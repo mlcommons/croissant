@@ -1,8 +1,11 @@
 MLCOMMONS ASSOCIATION LICENSE
 
 TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
 This license reproduces without alteration the terms of the Apache License
+
 Version 2.0, January 2004
+
 http://www.apache.org/licenses/
 
 1. Definitions.
