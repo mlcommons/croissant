@@ -1,0 +1,55 @@
+{
+    "@context": {
+        "@vocab": "https://schema.org/",
+        "ml": "http://mlcommons.org/schema/"
+    },
+    "@type": "Dataset",
+    "@language": "en",
+    "name": "anneal",
+    "description": "**Author**: Unknown. Donated by David Sterling and Wray Buntine  \n\n**Source**: [UCI](https://archive.ics.uci.edu/ml/datasets/Annealing) - 1990  \n\n**Please cite**: [UCI](https://archive.ics.uci.edu/ml/citation_policy.html)  \n\n\n\nThe original Annealing dataset from UCI. The exact meaning of the features and classes is largely unknown. Annealing, in metallurgy and materials science, is a heat treatment that alters the physical and sometimes chemical properties of a material to increase its ductility and reduce its hardness, making it more workable. It involves heating a material to above its recrystallization temperature, maintaining a suitable temperature, and then cooling. (Wikipedia)\n\n\n\n### Attribute Information:\n\n     1. family:          --,GB,GK,GS,TN,ZA,ZF,ZH,ZM,ZS\n\n     2. product-type:    C, H, G\n\n     3. steel:           -,R,A,U,K,M,S,W,V\n\n     4. carbon:          continuous\n\n     5. hardness:        continuous\n\n     6. temper_rolling:  -,T\n\n     7. condition:       -,S,A,X\n\n     8. formability:     -,1,2,3,4,5\n\n     9. strength:        continuous\n\n    10. non-ageing:      -,N\n\n    11. surface-finish:  P,M,-\n\n    12. surface-quality: -,D,E,F,G\n\n    13. enamelability:   -,1,2,3,4,5\n\n    14. bc:              Y,-\n\n    15. bf:              Y,-\n\n    16. bt:              Y,-\n\n    17. bw/me:           B,M,-\n\n    18. bl:              Y,-\n\n    19. m:               Y,-\n\n    20. chrom:           C,-\n\n    21. phos:            P,-\n\n    22. cbond:           Y,-\n\n    23. marvi:           Y,-\n\n    24. exptl:           Y,-\n\n    25. ferro:           Y,-\n\n    26. corr:            Y,-\n\n    27. blue/bright/varn/clean:          B,R,V,C,-\n\n    28. lustre:          Y,-\n\n    29. jurofm:          Y,-\n\n    30. s:               Y,-\n\n    31. p:               Y,-\n\n    32. shape:           COIL, SHEET\n\n    33. thick:           continuous\n\n    34. width:           continuous\n\n    35. len:             continuous\n\n    36. oil:             -,Y,N\n\n    37. bore:            0000,0500,0600,0760\n\n    38. packing: -,1,2,3\n\n    classes:        1,2,3,4,5,U\n\n  \n\n    -- The '-' values are actually 'not_applicable' values rather than\n\n       'missing_values' (and so can be treated as legal discrete\n\n       values rather than as showing the absence of a discrete value).",
+    "version": "1",
+    "creator": {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "David Sterling and Wray Buntine"
+    },
+    "contributor": {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "David Sterling and Wray Buntine"
+    },
+    "dateCreated": "2014-04-06T23:19:24",
+    "dateModified": "2019-07-09T15:22:03",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "license": null,
+    "creativeWorkStatus": "active",
+    "keywords": [
+        "study_1",
+        "study_14",
+        "study_34",
+        "study_37",
+        "study_41",
+        "study_70",
+        "study_76",
+        "test",
+        "uci"
+    ],
+    "citation": "https://archive.ics.uci.edu/ml/citation_policy.html",
+    "sameAs": "https://archive.ics.uci.edu/ml/datasets/Annealing",
+    "url": "https://www.openml.org/api/v1/json/data/2",
+    "distribution": [
+        {
+            "name": "dataset_2.pq",
+            "@type": "FileObject",
+            "contentUrl": "http://openml1.win.tue.nl/dataset2/dataset_2.pq",
+            "encodingFormat": "application/vnd.apache.parquet"
+        },
+        {
+            "name": "anneal.arff",
+            "@type": "FileObject",
+            "contentUrl": "https://api.openml.org/data/v1/download/1666876/anneal.arff",
+            "encodingFormat": "text/plain"
+        }
+    ]
+}
