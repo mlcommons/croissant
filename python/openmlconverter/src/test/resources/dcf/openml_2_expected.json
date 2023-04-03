@@ -287,7 +287,6 @@
           "source": "#{class}"
         }
       ],
-      "key": null,
       "name": "table",
       "source": "#{table}"
     }

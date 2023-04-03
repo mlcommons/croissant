@@ -18,8 +18,10 @@ def bake(openml_dataset: dict, openml_features: dict) -> dict:
         "description": _ds(field="description", required=True),
         "version": _ds(field="version"),
         # TODO: discuss. Multiple creators not supported  by schema.org, so joining them with "and"
-        "creator": _ds(field="creator", transform=lambda v: _person(" and ".join(v) if isinstance(
-            v, list) else v)),
+        "creator": _ds(
+            field="creator",
+            transform=lambda v: _person(" and ".join(v) if isinstance(v, list) else v),
+        ),
         "contributor": _ds(field="contributor", transform=_person),
         "dateCreated": _ds(field="upload_date", transform=dateutil.parser.parse),
         "dateModified": _ds(field="processing_date", transform=dateutil.parser.parse),
@@ -32,7 +34,8 @@ def bake(openml_dataset: dict, openml_features: dict) -> dict:
         "sameAs": _ds(field="original_data_url"),
         "url": f"https://www.openml.org/api/v1/json/data/{_ds(field='id')}",
         "distribution": [
-            _distribution(url) for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
+            _distribution(url)
+            for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
         ],
         "recordSet": [
             {
@@ -45,12 +48,12 @@ def bake(openml_dataset: dict, openml_features: dict) -> dict:
                         "name": feat["name"],
                         "@type": "ml:Field",
                         "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
-                        "source": f"#{{{feat['name']}}}"
+                        "source": f"#{{{feat['name']}}}",
                     }
                     for feat in openml_features
-                ]
+                ],
             }
-        ]
+        ],
     }
     _remove_none_values(croissant)
     for recordSet in croissant["recordSet"]:
@@ -115,8 +118,9 @@ def _datatype(value: str, nominal_value: list[str] | None) -> str:
 
 
 def _row_identifier(openml_features):
-    row_identifiers = [f"#{{{f['name']}}}" for f in openml_features
-                       if f["is_row_identifier"] == "true"]
+    row_identifiers = [
+        f"#{{{f['name']}}}" for f in openml_features if f["is_row_identifier"] == "true"
+    ]
     if len(row_identifiers) > 2:
         return row_identifiers
     elif len(row_identifiers) == 1:
