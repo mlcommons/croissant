@@ -1,0 +1,124 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/"
+  },
+  "@language": "en",
+  "@type": "Dataset",
+  "creativeWorkStatus": "active",
+  "dateCreated": "2017-10-16T01:17:36",
+  "dateModified": "2018-10-04T07:19:36",
+  "description": "**Author**: Frank E. Harrell Jr., Thomas Cason  \n**Source**: [Vanderbilt Biostatistics](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html)  \n**Please cite**:   \n\nThe original Titanic dataset, describing the survival status of individual passengers on the Titanic. The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. The principal source for data about Titanic passengers is the Encyclopedia Titanica. The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created. \n\nFor more information about how this dataset was constructed:\nhttp://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\n\n### Attribute information  \n\nThe variables on our extracted dataset are pclass, survived, name, age, embarked, home.dest, room, ticket, boat, and sex. pclass refers to passenger class (1st, 2nd, 3rd), and is a proxy for socio-economic class. Age is in years, and some infants had fractional values. The titanic2 data frame has no missing data and includes records for the crew, but age is dichotomized at adult vs. child. These data were obtained from Robert Dawson, Saint Mary's University, E-mail. The variables are pclass, age, sex, survived. These data frames are useful for demonstrating many of the functions in Hmisc as well as demonstrating binary logistic regression analysis using the Design library. For more details and references see Simonoff, Jeffrey S (1997): The \"unusual episode\" and a second statistics course. J Statistics Education, Vol. 5 No. 1.",
+  "distribution": [
+    {
+      "@type": "FileObject",
+      "contentUrl": "http://openml1.win.tue.nl/dataset40945/dataset_40945.pq",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "name": "table"
+    },
+    {
+      "@type": "FileObject",
+      "contentUrl": "https://api.openml.org/data/v1/download/16826755/Titanic.arff",
+      "encodingFormat": "text/plain",
+      "name": "table"
+    }
+  ],
+  "isAccessibleForFree": true,
+  "keywords": "text_data",
+  "name": "Titanic",
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "dataType": "number",
+          "name": "pclass",
+          "source": "#{pclass}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "boolean",
+          "name": "survived",
+          "source": "#{survived}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "name",
+          "source": "#{name}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "sex",
+          "source": "#{sex}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "number",
+          "name": "age",
+          "source": "#{age}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "number",
+          "name": "sibsp",
+          "source": "#{sibsp}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "number",
+          "name": "parch",
+          "source": "#{parch}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "ticket",
+          "source": "#{ticket}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "number",
+          "name": "fare",
+          "source": "#{fare}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "cabin",
+          "source": "#{cabin}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "embarked",
+          "source": "#{embarked}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "boat",
+          "source": "#{boat}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "number",
+          "name": "body",
+          "source": "#{body}"
+        },
+        {
+          "@type": "ml:Field",
+          "dataType": "string",
+          "name": "home.dest",
+          "source": "#{home.dest}"
+        }
+      ],
+      "name": "table",
+      "source": "#{table}"
+    }
+  ],
+  "url": "https://www.openml.org/api/v1/json/data/40945",
+  "version": "1"
+}
