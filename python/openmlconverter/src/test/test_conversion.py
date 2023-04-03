@@ -30,10 +30,18 @@ def mock_openml_responses(mocked_requests: responses.RequestsMock, openml_identi
     """
     resources = path_test_resources() / "openml"
     with open(resources / f"data_{openml_identifier}.json", "r") as f:
-        data_response = json.load(f)
+        data_dataset = json.load(f)
+    with open(resources / f"features_{openml_identifier}.json", "r") as f:
+        data_features = json.load(f)
     mocked_requests.add(
         responses.GET,
         f"{OPENML_URL}/data/{openml_identifier}",
-        json=data_response,
+        json=data_dataset,
+        status=200,
+    )
+    mocked_requests.add(
+        responses.GET,
+        f"{OPENML_URL}/data/features/{openml_identifier}",
+        json=data_features,
         status=200,
     )
