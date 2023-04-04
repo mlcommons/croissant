@@ -26,15 +26,8 @@
       {
         "@type": "ml:RecordSet",
         "name": "passengers_list",
-        "description": "The list of passengers. Does not include crew members.\n\nThere seem to be at least two passengers with the same name, so a composite key is used to uniquely identify passengers",
+        "description": "The list of passengers. Does not include crew members.",
         "source": "#{passengers}",
-        "key": [
-          "#{name}",
-          "#{age}",
-          "#{gender}",
-          "#{embarked}",
-          "#{home_destination}"
-        ],
         "field": [
           {
             "name": "name",
