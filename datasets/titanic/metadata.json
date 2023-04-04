@@ -15,7 +15,7 @@
     "distribution": [
       {
         "@type": "FileObject",
-        "name": "passengers",
+        "name": "passengers-table",
         "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
         "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
         "encodingFormat": "text/csv"
@@ -25,58 +25,58 @@
     "recordSet": [
       {
         "@type": "ml:RecordSet",
-        "name": "passengers_list",
+        "name": "passengers",
         "description": "The list of passengers. Does not include crew members.",
-        "source": "#{passengers}",
+        "source": "#{passengers-table}",
         "field": [
           {
             "name": "name",
             "description": "Name of the passenger",
             "@type": "ml:Field",
             "dataType": "string",
-            "source": "#{passengers/name}"
+            "source": "#{passengers-table/name}"
           },
           {
             "name": "gender",
             "description": "Gender of passenger (0: Male, 1: Female)",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/sex}"
+            "source": "#{passengers-table/sex}"
           },
           {
             "name": "age",
             "description": "Age of passenger at time of death.",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/age}"
+            "source": "#{passengers-table/age}"
           },
           {
             "name": "survived",
             "description": "Survival status of passenger (0: Lost, 1: Saved)",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/survived}"
+            "source": "#{passengers-table/survived}"
           },
           {
             "name": "pclass",
             "description": "Passenger Class (1st/2nd/3rd)",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/pclass}"
+            "source": "#{passengers-table/pclass}"
           },
           {
             "name": "cabin",
             "description": "Passenger cabin.",
             "@type": "ml:Field",
             "dataType": "string",
-            "source": "#{passengers/cabin}"
+            "source": "#{passengers-table/cabin}"
           },
           {
             "name": "embarked",
             "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
             "@type": "City/name",
             "dataType": "string",
-            "source": "#{passengers/embarked}"
+            "source": "#{passengers-table/embarked}"
   
           },
           {
@@ -84,49 +84,49 @@
             "description": "Passenger Fare (British pound)",
             "@type": "ml:Field",
             "dataType": "Float",
-            "source": "#{passengers/fare}"
+            "source": "#{passengers-table/fare}"
           },
           {
             "name": "home_destination",
             "description": "Home and destination",
             "@type": "ml:Field",
             "dataType": "string",
-            "source": "#{passengers/home.dest}"
+            "source": "#{passengers-table/home.dest}"
           },
           {
             "name": "ticket",
             "description": "Ticket Number, may include a letter.",
             "@type": "ml:Field",
             "dataType": "string",
-            "source": "#{passengers/ticket}"
+            "source": "#{passengers-table/ticket}"
           },
           {
             "name": "num_parents_children",
             "description": "Number of Parents/Children Aboard",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/parch}"
+            "source": "#{passengers-table/parch}"
           },
           {
             "name": "num_siblings_spouses",
             "description": "Number of Siblings/Spouses Aboard",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/sibsp}"
+            "source": "#{passengers-table/sibsp}"
           },
           {
             "name": "boat",
             "description": "Lifeboat used by passenger",
             "@type": "ml:Field",
             "dataType": "string",
-            "source": "#{passengers/boat}"
+            "source": "#{passengers-table/boat}"
           },
           {
             "name": "body",
             "description": "Body Identification Number",
             "@type": "ml:Field",
             "dataType": "integer",
-            "source": "#{passengers/body}"
+            "source": "#{passengers-table/body}"
           }
         ]
       }
