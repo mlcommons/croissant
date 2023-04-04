@@ -40,49 +40,49 @@
             "name": "name",
             "description": "Name of the passenger",
             "@type": "ml:Field",
-            "dataType": "Text",
+            "dataType": "string",
             "source": "#{passengers/name}"
           },
           {
             "name": "gender",
             "description": "Gender of passenger (0: Male, 1: Female)",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/sex}"
           },
           {
             "name": "age",
             "description": "Age of passenger at time of death.",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/age}"
           },
           {
             "name": "survived",
             "description": "Survival status of passenger (0: Lost, 1: Saved)",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/survived}"
           },
           {
             "name": "pclass",
             "description": "Passenger Class (1st/2nd/3rd)",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/pclass}"
           },
           {
             "name": "cabin",
             "description": "Passenger cabin.",
             "@type": "ml:Field",
-            "dataType": "Text",
+            "dataType": "string",
             "source": "#{passengers/cabin}"
           },
           {
             "name": "embarked",
             "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
             "@type": "City/name",
-            "dataType": "Text",
+            "dataType": "string",
             "source": "#{passengers/embarked}"
   
           },
@@ -97,42 +97,42 @@
             "name": "home_destination",
             "description": "Home and destination",
             "@type": "ml:Field",
-            "dataType": "Text",
+            "dataType": "string",
             "source": "#{passengers/home.dest}"
           },
           {
             "name": "ticket",
             "description": "Ticket Number, may include a letter.",
             "@type": "ml:Field",
-            "dataType": "Text",
+            "dataType": "string",
             "source": "#{passengers/ticket}"
           },
           {
             "name": "num_parents_children",
             "description": "Number of Parents/Children Aboard",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/parch}"
           },
           {
             "name": "num_siblings_spouses",
             "description": "Number of Siblings/Spouses Aboard",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/sibsp}"
           },
           {
             "name": "boat",
             "description": "Lifeboat used by passenger",
             "@type": "ml:Field",
-            "dataType": "Text",
+            "dataType": "string",
             "source": "#{passengers/boat}"
           },
           {
             "name": "body",
             "description": "Body Identification Number",
             "@type": "ml:Field",
-            "dataType": "Integer",
+            "dataType": "integer",
             "source": "#{passengers/body}"
           }
         ]
