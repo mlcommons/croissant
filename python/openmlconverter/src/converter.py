@@ -1,15 +1,18 @@
+import datetime
 from functools import partial
 
 import dateutil.parser
 import langcodes
 
 
-TABLE_NAME = "table"
-
-
 def bake(openml_dataset: dict, openml_features: dict) -> dict:
     _ds = partial(_get_field, json_dict=openml_dataset)  # get field from openml_dataset
 
+    distributions = [
+        _distribution(name=_ds(field="name"), url=url)
+        for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
+    ]
+    distribution_source = distributions[0]["name"]
     croissant = {
         "@context": {"@vocab": "https://schema.org/", "ml": "http://mlcommons.org/schema/"},
         "@type": "Dataset",
@@ -17,14 +20,14 @@ def bake(openml_dataset: dict, openml_features: dict) -> dict:
         "name": _ds(field="name", required=True),
         "description": _ds(field="description", required=True),
         "version": _ds(field="version"),
-        # TODO: discuss. Multiple creators not supported  by schema.org, so joining them with "and"
         "creator": _ds(
             field="creator",
-            transform=lambda v: _person(" and ".join(v) if isinstance(v, list) else v),
+            transform=lambda v: [_person(p) for p in v] if isinstance(v, list) else _person(v),
         ),
         "contributor": _ds(field="contributor", transform=_person),
         "dateCreated": _ds(field="upload_date", transform=dateutil.parser.parse),
         "dateModified": _ds(field="processing_date", transform=dateutil.parser.parse),
+        "datePublished": _ds(field="collection_date", transform=_lenient_date_parser),
         "inLanguage": _ds(field="language", transform=lambda v: langcodes.find(v).language),
         "isAccessibleForFree": True,
         "license": _ds(field="license"),
@@ -33,22 +36,19 @@ def bake(openml_dataset: dict, openml_features: dict) -> dict:
         "citation": _ds(field="citation"),
         "sameAs": _ds(field="original_data_url"),
         "url": f"https://www.openml.org/api/v1/json/data/{_ds(field='id')}",
-        "distribution": [
-            _distribution(url)
-            for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
-        ],
+        "distribution": distributions,
         "recordSet": [
             {
-                "name": TABLE_NAME,
+                "name": _ds(field="name"),
                 "@type": "ml:RecordSet",
-                "source": f"#{{{TABLE_NAME}}}",
+                "source": f"#{{{distribution_source}}}",
                 "key": _row_identifier(openml_features),
                 "field": [
                     {
                         "name": feat["name"],
                         "@type": "ml:Field",
                         "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
-                        "source": f"#{{{feat['name']}}}",
+                        "source": f"#{{{distribution_source}/{feat['name']}}}",
                     }
                     for feat in openml_features
                 ],
@@ -82,35 +82,37 @@ def _person(name: str) -> dict | None:
     return {"@context": "https://schema.org", "@type": "Person", "name": name}
 
 
-def _distribution(url: str) -> dict | None:
+def _distribution(name: str, url: str) -> dict | None:
     if url is None:
         return None
 
     if url.endswith(".arff"):
+        type_ = "arff"
         mimetype = "text/plain"  # No official arff mimetype exists
     elif url.endswith(".pq"):
-        mimetype = "application/vnd.apache.parquet"  # TODO: Not an official mimetype yet
+        type_ = "parquet"
+        mimetype = "application/vnd.apache.parquet"  # Not an official mimetype yet
         # see https://issues.apache.org/jira/browse/PARQUET-1889
     else:
         raise ValueError(f"Unrecognized file extension in url: {url}")
     return {
-        "name": TABLE_NAME,
+        "name": f"{name} ({type_})",
         "@type": "FileObject",
         "contentUrl": url,
         "encodingFormat": mimetype
         # TODO: add the md5 hash? But where? 'sha256' is in the Google Docs file, but not official?
+        # TODO: add sameAs (other distribution)?
     }
 
 
 def _datatype(value: str, nominal_value: list[str] | None) -> str:
     if nominal_value is not None:
         if set(nominal_value) == {"TRUE", "FALSE"} or set(nominal_value) == {"0", "1"}:
-            return "boolean"
+            return "Boolean"
     d_type = {
-        "numeric": "number",
-        "string": "string",
-        "nominal": "string",  # TODO: where to add the possible values?
-        # see https://www.w3.org/TR/tabular-data-primer/datatypes.png
+        "numeric": "Number",
+        "string": "Text",
+        "nominal": "Text",  # TODO: where to add the possible values?
     }.get(value, None)
     if d_type is None:
         raise ValueError(f"Unknown datatype: {value}")
@@ -126,6 +128,17 @@ def _row_identifier(openml_features):
     elif len(row_identifiers) == 1:
         return row_identifiers[0]
     return None
+
+
+def _lenient_date_parser(value: str) -> datetime.date | datetime.datetime:
+    try:
+        dateutil.parser.parse(value)
+    except dateutil.parser.ParserError:
+        pass
+    if len(value) == 4 and (value.startswith("19") or value.startswith("20")):
+        year = int(value)
+        return datetime.date(year, 1, 1)
+    raise ValueError(f"Unknown date/datetime format: {value}")
 
 
 def _remove_none_values(dct_: dict):

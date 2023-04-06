@@ -14,13 +14,13 @@
       "@type": "FileObject",
       "contentUrl": "http://openml1.win.tue.nl/dataset40945/dataset_40945.pq",
       "encodingFormat": "application/vnd.apache.parquet",
-      "name": "table"
+      "name": "Titanic (parquet)"
     },
     {
       "@type": "FileObject",
       "contentUrl": "https://api.openml.org/data/v1/download/16826755/Titanic.arff",
       "encodingFormat": "text/plain",
-      "name": "table"
+      "name": "Titanic (arff)"
     }
   ],
   "isAccessibleForFree": true,
@@ -32,91 +32,91 @@
       "field": [
         {
           "@type": "ml:Field",
-          "dataType": "number",
+          "dataType": "Number",
           "name": "pclass",
-          "source": "#{pclass}"
+          "source": "#{Titanic (parquet)/pclass}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "boolean",
+          "dataType": "Boolean",
           "name": "survived",
-          "source": "#{survived}"
+          "source": "#{Titanic (parquet)/survived}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "name",
-          "source": "#{name}"
+          "source": "#{Titanic (parquet)/name}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "sex",
-          "source": "#{sex}"
+          "source": "#{Titanic (parquet)/sex}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "number",
+          "dataType": "Number",
           "name": "age",
-          "source": "#{age}"
+          "source": "#{Titanic (parquet)/age}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "number",
+          "dataType": "Number",
           "name": "sibsp",
-          "source": "#{sibsp}"
+          "source": "#{Titanic (parquet)/sibsp}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "number",
+          "dataType": "Number",
           "name": "parch",
-          "source": "#{parch}"
+          "source": "#{Titanic (parquet)/parch}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "ticket",
-          "source": "#{ticket}"
+          "source": "#{Titanic (parquet)/ticket}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "number",
+          "dataType": "Number",
           "name": "fare",
-          "source": "#{fare}"
+          "source": "#{Titanic (parquet)/fare}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "cabin",
-          "source": "#{cabin}"
+          "source": "#{Titanic (parquet)/cabin}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "embarked",
-          "source": "#{embarked}"
+          "source": "#{Titanic (parquet)/embarked}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "boat",
-          "source": "#{boat}"
+          "source": "#{Titanic (parquet)/boat}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "number",
+          "dataType": "Number",
           "name": "body",
-          "source": "#{body}"
+          "source": "#{Titanic (parquet)/body}"
         },
         {
           "@type": "ml:Field",
-          "dataType": "string",
+          "dataType": "Text",
           "name": "home.dest",
-          "source": "#{home.dest}"
+          "source": "#{Titanic (parquet)/home.dest}"
         }
       ],
-      "name": "table",
-      "source": "#{table}"
+      "name": "Titanic",
+      "source": "#{Titanic (parquet)}"
     }
   ],
   "url": "https://www.openml.org/api/v1/json/data/40945",
