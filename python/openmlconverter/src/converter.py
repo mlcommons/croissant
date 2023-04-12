@@ -11,7 +11,7 @@ import dateutil.parser
 import langcodes
 
 
-def convert(openml_dataset: dict, openml_features: dict) -> dict:
+def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     """
     Convert an openml dataset into a DCF (Croissant) representation.
 
