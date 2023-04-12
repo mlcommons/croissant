@@ -6,6 +6,7 @@ Typical usage:
 
 import datetime
 from functools import partial
+from typing import Callable
 
 import dateutil.parser
 import langcodes
@@ -77,7 +78,9 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     return croissant
 
 
-def _get_field(json_dict: dict, field: str, transform=None, required=False):
+def _get_field(
+    json_dict: dict, field: str, transform: Callable | None = None, required: bool = False
+):
     """
     Get a field from a dictionary optionally perform the transformation.
 
