@@ -18,6 +18,7 @@
         "@type": "FileObject",
         "name": "passengers-table",
         "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
+        "contentSize": "117743 B",
         "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
         "encodingFormat": "text/csv"
       }
@@ -133,3 +134,4 @@
       }
     ]
   }
+
