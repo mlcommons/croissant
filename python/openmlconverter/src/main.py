@@ -32,7 +32,7 @@ def main():
 def convert(openml_id) -> dict:
     dataset_json = fetch_openml.dataset_json(openml_id)
     features_json = fetch_openml.features_json(openml_id)
-    dcf = converter.bake(dataset_json, features_json)
+    dcf = converter.convert(dataset_json, features_json)
     return dcf
 
 
