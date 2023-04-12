@@ -1,5 +1,6 @@
 # Datasets format
 
-[Requirements document](https://docs.google.com/document/d/1uuh1WsfCGf1HYBX4IufE7bW1wnZa5lSszphnP7TVyjY)
+[Drive folder](https://drive.google.com/corp/drive/folders/0AJdoVnszz6OVUk9PVA) with meeting notes, concept, requirements, spec, etc.
+
 
 Mailing list: https://groups.google.com/g/mldsformat/
