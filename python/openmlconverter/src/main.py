@@ -25,15 +25,15 @@ def main():
     croissant = convert(openml_id)
     output_filepath = output_folder / f"{openml_id}.json"
     with open(output_filepath, "w") as f:
-        json.dump(croissant, f, default=serialize_json, sort_keys=True)
+        json.dump(croissant, f, default=serialize_json)
         logging.info(f"Result written to {output_filepath.resolve()}")
 
 
-def convert(openml_id):
+def convert(openml_id) -> dict:
     dataset_json = fetch_openml.dataset_json(openml_id)
     features_json = fetch_openml.features_json(openml_id)
-    croissant = converter.bake(dataset_json, features_json)
-    return croissant
+    dcf = converter.bake(dataset_json, features_json)
+    return dcf
 
 
 if __name__ == "__main__":
