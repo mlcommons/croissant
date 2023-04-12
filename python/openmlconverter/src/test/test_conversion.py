@@ -9,6 +9,8 @@ from .test_utils import path_test_resources
 
 
 def test_happy_path():
+    """Convert a constructed OpenML example into DCF.
+    """
     openml_identifier = "constructed"
     with responses.RequestsMock() as mocked_requests:
         mock_openml_responses(mocked_requests, openml_identifier)
