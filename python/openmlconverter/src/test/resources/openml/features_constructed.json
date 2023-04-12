@@ -18,7 +18,7 @@
                 ],
                 "is_target": "false",
                 "is_ignore": "false",
-                "is_row_identifier": "false",
+                "is_row_identifier": "true",
                 "number_of_missing_values": "772"
             },
             {
@@ -32,7 +32,7 @@
                 ],
                 "is_target": "false",
                 "is_ignore": "false",
-                "is_row_identifier": "false",
+                "is_row_identifier": "true",
                 "number_of_missing_values": "0"
             },
             {

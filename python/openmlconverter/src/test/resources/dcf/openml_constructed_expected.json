@@ -64,6 +64,7 @@
       "name": "anneal",
       "@type": "ml:RecordSet",
       "source": "#{anneal (parquet)}",
+      "key": ["#{family}", "#{product-type}"],
       "field": [
         {
           "name": "family",

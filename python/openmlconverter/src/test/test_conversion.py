@@ -9,7 +9,7 @@ from .test_utils import path_test_resources
 
 
 def test_happy_path():
-    openml_identifier = "2"
+    openml_identifier = "constructed"
     with responses.RequestsMock() as mocked_requests:
         mock_openml_responses(mocked_requests, openml_identifier)
         croissant_dict_actual = main.convert(openml_identifier)

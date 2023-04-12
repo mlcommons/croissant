@@ -226,7 +226,7 @@ def _row_identifier(openml_features: list[dict[str, any]]) -> list[str] | str | 
     row_identifiers = [
         f"#{{{f['name']}}}" for f in openml_features if f["is_row_identifier"] == "true"
     ]
-    if len(row_identifiers) > 2:
+    if len(row_identifiers) > 1:
         return row_identifiers
     elif len(row_identifiers) == 1:
         return row_identifiers[0]
