@@ -44,7 +44,7 @@
   ],
   "citation": "https://archive.ics.uci.edu/ml/citation_policy.html",
   "sameAs": "https://archive.ics.uci.edu/ml/datasets/Annealing",
-  "url": "https://www.openml.org/api/v1/json/data/2",
+  "url": "https://www.openml.org/search?type=data&id=2",
   "distribution": [
     {
       "name": "anneal_parquet",

@@ -53,7 +53,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         "keywords": _ds(field="tag"),
         "citation": _ds(field="citation"),
         "sameAs": _ds(field="original_data_url"),
-        "url": f"https://www.openml.org/api/v1/json/data/{_ds(field='id')}",
+        "url": f"https://www.openml.org/search?type=data&id={_ds(field='id')}",
         "distribution": distributions,
         "recordSet": [
             {
@@ -67,7 +67,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
                         "@type": "ml:Field",
                         "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
                         "source": f"#{{{distribution_source}/{_replace_special_chars(feat['name'])}"
-                        "}}",
+                        "}",
                     }
                     for feat in openml_features
                 ],
