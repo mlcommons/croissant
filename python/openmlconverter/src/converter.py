@@ -5,6 +5,7 @@ Typical usage:
 """
 
 import datetime
+import re
 from functools import partial
 from typing import Callable
 
@@ -29,7 +30,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         _file_object(name=_ds(field="name"), url=url)
         for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
     ]
-    distribution_source = distributions[0]["name"]
+    distribution_source = _replace_special_chars(distributions[0]["name"])
     croissant = {
         "@context": {"@vocab": "https://schema.org/", "ml": "http://mlcommons.org/schema/"},
         "@type": "Dataset",
@@ -56,16 +57,17 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         "distribution": distributions,
         "recordSet": [
             {
-                "name": _ds(field="name"),
+                "name": _ds(field="name", transform=_replace_special_chars),
                 "@type": "ml:RecordSet",
                 "source": f"#{{{distribution_source}}}",
-                "key": _row_identifier(openml_features),
+                "key": _row_identifier(openml_features, distribution_source),
                 "field": [
                     {
                         "name": feat["name"],
                         "@type": "ml:Field",
                         "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
-                        "source": f"#{{{distribution_source}/{feat['name']}}}",
+                        "source": f"#{{{distribution_source}/{_replace_special_chars(feat['name'])}"
+                        "}}",
                     }
                     for feat in openml_features
                 ],
@@ -114,6 +116,18 @@ def _get_field(
     return val
 
 
+def _replace_special_chars(name: str) -> str:
+    """Replace special characters with underscores.
+
+    Args:
+        name: a name of a json-ld object.
+
+    Returns:
+        a sanitized version of the name
+    """
+    return re.sub("[^A-Za-z0-9]", "_", name)
+
+
 def _person(name: str) -> dict | None:
     """
     A dictionary with json-ld fields for a https://schema.org/Person
@@ -160,7 +174,7 @@ def _file_object(name: str, url: str) -> dict | None:
     else:
         raise ValueError(f"Unrecognized file extension in url: {url}")
     return {
-        "name": f"{name} ({type_})",
+        "name": f"{name}_{type_}",
         "@type": "FileObject",
         "contentUrl": url,
         "encodingFormat": mimetype
@@ -198,7 +212,9 @@ def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
     return d_type
 
 
-def _row_identifier(openml_features: list[dict[str, any]]) -> list[str] | str | None:
+def _row_identifier(
+    openml_features: list[dict[str, any]], distribution_source: str
+) -> list[str] | str | None:
     """
     Determine the feature names that uniquely identify a row.
 
@@ -222,12 +238,15 @@ def _row_identifier(openml_features: list[dict[str, any]]) -> list[str] | str | 
 
     Args:
         openml_features: A list of dictionaries containing the OpenML description of features.
+        distribution_source: The name of the distribution.
 
     Returns:
         A list of feature names, a single feature name, or None.
     """
     row_identifiers = [
-        f"#{{{f['name']}}}" for f in openml_features if f["is_row_identifier"] == "true"
+        f"#{{{distribution_source}/{_replace_special_chars(f['name'])}}}"
+        for f in openml_features
+        if f["is_row_identifier"] == "true"
     ]
     if len(row_identifiers) > 1:
         return row_identifiers
