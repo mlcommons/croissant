@@ -1,10 +1,22 @@
 {
     "@context": {
+      "@vocab": "https://schema.org/",
       "sc": "https://schema.org/",
       "ml": "http://mlcommons.org/schema/",
-      "wd": "https://www.wikidata.org/wiki/Q"
+      "wd": "https://www.wikidata.org/wiki/Q",
+      "dataType": {
+        "@id": "ml:dataType",
+        "@type": "@id"
+      },
+      "field": {
+        "@id": "ml:Field",
+        "@type": "@id"
+      },
+      "recordSet": {
+        "@id": "ml:RecordSet",
+        "@type": "@id"
+      }
     },
-
     "@type": "sc:Dataset",
     "@language": "en",
     "name": "Titanic",
@@ -31,10 +43,21 @@
         "description": "Maps gender keys (0, 1) to labeled values.",
         "key": "#{key}",
         "field": [
-            { "name": "key", "@type": "ml:Field", "dataType": "sc:Integer" },
-            { "name": "label", "@type": "ml:Field", "dataType": "sc:String" },
+            {
+              "name": "key",
+              "description": "0 or 1",
+              "@type": "ml:Field",
+              "dataType": "sc:Integer"
+            },
+            {
+              "name": "label",
+              "description": "Male or Female",
+              "@type": "ml:Field",
+              "dataType": "sc:Text"
+            },
             {
                 "name": "url",
+                "description": "Corresponding WikiData URL",
                 "@type": "ml:Field",
                 "dataType": ["sc:Url", "wd:48277"]
             }
@@ -50,10 +73,21 @@
         "description": "Maps Embarkation port initial to labeled values.",
         "key": "#{key}",
         "field": [
-            { "name": "key", "@type": "ml:Field", "dataType": "sc:Text" },
-            { "name": "label", "@type": "ml:Field", "dataType": "sc:Text" },
+            {
+              "name": "key",
+              "description": "C, Q, S or ?",
+              "@type": "ml:Field",
+              "dataType": "sc:Text"
+            },
+            {
+              "name": "label",
+              "description": "Human-readable label",
+              "@type": "ml:Field",
+              "dataType": "sc:Text"
+            },
             {
                 "name": "url",
+                "description": "Corresponding WikiData URL",
                 "@type": "ml:Field",
                 "dataType": ["sc:Url", "wd:515"]
             }
@@ -126,7 +160,7 @@
             "name": "fare",
             "description": "Passenger Fare (British pound)",
             "@type": "ml:Field",
-            "dataType": "Float",
+            "dataType": "sc:Float",
             "source": "#{passengers-table/fare}"
           },
           {

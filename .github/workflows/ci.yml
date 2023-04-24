@@ -1,0 +1,59 @@
+name: Continuous Integration (CI)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format-test:
+    name: Format / Unit Tests / Python ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Tests currently fail for 3.8 and 3.9.
+        python-version: ['3.10', '3.11']
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/format
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install library
+      run: pip install .[dev]
+
+    - name: PyTest
+      run: pytest .
+
+  datasets-test:
+    name: Datasets / JSON-LD Tests / Python 3.11
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/format
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install .
+
+    - name: Add folder to PYTHONPATH
+      run: |
+        echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
+
+    - name: Validate JSON-LD files
+      run: python scripts/validate.py --file ../../datasets/titanic/metadata.json

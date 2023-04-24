@@ -1,0 +1,23 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@id"
+    },
+    "recordSet": {
+      "@id": "ml:RecordSet",
+      "@type": "@id"
+    }
+  },
+  "@type": "mydataset",
+  "@language": "en",
+  "url": "https://www.google.com/dataset",
+  "description": "This is a description.",
+  "license": "This is a license.",
+  "citation": "This is a citation.",
+  "distribution": [],
+  "recordSet": []
+}
