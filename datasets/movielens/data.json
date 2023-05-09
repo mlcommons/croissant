@@ -1,0 +1,245 @@
+{
+  "@context": {
+    "@vocab" : "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+  },
+  "@type": "sc:Dataset",
+  "@language": "en",
+  "name": "Movielens-25M",
+  "url": "https://grouplens.org/datasets/movielens/25m/",
+  "description": "MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019",
+  "distribution": [
+    {
+      "name": "ml-25m-archive",
+      "@type": "sc:FileObject",
+      "contentUrl": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "sha256": "6b51fb2759a8657d3bfcbfc42b592ada",
+      "encodingFormat": "application/zip"
+    },
+    {
+      "name": "ratings-table",
+      "@type": "sc:FileObject",
+      "containedIn": "ml-25m-archive",
+      "contentUrl": "ratings.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "name": "movies-table",
+      "@type": "sc:FileObject",
+      "containedIn": "ml-25m-archive",
+      "contentUrl": "movies.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "name": "tags-table",
+      "@type": "sc:FileObject",
+      "containedIn": "ml-25m-archive",
+      "contentUrl": "tags.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "name": "links-table",
+      "@type": "sc:FileObject",
+      "containedIn": "ml-25m-archive",
+      "contentUrl": "links.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "name": "genome-scores-table",
+      "@type": "sc:FileObject",
+      "containedIn": "ml-25m-archive",
+      "contentUrl": "genome-scores.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "name": "genome-tags-table",
+      "@type": "sc:FileObject",
+      "containedIn": "ml-25m-archive",
+      "contentUrl": "genome-tags.csv",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "movies",
+      "@type": "ml:RecordSet",
+      "source": "#{movies-table}",
+      "key": "#{movie_id}",
+      "field": [
+        {
+          "name": "movie_id",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{movies-table/movieId}"
+        },
+        {
+          "name": "title",
+          "@type": "ml:Field",
+          "description": "The title of the  movie with the release year in parentheses.",
+          "dataType": "sc:Text",
+          "source": "#{movies-table/title}"
+        },
+        {
+          "name": "genre",
+          "@type": "ml:Field",
+          "description": "A sequence of genres to which the rated movie belongs.",
+          "dataType": "sc:Text",
+          "repeated": "true",
+          "source":
+            {
+              "data": "#{movies-table/genres}",
+              "applyTransform": {"separator": "|"}
+            }
+        }
+      ]
+    },
+    {
+      "name": "ratings",
+      "@type": "ml:RecordSet",
+      "source": "#{ratings-table}",
+      "key": ["#{user_id}", "#{movie_id}"],
+      "field": [
+        {
+          "name": "user_id",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{ratings-table/userId}"
+        },
+        {
+          "name": "movie_id",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{ratings-table/movieId}",
+          "references": "#{movies}"
+        },
+        {
+          "name": "rating",
+          "@type": "ml:Field",
+          "description": "The score of the rating on a five-star scale.",
+          "dataType": "sc:Float",
+          "source": "#{ratings-table/rating}"
+        },
+        {
+          "name": "timestamp",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source":  "#{ratings-table/timestamp}"
+        }
+      ]
+    },
+    {
+      "name": "tags",
+      "@type": "ml:RecordSet",
+      "source": "#{tags-table}",
+      "key": ["#{user_id}", "#{movie_id}", "#{timestamp}"],
+      "field": [
+        {
+          "name": "user_id",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{tags-table/userId}"
+        },
+        {
+          "name": "movie_id",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{tags-table/movieId}",
+          "references": "#{movies}"
+        },
+        {
+          "name": "tag",
+          "@type": "ml:Field",
+          "description": "Tags assigned to the movie.",
+          "dataType": "sc:Text",
+          "source": "#{tags-table/tag}"
+        },
+        {
+          "name": "timestamp",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source":  "#{tags-table/timestamp}"
+        }
+      ]
+    },
+    {
+      "name": "movies+ratings+tags",
+      "@type": "ml:RecordSet",
+      "source": "#{movies}",
+      "key": "#{movie_id}",
+      "field": [
+        {
+          "name": "movie_id",
+          "@type": "ml:Field",
+          "source": "#{movies/movie_id}"
+        },
+        {
+          "name": "movie_title",
+          "@type": "ml:Field",
+          "source": "#{movies/title}"
+        },
+        {
+          "name": "movie_genres",
+          "@type": "ml:Field",
+          "source": "#{movies/genres}"
+        },
+        {
+          "name": "ratings",
+          "@type": "ml:Field",
+          "dataType": "ml:RecordSet",
+          "source": "#{ratings}",
+          "parentField": {
+            "@type": "ml:Field",
+            "source": "#{ratings/movie_id}",
+            "references": "#{movies}"
+          },
+          "subField": [
+            {
+              "name": "user_id",
+              "@type": "ml:Field",
+              "source": "#{ratings/user_id}"
+            },
+            {
+              "name": "rating",
+              "@type": "ml:Field",
+              "source": "#{ratings/rating}"
+            },
+            {
+              "name": "timestamp",
+              "@type": "ml:Field",
+              "source": "#{ratings/timestamp}"
+            }
+          ]
+        },
+        {
+          "name": "tags",
+          "@type": "ml:Field",
+          "dataType": "ml:RecordSet",
+          "source": "#{tags}",
+          "parentField": {
+            "@type": "ml:Field",
+            "source": "#{tags/movie_id}",
+            "references": "#{movies}"
+          },
+          "subField": [
+            {
+              "name": "user_id",
+              "@type": "ml:Field",
+              "source": "#{tags/user_id}"
+            },
+            {
+              "name": "tag",
+              "@type": "ml:Field",
+              "source": "#{tags/tag}"
+            },
+            {
+              "name": "timestamp",
+              "@type": "ml:Field",
+              "source": "#{tags/timestamp}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
