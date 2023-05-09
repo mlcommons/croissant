@@ -1,8 +1,8 @@
 {
   "@context": {
-    "@vocab" : "https://schema.org/",
-    "sc" : "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/"
   },
   "@type": "sc:Dataset",
   "@language": "en",
@@ -30,63 +30,63 @@
       "name": "pass1",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.1.tar",
-      "sha256": "dddaf2840997cb181572863587899b53" ,
+      "sha256": "dddaf2840997cb181572863587899b53",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass2",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.2.tar",
-      "sha256": "dddaf2840997cb181572863587899b53" ,
+      "sha256": "dddaf2840997cb181572863587899b53",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass3",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.3.tar",
-      "sha256": "9b9b9e1ee65747e47ad835a4f99c8e70" ,
+      "sha256": "9b9b9e1ee65747e47ad835a4f99c8e70",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass4",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.4.tar",
-      "sha256": "e2c85293cbe6178477eea7d277d95dd7" ,
+      "sha256": "e2c85293cbe6178477eea7d277d95dd7",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass5",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.5.tar",
-      "sha256": "a2d174f7042d98ad037cda0e3313ea00" ,
+      "sha256": "a2d174f7042d98ad037cda0e3313ea00",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass6",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.6.tar",
-      "sha256": "2be85748c184b058f8d95a886dab161b" ,
+      "sha256": "2be85748c184b058f8d95a886dab161b",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass7",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.7.tar",
-      "sha256": "83e07eee33df5fcc63a4b0db4e94abb4" ,
+      "sha256": "83e07eee33df5fcc63a4b0db4e94abb4",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass8",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.8.tar",
-      "sha256": "3f708993aa168b57306e5de08ba71373" ,
+      "sha256": "3f708993aa168b57306e5de08ba71373",
       "encodingFormat": "application/x-tar"
     },
     {
       "name": "pass9",
       "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
-      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc" ,
+      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc",
       "encodingFormat": "application/x-tar"
     },
     {
@@ -122,7 +122,9 @@
           "dataType": "sc:Text",
           "source": {
             "data": "#{image-files/filename}",
-            "applyTransform": {"regex": "([^\\/]*)\\.jpg"}
+            "applyTransform": {
+              "regex": "([^\\/]*)\\.jpg"
+            }
           },
           "references": "#{metadata/image_hash}"
         },
@@ -164,9 +166,9 @@
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
-	    "data": "#{metadata/datetaken}",
-	    "format": "yyyy-MM-dd HH:mm:ss.S"
-	  }
+            "data": "#{metadata/datetaken}",
+            "format": "yyyy-MM-dd HH:mm:ss.S"
+          }
         }
       ]
     }
