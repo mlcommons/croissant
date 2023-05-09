@@ -2,7 +2,11 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/"
+    "ml": "http://mlcommons.org/schema/",
+    "includes": {
+      "@id": "ml:includes",
+      "@type": "@id"
+    }
   },
   "@type": "sc:Dataset",
   "@language": "en",
