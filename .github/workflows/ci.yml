@@ -56,4 +56,9 @@ jobs:
         echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
 
     - name: Validate JSON-LD files
-      run: python scripts/validate.py --file ../../datasets/titanic/metadata.json
+      run: |
+        JSON_FILES=$(python -c "import os; from etils import epath; [print(os.fspath(path)) for path in epath.Path('../../datasets').glob('*/metadata.json')]")
+        for file in ${JSON_FILES}
+        do
+          python scripts/validate.py --file ${file}
+        done

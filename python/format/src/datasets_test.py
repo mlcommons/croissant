@@ -19,12 +19,12 @@ import pytest
         ],
         # Distribution.
         [
-            "distribution_missing_property_content_size.json",
-            'Property "https://schema.org/contentSize" is mandatory, but does not exist.',
+            "distribution_missing_property_content_url.json",
+            'Property "https://schema.org/contentUrl" is mandatory, but does not exist.',
         ],
         [
             "distribution_bad_type.json",
-            'Node should have an attribute `"@type": "https://schema.org/FileObject"`.',
+            'Node should have an attribute `"@type" in "\[rdflib.term.URIRef\(\'https://schema.org/FileObject\'\), rdflib.term.URIRef\(\'https://schema.org/FileSet\'\)\]"',
         ],
         # Record set.
         [

@@ -67,8 +67,15 @@ class Node:
     def assert_has_type(self, expected_type: str):
         """Checks for the presence of `"@type": expected_type` in edges."""
         node_type = self.properties[constants.RDF_TYPE]
-        if node_type is not None and node_type != expected_type:
+        if node_type != expected_type:
             error = f'Node should have an attribute `"@type": "{expected_type}"`. Found `"@type": "{node_type}"`.'
+            self.issues.add_error(error)
+
+    def assert_has_types(self, expected_types: list[str]):
+        """Checks for the presence of `"@type": expected_types` in edges."""
+        node_type = self.properties[constants.RDF_TYPE]
+        if all(node_type != expected_type for expected_type in expected_types):
+            error = f'Node should have an attribute `"@type" in "{expected_types}"`. Found `"@type": "{node_type}"`.'
             self.issues.add_error(error)
 
     def assert_has_mandatory_properties(self, mandatory_properties: list[str]):
@@ -120,6 +127,10 @@ class Node:
         self.issues.add_error(error)
         return None
 
+    def __iter__(self):
+        """Magic method to be able to write `property_name in node`."""
+        for property in self.properties:
+            yield property
 
 def load_rdf_graph(dict_dataset: dict) -> nx.MultiDiGraph:
     """Parses RDF graph with NetworkX from a dict."""
@@ -163,13 +174,17 @@ def check_metadata(
         metadata.assert_has_type(constants.SCHEMA_ORG_DATASET)
         metadata.assert_has_mandatory_properties(
             [
-                constants.SCHEMA_ORG_CITATION,
-                constants.SCHEMA_ORG_LICENSE,
                 constants.SCHEMA_ORG_NAME,
                 constants.SCHEMA_ORG_URL,
             ]
         )
-        metadata.assert_has_optional_properties([constants.SCHEMA_ORG_DESCRIPTION])
+        metadata.assert_has_optional_properties(
+            [
+                constants.SCHEMA_ORG_CITATION,
+                constants.SCHEMA_ORG_LICENSE,
+                constants.SCHEMA_ORG_DESCRIPTION,
+            ]
+        )
 
 
 def check_distribution(
@@ -180,17 +195,32 @@ def check_distribution(
     """Populates issues on the Distribution nodes."""
     distribution_name = distribution.name
     with issues.context(f"dataset({dataset_name}) > distribution({distribution_name})"):
-        distribution.assert_has_type(constants.SCHEMA_ORG_FILE_OBJECT)
-        distribution.assert_has_mandatory_properties(
-            [
-                constants.SCHEMA_ORG_CONTENT_SIZE,
-                constants.SCHEMA_ORG_CONTENT_URL,
-                constants.SCHEMA_ORG_ENCODING_FORMAT,
-            ]
-        )
-        distribution.assert_has_exclusive_properties(
-            [[constants.SCHEMA_ORG_MD5, constants.SCHEMA_ORG_SHA256]]
-        )
+        distribution.assert_has_types([constants.SCHEMA_ORG_FILE_OBJECT, constants.SCHEMA_ORG_FILE_SET])
+        is_file_set = distribution[constants.RDF_TYPE] == constants.SCHEMA_ORG_FILE_SET
+        if is_file_set:
+            distribution.assert_has_mandatory_properties(
+                [
+                    constants.ML_COMMONS_INCLUDES,
+                    constants.SCHEMA_ORG_ENCODING_FORMAT,
+                ]
+            )
+        else:
+            distribution.assert_has_mandatory_properties(
+                [
+                    constants.SCHEMA_ORG_CONTENT_URL,
+                    constants.SCHEMA_ORG_ENCODING_FORMAT,
+                ]
+            )
+        is_root_distribution = constants.SCHEMA_ORG_CONTAINED_IN not in distribution
+        if is_root_distribution:
+            distribution.assert_has_optional_properties(
+                [
+                    constants.SCHEMA_ORG_CONTENT_SIZE,
+                ]
+            )
+            distribution.assert_has_exclusive_properties(
+                [[constants.SCHEMA_ORG_MD5, constants.SCHEMA_ORG_SHA256]]
+            )
 
 
 def check_record_set(

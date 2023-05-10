@@ -3,6 +3,7 @@ import rdflib
 # MLCommons-defined URIs (still draft).
 ML_COMMONS_DATA_TYPE = rdflib.term.URIRef("http://mlcommons.org/schema/dataType")
 ML_COMMONS_FIELD = rdflib.term.URIRef("http://mlcommons.org/schema/Field")
+ML_COMMONS_INCLUDES = rdflib.term.URIRef("http://mlcommons.org/schema/includes")
 ML_COMMONS_RECORD_SET = rdflib.term.URIRef("http://mlcommons.org/schema/RecordSet")
 
 # RDF standard URIs.
@@ -11,6 +12,7 @@ RDF_TYPE = rdflib.term.URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 
 # Schema.org standard URIs.
 SCHEMA_ORG_CITATION = rdflib.term.URIRef("https://schema.org/citation")
+SCHEMA_ORG_CONTAINED_IN = rdflib.term.URIRef("https://schema.org/containedIn")
 SCHEMA_ORG_CONTENT_SIZE = rdflib.term.URIRef("https://schema.org/contentSize")
 SCHEMA_ORG_CONTENT_URL = rdflib.term.URIRef("https://schema.org/contentUrl")
 SCHEMA_ORG_DATASET = rdflib.URIRef("https://schema.org/Dataset")
@@ -28,4 +30,5 @@ SCHEMA_ORG_URL = rdflib.term.URIRef("https://schema.org/url")
 
 # Schema.org URIs that do not exist yet in the standard.
 SCHEMA_ORG_FILE_OBJECT = rdflib.term.URIRef("https://schema.org/FileObject")
+SCHEMA_ORG_FILE_SET = rdflib.term.URIRef("https://schema.org/FileSet")
 SCHEMA_ORG_MD5 = rdflib.term.URIRef("https://schema.org/md5")

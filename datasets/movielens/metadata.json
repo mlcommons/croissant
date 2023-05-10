@@ -1,8 +1,8 @@
 {
   "@context": {
-    "@vocab" : "https://schema.org/",
+    "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
+    "ml": "http://mlcommons.org/schema/"
   },
   "@type": "sc:Dataset",
   "@language": "en",
@@ -86,11 +86,12 @@
           "description": "A sequence of genres to which the rated movie belongs.",
           "dataType": "sc:Text",
           "repeated": "true",
-          "source":
-            {
-              "data": "#{movies-table/genres}",
-              "applyTransform": {"separator": "|"}
+          "source": {
+            "data": "#{movies-table/genres}",
+            "applyTransform": {
+              "separator": "|"
             }
+          }
         }
       ]
     },
@@ -98,7 +99,10 @@
       "name": "ratings",
       "@type": "ml:RecordSet",
       "source": "#{ratings-table}",
-      "key": ["#{user_id}", "#{movie_id}"],
+      "key": [
+        "#{user_id}",
+        "#{movie_id}"
+      ],
       "field": [
         {
           "name": "user_id",
@@ -124,7 +128,7 @@
           "name": "timestamp",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source":  "#{ratings-table/timestamp}"
+          "source": "#{ratings-table/timestamp}"
         }
       ]
     },
@@ -132,7 +136,11 @@
       "name": "tags",
       "@type": "ml:RecordSet",
       "source": "#{tags-table}",
-      "key": ["#{user_id}", "#{movie_id}", "#{timestamp}"],
+      "key": [
+        "#{user_id}",
+        "#{movie_id}",
+        "#{timestamp}"
+      ],
       "field": [
         {
           "name": "user_id",
@@ -158,7 +166,7 @@
           "name": "timestamp",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source":  "#{tags-table/timestamp}"
+          "source": "#{tags-table/timestamp}"
         }
       ]
     },
