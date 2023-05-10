@@ -1,3 +1,6 @@
+import dataclasses
+from collections.abc import Mapping
+import json
 from typing import Any, List, Set
 
 import networkx as nx
@@ -9,6 +12,113 @@ from format.src import errors
 
 # Edges are always RDF triples, because we use `graph.edges(node, keys=True) -> (u, v, key)`.
 Edges = [Any, Any, Any]
+
+
+@dataclasses.dataclass(frozen=True)
+class Node:
+    """Resource node in Croissant.
+
+    When performing all operations, `self.issues` are populated when issues are encountered.
+
+    Usage:
+
+    ```python
+    node = Node(issues=issues, graph=graph, node=source)
+
+    # Can access a property of the node:
+    citation = node["https://schema.org/citation"]
+
+    # Can check a property exists:
+    has_citation = "https://schema.org/citation" in node
+
+    # Can assert features on the node. E.g.:
+    node.assert_has_exclusive_properties([[""https://schema.org/sha256"", "https://schema.org/md5"]])
+    ```
+    """
+    issues: errors.Issues
+    graph: nx.MultiDiGraph
+    node: rdflib.term.BNode
+    properties: Mapping[str, Any] = dataclasses.field(default_factory=dict)
+
+    def __post_init__(self):
+        self.populate_properties()
+
+    @property
+    def _edges_from_node(self):
+        return self.graph.edges(self.node, keys=True)
+
+    @property
+    def name(self):
+        return self.__getitem__(constants.SCHEMA_ORG_NAME)
+
+    def children_nodes(self, expected_property: str) -> list["Node"]:
+        """Finds all children objects/nodes."""
+        return [
+            Node(issues=self.issues, graph=self.graph, node=value)
+            for _, value, property in self._edges_from_node
+            if isinstance(value, rdflib.term.BNode) and expected_property == property
+        ]
+
+    def populate_properties(self):
+        for _, value, property in self._edges_from_node:
+            if not isinstance(value, rdflib.term.BNode):
+                self.properties[property] = value
+
+    def assert_has_type(self, expected_type: str):
+        """Checks for the presence of `"@type": expected_type` in edges."""
+        node_type = self.properties[constants.RDF_TYPE]
+        if node_type is not None and node_type != expected_type:
+            error = f'Node should have an attribute `"@type": "{expected_type}"`. Found `"@type": "{node_type}"`.'
+            self.issues.add_error(error)
+
+    def assert_has_mandatory_properties(self, mandatory_properties: list[str]):
+        """Checks a node in the graph for existing properties with constraints.
+
+        Args:
+            mandatory_properties: A list of mandatory properties for the current node. If the node doesn't have one, it triggers an error.
+        """
+        for mandatory_property in mandatory_properties:
+            if mandatory_property not in self.properties:
+                error = (
+                    f'Property "{mandatory_property}" is mandatory, but does not exist.'
+                )
+                self.issues.add_error(error)
+
+    def assert_has_optional_properties(self, optional_properties: list[str]):
+        """Checks a node in the graph for existing properties with constraints.
+
+        Args:
+            optional_properties: A list of optional properties for the current node. If the node doesn't have one, it triggers a warning.
+        """
+        for optional_property in optional_properties:
+            if optional_property not in self.properties:
+                error = f'Property "{optional_property}" is recommended, but does not exist.'
+                self.issues.add_warning(error)
+
+    def assert_has_exclusive_properties(self, exclusive_properties: list[list[str]]):
+        """Checks a node in the graph for existing properties with constraints.
+
+        Args:
+            exclusive_properties: A list of list of exclusive properties: the current node should have at least one.
+        """
+        for possible_exclusive_properties in exclusive_properties:
+            if not _there_exists_at_least_one_property(
+                self.properties, possible_exclusive_properties
+            ):
+                error = f"At least one of these properties should be defined: {possible_exclusive_properties}."
+                self.issues.add_error(error)
+
+    def __repr__(self):
+        """String representation of the node for debugging purposes."""
+        return f"Node(properties={json.dumps(self.properties)})"
+
+    def __getitem__(self, name: Any):
+        """Magic method to be able to write `node[property_name]` to access its property."""
+        if name in self.properties:
+            return self.properties[name]
+        error = f'Tried to access property "{name}", but it does not exist.'
+        self.issues.add_error(error)
+        return None
 
 
 def load_rdf_graph(dict_dataset: dict) -> nx.MultiDiGraph:
@@ -29,82 +139,6 @@ def _there_exists_at_least_one_property(keys: Set[str], possible_properties: Lis
     return False
 
 
-def _check_node_has_properties(
-    issues: errors.Issues,
-    edges: Edges,
-    mandatory_properties: List[str] = [],
-    exclusive_properties: List[List[str]] = [],
-    optional_properties: List[str] = [],
-):
-    """Checks a node in the graph for existing properties with constraints.
-
-    Args:
-        issues: The issues that will be modified in-place.
-        edges: Edges of the current node.
-        mandatory_properties: A list of mandatory properties for the current node. If the node doesn't have one, it triggers an error.
-        exclusive_properties: A list of list of exclusive properties: the current node should have at least one.
-        optional_properties: A list of optional properties for the current node. If the node doesn't have one, it triggers a warning.
-    """
-    properties = set()
-    for _, _, property in edges:
-        properties.add(property)
-    for property in mandatory_properties:
-        if property not in properties:
-            error = f'Property "{property}" is mandatory, but does not exist. Existing properties: {properties}.'
-            issues.add_error(error)
-    for property in optional_properties:
-        if property not in properties:
-            error = f'Property "{property}" is recommended, but does not exist. Existing properties: {properties}.'
-            issues.add_warning(error)
-    for possible_exclusive_properties in exclusive_properties:
-        if not _there_exists_at_least_one_property(
-            properties, possible_exclusive_properties
-        ):
-            error = f"At least one of these properties should be defined: {possible_exclusive_properties}. Existing properties: {properties}."
-            issues.add_error(error)
-
-
-def _find_children_objects(edges: Edges, property: rdflib.term.URIRef):
-    """Finds all children objects/nodes."""
-    return [
-        _object
-        for _, _object, _property in edges
-        if isinstance(_object, rdflib.term.BNode) and _property == property
-    ]
-
-
-def _find_single_object_by_property(
-    issues: errors.Issues, edges: Edges, property: rdflib.term.URIRef
-):
-    """Finds value where `[property]: value` in edges."""
-    possible_objects = [
-        _object for _, _object, _property in edges if _property == property
-    ]
-    if len(possible_objects) != 1:
-        issues.add_error(
-            f'Property "{property}" is mandatory, but does not exist. Existing properties: {edges}.'
-        )
-    return possible_objects[0]
-
-
-def _find_name(issues: errors.Issues, edges: Edges):
-    return _find_single_object_by_property(issues, edges, constants.SCHEMA_ORG_NAME)
-
-
-def _check_node_has_type(
-    issues: errors.Issues, edges: Edges, _type: rdflib.term.URIRef
-):
-    """Checks for the presence of `"@type": _type` in edges."""
-    for _, _object, _property in edges:
-        if _property == constants.RDF_TYPE:
-            if _object != _type:
-                issues.add_error(
-                    f'Node should have an attribute `"@type": "{_type}"`. Found `"@type": "{_object}"`.'
-                )
-            return
-    issues.add_error(f'Node should have an attribute `"@type": "{_type}"`.')
-
-
 def _find_entry_object(
     issues: errors.Issues, graph: nx.MultiDiGraph
 ) -> rdflib.term.BNode:
@@ -121,94 +155,81 @@ def _find_entry_object(
 
 def check_metadata(
     issues: errors.Issues,
-    edges: Edges,
+    metadata: Node,
     dataset_name: str,
 ):
     """Populates issues on the Metadata node."""
     with issues.context(f"dataset({dataset_name})"):
-        _check_node_has_type(issues, edges, constants.SCHEMA_ORG_DATASET)
-        _check_node_has_properties(
-            issues,
-            edges,
-            mandatory_properties=[
+        metadata.assert_has_type(constants.SCHEMA_ORG_DATASET)
+        metadata.assert_has_mandatory_properties(
+            [
                 constants.SCHEMA_ORG_CITATION,
                 constants.SCHEMA_ORG_LICENSE,
                 constants.SCHEMA_ORG_NAME,
                 constants.SCHEMA_ORG_URL,
-            ],
-            optional_properties=[constants.SCHEMA_ORG_DESCRIPTION],
+            ]
         )
+        metadata.assert_has_optional_properties([constants.SCHEMA_ORG_DESCRIPTION])
 
 
 def check_distribution(
     issues: errors.Issues,
-    graph: nx.MultiDiGraph,
-    node: rdflib.term.BNode,
+    distribution: Node,
     dataset_name: str,
 ):
     """Populates issues on the Distribution nodes."""
-    edges_from_node = graph.edges(node, keys=True)
-    distribution_name = _find_name(issues, edges_from_node)
+    distribution_name = distribution.name
     with issues.context(f"dataset({dataset_name}) > distribution({distribution_name})"):
-        _check_node_has_type(issues, edges_from_node, constants.SCHEMA_ORG_FILE_OBJECT)
-        _check_node_has_properties(
-            issues,
-            edges_from_node,
-            mandatory_properties=[
+        distribution.assert_has_type(constants.SCHEMA_ORG_FILE_OBJECT)
+        distribution.assert_has_mandatory_properties(
+            [
                 constants.SCHEMA_ORG_CONTENT_SIZE,
                 constants.SCHEMA_ORG_CONTENT_URL,
                 constants.SCHEMA_ORG_ENCODING_FORMAT,
-            ],
-            exclusive_properties=[
-                [constants.SCHEMA_ORG_MD5, constants.SCHEMA_ORG_SHA256]
-            ],
+            ]
+        )
+        distribution.assert_has_exclusive_properties(
+            [[constants.SCHEMA_ORG_MD5, constants.SCHEMA_ORG_SHA256]]
         )
 
 
 def check_record_set(
     issues: errors.Issues,
-    graph: nx.MultiDiGraph,
-    node: rdflib.term.BNode,
+    record_set: Node,
     dataset_name: str,
 ):
     """Populates issues on the RecordSet nodes."""
-    edges_from_node = graph.edges(node, keys=True)
-    record_set_name = _find_name(issues, edges_from_node)
+    record_set_name = record_set.name
     with issues.context(f"dataset({dataset_name}) > recordSet({record_set_name})"):
-        _check_node_has_type(issues, edges_from_node, constants.ML_COMMONS_RECORD_SET)
-        _check_node_has_properties(
-            issues,
-            edges_from_node,
-            mandatory_properties=[
-                constants.ML_COMMONS_FIELD,
+        record_set.assert_has_type(constants.ML_COMMONS_RECORD_SET)
+        record_set.assert_has_mandatory_properties(
+            [
                 constants.SCHEMA_ORG_NAME,
-            ],
-            optional_properties=[
-                constants.SCHEMA_ORG_DESCRIPTION,
-            ],
+            ]
         )
-        fields = _find_children_objects(edges_from_node, constants.ML_COMMONS_FIELD)
+        record_set.assert_has_optional_properties(
+            [
+                constants.SCHEMA_ORG_DESCRIPTION,
+            ]
+        )
+        fields = record_set.children_nodes(constants.ML_COMMONS_FIELD)
         if len(fields) == 0:
             issues.add_error("The node doesn't define any field.")
         for field in fields:
-            edges_from_node = graph.edges(field, keys=True)
-            field_name = _find_name(issues, edges_from_node)
             with issues.context(
-                f"dataset({dataset_name}) > recordSet({record_set_name}) > field({field_name})"
+                f"dataset({dataset_name}) > recordSet({record_set_name}) > field({field.name})"
             ):
-                _check_node_has_type(
-                    issues, edges_from_node, constants.ML_COMMONS_FIELD
-                )
-                _check_node_has_properties(
-                    issues,
-                    edges_from_node,
-                    mandatory_properties=[
+                field.assert_has_type(constants.ML_COMMONS_FIELD)
+                field.assert_has_mandatory_properties(
+                    [
                         constants.ML_COMMONS_DATA_TYPE,
                         constants.SCHEMA_ORG_NAME,
-                    ],
-                    optional_properties=[
+                    ]
+                )
+                field.assert_has_optional_properties(
+                    [
                         constants.SCHEMA_ORG_DESCRIPTION,
-                    ],
+                    ]
                 )
 
 
@@ -229,18 +250,14 @@ def check_graph(issues: errors.Issues, graph: nx.MultiDiGraph):
         graph: The NetworkX RDF graph to validate.
     """
     source = _find_entry_object(issues, graph)
-    edges_from_source = graph.edges(source, keys=True)
-    dataset_name = _find_name(issues, edges_from_source)
-    check_metadata(issues, edges_from_source, dataset_name)
+    metadata = Node(issues=issues, graph=graph, node=source)
+    dataset_name = metadata.name
+    check_metadata(issues, metadata, dataset_name)
 
-    distributions = _find_children_objects(
-        edges_from_source, constants.SCHEMA_ORG_DISTRIBUTION
-    )
+    distributions = metadata.children_nodes(constants.SCHEMA_ORG_DISTRIBUTION)
     for distribution in distributions:
-        check_distribution(issues, graph, distribution, dataset_name)
+        check_distribution(issues, distribution, dataset_name)
 
-    record_sets = _find_children_objects(
-        edges_from_source, constants.ML_COMMONS_RECORD_SET
-    )
+    record_sets = metadata.children_nodes(constants.ML_COMMONS_RECORD_SET)
     for record_set in record_sets:
-        check_record_set(issues, graph, record_set, dataset_name)
+        check_record_set(issues, record_set, dataset_name)
