@@ -48,7 +48,7 @@ class Node:
         return self.graph.edges(self.node, keys=True)
 
     @property
-    def name(self):
+    def id(self):
         return self.__getitem__(constants.SCHEMA_ORG_NAME)
 
     def children_nodes(self, expected_property: str) -> list["Node"]:
@@ -167,10 +167,10 @@ def _find_entry_object(
 def check_metadata(
     issues: errors.Issues,
     metadata: Node,
-    dataset_name: str,
 ):
     """Populates issues on the Metadata node."""
-    with issues.context(f"dataset({dataset_name})"):
+    dataset_id = metadata.id
+    with issues.context(f"dataset({dataset_id})"):
         metadata.assert_has_type(constants.SCHEMA_ORG_DATASET)
         metadata.assert_has_mandatory_properties(
             [
@@ -190,11 +190,12 @@ def check_metadata(
 def check_distribution(
     issues: errors.Issues,
     distribution: Node,
-    dataset_name: str,
+    metadata: Node,
 ):
     """Populates issues on the Distribution nodes."""
-    distribution_name = distribution.name
-    with issues.context(f"dataset({dataset_name}) > distribution({distribution_name})"):
+    dataset_id = metadata.id
+    distribution_id = distribution.id
+    with issues.context(f"dataset({dataset_id}) > distribution({distribution_id})"):
         distribution.assert_has_types([constants.SCHEMA_ORG_FILE_OBJECT, constants.SCHEMA_ORG_FILE_SET])
         is_file_set = distribution[constants.RDF_TYPE] == constants.SCHEMA_ORG_FILE_SET
         if is_file_set:
@@ -226,11 +227,12 @@ def check_distribution(
 def check_record_set(
     issues: errors.Issues,
     record_set: Node,
-    dataset_name: str,
+    metadata: Node,
 ):
     """Populates issues on the RecordSet nodes."""
-    record_set_name = record_set.name
-    with issues.context(f"dataset({dataset_name}) > recordSet({record_set_name})"):
+    dataset_id = metadata.id
+    record_set_id = record_set.id
+    with issues.context(f"dataset({dataset_id}) > recordSet({record_set_id})"):
         record_set.assert_has_type(constants.ML_COMMONS_RECORD_SET)
         record_set.assert_has_mandatory_properties(
             [
@@ -247,7 +249,7 @@ def check_record_set(
             issues.add_error("The node doesn't define any field.")
         for field in fields:
             with issues.context(
-                f"dataset({dataset_name}) > recordSet({record_set_name}) > field({field.name})"
+                f"dataset({dataset_id}) > recordSet({record_set_id}) > field({field.id})"
             ):
                 field.assert_has_type(constants.ML_COMMONS_FIELD)
                 field.assert_has_mandatory_properties(
@@ -281,13 +283,12 @@ def check_graph(issues: errors.Issues, graph: nx.MultiDiGraph):
     """
     source = _find_entry_object(issues, graph)
     metadata = Node(issues=issues, graph=graph, node=source)
-    dataset_name = metadata.name
-    check_metadata(issues, metadata, dataset_name)
+    check_metadata(issues, metadata)
 
     distributions = metadata.children_nodes(constants.SCHEMA_ORG_DISTRIBUTION)
     for distribution in distributions:
-        check_distribution(issues, distribution, dataset_name)
+        check_distribution(issues, distribution, metadata)
 
     record_sets = metadata.children_nodes(constants.ML_COMMONS_RECORD_SET)
     for record_set in record_sets:
-        check_record_set(issues, record_set, dataset_name)
+        check_record_set(issues, record_set, metadata)
