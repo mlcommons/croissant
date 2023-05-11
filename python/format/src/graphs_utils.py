@@ -10,14 +10,17 @@ def pretty_print_graph(graph: nx.Graph):
         graph: Any NetworkX graph.
 
     Warning: this function is for debugging purposes only."""
-    try:
-        import matplotlib.pyplot as plt
-    except ImportError:
-        print("Please, install matplotlib.")
-    nx.draw(graph, with_labels=True)
-    temporary_file = f"/tmp/graph_{time.time()}.svg"
-    plt.savefig(temporary_file)
+    simple_graph = nx.Graph()
+    for x, y in graph.edges():
+        x = getattr(x, "name", x)
+        y = getattr(y, "name", y)
+        simple_graph.add_edge(x, y)
+    agraph = nx.nx_agraph.to_agraph(graph)
+    agraph.layout(prog="dot")
+    temporary_file = f"/tmp/graph_{time.time()}.png"
+    agraph.draw(temporary_file, args="-Gnodesep=0.01 -Gfont_size=1", prog="dot")
     print(f"Generated a graph and saved it in: {temporary_file}")
+
 
 def print_graph_traversal(graph: nx.Graph):
     """Pretty prints a NetworkX graph.
@@ -26,4 +29,11 @@ def print_graph_traversal(graph: nx.Graph):
         graph: Any NetworkX graph.
 
     Warning: this function is for debugging purposes only."""
-    print(list(nx.edge_bfs(graph, orientation='original')))
+    visited = {}
+    print("--- Graph traversal ---")
+    for start, end, _ in nx.edge_bfs(graph):
+        for node in [start, end]:
+            if node.name not in visited:
+                print(f"Visited: {node.name}")
+                visited[node.name] = True
+    print("Done traversing the graph.")

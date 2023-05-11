@@ -9,7 +9,14 @@
     },
     "recordSet": "ml:RecordSet",
     "field": "ml:Field",
-    "dataType": "ml:dataType"
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator"
   },
   "@type": "sc:Dataset",
   "@language": "en",

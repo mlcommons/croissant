@@ -1,5 +1,6 @@
 import dataclasses
 import re
+from typing import Any, Mapping
 
 import networkx as nx
 import rdflib
@@ -13,9 +14,24 @@ _ID_REGEX = "[a-zA-Z0-9\-_]+"
 
 @dataclasses.dataclass(frozen=True)
 class Node:
-    """Resource node in Croissant.
+    """Structure node in Croissant.
 
-    When performing all operations, `self.issues` are populated when issues are encountered.
+    This generic class will be inherited by the actual Croissant nodes:
+    - Field
+    - FileObject
+    - FileSet
+    - Metadata
+    - RecordSet
+
+    When building the node, `self.issues` are populated when issues are encountered.
+
+    Args:
+        issues: the issues that will be modified in-place.
+        graph: The NetworkX RDF graph to validate.
+        node: The node in the graph to convert.
+        name: The name of the node.
+        parent_name: The name of the parent node if it exists. This is the parent in the JSON-LD
+            structure, whereas `sources` are the parents in the resource tree.
 
     Usage:
 
@@ -37,8 +53,10 @@ class Node:
     graph: nx.MultiDiGraph
     node: rdflib.term.BNode
     name: str = ""
+    parent_name: str | None = None
 
     def __post_init__(self):
+        """Checks for `name` (common property between all nodes)."""
         self.assert_has_mandatory_properties("name")
         self.validate_name(self.name)
 
@@ -48,32 +66,13 @@ class Node:
         issues: Issues,
         graph: nx.MultiDiGraph,
         node: rdflib.term.BNode,
+        parent_name: str | None,
     ) -> "Node":
-        properties = {}
-        for _, value, property in graph.edges(node, keys=True):
-            if isinstance(value, rdflib.term.BNode):
-                continue
-
-            # Normalize values to strings.
-            if isinstance(value, rdflib.term.Literal):
-                value = str(value)
-
-            # Normalize properties to Croissant values if it exists.
-            property = constants.TO_CROISSANT.get(property, property)
-
-            # Add `property` to existing properties.
-            if property not in properties:
-                properties[property] = value
-            elif isinstance(properties[property], tuple):
-                # Use tuple, because we need immutable types in order
-                # for the objects to be hashable and used by NetworkX.
-                properties[property] = properties[property] + (value,)
-            else:
-                # In the loop, we just found out that there are several values for the
-                # same property. `self.properties[property]` should be transformed to a tuple.
-                properties[property] = (properties[property], value)
-
+        """Builds a Node from the provided graph."""
+        properties = _extract_properties(graph, node)
         name = properties.get("name")
+
+        # Check @type.
         rdf_type = properties.get(constants.RDF_TYPE)
         expected_types = [
             constants.SCHEMA_ORG_DATASET,
@@ -87,72 +86,54 @@ class Node:
             issues.add_error(
                 f'Node should have an attribute `"@type" in "{expected_types}"`.'
             )
+
+        # Normalize `source`.
+        if (source := properties.get("source")) is not None:
+            properties["source"] = Source.from_json_ld(issues, source)
+
+        # Return proper node in each case.
+        args = [issues, graph, node, name, parent_name]
         if rdf_type == constants.SCHEMA_ORG_DATASET:
             with issues.context(dataset_name=name):
                 return Metadata(
-                    issues=issues,
-                    graph=graph,
-                    node=node,
+                    *args,
                     citation=properties.get("citation"),
                     description=properties.get("description"),
                     license=properties.get("license"),
-                    name=name,
                     url=properties.get("url"),
                 )
         elif rdf_type == constants.SCHEMA_ORG_FILE_OBJECT:
             with issues.context(distribution_name=name):
                 return FileObject(
-                    issues=issues,
-                    graph=graph,
-                    node=node,
+                    *args,
+                    contained_in=properties.get("contained_in"),
                     content_url=properties.get("content_url"),
                     description=properties.get("description"),
                     encoding_format=properties.get("encoding_format"),
                     md5=properties.get("md5"),
-                    name=name,
                     sha256=properties.get("sha256"),
                 )
         elif rdf_type == constants.SCHEMA_ORG_FILE_SET:
             with issues.context(distribution_name=name):
                 return FileSet(
-                    issues=issues,
-                    graph=graph,
-                    node=node,
+                    *args,
                     contained_in=properties.get("contained_in"),
                     description=properties.get("description"),
                     includes=properties.get("includes"),
                     encoding_format=properties.get("encoding_format"),
-                    name=name,
                 )
         elif rdf_type == constants.ML_COMMONS_RECORD_SET:
             with issues.context(record_set_name=name):
                 return RecordSet(
-                    issues=issues,
-                    graph=graph,
-                    node=node,
+                    *args,
                     description=properties.get("description"),
                     key=properties.get("key"),
-                    name=name,
                 )
         elif rdf_type == constants.ML_COMMONS_FIELD:
             with issues.context(field_name=name):
                 return Field(
-                    issues=issues,
-                    graph=graph,
-                    node=node,
+                    *args,
                     description=properties.get("description"),
-                    name=name,
-                    references=properties.get("references"),
-                    source=properties.get("source"),
-                )
-        elif rdf_type == constants.ML_COMMONS_SUB_FIELD:
-            with issues.context(sub_field_name=name):
-                return SubField(
-                    issues=issues,
-                    graph=graph,
-                    node=node,
-                    description=properties.get("description"),
-                    name=name,
                     references=properties.get("references"),
                     source=properties.get("source"),
                 )
@@ -161,6 +142,7 @@ class Node:
             graph=graph,
             node=node,
             name=name,
+            parent_name=parent_name,
         )
 
     @property
@@ -168,21 +150,16 @@ class Node:
         return self.graph.edges(self.node, keys=True)
 
     @property
-    def id(self):
-        node_id = str(self.name)
-        # _check_id(self.issues, node_id)  # TODO(marcenacp): move these checks to __post_init__.
-        return node_id
-
-    @property
     def sources(self) -> list[tuple[str]]:
-        # source can be contained either in `source` or in `contained_in`.
-        if hasattr(self, "source") and isinstance(self.source, Source):
-            return (self.source,)
-        if hasattr(self, "contained_in"):
-            return tuple(
-                source for source in self.contained_in if isinstance(source, Source)
-            )
-        return ()
+        """Retrieves sources.
+
+        Sources can be contained either in `source` (for Fields and FileObjects) or in `contained_in` (for FileSets).
+        """
+        if isinstance(self, (Field, FileObject)) and self.source is not None:
+            return [self.parse_source_data(self.source.data)]
+        if isinstance(self, FileSet) and self.contained_in:
+            return [self.parse_source_data(source) for source in self.contained_in]
+        return []
 
     def children_nodes(self, expected_property: str) -> list["Node"]:
         """Finds all children objects/nodes."""
@@ -197,6 +174,7 @@ class Node:
                         issues=self.issues,
                         graph=self.graph,
                         node=_object,
+                        parent_name=self.name,
                     )
                 )
         return nodes
@@ -239,6 +217,7 @@ class Node:
                 self.issues.add_error(error)
 
     def validate_name(self, name: str):
+        """Validates the name (which are used as unique identifiers in Croissant)."""
         if not isinstance(name, str):
             self.issues.add_error(
                 f"The identifier should be a string. Got: {type(name)}."
@@ -254,11 +233,11 @@ class Node:
             )
         return name
 
-    def parse_source(self, source: str) -> tuple[str]:
+    def parse_source_data(self, source_data: str) -> tuple[str]:
         source_regex = re.compile(rf"^\#\{{(?:({_ID_REGEX})\/)*({_ID_REGEX})\}}$")
-        match = source_regex.match(source)
+        match = source_regex.match(source_data)
         if match is None:
-            self.issues.add_error(f"Malformed source: {self.source}.")
+            self.issues.add_error(f"Malformed source data: {source_data}.")
             return ""
         groups = tuple(group for group in match.groups() if group is not None)
         for group in groups:
@@ -268,12 +247,59 @@ class Node:
 
 @dataclasses.dataclass(frozen=True)
 class Source:
+    """Standardizes the usage of sources.
+
+    Croissant accepts several manners to declare sources:
+
+    Either as a simple reference:
+
+    ```json
+    "source": "#{name_of_the_source.name_of_the_field}"
+    ```
+
+    Or jointly with transform operations:
+
+    ```json
+    "source": {
+        "data": "#{name_of_the_source}",
+        "applyTransform": {
+            "format": "yyyy-MM-dd HH:mm:ss.S",
+            "regex": "([^\\/]*)\\.jpg",
+            "separator": "|"
+        }
+    }
+    ```
+    """
+
     apply_transform_regex: str | None = None
+    apply_transform_separator: str | None = None
     data: str = ""
+
+    @classmethod
+    def from_json_ld(cls, issues: Issues, field: Any) -> "Source":
+        if isinstance(field, str):
+            return cls(data=field)
+        elif isinstance(field, dict):
+            try:
+                apply_transform = field.get("apply_transform", {})
+                return cls(
+                    data=str(field["data"]),
+                    apply_transform_regex=apply_transform.get("regex"),
+                    apply_transform_separator=apply_transform.get("separator"),
+                )
+            except (IndexError, TypeError) as exception:
+                issues.add_error(
+                    f"Malformed `source`: {field}. Got exception: {exception}"
+                )
+                return cls(data="")
+        else:
+            issues.add_error(f"`source` has wrong type: {type(field)} ({field})")
 
 
 @dataclasses.dataclass(frozen=True)
 class Metadata(Node):
+    """Nodes to describe a dataset metadata."""
+
     citation: str | None = None
     description: str | None = None
     license: str | None = None
@@ -287,7 +313,10 @@ class Metadata(Node):
 
 @dataclasses.dataclass(frozen=True)
 class FileObject(Node):
+    """Nodes to describe a dataset FileObject (distribution)."""
+
     content_url: str = ""
+    contained_in: tuple[str] = ()
     description: str | None = None
     encoding_format: str = ""
     md5: str | None = None
@@ -297,13 +326,15 @@ class FileObject(Node):
 
     def __post_init__(self):
         self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
-        if self.source is None:
+        if self.contained_in is None:
             self.assert_has_optional_properties("content_url")
             self.assert_has_exclusive_properties(["md5", "sha256"])
 
 
 @dataclasses.dataclass(frozen=True)
 class FileSet(Node):
+    """Nodes to describe a dataset FileSet (distribution)."""
+
     contained_in: tuple[str] = ()
     description: str | None = None
     encoding_format: str = ""
@@ -316,6 +347,8 @@ class FileSet(Node):
 
 @dataclasses.dataclass(frozen=True)
 class RecordSet(Node):
+    """Nodes to describe a dataset RecordSet."""
+
     description: str | None = None
     key: str | None = None
     name: str = ""
@@ -327,6 +360,8 @@ class RecordSet(Node):
 
 @dataclasses.dataclass(frozen=True)
 class Field(Node):
+    """Nodes to describe a dataset Field (RecordSet)."""
+
     data_type: str | None = None
     description: str | None = None
     name: str = ""
@@ -338,14 +373,45 @@ class Field(Node):
         self.assert_has_optional_properties("description")
 
 
-@dataclasses.dataclass(frozen=True)
-class SubField(Field):
-    pass
-
-
 def _there_exists_at_least_one_property(node: Node, possible_properties: list[str]):
     """Checks for the existence of one of `possible_exclusive_properties` in `keys`."""
     for possible_property in possible_properties:
         if getattr(node, possible_property, None) is not None:
             return True
     return False
+
+
+def _extract_properties(
+    graph: nx.MultiDiGraph, node: rdflib.term.BNode
+) -> Mapping[str, str | tuple[str]]:
+    """Extracts properties RDF->Python nodes.
+
+    TODO(marcenacp): find a better way to iterate on the graph!"""
+    properties: Mapping[str, str | tuple[str]] = {}
+    for _, value, property in graph.edges(node, keys=True):
+        if isinstance(value, rdflib.term.BNode):
+            # `source` needs a special treatment when it is a dict.
+            if property == constants.ML_COMMONS_SOURCE:
+                source = _extract_properties(graph, value)
+                properties["source"] = source
+            continue
+
+        # Normalize values to strings.
+        if isinstance(value, rdflib.term.Literal):
+            value = str(value)
+
+        # Normalize properties to Croissant values if it exists.
+        property = constants.TO_CROISSANT.get(property, property)
+
+        # Add `property` to existing properties.
+        if property not in properties:
+            properties[property] = value
+        elif isinstance(properties[property], tuple):
+            # Use tuple, because we need immutable types in order
+            # for the objects to be hashable and used by NetworkX.
+            properties[property] = properties[property] + (value,)
+        else:
+            # In the loop, we just found out that there are several values for the
+            # same property. `self.properties[property]` should be transformed to a tuple.
+            properties[property] = (properties[property], value)
+    return properties

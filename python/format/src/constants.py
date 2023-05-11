@@ -1,10 +1,16 @@
 import rdflib
 
 # MLCommons-defined URIs (still draft).
+ML_COMMONS_APPLY_TRANSFORM = rdflib.term.URIRef(
+    "http://mlcommons.org/schema/applyTransform"
+)
+ML_COMMONS_DATA = rdflib.term.URIRef("http://mlcommons.org/schema/data")
 ML_COMMONS_DATA_TYPE = rdflib.term.URIRef("http://mlcommons.org/schema/dataType")
+ML_COMMONS_FORMAT = rdflib.term.URIRef("http://mlcommons.org/schema/format")
 ML_COMMONS_FIELD = rdflib.term.URIRef("http://mlcommons.org/schema/Field")
 ML_COMMONS_INCLUDES = rdflib.term.URIRef("http://mlcommons.org/schema/includes")
 ML_COMMONS_RECORD_SET = rdflib.term.URIRef("http://mlcommons.org/schema/RecordSet")
+ML_COMMONS_REGEX = rdflib.term.URIRef("http://mlcommons.org/schema/regex")
 ML_COMMONS_SOURCE = rdflib.term.URIRef("http://mlcommons.org/schema/source")
 ML_COMMONS_SUB_FIELD = rdflib.term.URIRef("http://mlcommons.org/schema/SubField")
 
@@ -36,8 +42,12 @@ SCHEMA_ORG_FILE_SET = rdflib.term.URIRef("https://schema.org/FileSet")
 SCHEMA_ORG_MD5 = rdflib.term.URIRef("https://schema.org/md5")
 
 TO_CROISSANT = {
+    ML_COMMONS_APPLY_TRANSFORM: "apply_transform",
     ML_COMMONS_DATA_TYPE: "data_type",
+    ML_COMMONS_DATA: "data",
+    ML_COMMONS_FORMAT: "format",
     ML_COMMONS_INCLUDES: "includes",
+    ML_COMMONS_REGEX: "regex",
     ML_COMMONS_SOURCE: "source",
     SCHEMA_ORG_CITATION: "citation",
     SCHEMA_ORG_CONTAINED_IN: "contained_in",

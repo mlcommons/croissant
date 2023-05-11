@@ -1,6 +1,3 @@
-import dataclasses
-from typing import Any
-
 import networkx as nx
 import rdflib
 from rdflib.extras import external_graph_libs
@@ -51,12 +48,14 @@ def check_graph(issues: Issues, graph: nx.MultiDiGraph):
     """
     # Check RDF properties in nodes
     source = _find_entry_object(issues, graph)
-    metadata = Node.from_rdf_graph(issues, graph, source)
+    metadata = Node.from_rdf_graph(issues, graph, source, None)
+    nodes: list[Node] = [metadata]
     dataset_name = metadata.name
     with issues.context(dataset_name=dataset_name):
         distributions = metadata.children_nodes(constants.SCHEMA_ORG_DISTRIBUTION)
+        nodes += distributions
         record_sets = metadata.children_nodes(constants.ML_COMMONS_RECORD_SET)
-        nodes: list[Node] = distributions
+        nodes += record_sets
         for record_set in record_sets:
             with issues.context(
                 dataset_name=dataset_name, record_set_name=record_set.name
@@ -69,6 +68,6 @@ def check_graph(issues: Issues, graph: nx.MultiDiGraph):
                     sub_fields = field.children_nodes(constants.ML_COMMONS_SUB_FIELD)
                     nodes += sub_fields
 
-    # Check consistency of operations to generate datasets
-    computation_graph = ComputationGraph.from_nodes(nodes)
-    computation_graph.check_graph()
+        # Check consistency of operations to generate datasets
+        computation_graph = ComputationGraph.from_nodes(issues, nodes)
+        computation_graph.check_graph()
