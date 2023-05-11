@@ -15,6 +15,9 @@
       "recordSet": {
         "@id": "ml:RecordSet",
         "@type": "@id"
+      },
+      "source": {
+        "@id": "ml:source"
       }
     },
     "@type": "sc:Dataset",
@@ -168,7 +171,7 @@
             "description": "Home and destination",
             "@type": "ml:Field",
             "dataType": "sc:Text",
-            "source": "#{passengers-table/home.dest}"
+            "source": "#{passengers-table/home-dest}"
           },
           {
             "name": "ticket",

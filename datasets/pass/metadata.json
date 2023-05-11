@@ -6,7 +6,10 @@
     "includes": {
       "@id": "ml:includes",
       "@type": "@id"
-    }
+    },
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "dataType": "ml:dataType"
   },
   "@type": "sc:Dataset",
   "@language": "en",

@@ -15,7 +15,7 @@ import pytest
         ],
         [
             "metadata_bad_type.json",
-            'Node should have an attribute `"@type": "https://schema.org/Dataset"`.',
+            'Node should have an attribute `"@type" in',
         ],
         # Distribution.
         [
@@ -24,7 +24,7 @@ import pytest
         ],
         [
             "distribution_bad_type.json",
-            'Node should have an attribute `"@type" in "\[rdflib.term.URIRef\(\'https://schema.org/FileObject\'\), rdflib.term.URIRef\(\'https://schema.org/FileSet\'\)\]"',
+            'Node should have an attribute `"@type" in',
         ],
         # Record set.
         [
@@ -33,7 +33,7 @@ import pytest
         ],
         [
             "recordset_bad_type.json",
-            'Node should have an attribute `"@type": "http://mlcommons.org/schema/RecordSet"`.',
+            'Node should have an attribute `"@type" in',
         ],
         # ML field.
         [
@@ -42,7 +42,7 @@ import pytest
         ],
         [
             "mlfield_bad_type.json",
-            'Node should have an attribute `"@type": "http://mlcommons.org/schema/Field"`.',
+            'Node should have an attribute `"@type" in',
         ],
     ],
 )

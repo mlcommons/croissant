@@ -1,5 +1,5 @@
+import dataclasses
 import json
-from unittest import mock
 
 from etils import epath
 from format.src import graphs
@@ -12,12 +12,12 @@ with path.open() as file:
 
 
 def test_there_exists_at_least_one_property():
-    assert graphs._there_exists_at_least_one_property(
-        {"property1", "property2"}, ["property0", "property1"]
-    )
-    assert not graphs._there_exists_at_least_one_property(
-        {"property1", "property2"}, []
-    )
-    assert not graphs._there_exists_at_least_one_property(
-        {"property1", "property2"}, ["property0"]
-    )
+    @dataclasses.dataclass
+    class Node:
+        property1: str
+        property2: str
+
+    node = Node(property1="property1", property2="property2")
+    assert graphs._there_exists_at_least_one_property(node, ["property0", "property1"])
+    assert not graphs._there_exists_at_least_one_property(node, [])
+    assert not graphs._there_exists_at_least_one_property(node, ["property0"])

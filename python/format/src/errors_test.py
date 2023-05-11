@@ -9,24 +9,47 @@ def test_issues():
     assert not issues.warnings
 
     # With context
-    with issues.context("dataset_abc"):
+    with issues.context(dataset_name="abc"):
         issues.add_error("foo")
         issues.add_warning("bar")
-    assert issues.errors == ["[dataset_abc] foo"]
-    assert issues.warnings == ["[dataset_abc] bar"]
+    assert issues.errors == ["[dataset(abc)] foo"]
+    assert issues.warnings == ["[dataset(abc)] bar"]
+
+    # With nested context
+    with issues.context(dataset_name="abc", distribution_name="xyz"):
+        issues.add_error("foo")
+        issues.add_warning("bar")
+    assert issues.errors == [
+        "[dataset(abc)] foo",
+        "[dataset(abc) > distribution(xyz)] foo",
+    ]
+    assert issues.warnings == [
+        "[dataset(abc)] bar",
+        "[dataset(abc) > distribution(xyz)] bar",
+    ]
 
     # Without context
     issues.add_error("foo")
     issues.add_warning("bar")
-    assert issues.errors == ["[dataset_abc] foo", "foo"]
-    assert issues.warnings == ["[dataset_abc] bar", "bar"]
+    assert issues.errors == [
+        "[dataset(abc)] foo",
+        "[dataset(abc) > distribution(xyz)] foo",
+        "foo",
+    ]
+    assert issues.warnings == [
+        "[dataset(abc)] bar",
+        "[dataset(abc) > distribution(xyz)] bar",
+        "bar"
+    ]
 
     # Final report
     assert issues.report() == textwrap.dedent(
-        """Found the following 2 error(s) during the validation:
-  -  [dataset_abc] foo
+        """Found the following 3 error(s) during the validation:
+  -  [dataset(abc)] foo
+  -  [dataset(abc) > distribution(xyz)] foo
   -  foo
-Found the following 2 warning(s) during the validation:
-  -  [dataset_abc] bar
+Found the following 3 warning(s) during the validation:
+  -  [dataset(abc)] bar
+  -  [dataset(abc) > distribution(xyz)] bar
   -  bar"""
     )
