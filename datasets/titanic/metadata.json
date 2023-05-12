@@ -53,7 +53,7 @@
               "name": "label",
               "description": "Male or Female",
               "@type": "ml:Field",
-              "dataType": "sc:Text"
+              "dataType": ["sc:Text", "sc:name"]
             },
             {
                 "name": "url",
@@ -83,7 +83,7 @@
               "name": "label",
               "description": "Human-readable label",
               "@type": "ml:Field",
-              "dataType": "sc:Text"
+              "dataType": ["sc:Text", "sc:name"]
             },
             {
                 "name": "url",
