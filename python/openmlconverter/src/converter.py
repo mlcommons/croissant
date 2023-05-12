@@ -28,11 +28,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
 
     # For now, we only add .arff files, not the .pq file, because we do not have a checksum for .pq
     distributions = [
-        _file_object(
-            name=_ds(field="name"),
-            url=_ds(field="url"),
-            md5=_ds(field="md5_checksum")
-        )
+        _file_object(name=_ds(field="name"), url=_ds(field="url"), md5=_ds(field="md5_checksum"))
     ]
     distribution_source = _replace_special_chars(distributions[0]["name"])
     croissant = {
