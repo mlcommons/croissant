@@ -57,7 +57,7 @@ jobs:
 
     - name: Validate JSON-LD files
       run: |
-        JSON_FILES=$(python -c "import os; from etils import epath; [print(os.fspath(path)) for path in epath.Path('../../datasets').glob('*/metadata.json')]")
+        JSON_FILES=$(python -c "import os; from etils import epath; [print(os.fspath(path)) for path in epath.Path('../../datasets').glob('*/*.json')]")
         for file in ${JSON_FILES}
         do
           python scripts/validate.py --file ${file}
