@@ -26,9 +26,13 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     """
     _ds = partial(_get_field, json_dict=openml_dataset)  # get field from openml_dataset
 
+    # For now, we only add .arff files, not the .pq file, because we do not have a checksum for .pq
     distributions = [
-        _file_object(name=_ds(field="name"), url=url)
-        for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
+        _file_object(
+            name=_ds(field="name"),
+            url=_ds(field="url"),
+            md5=_ds(field="md5_checksum")
+        )
     ]
     distribution_source = _replace_special_chars(distributions[0]["name"])
     croissant = {
@@ -48,7 +52,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         "datePublished": _ds(field="collection_date", transform=_lenient_date_parser),
         "inLanguage": _ds(field="language", transform=lambda v: langcodes.find(v).language),
         "isAccessibleForFree": True,
-        "license": _ds(field="license"),
+        "license": _ds(field="licence"),
         "creativeWorkStatus": _ds(field="status"),
         "keywords": _ds(field="tag"),
         "citation": _ds(field="citation"),
@@ -144,7 +148,7 @@ def _person(name: str) -> dict | None:
     return {"@context": "https://schema.org", "@type": "Person", "name": name}
 
 
-def _file_object(name: str, url: str) -> dict | None:
+def _file_object(name: str, url: str, md5: str) -> dict | None:
     """
     A dictionary with json-ld fields for a FileObject.
 
@@ -154,6 +158,7 @@ def _file_object(name: str, url: str) -> dict | None:
     Args:
         name: The name of the FileObject
         url: The url of the FileObject
+        md5: The md5 checksum of the FileObject
 
     Returns:
         A dictionary with json-ld fields for a FileObject, or None if the URL is None.
@@ -177,8 +182,8 @@ def _file_object(name: str, url: str) -> dict | None:
         "name": f"{name}_{type_}",
         "@type": "FileObject",
         "contentUrl": url,
-        "encodingFormat": mimetype
-        # TODO: add the md5 hash? But where? 'sha256' is in the Google Docs file, but not official?
+        "encodingFormat": mimetype,
+        "md5": md5
         # TODO: add sameAs (other distribution)?
     }
 

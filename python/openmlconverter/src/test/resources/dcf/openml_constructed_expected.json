@@ -30,6 +30,7 @@
   "datePublished": "1990-01-01",
   "inLanguage": "en",
   "isAccessibleForFree": true,
+  "license": "Public",
   "creativeWorkStatus": "active",
   "keywords": [
     "study_1",
@@ -47,258 +48,253 @@
   "url": "https://www.openml.org/search?type=data&id=2",
   "distribution": [
     {
-      "name": "anneal_parquet",
-      "@type": "FileObject",
-      "contentUrl": "http://openml1.win.tue.nl/dataset2/dataset_2.pq",
-      "encodingFormat": "application/vnd.apache.parquet"
-    },
-    {
       "name": "anneal_arff",
       "@type": "FileObject",
       "contentUrl": "https://api.openml.org/data/v1/download/1666876/anneal.arff",
-      "encodingFormat": "text/plain"
+      "encodingFormat": "text/plain",
+      "md5": "4eaed8b6ec9d8211024b6c089b064761"
     }
   ],
   "recordSet": [
     {
       "name": "anneal",
       "@type": "ml:RecordSet",
-      "source": "#{anneal_parquet}",
-      "key": ["#{anneal_parquet/family}", "#{anneal_parquet/product_type}"],
+      "source": "#{anneal_arff}",
+      "key": ["#{anneal_arff/family}", "#{anneal_arff/product_type}"],
       "field": [
         {
           "name": "family",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/family}"
+          "source": "#{anneal_arff/family}"
         },
         {
           "name": "product-type",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/product_type}"
+          "source": "#{anneal_arff/product_type}"
         },
         {
           "name": "steel",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/steel}"
+          "source": "#{anneal_arff/steel}"
         },
         {
           "name": "carbon",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{anneal_parquet/carbon}"
+          "source": "#{anneal_arff/carbon}"
         },
         {
           "name": "hardness",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{anneal_parquet/hardness}"
+          "source": "#{anneal_arff/hardness}"
         },
         {
           "name": "temper_rolling",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/temper_rolling}"
+          "source": "#{anneal_arff/temper_rolling}"
         },
         {
           "name": "condition",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/condition}"
+          "source": "#{anneal_arff/condition}"
         },
         {
           "name": "formability",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/formability}"
+          "source": "#{anneal_arff/formability}"
         },
         {
           "name": "strength",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{anneal_parquet/strength}"
+          "source": "#{anneal_arff/strength}"
         },
         {
           "name": "non-ageing",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/non_ageing}"
+          "source": "#{anneal_arff/non_ageing}"
         },
         {
           "name": "surface-finish",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/surface_finish}"
+          "source": "#{anneal_arff/surface_finish}"
         },
         {
           "name": "surface-quality",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/surface_quality}"
+          "source": "#{anneal_arff/surface_quality}"
         },
         {
           "name": "enamelability",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/enamelability}"
+          "source": "#{anneal_arff/enamelability}"
         },
         {
           "name": "bc",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/bc}"
+          "source": "#{anneal_arff/bc}"
         },
         {
           "name": "bf",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/bf}"
+          "source": "#{anneal_arff/bf}"
         },
         {
           "name": "bt",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/bt}"
+          "source": "#{anneal_arff/bt}"
         },
         {
           "name": "bw%2Fme",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/bw_2Fme}"
+          "source": "#{anneal_arff/bw_2Fme}"
         },
         {
           "name": "bl",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/bl}"
+          "source": "#{anneal_arff/bl}"
         },
         {
           "name": "m",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/m}"
+          "source": "#{anneal_arff/m}"
         },
         {
           "name": "chrom",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/chrom}"
+          "source": "#{anneal_arff/chrom}"
         },
         {
           "name": "phos",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/phos}"
+          "source": "#{anneal_arff/phos}"
         },
         {
           "name": "cbond",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/cbond}"
+          "source": "#{anneal_arff/cbond}"
         },
         {
           "name": "marvi",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/marvi}"
+          "source": "#{anneal_arff/marvi}"
         },
         {
           "name": "exptl",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/exptl}"
+          "source": "#{anneal_arff/exptl}"
         },
         {
           "name": "ferro",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/ferro}"
+          "source": "#{anneal_arff/ferro}"
         },
         {
           "name": "corr",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/corr}"
+          "source": "#{anneal_arff/corr}"
         },
         {
           "name": "blue%2Fbright%2Fvarn%2Fclean",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/blue_2Fbright_2Fvarn_2Fclean}"
+          "source": "#{anneal_arff/blue_2Fbright_2Fvarn_2Fclean}"
         },
         {
           "name": "lustre",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/lustre}"
+          "source": "#{anneal_arff/lustre}"
         },
         {
           "name": "jurofm",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/jurofm}"
+          "source": "#{anneal_arff/jurofm}"
         },
         {
           "name": "s",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/s}"
+          "source": "#{anneal_arff/s}"
         },
         {
           "name": "p",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/p}"
+          "source": "#{anneal_arff/p}"
         },
         {
           "name": "shape",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/shape}"
+          "source": "#{anneal_arff/shape}"
         },
         {
           "name": "thick",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{anneal_parquet/thick}"
+          "source": "#{anneal_arff/thick}"
         },
         {
           "name": "width",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{anneal_parquet/width}"
+          "source": "#{anneal_arff/width}"
         },
         {
           "name": "len",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{anneal_parquet/len}"
+          "source": "#{anneal_arff/len}"
         },
         {
           "name": "oil",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/oil}"
+          "source": "#{anneal_arff/oil}"
         },
         {
           "name": "bore",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/bore}"
+          "source": "#{anneal_arff/bore}"
         },
         {
           "name": "packing",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/packing}"
+          "source": "#{anneal_arff/packing}"
         },
         {
           "name": "class",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_parquet/class}"
+          "source": "#{anneal_arff/class}"
         }
       ]
     }

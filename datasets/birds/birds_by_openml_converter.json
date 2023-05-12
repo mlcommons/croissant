@@ -3,1713 +3,1709 @@
     "@vocab": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/"
   },
-  "@language": "en",
   "@type": "Dataset",
-  "citation": "https://core.ac.uk/download/pdf/10195210.pdf",
-  "creativeWorkStatus": "active",
+  "@language": "en",
+  "name": "birds",
+  "description": "Multi-label dataset. The birds dataset consists of 327 audio\n  recordings of 12 different vocalizing bird species. Each sound can be\n  assigned to various bird species.",
+  "version": "4",
   "dateCreated": "2019-03-14T17:58:26",
   "dateModified": "2019-03-14T17:59:14",
-  "description": "Multi-label dataset. The birds dataset consists of 327 audio\n  recordings of 12 different vocalizing bird species. Each sound can be\n  assigned to various bird species.",
+  "isAccessibleForFree": true,
+  "license": "Public",
+  "creativeWorkStatus": "active",
+  "keywords": "2019_multioutput_paper",
+  "citation": "https://core.ac.uk/download/pdf/10195210.pdf",
+  "url": "https://www.openml.org/search?type=data&id=41464",
   "distribution": [
     {
-      "@type": "FileObject",
-      "contentUrl": "http://openml1.win.tue.nl/dataset41464/dataset_41464.pq",
-      "encodingFormat": "application/vnd.apache.parquet",
-      "name": "birds (parquet)"
-    },
-    {
+      "name": "birds_arff",
       "@type": "FileObject",
       "contentUrl": "https://api.openml.org/data/v1/download/21230421/birds.arff",
       "encodingFormat": "text/plain",
-      "name": "birds (arff)"
+      "md5": "6c69596d2dbd1add5e9a22352fa71e30"
     }
   ],
-  "isAccessibleForFree": true,
-  "keywords": "2019_multioutput_paper",
-  "name": "birds",
   "recordSet": [
     {
+      "name": "birds",
       "@type": "ml:RecordSet",
+      "source": "#{birds_arff}",
       "field": [
         {
-          "@type": "ml:Field",
-          "dataType": "Number",
           "name": "audio.ssd1",
-          "source": "#{birds (parquet)/audio.ssd1}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd1}"
+        },
+        {
           "name": "audio.ssd2",
-          "source": "#{birds (parquet)/audio.ssd2}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd2}"
+        },
+        {
           "name": "audio.ssd3",
-          "source": "#{birds (parquet)/audio.ssd3}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd3}"
+        },
+        {
           "name": "audio.ssd4",
-          "source": "#{birds (parquet)/audio.ssd4}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd4}"
+        },
+        {
           "name": "audio.ssd5",
-          "source": "#{birds (parquet)/audio.ssd5}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd5}"
+        },
+        {
           "name": "audio.ssd6",
-          "source": "#{birds (parquet)/audio.ssd6}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd6}"
+        },
+        {
           "name": "audio.ssd7",
-          "source": "#{birds (parquet)/audio.ssd7}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd7}"
+        },
+        {
           "name": "audio.ssd8",
-          "source": "#{birds (parquet)/audio.ssd8}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd8}"
+        },
+        {
           "name": "audio.ssd9",
-          "source": "#{birds (parquet)/audio.ssd9}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd9}"
+        },
+        {
           "name": "audio.ssd10",
-          "source": "#{birds (parquet)/audio.ssd10}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd10}"
+        },
+        {
           "name": "audio.ssd11",
-          "source": "#{birds (parquet)/audio.ssd11}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd11}"
+        },
+        {
           "name": "audio.ssd12",
-          "source": "#{birds (parquet)/audio.ssd12}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd12}"
+        },
+        {
           "name": "audio.ssd13",
-          "source": "#{birds (parquet)/audio.ssd13}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd13}"
+        },
+        {
           "name": "audio.ssd14",
-          "source": "#{birds (parquet)/audio.ssd14}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd14}"
+        },
+        {
           "name": "audio.ssd15",
-          "source": "#{birds (parquet)/audio.ssd15}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd15}"
+        },
+        {
           "name": "audio.ssd16",
-          "source": "#{birds (parquet)/audio.ssd16}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd16}"
+        },
+        {
           "name": "audio.ssd17",
-          "source": "#{birds (parquet)/audio.ssd17}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd17}"
+        },
+        {
           "name": "audio.ssd18",
-          "source": "#{birds (parquet)/audio.ssd18}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd18}"
+        },
+        {
           "name": "audio.ssd19",
-          "source": "#{birds (parquet)/audio.ssd19}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd19}"
+        },
+        {
           "name": "audio.ssd20",
-          "source": "#{birds (parquet)/audio.ssd20}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd20}"
+        },
+        {
           "name": "audio.ssd21",
-          "source": "#{birds (parquet)/audio.ssd21}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd21}"
+        },
+        {
           "name": "audio.ssd22",
-          "source": "#{birds (parquet)/audio.ssd22}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd22}"
+        },
+        {
           "name": "audio.ssd25",
-          "source": "#{birds (parquet)/audio.ssd25}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd25}"
+        },
+        {
           "name": "audio.ssd26",
-          "source": "#{birds (parquet)/audio.ssd26}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd26}"
+        },
+        {
           "name": "audio.ssd27",
-          "source": "#{birds (parquet)/audio.ssd27}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd27}"
+        },
+        {
           "name": "audio.ssd28",
-          "source": "#{birds (parquet)/audio.ssd28}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd28}"
+        },
+        {
           "name": "audio.ssd29",
-          "source": "#{birds (parquet)/audio.ssd29}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd29}"
+        },
+        {
           "name": "audio.ssd30",
-          "source": "#{birds (parquet)/audio.ssd30}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd30}"
+        },
+        {
           "name": "audio.ssd31",
-          "source": "#{birds (parquet)/audio.ssd31}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd31}"
+        },
+        {
           "name": "audio.ssd32",
-          "source": "#{birds (parquet)/audio.ssd32}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd32}"
+        },
+        {
           "name": "audio.ssd33",
-          "source": "#{birds (parquet)/audio.ssd33}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd33}"
+        },
+        {
           "name": "audio.ssd34",
-          "source": "#{birds (parquet)/audio.ssd34}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd34}"
+        },
+        {
           "name": "audio.ssd35",
-          "source": "#{birds (parquet)/audio.ssd35}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd35}"
+        },
+        {
           "name": "audio.ssd36",
-          "source": "#{birds (parquet)/audio.ssd36}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd36}"
+        },
+        {
           "name": "audio.ssd37",
-          "source": "#{birds (parquet)/audio.ssd37}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd37}"
+        },
+        {
           "name": "audio.ssd38",
-          "source": "#{birds (parquet)/audio.ssd38}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd38}"
+        },
+        {
           "name": "audio.ssd39",
-          "source": "#{birds (parquet)/audio.ssd39}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd39}"
+        },
+        {
           "name": "audio.ssd40",
-          "source": "#{birds (parquet)/audio.ssd40}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd40}"
+        },
+        {
           "name": "audio.ssd41",
-          "source": "#{birds (parquet)/audio.ssd41}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd41}"
+        },
+        {
           "name": "audio.ssd42",
-          "source": "#{birds (parquet)/audio.ssd42}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd42}"
+        },
+        {
           "name": "audio.ssd43",
-          "source": "#{birds (parquet)/audio.ssd43}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd43}"
+        },
+        {
           "name": "audio.ssd44",
-          "source": "#{birds (parquet)/audio.ssd44}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd44}"
+        },
+        {
           "name": "audio.ssd45",
-          "source": "#{birds (parquet)/audio.ssd45}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd45}"
+        },
+        {
           "name": "audio.ssd46",
-          "source": "#{birds (parquet)/audio.ssd46}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd46}"
+        },
+        {
           "name": "audio.ssd49",
-          "source": "#{birds (parquet)/audio.ssd49}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd49}"
+        },
+        {
           "name": "audio.ssd50",
-          "source": "#{birds (parquet)/audio.ssd50}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd50}"
+        },
+        {
           "name": "audio.ssd51",
-          "source": "#{birds (parquet)/audio.ssd51}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd51}"
+        },
+        {
           "name": "audio.ssd52",
-          "source": "#{birds (parquet)/audio.ssd52}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd52}"
+        },
+        {
           "name": "audio.ssd53",
-          "source": "#{birds (parquet)/audio.ssd53}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd53}"
+        },
+        {
           "name": "audio.ssd54",
-          "source": "#{birds (parquet)/audio.ssd54}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd54}"
+        },
+        {
           "name": "audio.ssd55",
-          "source": "#{birds (parquet)/audio.ssd55}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd55}"
+        },
+        {
           "name": "audio.ssd56",
-          "source": "#{birds (parquet)/audio.ssd56}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd56}"
+        },
+        {
           "name": "audio.ssd57",
-          "source": "#{birds (parquet)/audio.ssd57}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd57}"
+        },
+        {
           "name": "audio.ssd58",
-          "source": "#{birds (parquet)/audio.ssd58}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd58}"
+        },
+        {
           "name": "audio.ssd59",
-          "source": "#{birds (parquet)/audio.ssd59}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd59}"
+        },
+        {
           "name": "audio.ssd60",
-          "source": "#{birds (parquet)/audio.ssd60}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd60}"
+        },
+        {
           "name": "audio.ssd61",
-          "source": "#{birds (parquet)/audio.ssd61}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd61}"
+        },
+        {
           "name": "audio.ssd62",
-          "source": "#{birds (parquet)/audio.ssd62}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd62}"
+        },
+        {
           "name": "audio.ssd63",
-          "source": "#{birds (parquet)/audio.ssd63}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd63}"
+        },
+        {
           "name": "audio.ssd64",
-          "source": "#{birds (parquet)/audio.ssd64}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd64}"
+        },
+        {
           "name": "audio.ssd65",
-          "source": "#{birds (parquet)/audio.ssd65}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd65}"
+        },
+        {
           "name": "audio.ssd66",
-          "source": "#{birds (parquet)/audio.ssd66}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd66}"
+        },
+        {
           "name": "audio.ssd67",
-          "source": "#{birds (parquet)/audio.ssd67}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd67}"
+        },
+        {
           "name": "audio.ssd68",
-          "source": "#{birds (parquet)/audio.ssd68}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd68}"
+        },
+        {
           "name": "audio.ssd69",
-          "source": "#{birds (parquet)/audio.ssd69}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd69}"
+        },
+        {
           "name": "audio.ssd70",
-          "source": "#{birds (parquet)/audio.ssd70}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd70}"
+        },
+        {
           "name": "audio.ssd73",
-          "source": "#{birds (parquet)/audio.ssd73}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd73}"
+        },
+        {
           "name": "audio.ssd74",
-          "source": "#{birds (parquet)/audio.ssd74}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd74}"
+        },
+        {
           "name": "audio.ssd75",
-          "source": "#{birds (parquet)/audio.ssd75}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd75}"
+        },
+        {
           "name": "audio.ssd76",
-          "source": "#{birds (parquet)/audio.ssd76}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd76}"
+        },
+        {
           "name": "audio.ssd77",
-          "source": "#{birds (parquet)/audio.ssd77}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd77}"
+        },
+        {
           "name": "audio.ssd78",
-          "source": "#{birds (parquet)/audio.ssd78}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd78}"
+        },
+        {
           "name": "audio.ssd79",
-          "source": "#{birds (parquet)/audio.ssd79}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd79}"
+        },
+        {
           "name": "audio.ssd80",
-          "source": "#{birds (parquet)/audio.ssd80}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd80}"
+        },
+        {
           "name": "audio.ssd81",
-          "source": "#{birds (parquet)/audio.ssd81}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd81}"
+        },
+        {
           "name": "audio.ssd82",
-          "source": "#{birds (parquet)/audio.ssd82}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd82}"
+        },
+        {
           "name": "audio.ssd83",
-          "source": "#{birds (parquet)/audio.ssd83}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd83}"
+        },
+        {
           "name": "audio.ssd84",
-          "source": "#{birds (parquet)/audio.ssd84}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd84}"
+        },
+        {
           "name": "audio.ssd85",
-          "source": "#{birds (parquet)/audio.ssd85}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd85}"
+        },
+        {
           "name": "audio.ssd86",
-          "source": "#{birds (parquet)/audio.ssd86}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd86}"
+        },
+        {
           "name": "audio.ssd87",
-          "source": "#{birds (parquet)/audio.ssd87}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd87}"
+        },
+        {
           "name": "audio.ssd88",
-          "source": "#{birds (parquet)/audio.ssd88}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd88}"
+        },
+        {
           "name": "audio.ssd89",
-          "source": "#{birds (parquet)/audio.ssd89}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd89}"
+        },
+        {
           "name": "audio.ssd90",
-          "source": "#{birds (parquet)/audio.ssd90}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd90}"
+        },
+        {
           "name": "audio.ssd91",
-          "source": "#{birds (parquet)/audio.ssd91}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd91}"
+        },
+        {
           "name": "audio.ssd92",
-          "source": "#{birds (parquet)/audio.ssd92}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd92}"
+        },
+        {
           "name": "audio.ssd93",
-          "source": "#{birds (parquet)/audio.ssd93}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd93}"
+        },
+        {
           "name": "audio.ssd94",
-          "source": "#{birds (parquet)/audio.ssd94}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd94}"
+        },
+        {
           "name": "audio.ssd97",
-          "source": "#{birds (parquet)/audio.ssd97}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd97}"
+        },
+        {
           "name": "audio.ssd98",
-          "source": "#{birds (parquet)/audio.ssd98}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd98}"
+        },
+        {
           "name": "audio.ssd99",
-          "source": "#{birds (parquet)/audio.ssd99}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd99}"
+        },
+        {
           "name": "audio.ssd100",
-          "source": "#{birds (parquet)/audio.ssd100}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd100}"
+        },
+        {
           "name": "audio.ssd101",
-          "source": "#{birds (parquet)/audio.ssd101}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd101}"
+        },
+        {
           "name": "audio.ssd102",
-          "source": "#{birds (parquet)/audio.ssd102}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd102}"
+        },
+        {
           "name": "audio.ssd103",
-          "source": "#{birds (parquet)/audio.ssd103}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd103}"
+        },
+        {
           "name": "audio.ssd104",
-          "source": "#{birds (parquet)/audio.ssd104}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd104}"
+        },
+        {
           "name": "audio.ssd105",
-          "source": "#{birds (parquet)/audio.ssd105}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd105}"
+        },
+        {
           "name": "audio.ssd106",
-          "source": "#{birds (parquet)/audio.ssd106}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd106}"
+        },
+        {
           "name": "audio.ssd107",
-          "source": "#{birds (parquet)/audio.ssd107}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd107}"
+        },
+        {
           "name": "audio.ssd108",
-          "source": "#{birds (parquet)/audio.ssd108}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd108}"
+        },
+        {
           "name": "audio.ssd109",
-          "source": "#{birds (parquet)/audio.ssd109}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd109}"
+        },
+        {
           "name": "audio.ssd110",
-          "source": "#{birds (parquet)/audio.ssd110}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd110}"
+        },
+        {
           "name": "audio.ssd111",
-          "source": "#{birds (parquet)/audio.ssd111}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd111}"
+        },
+        {
           "name": "audio.ssd112",
-          "source": "#{birds (parquet)/audio.ssd112}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd112}"
+        },
+        {
           "name": "audio.ssd113",
-          "source": "#{birds (parquet)/audio.ssd113}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd113}"
+        },
+        {
           "name": "audio.ssd114",
-          "source": "#{birds (parquet)/audio.ssd114}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd114}"
+        },
+        {
           "name": "audio.ssd115",
-          "source": "#{birds (parquet)/audio.ssd115}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd115}"
+        },
+        {
           "name": "audio.ssd116",
-          "source": "#{birds (parquet)/audio.ssd116}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd116}"
+        },
+        {
           "name": "audio.ssd117",
-          "source": "#{birds (parquet)/audio.ssd117}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd117}"
+        },
+        {
           "name": "audio.ssd118",
-          "source": "#{birds (parquet)/audio.ssd118}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd118}"
+        },
+        {
           "name": "audio.ssd121",
-          "source": "#{birds (parquet)/audio.ssd121}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd121}"
+        },
+        {
           "name": "audio.ssd122",
-          "source": "#{birds (parquet)/audio.ssd122}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd122}"
+        },
+        {
           "name": "audio.ssd123",
-          "source": "#{birds (parquet)/audio.ssd123}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd123}"
+        },
+        {
           "name": "audio.ssd124",
-          "source": "#{birds (parquet)/audio.ssd124}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd124}"
+        },
+        {
           "name": "audio.ssd125",
-          "source": "#{birds (parquet)/audio.ssd125}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd125}"
+        },
+        {
           "name": "audio.ssd126",
-          "source": "#{birds (parquet)/audio.ssd126}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd126}"
+        },
+        {
           "name": "audio.ssd127",
-          "source": "#{birds (parquet)/audio.ssd127}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd127}"
+        },
+        {
           "name": "audio.ssd128",
-          "source": "#{birds (parquet)/audio.ssd128}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd128}"
+        },
+        {
           "name": "audio.ssd129",
-          "source": "#{birds (parquet)/audio.ssd129}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd129}"
+        },
+        {
           "name": "audio.ssd130",
-          "source": "#{birds (parquet)/audio.ssd130}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd130}"
+        },
+        {
           "name": "audio.ssd131",
-          "source": "#{birds (parquet)/audio.ssd131}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd131}"
+        },
+        {
           "name": "audio.ssd132",
-          "source": "#{birds (parquet)/audio.ssd132}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd132}"
+        },
+        {
           "name": "audio.ssd133",
-          "source": "#{birds (parquet)/audio.ssd133}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd133}"
+        },
+        {
           "name": "audio.ssd134",
-          "source": "#{birds (parquet)/audio.ssd134}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd134}"
+        },
+        {
           "name": "audio.ssd135",
-          "source": "#{birds (parquet)/audio.ssd135}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd135}"
+        },
+        {
           "name": "audio.ssd136",
-          "source": "#{birds (parquet)/audio.ssd136}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd136}"
+        },
+        {
           "name": "audio.ssd137",
-          "source": "#{birds (parquet)/audio.ssd137}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd137}"
+        },
+        {
           "name": "audio.ssd138",
-          "source": "#{birds (parquet)/audio.ssd138}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd138}"
+        },
+        {
           "name": "audio.ssd139",
-          "source": "#{birds (parquet)/audio.ssd139}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd139}"
+        },
+        {
           "name": "audio.ssd140",
-          "source": "#{birds (parquet)/audio.ssd140}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd140}"
+        },
+        {
           "name": "audio.ssd141",
-          "source": "#{birds (parquet)/audio.ssd141}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd141}"
+        },
+        {
           "name": "audio.ssd145",
-          "source": "#{birds (parquet)/audio.ssd145}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd145}"
+        },
+        {
           "name": "audio.ssd146",
-          "source": "#{birds (parquet)/audio.ssd146}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd146}"
+        },
+        {
           "name": "audio.ssd147",
-          "source": "#{birds (parquet)/audio.ssd147}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd147}"
+        },
+        {
           "name": "audio.ssd148",
-          "source": "#{birds (parquet)/audio.ssd148}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd148}"
+        },
+        {
           "name": "audio.ssd149",
-          "source": "#{birds (parquet)/audio.ssd149}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd149}"
+        },
+        {
           "name": "audio.ssd150",
-          "source": "#{birds (parquet)/audio.ssd150}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd150}"
+        },
+        {
           "name": "audio.ssd151",
-          "source": "#{birds (parquet)/audio.ssd151}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd151}"
+        },
+        {
           "name": "audio.ssd152",
-          "source": "#{birds (parquet)/audio.ssd152}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd152}"
+        },
+        {
           "name": "audio.ssd153",
-          "source": "#{birds (parquet)/audio.ssd153}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd153}"
+        },
+        {
           "name": "audio.ssd154",
-          "source": "#{birds (parquet)/audio.ssd154}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd154}"
+        },
+        {
           "name": "audio.ssd155",
-          "source": "#{birds (parquet)/audio.ssd155}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd155}"
+        },
+        {
           "name": "audio.ssd156",
-          "source": "#{birds (parquet)/audio.ssd156}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd156}"
+        },
+        {
           "name": "audio.ssd157",
-          "source": "#{birds (parquet)/audio.ssd157}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd157}"
+        },
+        {
           "name": "audio.ssd158",
-          "source": "#{birds (parquet)/audio.ssd158}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd158}"
+        },
+        {
           "name": "audio.ssd159",
-          "source": "#{birds (parquet)/audio.ssd159}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd159}"
+        },
+        {
           "name": "audio.ssd160",
-          "source": "#{birds (parquet)/audio.ssd160}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd160}"
+        },
+        {
           "name": "audio.ssd161",
-          "source": "#{birds (parquet)/audio.ssd161}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd161}"
+        },
+        {
           "name": "audio.ssd162",
-          "source": "#{birds (parquet)/audio.ssd162}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd162}"
+        },
+        {
           "name": "audio.ssd163",
-          "source": "#{birds (parquet)/audio.ssd163}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd163}"
+        },
+        {
           "name": "audio.ssd164",
-          "source": "#{birds (parquet)/audio.ssd164}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd164}"
+        },
+        {
           "name": "audio.ssd165",
-          "source": "#{birds (parquet)/audio.ssd165}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd165}"
+        },
+        {
           "name": "audio.ssd166",
-          "source": "#{birds (parquet)/audio.ssd166}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/audio_ssd166}"
+        },
+        {
           "name": "cluster1",
-          "source": "#{birds (parquet)/cluster1}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster1}"
+        },
+        {
           "name": "cluster2",
-          "source": "#{birds (parquet)/cluster2}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster2}"
+        },
+        {
           "name": "cluster3",
-          "source": "#{birds (parquet)/cluster3}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster3}"
+        },
+        {
           "name": "cluster4",
-          "source": "#{birds (parquet)/cluster4}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster4}"
+        },
+        {
           "name": "cluster5",
-          "source": "#{birds (parquet)/cluster5}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster5}"
+        },
+        {
           "name": "cluster6",
-          "source": "#{birds (parquet)/cluster6}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster6}"
+        },
+        {
           "name": "cluster7",
-          "source": "#{birds (parquet)/cluster7}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster7}"
+        },
+        {
           "name": "cluster8",
-          "source": "#{birds (parquet)/cluster8}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster8}"
+        },
+        {
           "name": "cluster9",
-          "source": "#{birds (parquet)/cluster9}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster9}"
+        },
+        {
           "name": "cluster10",
-          "source": "#{birds (parquet)/cluster10}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster10}"
+        },
+        {
           "name": "cluster11",
-          "source": "#{birds (parquet)/cluster11}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster11}"
+        },
+        {
           "name": "cluster12",
-          "source": "#{birds (parquet)/cluster12}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster12}"
+        },
+        {
           "name": "cluster13",
-          "source": "#{birds (parquet)/cluster13}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster13}"
+        },
+        {
           "name": "cluster14",
-          "source": "#{birds (parquet)/cluster14}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster14}"
+        },
+        {
           "name": "cluster15",
-          "source": "#{birds (parquet)/cluster15}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster15}"
+        },
+        {
           "name": "cluster16",
-          "source": "#{birds (parquet)/cluster16}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster16}"
+        },
+        {
           "name": "cluster17",
-          "source": "#{birds (parquet)/cluster17}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster17}"
+        },
+        {
           "name": "cluster18",
-          "source": "#{birds (parquet)/cluster18}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster18}"
+        },
+        {
           "name": "cluster19",
-          "source": "#{birds (parquet)/cluster19}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster19}"
+        },
+        {
           "name": "cluster20",
-          "source": "#{birds (parquet)/cluster20}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster20}"
+        },
+        {
           "name": "cluster21",
-          "source": "#{birds (parquet)/cluster21}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster21}"
+        },
+        {
           "name": "cluster22",
-          "source": "#{birds (parquet)/cluster22}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster22}"
+        },
+        {
           "name": "cluster23",
-          "source": "#{birds (parquet)/cluster23}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster23}"
+        },
+        {
           "name": "cluster24",
-          "source": "#{birds (parquet)/cluster24}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster24}"
+        },
+        {
           "name": "cluster25",
-          "source": "#{birds (parquet)/cluster25}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster25}"
+        },
+        {
           "name": "cluster26",
-          "source": "#{birds (parquet)/cluster26}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster26}"
+        },
+        {
           "name": "cluster27",
-          "source": "#{birds (parquet)/cluster27}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster27}"
+        },
+        {
           "name": "cluster28",
-          "source": "#{birds (parquet)/cluster28}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster28}"
+        },
+        {
           "name": "cluster29",
-          "source": "#{birds (parquet)/cluster29}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster29}"
+        },
+        {
           "name": "cluster30",
-          "source": "#{birds (parquet)/cluster30}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster30}"
+        },
+        {
           "name": "cluster31",
-          "source": "#{birds (parquet)/cluster31}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster31}"
+        },
+        {
           "name": "cluster32",
-          "source": "#{birds (parquet)/cluster32}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster32}"
+        },
+        {
           "name": "cluster33",
-          "source": "#{birds (parquet)/cluster33}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster33}"
+        },
+        {
           "name": "cluster34",
-          "source": "#{birds (parquet)/cluster34}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster34}"
+        },
+        {
           "name": "cluster35",
-          "source": "#{birds (parquet)/cluster35}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster35}"
+        },
+        {
           "name": "cluster36",
-          "source": "#{birds (parquet)/cluster36}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster36}"
+        },
+        {
           "name": "cluster37",
-          "source": "#{birds (parquet)/cluster37}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster37}"
+        },
+        {
           "name": "cluster38",
-          "source": "#{birds (parquet)/cluster38}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster38}"
+        },
+        {
           "name": "cluster39",
-          "source": "#{birds (parquet)/cluster39}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster39}"
+        },
+        {
           "name": "cluster40",
-          "source": "#{birds (parquet)/cluster40}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster40}"
+        },
+        {
           "name": "cluster41",
-          "source": "#{birds (parquet)/cluster41}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster41}"
+        },
+        {
           "name": "cluster42",
-          "source": "#{birds (parquet)/cluster42}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster42}"
+        },
+        {
           "name": "cluster43",
-          "source": "#{birds (parquet)/cluster43}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster43}"
+        },
+        {
           "name": "cluster44",
-          "source": "#{birds (parquet)/cluster44}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster44}"
+        },
+        {
           "name": "cluster45",
-          "source": "#{birds (parquet)/cluster45}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster45}"
+        },
+        {
           "name": "cluster46",
-          "source": "#{birds (parquet)/cluster46}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster46}"
+        },
+        {
           "name": "cluster47",
-          "source": "#{birds (parquet)/cluster47}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster47}"
+        },
+        {
           "name": "cluster48",
-          "source": "#{birds (parquet)/cluster48}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster48}"
+        },
+        {
           "name": "cluster49",
-          "source": "#{birds (parquet)/cluster49}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster49}"
+        },
+        {
           "name": "cluster50",
-          "source": "#{birds (parquet)/cluster50}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster50}"
+        },
+        {
           "name": "cluster51",
-          "source": "#{birds (parquet)/cluster51}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster51}"
+        },
+        {
           "name": "cluster52",
-          "source": "#{birds (parquet)/cluster52}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster52}"
+        },
+        {
           "name": "cluster53",
-          "source": "#{birds (parquet)/cluster53}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster53}"
+        },
+        {
           "name": "cluster54",
-          "source": "#{birds (parquet)/cluster54}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster54}"
+        },
+        {
           "name": "cluster55",
-          "source": "#{birds (parquet)/cluster55}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster55}"
+        },
+        {
           "name": "cluster56",
-          "source": "#{birds (parquet)/cluster56}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster56}"
+        },
+        {
           "name": "cluster57",
-          "source": "#{birds (parquet)/cluster57}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster57}"
+        },
+        {
           "name": "cluster59",
-          "source": "#{birds (parquet)/cluster59}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster59}"
+        },
+        {
           "name": "cluster60",
-          "source": "#{birds (parquet)/cluster60}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster60}"
+        },
+        {
           "name": "cluster61",
-          "source": "#{birds (parquet)/cluster61}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster61}"
+        },
+        {
           "name": "cluster62",
-          "source": "#{birds (parquet)/cluster62}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster62}"
+        },
+        {
           "name": "cluster63",
-          "source": "#{birds (parquet)/cluster63}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster63}"
+        },
+        {
           "name": "cluster64",
-          "source": "#{birds (parquet)/cluster64}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster64}"
+        },
+        {
           "name": "cluster65",
-          "source": "#{birds (parquet)/cluster65}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster65}"
+        },
+        {
           "name": "cluster66",
-          "source": "#{birds (parquet)/cluster66}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster66}"
+        },
+        {
           "name": "cluster67",
-          "source": "#{birds (parquet)/cluster67}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster67}"
+        },
+        {
           "name": "cluster68",
-          "source": "#{birds (parquet)/cluster68}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster68}"
+        },
+        {
           "name": "cluster69",
-          "source": "#{birds (parquet)/cluster69}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster69}"
+        },
+        {
           "name": "cluster70",
-          "source": "#{birds (parquet)/cluster70}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster70}"
+        },
+        {
           "name": "cluster71",
-          "source": "#{birds (parquet)/cluster71}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster71}"
+        },
+        {
           "name": "cluster72",
-          "source": "#{birds (parquet)/cluster72}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster72}"
+        },
+        {
           "name": "cluster73",
-          "source": "#{birds (parquet)/cluster73}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster73}"
+        },
+        {
           "name": "cluster74",
-          "source": "#{birds (parquet)/cluster74}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster74}"
+        },
+        {
           "name": "cluster75",
-          "source": "#{birds (parquet)/cluster75}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster75}"
+        },
+        {
           "name": "cluster76",
-          "source": "#{birds (parquet)/cluster76}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster76}"
+        },
+        {
           "name": "cluster78",
-          "source": "#{birds (parquet)/cluster78}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster78}"
+        },
+        {
           "name": "cluster79",
-          "source": "#{birds (parquet)/cluster79}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster79}"
+        },
+        {
           "name": "cluster80",
-          "source": "#{birds (parquet)/cluster80}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster80}"
+        },
+        {
           "name": "cluster81",
-          "source": "#{birds (parquet)/cluster81}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster81}"
+        },
+        {
           "name": "cluster82",
-          "source": "#{birds (parquet)/cluster82}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster82}"
+        },
+        {
           "name": "cluster83",
-          "source": "#{birds (parquet)/cluster83}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster83}"
+        },
+        {
           "name": "cluster84",
-          "source": "#{birds (parquet)/cluster84}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster84}"
+        },
+        {
           "name": "cluster85",
-          "source": "#{birds (parquet)/cluster85}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster85}"
+        },
+        {
           "name": "cluster86",
-          "source": "#{birds (parquet)/cluster86}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster86}"
+        },
+        {
           "name": "cluster87",
-          "source": "#{birds (parquet)/cluster87}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster87}"
+        },
+        {
           "name": "cluster88",
-          "source": "#{birds (parquet)/cluster88}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster88}"
+        },
+        {
           "name": "cluster89",
-          "source": "#{birds (parquet)/cluster89}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster89}"
+        },
+        {
           "name": "cluster90",
-          "source": "#{birds (parquet)/cluster90}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster90}"
+        },
+        {
           "name": "cluster91",
-          "source": "#{birds (parquet)/cluster91}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster91}"
+        },
+        {
           "name": "cluster92",
-          "source": "#{birds (parquet)/cluster92}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster92}"
+        },
+        {
           "name": "cluster93",
-          "source": "#{birds (parquet)/cluster93}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster93}"
+        },
+        {
           "name": "cluster94",
-          "source": "#{birds (parquet)/cluster94}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster94}"
+        },
+        {
           "name": "cluster95",
-          "source": "#{birds (parquet)/cluster95}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster95}"
+        },
+        {
           "name": "cluster96",
-          "source": "#{birds (parquet)/cluster96}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster96}"
+        },
+        {
           "name": "cluster97",
-          "source": "#{birds (parquet)/cluster97}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster97}"
+        },
+        {
           "name": "cluster98",
-          "source": "#{birds (parquet)/cluster98}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster98}"
+        },
+        {
           "name": "cluster99",
-          "source": "#{birds (parquet)/cluster99}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster99}"
+        },
+        {
           "name": "cluster100",
-          "source": "#{birds (parquet)/cluster100}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/cluster100}"
+        },
+        {
           "name": "segments",
-          "source": "#{birds (parquet)/segments}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/segments}"
+        },
+        {
           "name": "mean_rect_width",
-          "source": "#{birds (parquet)/mean_rect_width}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/mean_rect_width}"
+        },
+        {
           "name": "std_rect_width",
-          "source": "#{birds (parquet)/std_rect_width}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/std_rect_width}"
+        },
+        {
           "name": "mean_rect_height",
-          "source": "#{birds (parquet)/mean_rect_height}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/mean_rect_height}"
+        },
+        {
           "name": "std_rect_height",
-          "source": "#{birds (parquet)/std_rect_height}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{birds_arff/std_rect_height}"
+        },
+        {
           "name": "mean_rect_volume",
-          "source": "#{birds (parquet)/mean_rect_volume}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
-          "name": "std_rect_volume",
-          "source": "#{birds (parquet)/std_rect_volume}"
+          "source": "#{birds_arff/mean_rect_volume}"
         },
         {
+          "name": "std_rect_volume",
+          "@type": "ml:Field",
+          "dataType": "Number",
+          "source": "#{birds_arff/std_rect_volume}"
+        },
+        {
+          "name": "hasSegments",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "name": "hasSegments",
-          "source": "#{birds (parquet)/hasSegments}"
+          "source": "#{birds_arff/hasSegments}"
         },
         {
+          "name": "location",
           "@type": "ml:Field",
           "dataType": "Text",
-          "name": "location",
-          "source": "#{birds (parquet)/location}"
+          "source": "#{birds_arff/location}"
         },
         {
-          "@type": "ml:Field",
-          "dataType": "Boolean",
           "name": "Brown.Creeper",
-          "source": "#{birds (parquet)/Brown.Creeper}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Brown_Creeper}"
+        },
+        {
           "name": "Pacific.Wren",
-          "source": "#{birds (parquet)/Pacific.Wren}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Pacific_Wren}"
+        },
+        {
           "name": "Pacific.slope.Flycatcher",
-          "source": "#{birds (parquet)/Pacific.slope.Flycatcher}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Pacific_slope_Flycatcher}"
+        },
+        {
           "name": "Red.breasted.Nuthatch",
-          "source": "#{birds (parquet)/Red.breasted.Nuthatch}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Red_breasted_Nuthatch}"
+        },
+        {
           "name": "Dark.eyed.Junco",
-          "source": "#{birds (parquet)/Dark.eyed.Junco}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Dark_eyed_Junco}"
+        },
+        {
           "name": "Olive.sided.Flycatcher",
-          "source": "#{birds (parquet)/Olive.sided.Flycatcher}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Olive_sided_Flycatcher}"
+        },
+        {
           "name": "Hermit.Thrush",
-          "source": "#{birds (parquet)/Hermit.Thrush}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Hermit_Thrush}"
+        },
+        {
           "name": "Chestnut.backed.Chickadee",
-          "source": "#{birds (parquet)/Chestnut.backed.Chickadee}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Chestnut_backed_Chickadee}"
+        },
+        {
           "name": "Varied.Thrush",
-          "source": "#{birds (parquet)/Varied.Thrush}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Varied_Thrush}"
+        },
+        {
           "name": "Hermit.Warbler",
-          "source": "#{birds (parquet)/Hermit.Warbler}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Hermit_Warbler}"
+        },
+        {
           "name": "Swainson.s.Thrush",
-          "source": "#{birds (parquet)/Swainson.s.Thrush}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Swainson_s_Thrush}"
+        },
+        {
           "name": "Hammond.s.Flycatcher",
-          "source": "#{birds (parquet)/Hammond.s.Flycatcher}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Hammond_s_Flycatcher}"
+        },
+        {
           "name": "Western.Tanager",
-          "source": "#{birds (parquet)/Western.Tanager}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Western_Tanager}"
+        },
+        {
           "name": "Black.headed.Grosbeak",
-          "source": "#{birds (parquet)/Black.headed.Grosbeak}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Black_headed_Grosbeak}"
+        },
+        {
           "name": "Golden.Crowned.Kinglet",
-          "source": "#{birds (parquet)/Golden.Crowned.Kinglet}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Golden_Crowned_Kinglet}"
+        },
+        {
           "name": "Warbling.Vireo",
-          "source": "#{birds (parquet)/Warbling.Vireo}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Warbling_Vireo}"
+        },
+        {
           "name": "MacGillivray.s.Warbler",
-          "source": "#{birds (parquet)/MacGillivray.s.Warbler}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/MacGillivray_s_Warbler}"
+        },
+        {
           "name": "Stellar.s.Jay",
-          "source": "#{birds (parquet)/Stellar.s.Jay}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Boolean",
+          "source": "#{birds_arff/Stellar_s_Jay}"
+        },
+        {
           "name": "Common.Nighthawk",
-          "source": "#{birds (parquet)/Common.Nighthawk}"
+          "@type": "ml:Field",
+          "dataType": "Boolean",
+          "source": "#{birds_arff/Common_Nighthawk}"
         }
-      ],
-      "name": "birds",
-      "source": "#{birds (parquet)}"
+      ]
     }
-  ],
-  "url": "https://www.openml.org/api/v1/json/data/41464",
-  "version": "4"
+  ]
 }
