@@ -32,8 +32,12 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     ]
     distribution_source = _replace_special_chars(distributions[0]["name"])
     croissant = {
-        "@context": {"@vocab": "https://schema.org/", "ml": "http://mlcommons.org/schema/"},
-        "@type": "Dataset",
+        "@context": {
+            "@vocab": "https://schema.org/",
+            "sc": "https://schema.org/",
+            "ml": "http://mlcommons.org/schema/",
+        },
+        "@type": "sc:Dataset",
         "@language": "en",
         "name": _ds(field="name", required=True),
         "description": _ds(field="description", required=True),
@@ -141,7 +145,7 @@ def _person(name: str) -> dict | None:
     """
     if name is None or name == "":
         return None
-    return {"@context": "https://schema.org", "@type": "Person", "name": name}
+    return {"@context": "https://schema.org", "@type": "sc:Person", "name": name}
 
 
 def _file_object(name: str, url: str, md5: str) -> dict | None:
@@ -176,7 +180,7 @@ def _file_object(name: str, url: str, md5: str) -> dict | None:
         raise ValueError(f"Unrecognized file extension in url: {url}")
     return {
         "name": f"{name}_{type_}",
-        "@type": "FileObject",
+        "@type": "sc:FileObject",
         "contentUrl": url,
         "encodingFormat": mimetype,
         "md5": md5
