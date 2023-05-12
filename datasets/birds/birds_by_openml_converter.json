@@ -1,9 +1,10 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/"
   },
-  "@type": "Dataset",
+  "@type": "sc:Dataset",
   "@language": "en",
   "name": "birds",
   "description": "Multi-label dataset. The birds dataset consists of 327 audio\n  recordings of 12 different vocalizing bird species. Each sound can be\n  assigned to various bird species.",
@@ -19,7 +20,7 @@
   "distribution": [
     {
       "name": "birds_arff",
-      "@type": "FileObject",
+      "@type": "sc:FileObject",
       "contentUrl": "https://api.openml.org/data/v1/download/21230421/birds.arff",
       "encodingFormat": "text/plain",
       "md5": "6c69596d2dbd1add5e9a22352fa71e30"
