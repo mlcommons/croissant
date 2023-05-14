@@ -3,18 +3,20 @@ import time
 import networkx as nx
 
 
-def pretty_print_graph(graph: nx.Graph):
+def pretty_print_graph(graph: nx.Graph, simplify=False):
     """Pretty prints a NetworkX graph.
 
     Args:
         graph: Any NetworkX graph.
 
     Warning: this function is for debugging purposes only."""
-    simple_graph = nx.Graph()
-    for x, y in graph.edges():
-        x = getattr(x, "name", x)
-        y = getattr(y, "name", y)
-        simple_graph.add_edge(x, y)
+    if simplify:
+        simple_graph = nx.Graph()
+        for x, y in graph.edges():
+            x = getattr(x, "uid", x)
+            y = getattr(y, "uid", y)
+            simple_graph.add_edge(x, y)
+        graph = simple_graph
     agraph = nx.nx_agraph.to_agraph(graph)
     agraph.layout(prog="dot")
     temporary_file = f"/tmp/graph_{time.time()}.png"

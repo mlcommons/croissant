@@ -30,7 +30,7 @@ class Node:
         graph: The NetworkX RDF graph to validate.
         node: The node in the graph to convert.
         name: The name of the node.
-        parent_name: The name of the parent node if it exists. This is the parent in the JSON-LD
+        parent_uid: UID of the parent node if it exists. This is the parent in the JSON-LD
             structure, whereas `sources` are the parents in the resource tree.
 
     Usage:
@@ -53,12 +53,12 @@ class Node:
     graph: nx.MultiDiGraph
     node: rdflib.term.BNode
     name: str = ""
-    parent_name: str | None = None
+    parent_uid: str | None = None
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
         self.assert_has_mandatory_properties("name")
-        self.validate_name(self.name)
+        validate_name(self.issues, self.name)
 
     @classmethod
     def from_rdf_graph(
@@ -66,10 +66,10 @@ class Node:
         issues: Issues,
         graph: nx.MultiDiGraph,
         node: rdflib.term.BNode,
-        parent_name: str | None,
+        parent_uid: str,
     ) -> "Node":
         """Builds a Node from the provided graph."""
-        properties = _extract_properties(graph, node)
+        properties = _extract_properties(issues, graph, node)
         name = properties.get("name")
 
         # Check @type.
@@ -87,12 +87,8 @@ class Node:
                 f'Node should have an attribute `"@type" in "{expected_types}"`.'
             )
 
-        # Normalize `source`.
-        if (source := properties.get("source")) is not None:
-            properties["source"] = Source.from_json_ld(issues, source)
-
         # Return proper node in each case.
-        args = [issues, graph, node, name, parent_name]
+        args = [issues, graph, node, name, parent_uid]
         if rdf_type == constants.SCHEMA_ORG_DATASET:
             with issues.context(dataset_name=name):
                 return Metadata(
@@ -134,6 +130,7 @@ class Node:
                 return Field(
                     *args,
                     description=properties.get("description"),
+                    has_sub_fields=properties.get("has_sub_fields"),
                     references=properties.get("references"),
                     source=properties.get("source"),
                 )
@@ -142,12 +139,25 @@ class Node:
             graph=graph,
             node=node,
             name=name,
-            parent_name=parent_name,
+            parent_uid=parent_uid,
         )
 
     @property
     def _edges_from_node(self):
         return self.graph.edges(self.node, keys=True)
+
+    @property
+    def uid(self):
+        """Creates a UID from the name.
+
+        For fields, the UID cannot be the name, as a dataset
+        can contain two fields with the same name if they are
+        in different record sets for instancd.
+        """
+        if isinstance(self, Field):
+            # Concatenate all names except the dataset name.
+            return f"{self.parent_uid}/{self.name}"
+        return self.name
 
     @property
     def sources(self) -> list[tuple[str]]:
@@ -156,9 +166,11 @@ class Node:
         Sources can be contained either in `source` (for Fields and FileObjects) or in `contained_in` (for FileSets).
         """
         if isinstance(self, (Field, FileObject)) and self.source is not None:
-            return [self.parse_source_data(self.source.data)]
+            return [parse_reference(self.issues, self.source.reference)]
         if isinstance(self, FileSet) and self.contained_in:
-            return [self.parse_source_data(source) for source in self.contained_in]
+            return [
+                parse_reference(self.issues, source) for source in self.contained_in
+            ]
         return []
 
     def children_nodes(self, expected_property: str) -> list["Node"]:
@@ -174,7 +186,7 @@ class Node:
                         issues=self.issues,
                         graph=self.graph,
                         node=_object,
-                        parent_name=self.name,
+                        parent_uid=self.uid,
                     )
                 )
         return nodes
@@ -216,33 +228,33 @@ class Node:
                 error = f"At least one of these properties should be defined: {possible_exclusive_properties}."
                 self.issues.add_error(error)
 
-    def validate_name(self, name: str):
-        """Validates the name (which are used as unique identifiers in Croissant)."""
-        if not isinstance(name, str):
-            self.issues.add_error(
-                f"The identifier should be a string. Got: {type(name)}."
-            )
-        if len(name) > _MAX_ID_LENGTH:
-            self.issues.add_error(
-                f'The identifier "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
-            )
-        regex = re.compile(rf"^{_ID_REGEX}$")
-        if not regex.match(name):
-            self.issues.add_error(
-                f'The identifier "{name}" contains forbidden characters.'
-            )
-        return name
 
-    def parse_source_data(self, source_data: str) -> tuple[str]:
-        source_regex = re.compile(rf"^\#\{{(?:({_ID_REGEX})\/)*({_ID_REGEX})\}}$")
-        match = source_regex.match(source_data)
-        if match is None:
-            self.issues.add_error(f"Malformed source data: {source_data}.")
-            return ""
-        groups = tuple(group for group in match.groups() if group is not None)
-        for group in groups:
-            self.validate_name(group)
-        return groups
+def validate_name(issues: Issues, name: str):
+    """Validates the name (which are used as unique identifiers in Croissant)."""
+    if not isinstance(name, str):
+        issues.add_error(f"The identifier should be a string. Got: {type(name)}.")
+    if len(name) > _MAX_ID_LENGTH:
+        issues.add_error(
+            f'The identifier "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
+        )
+    regex = re.compile(rf"^{_ID_REGEX}$")
+    if not regex.match(name):
+        issues.add_error(f'The identifier "{name}" contains forbidden characters.')
+    return name
+
+
+def parse_reference(issues: Issues, source_data: str) -> tuple[str]:
+    source_regex = re.compile(rf"^\#\{{(?:({_ID_REGEX})\/)*({_ID_REGEX})\}}$")
+    match = source_regex.match(source_data)
+    if match is None:
+        issues.add_error(
+            f"Malformed source data: {source_data}. The source data should be written as `#{{name}}`."
+        )
+        return ""
+    groups = tuple(group for group in match.groups() if group is not None)
+    for group in groups:
+        validate_name(issues, group)
+    return groups
 
 
 @dataclasses.dataclass(frozen=True)
@@ -271,19 +283,19 @@ class Source:
     ```
     """
 
+    reference: tuple[str] = ()
     apply_transform_regex: str | None = None
     apply_transform_separator: str | None = None
-    data: str = ""
 
     @classmethod
     def from_json_ld(cls, issues: Issues, field: Any) -> "Source":
         if isinstance(field, str):
-            return cls(data=field)
+            return cls(reference=parse_reference(issues, field))
         elif isinstance(field, dict):
             try:
                 apply_transform = field.get("apply_transform", {})
                 return cls(
-                    data=str(field["data"]),
+                    reference=parse_reference(issues, field.get("data")),
                     apply_transform_regex=apply_transform.get("regex"),
                     apply_transform_separator=apply_transform.get("separator"),
                 )
@@ -291,9 +303,14 @@ class Source:
                 issues.add_error(
                     f"Malformed `source`: {field}. Got exception: {exception}"
                 )
-                return cls(data="")
+                return cls(reference="")
         else:
             issues.add_error(f"`source` has wrong type: {type(field)} ({field})")
+            return cls(reference="")
+
+    def __bool__(self):
+        """Allows to write `if not node.source` / `if node.source`"""
+        return len(self.reference) > 0
 
 
 @dataclasses.dataclass(frozen=True)
@@ -326,7 +343,7 @@ class FileObject(Node):
 
     def __post_init__(self):
         self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
-        if self.contained_in is None:
+        if not self.contained_in:
             self.assert_has_optional_properties("content_url")
             self.assert_has_exclusive_properties(["md5", "sha256"])
 
@@ -364,6 +381,7 @@ class Field(Node):
 
     data_type: str | None = None
     description: str | None = None
+    has_sub_fields: bool | None = None
     name: str = ""
     references: str | None = None
     source: Source = dataclasses.field(default_factory=Source)
@@ -382,18 +400,20 @@ def _there_exists_at_least_one_property(node: Node, possible_properties: list[st
 
 
 def _extract_properties(
-    graph: nx.MultiDiGraph, node: rdflib.term.BNode
-) -> Mapping[str, str | tuple[str]]:
+    issues: Issues, graph: nx.MultiDiGraph, node: rdflib.term.BNode
+) -> Mapping[str, Any]:
     """Extracts properties RDF->Python nodes.
 
-    TODO(marcenacp): find a better way to iterate on the graph!"""
+    Note: we could find a better way to extract information from the RDF graph."""
     properties: Mapping[str, str | tuple[str]] = {}
     for _, value, property in graph.edges(node, keys=True):
         if isinstance(value, rdflib.term.BNode):
             # `source` needs a special treatment when it is a dict.
             if property == constants.ML_COMMONS_SOURCE:
-                source = _extract_properties(graph, value)
+                source = _extract_properties(issues, graph, value)
                 properties["source"] = source
+            if property == constants.ML_COMMONS_SUB_FIELD:
+                properties["has_sub_fields"] = True
             continue
 
         # Normalize values to strings.
@@ -414,4 +434,20 @@ def _extract_properties(
             # In the loop, we just found out that there are several values for the
             # same property. `self.properties[property]` should be transformed to a tuple.
             properties[property] = (properties[property], value)
+
+    # Normalize `source`.
+    if (source := properties.get("source")) is not None:
+        properties["source"] = Source.from_json_ld(issues, source)
+    # Normalize `contained_in`.
+    if (contained_in := properties.get("contained_in")) is not None:
+        if isinstance(contained_in, str):
+            properties["contained_in"] = parse_reference(issues, contained_in)
+        else:
+            properties["contained_in"] = (
+                parse_reference(issues, reference)[0] for reference in contained_in
+            )
     return properties
+
+
+def concatenate_uid(source: tuple[str]) -> str:
+    return "/".join(source)
