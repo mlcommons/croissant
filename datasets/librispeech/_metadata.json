@@ -1,0 +1,254 @@
+{
+    "@context": {
+        "@vocab": "https://schema.org/",
+        "ml": "http://mlcommons.org/schema/"
+    },
+    "@type": "Dataset",
+    "@language": "en",
+    "name": "LibriSpeech ASR corpus",
+    "url": "http://www.openslr.org/12",
+    "description": "LibriSpeech is a corpus of approximately 1000 hours of 16kHz read English speech, prepared by Vassil Panayotov with the assistance of Daniel Povey. The data is derived from read audiobooks from the LibriVox project, and has been carefully segmented and aligned.\nAcoustic models, trained on this data set, are available at kaldi-asr.org and language models, suitable for evaluation can be found at http://www.openslr.org/11/.\nFor more information, see the paper \"LibriSpeech: an ASR corpus based on public domain audio books\", Vassil Panayotov, Guoguo Chen, Daniel Povey and Sanjeev Khudanpur, ICASSP 2015 (submitted) (pdf)",
+    "distribution": [
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/dev-clean.tar.gz",
+            "name": "dev-clean.tar.gz",
+            "sha256": "42e2234ba48799c1f50f24a7926300a1",
+            "description": "[337M] development set, \"clean\" speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/dev-other.tar.gz",
+            "name": "dev-other.tar.gz",
+            "sha256": "c8d0bcc9cca99d4f8b62fcc847357931",
+            "description": "[314M] development set, \"other\", more challenging, speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/test-clean.tar.gz",
+            "name": "test-clean.tar.gz",
+            "sha256": "32fa31d27d2e1cad72775fee3f4849a9",
+            "description": "[346M] test set, \"clean\" speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/test-other.tar.gz",
+            "name": "test-other.tar.gz",
+            "sha256": "fb5a50374b501bb3bac4815ee91d3135",
+            "description": "[328M] test set, \"other\" speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/train-clean-100.tar.gz",
+            "name": "train-clean-100.tar.gz",
+            "sha256": "2a93770f6d5c6c964bc36631d331a522",
+            "description": "[6.3G] training set of 100 hours \"clean\" speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/train-clean-360.tar.gz",
+            "name": "train-clean-360.tar.gz",
+            "sha256": "c0e676e450a7ff2f54aeade5171606fa",
+            "description": "[23G] training set of 360 hours \"clean\" speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/train-other-500.tar.gz",
+            "name": "train-other-500.tar.gz",
+            "sha256": "d1a0fd59409feb2c614ce4d30c387708",
+            "description": "[30G] training set of 500 hours \"other\" speech",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/intro-disclaimers.tar.gz",
+            "name": "intro-disclaimers.tar.gz",
+            "sha256": "92ba57a9611a70fd7d34b73249ae48cf",
+            "description": "[695M] extracted LibriVox announcements for some of the speakers",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/original-mp3.tar.gz",
+            "name": "original-mp3.tar.gz",
+            "sha256": "7e14b6df14f1c04a852a50ba5f7be915",
+            "description": "[87G] LibriVox mp3 files, from which corpus' audio was extracted",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/original-books.tar.gz",
+            "name": "original-books.tar.gz",
+            "sha256": "9da96b465573c8d1ee1d5ad3d01c08e3",
+            "description": "[297M] Project Gutenberg texts, against which the audio in the corpus was aligned",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/raw-metadata.tar.gz",
+            "name": "raw-metadata.tar.gz",
+            "sha256": "25eced105e10f4081585af89b8d27cd2",
+            "description": "[33M] Some extra meta-data produced during the creation of the corpus",
+            "encodingFormat": "application/x-tar"
+        },
+        {
+            "@type": "FileObject",
+            "contentUrl": "https://www.openslr.org/resources/12/md5sum.txt",
+            "name": "md5sum.txt",
+            "description": "[600 bytes] MD5 checksums for the archive files",
+            "encodingFormat": "text/plain"
+        },
+        {
+            "@type": "FileSet",
+            "containedIn": [
+                "#{dev-clean.tar.gz}",
+                "#{dev-other.tar.gz}",
+                "#{test-clean.tar.gz}",
+                "#{test-other.tar.gz}",
+                "#{train-clean-100.tar.gz}",
+                "#{train-clean-360.tar.gz}",
+                "#{train-other-500.tar.gz}"
+            ],
+            "name": "flacs-sources",
+            "includes": "*.flac",
+            "encodingFormat": "audio/x-flac"
+        },
+        {
+            "@type": "FileSet",
+            "containedIn": [
+                "#{dev-clean.tar.gz}",
+                "#{dev-other.tar.gz}",
+                "#{test-clean.tar.gz}",
+                "#{test-other.tar.gz}",
+                "#{train-clean-100.tar.gz}",
+                "#{train-clean-360.tar.gz}",
+                "#{train-other-500.tar.gz}"
+            ],
+            "name": "transcriptions-sources",
+            "includes": "*.trans.txt",
+            "encodingFormat": "text/plain"
+        }
+    ],
+    "recordSet": [
+        {
+            "name": "flacs",
+            "@type": "ml:RecordSet",
+            "source": "#{flacs-sources}",
+            "key": "#{id}",
+            "field": [
+                {
+                    "name": "flac_content",
+                    "@type": "ml:Field",
+                    "description": "The content of the audio.",
+                    "valueType": "AudioObject",
+                    "source": "#{flacs-sources/content}"
+                },
+                {
+                    "name": "split",
+                    "@type": "ml:Field",
+                    "description": "The ML split.",
+                    "dataType": "ml:Split",
+                    "source": {
+                        "data": "#{flacs-sources/path}",
+                        "applyTransform": {
+                            "ml:regex": "LibriSpeech\\/([\\w|\\d|-]*)\\/.*\\.flac"
+                        }
+                    }
+                },
+                {
+                    "name": "id",
+                    "@type": "ml:Field",
+                    "description": "The ID of the audio as represented by the filename (usually `dddd-dddd-dddd`).",
+                    "dataType": "identifier",
+                    "source": {
+                        "data": "#{flacs-sources/filename}",
+                        "applyTransform": {
+                            "ml:regex": "([\\d|-]*)\\.flac"
+                        }
+                    }
+                },
+                {
+                    "name": "group",
+                    "@type": "ml:Field",
+                    "description": "The group of the audio as represented by the first two groups of digits in the filename (usually `dddd-dddd`).",
+                    "dataType": "identifier",
+                    "source": {
+                        "data": "#{flacs-sources/filename}",
+                        "applyTransform": {
+                            "ml:regex": "([\\d|-]*)-\\d\\d\\d\\d\\.flac"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "transcriptions",
+            "@type": "ml:RecordSet",
+            "source": {
+                "data": "#{transcriptions-sources}",
+                "regex": "(?<id>\\d*-\\d*-\\d*) (?<transcription_content>.*)"
+            },
+            "field": [
+                {
+                    "name": "transcription_content",
+                    "@type": "ml:Field",
+                    "description": "The transcription of the audio.",
+                    "valueType": "String",
+                    "data": "#{transcriptions-sources/transcription_content}"
+                },
+                {
+                    "name": "id",
+                    "description": "The ID of the audio as represented by the filename (usually `dddd-dddd-dddd`).",
+                    "@type": "ml:Field",
+                    "valueType": "identifier",
+                    "data": "#{transcriptions-sources/id}"
+                }
+            ]
+        },
+        {
+            "name": "corpus",
+            "@type": "ml:RecordSet",
+            "source": "#{flacs}",
+            "key": "#{id}",
+            "field": [
+                {
+                    "name": "id",
+                    "@type": "ml:Field",
+                    "dataType": "identifier",
+                    "source": "#{flacs/id}",
+                    "references": "#{transcriptions/id}"
+                },
+                {
+                    "name": "flac_content",
+                    "@type": "ml:Field",
+                    "valueType": "AudioObject",
+                    "source": "#{flacs/flac_content}"
+                },
+                {
+                    "name": "transcription_content",
+                    "@type": "ml:Field",
+                    "valueType": "AudioObject",
+                    "source": "#{transcriptions/transcription_content}"
+                },
+                {
+                    "name": "split",
+                    "@type": "ml:Field",
+                    "dataType": "ml:Split",
+                    "source": "#{flacs/split}"
+                },
+                {
+                    "name": "group",
+                    "@type": "ml:Field",
+                    "dataType": "identifier",
+                    "source": "#{flacs/group}"
+                }
+            ]
+        }
+    ]
+}
