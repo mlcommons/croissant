@@ -9,6 +9,16 @@ class ValidationError(Exception):
 
 @dataclasses.dataclass
 class Context:
+    """Context to identify an issue.
+
+    This allows to add context to an issue by tracing it back:
+    - within a given dataset,
+    - within a given distribution,
+    - within a given record set,
+    - within a given field,
+    - within a given sub field.
+    """
+
     dataset_name: str | None = None
     distribution_name: str | None = None
     record_set_name: str | None = None

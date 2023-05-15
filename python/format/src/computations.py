@@ -24,15 +24,39 @@ def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     return entry_nodes
 
 
-def get_structure_graph(
-    issues: Issues, nodes: list[Node]
-) -> tuple[Node, nx.MultiDiGraph]:
-    graph = nx.MultiDiGraph()
+def _check_no_duplicate(issues: Issues, nodes: list[Node]) -> Mapping[str, Node]:
+    """Checks that no node has duplicated UID and returns the hash table `uid`->`Node`."""
     uid_to_node: Mapping[str, Node] = {}
     for node in nodes:
         if node.uid in uid_to_node:
             issues.add_error(f"Duplicate node with the same identifier: {node.uid}")
         uid_to_node[node.uid] = node
+    return uid_to_node
+
+
+def add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
+    """Add `node` as the entry node of the graph by updating `graph` in place."""
+    graph.add_node(node, parent=None)
+    entry_nodes = get_entry_nodes(graph)
+    for node in entry_nodes:
+        if isinstance(node, (FileObject, FileSet)):
+            graph.add_edge(node, node)
+
+
+def build_structure_graph(
+    issues: Issues, nodes: list[Node]
+) -> tuple[Node, nx.MultiDiGraph]:
+    """Builds the structure graph from the nodes.
+
+    The structure graph represents the relationship between the nodes:
+
+    - For ml:Fields without ml:subField, the predecessors in the structure graph are the sources.
+    - For sc:FileSet or sc:FileObject with a `containedIn`, the predecessors in the structure graph are those `containedId`.
+    - For other objects, the predecessors are their parents (i.e., predecessors in the JSON-LD). For example:
+        - For ml:Field with subField, the predecessors are the ml:RecordSet in which they are contained.
+    """
+    graph = nx.MultiDiGraph()
+    uid_to_node = _check_no_duplicate(issues, nodes)
     for node in nodes:
         if isinstance(node, Metadata):
             continue
@@ -56,16 +80,12 @@ def get_structure_graph(
             parent = uid_to_node[node.parent_uid]
             graph.add_edge(parent, node)
     # `Metadata` are used as the entry node.
-    metadata_node = next((node for node in nodes if isinstance(node, Metadata)), None)
-    if metadata_node is None:
+    metadata = next((node for node in nodes if isinstance(node, Metadata)), None)
+    if metadata is None:
         issues.add_error("No metadata is defined in the dataset.")
         return None, graph
-    graph.add_node(metadata_node, parent=None)
-    entry_nodes = get_entry_nodes(graph)
-    for node in entry_nodes:
-        if isinstance(node, (FileObject, FileSet)):
-            graph.add_edge(metadata_node, node)
-    return metadata_node, graph
+    add_node_as_entry_node(graph, metadata)
+    return metadata, graph
 
 
 @dataclasses.dataclass(frozen=True)
@@ -82,7 +102,14 @@ class ComputationGraph:
 
     @classmethod
     def from_nodes(self, issues: Issues, nodes: list[Node]) -> "ComputationGraph":
-        entry_node, graph = get_structure_graph(issues, nodes)
+        """Builds the ComputationGraph from the nodes.
+
+        This is done by:
+
+        1. Building the structure graph.
+        2. Building the computation graph by exploring the structure graph layers by layers in a breadth-first search.
+        """
+        entry_node, graph = build_structure_graph(issues, nodes)
         if not graph.is_directed():
             issues.add_error("Final graph is not directed.")
         last_operation_for_node: Mapping[Node, Operation] = {}
@@ -141,7 +168,7 @@ class ComputationGraph:
                                 last_operation_for_node[node], operation
                             )
                             last_operation_for_node[node] = operation
-                elif isinstance(node, (FileObject, FileSet)):
+                elif isinstance(node, FileSet):
                     if node.contained_in:
                         operation = Operation(name=f"filter:{node.uid}")
                         for source in graph.predecessors(node):

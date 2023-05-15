@@ -3,6 +3,7 @@
       "@vocab": "https://schema.org/",
       "sc": "https://schema.org/",
       "ml": "http://mlcommons.org/schema/",
+      "wd": "https://www.wikidata.org/wiki/Q",
       "includes": "ml:includes",
       "recordSet": "ml:RecordSet",
       "field": "ml:Field",
