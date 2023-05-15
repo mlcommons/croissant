@@ -3,7 +3,6 @@ from typing import Mapping
 
 import networkx as nx
 
-from format.src import graphs_utils
 from format.src.errors import Issues
 from format.src.nodes import (
     concatenate_uid,
@@ -158,7 +157,6 @@ class ComputationGraph:
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
 
-        graphs_utils.pretty_print_graph(operations)
         return ComputationGraph(issues=issues, graph=operations)
 
     def check_graph(self):

@@ -3,10 +3,7 @@
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
-    "includes": {
-      "@id": "ml:includes",
-      "@type": "@id"
-    },
+    "includes": "ml:includes",
     "recordSet": "ml:RecordSet",
     "field": "ml:Field",
     "subField": "ml:SubField",
