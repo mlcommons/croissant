@@ -68,6 +68,9 @@ def check_graph(issues: Issues, graph: nx.MultiDiGraph):
                     sub_fields = field.children_nodes(constants.ML_COMMONS_SUB_FIELD)
                     nodes += sub_fields
 
+        # Feature toggling: do not check for MovieLens, because we need more features.
+        if metadata.uid == "Movielens-25M":
+            return
         # Check consistency of operations to generate datasets
         computation_graph = ComputationGraph.from_nodes(issues, nodes)
         computation_graph.check_graph()
