@@ -1,0 +1,51 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator"
+  },
+  "@type": "sc:Dataset",
+  "@language": "en",
+  "name": "simple-pass",
+  "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
+  "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "citation": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
+  "distribution": [
+    {
+      "name": "metadata",
+      "@type": "sc:FileObject",
+      "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
+      "sha256": "0b033707ea49365a5ffdd14615825511",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "images",
+      "@type": "ml:RecordSet",
+      "source": "#{image-files}",
+      "key": "#{hash}",
+      "field": [
+        {
+          "name": "creator_uname",
+          "@type": "ml:Field",
+          "description": "Unique name of photo creator.",
+          "dataType": "sc:Text",
+          "source": "#{metadata/unickname}"
+        }
+      ]
+    }
+  ]
+}

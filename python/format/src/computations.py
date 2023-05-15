@@ -1,10 +1,11 @@
 """computations module."""
 
 import dataclasses
+import hashlib
 from typing import Mapping
 
-import networkx as nx
-
+from absl import logging
+from etils import epath
 from format.src.errors import Issues
 from format.src.nodes import (
     concatenate_uid,
@@ -15,6 +16,14 @@ from format.src.nodes import (
     Node,
     RecordSet,
 )
+import networkx as nx
+import pandas as pd
+import requests
+
+
+def _get_filepath(url: str) -> epath.Path:
+    hashed_url = hashlib.sha256(url.encode()).hexdigest()
+    return epath.Path("/tmp") / f"croissant-{hashed_url}"
 
 
 def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
@@ -113,9 +122,79 @@ def build_structure_graph(
     return metadata, graph
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, repr=False)
 class Operation:
-    name: str
+    """Generic base class to define an operation.
+
+    `@dataclass(frozen=True)` allows having a hashable operation for NetworkX to use
+    operations as nodes of  graphs.
+
+    `@dataclass(repr=False)` allows having a readable stringified `str(operation)`.
+
+    Args:
+        node: The node attached to the operation for the context.
+    """
+
+    node: Node
+
+    def __call__(self):
+        raise NotImplementedError
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.node.uid})"
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class InitOperation(Operation):
+    """Sets up other operations."""
+
+    def __call__(self):
+        logging.info("Setting up generation for dataset: %s", self.node_uid)
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class Download(Operation):
+    """Downloads from a URL to the disk."""
+
+    url: str
+
+    def __call__(self):
+        filepath = _get_filepath(self.url)
+        if filepath.exists():
+            logging.info("File %s is already downloaded.", self.url)
+            return
+        request = requests.get(self.url)  # pylint:disable=missing-timeout
+        with filepath.open("wb") as file:
+            file.write(request.content)
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class ReadCsv(Operation):
+    """Reads from a CSV file and yield lines."""
+
+    url: str
+
+    def __call__(self):
+        filepath = _get_filepath(self.url)
+        with filepath.open("rb") as csvfile:
+            return pd.read_csv(csvfile)
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class ReadField(Operation):
+    """Reads a field from a Pandas DataFrame and applies transformations."""
+
+    def __call__(self, args: pd.Series):
+        _, field = self.node.source.reference
+        return {self.node.name: args[field]}
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class GroupRecordSet(Operation):
+    """Groups fields as a record set."""
+
+    def __call__(self, args):
+        return {self.node.name: args}
 
 
 @dataclasses.dataclass(frozen=True)
@@ -153,33 +232,25 @@ class ComputationGraph:
                             issues.add_error(f'Wrong source in node "{node.uid}"')
                             continue
                         predecessor = next(graph.predecessors(node))
-                        operation = Operation(f"field:{node.name}")
+                        operation = ReadField(node=node)
                         operations.add_edge(
                             last_operation_for_node[predecessor], operation
                         )
-                        if node.source.apply_transform_regex:
-                            new_operation = Operation("transform-regex")
-                            operations.add_edge(operation, new_operation)
-                            operation = new_operation
-                        if node.source.apply_transform_separator:
-                            new_operation = Operation("transform-separator")
-                            operations.add_edge(operation, new_operation)
-                            operation = new_operation
                         last_operation_for_node[node] = operation
                         parent_node = graph.nodes[node].get("parent")
                         if isinstance(parent_node, Field) and isinstance(node, Field):
-                            new_operation = Operation(f"field:{parent_node.uid}")
+                            new_operation = Operation(node=parent_node)
                             operations.add_edge(operation, new_operation)
                             operation = new_operation
                             last_operation_for_node[parent_node] = new_operation
                             parent_node = graph.nodes[parent_node].get("parent")
                         if isinstance(parent_node, RecordSet):
-                            new_operation = Operation(f"record-set:{parent_node.uid}")
+                            new_operation = GroupRecordSet(node=parent_node)
                             operations.add_edge(operation, new_operation)
                             operation = new_operation
                             last_operation_for_node[parent_node] = new_operation
                 elif isinstance(node, FileObject):
-                    operation = Operation(name=f"download:{node.uid}")
+                    operation = Download(node=node, url=node.content_url)
                     operations.add_node(operation)
                     last_operation_for_node[node] = operation
                     for successor in graph.successors(node):
@@ -188,14 +259,21 @@ class ComputationGraph:
                             and isinstance(successor, (FileObject, FileSet))
                             and successor.encoding_format != "application/x-tar"
                         ):
-                            operation = Operation(name=f"extract:{node.uid}")
+                            operation = Operation(node=node)
                             operations.add_edge(
                                 last_operation_for_node[node], operation
                             )
                             last_operation_for_node[node] = operation
+                    if node.encoding_format == "text/csv":
+                        operation = ReadCsv(
+                            node=node,
+                            url=node.content_url,
+                        )
+                        operations.add_edge(last_operation_for_node[node], operation)
+                        last_operation_for_node[node] = operation
                 elif isinstance(node, FileSet):
                     if node.contained_in:
-                        operation = Operation(name=f"filter:{node.uid}")
+                        operation = Operation(node=node)
                         for source in graph.predecessors(node):
                             operations.add_edge(
                                 last_operation_for_node[source], operation
@@ -205,7 +283,7 @@ class ComputationGraph:
 
         # Attach all entry nodes to a single `start` node
         entry_operations = get_entry_nodes(operations)
-        init_operation = Operation("init")
+        init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
 

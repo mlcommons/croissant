@@ -5,7 +5,6 @@ import rdflib
 from rdflib.extras import external_graph_libs
 
 from format.src import constants
-from format.src.computations import ComputationGraph
 from format.src.errors import Issues
 from format.src.nodes import Node
 

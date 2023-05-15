@@ -270,17 +270,18 @@ def validate_name(issues: Issues, name: str):
 
 
 def parse_reference(issues: Issues, source_data: str) -> tuple[str]:
-    source_regex = re.compile(rf"^\#\{{(?:({_ID_REGEX})\/)*({_ID_REGEX})\}}$")
+    source_regex = re.compile(rf"^\#\{{({_ID_REGEX})(?:\/([^\/]+))*\}}$")
     match = source_regex.match(source_data)
     if match is None:
         issues.add_error(
             f"Malformed source data: {source_data}. The source data should be written"
-            " as `#{name}`."
+            " as `#{name}` where name is valid ID."
         )
         return ""
     groups = tuple(group for group in match.groups() if group is not None)
-    for group in groups:
-        validate_name(issues, group)
+    # Only validate the root group, because others can point to external columns
+    # (like in a CSV) with fuzzy names.
+    validate_name(issues, groups[0])
     return groups
 
 
