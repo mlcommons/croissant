@@ -60,5 +60,6 @@ jobs:
         JSON_FILES=$(python -c "import os; from etils import epath; [print(os.fspath(path)) for path in epath.Path('../../datasets').glob('*/metadata.json')]")
         for file in ${JSON_FILES}
         do
+          echo "Validating ${file}..."
           python scripts/validate.py --file ${file}
         done

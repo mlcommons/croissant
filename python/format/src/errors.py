@@ -8,6 +8,25 @@ class ValidationError(Exception):
 
 
 @dataclasses.dataclass
+class Context:
+    """Context to identify an issue.
+
+    This allows to add context to an issue by tracing it back:
+    - within a given dataset,
+    - within a given distribution,
+    - within a given record set,
+    - within a given field,
+    - within a given sub field.
+    """
+
+    dataset_name: str | None = None
+    distribution_name: str | None = None
+    record_set_name: str | None = None
+    field_name: str | None = None
+    sub_field_name: str | None = None
+
+
+@dataclasses.dataclass(frozen=True)
 class Issues:
     """
     Issues during the validation of the format.
@@ -15,14 +34,27 @@ class Issues:
     Issues can either be errors (blocking) or warnings (informative).
     """
 
-    errors: List[str] = dataclasses.field(default_factory=list)
-    warnings: List[str] = dataclasses.field(default_factory=list)
-    _local_context: Union[str, None] = None
+    errors: List[str] = dataclasses.field(default_factory=list, hash=False)
+    warnings: List[str] = dataclasses.field(default_factory=list, hash=False)
+    _local_context: Context = dataclasses.field(default_factory=Context, hash=False)
 
     def _wrap_in_local_context(self, issue: str) -> str:
-        if self._local_context is None:
+        local_context = []
+        if self._local_context.dataset_name is not None:
+            local_context.append(f"dataset({self._local_context.dataset_name})")
+        if self._local_context.distribution_name is not None:
+            local_context.append(
+                f"distribution({self._local_context.distribution_name})"
+            )
+        if self._local_context.record_set_name is not None:
+            local_context.append(f"record_set({self._local_context.record_set_name})")
+        if self._local_context.field_name is not None:
+            local_context.append(f"field({self._local_context.field_name})")
+        if self._local_context.sub_field_name is not None:
+            local_context.append(f"sub_field({self._local_context.sub_field_name})")
+        if not local_context:
             return issue
-        return f"[{self._local_context}] {issue}"
+        return f"[{' > '.join(local_context)}] {issue}"
 
     def add_error(self, error: str):
         """Mutates self.errors with a new error."""
@@ -47,16 +79,40 @@ class Issues:
         return message.strip()
 
     @contextlib.contextmanager
-    def context(self, local_context: str):
+    def context(
+        self,
+        *,
+        dataset_name: str | None = None,
+        distribution_name: str | None = None,
+        record_set_name: str | None = None,
+        field_name: str | None = None,
+        sub_field_name: str | None = None,
+    ):
         """Context manager to add a string context to each error/warning.
 
         Usage:
-            This prints the error "[dataset_abc] xyz":
+            This prints the error "[dataset(abc)] xyz":
             ```
-            with issues.context("dataset_abc"):
+            with issues.context(dataset_id=abc"):
                 issues.add_error("xyz")
             ```
         """
-        self._local_context = local_context
+        _dataset_name = self._local_context.dataset_name
+        _distribution_name = self._local_context.distribution_name
+        _record_set_name = self._local_context.record_set_name
+        _field_name = self._local_context.field_name
+        _sub_field_name = self._local_context.sub_field_name
+
+        self._local_context.dataset_name = dataset_name or _dataset_name
+        self._local_context.distribution_name = distribution_name or _distribution_name
+        self._local_context.record_set_name = record_set_name or _record_set_name
+        self._local_context.field_name = field_name or _field_name
+        self._local_context.sub_field_name = sub_field_name or _sub_field_name
+
         yield
-        self._local_context = None
+
+        self._local_context.dataset_name = _dataset_name
+        self._local_context.distribution_name = _distribution_name
+        self._local_context.record_set_name = _record_set_name
+        self._local_context.field_name = _field_name
+        self._local_context.sub_field_name = _sub_field_name
