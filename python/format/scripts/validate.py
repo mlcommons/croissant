@@ -23,7 +23,7 @@ def main(argv):
     file = FLAGS.file
     try:
         datasets.Dataset(file)
-        print("Done.")
+        logging.info("Done.")
     except errors.ValidationError as exception:
         logging.error(exception)
         sys.exit(1)
