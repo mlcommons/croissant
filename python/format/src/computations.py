@@ -43,6 +43,21 @@ def add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
             graph.add_edge(node, node)
 
 
+def add_edge(
+    issues: Issues,
+    graph: nx.MultiDiGraph,
+    uid_to_node: Mapping[str, Node],
+    uid: str,
+    node: Node,
+):
+    if uid not in uid_to_node:
+        issues.add_error(
+            f'There is a reference to node named "{uid}", but this node doesn\'t exist.'
+        )
+        return
+    graph.add_edge(uid_to_node[uid], node)
+
+
 def build_structure_graph(
     issues: Issues, nodes: list[Node]
 ) -> tuple[Node, nx.MultiDiGraph]:
@@ -65,20 +80,21 @@ def build_structure_graph(
         # Distribution
         if isinstance(node, (FileObject, FileSet)) and node.contained_in:
             for uid in node.contained_in:
-                graph.add_edge(uid_to_node[uid], node)
+                add_edge(issues, graph, uid_to_node, uid, node)
         # Fields
         elif isinstance(node, Field) and node.source:
             reference = node.source.reference
             # The source can be either another field...
             if (uid := concatenate_uid(reference)) in uid_to_node:
-                graph.add_edge(uid_to_node[uid], node)
+                add_edge(issues, graph, uid_to_node, uid, node)
             # ...or the source can be a metadata.
             elif (uid := reference[0]) in uid_to_node:
-                graph.add_edge(uid_to_node[uid], node)
+                add_edge(issues, graph, uid_to_node, uid, node)
+            else:
+                issues.add_error(f'Source refers to an unknown node "{concatenate_uid(reference)}".')
         # Other nodes
         elif node.parent_uid is not None:
-            parent = uid_to_node[node.parent_uid]
-            graph.add_edge(parent, node)
+            add_edge(issues, graph, uid_to_node, node.parent_uid, node)
     # `Metadata` are used as the entry node.
     metadata = next((node for node in nodes if isinstance(node, Metadata)), None)
     if metadata is None:
