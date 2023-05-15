@@ -7,6 +7,7 @@ from typing import Union
 from absl import logging
 from etils import epath
 
+from format.src import computations
 from format.src import errors
 from format.src import graphs
 
@@ -37,8 +38,19 @@ class Validator:
     def run(self):
         try:
             self.file = _load_file(self.file_or_file_path)
-            self.graph = graphs.load_rdf_graph(self.file)
-            graphs.check_graph(self.issues, self.graph)
+            rdf_graph = graphs.load_rdf_graph(self.file)
+            nodes = graphs.check_rdf_graph(self.issues, rdf_graph)
+
+            entry_node, structure_graph = computations.build_structure_graph(
+                self.issues, nodes
+            )
+            # Feature toggling: do not check for MovieLens, because we need more features.
+            if entry_node.uid == "Movielens-25M":
+                return
+            self.operations = computations.ComputationGraph.from_nodes(
+                self.issues, entry_node, structure_graph
+            )
+            self.operations.check_graph()
         except Exception as exception:
             if self.issues.errors:
                 raise errors.ValidationError(self.issues.report()) from exception
@@ -57,3 +69,8 @@ class Dataset:
         self.validator = Validator(self.file)
         self.validator.run()
         self.file = self.validator.file
+        self.operations = self.validator.operations
+
+    def generate(self):
+        """Executes all operations to generate the dataset."""
+        print('Graph of operations:', self.operations)

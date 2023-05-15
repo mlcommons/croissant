@@ -108,6 +108,8 @@ def build_structure_graph(
         issues.add_error("No metadata is defined in the dataset.")
         return None, graph
     add_node_as_entry_node(graph, metadata)
+    if not graph.is_directed():
+        issues.add_error("Structure graph is not directed.")
     return metadata, graph
 
 
@@ -124,7 +126,9 @@ class ComputationGraph:
     graph: nx.MultiDiGraph
 
     @classmethod
-    def from_nodes(cls, issues: Issues, nodes: list[Node]) -> "ComputationGraph":
+    def from_nodes(
+        cls, issues: Issues, metadata: Node, graph: nx.MultiDiGraph
+    ) -> "ComputationGraph":
         """Builds the ComputationGraph from the nodes.
 
         This is done by:
@@ -133,12 +137,9 @@ class ComputationGraph:
         2. Building the computation graph by exploring the structure graph layers by
         layers in a breadth-first search.
         """
-        entry_node, graph = build_structure_graph(issues, nodes)
-        if not graph.is_directed():
-            issues.add_error("Final graph is not directed.")
         last_operation_for_node: Mapping[Node, Operation] = {}
         operations = nx.MultiDiGraph()
-        for layer in nx.bfs_layers(graph, entry_node):
+        for layer in nx.bfs_layers(graph, metadata):
             for node in layer:
                 predecessors = graph.predecessors(node)
                 for predecessor in predecessors:
