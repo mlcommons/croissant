@@ -1,3 +1,5 @@
+"""datasets module."""
+
 import dataclasses
 import json
 from typing import Union
@@ -17,8 +19,8 @@ def _load_file(file: FileOrFilePath) -> dict:
         if not file.exists():
             raise ValueError(f"File {file} does not exist.")
     if isinstance(file, epath.PathLike):
-        with file.open() as file:
-            file = json.load(file)
+        with file.open() as filedescriptor:
+            file = json.load(filedescriptor)
     if not isinstance(file, dict):
         raise ValueError("The file is not a valid JSON-LD, because it's not an object.")
     return file
@@ -26,6 +28,8 @@ def _load_file(file: FileOrFilePath) -> dict:
 
 @dataclasses.dataclass
 class Validator:
+    """Static analysis of the issues in the Croissant file."""
+
     file_or_file_path: FileOrFilePath
     issues: errors.Issues = dataclasses.field(default_factory=errors.Issues)
     file: dict = dataclasses.field(init=False)

@@ -1,3 +1,5 @@
+"""graphs module."""
+
 import networkx as nx
 import rdflib
 from rdflib.extras import external_graph_libs
@@ -26,18 +28,20 @@ def _find_entry_object(issues: Issues, graph: nx.MultiDiGraph) -> rdflib.term.BN
         if indegree == 0 and isinstance(node, rdflib.term.BNode)
     ]
     if len(sources) != 1:
-        issues.add_error(f"Trying to define more than one dataset in the file.")
+        issues.add_error("Trying to define more than one dataset in the file.")
     return sources[0]
 
 
 def check_graph(issues: Issues, graph: nx.MultiDiGraph):
     """Validates the graph and populates issues with errors/warnings.
 
-    We first build a NetworkX graph where edges are subject->object with the attribute `property`.
+    We first build a NetworkX graph where edges are subject->object with the attribute
+    `property`.
 
     Subject/object/property are RDF triples:
         - `subject`is an ID instanciated by RDFLib.
-        - `property` (aka predicate) denotes the relationship (e.g., `https://schema.org/description`).
+        - `property` (aka predicate) denotes the relationship (e.g.,
+        `https://schema.org/description`).
         - `object` is either the value (e.g., the description) or another `subject`.
 
     Refer to https://www.w3.org/TR/rdf-concepts to learn more.

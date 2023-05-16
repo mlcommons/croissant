@@ -1,3 +1,5 @@
+"""computations module."""
+
 import dataclasses
 from typing import Mapping
 
@@ -25,7 +27,7 @@ def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
 
 
 def _check_no_duplicate(issues: Issues, nodes: list[Node]) -> Mapping[str, Node]:
-    """Checks that no node has duplicated UID and returns the hash table `uid`->`Node`."""
+    """Checks that no node has duplicated UID and returns the mapping `uid`->`Node`."""
     uid_to_node: Mapping[str, Node] = {}
     for node in nodes:
         if node.uid in uid_to_node:
@@ -38,9 +40,9 @@ def add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
     """Add `node` as the entry node of the graph by updating `graph` in place."""
     graph.add_node(node, parent=None)
     entry_nodes = get_entry_nodes(graph)
-    for node in entry_nodes:
+    for entry_node in entry_nodes:
         if isinstance(node, (FileObject, FileSet)):
-            graph.add_edge(node, node)
+            graph.add_edge(entry_node, node)
 
 
 def add_edge(
@@ -65,10 +67,13 @@ def build_structure_graph(
 
     The structure graph represents the relationship between the nodes:
 
-    - For ml:Fields without ml:subField, the predecessors in the structure graph are the sources.
-    - For sc:FileSet or sc:FileObject with a `containedIn`, the predecessors in the structure graph are those `containedId`.
-    - For other objects, the predecessors are their parents (i.e., predecessors in the JSON-LD). For example:
-        - For ml:Field with subField, the predecessors are the ml:RecordSet in which they are contained.
+    - For ml:Fields without ml:subField, the predecessors in the structure graph are the
+    sources.
+    - For sc:FileSet or sc:FileObject with a `containedIn`, the predecessors in the
+    structure graph are those `containedId`.
+    - For other objects, the predecessors are their parents (i.e., predecessors in the
+    JSON-LD). For example: for ml:Field with subField, the predecessors are the
+    ml:RecordSet in which they are contained.
     """
     graph = nx.MultiDiGraph()
     uid_to_node = _check_no_duplicate(issues, nodes)
@@ -91,7 +96,9 @@ def build_structure_graph(
             elif (uid := reference[0]) in uid_to_node:
                 add_edge(issues, graph, uid_to_node, uid, node)
             else:
-                issues.add_error(f'Source refers to an unknown node "{concatenate_uid(reference)}".')
+                issues.add_error(
+                    f'Source refers to an unknown node "{concatenate_uid(reference)}".'
+                )
         # Other nodes
         elif node.parent_uid is not None:
             add_edge(issues, graph, uid_to_node, node.parent_uid, node)
@@ -117,13 +124,14 @@ class ComputationGraph:
     graph: nx.MultiDiGraph
 
     @classmethod
-    def from_nodes(self, issues: Issues, nodes: list[Node]) -> "ComputationGraph":
+    def from_nodes(cls, issues: Issues, nodes: list[Node]) -> "ComputationGraph":
         """Builds the ComputationGraph from the nodes.
 
         This is done by:
 
         1. Building the structure graph.
-        2. Building the computation graph by exploring the structure graph layers by layers in a breadth-first search.
+        2. Building the computation graph by exploring the structure graph layers by
+        layers in a breadth-first search.
         """
         entry_node, graph = build_structure_graph(issues, nodes)
         if not graph.is_directed():
@@ -203,6 +211,7 @@ class ComputationGraph:
         return ComputationGraph(issues=issues, graph=operations)
 
     def check_graph(self):
+        """Checks the computation graph for issues."""
         if not self.graph.is_directed():
             self.issues.add_error("Computation graph is not directed.")
         selfloops = [operation.uid for operation, _ in nx.selfloop_edges(self.graph)]

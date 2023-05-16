@@ -1,3 +1,5 @@
+"""errors_test module."""
+
 import textwrap
 
 from format.src import errors
@@ -39,7 +41,7 @@ def test_issues():
     assert issues.warnings == {
         "[dataset(abc)] bar",
         "[dataset(abc) > distribution(xyz)] bar",
-        "bar"
+        "bar",
     }
 
     # Final report

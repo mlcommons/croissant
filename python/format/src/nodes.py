@@ -1,3 +1,5 @@
+"""nodes module."""
+
 import dataclasses
 import re
 from typing import Any, Mapping
@@ -9,7 +11,7 @@ from format.src import constants
 from format.src.errors import Issues
 
 _MAX_ID_LENGTH = 255
-_ID_REGEX = "[a-zA-Z0-9\-_]+"
+_ID_REGEX = "[a-zA-Z0-9\\-_]+"
 
 
 @dataclasses.dataclass(frozen=True)
@@ -30,8 +32,8 @@ class Node:
         graph: The NetworkX RDF graph to validate.
         node: The node in the graph to convert.
         name: The name of the node.
-        parent_uid: UID of the parent node if it exists. This is the parent in the JSON-LD
-            structure, whereas `sources` are the parents in the resource tree.
+        parent_uid: UID of the parent node if it exists. This is the parent in the
+            JSON-LD structure, whereas `sources` are the parents in the resource tree.
 
     Usage:
 
@@ -45,7 +47,9 @@ class Node:
     has_citation = "https://schema.org/citation" in node
 
     # Can assert features on the node. E.g.:
-    node.assert_has_exclusive_properties([[""https://schema.org/sha256"", "https://schema.org/md5"]])
+    node.assert_has_exclusive_properties(
+        [[""https://schema.org/sha256"", "https://schema.org/md5"]]
+    )
     ```
     """
 
@@ -163,7 +167,8 @@ class Node:
     def sources(self) -> list[tuple[str]]:
         """Retrieves sources.
 
-        Sources can be contained either in `source` (for Fields and FileObjects) or in `contained_in` (for FileSets).
+        Sources can be contained either in `source` (for Fields and FileObjects) or in
+        `contained_in` (for FileSets).
         """
         if isinstance(self, (Field, FileObject)) and self.source is not None:
             return [parse_reference(self.issues, self.source.reference)]
@@ -176,6 +181,7 @@ class Node:
     def children_nodes(self, expected_property: str) -> list["Node"]:
         """Finds all children objects/nodes."""
         nodes = []
+        # pylint:disable=invalid-name
         for _, _object, _property in self._edges_from_node:
             if (
                 isinstance(_object, rdflib.term.BNode)
@@ -189,9 +195,13 @@ class Node:
                         parent_uid=self.uid,
                     )
                 )
-        if not nodes and expected_property in [constants.ML_COMMONS_RECORD_SET, constants.SCHEMA_ORG_DISTRIBUTION]:
+        if not nodes and expected_property in [
+            constants.ML_COMMONS_RECORD_SET,
+            constants.SCHEMA_ORG_DISTRIBUTION,
+        ]:
             self.issues.add_warning(
-                f'The current dataset doesn\'t declare any node of type: "{expected_property}"'
+                "The current dataset doesn't declare any node of type:"
+                f' "{expected_property}"'
             )
         return nodes
 
@@ -199,37 +209,49 @@ class Node:
         """Checks a node in the graph for existing properties with constraints.
 
         Args:
-            mandatory_properties: A list of mandatory properties for the current node. If the node doesn't have one, it triggers an error.
+            mandatory_properties: A list of mandatory properties for the current node.
+                If the node doesn't have one, it triggers an error.
         """
         for mandatory_property in mandatory_properties:
             value = getattr(self, mandatory_property)
             if not value:
-                error = f'Property "{constants.FROM_CROISSANT.get(mandatory_property)}" is mandatory, but does not exist.'
+                error = (
+                    f'Property "{constants.FROM_CROISSANT.get(mandatory_property)}" is'
+                    " mandatory, but does not exist."
+                )
                 self.issues.add_error(error)
 
     def assert_has_optional_properties(self, *optional_properties: list[str]):
         """Checks a node in the graph for existing properties with constraints.
 
         Args:
-            optional_properties: A list of optional properties for the current node. If the node doesn't have one, it triggers a warning.
+            optional_properties: A list of optional properties for the current node. If
+                the node doesn't have one, it triggers a warning.
         """
         for optional_property in optional_properties:
             value = getattr(self, optional_property)
             if not value:
-                error = f'Property "{constants.FROM_CROISSANT.get(optional_property)}" is recommended, but does not exist.'
+                error = (
+                    f'Property "{constants.FROM_CROISSANT.get(optional_property)}" is'
+                    " recommended, but does not exist."
+                )
                 self.issues.add_warning(error)
 
     def assert_has_exclusive_properties(self, *exclusive_properties: list[list[str]]):
         """Checks a node in the graph for existing properties with constraints.
 
         Args:
-            exclusive_properties: A list of list of exclusive properties: the current node should have at least one.
+            exclusive_properties: A list of list of exclusive properties: the current
+                node should have at least one.
         """
         for possible_exclusive_properties in exclusive_properties:
             if not _there_exists_at_least_one_property(
                 self, possible_exclusive_properties
             ):
-                error = f"At least one of these properties should be defined: {possible_exclusive_properties}."
+                error = (
+                    "At least one of these properties should be defined:"
+                    f" {possible_exclusive_properties}."
+                )
                 self.issues.add_error(error)
 
 
@@ -252,7 +274,8 @@ def parse_reference(issues: Issues, source_data: str) -> tuple[str]:
     match = source_regex.match(source_data)
     if match is None:
         issues.add_error(
-            f"Malformed source data: {source_data}. The source data should be written as `#{{name}}`."
+            f"Malformed source data: {source_data}. The source data should be written"
+            " as `#{name}`."
         )
         return ""
     groups = tuple(group for group in match.groups() if group is not None)
@@ -408,36 +431,38 @@ def _extract_properties(
 ) -> Mapping[str, Any]:
     """Extracts properties RDF->Python nodes.
 
-    Note: we could find a better way to extract information from the RDF graph."""
+    Note: we could find a better way to extract information from the RDF graph.
+    """
     properties: Mapping[str, str | tuple[str]] = {}
-    for _, value, property in graph.edges(node, keys=True):
-        if isinstance(value, rdflib.term.BNode):
+    # pylint:disable=invalid-name
+    for _, _object, _property in graph.edges(node, keys=True):
+        if isinstance(_object, rdflib.term.BNode):
             # `source` needs a special treatment when it is a dict.
-            if property == constants.ML_COMMONS_SOURCE:
-                source = _extract_properties(issues, graph, value)
+            if _property == constants.ML_COMMONS_SOURCE:
+                source = _extract_properties(issues, graph, _object)
                 properties["source"] = source
-            if property == constants.ML_COMMONS_SUB_FIELD:
+            if _property == constants.ML_COMMONS_SUB_FIELD:
                 properties["has_sub_fields"] = True
             continue
 
         # Normalize values to strings.
-        if isinstance(value, rdflib.term.Literal):
-            value = str(value)
+        if isinstance(_object, rdflib.term.Literal):
+            _object = str(_object)
 
         # Normalize properties to Croissant values if it exists.
-        property = constants.TO_CROISSANT.get(property, property)
+        _property = constants.TO_CROISSANT.get(_property, _property)
 
         # Add `property` to existing properties.
-        if property not in properties:
-            properties[property] = value
-        elif isinstance(properties[property], tuple):
+        if _property not in properties:
+            properties[_property] = _object
+        elif isinstance(properties[_property], tuple):
             # Use tuple, because we need immutable types in order
             # for the objects to be hashable and used by NetworkX.
-            properties[property] = properties[property] + (value,)
+            properties[_property] = properties[_property] + (_object,)
         else:
-            # In the loop, we just found out that there are several values for the
-            # same property. `self.properties[property]` should be transformed to a tuple.
-            properties[property] = (properties[property], value)
+            # In the loop, we just found out that there are several values for the same
+            # property. `self.properties[property]` should be transformed to a tuple.
+            properties[_property] = (properties[_property], _object)
 
     # Normalize `source`.
     if (source := properties.get("source")) is not None:
