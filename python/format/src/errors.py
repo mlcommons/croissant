@@ -1,6 +1,5 @@
 import contextlib
 import dataclasses
-from typing import List, Union
 
 
 class ValidationError(Exception):
@@ -32,10 +31,12 @@ class Issues:
     Issues during the validation of the format.
 
     Issues can either be errors (blocking) or warnings (informative).
+
+    We use sets to represent errors and warnings to avoid repeated strings.
     """
 
-    errors: List[str] = dataclasses.field(default_factory=list, hash=False)
-    warnings: List[str] = dataclasses.field(default_factory=list, hash=False)
+    errors: set[str] = dataclasses.field(default_factory=set, hash=False)
+    warnings: set[str] = dataclasses.field(default_factory=set, hash=False)
     _local_context: Context = dataclasses.field(default_factory=Context, hash=False)
 
     def _wrap_in_local_context(self, issue: str) -> str:
@@ -58,18 +59,19 @@ class Issues:
 
     def add_error(self, error: str):
         """Mutates self.errors with a new error."""
-        self.errors.append(self._wrap_in_local_context(error))
+        self.errors.add(self._wrap_in_local_context(error))
 
     def add_warning(self, warning: str):
         """Mutates self.warnings with a new warning."""
-        self.warnings.append(self._wrap_in_local_context(warning))
+        self.warnings.add(self._wrap_in_local_context(warning))
 
     def report(self) -> str:
         """Reports errors and warnings in a string."""
         message = ""
+        # Sort before printing because sets are not ordered.
         for issues, issue_type in [
-            (self.errors, "error(s)"),
-            (self.warnings, "warning(s)"),
+            (sorted(self.errors), "error(s)"),
+            (sorted(self.warnings), "warning(s)"),
         ]:
             num_issues = len(issues)
             if num_issues:

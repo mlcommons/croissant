@@ -17,6 +17,10 @@ import pytest
             "metadata_bad_type.json",
             'Node should have an attribute `"@type" in',
         ],
+        [
+            "metadata_bad_type.json",
+            'The current dataset doesn\'t declare any node of type: "http://mlcommons.org/schema/RecordSet"',
+        ],
         # Distribution.
         [
             "distribution_missing_property_content_url.json",

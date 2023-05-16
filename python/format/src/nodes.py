@@ -189,6 +189,10 @@ class Node:
                         parent_uid=self.uid,
                     )
                 )
+        if not nodes and expected_property in [constants.ML_COMMONS_RECORD_SET, constants.SCHEMA_ORG_DISTRIBUTION]:
+            self.issues.add_warning(
+                f'The current dataset doesn\'t declare any node of type: "{expected_property}"'
+            )
         return nodes
 
     def assert_has_mandatory_properties(self, *mandatory_properties: list[str]):
