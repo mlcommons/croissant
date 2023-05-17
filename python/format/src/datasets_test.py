@@ -48,6 +48,14 @@ import pytest
             "mlfield_bad_type.json",
             'Node should have an attribute `"@type" in',
         ],
+        [
+            "mlfield_bad_source.json",
+            "Malformed source data: #{THISDOESNOTEXIST.field}.",
+        ],
+        [
+            "distribution_bad_contained_in.json",
+            'There is a reference to node named "THISDOESNOTEXIST", but this node doesn\'t exist.',
+        ],
     ],
 )
 def test_check_graph(filename, error):
