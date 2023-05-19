@@ -30,6 +30,15 @@ import pytest
             "distribution_bad_type.json",
             'Node should have an attribute `"@type" in',
         ],
+        [
+            "distribution_bad_contained_in.json",
+            'There is a reference to node named "THISDOESNOTEXIST", but this node doesn\'t exist.',
+        ],
+        [
+            # When the name misses, the context should still appear without the name.
+            "distribution_missing_name.json",
+            '\[dataset\(mydataset\) \> distribution\(\)\] Property "https://schema.org/name" is mandatory',
+        ],
         # Record set.
         [
             "recordset_missing_property_name.json",
@@ -51,10 +60,6 @@ import pytest
         [
             "mlfield_bad_source.json",
             "Malformed source data: #{THISDOESNOTEXIST.field}.",
-        ],
-        [
-            "distribution_bad_contained_in.json",
-            'There is a reference to node named "THISDOESNOTEXIST", but this node doesn\'t exist.',
         ],
     ],
 )

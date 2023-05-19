@@ -105,11 +105,11 @@ class Issues:
         _field_name = self._local_context.field_name
         _sub_field_name = self._local_context.sub_field_name
 
-        self._local_context.dataset_name = dataset_name or _dataset_name
-        self._local_context.distribution_name = distribution_name or _distribution_name
-        self._local_context.record_set_name = record_set_name or _record_set_name
-        self._local_context.field_name = field_name or _field_name
-        self._local_context.sub_field_name = sub_field_name or _sub_field_name
+        self._local_context.dataset_name = dataset_name if dataset_name is not None else _dataset_name
+        self._local_context.distribution_name = distribution_name if distribution_name is not None else _distribution_name
+        self._local_context.record_set_name = record_set_name if record_set_name is not None else _record_set_name
+        self._local_context.field_name = field_name if field_name is not None else _field_name
+        self._local_context.sub_field_name = sub_field_name if sub_field_name is not None else _sub_field_name
 
         yield
 
