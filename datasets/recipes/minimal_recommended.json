@@ -1,0 +1,49 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field"
+  },
+  "@type": "sc:Dataset",
+  "name": "Minimal example with recommended fields",
+  "description": "This is a minimal example, including the required and the recommended fields.",
+  "url": "https://example.com/dataset/minimal-recommended/about",
+  "citation": "@article{nash51, author = \"Nash, John\", title  = \"Non-cooperative Games\", journal = \"Annals of Mathematics\", year = 1951, volume = \"54\", number = \"2\", pages  = \"286--295\"}",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "examples-table",
+      "contentUrl": "https://example.com/dataset/minimal-recommended/data.csv",
+      "sha256": "0b033707ea49365a5ffdd14615825511",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "examples",
+      "@type": "ml:RecordSet",
+      "source": "#{examples-table}",
+      "key": "#{hash}",
+      "description": "Describing the columns of the table.",
+      "field": [
+        {
+          "name": "name",
+          "@type": "ml:Field",
+          "dataType": "sc:Text",
+          "description": "The first column contains the name.",
+          "references": "#{examples-table/name}"
+        },
+        {
+          "name": "age",
+          "@type": "ml:Field",
+          "dataType": "sc:Number",
+          "description": "The second column contains the age.",
+          "references": "#{examples-table/age}"
+        }
+      ]
+    }
+  ]
+}
