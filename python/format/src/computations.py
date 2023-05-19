@@ -1,8 +1,13 @@
 """computations module."""
 
+from collections.abc import Callable, Mapping
 import dataclasses
+import fnmatch
 import hashlib
-from typing import Mapping
+import os
+import re
+import tarfile
+from typing import Any
 
 from absl import logging
 from etils import epath
@@ -15,15 +20,31 @@ from format.src.nodes import (
     Metadata,
     Node,
     RecordSet,
+    Source,
 )
 import networkx as nx
 import pandas as pd
 import requests
+import tqdm
+
+_CROISSANT_CACHE = epath.Path("/tmp/croissant")
+_DOWNLOAD_PATH = _CROISSANT_CACHE / "download"
+_EXTRACT_PATH = _CROISSANT_CACHE / "extract"
+_DOWNLOAD_CHUNK_SIZE = 1024
 
 
-def _get_filepath(url: str) -> epath.Path:
-    hashed_url = hashlib.sha256(url.encode()).hexdigest()
-    return epath.Path("/tmp") / f"croissant-{hashed_url}"
+def _get_hash(url: str) -> str:
+    return hashlib.sha256(url.encode()).hexdigest()
+
+
+def _tmp_column_name(original_name: str) -> str:
+    return f"{original_name}_{_get_hash(original_name)}"
+
+
+def _get_download_filepath(url: str) -> epath.Path:
+    hashed_url = _get_hash(url)
+    _DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
+    return _DOWNLOAD_PATH / f"croissant-{hashed_url}"
 
 
 def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
@@ -96,18 +117,24 @@ def build_structure_graph(
             for uid in node.contained_in:
                 add_edge(issues, graph, uid_to_node, uid, node)
         # Fields
-        elif isinstance(node, Field) and node.source:
-            reference = node.source.reference
-            # The source can be either another field...
-            if (uid := concatenate_uid(reference)) in uid_to_node:
-                add_edge(issues, graph, uid_to_node, uid, node)
-            # ...or the source can be a metadata.
-            elif (uid := reference[0]) in uid_to_node:
-                add_edge(issues, graph, uid_to_node, uid, node)
-            else:
-                issues.add_error(
-                    f'Source refers to an unknown node "{concatenate_uid(reference)}".'
-                )
+        elif isinstance(node, Field):
+            references = []
+            if node.source is not None:
+                references.append(node.source.reference)
+            if node.references is not None:
+                references.append(node.references.reference)
+            for reference in references:
+                # The source can be either another field...
+                if (uid := concatenate_uid(reference)) in uid_to_node:
+                    add_edge(issues, graph, uid_to_node, uid, node)
+                # ...or the source can be a metadata.
+                elif (uid := reference[0]) in uid_to_node:
+                    add_edge(issues, graph, uid_to_node, uid, node)
+                else:
+                    issues.add_error(
+                        "Source refers to an unknown node"
+                        f' "{concatenate_uid(reference)}".'
+                    )
         # Other nodes
         elif node.parent_uid is not None:
             add_edge(issues, graph, uid_to_node, node.parent_uid, node)
@@ -133,6 +160,8 @@ class Operation:
 
     Args:
         node: The node attached to the operation for the context.
+        output: The result of the operation when it is executed (as returned by
+            __call__).
     """
 
     node: Node
@@ -144,6 +173,16 @@ class Operation:
         return f"{type(self).__name__}({self.node.uid})"
 
 
+class FileOperation(Operation):
+    def __call__(self):
+        raise NotImplementedError
+
+
+class LineOperation(Operation):
+    def __call__(self):
+        raise NotImplementedError
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class InitOperation(Operation):
     """Sets up other operations."""
@@ -153,48 +192,143 @@ class InitOperation(Operation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Download(Operation):
+class Download(FileOperation):
     """Downloads from a URL to the disk."""
 
     url: str
 
     def __call__(self):
-        filepath = _get_filepath(self.url)
-        if filepath.exists():
-            logging.info("File %s is already downloaded.", self.url)
-            return
-        request = requests.get(self.url)  # pylint:disable=missing-timeout
-        with filepath.open("wb") as file:
-            file.write(request.content)
+        filepath = _get_download_filepath(self.url)
+        if not filepath.exists():
+            response = requests.get(self.url, stream=True, timeout=10)
+            total = int(response.headers.get("Content-Length", 0))
+            with filepath.open("wb") as file, tqdm.tqdm(
+                desc=f"Downloading {self.url}...",
+                total=total,
+                unit="iB",
+                unit_scale=True,
+                unit_divisor=1024,
+            ) as bar:
+                for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
+                    size = file.write(data)
+                    bar.update(size)
+        logging.info("File %s is downloaded to %s.", self.url, os.fspath(filepath))
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadCsv(Operation):
+class Untar(FileOperation):
+    """Un-tars "application/x-tar" and yields filtered lines."""
+
+    node: FileObject
+    target_node: FileObject | FileSet
+
+    def __call__(self):
+        includes = fnmatch.translate(self.target_node.includes)
+        url = self.node.content_url
+        archive_file = _get_download_filepath(url)
+        hashed_url = _get_hash(url)
+        extract_dir = _EXTRACT_PATH / hashed_url
+        if not extract_dir.exists():
+            with tarfile.open(archive_file) as tar:
+                tar.extractall(extract_dir)
+        logging.info(
+            "Found directory where data is extracted: %s.", os.fspath(extract_dir)
+        )
+        included_files = []
+        for basepath, _, files in os.walk(extract_dir):
+            for file in files:
+                if re.match(includes, os.fspath(file)):
+                    included_files.append(epath.Path(basepath) / file)
+        return pd.DataFrame(
+            {
+                "filepath": included_files,
+                "filename": [file.name for file in included_files],
+            }
+        )
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class ReadCsv(FileOperation):
     """Reads from a CSV file and yield lines."""
 
     url: str
 
     def __call__(self):
-        filepath = _get_filepath(self.url)
+        filepath = _get_download_filepath(self.url)
         with filepath.open("rb") as csvfile:
             return pd.read_csv(csvfile)
 
 
+def apply_transform_fn(value: str, source: Source | None = None) -> Callable[..., Any]:
+    if source is None:
+        return value
+    if source.apply_transform_regex is not None:
+        source_regex = re.compile(source.apply_transform_regex)
+        match = source_regex.match(value)
+        for group in match.groups():
+            if group is not None:
+                return group
+    return value
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadField(Operation):
+class Join(LineOperation):
+    """Joins pd.DataFrames."""
+
+    def __call__(
+        self, *args: pd.Series, left: Source | None = None, right: Source | None = None
+    ) -> pd.Series:
+        if len(args) == 1:
+            return args[0]
+        elif len(args) == 2:
+            df_left, df_right = args
+            assert (
+                len(left.reference) == 2
+            ), "JOIN operation does not define a column name."
+            left_key = left.reference[1]
+            right_key = right.reference[1]
+            new_left_key = _tmp_column_name(left.reference[1])
+            assert left_key in df_left.columns, (
+                f'Column "{left_key}" does not exist in node "{left.reference[0]}".'
+                f" Existing columns: {df_left.columns}"
+            )
+            assert right_key in df_right.columns, (
+                f'Column "{right_key}" does not exist in node "{right.reference[0]}".'
+                f" Existing columns: {df_right.columns}"
+            )
+            df_left[new_left_key] = df_left[left_key].transform(
+                apply_transform_fn, source=left
+            )
+            return df_left.set_index(new_left_key).join(df_right.set_index(right_key))
+        else:
+            raise NotImplementedError(
+                f"Unsupported: Trying to joing {len(args)} pd.DataFrames."
+            )
+
+
+@dataclasses.dataclass(frozen=True, repr=False)
+class ReadField(LineOperation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
-    def __call__(self, args: pd.Series):
-        _, field = self.node.source.reference
-        return {self.node.name: args[field]}
+    node: Field
+
+    def __call__(self, original: pd.Series) -> Mapping[str, Any]:
+        assert isinstance(self.node, Field)
+        field = self.node.source.reference[-1]
+        assert field in original, (
+            f'Field "{field}" does not exist in source "{self.node.parent_uid}".'
+            f" Existing fields: {original.keys()}"
+        )
+        return {self.node.name: original[field]}
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class GroupRecordSet(Operation):
+class GroupRecordSet(LineOperation):
     """Groups fields as a record set."""
 
-    def __call__(self, args):
-        return {self.node.name: args}
+    def __call__(self, *fields: pd.Series):
+        concatenated_series = {k: v for field in fields for k, v in field.items()}
+        return {self.node.name: concatenated_series}
 
 
 @dataclasses.dataclass(frozen=True)
@@ -218,75 +352,74 @@ class ComputationGraph:
         """
         last_operation_for_node: Mapping[Node, Operation] = {}
         operations = nx.MultiDiGraph()
-        for layer in nx.bfs_layers(graph, metadata):
-            for node in layer:
-                predecessors = graph.predecessors(node)
-                for predecessor in predecessors:
-                    if predecessor in last_operation_for_node:
-                        last_operation_for_node[node] = last_operation_for_node[
-                            predecessor
-                        ]
-                if isinstance(node, Field):
-                    if node.source and not node.has_sub_fields:
-                        if len(node.source.reference) != 2:
-                            issues.add_error(f'Wrong source in node "{node.uid}"')
-                            continue
-                        predecessor = next(graph.predecessors(node))
-                        operation = ReadField(node=node)
-                        operations.add_edge(
-                            last_operation_for_node[predecessor], operation
-                        )
-                        last_operation_for_node[node] = operation
-                        parent_node = graph.nodes[node].get("parent")
-                        if isinstance(parent_node, Field) and isinstance(node, Field):
-                            new_operation = Operation(node=parent_node)
-                            operations.add_edge(operation, new_operation)
-                            operation = new_operation
-                            last_operation_for_node[parent_node] = new_operation
-                            parent_node = graph.nodes[parent_node].get("parent")
-                        if isinstance(parent_node, RecordSet):
-                            new_operation = GroupRecordSet(node=parent_node)
-                            operations.add_edge(operation, new_operation)
-                            operation = new_operation
-                            last_operation_for_node[parent_node] = new_operation
-                elif isinstance(node, FileObject):
-                    operation = Download(node=node, url=node.content_url)
-                    operations.add_node(operation)
+        for node in nx.topological_sort(graph):
+            predecessors = graph.predecessors(node)
+            for predecessor in predecessors:
+                if predecessor in last_operation_for_node:
+                    last_operation_for_node[node] = last_operation_for_node[
+                        predecessor
+                    ]
+            if isinstance(node, Field):
+                if node.source and not node.has_sub_fields:
+                    parent_node = graph.nodes[node].get("parent")
+                    if node.references is not None:
+                        operation = Join(node=parent_node)
+                        # `Join()` takes left=Source and right=Source as kwargs.
+                        kwargs = {
+                            "left": node.source,
+                            "right": node.references,
+                        }
+                        operations.add_node(operation, kwargs=kwargs)
+                        for predecessor in graph.predecessors(node):
+                            operations.add_edge(
+                                last_operation_for_node[predecessor], operation
+                            )
                     last_operation_for_node[node] = operation
-                    for successor in graph.successors(node):
-                        if (
-                            node.encoding_format == "application/x-tar"
-                            and isinstance(successor, (FileObject, FileSet))
-                            and successor.encoding_format != "application/x-tar"
-                        ):
-                            operation = Operation(node=node)
-                            operations.add_edge(
-                                last_operation_for_node[node], operation
-                            )
-                            last_operation_for_node[node] = operation
-                    if node.encoding_format == "text/csv":
-                        operation = ReadCsv(
-                            node=node,
-                            url=node.content_url,
+                    if len(node.source.reference) != 2:
+                        issues.add_error(f'Wrong source in node "{node.uid}"')
+                        continue
+                    operation = ReadField(node=node)
+                    operations.add_edge(last_operation_for_node[node], operation)
+                    last_operation_for_node[node] = operation
+                    if isinstance(parent_node, Field) and isinstance(node, Field):
+                        new_operation = Operation(node=parent_node)
+                        operations.add_edge(operation, new_operation)
+                        operation = new_operation
+                        last_operation_for_node[parent_node] = new_operation
+                        parent_node = graph.nodes[parent_node].get("parent")
+                    if isinstance(parent_node, RecordSet):
+                        new_operation = GroupRecordSet(node=parent_node)
+                        operations.add_edge(operation, new_operation)
+                        operation = new_operation
+                        last_operation_for_node[parent_node] = new_operation
+            elif isinstance(node, FileObject):
+                operation = Download(node=node, url=node.content_url)
+                operations.add_node(operation)
+                last_operation_for_node[node] = operation
+                for successor in graph.successors(node):
+                    if (
+                        node.encoding_format == "application/x-tar"
+                        and isinstance(successor, (FileObject, FileSet))
+                        and successor.encoding_format != "application/x-tar"
+                    ):
+                        operation = Untar(node=node, target_node=successor)
+                        operations.add_edge(
+                            last_operation_for_node[node], operation
                         )
-                        operations.add_edge(last_operation_for_node[node], operation)
                         last_operation_for_node[node] = operation
-                elif isinstance(node, FileSet):
-                    if node.contained_in:
-                        operation = Operation(node=node)
-                        for source in graph.predecessors(node):
-                            operations.add_edge(
-                                last_operation_for_node[source], operation
-                            )
-                            last_operation_for_node[source] = operation
-                        last_operation_for_node[node] = operation
+                if node.encoding_format == "text/csv":
+                    operation = ReadCsv(
+                        node=node,
+                        url=node.content_url,
+                    )
+                    operations.add_edge(last_operation_for_node[node], operation)
+                    last_operation_for_node[node] = operation
 
         # Attach all entry nodes to a single `start` node
         entry_operations = get_entry_nodes(operations)
         init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
-
         return ComputationGraph(issues=issues, graph=operations)
 
     def check_graph(self):

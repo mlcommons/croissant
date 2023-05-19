@@ -1,8 +1,9 @@
 """datasets module."""
 
+from collections.abc import Mapping
 import dataclasses
 import json
-from typing import Union
+from typing import Any, Union
 
 from absl import logging
 from etils import epath
@@ -12,10 +13,11 @@ from format.src.computations import (
     build_structure_graph,
     ComputationGraph,
     get_entry_nodes,
+    GroupRecordSet,
     Operation,
+    ReadField,
 )
 import networkx as nx
-import pandas as pd
 
 FileOrFilePath = Union[str, epath.PathLike, dict]
 
@@ -86,26 +88,47 @@ class Dataset:
         self.operations = self.validator.operations
 
     def __iter__(self):
-        """Executes all operations, runs dynamic analysis and yields examples."""
+        """Executes all operations, runs dynamic analysis and yields examples.
+
+        Warning: at the moment, this method yields examples from the first explored
+        record_set.
+        """
         entry_nodes = get_entry_nodes(self.operations.graph)
         visited = set()
+        results: Mapping[str, Any] = {}
+        return self.execute_operations(entry_nodes[0], visited, results)
+
+    def execute_operations(
+        self, entry_node: Operation, visited: set[Operation], results: Mapping[str, Any]
+    ):
         operations = self.list_operations(
-            start=entry_nodes[0], visited=visited, skip_visited=False
+            start=entry_node, visited=visited, skip_visited=False
         )
         for operation in operations:
             logging.info('Executing "%s"', operation)
-            result = operation()
+            kwargs = self.operations.graph.nodes[operation].get("kwargs", {})
+            previous_results = [
+                results[previous_operation]
+                for previous_operation in self.operations.graph.predecessors(operation)
+                if previous_operation in results
+                # Filter out results that yielded `None`.
+                and results[previous_operation] is not None
+            ]
+            if isinstance(operation, GroupRecordSet):
+                yield operation(*previous_results, **kwargs)
+            elif isinstance(operation, ReadField):
+                assert len(previous_results) == 1, (
+                    f'"{operation}" should have one and only one predecessor. Got:'
+                    f" {len(previous_results)}."
+                )
+                previous_result = previous_results[0]
+                for _, line in previous_result.iterrows():
+                    result = operation(line, **kwargs)
+                    yield result
+                    results[operation] = result
+            else:
+                results[operation] = operation(*previous_results, **kwargs)
             visited.add(operation)
-            if isinstance(result, pd.DataFrame):
-                for _, line in result.iterrows():
-                    line_operations = self.list_operations(
-                        start=operation, visited=visited, skip_visited=True
-                    )
-                    for line_operation in line_operations:
-                        logging.info('Executing "%s"', line_operation)
-                        line = line_operation(line)
-                        visited.add(line_operation)
-                    yield line
 
     def list_operations(
         self,

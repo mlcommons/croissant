@@ -19,6 +19,7 @@ dependencies = [
   "pandas",
   "rdflib",
   "requests",
+  "tqdm",
 ]
 readme = "README.md"
 
