@@ -1,3 +1,5 @@
+"""nodes_test module."""
+
 import dataclasses
 import json
 
@@ -19,6 +21,7 @@ def test_there_exists_at_least_one_property():
         property2: str
 
     node = Node(property1="property1", property2="property2")
+    # pylint:disable=protected-access
     assert nodes._there_exists_at_least_one_property(node, ["property0", "property1"])
     assert not nodes._there_exists_at_least_one_property(node, [])
     assert not nodes._there_exists_at_least_one_property(node, ["property0"])

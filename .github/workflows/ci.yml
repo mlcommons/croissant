@@ -34,6 +34,9 @@ jobs:
     - name: PyTest
       run: pytest .
 
+    - name: PyLint
+      run: pylint **/*.py
+
   datasets-test:
     name: Datasets / JSON-LD Tests / Python 3.11
     runs-on: ubuntu-latest

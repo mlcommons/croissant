@@ -1,3 +1,5 @@
+"""graphs_utils module."""
+
 import time
 
 import networkx as nx

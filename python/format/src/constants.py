@@ -1,3 +1,5 @@
+"""constants module."""
+
 import rdflib
 
 # MLCommons-defined URIs (still draft).

@@ -1,3 +1,5 @@
+"""validate script."""
+
 import sys
 
 from absl import app

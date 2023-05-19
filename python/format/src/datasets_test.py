@@ -1,3 +1,5 @@
+"""datasets_test module."""
+
 from etils import epath
 from format.src import datasets
 from format.src import errors
@@ -19,12 +21,18 @@ import pytest
         ],
         [
             "metadata_bad_type.json",
-            'The current dataset doesn\'t declare any node of type: "http://mlcommons.org/schema/RecordSet"',
+            (
+                "The current dataset doesn't declare any node of type:"
+                ' "http://mlcommons.org/schema/RecordSet"'
+            ),
         ],
         # Distribution.
         [
             "distribution_missing_property_content_url.json",
-            'Property "https://schema.org/contentUrl" is mandatory, but does not exist.',
+            (
+                'Property "https://schema.org/contentUrl" is mandatory, but does not '
+                "exist."
+            ),
         ],
         [
             "distribution_bad_type.json",
@@ -32,12 +40,18 @@ import pytest
         ],
         [
             "distribution_bad_contained_in.json",
-            'There is a reference to node named "THISDOESNOTEXIST", but this node doesn\'t exist.',
+            (
+                'There is a reference to node named "THISDOESNOTEXIST", but this '
+                "node doesn't exist."
+            ),
         ],
         [
             # When the name misses, the context should still appear without the name.
             "distribution_missing_name.json",
-            '\[dataset\(mydataset\) \> distribution\(\)\] Property "https://schema.org/name" is mandatory',
+            (
+                r"\[dataset\(mydataset\) \> distribution\(\)\] Property "
+                r'"https://schema.org/name" is mandatory'
+            ),
         ],
         # Record set.
         [
