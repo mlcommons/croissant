@@ -5,7 +5,6 @@ import rdflib
 from rdflib.extras import external_graph_libs
 
 from format.src import constants
-from format.src.computations import ComputationGraph
 from format.src.errors import Issues
 from format.src.nodes import Node
 
@@ -32,7 +31,7 @@ def _find_entry_object(issues: Issues, graph: nx.MultiDiGraph) -> rdflib.term.BN
     return sources[0]
 
 
-def check_graph(issues: Issues, graph: nx.MultiDiGraph):
+def check_rdf_graph(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     """Validates the graph and populates issues with errors/warnings.
 
     We first build a NetworkX graph where edges are subject->object with the attribute
@@ -73,10 +72,4 @@ def check_graph(issues: Issues, graph: nx.MultiDiGraph):
                 for field in fields:
                     sub_fields = field.children_nodes(constants.ML_COMMONS_SUB_FIELD)
                     nodes += sub_fields
-
-        # Feature toggling: do not check for MovieLens, because we need more features.
-        if metadata.uid == "Movielens-25M":
-            return
-        # Check consistency of operations to generate datasets
-        computation_graph = ComputationGraph.from_nodes(issues, nodes)
-        computation_graph.check_graph()
+    return nodes

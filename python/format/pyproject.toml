@@ -12,7 +12,14 @@ authors = [
   { name = "Pierre Ruyssen" },
   { name = "Prabhant Singh" },
 ]
-dependencies = ["absl-py", "etils[epath]", "networkx", "rdflib"]
+dependencies = [
+  "absl-py",
+  "etils[epath]",
+  "networkx",
+  "pandas",
+  "rdflib",
+  "requests",
+]
 readme = "README.md"
 
 [project.optional-dependencies]
