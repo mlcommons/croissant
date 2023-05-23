@@ -57,19 +57,19 @@ def check_rdf_graph(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     with issues.context(dataset_name=dataset_name, distribution_name=""):
         distributions = metadata.children_nodes(constants.SCHEMA_ORG_DISTRIBUTION)
         nodes += distributions
-        record_sets = metadata.children_nodes(constants.ML_COMMONS_RECORD_SET)
-        nodes += record_sets
-        for record_set in record_sets:
-            with issues.context(
-                dataset_name=dataset_name,
-                record_set_name=record_set.name,
-                field_name="",
-            ):
-                fields = record_set.children_nodes(constants.ML_COMMONS_FIELD)
-                nodes += fields
-                if len(fields) == 0:
-                    issues.add_error("The node doesn't define any field.")
-                for field in fields:
-                    sub_fields = field.children_nodes(constants.ML_COMMONS_SUB_FIELD)
-                    nodes += sub_fields
+    record_sets = metadata.children_nodes(constants.ML_COMMONS_RECORD_SET)
+    nodes += record_sets
+    for record_set in record_sets:
+        with issues.context(
+            dataset_name=dataset_name,
+            record_set_name=record_set.name,
+            field_name="",
+        ):
+            fields = record_set.children_nodes(constants.ML_COMMONS_FIELD)
+            nodes += fields
+            if len(fields) == 0:
+                issues.add_error("The node doesn't define any field.")
+            for field in fields:
+                sub_fields = field.children_nodes(constants.ML_COMMONS_SUB_FIELD)
+                nodes += sub_fields
     return nodes
