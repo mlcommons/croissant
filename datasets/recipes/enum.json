@@ -53,7 +53,7 @@
       "@type": "ml:RecordSet",
       "name": "examples",
       "source": "#{examples-table}",
-      "description": "Descring the columns of the table",
+      "description": "Describing the columns of the table",
       "field": [
         {
           "name": "name",
