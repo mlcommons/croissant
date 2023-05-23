@@ -1,0 +1,51 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field"
+  },
+  "@type": "sc:Dataset",
+  "name": "Untar archive example",
+  "description": "This is a fairly minimal example, showing a way to describe archive files.",
+  "url": "https://example.com/dataset/untar/about",
+  "citation": "@article{nash51, author = \"Nash, John\", title  = \"Non-cooperative Games\", journal = \"Annals of Mathematics\", year = 1951, volume = \"54\", number = \"2\", pages  = \"286--295\"}",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "distribution": [
+    {
+      "name": "archive",
+      "@type": "sc:FileObject",
+      "contentUrl": "https://example.org/dataset/untar/file.tar",
+      "sha256": "12345678901234567890123456789012",
+      "encodingFormat": "application/x-tar"
+    },
+    {
+      "name": "image-files",
+      "@type": "sc:FileSet",
+      "containedIn": [
+        "#{archive}"
+      ],
+      "includes": "*.jpg",
+      "encodingFormat": "image/jpeg"
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "images",
+      "@type": "ml:RecordSet",
+      "source": "#{image-files}",
+      "description": "In this example, only the file content is described.",
+      "field": [
+        {
+          "name": "image_content",
+          "@type": "ml:Field",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        }
+      ]
+    }
+  ]
+}
