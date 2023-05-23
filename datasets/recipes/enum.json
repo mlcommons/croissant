@@ -1,0 +1,76 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field"
+  },
+  "@type": "sc:Dataset",
+  "name": "Enum example",
+  "description": "This is a fairly minimal example, showing a way to describe enumerations.",
+  "url": "https://example.com/dataset/enum/about",
+  "citation": "@article{nash51, author = \"Nash, John\", title  = \"Non-cooperative Games\", journal = \"Annals of Mathematics\", year = 1951, volume = \"54\", number = \"2\", pages  = \"286--295\"}",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "examples-table",
+      "contentUrl": "https://example.com/dataset/enum/data.csv",
+      "sha256": "12345678901234567890123456789012",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "direction_enums",
+      "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
+      "key": "#{key}",
+      "field": [
+          {
+            "name": "key",
+            "description": "0, 1, 2 or 3",
+            "@type": "ml:Field",
+            "dataType": "sc:Integer"
+          },
+          {
+            "name": "label",
+            "description": "North, East, South or West",
+            "@type": "ml:Field",
+            "dataType": ["sc:Text", "sc:name"]
+          }
+      ],
+      "data": [
+          { "key": 0, "label": "North" },
+          { "key": 1, "label": "East" },
+          { "key": 2, "label": "South" },
+          { "key": 3, "label": "West" }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "examples",
+      "source": "#{examples-table}",
+      "description": "Descring the columns of the table",
+      "field": [
+        {
+          "name": "name",
+          "@type": "ml:Field",
+          "dataType": "sc:Text",
+          "description": "The first column contains the name of the object.",
+          "references": "#{examples-table/name}"
+        },
+        {
+          "name": "direction",
+          "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{examples-table/direction}",
+          "references": "#{direction_enums}"
+        }
+      ]
+    }
+  ]
+}
