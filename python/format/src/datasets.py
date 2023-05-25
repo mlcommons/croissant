@@ -12,9 +12,7 @@ from format.src import graphs
 from format.src.computations import (
     build_structure_graph,
     ComputationGraph,
-    get_entry_nodes,
     GroupRecordSet,
-    Operation,
     ReadField,
 )
 import networkx as nx
@@ -93,18 +91,8 @@ class Dataset:
         Warning: at the moment, this method yields examples from the first explored
         record_set.
         """
-        entry_nodes = get_entry_nodes(self.operations.graph)
-        visited = set()
         results: Mapping[str, Any] = {}
-        return self.execute_operations(entry_nodes[0], visited, results)
-
-    def execute_operations(
-        self, entry_node: Operation, visited: set[Operation], results: Mapping[str, Any]
-    ):
-        operations = self.list_operations(
-            start=entry_node, visited=visited, skip_visited=False
-        )
-        for operation in operations:
+        for operation in nx.topological_sort(self.operations.graph):
             logging.info('Executing "%s"', operation)
             kwargs = self.operations.graph.nodes[operation].get("kwargs", {})
             previous_results = [
@@ -128,28 +116,3 @@ class Dataset:
                     results[operation] = result
             else:
                 results[operation] = operation(*previous_results, **kwargs)
-            visited.add(operation)
-
-    def list_operations(
-        self,
-        start: Operation,
-        visited: set[Operation],
-        skip_visited: bool,
-    ):
-        """List operations in the ComputationGraph in a BFS fashion.
-
-        Args:
-            start: Operation from which to start (not included).
-            visited: List of visited nodes.
-            skip_visited: Whether to skip visited nodes or not.
-        """
-        for i, parallel_operations in enumerate(
-            nx.bfs_layers(self.operations.graph, start)
-        ):
-            # Do not include the `start` operation
-            if i == 0:
-                continue
-            for operation in parallel_operations:
-                if not skip_visited and operation in visited:
-                    continue
-                yield operation
