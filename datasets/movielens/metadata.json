@@ -13,7 +13,8 @@
     "applyTransform": "ml:applyTransform",
     "format": "ml:format",
     "regex": "ml:regex",
-    "separator": "ml:separator"
+    "separator": "ml:separator",
+    "references": "ml:references"
   },
   "@type": "sc:Dataset",
   "@language": "en",

@@ -103,16 +103,18 @@ class Dataset:
                 and results[previous_operation] is not None
             ]
             if isinstance(operation, GroupRecordSet):
-                yield operation(*previous_results, **kwargs)
-            elif isinstance(operation, ReadField):
                 assert len(previous_results) == 1, (
                     f'"{operation}" should have one and only one predecessor. Got:'
                     f" {len(previous_results)}."
                 )
                 previous_result = previous_results[0]
                 for _, line in previous_result.iterrows():
-                    result = operation(line, **kwargs)
-                    yield result
-                    results[operation] = result
+                    read_fields = []
+                    for read_field in self.operations.graph.successors(operation):
+                        assert isinstance(read_field, ReadField)
+                        logging.info('Executing "%s"', read_field)
+                        read_fields.append(read_field(line, **kwargs))
+                    logging.info('Executing "%s"', operation)
+                    yield operation(*read_fields, **kwargs)
             else:
                 results[operation] = operation(*previous_results, **kwargs)

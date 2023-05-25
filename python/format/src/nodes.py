@@ -392,6 +392,7 @@ class RecordSet(Node):
 class Field(Node):
     """Nodes to describe a dataset Field (RecordSet)."""
 
+    data: list[Mapping[str, Any]] | None = None
     data_type: str | None = None
     description: str | None = None
     has_sub_fields: bool | None = None
@@ -402,6 +403,7 @@ class Field(Node):
     def __post_init__(self):
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
+        # TODO(marcenacp): check that `data` has the expected form if it exists.
 
 
 def _there_exists_at_least_one_property(node: Node, possible_properties: list[str]):

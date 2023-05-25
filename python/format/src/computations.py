@@ -134,12 +134,18 @@ def build_structure_graph(
             for reference in references:
                 # The source can be either another field...
                 if (uid := concatenate_uid(reference)) in uid_to_node:
-                    add_edge(issues, graph, uid_to_node, uid, node, Node)
+                    # Record sets are not valid parents here.
+                    # The case can arise when a Field references a record set to have a
+                    # machine-readable explanation of the field (see datasets/titanic
+                    # for example).
+                    if not isinstance(uid_to_node[uid], RecordSet):
+                        add_edge(issues, graph, uid_to_node, uid, node, Node)
                 # ...or the source can be a metadata.
                 elif (uid := reference[0]) in uid_to_node:
-                    add_edge(
-                        issues, graph, uid_to_node, uid, node, (FileObject, FileSet)
-                    )
+                    if not isinstance(uid_to_node[uid], RecordSet):
+                        add_edge(
+                            issues, graph, uid_to_node, uid, node, (FileObject, FileSet)
+                        )
                 else:
                     issues.add_error(
                         "Source refers to an unknown node"
@@ -295,6 +301,13 @@ def apply_transform_fn(value: str, source: Source | None = None) -> Callable[...
     return value
 
 
+class Data(LineOperation):
+    node: Field
+
+    def __call__(self):
+        return pd.DataFrame(self.node.data)
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Join(LineOperation):
     """Joins pd.DataFrames."""
@@ -359,6 +372,10 @@ class GroupRecordSet(LineOperation):
 
 
 def _find_record_set(graph: nx.MultiDiGraph, node: Node) -> RecordSet:
+    """Finds the record set to which a field is attached.
+
+    The record set will be typically either the parent or the parent's parent.
+    """
     parent_node = graph.nodes[node].get("parent")
     if isinstance(parent_node, RecordSet):
         return parent_node
@@ -368,7 +385,7 @@ def _find_record_set(graph: nx.MultiDiGraph, node: Node) -> RecordSet:
     return _find_record_set(graph, parent_node)
 
 
-def _add_operations_for_field(
+def _add_operations_for_field_with_source(
     issues: Issues,
     graph: nx.MultiDiGraph,
     operations: nx.MultiDiGraph,
@@ -383,11 +400,12 @@ def _add_operations_for_field(
     - `ReadField` to specify how the field is read.
     - `GroupRecordSet` to structure the final dict that is sent back to the user.
     """
-    parent_node = graph.nodes[node].get("parent")
-    # Read/extract the field
-    read_field = ReadField(node=node)
+    # Attach the field to a record set
+    record_set = _find_record_set(graph, node)
+    group_record_set = GroupRecordSet(node=record_set)
     join = None
-    if node.references is not None:
+    if node.references is not None and len(node.references.reference) > 1:
+        parent_node = graph.nodes[node].get("parent")
         join = Join(node=parent_node)
         # `Join()` takes left=Source and right=Source as kwargs.
         kwargs = {
@@ -395,18 +413,33 @@ def _add_operations_for_field(
             "right": node.references,
         }
         operations.add_node(join, kwargs=kwargs)
-        operations.add_edge(join, read_field)
-    operation = join if join is not None else read_field
+        operations.add_edge(join, group_record_set)
+    operation = join if join is not None else group_record_set
     for predecessor in graph.predecessors(node):
         operations.add_edge(last_operation[predecessor], operation)
     if len(node.source.reference) != 2:
         issues.add_error(f'Wrong source in node "{node.uid}"')
         return
-    # Attach the field to a record set
-    record_set = _find_record_set(graph, node)
-    group_record_set = GroupRecordSet(node=record_set)
-    operations.add_edge(read_field, group_record_set)
+    # Read/extract the field
+    read_field = ReadField(node=node)
+    operations.add_edge(group_record_set, read_field)
     last_operation[node] = read_field
+
+
+def _add_operations_for_field_with_data(
+    graph: nx.MultiDiGraph,
+    operations: nx.MultiDiGraph,
+    last_operation: Mapping[Node, Operation],
+    node: Field,
+):
+    """Adds a `Data` operation for a node of type `Field` with data.
+
+    Those nodes return a DataFrame representing the lines in `data`.
+    """
+    operation = Data(node=node)
+    for predecessor in graph.predecessors(node):
+        operations.add_edge(last_operation[predecessor], operation)
+    last_operation[node] = operation
 
 
 def _add_operations_for_file_object(
@@ -481,14 +514,22 @@ class ComputationGraph:
             for predecessor in predecessors:
                 if predecessor in last_operation:
                     last_operation[node] = last_operation[predecessor]
-            if isinstance(node, Field) and node.source and not node.has_sub_fields:
-                _add_operations_for_field(
-                    issues,
-                    graph,
-                    operations,
-                    last_operation,
-                    node,
-                )
+            if isinstance(node, Field):
+                if node.source and not node.has_sub_fields:
+                    _add_operations_for_field_with_source(
+                        issues,
+                        graph,
+                        operations,
+                        last_operation,
+                        node,
+                    )
+                elif node.data:
+                    _add_operations_for_field_with_data(
+                        graph,
+                        operations,
+                        last_operation,
+                        node,
+                    )
             elif isinstance(node, FileObject):
                 _add_operations_for_file_object(
                     graph,
