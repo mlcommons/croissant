@@ -1,16 +1,16 @@
 # Croissant Dataset Format
 
-- version: 0.1
-- status: Early draft
+- Version: 0.1
+- Status: Early draft
+- Edited collaboratively by members of the ML Datasets format working group.
 
-Edited collaboratively by members of the ML Datasets format working group.
+This is the draft specification of `Croissant`, a format for ML
+datasets. `Croissant` is based on [schema.org](https://schema.org), and builds on
+its [Dataset](https://schema.org/dataset) vocabulary. The `Croissant` format is
+defined under a separate namespace, although some parts of if may make sense to
+integrate into `schema.org` down the line.
 
-This is the draft specification of Croissant, a format for ML
-datasets. Croissant is based on the `schema.org`, and builds on its `Dataset`
-vocabulary. The Croissant format is defined under a separate namespace, although
-some parts of if may make sense to integrate into `schema.org` down the line.
-
-The main components of the Croissant format are:
+The main components of the `Croissant` format are:
 
 - **Resource description**: The contents of a dataset as individual files
   (`FileObject`) and/or sets of files (`FileSet`).
@@ -24,7 +24,7 @@ We use the `sc` prefix to refer to the `http://schema.org` namespace.
 
 ## Classes
 
-The Croissant vocabulary defines the following classes
+The `Croissant` vocabulary defines the following classes:
 
 ### FileObject
 
@@ -35,7 +35,7 @@ A digital file that could represent a
 `FileObject` is a general purpose class that should ideally be included in the
 `schema.org` vocabulary.
 
-**subclassOf**:	[sc:CreativeWork](schema.org/CreativeWork)
+**subclassOf**:	[sc:CreativeWork](https://schema.org/CreativeWork)
 
 
 **Properties**:
@@ -47,13 +47,13 @@ A digital file that could represent a
 
 Notable inherited properties:
 
-* [sc:name](https://schema.org/name) : the name is used as identifier and should not
-  contain special characters
+* [sc:name](https://schema.org/name) : Name is used as an identifier and should not
+  contain special characters.
 * [sc:contentUrl](https://schema.org/contentUrl): Actual bytes of the media object, for
   example the image file or video file.
 * [sc:contentSize](https://schema.org/contentSize): File size in (mega/kilo)bytes.
-* [sc:sameAs](https://schema.org/sameAs): the name of a FileObject with the same content,
-  but a different format.
+* [sc:sameAs](https://schema.org/sameAs): The name or URL of a `FileObject` with
+  the same content, but a different format.
 
 
 ### FileSet
@@ -68,7 +68,7 @@ potentially filtered by inclusion and/or exclusion filters.
 
 **Properties**:
 
-*   [containedIn](#containedin): The container of the files in the `FileSet`
+*   [containedIn](#containedin): The container of the files in the `FileSet`.
 *   [includes](#includes): A glob pattern that specifies the files to include,
     e.g., `"*.jpg" `.
 *   [excludes](#excudes): A glob pattern that specifies the files to exclude.
@@ -76,12 +76,12 @@ potentially filtered by inclusion and/or exclusion filters.
 
 ### RecordSet
 
-A `RecordSet` specifies how to get a set of structured records from a data
-source (typically a file or set of files) and the structure of the records as a
-set of fields(e.g., the columns of a table). A `RecordSet` can represent flat or
-nested data.
+A `RecordSet` describes a set of structured records obtained from one or more data
+sources (typically a file or set of files) and the structure of these records,
+expressed as a set of fields (e.g., the columns of a table). A `RecordSet` can
+represent flat or nested data.
 
-A RecordSet can also be used to combine/flatten data from multiple sources,
+A `RecordSet` can also be used to combine/flatten data from multiple sources,
 typically to prepare data for ingestion by ML applications.
 
 **subclassOf**:	[sc:Intangible](https://schema.org/Intangible)
@@ -89,15 +89,15 @@ typically to prepare data for ingestion by ML applications.
 **Properties**:
 
 *   [source](#source): A data source for the records, typically a reference to a
-    `FileObject` or `FileSet` of the form `"#{<source>}"`. A source can be a
-    single structured file (e.g., a `csv` or `jsonl` `FileObject`) that yields
+    `FileObject` or `FileSet` of the form `"#{<source_name>}"`. A source can be
+    a single structured file (e.g., a `csv` or `jsonl` `FileObject`) that yields
     one record per line, or a set of unstructured files (e.g., a directory of
     images) that yield one record per file.
 *   [field](#field): A data element that appears in the records in the
     `RecordSet` (e.g., one column of a table).
 *   [key](#key): One or more fields whose value uniquely identify each record in
     the `RecordSet`.
-*   [record](#record): An inlined record that belongs to the `RecordSet`,
+*   [record](#record): One or more inlined records that belongs to the `RecordSet`,
     typically used for small enumerations that do not have an external source of
     data.
 
@@ -106,7 +106,7 @@ typically to prepare data for ingestion by ML applications.
 
 A `Field` is a component of the structure of a `RecordSet`. It may represent a
 column of a table, or a nested data structure or even a nested `RecordSet` in
-hierarchical data.
+the case of hierarchical data.
 
 **subclassOf**:	[sc:Intangible](https://schema.org/Intangible)
 
@@ -116,7 +116,7 @@ hierarchical data.
     `"#{<record_source>/<field_source>}"`. For example if the source of records is a table,
     the field source is of the form `"#{<table_name>/<column_name>}"`.
 *   [dataType](#datatype): The data type of the field, which could be either an
-    atomic type (e.g, an `sc:Number`) or a semantic type (e.g., `sc:GeoLocation`).
+    atomic type (e.g, `sc:Integer`) or a semantic type (e.g., `sc:GeoLocation`).
 *   [references](#references): Another `Field` of another `RecordSet` that this
     field references. This is the equivalent of a foreign key reference in a
     relational database.
@@ -129,7 +129,7 @@ hierarchical data.
 ### DataSource
 
 A reference to a source of data. This class is generally used when the data
-needs to be tranformed or formatted, otherwise a `Reference` can be used
+needs to be transformed or formatted, otherwise a `Reference` can be used
 instead.
 
 **subclassOf**:	[sc:Intangible](https://schema.org/Intangible)
@@ -145,7 +145,7 @@ instead.
 ### Reference
 
 A reference to another object defined within the dataset. References are string
-of the form "#{[ref]}", where `ref` is either the name of an object defined in
+of the form `"#{[ref]}"`, where `ref` is either the name of an object defined in
 the dataset (e.g., a `FileObject`, or a `RecordSet`), or one of its components
 (e.g., a `Field` in a `RecordSet`). For the latter case, `ref` uses '/' to
 represent nesting (e.g., `"#{recordset2/field5}"`).
@@ -155,15 +155,15 @@ subclassOf:	[sc:Text](https://schema.org/Text)
 
 ## Properties
 
-We now describe the properties defined as part of the Croissant vocabulary.
+We now describe the properties defined as part of the `Croissant` vocabulary.
 
 ### containedIn
 
-A location that the object is contained in. When `containedIn` is specified,
-then the `contentUrl` of the object is evaluated starting from the object
-specified by `containedIn` (e.g., path within an archive). If multiple values
-are provided for containedIn, then their union is taken (e.g., to combine files
-from multiple folders).
+A location that the object is contained in, e.g., an archive `FileObject`. When
+`containedIn` is specified, then the `contentUrl` of the object is evaluated
+starting from the object specified by `containedIn` (e.g., a path within an
+archive). If multiple values are provided for `containedIn`, then their union is
+taken (e.g., this can be used to to combine files from multiple archives).
 
 **range**: [Reference](#reference) (to a [FileObject](#fileobject) or
 [FileSet](#fileset))
@@ -173,8 +173,10 @@ from multiple folders).
 ### includes
 
 A glob pattern over content Urls or filenames that specifies files to include in
-a `FileSet`. If multiple values are provided, then their union is taken. The
-range of the property is text, assuming a default globbing syntax. A more
+a `FileSet`. If multiple values are provided, then their union is taken, i.e.,
+any file matched by any of the include patterns is included. 
+
+The range of the property is text, assuming a default globbing syntax. A more
 structured type can be introduced if we want to support multiple globbing
 mechanisms.
 
@@ -187,7 +189,8 @@ mechanisms.
 
 A glob pattern or regular expression over content Urls or filenames that
 specifies files to exclude from the `FileSet`. If multiple values are provided,
-then their union is taken.
+then their union is taken, i.e., any file matched by any of the exclude patterns
+is excluded.
 
 **range**:	[sc:Text](https://schema.org/Text)
 
@@ -242,7 +245,7 @@ field nested inside the parent field.
 
 ### parentField
 
-`parentField` is a special case of nested `subField`, which references a field
+`parentField` is a special kind of nested `subField`, which references a field
 already present in the parent record, and therefore should be hidden.
 
 **range**:	[Field](#field)
@@ -279,15 +282,15 @@ values of this field to be URLs referring to cities (eg:
   "dataType": ["https://schema.org/URL", "https://www.wikidata.org/wiki/Q515"]
 }
 ```
-
+<!---
 Supported known semantic types:
 
 *   `https://www.wikidata.org/wiki/Q48277`: gender
 
 Supported known semantic types with an ML meaning:
 
-*   `https://www.wikidata.org/wiki/Q3985153`: Training, validation and test sets.
-
+*   https://www.wikidata.org/wiki/Q3985153`: Training, validation and test sets.
+--->
 
 
 ### references
@@ -320,9 +323,7 @@ for example the ones defining enumerated values. In such a case, data is a JSON
 list, and each object within that list must define the RecordSet fields.
 
 
-TODO: Consider switching to use sc:PropertyValue to keep the json-ld valid.
-
-** Example:**
+**Example**:
 
 ```JSON
 {
@@ -341,7 +342,8 @@ TODO: Consider switching to use sc:PropertyValue to keep the json-ld valid.
 }
 ```
 
-**range**:	[Reference](#reference)
+**range**: JSON Text that matches the fields of the `RecordSet`. TODO: Consider
+switching to use `sc:PropertyValue` to keep the json-ld valid.
 
 **domain**: [RecordSet](#recordset)
 
@@ -351,15 +353,15 @@ TODO: Consider switching to use sc:PropertyValue to keep the json-ld valid.
 A transformation to apply on source data. We aim to support a few simple
 transformations:
 
-*   delimiter: split a string into an array using the supplied character
-*   regex: A regular expression to parse the data (specifiy if it applies to the
-    entire file or to individual lines)
-*   json-query: A json query to evaluate on the (json) data source.
+*   **delimiter**: split a string into an array using the supplied character
+*   **regex**: A regular expression to parse the data. TODO: Mechanism to specify if
+    it applies to the entire file or to individual lines.
+*   **json-query**: A json query to evaluate on the (json) data source.
 
-We can either define a range type that has properties for each of these
-mechanisms, or use PropertyValue as an escape hatch.
+We can either define a custom type that has properties for each of these
+mechanisms, or use `sc:PropertyValue` as an escape hatch.
 
-**range**: [PropertyValue](schema.org/PropertyValue) TODO: Define a dedicated class.
+**range**: [PropertyValue](https://schema.org/PropertyValue) TODO: Define a dedicated class.
 
 **domain**:	[DataSource](#datasource)
 
@@ -367,6 +369,9 @@ mechanisms, or use PropertyValue as an escape hatch.
 ### format
 
 A format used to parse the values coming from a `DataSource`, e.g., for dates or numbers.
+
+TODO: Define the list of supported formats, and devise a mechanism to select the
+right format for a given target data type.
 
 **range**: [sc:Text](https://schema.org/Text)
 
@@ -382,8 +387,5 @@ A format used to parse the values coming from a `DataSource`, e.g., for dates or
 5. Should Reference be this general, or should it be specialized into
    FileObjectReference, RecordSetReference, etc..?  (A bit verbose, but more
    type-safe, and helps with namespace homing.)
-6. Is the "relative" reference mechanism for fields (where the recordset source
-   is used as context) useful? Or should we always specify the recordset as part
-   of field references?
-7. Non-semantic and Semantic types supported
-8. Representation of enumerated records: PropertyValue vs arbitrary JSON.
+6. Non-semantic and Semantic types supported
+7. Representation of enumerated records: PropertyValue vs arbitrary JSON.
