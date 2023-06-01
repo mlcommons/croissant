@@ -1,0 +1,169 @@
+{
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "sc": "https://schema.org/",
+      "ml": "http://mlcommons.org/schema/",
+      "wd": "https://www.wikidata.org/wiki/Q",
+      "dataType": {
+        "@id": "ml:dataType",
+        "@type": "@id"
+      },
+      "field": {
+        "@id": "ml:Field",
+        "@type": "@id"
+      },
+      "recordSet": {
+        "@id": "ml:RecordSet",
+        "@type": "@id"
+      }
+    },
+    "@type": "sc:Dataset",
+    "@language": "en",
+    "name": "COCO",
+    "url": "https://cocodataset.org/",
+    "description": "COCO is a large-scale object detection, segmentation, and captioning dataset.",
+    "license": [
+        "Creative Commons Attribution 4.0 License",
+        "https://www.flickr.com/creativecommons/"
+    ],
+    "citation": "@article{DBLP:journals/corr/LinMBHPRDZ14,\n  author    = {Tsung{-}Yi Lin and\n               Michael Maire and\n               Serge J. Belongie and\n               Lubomir D. Bourdev and\n               Ross B. Girshick and\n               James Hays and\n               Pietro Perona and\n               Deva Ramanan and\n               Piotr Doll{'{a}}r and\n               C. Lawrence Zitnick},\n  title     = {Microsoft {COCO:} Common Objects in Context},\n  journal   = {CoRR},\n  volume    = {abs/1405.0312},\n  year      = {2014},\n  url       = {http://arxiv.org/abs/1405.0312},\n  archivePrefix = {arXiv},\n  eprint    = {1405.0312},\n  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}",
+    "distribution": [
+      {
+        "@type": "sc:FileObject",
+        "name": "train_images_zip",
+        "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
+        "contentSize": " B",
+        "sha256": "",
+        "encodingFormat": "application/zip"
+      },
+      {
+        "@type": "sc:FileObject",
+        "name": "val_images_zip",
+        "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
+        "contentSize": " B",
+        "sha256": "",
+        "encodingFormat": "application/zip"
+      },
+      {
+        "@type": "sc:FileObject",
+        "name": "test_images_zip",
+        "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
+        "contentSize": " B",
+        "sha256": "",
+        "encodingFormat": "application/zip"
+      },
+      {
+        "@type": "sc:FileSet",
+        "name": "images",
+        "containedIn": [
+          "#{train_images_zip}",
+          "#{val_images_zip}",
+          "#{test_images_zip}"
+        ],
+        "includes": "(train|val|test)2014/*.jpg",
+        "encodingFormat": "image/jpeg",
+        "splits": [
+          {
+            "@type": "ml:Split",
+            "name": {
+              "data": "filename",
+              "applyTransform": {
+                "regex": "(train|val|test)2014/.*\\.jpg"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "@type": "sc:FileObject",
+        "name": "trainval_annotations_zip",
+        "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
+        "contentSize": " B",
+        "sha256": "",
+        "encodingFormat": "application/zip"
+      },
+      {
+        "@type": "sc:FileSet",
+        "name": "caption_annotations",
+        "containedIn": [
+          "#{trainval_annotations_zip}"
+        ],
+        "includes": "annotations/captions_(val|train)2014.json",
+        "encodingFormat": "application/json",
+        "splits": [
+          {
+            "@type": "ml:Split",
+            "name": {
+              "data": "filename",
+              "applyTransform": {
+                "regex": ".*_(val|train)2014\\.json$"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "@type": "sc:FileSet",
+        "name": "person_keypoints_annotations",
+        "containedIn": [
+          "#{trainval_annotations_zip}"
+        ],
+        "includes": "annotations/person_keypoints_(val|train)2014.json",
+        "encodingFormat": "application/json",
+        "splits": [
+          {
+            "@type": "ml:Split",
+            "name": {
+              "data": "filename",
+              "applyTransform": {
+                "regex": ".*_(val|train)2014\\.json$"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "@type": "sc:FileSet",
+        "name": "instancesperson_keypoints_annotations",
+        "containedIn": [
+          "#{trainval_annotations_zip}"
+        ],
+        "includes": "annotations/instances_(val|train)2014.json",
+        "encodingFormat": "application/json",
+        "splits": [
+          {
+            "@type": "ml:Split",
+            "name": {
+              "data": "filename",
+              "applyTransform": {
+                "regex": ".*_(val|train)2014\\.json$"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "@type": "sc:FileObject",
+        "name": "test_imageinfo_zip",
+        "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
+        "contentSize": " B",
+        "sha256": "",
+        "encodingFormat": "application/zip"
+      },
+      {
+        "@type": "sc:FileSet",
+        "name": "imageinfo",
+        "containedIn": [
+          "#{test_imageinfo_zip}"
+        ],
+        "includes": "annotations/image_info_test.json",
+        "encodingFormat": "application/json",
+        "splits": [
+          {
+            "@type": "ml:Split",
+            "name": "test"
+          }
+        ]
+      }
+    ]
+}
