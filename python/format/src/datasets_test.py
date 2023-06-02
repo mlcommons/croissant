@@ -1,3 +1,5 @@
+"""datasets_test module."""
+
 from etils import epath
 from format.src import datasets
 from format.src import errors
@@ -15,16 +17,41 @@ import pytest
         ],
         [
             "metadata_bad_type.json",
-            'Node should have an attribute `"@type": "https://schema.org/Dataset"`.',
+            'Node should have an attribute `"@type" in',
+        ],
+        [
+            "metadata_bad_type.json",
+            (
+                "The current dataset doesn't declare any node of type:"
+                ' "http://mlcommons.org/schema/RecordSet"'
+            ),
         ],
         # Distribution.
         [
             "distribution_missing_property_content_url.json",
-            'Property "https://schema.org/contentUrl" is mandatory, but does not exist.',
+            (
+                'Property "https://schema.org/contentUrl" is mandatory, but does not '
+                "exist."
+            ),
         ],
         [
             "distribution_bad_type.json",
-            'Node should have an attribute `"@type" in "\[rdflib.term.URIRef\(\'https://schema.org/FileObject\'\), rdflib.term.URIRef\(\'https://schema.org/FileSet\'\)\]"',
+            'Node should have an attribute `"@type" in',
+        ],
+        [
+            "distribution_bad_contained_in.json",
+            (
+                'There is a reference to node named "THISDOESNOTEXIST" in node'
+                ' "a-csv-table", but this node doesn\'t exist.'
+            ),
+        ],
+        [
+            # When the name misses, the context should still appear without the name.
+            "distribution_missing_name.json",
+            (
+                r"\[dataset\(mydataset\) \> distribution\(\)\] Property "
+                r'"https://schema.org/name" is mandatory'
+            ),
         ],
         # Record set.
         [
@@ -33,7 +60,7 @@ import pytest
         ],
         [
             "recordset_bad_type.json",
-            'Node should have an attribute `"@type": "http://mlcommons.org/schema/RecordSet"`.',
+            'Node should have an attribute `"@type" in',
         ],
         # ML field.
         [
@@ -42,7 +69,11 @@ import pytest
         ],
         [
             "mlfield_bad_type.json",
-            'Node should have an attribute `"@type": "http://mlcommons.org/schema/Field"`.',
+            'Node should have an attribute `"@type" in',
+        ],
+        [
+            "mlfield_bad_source.json",
+            "Malformed source data: #{THISDOESNOTEXIST.field}.",
         ],
     ],
 )
