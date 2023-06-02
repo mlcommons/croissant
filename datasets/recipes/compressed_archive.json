@@ -8,18 +8,16 @@
     "field": "ml:Field"
   },
   "@type": "sc:Dataset",
-  "name": "Untar archive example",
+  "name": "Compressed archive example",
   "description": "This is a fairly minimal example, showing a way to describe archive files.",
-  "url": "https://example.com/dataset/untar/about",
-  "citation": "@article{nash51, author = \"Nash, John\", title  = \"Non-cooperative Games\", journal = \"Annals of Mathematics\", year = 1951, volume = \"54\", number = \"2\", pages  = \"286--295\"}",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://example.com/datasets/recipes/compressed_archive/about",
   "distribution": [
     {
       "name": "archive",
       "@type": "sc:FileObject",
-      "contentUrl": "https://example.org/dataset/untar/file.tar",
-      "sha256": "12345678901234567890123456789012",
-      "encodingFormat": "application/x-tar"
+      "contentUrl": "https://example.org/datasets/recipes/compressed_archive.zip",
+      "sha256": "4cee 7cd36f1d874072b6a96c95ce53c9b01d158f0737e754e6c9cc80aeb06e5a",
+      "encodingFormat": "application/zip"
     },
     {
       "name": "image-files",
@@ -27,7 +25,7 @@
       "containedIn": [
         "#{archive}"
       ],
-      "includes": "*.jpg",
+      "includes": "*.jpeg",
       "encodingFormat": "image/jpeg"
     }
   ],
@@ -36,7 +34,7 @@
       "name": "images",
       "@type": "ml:RecordSet",
       "source": "#{image-files}",
-      "description": "In this example, only the file content is described.",
+      "description": "Records extracted from the image files, with their schema.",
       "field": [
         {
           "name": "image_content",
