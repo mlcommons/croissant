@@ -1,3 +1,5 @@
+"""constants module."""
+
 import rdflib
 
 # MLCommons-defined URIs (still draft).
@@ -10,6 +12,7 @@ ML_COMMONS_FORMAT = rdflib.term.URIRef("http://mlcommons.org/schema/format")
 ML_COMMONS_FIELD = rdflib.term.URIRef("http://mlcommons.org/schema/Field")
 ML_COMMONS_INCLUDES = rdflib.term.URIRef("http://mlcommons.org/schema/includes")
 ML_COMMONS_RECORD_SET = rdflib.term.URIRef("http://mlcommons.org/schema/RecordSet")
+ML_COMMONS_REFERENCES = rdflib.term.URIRef("http://mlcommons.org/schema/references")
 ML_COMMONS_REGEX = rdflib.term.URIRef("http://mlcommons.org/schema/regex")
 ML_COMMONS_SOURCE = rdflib.term.URIRef("http://mlcommons.org/schema/source")
 ML_COMMONS_SUB_FIELD = rdflib.term.URIRef("http://mlcommons.org/schema/SubField")
@@ -47,6 +50,7 @@ TO_CROISSANT = {
     ML_COMMONS_DATA: "data",
     ML_COMMONS_FORMAT: "format",
     ML_COMMONS_INCLUDES: "includes",
+    ML_COMMONS_REFERENCES: "references",
     ML_COMMONS_REGEX: "regex",
     ML_COMMONS_SOURCE: "source",
     SCHEMA_ORG_CITATION: "citation",

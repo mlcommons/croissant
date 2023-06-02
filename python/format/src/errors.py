@@ -1,3 +1,5 @@
+"""errors module."""
+
 import contextlib
 import dataclasses
 
@@ -75,7 +77,10 @@ class Issues:
         ]:
             num_issues = len(issues)
             if num_issues:
-                message += f"Found the following {len(issues)} {issue_type} during the validation:\n"
+                message += (
+                    f"Found the following {len(issues)} {issue_type} during the"
+                    " validation:\n"
+                )
                 for issue in issues:
                     message += f"  -  {issue}\n"
         return message.strip()
@@ -99,22 +104,34 @@ class Issues:
                 issues.add_error("xyz")
             ```
         """
-        _dataset_name = self._local_context.dataset_name
-        _distribution_name = self._local_context.distribution_name
-        _record_set_name = self._local_context.record_set_name
-        _field_name = self._local_context.field_name
-        _sub_field_name = self._local_context.sub_field_name
+        tmp_dataset_name = self._local_context.dataset_name
+        tmp_distribution_name = self._local_context.distribution_name
+        tmp_record_set_name = self._local_context.record_set_name
+        tmp_field_name = self._local_context.field_name
+        tmp_sub_field_name = self._local_context.sub_field_name
 
-        self._local_context.dataset_name = dataset_name or _dataset_name
-        self._local_context.distribution_name = distribution_name or _distribution_name
-        self._local_context.record_set_name = record_set_name or _record_set_name
-        self._local_context.field_name = field_name or _field_name
-        self._local_context.sub_field_name = sub_field_name or _sub_field_name
+        self._local_context.dataset_name = (
+            dataset_name if dataset_name is not None else tmp_dataset_name
+        )
+        self._local_context.distribution_name = (
+            distribution_name
+            if distribution_name is not None
+            else tmp_distribution_name
+        )
+        self._local_context.record_set_name = (
+            record_set_name if record_set_name is not None else tmp_record_set_name
+        )
+        self._local_context.field_name = (
+            field_name if field_name is not None else tmp_field_name
+        )
+        self._local_context.sub_field_name = (
+            sub_field_name if sub_field_name is not None else tmp_sub_field_name
+        )
 
         yield
 
-        self._local_context.dataset_name = _dataset_name
-        self._local_context.distribution_name = _distribution_name
-        self._local_context.record_set_name = _record_set_name
-        self._local_context.field_name = _field_name
-        self._local_context.sub_field_name = _sub_field_name
+        self._local_context.dataset_name = tmp_dataset_name
+        self._local_context.distribution_name = tmp_distribution_name
+        self._local_context.record_set_name = tmp_record_set_name
+        self._local_context.field_name = tmp_field_name
+        self._local_context.sub_field_name = tmp_sub_field_name

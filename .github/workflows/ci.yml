@@ -34,8 +34,11 @@ jobs:
     - name: PyTest
       run: pytest .
 
-  datasets-test:
-    name: Datasets / JSON-LD Tests / Python 3.11
+    - name: PyLint
+      run: pylint **/*.py
+
+  validation-test:
+    name: Validation / JSON-LD Tests / Python 3.11
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -63,3 +66,27 @@ jobs:
           echo "Validating ${file}..."
           python scripts/validate.py --file ${file}
         done
+
+  generation-test:
+    name: Generation / JSON-LD Tests / Python 3.11
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/format
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install .
+
+    - name: Add folder to PYTHONPATH
+      run: |
+        echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
+
+    - name: Generate JSON-LD files
+      run: python scripts/validate.py --file ../../datasets/titanic/metadata.json

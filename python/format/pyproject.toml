@@ -12,11 +12,19 @@ authors = [
   { name = "Pierre Ruyssen" },
   { name = "Prabhant Singh" },
 ]
-dependencies = ["absl-py", "etils[epath]", "networkx", "rdflib"]
+dependencies = [
+  "absl-py",
+  "etils[epath]",
+  "networkx",
+  "pandas",
+  "rdflib",
+  "requests",
+  "tqdm",
+]
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["black", "pylint", "pytest"]
 
 [tool.black]
-line-length = 80
+line-length = 88

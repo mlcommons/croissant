@@ -1,0 +1,20 @@
+{
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.rulers": [
+            88
+        ],
+    },
+    "files.watcherExclude": {
+        "**/.git/**": true,
+    },
+    "pylint.args": [
+        "--rcfile=${workspaceFolder}/python/format/.pylintrc"
+    ],
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "88",
+        "--preview",
+        "--experimental-string-processing"
+    ],
+}
