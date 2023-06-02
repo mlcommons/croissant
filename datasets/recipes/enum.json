@@ -16,7 +16,7 @@
       "@type": "sc:FileObject",
       "name": "examples-table",
       "contentUrl": "https://example.com/datasets/recipes/enum.csv",
-      "sha256": "5556d6d53bbe2cd41e64fd1964d9b9c620042911c9657eae8c3c2a64368d3041",
+      "sha256": "52121a5df209dc2d63069710923e25f769d380a1388d00798e84d432c54fd934",
       "encodingFormat": "text/csv"
     }
   ],
