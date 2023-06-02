@@ -10,7 +10,6 @@
   "name": "Minimal example with recommended fields",
   "description": "This is a minimal example, including the required and the recommended fields.",
   "url": "https://example.com/dataset/minimal-recommended/about",
-  "citation": "@article{nash51, author = \"Nash, John\", title  = \"Non-cooperative Games\", journal = \"Annals of Mathematics\", year = 1951, volume = \"54\", number = \"2\", pages  = \"286--295\"}",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "distribution": [
     {
@@ -26,8 +25,7 @@
       "name": "examples",
       "@type": "ml:RecordSet",
       "source": "#{examples-table}",
-      "key": "#{hash}",
-      "description": "Describing the columns of the table.",
+      "description": "Records extracted from the example table, with their schema.",
       "field": [
         {
           "name": "name",
