@@ -36,6 +36,8 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
             "@vocab": "https://schema.org/",
             "sc": "https://schema.org/",
             "ml": "http://mlcommons.org/schema/",
+            "recordSet": "ml:RecordSet",
+            "field": "ml:Field"
         },
         "@type": "sc:Dataset",
         "@language": "en",
@@ -61,7 +63,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         "distribution": distributions,
         "recordSet": [
             {
-                "name": _ds(field="name", transform=_sanitize_name_string),
+                "name": _ds(field="name", transform=_sanitize_name_string) + "_records",
                 "@type": "ml:RecordSet",
                 "source": f"#{{{distribution_source}}}",
                 "key": _row_identifier(openml_features, distribution_source),

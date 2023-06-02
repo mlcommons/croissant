@@ -2,7 +2,9 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/"
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field"
   },
   "@type": "sc:Dataset",
   "@language": "en",
@@ -27,7 +29,7 @@
   ],
   "recordSet": [
     {
-      "name": "titanic",
+      "name": "titanic_records",
       "@type": "ml:RecordSet",
       "source": "#{titanic_arff}",
       "field": [
@@ -110,10 +112,10 @@
           "source": "#{titanic_arff/body}"
         },
         {
-          "name": "home.dest",
+          "name": "home_dest",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{titanic_arff/home_dest}"
+          "source": "#{titanic_arff/home.dest}"
         }
       ]
     }

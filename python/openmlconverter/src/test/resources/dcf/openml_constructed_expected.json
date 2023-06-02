@@ -2,7 +2,9 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/"
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field"
   },
   "@type": "sc:Dataset",
   "@language": "en",
@@ -58,7 +60,7 @@
   ],
   "recordSet": [
     {
-      "name": "anneal",
+      "name": "anneal_records",
       "@type": "ml:RecordSet",
       "source": "#{anneal_arff}",
       "key": ["#{family}",  "#{product_type}"],
