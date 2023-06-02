@@ -51,7 +51,7 @@
       "@type": "ml:RecordSet",
       "name": "examples",
       "source": "#{examples-table}",
-      "description": "Descring the columns of the table",
+      "description": "Records extracted from the examples table, with their schema.",
       "field": [
         {
           "name": "name",
@@ -62,9 +62,9 @@
         },
         {
           "name": "direction",
-          "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
+          "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "source": "#{examples-table/direction}",
           "references": "#{direction_enums}"
         }
