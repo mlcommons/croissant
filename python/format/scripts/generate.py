@@ -16,14 +16,18 @@ flags.mark_flag_as_required("file")
 
 FLAGS = flags.FLAGS
 
+_NUM_MAX_RECORDS = 10
+
 
 def main(argv):
     del argv
     file = FLAGS.file
     dataset = datasets.Dataset(file)
-    for record in dataset:
-        print(f"Generating {record}")
-        break
+    print(f"Generating the first {_NUM_MAX_RECORDS} records.")
+    for i, record in enumerate(dataset):
+        if i >= _NUM_MAX_RECORDS:
+            break
+        print(record)
     print("Done.")
 
 

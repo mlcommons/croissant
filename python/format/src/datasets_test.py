@@ -41,8 +41,8 @@ import pytest
         [
             "distribution_bad_contained_in.json",
             (
-                'There is a reference to node named "THISDOESNOTEXIST", but this '
-                "node doesn't exist."
+                'There is a reference to node named "THISDOESNOTEXIST" in node'
+                ' "a-csv-table", but this node doesn\'t exist.'
             ),
         ],
         [

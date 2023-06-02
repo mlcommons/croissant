@@ -1,8 +1,9 @@
 """datasets module."""
 
+from collections.abc import Mapping
 import dataclasses
 import json
-from typing import Union
+from typing import Any, Union
 
 from absl import logging
 from etils import epath
@@ -11,11 +12,10 @@ from format.src import graphs
 from format.src.computations import (
     build_structure_graph,
     ComputationGraph,
-    get_entry_nodes,
-    Operation,
+    GroupRecordSet,
+    ReadField,
 )
 import networkx as nx
-import pandas as pd
 
 FileOrFilePath = Union[str, epath.PathLike, dict]
 
@@ -86,47 +86,35 @@ class Dataset:
         self.operations = self.validator.operations
 
     def __iter__(self):
-        """Executes all operations, runs dynamic analysis and yields examples."""
-        entry_nodes = get_entry_nodes(self.operations.graph)
-        visited = set()
-        operations = self.list_operations(
-            start=entry_nodes[0], visited=visited, skip_visited=False
-        )
-        for operation in operations:
-            logging.info('Executing "%s"', operation)
-            result = operation()
-            visited.add(operation)
-            if isinstance(result, pd.DataFrame):
-                for _, line in result.iterrows():
-                    line_operations = self.list_operations(
-                        start=operation, visited=visited, skip_visited=True
-                    )
-                    for line_operation in line_operations:
-                        logging.info('Executing "%s"', line_operation)
-                        line = line_operation(line)
-                        visited.add(line_operation)
-                    yield line
+        """Executes all operations, runs dynamic analysis and yields examples.
 
-    def list_operations(
-        self,
-        start: Operation,
-        visited: set[Operation],
-        skip_visited: bool,
-    ):
-        """List operations in the ComputationGraph in a BFS fashion.
-
-        Args:
-            start: Operation from which to start (not included).
-            visited: List of visited nodes.
-            skip_visited: Whether to skip visited nodes or not.
+        Warning: at the moment, this method yields examples from the first explored
+        record_set.
         """
-        for i, parallel_operations in enumerate(
-            nx.bfs_layers(self.operations.graph, start)
-        ):
-            # Do not include the `start` operation
-            if i == 0:
-                continue
-            for operation in parallel_operations:
-                if not skip_visited and operation in visited:
-                    continue
-                yield operation
+        results: Mapping[str, Any] = {}
+        for operation in nx.topological_sort(self.operations.graph):
+            logging.info('Executing "%s"', operation)
+            kwargs = self.operations.graph.nodes[operation].get("kwargs", {})
+            previous_results = [
+                results[previous_operation]
+                for previous_operation in self.operations.graph.predecessors(operation)
+                if previous_operation in results
+                # Filter out results that yielded `None`.
+                and results[previous_operation] is not None
+            ]
+            if isinstance(operation, GroupRecordSet):
+                assert len(previous_results) == 1, (
+                    f'"{operation}" should have one and only one predecessor. Got:'
+                    f" {len(previous_results)}."
+                )
+                previous_result = previous_results[0]
+                for _, line in previous_result.iterrows():
+                    read_fields = []
+                    for read_field in self.operations.graph.successors(operation):
+                        assert isinstance(read_field, ReadField)
+                        logging.info('Executing "%s"', read_field)
+                        read_fields.append(read_field(line, **kwargs))
+                    logging.info('Executing "%s"', operation)
+                    yield operation(*read_fields, **kwargs)
+            else:
+                results[operation] = operation(*previous_results, **kwargs)

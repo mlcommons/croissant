@@ -163,21 +163,6 @@ class Node:
             return f"{self.parent_uid}/{self.name}"
         return self.name
 
-    @property
-    def sources(self) -> list[tuple[str]]:
-        """Retrieves sources.
-
-        Sources can be contained either in `source` (for Fields and FileObjects) or in
-        `contained_in` (for FileSets).
-        """
-        if isinstance(self, (Field, FileObject)) and self.source is not None:
-            return [parse_reference(self.issues, self.source.reference)]
-        if isinstance(self, FileSet) and self.contained_in:
-            return [
-                parse_reference(self.issues, source) for source in self.contained_in
-            ]
-        return []
-
     def children_nodes(self, expected_property: str) -> list["Node"]:
         """Finds all children objects/nodes."""
         nodes = []
@@ -407,16 +392,18 @@ class RecordSet(Node):
 class Field(Node):
     """Nodes to describe a dataset Field (RecordSet)."""
 
+    data: list[Mapping[str, Any]] | None = None
     data_type: str | None = None
     description: str | None = None
     has_sub_fields: bool | None = None
     name: str = ""
-    references: str | None = None
+    references: Source = dataclasses.field(default_factory=Source)
     source: Source = dataclasses.field(default_factory=Source)
 
     def __post_init__(self):
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
+        # TODO(marcenacp): check that `data` has the expected form if it exists.
 
 
 def _there_exists_at_least_one_property(node: Node, possible_properties: list[str]):
@@ -468,6 +455,9 @@ def _extract_properties(
     # Normalize `source`.
     if (source := properties.get("source")) is not None:
         properties["source"] = Source.from_json_ld(issues, source)
+    # Normalize `references`.
+    if (references := properties.get("references")) is not None:
+        properties["references"] = Source.from_json_ld(issues, references)
     # Normalize `contained_in`.
     if (contained_in := properties.get("contained_in")) is not None:
         if isinstance(contained_in, str):
