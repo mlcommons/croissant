@@ -1584,7 +1584,7 @@
           "name": "hasSegments",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/hasSegments}"
+          "source": "#{birds_arff/hassegments}"
         },
         {
           "name": "location",
@@ -1596,115 +1596,115 @@
           "name": "Brown.Creeper",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Brown_Creeper}"
+          "source": "#{birds_arff/brown_creeper}"
         },
         {
           "name": "Pacific.Wren",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Pacific_Wren}"
+          "source": "#{birds_arff/pacific_wren}"
         },
         {
           "name": "Pacific.slope.Flycatcher",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Pacific_slope_Flycatcher}"
+          "source": "#{birds_arff/pacific_slope_flycatcher}"
         },
         {
           "name": "Red.breasted.Nuthatch",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Red_breasted_Nuthatch}"
+          "source": "#{birds_arff/red_breasted_nuthatch}"
         },
         {
           "name": "Dark.eyed.Junco",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Dark_eyed_Junco}"
+          "source": "#{birds_arff/dark_eyed_junco}"
         },
         {
           "name": "Olive.sided.Flycatcher",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Olive_sided_Flycatcher}"
+          "source": "#{birds_arff/olive_sided_flycatcher}"
         },
         {
           "name": "Hermit.Thrush",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Hermit_Thrush}"
+          "source": "#{birds_arff/hermit_thrush}"
         },
         {
           "name": "Chestnut.backed.Chickadee",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Chestnut_backed_Chickadee}"
+          "source": "#{birds_arff/chestnut_backed_chickadee}"
         },
         {
           "name": "Varied.Thrush",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Varied_Thrush}"
+          "source": "#{birds_arff/varied_thrush}"
         },
         {
           "name": "Hermit.Warbler",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Hermit_Warbler}"
+          "source": "#{birds_arff/hermit_warbler}"
         },
         {
           "name": "Swainson.s.Thrush",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Swainson_s_Thrush}"
+          "source": "#{birds_arff/swainson_s_thrush}"
         },
         {
           "name": "Hammond.s.Flycatcher",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Hammond_s_Flycatcher}"
+          "source": "#{birds_arff/hammond_s_flycatcher}"
         },
         {
           "name": "Western.Tanager",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Western_Tanager}"
+          "source": "#{birds_arff/western_tanager}"
         },
         {
           "name": "Black.headed.Grosbeak",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Black_headed_Grosbeak}"
+          "source": "#{birds_arff/black_headed_grosbeak}"
         },
         {
           "name": "Golden.Crowned.Kinglet",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Golden_Crowned_Kinglet}"
+          "source": "#{birds_arff/golden_crowned_kinglet}"
         },
         {
           "name": "Warbling.Vireo",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Warbling_Vireo}"
+          "source": "#{birds_arff/warbling_vireo}"
         },
         {
           "name": "MacGillivray.s.Warbler",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/MacGillivray_s_Warbler}"
+          "source": "#{birds_arff/macgillivray_s_warbler}"
         },
         {
           "name": "Stellar.s.Jay",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Stellar_s_Jay}"
+          "source": "#{birds_arff/stellar_s_jay}"
         },
         {
           "name": "Common.Nighthawk",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{birds_arff/Common_Nighthawk}"
+          "source": "#{birds_arff/common_nighthawk}"
         }
       ]
     }

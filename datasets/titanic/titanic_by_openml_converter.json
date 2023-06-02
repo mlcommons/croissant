@@ -27,93 +27,93 @@
   ],
   "recordSet": [
     {
-      "name": "Titanic",
+      "name": "titanic",
       "@type": "ml:RecordSet",
-      "source": "#{Titanic_arff}",
+      "source": "#{titanic_arff}",
       "field": [
         {
           "name": "pclass",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{Titanic_arff/pclass}"
+          "source": "#{titanic_arff/pclass}"
         },
         {
           "name": "survived",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "source": "#{Titanic_arff/survived}"
+          "source": "#{titanic_arff/survived}"
         },
         {
           "name": "name",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/name}"
+          "source": "#{titanic_arff/name}"
         },
         {
           "name": "sex",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/sex}"
+          "source": "#{titanic_arff/sex}"
         },
         {
           "name": "age",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{Titanic_arff/age}"
+          "source": "#{titanic_arff/age}"
         },
         {
           "name": "sibsp",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{Titanic_arff/sibsp}"
+          "source": "#{titanic_arff/sibsp}"
         },
         {
           "name": "parch",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{Titanic_arff/parch}"
+          "source": "#{titanic_arff/parch}"
         },
         {
           "name": "ticket",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/ticket}"
+          "source": "#{titanic_arff/ticket}"
         },
         {
           "name": "fare",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{Titanic_arff/fare}"
+          "source": "#{titanic_arff/fare}"
         },
         {
           "name": "cabin",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/cabin}"
+          "source": "#{titanic_arff/cabin}"
         },
         {
           "name": "embarked",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/embarked}"
+          "source": "#{titanic_arff/embarked}"
         },
         {
           "name": "boat",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/boat}"
+          "source": "#{titanic_arff/boat}"
         },
         {
           "name": "body",
           "@type": "ml:Field",
           "dataType": "Number",
-          "source": "#{Titanic_arff/body}"
+          "source": "#{titanic_arff/body}"
         },
         {
           "name": "home.dest",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{Titanic_arff/home_dest}"
+          "source": "#{titanic_arff/home_dest}"
         }
       ]
     }

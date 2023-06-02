@@ -61,7 +61,7 @@
       "name": "anneal",
       "@type": "ml:RecordSet",
       "source": "#{anneal_arff}",
-      "key": ["#{anneal_arff/family}", "#{anneal_arff/product_type}"],
+      "key": ["#{family}",  "#{product_type}"],
       "field": [
         {
           "name": "family",
@@ -70,10 +70,10 @@
           "source": "#{anneal_arff/family}"
         },
         {
-          "name": "product-type",
+          "name": "product_type",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_arff/product_type}"
+          "source": "#{anneal_arff/product-type}"
         },
         {
           "name": "steel",
@@ -118,22 +118,22 @@
           "source": "#{anneal_arff/strength}"
         },
         {
-          "name": "non-ageing",
+          "name": "non_ageing",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_arff/non_ageing}"
+          "source": "#{anneal_arff/non-ageing}"
         },
         {
-          "name": "surface-finish",
+          "name": "surface_finish",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_arff/surface_finish}"
+          "source": "#{anneal_arff/surface-finish}"
         },
         {
-          "name": "surface-quality",
+          "name": "surface_quality",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_arff/surface_quality}"
+          "source": "#{anneal_arff/surface-quality}"
         },
         {
           "name": "enamelability",
@@ -160,10 +160,10 @@
           "source": "#{anneal_arff/bt}"
         },
         {
-          "name": "bw%2Fme",
+          "name": "bw_2fme",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_arff/bw_2Fme}"
+          "source": "#{anneal_arff/bw%2Fme}"
         },
         {
           "name": "bl",
@@ -220,10 +220,10 @@
           "source": "#{anneal_arff/corr}"
         },
         {
-          "name": "blue%2Fbright%2Fvarn%2Fclean",
+          "name": "blue_2fbright_2fvarn_2fclean",
           "@type": "ml:Field",
           "dataType": "Text",
-          "source": "#{anneal_arff/blue_2Fbright_2Fvarn_2Fclean}"
+          "source": "#{anneal_arff/blue%2Fbright%2Fvarn%2Fclean}"
         },
         {
           "name": "lustre",

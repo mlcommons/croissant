@@ -30,7 +30,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     distributions = [
         _file_object(name=_ds(field="name"), url=_ds(field="url"), md5=_ds(field="md5_checksum"))
     ]
-    distribution_source = _replace_special_chars(distributions[0]["name"])
+    distribution_source = _sanitize_name_string(distributions[0]["name"])
     croissant = {
         "@context": {
             "@vocab": "https://schema.org/",
@@ -61,16 +61,17 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         "distribution": distributions,
         "recordSet": [
             {
-                "name": _ds(field="name", transform=_replace_special_chars),
+                "name": _ds(field="name", transform=_sanitize_name_string),
                 "@type": "ml:RecordSet",
                 "source": f"#{{{distribution_source}}}",
                 "key": _row_identifier(openml_features, distribution_source),
                 "field": [
                     {
-                        "name": feat["name"],
+                        "name": _sanitize_name_string(feat["name"]),
                         "@type": "ml:Field",
                         "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
-                        "source": f"#{{{distribution_source}/{_replace_special_chars(feat['name'])}"
+                        "source": f"#{{{distribution_source}/{feat['name']}"
+                                  # TODO: handling special characters such as '/' in column names
                         "}",
                     }
                     for feat in openml_features
@@ -120,8 +121,8 @@ def _get_field(
     return val
 
 
-def _replace_special_chars(name: str) -> str:
-    """Replace special characters with underscores.
+def _sanitize_name_string(name: str) -> str:
+    """Replace special characters with underscores, and transform to lower case.
 
     Args:
         name: a name of a json-ld object.
@@ -129,7 +130,7 @@ def _replace_special_chars(name: str) -> str:
     Returns:
         a sanitized version of the name
     """
-    return re.sub("[^A-Za-z0-9]", "_", name)
+    return re.sub("[^A-Za-z0-9]", "_", name).lower()
 
 
 def _person(name: str) -> dict | None:
@@ -249,7 +250,7 @@ def _row_identifier(
         A list of feature names, a single feature name, or None.
     """
     row_identifiers = [
-        f"#{{{distribution_source}/{_replace_special_chars(f['name'])}}}"
+        f"#{{{_sanitize_name_string(f['name'])}}}"
         for f in openml_features
         if f["is_row_identifier"] == "true"
     ]
