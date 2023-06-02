@@ -1,0 +1,111 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "wd": "https://www.wikidata.org/wiki/Q",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@id"
+    },
+    "field": {
+      "@id": "ml:Field",
+      "@type": "@id"
+    },
+    "recordSet": {
+      "@id": "ml:RecordSet",
+      "@type": "@id"
+    }
+  },
+  "@type": "sc:Dataset",
+  "@language": "en",
+  "name": "Oxford 102 Category Flower",
+  "url": "https://www.robots.ox.ac.uk/~vgg/data/flowers/102/",
+  "description": "A dataset of 102 flower categories commonly occurring in the United Kingdom. Each class consists of between 40 and 258 images. The images have large scale, pose and light variations. In addition, there are categories that have large variations within the category and several very similar categories.",
+  "citation": "@InProceedings{Nilsback08,\nauthor = \"Nilsback, M-E. and Zisserman, A.\",\ntitle = \"Automated Flower Classification over a Large Number of Classes\",\nbooktitle = "Proceedings of the Indian Conference on Computer Vision, Graphics and Image Processing\",\nyear = \"2008\",\nmonth = \"Dec\"\n}",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "102flowers.tgz",
+      "contentUrl": "https://www.robots.ox.ac.uk/~vgg/data/flowers/102/102flowers.tgz",
+      "contentSize": "344862509 B",
+      "sha256": "",
+      "encodingFormat": "application/gzip"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "imagelabels.mat",
+      "contentUrl": "https://www.robots.ox.ac.uk/~vgg/data/flowers/102/imagelabels.mat",
+      "contentSize": "502 B",
+      "sha256": "",
+      "encodingFormat": "application/octet-stream"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "setid.mat",
+      "contentUrl": "https://www.robots.ox.ac.uk/~vgg/data/flowers/102/setid.mat",
+      "contentSize": "14989 B",
+      "sha256": "",
+      "encodingFormat": "application/octet-stream"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "image-files",
+      "containedIn": [
+        "#{102flowers.tgz}"
+      ],
+      "includes": "jpg/*.jpg",
+      "encodingFormat": "image/jpeg"
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "images",
+      "@type": "ml:RecordSet",
+      "source": "#{image-files}",
+      "key": "#{img_id}",
+      "field": [
+        {
+          "name": "img_id",
+          "@type": "ml:Field",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "data": "#{image-files/filename}",
+            "applyTransform": {
+              "regex": "jpg/image_(\\d+)\\.jpg"
+            }
+          }
+        },
+        {
+          "name": "image_content",
+          "@type": "ml:Field",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        },
+        {
+          "name": "label",
+          "@type": "ml:Field",
+          "description": "The image label.",
+          "dataType": "",
+          "source": "#{imagelabels.mat/labels}[img_id - 1]"
+        },
+        {
+          "name": "split",
+          "@type": "ml:Field",
+          "dataType": [
+            "sc:Text",
+            "wd:3985153"
+          ],
+          "source": "lookup(img_id)",
+          "source_lookup": {
+            "train": "#{setid.mat/trnid}",
+            "test": "#{setid.mat/tstid}",
+            "val": "#{setid.mat/valid}"
+          }
+        }
+      ]
+    }
+  ]
+}
