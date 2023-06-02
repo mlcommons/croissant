@@ -10,15 +10,13 @@
   "@type": "sc:Dataset",
   "name": "Enum example",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
-  "url": "https://example.com/dataset/enum/about",
-  "citation": "@article{nash51, author = \"Nash, John\", title  = \"Non-cooperative Games\", journal = \"Annals of Mathematics\", year = 1951, volume = \"54\", number = \"2\", pages  = \"286--295\"}",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://example.com/datasets/enum/about",
   "distribution": [
     {
       "@type": "sc:FileObject",
       "name": "examples-table",
-      "contentUrl": "https://example.com/dataset/enum/data.csv",
-      "sha256": "12345678901234567890123456789012",
+      "contentUrl": "https://example.com/datasets/recipes/enum.csv",
+      "sha256": "5556d6d53bbe2cd41e64fd1964d9b9c620042911c9657eae8c3c2a64368d3041",
       "encodingFormat": "text/csv"
     }
   ],
