@@ -16,7 +16,7 @@
       "@type": "sc:FileObject",
       "name": "examples-table",
       "contentUrl": "https://example.com/dataset/minimal-recommended/data.csv",
-      "sha256": "0b033707ea49365a5ffdd14615825511",
+      "sha256": "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354",
       "encodingFormat": "text/csv"
     }
   ],
