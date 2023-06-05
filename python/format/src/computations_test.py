@@ -11,6 +11,7 @@ from format.src.computations import (
 from format.src.errors import Issues
 from format.src.nodes import Node
 import pytest
+from rdflib import namespace
 
 
 @pytest.mark.parametrize(
@@ -23,7 +24,11 @@ import pytest
             {"croissant_folder": epath.Path(), "url": "http://mlcommons.org"},
             "ReadCsv(node_name)",
         ),
-        (ReadField, {}, "ReadField(node_name)"),
+        (
+            ReadField,
+            {"rdf_namespace_manager": namespace.NamespaceManager},
+            "ReadField(node_name)",
+        ),
         (GroupRecordSet, {}, "GroupRecordSet(node_name)"),
     ],
 )

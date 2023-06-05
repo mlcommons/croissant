@@ -46,8 +46,9 @@ class Validator:
     def run_static_analysis(self):
         try:
             file_path, self.file = _load_file(self.file_or_file_path)
-            rdf_graph = graphs.load_rdf_graph(self.file)
-            nodes = graphs.check_rdf_graph(self.issues, rdf_graph)
+            rdf_graph, rdf_nx_graph = graphs.load_rdf_graph(self.file)
+            rdf_namespace_manager = rdf_graph.namespace_manager
+            nodes = graphs.check_rdf_graph(self.issues, rdf_nx_graph)
 
             entry_node, structure_graph = build_structure_graph(self.issues, nodes)
             # Feature toggling: do not check for MovieLens, because we need more
@@ -59,6 +60,7 @@ class Validator:
                 metadata=entry_node,
                 graph=structure_graph,
                 croissant_folder=file_path.parent,
+                rdf_namespace_manager=rdf_namespace_manager,
             )
             self.operations.check_graph()
         except Exception as exception:
