@@ -6,6 +6,8 @@ Typical usage:
 """
 
 import datetime
+from collections import OrderedDict
+
 import dateutil.parser
 
 
@@ -19,14 +21,17 @@ def deserialize_dcf_json(dct: dict[str, any]) -> dict[str, any]:
     Returns:
         a dictionary containing the proper datatypes (e.g. datetime instead of string).
     """
+    deserialized = OrderedDict()
     for field, value in dct.items():
         if field.startswith("date"):
             datetime_ = dateutil.parser.parse(value)
             if len(value) == len("YYYY-MM-DD"):
-                dct[field] = datetime_.date()
+                deserialized[field] = datetime_.date()
             else:
-                dct[field] = datetime_
-    return dct
+                deserialized[field] = datetime_
+        else:
+            deserialized[field] = value
+    return deserialized
 
 
 def serialize_dcf_json_field(obj: any) -> str:

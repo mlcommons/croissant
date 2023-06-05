@@ -4,7 +4,7 @@ import responses
 
 import main
 from fetch_openml import OPENML_URL
-from serialization import deserialize_dcf_json
+from serialization import deserialize_dcf_json, serialize_dcf_json_field
 from .test_utils import path_test_resources
 
 
@@ -16,6 +16,8 @@ def test_happy_path():
         croissant_dict_actual = main.convert(openml_identifier)
 
     filename = path_test_resources() / "dcf" / f"openml_{openml_identifier}_expected.json"
+
+    print(json.dumps(croissant_dict_actual, default=serialize_dcf_json_field))
     with open(filename, "r") as f:
         croissant_dict_expected = json.load(f, object_hook=deserialize_dcf_json)
     for expected_key, expected in croissant_dict_expected.items():

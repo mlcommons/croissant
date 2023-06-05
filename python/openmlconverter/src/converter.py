@@ -6,6 +6,7 @@ Typical usage:
 
 import datetime
 import re
+from collections import OrderedDict
 from functools import partial
 from typing import Callable
 
@@ -34,61 +35,58 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     if any(missing_fields):
         raise ValueError(f"Required fields missing: {' '.join(missing_fields)}.")
 
+    croissant = OrderedDict()
+    context = OrderedDict()
+    context["@vocab"] = "https://schema.org/"
+    context["sc"] = "https://schema.org/"
+    context["ml"] = "http://mlcommons.org/schema/"
+    context["recordSet"] = "ml:RecordSet"
+    context["field"] = "ml:Field"
+    croissant["@context"] = context
+    croissant["@type"] = "sc:Dataset"
+    croissant["@language"] = "en"
+    croissant["name"] = _ds(field="name")
+    croissant["description"] = _ds(field="description")
+    croissant["version"] = _ds(field="version")
+    croissant["creator"] = _ds(
+        field="creator",
+        transform=lambda v: [_person(p) for p in v] if isinstance(v, list) else _person(v),
+    )
+    croissant["contributor"] = _ds(field="contributor", transform=_person)
+    croissant["dateCreated"] = _ds(field="upload_date", transform=dateutil.parser.parse)
+    croissant["dateModified"] = _ds(field="processing_date", transform=dateutil.parser.parse)
+    croissant["datePublished"] = _ds(field="collection_date", transform=_lenient_date_parser)
+    croissant["inLanguage"] = _ds(field="language", transform=lambda v: langcodes.find(v).language)
+    croissant["isAccessibleForFree"] = True
+    croissant["license"] = _ds(field="licence")
+    croissant["creativeWorkStatus"] = _ds(field="status")
+    croissant["keywords"] = _ds(field="tag")
+    croissant["citation"] = _ds(field="citation")
+    croissant["sameAs"] = _ds(field="original_data_url")
+    croissant["url"] = f"https://www.openml.org/search?type=data&id={_ds(field='id')}"
+
     # For now, we only add .arff files, not the .pq file, because we do not have a checksum for .pq
     distributions = [
         _file_object(name=_ds(field="name"), url=_ds(field="url"), md5=_ds(field="md5_checksum"))
     ]
     distribution_source = _sanitize_name_string(distributions[0]["name"])
-    croissant = {
-        "@context": {
-            "@vocab": "https://schema.org/",
-            "sc": "https://schema.org/",
-            "ml": "http://mlcommons.org/schema/",
-            "recordSet": "ml:RecordSet",
-            "field": "ml:Field",
-        },
-        "@type": "sc:Dataset",
-        "@language": "en",
-        "name": _ds(field="name"),
-        "description": _ds(field="description"),
-        "version": _ds(field="version"),
-        "creator": _ds(
-            field="creator",
-            transform=lambda v: [_person(p) for p in v] if isinstance(v, list) else _person(v),
-        ),
-        "contributor": _ds(field="contributor", transform=_person),
-        "dateCreated": _ds(field="upload_date", transform=dateutil.parser.parse),
-        "dateModified": _ds(field="processing_date", transform=dateutil.parser.parse),
-        "datePublished": _ds(field="collection_date", transform=_lenient_date_parser),
-        "inLanguage": _ds(field="language", transform=lambda v: langcodes.find(v).language),
-        "isAccessibleForFree": True,
-        "license": _ds(field="licence"),
-        "creativeWorkStatus": _ds(field="status"),
-        "keywords": _ds(field="tag"),
-        "citation": _ds(field="citation"),
-        "sameAs": _ds(field="original_data_url"),
-        "url": f"https://www.openml.org/search?type=data&id={_ds(field='id')}",
-        "distribution": distributions,
-        "recordSet": [
-            {
-                "name": _ds(field="name", transform=_sanitize_name_string) + "_records",
-                "@type": "ml:RecordSet",
-                "source": f"#{{{distribution_source}}}",
-                "key": _row_identifier(openml_features, distribution_source),
-                "field": [
-                    {
-                        "name": _sanitize_name_string(feat["name"]),
-                        "@type": "ml:Field",
-                        "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
-                        "source": f"#{{{distribution_source}/{feat['name']}"
-                        # TODO: handling special characters such as '/' in column names
-                        "}",
-                    }
-                    for feat in openml_features
-                ],
-            }
-        ],
-    }
+    croissant["distribution"] = distributions
+
+    record_set = OrderedDict()
+    croissant["recordSet"] = [record_set]
+    record_set["name"] = _ds(field="name", transform=_sanitize_name_string) + "_records"
+    record_set["@type"] = "ml:RecordSet"
+    record_set["source"] = f"#{{{distribution_source}}}"
+    record_set["key"] = _row_identifier(openml_features, distribution_source)
+    record_set["field"] = []
+    for feature in openml_features:
+        field = OrderedDict()
+        record_set["field"].append(field)
+        field["name"] = _sanitize_name_string(feature["name"])
+        field["@type"] = "ml:Field"
+        field["dataType"] = _datatype(feature["data_type"], feature.get("nominal_value", None))
+        field["source"] = f"#{{{distribution_source}/{feature['name']}}}"
+        # TODO: handling special characters such as '/' in column names
     _remove_empty_values(croissant)
     return croissant
 
@@ -148,7 +146,11 @@ def _person(name: str) -> dict | None:
     """
     if not name:
         return None
-    return {"@context": "https://schema.org", "@type": "sc:Person", "name": name}
+    person = OrderedDict()
+    person["@context"] = "https://schema.org"
+    person["@type"] = "sc:Person"
+    person["name"] = name
+    return person
 
 
 def _file_object(name: str, url: str, md5: str) -> dict | None:
@@ -181,14 +183,15 @@ def _file_object(name: str, url: str, md5: str) -> dict | None:
         # see https://issues.apache.org/jira/browse/PARQUET-1889
     else:
         raise ValueError(f"Unrecognized file extension in url: {url}")
-    return {
-        "name": f"{name}_{type_}",
-        "@type": "sc:FileObject",
-        "contentUrl": url,
-        "encodingFormat": mimetype,
-        "md5": md5
-        # TODO: add sameAs (other distribution)?
-    }
+    file_object = OrderedDict()
+    file_object["name"] = f"{name}_{type_}"
+    file_object["@type"] = "sc:FileObject"
+    file_object["contentUrl"] = url
+    file_object["encodingFormat"] = mimetype
+    file_object["md5"] = md5
+
+    # TODO: add sameAs (other distribution)?
+    return file_object
 
 
 def _datatype(openml_datatype: str, nominal_values: list[str] | None) -> str:
