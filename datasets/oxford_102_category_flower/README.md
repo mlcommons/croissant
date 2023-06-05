@@ -1,4 +1,4 @@
-WARNING: `metadata.json` is  incomplete and does not fully defines the Oxford 102 category flower dataset. It lacks:
+WARNING: `metadata.json` is  incomplete and does not fully define the Oxford 102 category flower dataset. It lacks:
 
  - Image segmentations
  - &Chi2 distances

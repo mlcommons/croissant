@@ -3,6 +3,7 @@
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
+    "mldef": "http://mlcommons.org/definitions/",
     "wd": "https://www.wikidata.org/wiki/Q",
     "dataType": {
       "@id": "ml:dataType",
@@ -157,6 +158,43 @@
   ],
   "recordSet": [
     {
+      "@type": "ml:RecordSet",
+      "name": "split_enums",
+      "description": "Maps split names to semantic values.",
+      "key": "#{name}",
+      "field": [
+        {
+          "name": "name",
+          "description": "One of: train, val, test.",
+          "@type": "ml:Field",
+          "dataType": "sc:Text"
+        },
+        {
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "@type": "ml:Field",
+          "dataType": [
+            "sc:Url",
+            "wd:3985153"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "name": "train",
+          "url": "mldef:training_split"
+        },
+        {
+          "name": "val",
+          "url": "mldef:validation_split"
+        },
+        {
+          "name": "test",
+          "url": "mldef:test_split"
+        }
+      ]
+    },
+    {
       "name": "images",
       "@type": "ml:RecordSet",
       "source": "#{image-files}",
@@ -188,7 +226,8 @@
             "applyTransform": {
               "regex": "^(train|val|test)2014.zip/.+2014/.*\\.jpg$"
             }
-          }
+          },
+          "references": "#{split_enums}"
         }
       ]
     }
