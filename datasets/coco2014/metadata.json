@@ -30,7 +30,7 @@
   "distribution": [
     {
       "@type": "sc:FileObject",
-      "name": "train_images_zip",
+      "name": "train2014.zip",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
       "contentSize": " B",
       "sha256": "",
@@ -38,7 +38,7 @@
     },
     {
       "@type": "sc:FileObject",
-      "name": "val_images_zip",
+      "name": "val2014.zip",
       "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
       "contentSize": " B",
       "sha256": "",
@@ -46,7 +46,7 @@
     },
     {
       "@type": "sc:FileObject",
-      "name": "test_images_zip",
+      "name": "test2014.zip",
       "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
       "contentSize": " B",
       "sha256": "",
@@ -54,25 +54,14 @@
     },
     {
       "@type": "sc:FileSet",
-      "name": "images",
+      "name": "image-files",
       "containedIn": [
-        "#{train_images_zip}",
-        "#{val_images_zip}",
-        "#{test_images_zip}"
+        "#{train2014.zip}",
+        "#{val2014.zip}",
+        "#{test2014.zip}"
       ],
-      "includes": "(train|val|test)2014/*.jpg",
-      "encodingFormat": "image/jpeg",
-      "splits": [
-        {
-          "@type": "ml:Split",
-          "name": {
-            "data": "filename",
-            "applyTransform": {
-              "regex": "(train|val|test)2014/.*\\.jpg"
-            }
-          }
-        }
-      ]
+      "includes": "*.jpg",
+      "encodingFormat": "image/jpeg"
     },
     {
       "@type": "sc:FileObject",
@@ -162,6 +151,44 @@
         {
           "@type": "ml:Split",
           "name": "test"
+        }
+      ]
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "images",
+      "@type": "ml:RecordSet",
+      "source": "#{image-files}",
+      "key": "#{img_id}",
+      "field": [
+        {
+          "name": "image_filename",
+          "@type": "ml:Field",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": "#{image-files/filename}"
+        },
+        {
+          "name": "image_content",
+          "@type": "ml:Field",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        },
+        {
+          "name": "split",
+          "@type": "ml:Field",
+          "dataType": [
+            "sc:Text",
+            "wd:3985153"
+          ],
+          "source": {
+            "data": "#{image-files/fullpath}",
+            "applyTransform": {
+              "regex": "^(train|val|test)2014.zip/.+2014/.*\\.jpg$"
+            }
+          }
         }
       ]
     }
