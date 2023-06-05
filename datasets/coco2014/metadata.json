@@ -66,7 +66,7 @@
     },
     {
       "@type": "sc:FileObject",
-      "name": "trainval_annotations_zip",
+      "name": "annotations_trainval2014.zip",
       "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
       "contentSize": " B",
       "sha256": "",
@@ -76,7 +76,7 @@
       "@type": "sc:FileSet",
       "name": "caption_annotations-files",
       "containedIn": [
-        "#{trainval_annotations_zip}"
+        "#{annotations_trainval2014.zip}"
       ],
       "includes": "annotations/captions_(val|train)2014.json",
       "encodingFormat": "application/json"
@@ -85,7 +85,7 @@
       "@type": "sc:FileSet",
       "name": "person_keypoints_annotations",
       "containedIn": [
-        "#{trainval_annotations_zip}"
+        "#{annotations_trainval2014.zip}"
       ],
       "includes": "annotations/person_keypoints_(val|train)2014.json",
       "encodingFormat": "application/json"
@@ -94,14 +94,14 @@
       "@type": "sc:FileSet",
       "name": "instancesperson_keypoints_annotations",
       "containedIn": [
-        "#{trainval_annotations_zip}"
+        "#{annotations_trainval2014.zip}"
       ],
       "includes": "annotations/instances_(val|train)2014.json",
       "encodingFormat": "application/json"
     },
     {
       "@type": "sc:FileObject",
-      "name": "test_imageinfo_zip",
+      "name": "image_info_test2014.zip",
       "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
       "contentSize": " B",
       "sha256": "",
@@ -111,7 +111,7 @@
       "@type": "sc:FileSet",
       "name": "imageinfo",
       "containedIn": [
-        "#{test_imageinfo_zip}"
+        "#{image_info_test2014.zip}"
       ],
       "includes": "annotations/image_info_test.json",
       "encodingFormat": "application/json"
