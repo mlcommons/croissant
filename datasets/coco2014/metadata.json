@@ -74,23 +74,12 @@
     },
     {
       "@type": "sc:FileSet",
-      "name": "caption_annotations",
+      "name": "caption_annotations-files",
       "containedIn": [
         "#{trainval_annotations_zip}"
       ],
       "includes": "annotations/captions_(val|train)2014.json",
-      "encodingFormat": "application/json",
-      "splits": [
-        {
-          "@type": "ml:Split",
-          "name": {
-            "data": "filename",
-            "applyTransform": {
-              "regex": ".*_(val|train)2014\\.json$"
-            }
-          }
-        }
-      ]
+      "encodingFormat": "application/json"
     },
     {
       "@type": "sc:FileSet",
@@ -99,18 +88,7 @@
         "#{trainval_annotations_zip}"
       ],
       "includes": "annotations/person_keypoints_(val|train)2014.json",
-      "encodingFormat": "application/json",
-      "splits": [
-        {
-          "@type": "ml:Split",
-          "name": {
-            "data": "filename",
-            "applyTransform": {
-              "regex": ".*_(val|train)2014\\.json$"
-            }
-          }
-        }
-      ]
+      "encodingFormat": "application/json"
     },
     {
       "@type": "sc:FileSet",
@@ -119,18 +97,7 @@
         "#{trainval_annotations_zip}"
       ],
       "includes": "annotations/instances_(val|train)2014.json",
-      "encodingFormat": "application/json",
-      "splits": [
-        {
-          "@type": "ml:Split",
-          "name": {
-            "data": "filename",
-            "applyTransform": {
-              "regex": ".*_(val|train)2014\\.json$"
-            }
-          }
-        }
-      ]
+      "encodingFormat": "application/json"
     },
     {
       "@type": "sc:FileObject",
@@ -147,13 +114,7 @@
         "#{test_imageinfo_zip}"
       ],
       "includes": "annotations/image_info_test.json",
-      "encodingFormat": "application/json",
-      "splits": [
-        {
-          "@type": "ml:Split",
-          "name": "test"
-        }
-      ]
+      "encodingFormat": "application/json"
     }
   ],
   "recordSet": [
@@ -225,6 +186,50 @@
             "data": "#{image-files/fullpath}",
             "applyTransform": {
               "regex": "^(train|val|test)2014.zip/.+2014/.*\\.jpg$"
+            }
+          },
+          "references": "#{split_enums}"
+        }
+      ]
+    },
+    {
+      "name": "captions",
+      "@type": "ml:RecordSet",
+      "source": "#{caption_annotations-files/annotations}",
+      "key": "#{id}",
+      "field": [
+        {
+          "name": "id",
+          "@type": "ml:Field",
+          "description": "The ID of the caption",
+          "dataType": "sc:Integer",
+          "source": "#{id}"
+        },
+        {
+          "name": "image_id",
+          "@type": "ml:Field",
+          "description": "The ID of the image",
+          "dataType": "sc:Integer",
+          "source": "#{image_id}"
+        },
+        {
+          "name": "caption",
+          "@type": "ml:Field",
+          "description": "The caption",
+          "dataType": ["sc:Integer", "wd:18585177"],
+          "source": "#{caption}"
+        },
+        {
+          "name": "split",
+          "@type": "ml:Field",
+          "dataType": [
+            "sc:Text",
+            "wd:3985153"
+          ],
+          "source": {
+            "data": "#caption_annotations-files/filename}",
+            "applyTransform": {
+              "regex": ".*_(val|train)2014\\.json$"
             }
           },
           "references": "#{split_enums}"
