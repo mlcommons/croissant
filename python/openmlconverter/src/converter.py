@@ -14,6 +14,7 @@ import langcodes
 
 
 REQUIRED_FIELDS = ("name", "description")
+BOOLEAN_STRING_VALUES = ({"TRUE", "FALSE"}, {"0", "1"})
 
 
 def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
@@ -190,7 +191,7 @@ def _file_object(name: str, url: str, md5: str) -> dict | None:
     }
 
 
-def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
+def _datatype(openml_datatype: str, nominal_values: list[str] | None) -> str:
     """
     Convert the datatype according to OpenML to a schema.org datatype.
 
@@ -198,7 +199,7 @@ def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
 
     Args:
         openml_datatype: The datatype according to OpenML
-        nominal_value: An optional list of strings with the possible values.
+        nominal_values: An optional list of strings with the possible values.
 
     Returns:
         The schema.org datatype.
@@ -206,9 +207,10 @@ def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
     Raises:
         ValueError: Unknown datatype: [openml_datatype].
     """
-    if nominal_value:
-        if set(nominal_value) == {"TRUE", "FALSE"} or set(nominal_value) == {"0", "1"}:
-            return "Boolean"
+    if nominal_values and any(
+        set(nominal_values).issubset(booleans) for booleans in BOOLEAN_STRING_VALUES
+    ):
+        return "Boolean"
     d_type = {
         "numeric": "Number",
         "string": "Text",
@@ -257,9 +259,7 @@ def _row_identifier(
     ]
     if len(row_identifiers) > 1:
         return row_identifiers
-    elif len(row_identifiers) == 1:
-        return row_identifiers[0]
-    return None
+    return next(iter(row_identifiers), None)
 
 
 def _lenient_date_parser(value: str) -> datetime.date | datetime.datetime:
@@ -278,7 +278,7 @@ def _lenient_date_parser(value: str) -> datetime.date | datetime.datetime:
     Raises:
         dateutil.parser.ParserError: Unknown date/datetime format.
     """
-    if len(value) == 4 and (value.startswith("19") or value.startswith("20")):
+    if len(value) == len("YYYY") and (value.startswith("19") or value.startswith("20")):
         year = int(value)
         return datetime.date(year, 1, 1)
     return dateutil.parser.parse(value)

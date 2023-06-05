@@ -22,7 +22,7 @@ def deserialize_dcf_json(dct: dict[str, any]) -> dict[str, any]:
     for field, value in dct.items():
         if field.startswith("date"):
             datetime_ = dateutil.parser.parse(value)
-            if len(value) == 10:
+            if len(value) == len("YYYY-MM-DD"):
                 dct[field] = datetime_.date()
             else:
                 dct[field] = datetime_
