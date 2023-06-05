@@ -14,7 +14,7 @@
   "distribution": [
     {
       "@type": "sc:FileObject",
-      "name": "examples-table",
+      "name": "enum.csv",
       "contentUrl": "https://example.com/datasets/recipes/enum.csv",
       "sha256": "52121a5df209dc2d63069710923e25f769d380a1388d00798e84d432c54fd934",
       "encodingFormat": "text/csv"
@@ -50,7 +50,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "examples",
-      "source": "#{examples-table}",
+      "source": "#{enum.csv}",
       "description": "Records extracted from the examples table, with their schema.",
       "field": [
         {
@@ -58,14 +58,14 @@
           "@type": "ml:Field",
           "dataType": "sc:Text",
           "description": "The first column contains the name of the object.",
-          "references": "#{examples-table/name}"
+          "references": "#{enum.csv/name}"
         },
         {
           "name": "direction",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
           "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
-          "source": "#{examples-table/direction}",
+          "source": "#{enum.csv/direction}",
           "references": "#{direction_enums}"
         }
       ]
