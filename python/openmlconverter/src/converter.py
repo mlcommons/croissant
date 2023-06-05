@@ -145,7 +145,7 @@ def _person(name: str) -> dict | None:
         A dictionary with json-ld fields for a schema.org Person, or None if the name is not
         present.
     """
-    if name is None or name == "":
+    if not name:
         return None
     return {"@context": "https://schema.org", "@type": "sc:Person", "name": name}
 
@@ -168,7 +168,7 @@ def _file_object(name: str, url: str, md5: str) -> dict | None:
     Raises:
         ValueError: Unrecognized file extension in url: [url].
     """
-    if url is None:
+    if not url:
         return None
 
     if url.endswith(".arff"):
@@ -206,7 +206,7 @@ def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
     Raises:
         ValueError: Unknown datatype: [openml_datatype].
     """
-    if nominal_value is not None:
+    if nominal_value:
         if set(nominal_value) == {"TRUE", "FALSE"} or set(nominal_value) == {"0", "1"}:
             return "Boolean"
     d_type = {
