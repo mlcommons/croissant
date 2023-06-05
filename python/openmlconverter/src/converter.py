@@ -37,12 +37,15 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
 
     croissant = OrderedDict()
     context = OrderedDict()
+    croissant["@context"] = context
     context["@vocab"] = "https://schema.org/"
     context["sc"] = "https://schema.org/"
     context["ml"] = "http://mlcommons.org/schema/"
     context["recordSet"] = "ml:RecordSet"
     context["field"] = "ml:Field"
-    croissant["@context"] = context
+    context["dataType"] = "ml:dataType"
+    context["source"] = "ml:source"
+
     croissant["@type"] = "sc:Dataset"
     croissant["@language"] = "en"
     croissant["name"] = _ds(field="name")

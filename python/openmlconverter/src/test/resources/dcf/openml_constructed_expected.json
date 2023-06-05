@@ -4,7 +4,9 @@
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
     "recordSet": "ml:RecordSet",
-    "field": "ml:Field"
+    "field": "ml:Field",
+    "dataType": "ml:dataType",
+    "source": "ml:source"
   },
   "@type": "sc:Dataset",
   "@language": "en",
