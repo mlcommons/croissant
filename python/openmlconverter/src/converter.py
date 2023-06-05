@@ -5,6 +5,7 @@ Typical usage:
 """
 
 import datetime
+import os
 import re
 from collections import OrderedDict
 from functools import partial
@@ -69,10 +70,8 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     croissant["url"] = f"https://www.openml.org/search?type=data&id={_ds(field='id')}"
 
     # For now, we only add .arff files, not the .pq file, because we do not have a checksum for .pq
-    distributions = [
-        _file_object(name=_ds(field="name"), url=_ds(field="url"), md5=_ds(field="md5_checksum"))
-    ]
-    distribution_source = _sanitize_name_string(distributions[0]["name"])
+    distributions = [_file_object(url=_ds(field="url"), md5=_ds(field="md5_checksum"))]
+    distribution_source = distributions[0]["name"]
     croissant["distribution"] = distributions
 
     record_set = OrderedDict()
@@ -156,7 +155,7 @@ def _person(name: str) -> dict | None:
     return person
 
 
-def _file_object(name: str, url: str, md5: str) -> dict | None:
+def _file_object(url: str, md5: str) -> dict | None:
     """
     A dictionary with json-ld fields for a FileObject.
 
@@ -164,7 +163,6 @@ def _file_object(name: str, url: str, md5: str) -> dict | None:
     https://schema.org/CreativeWork.
 
     Args:
-        name: The name of the FileObject
         url: The url of the FileObject
         md5: The md5 checksum of the FileObject
 
@@ -176,18 +174,16 @@ def _file_object(name: str, url: str, md5: str) -> dict | None:
     """
     if not url:
         return None
-
-    if url.endswith(".arff"):
-        type_ = "arff"
+    filename = os.path.split(url)[-1]
+    if filename.endswith(".arff"):
         mimetype = "text/plain"  # No official arff mimetype exists
-    elif url.endswith(".pq"):
-        type_ = "parquet"
+    elif filename.endswith(".pq"):
         mimetype = "application/vnd.apache.parquet"  # Not an official mimetype yet
         # see https://issues.apache.org/jira/browse/PARQUET-1889
     else:
         raise ValueError(f"Unrecognized file extension in url: {url}")
     file_object = OrderedDict()
-    file_object["name"] = f"{name}_{type_}"
+    file_object["name"] = filename
     file_object["@type"] = "sc:FileObject"
     file_object["contentUrl"] = url
     file_object["encodingFormat"] = mimetype
