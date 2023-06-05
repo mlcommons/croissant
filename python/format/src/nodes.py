@@ -134,6 +134,7 @@ class Node:
             with issues.context(field_name=name):
                 return Field(
                     *args,
+                    data_type=properties.get("data_type"),
                     description=properties.get("description"),
                     has_sub_fields=properties.get("has_sub_fields"),
                     references=properties.get("references"),
@@ -404,7 +405,7 @@ class Field(Node):
     source: Source = dataclasses.field(default_factory=Source)
 
     def __post_init__(self):
-        self.assert_has_mandatory_properties("name")
+        self.assert_has_mandatory_properties("data_type", "name")
         self.assert_has_optional_properties("description")
         # TODO(marcenacp): check that `data` has the expected form if it exists.
 
