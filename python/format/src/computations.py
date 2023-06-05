@@ -37,10 +37,6 @@ def _get_hash(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()
 
 
-def _tmp_column_name(original_name: str) -> str:
-    return f"{original_name}_{_get_hash(original_name)}"
-
-
 def _get_download_filepath(url: str) -> epath.Path:
     hashed_url = _get_hash(url)
     _DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
@@ -207,6 +203,14 @@ class InitOperation(Operation):
         logging.info("Setting up generation for dataset: %s", self.node.uid)
 
 
+def _is_url(url: str) -> bool:
+    """Tests whether a URL is valid.
+
+    The current version is very loose and only supports the HTTP protocol.
+    """
+    return url.startswith("http://") or url.startswith("https://")
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Download(FileOperation):
     """Downloads from a URL to the disk."""
@@ -214,6 +218,13 @@ class Download(FileOperation):
     url: str
 
     def __call__(self):
+        if not _is_url(self.url):
+            assert self.url.startswith("data/"), (
+                'Local file "{self.node.uid}" should point to a file within the data/'
+                ' folder next to the JSON-LD Croissant file. But got: "{self.url}"'
+            )
+            # No need to download local files
+            return
         filepath = _get_download_filepath(self.url)
         if not filepath.exists():
             response = requests.get(self.url, stream=True, timeout=10)
@@ -282,9 +293,18 @@ class ReadCsv(FileOperation):
     """Reads from a CSV file and yield lines."""
 
     url: str
+    croissant_folder: epath.Path
 
     def __call__(self):
-        filepath = _get_download_filepath(self.url)
+        if _is_url(self.url):
+            filepath = _get_download_filepath(self.url)
+        else:
+            # Read from the local path
+            filepath = self.croissant_folder / self.url
+            assert filepath.exists(), (
+                f'In node "{self.node.uid}", file "{self.url}" is either an invalid URL'
+                " or an invalid path."
+            )
         with filepath.open("rb") as csvfile:
             return pd.read_csv(csvfile)
 
@@ -318,13 +338,20 @@ class Join(LineOperation):
         if len(args) == 1:
             return args[0]
         elif len(args) == 2:
+            assert left.reference is not None, (
+                f'Reference for "{self.node.uid}" is None. It should be a valid'
+                " reference."
+            )
+            left_key = left.reference[1]
+            right_key = right.reference[1]
+            # A priori, we cannot know which one is left and which one is right, because
+            # topological sort is not reproducible in some case.
             df_left, df_right = args
+            if left_key not in df_left.columns or right_key not in df_right.columns:
+                df_left, df_right = df_right, df_left
             assert (
                 len(left.reference) == 2
             ), "JOIN operation does not define a column name."
-            left_key = left.reference[1]
-            right_key = right.reference[1]
-            new_left_key = _tmp_column_name(left.reference[1])
             assert left_key in df_left.columns, (
                 f'Column "{left_key}" does not exist in node "{left.reference[0]}".'
                 f" Existing columns: {df_left.columns}"
@@ -333,10 +360,12 @@ class Join(LineOperation):
                 f'Column "{right_key}" does not exist in node "{right.reference[0]}".'
                 f" Existing columns: {df_right.columns}"
             )
-            df_left[new_left_key] = df_left[left_key].transform(
+            df_left[left_key] = df_left[left_key].transform(
                 apply_transform_fn, source=left
             )
-            return df_left.set_index(new_left_key).join(df_right.set_index(right_key))
+            return df_left.merge(
+                df_right, left_on=left_key, right_on=right_key, how="left"
+            )
         else:
             raise NotImplementedError(
                 f"Unsupported: Trying to joing {len(args)} pd.DataFrames."
@@ -403,20 +432,21 @@ def _add_operations_for_field_with_source(
     # Attach the field to a record set
     record_set = _find_record_set(graph, node)
     group_record_set = GroupRecordSet(node=record_set)
-    join = None
+    parent_node = graph.nodes[node].get("parent")
+    join = Join(node=parent_node)
+    # `Join()` takes left=Source and right=Source as kwargs.
     if node.references is not None and len(node.references.reference) > 1:
-        parent_node = graph.nodes[node].get("parent")
-        join = Join(node=parent_node)
-        # `Join()` takes left=Source and right=Source as kwargs.
         kwargs = {
             "left": node.source,
             "right": node.references,
         }
         operations.add_node(join, kwargs=kwargs)
-        operations.add_edge(join, group_record_set)
-    operation = join if join is not None else group_record_set
+    else:
+        # Else, we add a dummy JOIN operation.
+        operations.add_node(join)
+    operations.add_edge(join, group_record_set)
     for predecessor in graph.predecessors(node):
-        operations.add_edge(last_operation[predecessor], operation)
+        operations.add_edge(last_operation[predecessor], join)
     if len(node.source.reference) != 2:
         issues.add_error(f'Wrong source in node "{node.uid}"')
         return
@@ -447,6 +477,7 @@ def _add_operations_for_file_object(
     operations: nx.MultiDiGraph,
     last_operation: Mapping[Node, Operation],
     node: Node,
+    croissant_folder: epath.Path,
 ):
     """Adds all operations for a node of type `FileObject`.
 
@@ -480,6 +511,7 @@ def _add_operations_for_file_object(
         read_csv = ReadCsv(
             node=node,
             url=node.content_url,
+            croissant_folder=croissant_folder,
         )
         operations.add_edge(operation, read_csv)
         operation = read_csv
@@ -495,7 +527,11 @@ class ComputationGraph:
 
     @classmethod
     def from_nodes(
-        cls, issues: Issues, metadata: Node, graph: nx.MultiDiGraph
+        cls,
+        issues: Issues,
+        metadata: Node,
+        graph: nx.MultiDiGraph,
+        croissant_folder: epath.Path,
     ) -> "ComputationGraph":
         """Builds the ComputationGraph from the nodes.
 
@@ -532,10 +568,7 @@ class ComputationGraph:
                     )
             elif isinstance(node, FileObject):
                 _add_operations_for_file_object(
-                    graph,
-                    operations,
-                    last_operation,
-                    node,
+                    graph, operations, last_operation, node, croissant_folder
                 )
 
         # Attach all entry nodes to a single `start` node

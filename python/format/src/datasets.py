@@ -3,7 +3,7 @@
 from collections.abc import Mapping
 import dataclasses
 import json
-from typing import Any, Union
+from typing import Any
 
 from absl import logging
 from etils import epath
@@ -17,34 +17,35 @@ from format.src.computations import (
 )
 import networkx as nx
 
-FileOrFilePath = Union[str, epath.PathLike, dict]
 
+def _load_file(filepath: epath.PathLike) -> tuple[epath.Path, dict]:
+    """Loads the file.
 
-def _load_file(file: FileOrFilePath) -> dict:
-    if isinstance(file, str):
-        file = epath.Path(file)
-        if not file.exists():
-            raise ValueError(f"File {file} does not exist.")
-    if isinstance(file, epath.PathLike):
-        with file.open() as filedescriptor:
-            file = json.load(filedescriptor)
-    if not isinstance(file, dict):
-        raise ValueError("The file is not a valid JSON-LD, because it's not an object.")
-    return file
+    Args:
+        filepath: the path to the Croissant file.
+
+    Returns:
+        A tuple with the path to the file and the file content.
+    """
+    filepath = epath.Path(filepath).expanduser().resolve()
+    if not filepath.exists():
+        raise ValueError(f"File {filepath} does not exist.")
+    with filepath.open() as filedescriptor:
+        return filepath, json.load(filedescriptor)
 
 
 @dataclasses.dataclass
 class Validator:
     """Static analysis of the issues in the Croissant file."""
 
-    file_or_file_path: FileOrFilePath
+    file_or_file_path: epath.PathLike
     issues: errors.Issues = dataclasses.field(default_factory=errors.Issues)
     file: dict = dataclasses.field(init=False)
     operations: ComputationGraph | None = None
 
     def run_static_analysis(self):
         try:
-            self.file = _load_file(self.file_or_file_path)
+            file_path, self.file = _load_file(self.file_or_file_path)
             rdf_graph = graphs.load_rdf_graph(self.file)
             nodes = graphs.check_rdf_graph(self.issues, rdf_graph)
 
@@ -54,7 +55,10 @@ class Validator:
             if entry_node.uid == "Movielens-25M":
                 return
             self.operations = ComputationGraph.from_nodes(
-                self.issues, entry_node, structure_graph
+                issues=self.issues,
+                metadata=entry_node,
+                graph=structure_graph,
+                croissant_folder=file_path.parent,
             )
             self.operations.check_graph()
         except Exception as exception:
@@ -75,7 +79,7 @@ class Dataset:
         file: A JSON object or a path to a Croissant file (string or pathlib.Path).
     """
 
-    file: FileOrFilePath
+    file: epath.PathLike
     operations: ComputationGraph | None = None
 
     def __post_init__(self):
@@ -117,4 +121,6 @@ class Dataset:
                     logging.info('Executing "%s"', operation)
                     yield operation(*read_fields, **kwargs)
             else:
+                if isinstance(operation, ReadField) and not previous_results:
+                    break
                 results[operation] = operation(*previous_results, **kwargs)

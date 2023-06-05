@@ -1,5 +1,6 @@
 """computations_test module."""
 
+from etils import epath
 from format.src.computations import (
     Download,
     InitOperation,
@@ -17,7 +18,11 @@ import pytest
     [
         (Download, {"url": "http://mlcommons.org"}, "Download(node_name)"),
         (InitOperation, {}, "InitOperation(node_name)"),
-        (ReadCsv, {"url": "http://mlcommons.org"}, "ReadCsv(node_name)"),
+        (
+            ReadCsv,
+            {"croissant_folder": epath.Path(), "url": "http://mlcommons.org"},
+            "ReadCsv(node_name)",
+        ),
         (ReadField, {}, "ReadField(node_name)"),
         (GroupRecordSet, {}, "GroupRecordSet(node_name)"),
     ],
