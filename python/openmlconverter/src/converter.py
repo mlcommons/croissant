@@ -276,16 +276,12 @@ def _lenient_date_parser(value: str) -> datetime.date | datetime.datetime:
         A datetime if the date and time are specified, or a date if the time is not specified.
 
     Raises:
-        ValueError: Unknown date/datetime format: [format]
+        dateutil.parser.ParserError: Unknown date/datetime format.
     """
-    try:
-        dateutil.parser.parse(value)
-    except dateutil.parser.ParserError:
-        pass
     if len(value) == 4 and (value.startswith("19") or value.startswith("20")):
         year = int(value)
         return datetime.date(year, 1, 1)
-    raise ValueError(f"Unknown date/datetime format: {value}")
+    return dateutil.parser.parse(value)
 
 
 def _remove_empty_values(dct_: dict):
