@@ -13,6 +13,9 @@ import dateutil.parser
 import langcodes
 
 
+REQUIRED_FIELDS = ("name", "description")
+
+
 def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     """
     Convert an openml dataset into a DCF (Croissant) representation.
@@ -26,6 +29,10 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     """
     _ds = partial(_get_field, json_dict=openml_dataset)  # get field from openml_dataset
 
+    missing_fields = [field for field in REQUIRED_FIELDS if _ds(field=field) is None]
+    if any(missing_fields):
+        raise ValueError(f"Required fields missing: {' '.join(missing_fields)}.")
+
     # For now, we only add .arff files, not the .pq file, because we do not have a checksum for .pq
     distributions = [
         _file_object(name=_ds(field="name"), url=_ds(field="url"), md5=_ds(field="md5_checksum"))
@@ -37,12 +44,12 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
             "sc": "https://schema.org/",
             "ml": "http://mlcommons.org/schema/",
             "recordSet": "ml:RecordSet",
-            "field": "ml:Field"
+            "field": "ml:Field",
         },
         "@type": "sc:Dataset",
         "@language": "en",
-        "name": _ds(field="name", required=True),
-        "description": _ds(field="description", required=True),
+        "name": _ds(field="name"),
+        "description": _ds(field="description"),
         "version": _ds(field="version"),
         "creator": _ds(
             field="creator",
@@ -73,7 +80,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
                         "@type": "ml:Field",
                         "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
                         "source": f"#{{{distribution_source}/{feat['name']}"
-                                  # TODO: handling special characters such as '/' in column names
+                        # TODO: handling special characters such as '/' in column names
                         "}",
                     }
                     for feat in openml_features
@@ -87,9 +94,7 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     return croissant
 
 
-def _get_field(
-    json_dict: dict, field: str, transform: Callable | None = None, required: bool = False
-):
+def _get_field(json_dict: dict, field: str, transform: Callable | None = None):
     """
     Get a field from a dictionary optionally perform the transformation.
 
@@ -101,21 +106,17 @@ def _get_field(
         field: A string containing the field name
         transform: A function to be applied to the resulting value. If None, no transformation
           will be applied.
-        required: If true, an error will be thrown when the field is not present.
 
     Returns:
         The value of the field, whereby the transformation (if any) is applied, or None if the
         field is not present and not required.
 
     Raises:
-        ValueError: Required field [field] missing.
         ValueError: Unknown date/datetime formatL: [format].
         ValueError: Unrecognized file extension in url: [url].
         ValueError: Unrecognized datatype: [openml_datatype].
     """
     if field not in json_dict:
-        if required:
-            raise ValueError(f"Required field {field} missing.")
         return None
     val = json_dict[field]
     if transform is not None:
