@@ -89,4 +89,4 @@ jobs:
         echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
 
     - name: Generate JSON-LD files
-      run: python scripts/validate.py --file ../../datasets/titanic/metadata.json
+      run: python scripts/generate.py --file ../../datasets/titanic/metadata.json
