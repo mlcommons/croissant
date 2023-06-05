@@ -11,7 +11,7 @@ from format.src import constants
 from format.src.errors import Issues
 
 _MAX_ID_LENGTH = 255
-_ID_REGEX = "[a-zA-Z0-9\\-_]+"
+_ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 
 
 @dataclasses.dataclass(frozen=True)

@@ -42,7 +42,7 @@
           "name": "first-field",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source": "#{THISDOESNOTEXIST.field}"
+          "source": "#{THISDOESNOTEXIST#field}"
         }
       ]
     }

@@ -74,7 +74,7 @@ import pytest
         ],
         [
             "mlfield_bad_source.json",
-            "Malformed source data: #{THISDOESNOTEXIST.field}.",
+            "Malformed source data: #{THISDOESNOTEXIST#field}.",
         ],
     ],
 )
