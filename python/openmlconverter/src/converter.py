@@ -89,8 +89,6 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
         ],
     }
     _remove_empty_values(croissant)
-    for recordSet in croissant["recordSet"]:
-        _remove_empty_values(recordSet)
     return croissant
 
 
@@ -300,7 +298,13 @@ def _remove_empty_values(dct_: dict):
     for key, value in list(dct_.items()):
         if isinstance(value, dict):
             _remove_empty_values(value)
+            if len(value) == 0:
+                del dct_[key]
+        elif isinstance(value, list):
+            for list_item in value:
+                if isinstance(list_item, dict):
+                    _remove_empty_values(list_item)
+            if len(value) == 0:
+                del dct_[key]
         elif value is None:
-            del dct_[key]
-        elif isinstance(value, list) and len(value) == 0:
             del dct_[key]
