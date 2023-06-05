@@ -3,10 +3,18 @@
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
-    "includes": {
-      "@id": "ml:includes",
-      "@type": "@id"
-    }
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator",
+    "references": "ml:references"
   },
   "@type": "sc:Dataset",
   "@language": "en",
