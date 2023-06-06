@@ -204,7 +204,7 @@
           "name": "caption",
           "@type": "ml:Field",
           "description": "The caption",
-          "dataType": ["sc:Integer", "wd:18585177"],
+          "dataType": ["sc:Text", "wd:18585177"],
           "source": "#{caption}"
         },
         {
