@@ -13,7 +13,7 @@
   "@language": "en",
   "name": "COCO",
   "url": "https://cocodataset.org/",
-  "description": "COCO is a large-scale object detection, segmentation, and captioning dataset.",
+  "description": "COCO is a large-scale object detection, segmentation, and captioning dataset.  WARNING: `metadata.json` is incomplete and does not fully define the COCO2014 dataset. It lacks `recordSet` definitions that would enable automatic loading of all the annotations.",
   "license": [
     "Creative Commons Attribution 4.0 License",
     "https://www.flickr.com/creativecommons/"
