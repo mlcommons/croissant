@@ -1,4 +1,5 @@
 """datasets module."""
+from __future__ import annotations
 
 from collections.abc import Mapping
 import dataclasses
@@ -75,7 +76,7 @@ class Validator:
 
 @dataclasses.dataclass
 class Dataset:
-    """Iterable dataset.
+    """Python representation of a Croissant dataset.
 
     Args:
         file: A JSON object or a path to a Croissant file (string or pathlib.Path).
@@ -91,6 +92,22 @@ class Dataset:
         self.file = self.validator.file
         self.operations = self.validator.operations
 
+    def records(self, record_set: str) -> Records:
+        return Records(self, record_set)
+
+
+@dataclasses.dataclass
+class Records:
+    """Iterable set of records.
+
+    Args:
+        dataset: The parent dataset.
+        record_set: The name of the record set.
+    """
+
+    dataset: Dataset
+    record_set: str
+
     def __iter__(self):
         """Executes all operations, runs dynamic analysis and yields examples.
 
@@ -98,17 +115,24 @@ class Dataset:
         record_set.
         """
         results: Mapping[str, Any] = {}
-        for operation in nx.topological_sort(self.operations.graph):
+        operations = self.dataset.operations.graph
+        for operation in nx.topological_sort(operations):
             logging.info('Executing "%s"', operation)
-            kwargs = self.operations.graph.nodes[operation].get("kwargs", {})
+            kwargs = operations.nodes[operation].get("kwargs", {})
             previous_results = [
                 results[previous_operation]
-                for previous_operation in self.operations.graph.predecessors(operation)
+                for previous_operation in operations.predecessors(operation)
                 if previous_operation in results
                 # Filter out results that yielded `None`.
                 and results[previous_operation] is not None
             ]
             if isinstance(operation, GroupRecordSet):
+                # Only keep the record set whose name is `self.record_set`.
+                # Note: this is a short-term solution. The long-term solution is to
+                # re-compute the sub-graph of operations that is sufficient to compute
+                # `self.record_set`.
+                if operation.node.name != self.record_set:
+                    continue
                 assert len(previous_results) == 1, (
                     f'"{operation}" should have one and only one predecessor. Got:'
                     f" {len(previous_results)}."
@@ -116,7 +140,7 @@ class Dataset:
                 previous_result = previous_results[0]
                 for _, line in previous_result.iterrows():
                     read_fields = []
-                    for read_field in self.operations.graph.successors(operation):
+                    for read_field in operations.successors(operation):
                         assert isinstance(read_field, ReadField)
                         logging.info('Executing "%s"', read_field)
                         read_fields.append(read_field(line, **kwargs))

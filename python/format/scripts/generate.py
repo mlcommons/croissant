@@ -11,6 +11,12 @@ flags.DEFINE_string(
     "Path to the file to validate.",
 )
 
+flags.DEFINE_string(
+    "record_set",
+    None,
+    "The name of the record set to generate.",
+)
+
 flags.mark_flag_as_required("file")
 
 
@@ -22,9 +28,11 @@ _NUM_MAX_RECORDS = 10
 def main(argv):
     del argv
     file = FLAGS.file
+    record_set = FLAGS.record_set
     dataset = datasets.Dataset(file)
+    records = dataset.records(record_set)
     print(f"Generating the first {_NUM_MAX_RECORDS} records.")
-    for i, record in enumerate(dataset):
+    for i, record in enumerate(records):
         if i >= _NUM_MAX_RECORDS:
             break
         print(record)
