@@ -11,7 +11,16 @@ from format.src.computations import (
 from format.src.errors import Issues
 from format.src.nodes import Node
 import pytest
+import rdflib
 from rdflib import namespace
+
+node = Node(
+    issues=Issues(),
+    graph=None,
+    node=None,
+    name="node_name",
+    parent_uid="parent_name",
+)
 
 
 @pytest.mark.parametrize(
@@ -33,12 +42,17 @@ from rdflib import namespace
     ],
 )
 def test_str_representation(operation_cls, kwargs, expected_str):
-    node = Node(
-        issues=Issues(),
-        graph=None,
-        node=None,
-        name="node_name",
-        parent_uid="parent_name",
-    )
     operation = operation_cls(node=node, **kwargs)
     assert str(operation) == expected_str
+
+
+def test_find_data_type():
+    sc = rdflib.Namespace("https://schema.org/")
+    rdf_namespace_manager = namespace.NamespaceManager(rdflib.Graph())
+    rdf_namespace_manager.bind("sc", sc)
+    read_field = ReadField(node=node, rdf_namespace_manager=rdf_namespace_manager)
+    assert read_field.find_data_type("sc:Boolean") == bool
+    assert read_field.find_data_type(["sc:Boolean", "bar"]) == bool
+    assert read_field.find_data_type(["bar", "sc:Boolean"]) == bool
+    with pytest.raises(ValueError, match="Unknown data type"):
+        read_field.find_data_type("sc:Foo")
