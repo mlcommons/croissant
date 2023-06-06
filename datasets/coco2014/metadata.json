@@ -3,7 +3,6 @@
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
-    "mldef": "http://mlcommons.org/definitions/",
     "wd": "https://www.wikidata.org/wiki/Q",
     "dataType": {
       "@id": "ml:dataType",
@@ -29,6 +28,13 @@
   ],
   "citation": "@article{DBLP:journals/corr/LinMBHPRDZ14,\n  author    = {Tsung{-}Yi Lin and\n               Michael Maire and\n               Serge J. Belongie and\n               Lubomir D. Bourdev and\n               Ross B. Girshick and\n               James Hays and\n               Pietro Perona and\n               Deva Ramanan and\n               Piotr Doll{'{a}}r and\n               C. Lawrence Zitnick},\n  title     = {Microsoft {COCO:} Common Objects in Context},\n  journal   = {CoRR},\n  volume    = {abs/1405.0312},\n  year      = {2014},\n  url       = {http://arxiv.org/abs/1405.0312},\n  archivePrefix = {arXiv},\n  eprint    = {1405.0312},\n  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}",
   "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "splits.csv",
+      "contentSize": " B",
+      "sha256": "",
+      "encodingFormat": "text/csv"
+    },
     {
       "@type": "sc:FileObject",
       "name": "train2014.zip",
@@ -122,36 +128,25 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
+      "source": "#{splits.csv}",
       "key": "#{name}",
       "field": [
         {
           "name": "name",
           "description": "One of: train, val, test.",
           "@type": "ml:Field",
+          "source": "#{splits.csv/name}",
           "dataType": "sc:Text"
         },
         {
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "@type": "ml:Field",
+          "source": "#{splits.csv/url}",
           "dataType": [
             "sc:Url",
             "wd:3985153"
           ]
-        }
-      ],
-      "data": [
-        {
-          "name": "train",
-          "url": "mldef:training_split"
-        },
-        {
-          "name": "val",
-          "url": "mldef:validation_split"
-        },
-        {
-          "name": "test",
-          "url": "mldef:test_split"
         }
       ]
     },
