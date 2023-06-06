@@ -11,6 +11,7 @@ from typing import Any
 
 from absl import logging
 from etils import epath
+from format.src import constants
 from format.src.data_types import EXPECTED_DATA_TYPES
 from format.src.errors import Issues
 from format.src.nodes import (
@@ -45,12 +46,19 @@ def _get_download_filepath(url: str) -> epath.Path:
     return _DOWNLOAD_PATH / f"croissant-{hashed_url}"
 
 
-def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
+def get_entry_nodes(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     """Retrieves the entry nodes (without predecessors) in a graph."""
     entry_nodes = []
     for node, indegree in graph.in_degree(graph.nodes()):
         if indegree == 0:
             entry_nodes.append(node)
+    # Entry nodes should not be Fields:
+    for node in entry_nodes:
+        if isinstance(node, Field):
+            issues.add_error(
+                f'Node "{node.uid}" is a field and has no parent. Please, use'
+                f" {constants.ML_COMMONS_SOURCE} to specify the source."
+            )
     return entry_nodes
 
 
@@ -64,10 +72,10 @@ def _check_no_duplicate(issues: Issues, nodes: list[Node]) -> Mapping[str, Node]
     return uid_to_node
 
 
-def add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
+def add_node_as_entry_node(issues: Issues, graph: nx.MultiDiGraph, node: Node):
     """Add `node` as the entry node of the graph by updating `graph` in place."""
     graph.add_node(node, parent=None)
-    entry_nodes = get_entry_nodes(graph)
+    entry_nodes = get_entry_nodes(issues, graph)
     for entry_node in entry_nodes:
         if isinstance(node, (FileObject, FileSet)):
             graph.add_edge(entry_node, node)
@@ -157,7 +165,7 @@ def build_structure_graph(
     if metadata is None:
         issues.add_error("No metadata is defined in the dataset.")
         return None, graph
-    add_node_as_entry_node(graph, metadata)
+    add_node_as_entry_node(issues, graph, metadata)
     if not graph.is_directed():
         issues.add_error("Structure graph is not directed.")
     return metadata, graph
@@ -563,6 +571,9 @@ class ComputationGraph:
         """
         last_operation: Mapping[Node, Operation] = {}
         operations = nx.MultiDiGraph()
+        from format.src import graphs_utils
+
+        graphs_utils.pretty_print_graph(graph, simplify=True)
         # Find all fields
         for node in nx.topological_sort(graph):
             predecessors = graph.predecessors(node)
@@ -593,7 +604,7 @@ class ComputationGraph:
                 )
 
         # Attach all entry nodes to a single `start` node
-        entry_operations = get_entry_nodes(operations)
+        entry_operations = get_entry_nodes(issues, operations)
         init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)

@@ -39,68 +39,6 @@
     "recordSet": [
       {
         "@type": "ml:RecordSet",
-        "name": "gender_enums",
-        "description": "Maps gender keys (0, 1) to labeled values.",
-        "key": "#{key}",
-        "field": [
-            {
-              "name": "key",
-              "description": "0 or 1",
-              "@type": "ml:Field",
-              "dataType": "sc:Integer"
-            },
-            {
-              "name": "label",
-              "description": "Male or Female",
-              "@type": "ml:Field",
-              "dataType": ["sc:Text", "sc:name"]
-            },
-            {
-                "name": "url",
-                "description": "Corresponding WikiData URL",
-                "@type": "ml:Field",
-                "dataType": ["sc:Url", "wd:48277"]
-            }
-        ],
-        "data": [
-            { "key": 0, "label": "Male", "url": "wd:6581097" },
-            { "key": 1, "label": "Female", "url": "wd:6581072" }
-        ]
-      },
-      {
-        "@type": "ml:RecordSet",
-        "name": "ports_enums",
-        "description": "Maps Embarkation port initial to labeled values.",
-        "key": "#{key}",
-        "field": [
-            {
-              "name": "key",
-              "description": "C, Q, S or ?",
-              "@type": "ml:Field",
-              "dataType": "sc:Text"
-            },
-            {
-              "name": "label",
-              "description": "Human-readable label",
-              "@type": "ml:Field",
-              "dataType": ["sc:Text", "sc:name"]
-            },
-            {
-                "name": "url",
-                "description": "Corresponding WikiData URL",
-                "@type": "ml:Field",
-                "dataType": ["sc:Url", "wd:515"]
-            }
-        ],
-        "data": [
-            { "key": "C", "label": "Cherbourg", "url": "wd:3667188" },
-            { "key": "Q", "label": "Queenstown", "url": "wd:733093" },
-            { "key": "S", "label": "Southampton", "url": "wd:79848" },
-            { "key": "?", "label": "Unknown", "url": "wd:24238356" }
-        ]
-      },
-      {
-        "@type": "ml:RecordSet",
         "name": "passengers",
         "description": "The list of passengers. Does not include crew members.",
         "source": "#{passengers-table}",
@@ -117,8 +55,7 @@
             "description": "Gender of passenger (0: Male, 1: Female)",
             "@type": "ml:Field",
             "dataType": "sc:Text",
-            "source": "#{passengers-table/sex}",
-            "references": "#{gender_enums}"
+            "source": "#{passengers-table/sex}"
           },
           {
             "name": "age",
@@ -153,8 +90,7 @@
             "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
             "@type": "ml:Field",
             "dataType": "sc:Text",
-            "source": "#{passengers-table/embarked}",
-            "references": "#{ports_enums}"
+            "source": "#{passengers-table/embarked}"
           },
           {
             "name": "fare",
