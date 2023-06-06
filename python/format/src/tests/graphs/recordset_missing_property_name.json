@@ -37,7 +37,11 @@
       "@type": "ml:RecordSet",
       "description": "This is a record set.",
       "field": [
-          { "name": "first-field", "@type": "ml:Field", "dataType": "sc:Integer" }
+        {
+          "name": "first-field",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer"
+        }
       ]
     }
   ]

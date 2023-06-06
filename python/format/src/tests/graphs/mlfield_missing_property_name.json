@@ -38,7 +38,10 @@
       "name": "a-record-set",
       "description": "This is a record set.",
       "field": [
-          { "@type": "ml:Field", "dataType": "sc:Integer" }
+        {
+          "@type": "ml:Field",
+          "dataType": "sc:Integer"
+        }
       ]
     }
   ]
