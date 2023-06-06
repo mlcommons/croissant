@@ -63,6 +63,13 @@ import pytest
             "recordset_bad_type.json",
             'Node should have an attribute `"@type" in',
         ],
+        [
+            "recordset_missing_context_for_datatype.json",
+            (
+                'Property "http://mlcommons.org/schema/dataType" is mandatory, but does'
+                " not exist."
+            ),
+        ],
         # ML field.
         [
             "mlfield_missing_property_name.json",
