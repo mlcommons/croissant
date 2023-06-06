@@ -4,18 +4,10 @@
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
     "wd": "https://www.wikidata.org/wiki/Q",
-    "dataType": {
-      "@id": "ml:dataType",
-      "@type": "@id"
-    },
-    "field": {
-      "@id": "ml:Field",
-      "@type": "@id"
-    },
-    "recordSet": {
-      "@id": "ml:RecordSet",
-      "@type": "@id"
-    }
+    "dataType": "ml:dataType",
+    "field": "ml:Field",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet"
   },
   "@type": "sc:Dataset",
   "@language": "en",
@@ -31,6 +23,7 @@
     {
       "@type": "sc:FileObject",
       "name": "splits.csv",
+      "contentUrl": "data/splits.csv",
       "contentSize": " B",
       "sha256": "",
       "encodingFormat": "text/csv"
@@ -222,7 +215,7 @@
             "wd:3985153"
           ],
           "source": {
-            "data": "#caption_annotations-files/filename}",
+            "data": "#{caption_annotations-files/filename}",
             "applyTransform": {
               "regex": ".*_(val|train)2014\\.json$"
             }
