@@ -11,6 +11,7 @@ from typing import Any
 
 from absl import logging
 from etils import epath
+from format.src.data_types import EXPECTED_DATA_TYPES
 from format.src.errors import Issues
 from format.src.nodes import (
     concatenate_uid,
@@ -24,6 +25,7 @@ from format.src.nodes import (
 )
 import networkx as nx
 import pandas as pd
+from rdflib import namespace
 import requests
 import tqdm
 
@@ -377,6 +379,20 @@ class ReadField(LineOperation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
     node: Field
+    rdf_namespace_manager: namespace.NamespaceManager
+
+    def _cast_value(self, value: Any):
+        data_type = self.rdf_namespace_manager.expand_curie(self.node.data_type)
+        expected_data_type = EXPECTED_DATA_TYPES[data_type]
+        if pd.isna(value):
+            return value
+        try:
+            return expected_data_type(value)
+        except ValueError as exception:
+            raise ValueError(
+                f'Expected type "{expected_data_type}" for node "{self.node.uid}", but'
+                f' got: "{type(value)}" with value "{value}"'
+            ) from exception
 
     def __call__(self, series: pd.Series):
         assert len(self.node.source.reference) == 2, (
@@ -388,7 +404,9 @@ class ReadField(LineOperation):
             f'Field "{field}" does not exist. Possible fields:'
             f" {list(series.axes) if isinstance(series, pd.Series) else series.keys()}"
         )
-        return {self.node.name: series[field]}
+        value = series[field]
+        value = self._cast_value(value)
+        return {self.node.name: value}
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -420,6 +438,7 @@ def _add_operations_for_field_with_source(
     operations: nx.MultiDiGraph,
     last_operation: Mapping[Node, Operation],
     node: Field,
+    rdf_namespace_manager: namespace.NamespaceManager,
 ):
     """Adds all operations for a node of type `Field`.
 
@@ -451,7 +470,7 @@ def _add_operations_for_field_with_source(
         issues.add_error(f'Wrong source in node "{node.uid}"')
         return
     # Read/extract the field
-    read_field = ReadField(node=node)
+    read_field = ReadField(node=node, rdf_namespace_manager=rdf_namespace_manager)
     operations.add_edge(group_record_set, read_field)
     last_operation[node] = read_field
 
@@ -532,6 +551,7 @@ class ComputationGraph:
         metadata: Node,
         graph: nx.MultiDiGraph,
         croissant_folder: epath.Path,
+        rdf_namespace_manager: namespace.NamespaceManager,
     ) -> "ComputationGraph":
         """Builds the ComputationGraph from the nodes.
 
@@ -558,6 +578,7 @@ class ComputationGraph:
                         operations,
                         last_operation,
                         node,
+                        rdf_namespace_manager,
                     )
                 elif node.data:
                     _add_operations_for_field_with_data(

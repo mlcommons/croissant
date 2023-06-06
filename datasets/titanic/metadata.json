@@ -116,7 +116,7 @@
             "name": "gender",
             "description": "Gender of passenger (0: Male, 1: Female)",
             "@type": "ml:Field",
-            "dataType": "sc:Integer",
+            "dataType": "sc:Text",
             "source": "#{passengers-table/sex}",
             "references": "#{gender_enums}"
           },
@@ -124,7 +124,7 @@
             "name": "age",
             "description": "Age of passenger at time of death.",
             "@type": "ml:Field",
-            "dataType": "sc:Integer",
+            "dataType": "sc:Float",
             "source": "#{passengers-table/age}"
           },
           {
@@ -202,7 +202,7 @@
             "name": "body",
             "description": "Body Identification Number",
             "@type": "ml:Field",
-            "dataType": "sc:Integer",
+            "dataType": "sc:Text",
             "source": "#{passengers-table/body}"
           }
         ]
