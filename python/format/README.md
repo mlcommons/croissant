@@ -22,6 +22,6 @@ The command:
 ## Run tests
 
 ```bash
-python -m pip install .[dev]
+python -m pip install ".[dev]"
 pytest .
 ```

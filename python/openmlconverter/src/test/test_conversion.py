@@ -18,7 +18,6 @@ def test_happy_path():
     filename = path_test_resources() / "dcf" / f"openml_{openml_identifier}_expected.json"
     with open(filename, "r") as f:
         croissant_dict_expected = json.load(f, object_hook=deserialize_dcf_json)
-
     for expected_key, expected in croissant_dict_expected.items():
         actual = croissant_dict_actual[expected_key]
         assert actual == expected, f"field {expected_key}: actual:\n{actual}\n != \n{expected}\n"

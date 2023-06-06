@@ -5,12 +5,18 @@ Typical usage:
 """
 
 import datetime
+import os
 import re
+from collections import OrderedDict
 from functools import partial
 from typing import Callable
 
 import dateutil.parser
 import langcodes
+
+
+REQUIRED_FIELDS = ("name", "description")
+BOOLEAN_STRING_VALUES = ({"TRUE", "FALSE"}, {"0", "1"})
 
 
 def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
@@ -26,63 +32,68 @@ def convert(openml_dataset: dict, openml_features: list[dict]) -> dict:
     """
     _ds = partial(_get_field, json_dict=openml_dataset)  # get field from openml_dataset
 
-    distributions = [
-        _file_object(name=_ds(field="name"), url=url)
-        for url in sorted({_ds(field="minio_url"), _ds(field="url"), _ds(field="parquet_url")})
-    ]
-    distribution_source = _replace_special_chars(distributions[0]["name"])
-    croissant = {
-        "@context": {"@vocab": "https://schema.org/", "ml": "http://mlcommons.org/schema/"},
-        "@type": "Dataset",
-        "@language": "en",
-        "name": _ds(field="name", required=True),
-        "description": _ds(field="description", required=True),
-        "version": _ds(field="version"),
-        "creator": _ds(
-            field="creator",
-            transform=lambda v: [_person(p) for p in v] if isinstance(v, list) else _person(v),
-        ),
-        "contributor": _ds(field="contributor", transform=_person),
-        "dateCreated": _ds(field="upload_date", transform=dateutil.parser.parse),
-        "dateModified": _ds(field="processing_date", transform=dateutil.parser.parse),
-        "datePublished": _ds(field="collection_date", transform=_lenient_date_parser),
-        "inLanguage": _ds(field="language", transform=lambda v: langcodes.find(v).language),
-        "isAccessibleForFree": True,
-        "license": _ds(field="license"),
-        "creativeWorkStatus": _ds(field="status"),
-        "keywords": _ds(field="tag"),
-        "citation": _ds(field="citation"),
-        "sameAs": _ds(field="original_data_url"),
-        "url": f"https://www.openml.org/search?type=data&id={_ds(field='id')}",
-        "distribution": distributions,
-        "recordSet": [
-            {
-                "name": _ds(field="name", transform=_replace_special_chars),
-                "@type": "ml:RecordSet",
-                "source": f"#{{{distribution_source}}}",
-                "key": _row_identifier(openml_features, distribution_source),
-                "field": [
-                    {
-                        "name": feat["name"],
-                        "@type": "ml:Field",
-                        "dataType": _datatype(feat["data_type"], feat.get("nominal_value", None)),
-                        "source": f"#{{{distribution_source}/{_replace_special_chars(feat['name'])}"
-                        "}",
-                    }
-                    for feat in openml_features
-                ],
-            }
-        ],
-    }
+    missing_fields = [field for field in REQUIRED_FIELDS if _ds(field=field) is None]
+    if any(missing_fields):
+        raise ValueError(f"Required fields missing: {' '.join(missing_fields)}.")
+
+    croissant = OrderedDict()
+    context = OrderedDict()
+    croissant["@context"] = context
+    context["@vocab"] = "https://schema.org/"
+    context["sc"] = "https://schema.org/"
+    context["ml"] = "http://mlcommons.org/schema/"
+    context["recordSet"] = "ml:RecordSet"
+    context["field"] = "ml:Field"
+    context["dataType"] = "ml:dataType"
+    context["source"] = "ml:source"
+
+    croissant["@type"] = "sc:Dataset"
+    croissant["@language"] = "en"
+    croissant["name"] = _ds(field="name")
+    croissant["description"] = _ds(field="description")
+    croissant["version"] = _ds(field="version")
+    croissant["creator"] = _ds(
+        field="creator",
+        transform=lambda v: [_person(p) for p in v] if isinstance(v, list) else _person(v),
+    )
+    croissant["contributor"] = _ds(field="contributor", transform=_person)
+    croissant["dateCreated"] = _ds(field="upload_date", transform=dateutil.parser.parse)
+    croissant["dateModified"] = _ds(field="processing_date", transform=dateutil.parser.parse)
+    croissant["datePublished"] = _ds(field="collection_date", transform=_lenient_date_parser)
+    croissant["inLanguage"] = _ds(field="language", transform=lambda v: langcodes.find(v).language)
+    croissant["isAccessibleForFree"] = True
+    croissant["license"] = _ds(field="licence")
+    croissant["creativeWorkStatus"] = _ds(field="status")
+    croissant["keywords"] = _ds(field="tag")
+    croissant["citation"] = _ds(field="citation")
+    croissant["sameAs"] = _ds(field="original_data_url")
+    croissant["url"] = f"https://www.openml.org/search?type=data&id={_ds(field='id')}"
+
+    # For now, we only add .arff files, not the .pq file, because we do not have a checksum for .pq
+    distributions = [_file_object(url=_ds(field="url"), md5=_ds(field="md5_checksum"))]
+    distribution_source = distributions[0]["name"]
+    croissant["distribution"] = distributions
+
+    record_set = OrderedDict()
+    croissant["recordSet"] = [record_set]
+    record_set["name"] = _ds(field="name", transform=_sanitize_name_string) + "_records"
+    record_set["@type"] = "ml:RecordSet"
+    record_set["source"] = f"#{{{distribution_source}}}"
+    record_set["key"] = _row_identifier(openml_features, distribution_source)
+    record_set["field"] = []
+    for feature in openml_features:
+        field = OrderedDict()
+        record_set["field"].append(field)
+        field["name"] = _sanitize_name_string(feature["name"])
+        field["@type"] = "ml:Field"
+        field["dataType"] = _datatype(feature["data_type"], feature.get("nominal_value", None))
+        field["source"] = f"#{{{distribution_source}/{feature['name']}}}"
+        # TODO: handling special characters such as '/' in column names
     _remove_empty_values(croissant)
-    for recordSet in croissant["recordSet"]:
-        _remove_empty_values(recordSet)
     return croissant
 
 
-def _get_field(
-    json_dict: dict, field: str, transform: Callable | None = None, required: bool = False
-):
+def _get_field(json_dict: dict, field: str, transform: Callable | None = None):
     """
     Get a field from a dictionary optionally perform the transformation.
 
@@ -94,21 +105,17 @@ def _get_field(
         field: A string containing the field name
         transform: A function to be applied to the resulting value. If None, no transformation
           will be applied.
-        required: If true, an error will be thrown when the field is not present.
 
     Returns:
         The value of the field, whereby the transformation (if any) is applied, or None if the
         field is not present and not required.
 
     Raises:
-        ValueError: Required field [field] missing.
         ValueError: Unknown date/datetime formatL: [format].
         ValueError: Unrecognized file extension in url: [url].
         ValueError: Unrecognized datatype: [openml_datatype].
     """
     if field not in json_dict:
-        if required:
-            raise ValueError(f"Required field {field} missing.")
         return None
     val = json_dict[field]
     if transform is not None:
@@ -116,8 +123,8 @@ def _get_field(
     return val
 
 
-def _replace_special_chars(name: str) -> str:
-    """Replace special characters with underscores.
+def _sanitize_name_string(name: str) -> str:
+    """Replace special characters with underscores, and transform to lower case.
 
     Args:
         name: a name of a json-ld object.
@@ -125,7 +132,7 @@ def _replace_special_chars(name: str) -> str:
     Returns:
         a sanitized version of the name
     """
-    return re.sub("[^A-Za-z0-9]", "_", name)
+    return re.sub("[^A-Za-z0-9]", "_", name).lower()
 
 
 def _person(name: str) -> dict | None:
@@ -139,12 +146,16 @@ def _person(name: str) -> dict | None:
         A dictionary with json-ld fields for a schema.org Person, or None if the name is not
         present.
     """
-    if name is None or name == "":
+    if not name:
         return None
-    return {"@context": "https://schema.org", "@type": "Person", "name": name}
+    person = OrderedDict()
+    person["@context"] = "https://schema.org"
+    person["@type"] = "sc:Person"
+    person["name"] = name
+    return person
 
 
-def _file_object(name: str, url: str) -> dict | None:
+def _file_object(url: str, md5: str) -> dict | None:
     """
     A dictionary with json-ld fields for a FileObject.
 
@@ -152,8 +163,8 @@ def _file_object(name: str, url: str) -> dict | None:
     https://schema.org/CreativeWork.
 
     Args:
-        name: The name of the FileObject
         url: The url of the FileObject
+        md5: The md5 checksum of the FileObject
 
     Returns:
         A dictionary with json-ld fields for a FileObject, or None if the URL is None.
@@ -161,29 +172,28 @@ def _file_object(name: str, url: str) -> dict | None:
     Raises:
         ValueError: Unrecognized file extension in url: [url].
     """
-    if url is None:
+    if not url:
         return None
-
-    if url.endswith(".arff"):
-        type_ = "arff"
+    filename = os.path.split(url)[-1]
+    if filename.endswith(".arff"):
         mimetype = "text/plain"  # No official arff mimetype exists
-    elif url.endswith(".pq"):
-        type_ = "parquet"
+    elif filename.endswith(".pq"):
         mimetype = "application/vnd.apache.parquet"  # Not an official mimetype yet
         # see https://issues.apache.org/jira/browse/PARQUET-1889
     else:
         raise ValueError(f"Unrecognized file extension in url: {url}")
-    return {
-        "name": f"{name}_{type_}",
-        "@type": "FileObject",
-        "contentUrl": url,
-        "encodingFormat": mimetype
-        # TODO: add the md5 hash? But where? 'sha256' is in the Google Docs file, but not official?
-        # TODO: add sameAs (other distribution)?
-    }
+    file_object = OrderedDict()
+    file_object["name"] = filename
+    file_object["@type"] = "sc:FileObject"
+    file_object["contentUrl"] = url
+    file_object["encodingFormat"] = mimetype
+    file_object["md5"] = md5
+
+    # TODO: add sameAs (other distribution)?
+    return file_object
 
 
-def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
+def _datatype(openml_datatype: str, nominal_values: list[str] | None) -> str:
     """
     Convert the datatype according to OpenML to a schema.org datatype.
 
@@ -191,7 +201,7 @@ def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
 
     Args:
         openml_datatype: The datatype according to OpenML
-        nominal_value: An optional list of strings with the possible values.
+        nominal_values: An optional list of strings with the possible values.
 
     Returns:
         The schema.org datatype.
@@ -199,9 +209,10 @@ def _datatype(openml_datatype: str, nominal_value: list[str] | None) -> str:
     Raises:
         ValueError: Unknown datatype: [openml_datatype].
     """
-    if nominal_value is not None:
-        if set(nominal_value) == {"TRUE", "FALSE"} or set(nominal_value) == {"0", "1"}:
-            return "Boolean"
+    if nominal_values and any(
+        set(nominal_values).issubset(booleans) for booleans in BOOLEAN_STRING_VALUES
+    ):
+        return "Boolean"
     d_type = {
         "numeric": "Number",
         "string": "Text",
@@ -244,15 +255,13 @@ def _row_identifier(
         A list of feature names, a single feature name, or None.
     """
     row_identifiers = [
-        f"#{{{distribution_source}/{_replace_special_chars(f['name'])}}}"
+        f"#{{{_sanitize_name_string(f['name'])}}}"
         for f in openml_features
         if f["is_row_identifier"] == "true"
     ]
     if len(row_identifiers) > 1:
         return row_identifiers
-    elif len(row_identifiers) == 1:
-        return row_identifiers[0]
-    return None
+    return next(iter(row_identifiers), None)
 
 
 def _lenient_date_parser(value: str) -> datetime.date | datetime.datetime:
@@ -269,16 +278,12 @@ def _lenient_date_parser(value: str) -> datetime.date | datetime.datetime:
         A datetime if the date and time are specified, or a date if the time is not specified.
 
     Raises:
-        ValueError: Unknown date/datetime format: [format]
+        dateutil.parser.ParserError: Unknown date/datetime format.
     """
-    try:
-        dateutil.parser.parse(value)
-    except dateutil.parser.ParserError:
-        pass
-    if len(value) == 4 and (value.startswith("19") or value.startswith("20")):
+    if len(value) == len("YYYY") and (value.startswith("19") or value.startswith("20")):
         year = int(value)
         return datetime.date(year, 1, 1)
-    raise ValueError(f"Unknown date/datetime format: {value}")
+    return dateutil.parser.parse(value)
 
 
 def _remove_empty_values(dct_: dict):
@@ -291,7 +296,13 @@ def _remove_empty_values(dct_: dict):
     for key, value in list(dct_.items()):
         if isinstance(value, dict):
             _remove_empty_values(value)
+            if len(value) == 0:
+                del dct_[key]
+        elif isinstance(value, list):
+            for list_item in value:
+                if isinstance(list_item, dict):
+                    _remove_empty_values(list_item)
+            if len(value) == 0:
+                del dct_[key]
         elif value is None:
-            del dct_[key]
-        elif isinstance(value, list) and len(value) == 0:
             del dct_[key]
