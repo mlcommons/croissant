@@ -3,7 +3,7 @@
 from absl import app
 from absl import flags
 
-from format import Dataset
+from ml_croissant import Dataset
 
 _NUM_MAX_RECORDS = 10
 

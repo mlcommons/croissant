@@ -8,9 +8,9 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from format._src import errors
-from format._src import graphs
-from format._src.computations import (
+from ml_croissant._src import errors
+from ml_croissant._src import graphs
+from ml_croissant._src.computations import (
     build_structure_graph,
     ComputationGraph,
     GroupRecordSet,

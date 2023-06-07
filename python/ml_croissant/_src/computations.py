@@ -11,10 +11,10 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from format._src import constants
-from format._src.data_types import EXPECTED_DATA_TYPES
-from format._src.errors import Issues
-from format._src.nodes import (
+from ml_croissant._src import constants
+from ml_croissant._src.data_types import EXPECTED_DATA_TYPES
+from ml_croissant._src.errors import Issues
+from ml_croissant._src.nodes import (
     concatenate_uid,
     Field,
     FileObject,

@@ -1,8 +1,8 @@
 """datasets_test module."""
 
 from etils import epath
-from format._src import datasets
-from format._src import errors
+from ml_croissant._src import datasets
+from ml_croissant._src import errors
 import numpy as np
 import pytest
 

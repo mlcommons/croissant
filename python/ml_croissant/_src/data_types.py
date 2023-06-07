@@ -1,6 +1,6 @@
 """data_types module."""
 
-from format._src import constants
+from ml_croissant._src import constants
 import pandas as pd
 
 EXPECTED_DATA_TYPES: dict[str, type] = {

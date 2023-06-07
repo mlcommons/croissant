@@ -2,7 +2,7 @@
 
 import textwrap
 
-from format._src import errors
+from ml_croissant._src import errors
 
 
 def test_issues():
