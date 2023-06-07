@@ -229,7 +229,7 @@
               "regex": ".*_(val|train)2014\\.json$"
             }
           },
-          "references": "#{caption_annotations-files/annotations/split_enums/name}"
+          "references": "#{split_enums/name}"
         }
       ]
     },
