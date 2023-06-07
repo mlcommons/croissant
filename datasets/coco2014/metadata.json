@@ -296,7 +296,7 @@
           "dataType": "ml:BoundingBox",
           "source": {
             "data": "#{instancesperson_keypoints_annotations/annotations/bbox}",
-            "format": "[x,y,width,height]"
+            "format": "XYWH"
           }
         }
       ]
