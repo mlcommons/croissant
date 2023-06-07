@@ -1,0 +1,49 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator"
+  },
+  "@type": "Dataset",
+  "@language": "en",
+  "name": "mydataset",
+  "url": "https://www.google.com/dataset",
+  "description": "This is a description.",
+  "license": "This is a license.",
+  "citation": "This is a citation.",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "a-csv-table",
+      "contentUrl": "https://www.google.com/data.csv",
+      "contentSize": "117743 B",
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "a-record-set",
+      "description": "This is a record set.",
+      "field": [
+        {
+          "name": "first-field",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer",
+          "source": "#{a-csv-table/field}"
+        }
+      ]
+    }
+  ]
+}

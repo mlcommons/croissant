@@ -11,6 +11,7 @@ from typing import Any
 
 from absl import logging
 from etils import epath
+from format.src import constants
 from format.src.data_types import EXPECTED_DATA_TYPES
 from format.src.errors import Issues
 from format.src.nodes import (
@@ -45,12 +46,20 @@ def _get_download_filepath(url: str) -> epath.Path:
     return _DOWNLOAD_PATH / f"croissant-{hashed_url}"
 
 
-def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
+def get_entry_nodes(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     """Retrieves the entry nodes (without predecessors) in a graph."""
     entry_nodes = []
     for node, indegree in graph.in_degree(graph.nodes()):
         if indegree == 0:
             entry_nodes.append(node)
+    # Fields should usually not be entry nodes, except if they have subFields. So we
+    # check for this:
+    for node in entry_nodes:
+        if isinstance(node, Field) and not node.has_sub_fields:
+            issues.add_error(
+                f'Node "{node.uid}" is a field and has no source. Please, use'
+                f" {constants.ML_COMMONS_SOURCE} to specify the source."
+            )
     return entry_nodes
 
 
@@ -64,10 +73,10 @@ def _check_no_duplicate(issues: Issues, nodes: list[Node]) -> Mapping[str, Node]
     return uid_to_node
 
 
-def add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
+def add_node_as_entry_node(issues: Issues, graph: nx.MultiDiGraph, node: Node):
     """Add `node` as the entry node of the graph by updating `graph` in place."""
     graph.add_node(node, parent=None)
-    entry_nodes = get_entry_nodes(graph)
+    entry_nodes = get_entry_nodes(issues, graph)
     for entry_node in entry_nodes:
         if isinstance(node, (FileObject, FileSet)):
             graph.add_edge(entry_node, node)
@@ -157,7 +166,7 @@ def build_structure_graph(
     if metadata is None:
         issues.add_error("No metadata is defined in the dataset.")
         return None, graph
-    add_node_as_entry_node(graph, metadata)
+    add_node_as_entry_node(issues, graph, metadata)
     if not graph.is_directed():
         issues.add_error("Structure graph is not directed.")
     return metadata, graph
@@ -381,16 +390,39 @@ class ReadField(LineOperation):
     node: Field
     rdf_namespace_manager: namespace.NamespaceManager
 
+    def find_data_type(self, data_types: list[str] | tuple[str] | str) -> type:
+        """Finds the data type by expanding its name from the namespace manager.
+
+        In some cases, we specify a list of data types. In that case, we take the first
+        one in the list that can be parsed.
+        """
+        if isinstance(data_types, (list, tuple)):
+            for data_type in data_types:
+                try:
+                    return self.find_data_type(data_type)
+                except ValueError:
+                    continue
+        elif isinstance(data_types, str):
+            if ":" in data_types:
+                data_type = self.rdf_namespace_manager.expand_curie(data_types)
+            else:
+                data_type = data_types
+            if data_type not in EXPECTED_DATA_TYPES:
+                raise ValueError(
+                    f'Unknown data type "{data_type}" found for "{self.node.uid}"'
+                )
+            return EXPECTED_DATA_TYPES[data_type]
+        raise ValueError(f'No data type found for "{self.node.uid}"')
+
     def _cast_value(self, value: Any):
-        data_type = self.rdf_namespace_manager.expand_curie(self.node.data_type)
-        expected_data_type = EXPECTED_DATA_TYPES[data_type]
+        data_type = self.find_data_type(self.node.data_type)
         if pd.isna(value):
             return value
         try:
-            return expected_data_type(value)
+            return data_type(value)
         except ValueError as exception:
             raise ValueError(
-                f'Expected type "{expected_data_type}" for node "{self.node.uid}", but'
+                f'Expected type "{data_type}" for node "{self.node.uid}", but'
                 f' got: "{type(value)}" with value "{value}"'
             ) from exception
 
@@ -593,7 +625,7 @@ class ComputationGraph:
                 )
 
         # Attach all entry nodes to a single `start` node
-        entry_operations = get_entry_nodes(operations)
+        entry_operations = get_entry_nodes(issues, operations)
         init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)

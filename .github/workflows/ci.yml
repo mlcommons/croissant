@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+  merge_group:
 
 jobs:
   format-test:
@@ -89,4 +90,4 @@ jobs:
         echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
 
     - name: Generate JSON-LD files
-      run: python scripts/generate.py --file ../../datasets/titanic/metadata.json
+      run: python scripts/generate.py --file ../../datasets/titanic/metadata.json --record_set passengers
