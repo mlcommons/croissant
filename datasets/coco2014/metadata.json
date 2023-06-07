@@ -230,7 +230,6 @@
     {
       "name": "categories",
       "@type": "ml:RecordSet",
-      "source": "#{instancesperson_keypoints_annotations/categories}",
       "key": "#{id}",
       "field": [
         {
@@ -238,7 +237,7 @@
           "@type": "ml:Field",
           "description": "The ID of the category",
           "dataType": "sc:Integer",
-          "source": "#{id}"
+          "source": "#{instancesperson_keypoints_annotations/categories/id}"
         },
         {
           "name": "name",
@@ -248,7 +247,7 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{name}"
+          "source": "#{instancesperson_keypoints_annotations/categories/name}"
         },
         {
           "name": "supercategory",
@@ -258,14 +257,13 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{supercategory}"
+          "source": "#{instancesperson_keypoints_annotations/categories/supercategory}"
         }
       ]
     },
     {
       "name": "annotations",
       "@type": "ml:RecordSet",
-      "source": "#{instancesperson_keypoints_annotations/annotations}",
       "key": "#{id}",
       "field": [
         {
@@ -273,23 +271,23 @@
           "@type": "ml:Field",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
-          "source": "#{id}"
+          "source": "#{instancesperson_keypoints_annotations/annotations/id}"
         },
         {
           "name": "category_id",
           "@type": "ml:Field",
           "description": "The ID of the category.",
           "dataType": "sc:Integer",
-          "source": "#{category_id}",
-          "references": "#{categories}"
+          "source": "#{instancesperson_keypoints_annotations/annotations/category_id}",
+          "references": "#{categories/id}"
         },
         {
           "name": "image_id",
           "@type": "ml:Field",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
-          "source": "#{image_id}",
-          "references": "#{images}"
+          "source": "#{instancesperson_keypoints_annotations/annotations/image_id}",
+          "references": "#{images/id}"
         },
         {
           "name": "bbox",
@@ -297,10 +295,9 @@
           "description": "The bounding box around annotated object[s].",
           "dataType": "ml:BoundingBox",
           "source": {
-            "data": "#{bbox}",
+            "data": "#{instancesperson_keypoints_annotations/annotations/bbox}",
             "format": "[x,y,width,height]"
-          },
-          "references": "#{images}"
+          }
         }
       ]
     }
