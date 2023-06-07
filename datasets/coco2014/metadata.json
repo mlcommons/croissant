@@ -197,14 +197,14 @@
           "@type": "ml:Field",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
-          "source": "#{caption_annotations-files/annotations/id}""source": "#{caption_annotations-files/annotations/id}"
+          "source": "#{caption_annotations-files/annotations/id}"
         },
         {
           "name": "image_id",
           "@type": "ml:Field",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
-          "source": "#{caption_annotations-files/annotations/image_id}""source": "#{caption_annotations-files/annotations/image_id}"
+          "source": "#{caption_annotations-files/annotations/image_id}"
         },
         {
           "name": "caption",
