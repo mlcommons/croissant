@@ -48,13 +48,13 @@ If you're interested in developing one of the points, please [create a discussio
 - [ ] [`Good first issue!`] Implement more readers. `ReadCsv` becomes `Read` and supports: CSV, Parquet, JSON, JSON-L, text files.
 - [ ] [`Good first issue!`] In `Download`, check SHA256 or MD5.
 - [ ] [`Good first issue!`] Refactor tests to support golden files. See issue [#14](https://github.com/mlcommons/datasets_format/issues/14).
-- [ ] [`Difficult issue!`] Support complex joins (i.e., for the PASS dataset).
-- [ ] [`Difficult issue!`] Support nested fields (i.e., for the PASS dataset).
+- [ ] [`Difficult issue!`] Support complex joins (i.e., for the MovieLens dataset).
+- [ ] [`Difficult issue!`] Support nested fields (i.e., for the MovieLens dataset).
 - [ ] Better handling of issues during dynamic analysis. See issue [#39](https://github.com/mlcommons/datasets_format/issues/39).
 - [ ] Remove the usage of `rdflib.Graph` and parse the JSON directly.
 - [ ] Distinguish `sources` from `references` in the codebase. See issue [#40](https://github.com/mlcommons/datasets_format/issues/40).
-- [ ] [`Good first issue!`] Connect the library to [Hugging Face datasets](https://github.com/huggingface/datasets).
-- [ ] [`Good first issue!`] Connect the library to [TFDS](https://github.com/tensorflow/datasets).
+- [ ] Connect the library to [Hugging Face datasets](https://github.com/huggingface/datasets).
+- [ ] Connect the library to [TFDS](https://github.com/tensorflow/datasets).
 - [ ] [`Difficult issue!`] Smarter operations. Some operations are repeated, so the computation graph could be improved.
 - [ ] [`Good first issue!`] Better type checking. Some advanced types (e.g., URLs) can be better type checked (e.g., URL has the right form).
 - [ ] [`Difficult issue!`] Use [Dask](https://github.com/dask/dask) to scale DataFrames and the computation graph to bigger datasets (i.e., for the C4 dataset).
