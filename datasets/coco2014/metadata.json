@@ -212,7 +212,7 @@
           "description": "The caption",
           "dataType": [
             "sc:Text",
-            "wd:18585177"
+            "wd:Q18585177"
           ],
           "source": "#{caption_annotations-files/annotations/caption}"
         },
