@@ -3,11 +3,19 @@
     "@vocab": "https://schema.org/",
     "sc": "https://schema.org/",
     "ml": "http://mlcommons.org/schema/",
-    "wd": "https://www.wikidata.org/wiki/Q",
-    "dataType": "ml:dataType",
-    "field": "ml:Field",
+    "wd": "https://www.wikidata.org/wiki/",
     "includes": "ml:includes",
-    "recordSet": "ml:RecordSet"
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator",
+    "references": "ml:references"
   },
   "@type": "sc:Dataset",
   "@language": "en",
@@ -138,7 +146,7 @@
           "source": "#{splits.csv/url}",
           "dataType": [
             "sc:Url",
-            "wd:3985153"
+            "wd:Q3985153"
           ]
         }
       ]
@@ -168,7 +176,7 @@
           "@type": "ml:Field",
           "dataType": [
             "sc:Text",
-            "wd:3985153"
+            "wd:Q3985153"
           ],
           "source": {
             "data": "#{image-files/fullpath}",
@@ -191,28 +199,31 @@
           "@type": "ml:Field",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
-          "source": "#{id}"
+          "source": "#{caption_annotations-files/annotations/id}"
         },
         {
           "name": "image_id",
           "@type": "ml:Field",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
-          "source": "#{image_id}"
+          "source": "#{caption_annotations-files/annotations/image_id}"
         },
         {
           "name": "caption",
           "@type": "ml:Field",
           "description": "The caption",
-          "dataType": ["sc:Text", "wd:18585177"],
-          "source": "#{caption}"
+          "dataType": [
+            "sc:Text",
+            "wd:Q18585177"
+          ],
+          "source": "#{caption_annotations-files/annotations/caption}"
         },
         {
           "name": "split",
           "@type": "ml:Field",
           "dataType": [
             "sc:Text",
-            "wd:3985153"
+            "wd:Q3985153"
           ],
           "source": {
             "data": "#{caption_annotations-files/filename}",
@@ -220,7 +231,7 @@
               "regex": ".*_(val|train)2014\\.json$"
             }
           },
-          "references": "#{split_enums}"
+          "references": "#{caption_annotations-files/annotations/split_enums}"
         }
       ]
     }
