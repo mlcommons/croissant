@@ -1,6 +1,6 @@
 """data_types module."""
 
-from format.src import constants
+from format._src import constants
 import pandas as pd
 
 EXPECTED_DATA_TYPES: dict[str, type] = {

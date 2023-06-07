@@ -4,9 +4,9 @@ import networkx as nx
 import rdflib
 from rdflib.extras import external_graph_libs
 
-from format.src import constants
-from format.src.errors import Issues
-from format.src.nodes import Node
+from format._src import constants
+from format._src.errors import Issues
+from format._src.nodes import Node
 
 
 def load_rdf_graph(dict_dataset: dict) -> tuple[rdflib.Graph, nx.MultiDiGraph]:

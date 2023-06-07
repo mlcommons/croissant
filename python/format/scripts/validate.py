@@ -5,8 +5,8 @@ import sys
 from absl import app
 from absl import flags
 from absl import logging
-from format.src import datasets
-from format.src import errors
+from format import Dataset
+from format._src import errors
 
 flags.DEFINE_string(
     "file",
@@ -24,7 +24,7 @@ def main(argv):
     del argv
     file = FLAGS.file
     try:
-        datasets.Dataset(file)
+        Dataset(file)
         logging.info("Done.")
     except errors.ValidationError as exception:
         logging.error(exception)

@@ -11,10 +11,10 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from format.src import constants
-from format.src.data_types import EXPECTED_DATA_TYPES
-from format.src.errors import Issues
-from format.src.nodes import (
+from format._src import constants
+from format._src.data_types import EXPECTED_DATA_TYPES
+from format._src.errors import Issues
+from format._src.nodes import (
     concatenate_uid,
     Field,
     FileObject,

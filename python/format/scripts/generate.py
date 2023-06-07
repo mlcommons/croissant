@@ -3,7 +3,7 @@
 from absl import app
 from absl import flags
 
-from format.src import datasets
+from format import Dataset
 
 _NUM_MAX_RECORDS = 10
 
@@ -37,7 +37,7 @@ def main(argv):
     file = FLAGS.file
     record_set = FLAGS.record_set
     num_records = FLAGS.num_records
-    dataset = datasets.Dataset(file)
+    dataset = Dataset(file)
     records = dataset.records(record_set)
     print(f"Generating the first {num_records} records.")
     for i, record in enumerate(records):

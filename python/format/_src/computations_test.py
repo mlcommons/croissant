@@ -1,15 +1,15 @@
 """computations_test module."""
 
 from etils import epath
-from format.src.computations import (
+from format._src.computations import (
     Download,
     InitOperation,
     ReadCsv,
     ReadField,
     GroupRecordSet,
 )
-from format.src.errors import Issues
-from format.src.nodes import Node
+from format._src.errors import Issues
+from format._src.nodes import Node
 import pytest
 import rdflib
 from rdflib import namespace

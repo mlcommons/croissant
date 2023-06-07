@@ -8,9 +8,9 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from format.src import errors
-from format.src import graphs
-from format.src.computations import (
+from format._src import errors
+from format._src import graphs
+from format._src.computations import (
     build_structure_graph,
     ComputationGraph,
     GroupRecordSet,
