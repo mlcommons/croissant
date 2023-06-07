@@ -204,7 +204,10 @@
           "name": "caption",
           "@type": "ml:Field",
           "description": "The caption",
-          "dataType": ["sc:Text", "wd:18585177"],
+          "dataType": [
+            "sc:Text",
+            "wd:18585177"
+          ],
           "source": "#{caption}"
         },
         {
@@ -221,6 +224,83 @@
             }
           },
           "references": "#{split_enums}"
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "@type": "ml:RecordSet",
+      "source": "#{instancesperson_keypoints_annotations/categories}",
+      "key": "#{id}",
+      "field": [
+        {
+          "name": "id",
+          "@type": "ml:Field",
+          "description": "The ID of the category",
+          "dataType": "sc:Integer",
+          "source": "#{id}"
+        },
+        {
+          "name": "name",
+          "@type": "ml:Field",
+          "description": "The name of the category.",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": "#{name}"
+        },
+        {
+          "name": "supercategory",
+          "@type": "ml:Field",
+          "description": "The name of the supercategory.",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": "#{supercategory}"
+        }
+      ]
+    },
+    {
+      "name": "annotations",
+      "@type": "ml:RecordSet",
+      "source": "#{instancesperson_keypoints_annotations/annotations}",
+      "key": "#{id}",
+      "field": [
+        {
+          "name": "id",
+          "@type": "ml:Field",
+          "description": "The ID of the annotation.",
+          "dataType": "sc:Integer",
+          "source": "#{id}"
+        },
+        {
+          "name": "category_id",
+          "@type": "ml:Field",
+          "description": "The ID of the category.",
+          "dataType": "sc:Integer",
+          "source": "#{category_id}",
+          "references": "#{categories}"
+        },
+        {
+          "name": "image_id",
+          "@type": "ml:Field",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": "#{image_id}",
+          "references": "#{images}"
+        },
+        {
+          "name": "bbox",
+          "@type": "ml:Field",
+          "description": "The bounding box around annotated object[s].",
+          "dataType": "ml:BoundingBox",
+          "source": {
+            "data": "#{bbox}",
+            "format": "[x,y,width,height]"
+          },
+          "references": "#{images}"
         }
       ]
     }
