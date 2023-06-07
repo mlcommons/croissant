@@ -99,8 +99,9 @@ def test_generation_titanic():
         / "metadata.json"
     )
     dataset = datasets.Dataset(titanic_config)
-    dataset = iter(dataset)
-    assert next(dataset) == {
+    records = dataset.records("passengers")
+    records = iter(records)
+    assert next(records) == {
         "passengers": {
             "survived": 1,
             "embarked": "S",
@@ -118,7 +119,7 @@ def test_generation_titanic():
             "num_parents_children": 0,
         }
     }
-    assert next(dataset) == {
+    assert next(records) == {
         "passengers": {
             "survived": 1,
             "embarked": "S",
@@ -146,15 +147,16 @@ def test_generation_simple_join():
         / "metadata.json"
     )
     dataset = datasets.Dataset(titanic_config)
-    dataset = iter(dataset)
-    assert next(dataset) == {
+    records = dataset.records("publications_by_user")
+    records = iter(records)
+    assert next(records) == {
         "publications_by_user": {
             "author_email": "john.smith@gmail.com",
             "author_fullname": "John Smith",
             "title": "A New Approach to Machine Learning Using Neural Networks",
         }
     }
-    assert next(dataset) == {
+    assert next(records) == {
         "publications_by_user": {
             "author_email": "jane.doe@yahoo.com",
             "author_fullname": "Jane Doe",
@@ -163,14 +165,14 @@ def test_generation_simple_join():
             ),
         }
     }
-    assert next(dataset) == {
+    assert next(records) == {
         "publications_by_user": {
             "author_email": "david.lee@outlook.com",
             "author_fullname": "David Lee",
             "title": "The Use of Machine Learning to Predict the Stock Market",
         }
     }
-    assert next(dataset) == {
+    assert next(records) == {
         "publications_by_user": {
             "author_email": "mary.jones@hotmail.com",
             "author_fullname": "Mary Jones",
@@ -178,4 +180,4 @@ def test_generation_simple_join():
         }
     }
     with pytest.raises(StopIteration):
-        next(dataset)
+        next(records)
