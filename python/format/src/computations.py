@@ -381,16 +381,39 @@ class ReadField(LineOperation):
     node: Field
     rdf_namespace_manager: namespace.NamespaceManager
 
+    def find_data_type(self, data_types: list[str] | tuple[str] | str) -> type:
+        """Finds the data type by expanding its name from the namespace manager.
+
+        In some cases, we specify a list of data types. In that case, we take the first
+        one in the list that can be parsed.
+        """
+        if isinstance(data_types, (list, tuple)):
+            for data_type in data_types:
+                try:
+                    return self.find_data_type(data_type)
+                except ValueError:
+                    continue
+        elif isinstance(data_types, str):
+            if ":" in data_types:
+                data_type = self.rdf_namespace_manager.expand_curie(data_types)
+            else:
+                data_type = data_types
+            if data_type not in EXPECTED_DATA_TYPES:
+                raise ValueError(
+                    f'Unknown data type "{data_type}" found for "{self.node.uid}"'
+                )
+            return EXPECTED_DATA_TYPES[data_type]
+        raise ValueError(f'No data type found for "{self.node.uid}"')
+
     def _cast_value(self, value: Any):
-        data_type = self.rdf_namespace_manager.expand_curie(self.node.data_type)
-        expected_data_type = EXPECTED_DATA_TYPES[data_type]
+        data_type = self.find_data_type(self.node.data_type)
         if pd.isna(value):
             return value
         try:
-            return expected_data_type(value)
+            return data_type(value)
         except ValueError as exception:
             raise ValueError(
-                f'Expected type "{expected_data_type}" for node "{self.node.uid}", but'
+                f'Expected type "{data_type}" for node "{self.node.uid}", but'
                 f' got: "{type(value)}" with value "{value}"'
             ) from exception
 
