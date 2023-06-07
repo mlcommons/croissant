@@ -80,6 +80,10 @@ import pytest
             'Node should have an attribute `"@type" in',
         ],
         [
+            "mlfield_missing_source.json",
+            'Node "a-record-set/first-field" is a field and has no source.',
+        ],
+        [
             "mlfield_bad_source.json",
             "Malformed source data: #{THISDOESNOTEXIST#field}.",
         ],
