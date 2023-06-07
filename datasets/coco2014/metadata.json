@@ -154,7 +154,6 @@
     {
       "name": "images",
       "@type": "ml:RecordSet",
-      "source": "#{image-files}",
       "key": "#{img_id}",
       "field": [
         {
@@ -191,7 +190,6 @@
     {
       "name": "captions",
       "@type": "ml:RecordSet",
-      "source": "#{caption_annotations-files/annotations}",
       "key": "#{id}",
       "field": [
         {
@@ -231,7 +229,81 @@
               "regex": ".*_(val|train)2014\\.json$"
             }
           },
-          "references": "#{caption_annotations-files/annotations/split_enums}"
+          "references": "#{split_enums/name}"
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "@type": "ml:RecordSet",
+      "key": "#{id}",
+      "field": [
+        {
+          "name": "id",
+          "@type": "ml:Field",
+          "description": "The ID of the category",
+          "dataType": "sc:Integer",
+          "source": "#{instancesperson_keypoints_annotations/categories/id}"
+        },
+        {
+          "name": "name",
+          "@type": "ml:Field",
+          "description": "The name of the category.",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": "#{instancesperson_keypoints_annotations/categories/name}"
+        },
+        {
+          "name": "supercategory",
+          "@type": "ml:Field",
+          "description": "The name of the supercategory.",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": "#{instancesperson_keypoints_annotations/categories/supercategory}"
+        }
+      ]
+    },
+    {
+      "name": "annotations",
+      "@type": "ml:RecordSet",
+      "key": "#{id}",
+      "field": [
+        {
+          "name": "id",
+          "@type": "ml:Field",
+          "description": "The ID of the annotation.",
+          "dataType": "sc:Integer",
+          "source": "#{instancesperson_keypoints_annotations/annotations/id}"
+        },
+        {
+          "name": "category_id",
+          "@type": "ml:Field",
+          "description": "The ID of the category.",
+          "dataType": "sc:Integer",
+          "source": "#{instancesperson_keypoints_annotations/annotations/category_id}",
+          "references": "#{categories/id}"
+        },
+        {
+          "name": "image_id",
+          "@type": "ml:Field",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": "#{instancesperson_keypoints_annotations/annotations/image_id}",
+          "references": "#{images/id}"
+        },
+        {
+          "name": "bbox",
+          "@type": "ml:Field",
+          "description": "The bounding box around annotated object[s].",
+          "dataType": "ml:BoundingBox",
+          "source": {
+            "data": "#{instancesperson_keypoints_annotations/annotations/bbox}",
+            "format": "XYWH"
+          }
         }
       ]
     }
