@@ -146,7 +146,6 @@
     {
       "name": "images",
       "@type": "ml:RecordSet",
-      "source": "#{image-files}",
       "key": "#{img_id}",
       "field": [
         {
@@ -183,7 +182,6 @@
     {
       "name": "captions",
       "@type": "ml:RecordSet",
-      "source": "#{caption_annotations-files/annotations}",
       "key": "#{id}",
       "field": [
         {
@@ -191,14 +189,14 @@
           "@type": "ml:Field",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
-          "source": "#{id}"
+          "source": "#{caption_annotations-files/annotations/id}"
         },
         {
           "name": "image_id",
           "@type": "ml:Field",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
-          "source": "#{image_id}"
+          "source": "#{caption_annotations-files/annotations/image_id}"
         },
         {
           "name": "caption",
@@ -208,7 +206,7 @@
             "sc:Text",
             "wd:18585177"
           ],
-          "source": "#{caption}"
+          "source": "#{caption_annotations-files/annotations/caption}"
         },
         {
           "name": "split",
