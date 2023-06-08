@@ -30,18 +30,21 @@
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
       "key": "#{key}",
       "field": [
-          {
-            "name": "key",
-            "description": "0, 1, 2 or 3",
-            "@type": "ml:Field",
-            "dataType": "sc:Integer"
-          },
-          {
-            "name": "label",
-            "description": "North, East, South or West",
-            "@type": "ml:Field",
-            "dataType": ["sc:Text", "sc:name"]
-          }
+        {
+          "name": "key",
+          "description": "0, 1, 2 or 3",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer"
+        },
+        {
+          "name": "label",
+          "description": "North, East, South or West",
+          "@type": "ml:Field",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ]
+        }
       ],
       "itemListElement": [
         {
@@ -58,7 +61,8 @@
               "value": "North"
             }
           ]
-        },{
+        },
+        {
           "@type": "ListItem",
           "item": [
             {
@@ -72,7 +76,8 @@
               "value": "East"
             }
           ]
-        },{
+        },
+        {
           "@type": "ListItem",
           "item": [
             {
@@ -86,7 +91,8 @@
               "value": "South"
             }
           ]
-        },{
+        },
+        {
           "@type": "ListItem",
           "item": [
             {
@@ -119,7 +125,10 @@
         {
           "name": "direction",
           "@type": "ml:Field",
-          "dataType": ["sc:Text", "ml:Enum"],
+          "dataType": [
+            "sc:Text",
+            "ml:Enum"
+          ],
           "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "source": "#{enum.csv/direction}",
           "references": "#{direction_enum/key}"
