@@ -269,8 +269,7 @@ types inform about the semantic being used, possibly semantics with ML meaning.
 
 **domain**:	[Field](#field)
 
-
-Supported known types:
+[🔗](#known-supported-data-types) Known supported data types:
 
 | `dataType` | Usage |
 | -------- | ----- |
