@@ -270,19 +270,20 @@ types inform about the semantic being used, possibly semantics with ML meaning.
 **domain**:	[Field](#field)
 
 
-Supported types with ML meaning:
+Supported known types:
 
 | `dataType` | Usage |
 | -------- | ----- |
+| [**`sc:Boolean`**](https://schema.org/Boolean) | Describes a boolean. |
+| [**`sc:Date`**](https://schema.org/Date) | Describes a date. |
+| [**`sc:Float`**](https://schema.org/Float) | Describes a float. |
+| [**`sc:Integer`**](https://schema.org/Integer) | Describes an integer. |
+| [**`sc:Text`**](https://schema.org/Text) | Describes a string. |
+| [**`sc:URL`**](https://schema.org/ImageObject) | Describes a URL. |
 | [**`sc:ImageObject`**](https://schema.org/ImageObject) | Describes a field containing the content of an image (pixels). |
 | [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box. |
 | [**`sc:name`**](https://schema.org/name) | Describes a field which can be used as a human-friendly label. |
 | [**`wd:Q3985153`**](https://www.wikidata.org/wiki/Q3985153) <br/>(**Training, validation and test sets**) | Describes a field used to divide data into multiple sets according to intended usage with regards to models [training](https://mlcommons.org/definitions/training_split), [validation](https://mlcommons.org/definitions/validation_split), [testing](https://mlcommons.org/definitions/test_split), and possibly others. <br/>While any value is acceptable here, it is recommended to associate the usual splits listed above with the linked semantic URL.
-
-Supported types with no ML meaning:
-
-| `dataType` | Usage |
-| ---------- | ----- |
 | [**`wd:Q48277`**](https://www.wikidata.org/wiki/Q48277) <br/>(**gender**) | Describes a field which values are indicative of a person gender. This can be used by Ethical AI tools to flag possible gender bias in the data. Values for this field can be associated with specific gender URLs (eg: [**`wd:Q6581097`**](https://www.wikidata.org/wiki/Q6581097), [**`wd:Q6581072`**](https://www.wikidata.org/wiki/Q6581072), etc.) |
 
 
