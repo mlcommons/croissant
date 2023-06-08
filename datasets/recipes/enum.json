@@ -119,7 +119,7 @@
         {
           "name": "direction",
           "@type": "ml:Field",
-          "dataType": "sc:Integer",
+          "dataType": ["sc:Text", "ml:Enum"],
           "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "source": "#{enum.csv/direction}",
           "references": "#{direction_enum/key}"
