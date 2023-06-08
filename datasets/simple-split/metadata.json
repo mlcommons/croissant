@@ -12,6 +12,7 @@
     "@language": "en",
     "name": "simple-split",
     "description": "An artificial example dataset defining splits from a CSV column",
+    "url": "https://mlcommons.org",
     "license": "https://creativecommons.org/licenses/by/4.0/",
     "distribution": [
         {
