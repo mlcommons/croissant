@@ -17,7 +17,7 @@
     {
       "name": "compressed_archive.zip",
       "@type": "sc:FileObject",
-      "contentUrl": "https://example.org/datasets/recipes/compressed_archive.zip",
+      "contentUrl": "data/compressed_archive.zip",
       "sha256": "4cee7cd36f1d874072b6a96c95ce53c9b01d158f0737e754e6c9cc80aeb06e5a",
       "encodingFormat": "application/zip"
     },
