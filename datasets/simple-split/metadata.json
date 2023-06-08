@@ -1,0 +1,65 @@
+{
+    "@context": {
+        "@vocab": "https://schema.org/",
+        "sc": "https://schema.org/",
+        "ml": "http://mlcommons.org/schema/",
+        "includes": "ml:includes",
+        "recordSet": "ml:RecordSet",
+        "field": "ml:Field",
+        "subField": "ml:SubField",
+        "dataType": "ml:dataType",
+        "source": "ml:source",
+        "data": "ml:data",
+        "applyTransform": "ml:applyTransform",
+        "format": "ml:format",
+        "regex": "ml:regex",
+        "separator": "ml:separator",
+        "references": "ml:references"
+    },
+    "@type": "sc:Dataset",
+    "@language": "en",
+    "name": "simple-split",
+    "description": "An artificial dataset defining one single split containing all the data",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "distribution": [
+        {
+            "name": "books.csv",
+            "@type": "sc:FileObject",
+            "contentUrl": "data/books.csv",
+            "sha256": "",
+            "encodingFormat": "text/csv"
+        }
+    ],
+    "recordSet": [
+        {
+            "name": "books",
+            "@type": "ml:RecordSet",
+            "field": [
+                {
+                    "name": "title",
+                    "@type": "ml:Field",
+                    "description": "The title of the book",
+                    "dataType": "sc:Text",
+                    "source": "#{books.csv/Title}"
+                },
+                {
+                    "name": "Author",
+                    "@type": "ml:Field",
+                    "description": "The author of the book",
+                    "dataType": "sc:Text",
+                    "source": "#{books.csv/Author}"
+                },
+                {
+                    "name": "split",
+                    "@type": "ml:Field",
+                    "description": "The data split to which belong the record",
+                    "dataType": [
+                        "sc:Text",
+                        "wd:Q3985153"
+                    ],
+                    "value": "train"
+                }
+            ]
+        }
+    ]
+}
