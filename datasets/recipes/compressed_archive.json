@@ -7,8 +7,7 @@
     "recordSet": "ml:RecordSet",
     "field": "ml:Field",
     "dataType": "ml:dataType",
-    "source": "ml:source",
-    "references": "ml:references"
+    "source": "ml:source"
   },
   "@type": "sc:Dataset",
   "name": "Compressed archive example",
