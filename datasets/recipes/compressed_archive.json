@@ -5,7 +5,10 @@
     "ml": "http://mlcommons.org/schema/",
     "includes": "ml:includes",
     "recordSet": "ml:RecordSet",
-    "field": "ml:Field"
+    "field": "ml:Field",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "references": "ml:references"
   },
   "@type": "sc:Dataset",
   "name": "Compressed archive example",
