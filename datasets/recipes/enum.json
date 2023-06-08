@@ -18,8 +18,15 @@
     {
       "@type": "sc:FileObject",
       "name": "enum.csv",
-      "contentUrl": "https://example.com/datasets/recipes/enum.csv",
+      "contentUrl": "enum.csv",
       "sha256": "52121a5df209dc2d63069710923e25f769d380a1388d00798e84d432c54fd934",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "enum_directions.csv",
+      "contentUrl": "enum_directions.csv",
+      "sha256": "b993e19ae54b3f4f0264ada1eca3b9d84b62c2c52d71b8049876e9cc952d5685",
       "encodingFormat": "text/csv"
     }
   ],
@@ -34,7 +41,8 @@
           "name": "key",
           "description": "0, 1, 2 or 3",
           "@type": "ml:Field",
-          "dataType": "sc:Integer"
+          "dataType": "sc:Integer",
+          "source": "#{enum_directions.csv/key}"
         },
         {
           "name": "label",
@@ -43,69 +51,8 @@
           "dataType": [
             "sc:Text",
             "sc:name"
-          ]
-        }
-      ],
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "item": [
-            {
-              "@type": "PropertyValue",
-              "name": "key",
-              "value": 0
-            },
-            {
-              "@type": "PropertyValue",
-              "name": "label",
-              "value": "North"
-            }
-          ]
-        },
-        {
-          "@type": "ListItem",
-          "item": [
-            {
-              "@type": "PropertyValue",
-              "name": "key",
-              "value": 1
-            },
-            {
-              "@type": "PropertyValue",
-              "name": "label",
-              "value": "East"
-            }
-          ]
-        },
-        {
-          "@type": "ListItem",
-          "item": [
-            {
-              "@type": "PropertyValue",
-              "name": "key",
-              "value": 2
-            },
-            {
-              "@type": "PropertyValue",
-              "name": "label",
-              "value": "South"
-            }
-          ]
-        },
-        {
-          "@type": "ListItem",
-          "item": [
-            {
-              "@type": "PropertyValue",
-              "name": "key",
-              "value": 3
-            },
-            {
-              "@type": "PropertyValue",
-              "name": "label",
-              "value": "West"
-            }
-          ]
+          ],
+          "source": "#{enum_directions.csv/label}"
         }
       ]
     },
