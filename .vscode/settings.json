@@ -5,6 +5,11 @@
             88
         ],
     },
+    "[json]": {
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+    },
     "files.watcherExclude": {
         "**/.git/**": true,
     },

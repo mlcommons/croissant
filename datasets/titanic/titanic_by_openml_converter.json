@@ -1,124 +1,125 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/"
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "dataType": "ml:dataType",
+    "source": "ml:source"
   },
+  "@type": "sc:Dataset",
   "@language": "en",
-  "@type": "Dataset",
-  "creativeWorkStatus": "active",
+  "name": "Titanic",
+  "description": "**Author**: Frank E. Harrell Jr., Thomas Cason  \n**Source**: [Vanderbilt Biostatistics](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html)  \n**Please cite**:   \n\nThe original Titanic dataset, describing the survival status of individual passengers on the Titanic. The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. The principal source for data about Titanic passengers is the Encyclopedia Titanica. The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created. \n\nFor more information about how this dataset was constructed:\nhttp://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\n\n### Attribute information  \n\nThe variables on our extracted dataset are pclass, survived, name, age, embarked, home.dest, room, ticket, boat, and sex. pclass refers to passenger class (1st, 2nd, 3rd), and is a proxy for socio-economic class. Age is in years, and some infants had fractional values. The titanic2 data frame has no missing data and includes records for the crew, but age is dichotomized at adult vs. child. These data were obtained from Robert Dawson, Saint Mary's University, E-mail. The variables are pclass, age, sex, survived. These data frames are useful for demonstrating many of the functions in Hmisc as well as demonstrating binary logistic regression analysis using the Design library. For more details and references see Simonoff, Jeffrey S (1997): The \"unusual episode\" and a second statistics course. J Statistics Education, Vol. 5 No. 1.",
+  "version": "1",
   "dateCreated": "2017-10-16T01:17:36",
   "dateModified": "2018-10-04T07:19:36",
-  "description": "**Author**: Frank E. Harrell Jr., Thomas Cason  \n**Source**: [Vanderbilt Biostatistics](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html)  \n**Please cite**:   \n\nThe original Titanic dataset, describing the survival status of individual passengers on the Titanic. The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. The principal source for data about Titanic passengers is the Encyclopedia Titanica. The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created. \n\nFor more information about how this dataset was constructed:\nhttp://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\n\n### Attribute information  \n\nThe variables on our extracted dataset are pclass, survived, name, age, embarked, home.dest, room, ticket, boat, and sex. pclass refers to passenger class (1st, 2nd, 3rd), and is a proxy for socio-economic class. Age is in years, and some infants had fractional values. The titanic2 data frame has no missing data and includes records for the crew, but age is dichotomized at adult vs. child. These data were obtained from Robert Dawson, Saint Mary's University, E-mail. The variables are pclass, age, sex, survived. These data frames are useful for demonstrating many of the functions in Hmisc as well as demonstrating binary logistic regression analysis using the Design library. For more details and references see Simonoff, Jeffrey S (1997): The \"unusual episode\" and a second statistics course. J Statistics Education, Vol. 5 No. 1.",
+  "isAccessibleForFree": true,
+  "license": "Public",
+  "creativeWorkStatus": "active",
+  "keywords": "text_data",
+  "url": "https://www.openml.org/search?type=data&id=40945",
   "distribution": [
     {
-      "@type": "FileObject",
-      "contentUrl": "http://openml1.win.tue.nl/dataset40945/dataset_40945.pq",
-      "encodingFormat": "application/vnd.apache.parquet",
-      "name": "Titanic (parquet)"
-    },
-    {
-      "@type": "FileObject",
+      "name": "Titanic.arff",
+      "@type": "sc:FileObject",
       "contentUrl": "https://api.openml.org/data/v1/download/16826755/Titanic.arff",
       "encodingFormat": "text/plain",
-      "name": "Titanic (arff)"
+      "md5": "60ac7205eee0ba5045c90b3bba95b1c4"
     }
   ],
-  "isAccessibleForFree": true,
-  "keywords": "text_data",
-  "name": "Titanic",
   "recordSet": [
     {
+      "name": "titanic_records",
       "@type": "ml:RecordSet",
+      "source": "#{Titanic.arff}",
       "field": [
         {
+          "name": "pclass",
           "@type": "ml:Field",
           "dataType": "Number",
-          "name": "pclass",
-          "source": "#{Titanic (parquet)/pclass}"
+          "source": "#{Titanic.arff/pclass}"
         },
         {
+          "name": "survived",
           "@type": "ml:Field",
           "dataType": "Boolean",
-          "name": "survived",
-          "source": "#{Titanic (parquet)/survived}"
+          "source": "#{Titanic.arff/survived}"
         },
         {
-          "@type": "ml:Field",
-          "dataType": "Text",
           "name": "name",
-          "source": "#{Titanic (parquet)/name}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Text",
+          "source": "#{Titanic.arff/name}"
+        },
+        {
           "name": "sex",
-          "source": "#{Titanic (parquet)/sex}"
+          "@type": "ml:Field",
+          "dataType": "Text",
+          "source": "#{Titanic.arff/sex}"
         },
         {
-          "@type": "ml:Field",
-          "dataType": "Number",
           "name": "age",
-          "source": "#{Titanic (parquet)/age}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{Titanic.arff/age}"
+        },
+        {
           "name": "sibsp",
-          "source": "#{Titanic (parquet)/sibsp}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
+          "source": "#{Titanic.arff/sibsp}"
+        },
+        {
           "name": "parch",
-          "source": "#{Titanic (parquet)/parch}"
+          "@type": "ml:Field",
+          "dataType": "Number",
+          "source": "#{Titanic.arff/parch}"
         },
         {
-          "@type": "ml:Field",
-          "dataType": "Text",
           "name": "ticket",
-          "source": "#{Titanic (parquet)/ticket}"
+          "@type": "ml:Field",
+          "dataType": "Text",
+          "source": "#{Titanic.arff/ticket}"
         },
         {
-          "@type": "ml:Field",
-          "dataType": "Number",
           "name": "fare",
-          "source": "#{Titanic (parquet)/fare}"
-        },
-        {
-          "@type": "ml:Field",
-          "dataType": "Text",
-          "name": "cabin",
-          "source": "#{Titanic (parquet)/cabin}"
-        },
-        {
-          "@type": "ml:Field",
-          "dataType": "Text",
-          "name": "embarked",
-          "source": "#{Titanic (parquet)/embarked}"
-        },
-        {
-          "@type": "ml:Field",
-          "dataType": "Text",
-          "name": "boat",
-          "source": "#{Titanic (parquet)/boat}"
-        },
-        {
           "@type": "ml:Field",
           "dataType": "Number",
-          "name": "body",
-          "source": "#{Titanic (parquet)/body}"
+          "source": "#{Titanic.arff/fare}"
         },
         {
+          "name": "cabin",
           "@type": "ml:Field",
           "dataType": "Text",
-          "name": "home.dest",
-          "source": "#{Titanic (parquet)/home.dest}"
+          "source": "#{Titanic.arff/cabin}"
+        },
+        {
+          "name": "embarked",
+          "@type": "ml:Field",
+          "dataType": "Text",
+          "source": "#{Titanic.arff/embarked}"
+        },
+        {
+          "name": "boat",
+          "@type": "ml:Field",
+          "dataType": "Text",
+          "source": "#{Titanic.arff/boat}"
+        },
+        {
+          "name": "body",
+          "@type": "ml:Field",
+          "dataType": "Number",
+          "source": "#{Titanic.arff/body}"
+        },
+        {
+          "name": "home_dest",
+          "@type": "ml:Field",
+          "dataType": "Text",
+          "source": "#{Titanic.arff/home.dest}"
         }
-      ],
-      "name": "Titanic",
-      "source": "#{Titanic (parquet)}"
+      ]
     }
-  ],
-  "url": "https://www.openml.org/api/v1/json/data/40945",
-  "version": "1"
+  ]
 }
