@@ -5,7 +5,10 @@
     "ml": "http://mlcommons.org/schema/",
     "includes": "ml:includes",
     "recordSet": "ml:RecordSet",
-    "field": "ml:Field"
+    "field": "ml:Field",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "references": "ml:references"
   },
   "@type": "sc:Dataset",
   "name": "Enum example",
@@ -23,7 +26,7 @@
   "recordSet": [
     {
       "@type": "ml:RecordSet",
-      "name": "direction_enums",
+      "name": "direction_enum",
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
       "key": "#{key}",
       "field": [
@@ -40,11 +43,64 @@
             "dataType": ["sc:Text", "sc:name"]
           }
       ],
-      "data": [
-          { "key": 0, "label": "North" },
-          { "key": 1, "label": "East" },
-          { "key": 2, "label": "South" },
-          { "key": 3, "label": "West" }
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "item": [
+            {
+              "@type": "PropertyValue",
+              "name": "key",
+              "value": 0
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "label",
+              "value": "North"
+            }
+          ]
+        },{
+          "@type": "ListItem",
+          "item": [
+            {
+              "@type": "PropertyValue",
+              "name": "key",
+              "value": 1
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "label",
+              "value": "East"
+            }
+          ]
+        },{
+          "@type": "ListItem",
+          "item": [
+            {
+              "@type": "PropertyValue",
+              "name": "key",
+              "value": 2
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "label",
+              "value": "South"
+            }
+          ]
+        },{
+          "@type": "ListItem",
+          "item": [
+            {
+              "@type": "PropertyValue",
+              "name": "key",
+              "value": 3
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "label",
+              "value": "West"
+            }
+          ]
+        }
       ]
     },
     {
@@ -66,7 +122,7 @@
           "dataType": "sc:Integer",
           "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "source": "#{enum.csv/direction}",
-          "references": "#{direction_enums}"
+          "references": "#{direction_enum/key}"
         }
       ]
     }
