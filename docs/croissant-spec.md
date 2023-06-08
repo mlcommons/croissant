@@ -398,11 +398,6 @@ right format for a given target data type.
 **domain**:	[DataSource](#datasource)
 
 
-## Examples
-
-
-
-
 ## Open issues/questions
 
 1. Representation of ML tasks
