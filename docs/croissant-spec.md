@@ -153,6 +153,16 @@ represent nesting (e.g., `"#{recordset2/field5}"`).
 subclassOf:	[sc:Text](https://schema.org/Text)
 
 
+### BoundingBox
+
+A `BoundingBox` describes an imaginary rectangle that outlines an object or a group of objects in an image.
+
+**subclassOf**:	[ml:Field](#field)
+
+**Properties**:
+
+*   [format](#format): The bounding box format. One of `CENTER_XYWH`, `XYWH`, `XYXY` or `REL_XYXY`, as defined by https://keras.io/api/keras_cv/bounding_box/formats/.
+
 ## Properties
 
 We now describe the properties defined as part of the `Croissant` vocabulary.
@@ -388,7 +398,7 @@ mechanisms, or use `sc:PropertyValue` as an escape hatch.
 
 ### format
 
-A format used to parse the values coming from a `DataSource`, e.g., for dates or numbers.
+A format used to parse the values coming from a `DataSource` or a `BoundingBox`, e.g., for dates or numbers.
 
 TODO: Define the list of supported formats, and devise a mechanism to select the
 right format for a given target data type.
