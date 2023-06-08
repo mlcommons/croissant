@@ -4,8 +4,8 @@ import dataclasses
 import json
 
 from etils import epath
-from format.src import graphs
-from format.src import nodes
+from ml_croissant._src import graphs
+from ml_croissant._src import nodes
 
 # Path to a valid JSON to define a valid graph.
 path = epath.Path(__file__).parent / "tests/graphs/valid.json"

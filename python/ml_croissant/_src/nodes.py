@@ -7,8 +7,8 @@ from typing import Any, Mapping
 import networkx as nx
 import rdflib
 
-from format.src import constants
-from format.src.errors import Issues
+from ml_croissant._src import constants
+from ml_croissant._src.errors import Issues
 
 _MAX_ID_LENGTH = 255
 _ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
