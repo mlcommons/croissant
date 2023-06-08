@@ -38,7 +38,11 @@ and the data describing those splits actually come from a [CSV file](https://git
 
 https://github.com/mlcommons/datasets_format/blob/83dd4919ea32319703a0fa23ed013719548b4c03/datasets/coco2014/data/splits.csv#L1
 
-As you can see, here the split URLs are of known supported types:
+As you can see, here the split URLs are from the [known supported types](#known-supported-data-types) (under `wd:Q3985153`):
  - https://mlcommons.org/definitions/training_split
  - https://mlcommons.org/definitions/validation_split
  - https://mlcommons.org/definitions/test_split
+
+## Wrapping it up
+
+And voilà! With this information, a consumer of a dataset should be able to load a particular split, either using the original name of the split as specified by the dataset publisher, or by using a more standardized appellation. This additional semantic allows tools to "understand" if a split is actually intended for training, validation or testing.
