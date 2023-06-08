@@ -7,11 +7,11 @@ from typing import Any, Mapping
 import networkx as nx
 import rdflib
 
-from format.src import constants
-from format.src.errors import Issues
+from ml_croissant._src import constants
+from ml_croissant._src.errors import Issues
 
 _MAX_ID_LENGTH = 255
-_ID_REGEX = "[a-zA-Z0-9\\-_]+"
+_ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 
 
 @dataclasses.dataclass(frozen=True)
@@ -126,6 +126,7 @@ class Node:
             with issues.context(record_set_name=name):
                 return RecordSet(
                     *args,
+                    data=properties.get("data"),
                     description=properties.get("description"),
                     key=properties.get("key"),
                 )
@@ -133,6 +134,7 @@ class Node:
             with issues.context(field_name=name):
                 return Field(
                     *args,
+                    data_type=properties.get("data_type"),
                     description=properties.get("description"),
                     has_sub_fields=properties.get("has_sub_fields"),
                     references=properties.get("references"),
@@ -357,7 +359,6 @@ class FileObject(Node):
     def __post_init__(self):
         self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
         if not self.contained_in:
-            self.assert_has_optional_properties("content_url")
             self.assert_has_exclusive_properties(["md5", "sha256"])
 
 
@@ -379,6 +380,9 @@ class FileSet(Node):
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
+    # `data` is still a point of discussion in the format, because JSON-LD does not
+    # accept arbitrary JSON. All keys are interpreted with respect to the RDF context.
+    data: list[Mapping[str, Any]] | None = None
     description: str | None = None
     key: str | None = None
     name: str = ""
@@ -401,7 +405,7 @@ class Field(Node):
     source: Source = dataclasses.field(default_factory=Source)
 
     def __post_init__(self):
-        self.assert_has_mandatory_properties("name")
+        self.assert_has_mandatory_properties("data_type", "name")
         self.assert_has_optional_properties("description")
         # TODO(marcenacp): check that `data` has the expected form if it exists.
 

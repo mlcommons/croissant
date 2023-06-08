@@ -4,19 +4,19 @@ import networkx as nx
 import rdflib
 from rdflib.extras import external_graph_libs
 
-from format.src import constants
-from format.src.errors import Issues
-from format.src.nodes import Node
+from ml_croissant._src import constants
+from ml_croissant._src.errors import Issues
+from ml_croissant._src.nodes import Node
 
 
-def load_rdf_graph(dict_dataset: dict) -> nx.MultiDiGraph:
+def load_rdf_graph(dict_dataset: dict) -> tuple[rdflib.Graph, nx.MultiDiGraph]:
     """Parses RDF graph with NetworkX from a dict."""
     graph = rdflib.Graph()
     graph.parse(
         data=dict_dataset,
         format="json-ld",
     )
-    return external_graph_libs.rdflib_to_networkx_multidigraph(graph)
+    return graph, external_graph_libs.rdflib_to_networkx_multidigraph(graph)
 
 
 def _find_entry_object(issues: Issues, graph: nx.MultiDiGraph) -> rdflib.term.BNode:

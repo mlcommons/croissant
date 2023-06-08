@@ -11,8 +11,10 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from format.src.errors import Issues
-from format.src.nodes import (
+from ml_croissant._src import constants
+from ml_croissant._src.data_types import EXPECTED_DATA_TYPES
+from ml_croissant._src.errors import Issues
+from ml_croissant._src.nodes import (
     concatenate_uid,
     Field,
     FileObject,
@@ -24,6 +26,7 @@ from format.src.nodes import (
 )
 import networkx as nx
 import pandas as pd
+from rdflib import namespace
 import requests
 import tqdm
 
@@ -37,22 +40,26 @@ def _get_hash(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()
 
 
-def _tmp_column_name(original_name: str) -> str:
-    return f"{original_name}_{_get_hash(original_name)}"
-
-
 def _get_download_filepath(url: str) -> epath.Path:
     hashed_url = _get_hash(url)
     _DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
     return _DOWNLOAD_PATH / f"croissant-{hashed_url}"
 
 
-def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
+def get_entry_nodes(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     """Retrieves the entry nodes (without predecessors) in a graph."""
     entry_nodes = []
     for node, indegree in graph.in_degree(graph.nodes()):
         if indegree == 0:
             entry_nodes.append(node)
+    # Fields should usually not be entry nodes, except if they have subFields. So we
+    # check for this:
+    for node in entry_nodes:
+        if isinstance(node, Field) and not node.has_sub_fields:
+            issues.add_error(
+                f'Node "{node.uid}" is a field and has no source. Please, use'
+                f" {constants.ML_COMMONS_SOURCE} to specify the source."
+            )
     return entry_nodes
 
 
@@ -66,10 +73,10 @@ def _check_no_duplicate(issues: Issues, nodes: list[Node]) -> Mapping[str, Node]
     return uid_to_node
 
 
-def add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
+def add_node_as_entry_node(issues: Issues, graph: nx.MultiDiGraph, node: Node):
     """Add `node` as the entry node of the graph by updating `graph` in place."""
     graph.add_node(node, parent=None)
-    entry_nodes = get_entry_nodes(graph)
+    entry_nodes = get_entry_nodes(issues, graph)
     for entry_node in entry_nodes:
         if isinstance(node, (FileObject, FileSet)):
             graph.add_edge(entry_node, node)
@@ -159,7 +166,7 @@ def build_structure_graph(
     if metadata is None:
         issues.add_error("No metadata is defined in the dataset.")
         return None, graph
-    add_node_as_entry_node(graph, metadata)
+    add_node_as_entry_node(issues, graph, metadata)
     if not graph.is_directed():
         issues.add_error("Structure graph is not directed.")
     return metadata, graph
@@ -189,16 +196,6 @@ class Operation:
         return f"{type(self).__name__}({self.node.uid})"
 
 
-class FileOperation(Operation):
-    def __call__(self):
-        raise NotImplementedError
-
-
-class LineOperation(Operation):
-    def __call__(self):
-        raise NotImplementedError
-
-
 @dataclasses.dataclass(frozen=True, repr=False)
 class InitOperation(Operation):
     """Sets up other operations."""
@@ -207,13 +204,28 @@ class InitOperation(Operation):
         logging.info("Setting up generation for dataset: %s", self.node.uid)
 
 
+def _is_url(url: str) -> bool:
+    """Tests whether a URL is valid.
+
+    The current version is very loose and only supports the HTTP protocol.
+    """
+    return url.startswith("http://") or url.startswith("https://")
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
-class Download(FileOperation):
+class Download(Operation):
     """Downloads from a URL to the disk."""
 
     url: str
 
     def __call__(self):
+        if not _is_url(self.url):
+            assert self.url.startswith("data/"), (
+                'Local file "{self.node.uid}" should point to a file within the data/'
+                ' folder next to the JSON-LD Croissant file. But got: "{self.url}"'
+            )
+            # No need to download local files
+            return
         filepath = _get_download_filepath(self.url)
         if not filepath.exists():
             response = requests.get(self.url, stream=True, timeout=10)
@@ -232,7 +244,7 @@ class Download(FileOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Untar(FileOperation):
+class Untar(Operation):
     """Un-tars "application/x-tar" and yields filtered lines."""
 
     node: FileObject
@@ -278,13 +290,22 @@ class Merge(Operation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadCsv(FileOperation):
+class ReadCsv(Operation):
     """Reads from a CSV file and yield lines."""
 
     url: str
+    croissant_folder: epath.Path
 
     def __call__(self):
-        filepath = _get_download_filepath(self.url)
+        if _is_url(self.url):
+            filepath = _get_download_filepath(self.url)
+        else:
+            # Read from the local path
+            filepath = self.croissant_folder / self.url
+            assert filepath.exists(), (
+                f'In node "{self.node.uid}", file "{self.url}" is either an invalid URL'
+                " or an invalid path."
+            )
         with filepath.open("rb") as csvfile:
             return pd.read_csv(csvfile)
 
@@ -301,7 +322,7 @@ def apply_transform_fn(value: str, source: Source | None = None) -> Callable[...
     return value
 
 
-class Data(LineOperation):
+class Data(Operation):
     node: Field
 
     def __call__(self):
@@ -309,7 +330,7 @@ class Data(LineOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Join(LineOperation):
+class Join(Operation):
     """Joins pd.DataFrames."""
 
     def __call__(
@@ -318,13 +339,20 @@ class Join(LineOperation):
         if len(args) == 1:
             return args[0]
         elif len(args) == 2:
+            assert left.reference is not None, (
+                f'Reference for "{self.node.uid}" is None. It should be a valid'
+                " reference."
+            )
+            left_key = left.reference[1]
+            right_key = right.reference[1]
+            # A priori, we cannot know which one is left and which one is right, because
+            # topological sort is not reproducible in some case.
             df_left, df_right = args
+            if left_key not in df_left.columns or right_key not in df_right.columns:
+                df_left, df_right = df_right, df_left
             assert (
                 len(left.reference) == 2
             ), "JOIN operation does not define a column name."
-            left_key = left.reference[1]
-            right_key = right.reference[1]
-            new_left_key = _tmp_column_name(left.reference[1])
             assert left_key in df_left.columns, (
                 f'Column "{left_key}" does not exist in node "{left.reference[0]}".'
                 f" Existing columns: {df_left.columns}"
@@ -333,10 +361,12 @@ class Join(LineOperation):
                 f'Column "{right_key}" does not exist in node "{right.reference[0]}".'
                 f" Existing columns: {df_right.columns}"
             )
-            df_left[new_left_key] = df_left[left_key].transform(
+            df_left[left_key] = df_left[left_key].transform(
                 apply_transform_fn, source=left
             )
-            return df_left.set_index(new_left_key).join(df_right.set_index(right_key))
+            return df_left.merge(
+                df_right, left_on=left_key, right_on=right_key, how="left"
+            )
         else:
             raise NotImplementedError(
                 f"Unsupported: Trying to joing {len(args)} pd.DataFrames."
@@ -344,10 +374,47 @@ class Join(LineOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadField(LineOperation):
+class ReadField(Operation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
     node: Field
+    rdf_namespace_manager: namespace.NamespaceManager
+
+    def find_data_type(self, data_types: list[str] | tuple[str] | str) -> type:
+        """Finds the data type by expanding its name from the namespace manager.
+
+        In some cases, we specify a list of data types. In that case, we take the first
+        one in the list that can be parsed.
+        """
+        if isinstance(data_types, (list, tuple)):
+            for data_type in data_types:
+                try:
+                    return self.find_data_type(data_type)
+                except ValueError:
+                    continue
+        elif isinstance(data_types, str):
+            if ":" in data_types:
+                data_type = self.rdf_namespace_manager.expand_curie(data_types)
+            else:
+                data_type = data_types
+            if data_type not in EXPECTED_DATA_TYPES:
+                raise ValueError(
+                    f'Unknown data type "{data_type}" found for "{self.node.uid}"'
+                )
+            return EXPECTED_DATA_TYPES[data_type]
+        raise ValueError(f'No data type found for "{self.node.uid}"')
+
+    def _cast_value(self, value: Any):
+        data_type = self.find_data_type(self.node.data_type)
+        if pd.isna(value):
+            return value
+        try:
+            return data_type(value)
+        except ValueError as exception:
+            raise ValueError(
+                f'Expected type "{data_type}" for node "{self.node.uid}", but'
+                f' got: "{type(value)}" with value "{value}"'
+            ) from exception
 
     def __call__(self, series: pd.Series):
         assert len(self.node.source.reference) == 2, (
@@ -359,11 +426,13 @@ class ReadField(LineOperation):
             f'Field "{field}" does not exist. Possible fields:'
             f" {list(series.axes) if isinstance(series, pd.Series) else series.keys()}"
         )
-        return {self.node.name: series[field]}
+        value = series[field]
+        value = self._cast_value(value)
+        return {self.node.name: value}
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class GroupRecordSet(LineOperation):
+class GroupRecordSet(Operation):
     """Groups fields as a record set."""
 
     def __call__(self, *fields: pd.Series):
@@ -391,6 +460,7 @@ def _add_operations_for_field_with_source(
     operations: nx.MultiDiGraph,
     last_operation: Mapping[Node, Operation],
     node: Field,
+    rdf_namespace_manager: namespace.NamespaceManager,
 ):
     """Adds all operations for a node of type `Field`.
 
@@ -403,25 +473,26 @@ def _add_operations_for_field_with_source(
     # Attach the field to a record set
     record_set = _find_record_set(graph, node)
     group_record_set = GroupRecordSet(node=record_set)
-    join = None
+    parent_node = graph.nodes[node].get("parent")
+    join = Join(node=parent_node)
+    # `Join()` takes left=Source and right=Source as kwargs.
     if node.references is not None and len(node.references.reference) > 1:
-        parent_node = graph.nodes[node].get("parent")
-        join = Join(node=parent_node)
-        # `Join()` takes left=Source and right=Source as kwargs.
         kwargs = {
             "left": node.source,
             "right": node.references,
         }
         operations.add_node(join, kwargs=kwargs)
-        operations.add_edge(join, group_record_set)
-    operation = join if join is not None else group_record_set
+    else:
+        # Else, we add a dummy JOIN operation.
+        operations.add_node(join)
+    operations.add_edge(join, group_record_set)
     for predecessor in graph.predecessors(node):
-        operations.add_edge(last_operation[predecessor], operation)
+        operations.add_edge(last_operation[predecessor], join)
     if len(node.source.reference) != 2:
         issues.add_error(f'Wrong source in node "{node.uid}"')
         return
     # Read/extract the field
-    read_field = ReadField(node=node)
+    read_field = ReadField(node=node, rdf_namespace_manager=rdf_namespace_manager)
     operations.add_edge(group_record_set, read_field)
     last_operation[node] = read_field
 
@@ -447,6 +518,7 @@ def _add_operations_for_file_object(
     operations: nx.MultiDiGraph,
     last_operation: Mapping[Node, Operation],
     node: Node,
+    croissant_folder: epath.Path,
 ):
     """Adds all operations for a node of type `FileObject`.
 
@@ -480,6 +552,7 @@ def _add_operations_for_file_object(
         read_csv = ReadCsv(
             node=node,
             url=node.content_url,
+            croissant_folder=croissant_folder,
         )
         operations.add_edge(operation, read_csv)
         operation = read_csv
@@ -495,7 +568,12 @@ class ComputationGraph:
 
     @classmethod
     def from_nodes(
-        cls, issues: Issues, metadata: Node, graph: nx.MultiDiGraph
+        cls,
+        issues: Issues,
+        metadata: Node,
+        graph: nx.MultiDiGraph,
+        croissant_folder: epath.Path,
+        rdf_namespace_manager: namespace.NamespaceManager,
     ) -> "ComputationGraph":
         """Builds the ComputationGraph from the nodes.
 
@@ -522,6 +600,7 @@ class ComputationGraph:
                         operations,
                         last_operation,
                         node,
+                        rdf_namespace_manager,
                     )
                 elif node.data:
                     _add_operations_for_field_with_data(
@@ -532,14 +611,11 @@ class ComputationGraph:
                     )
             elif isinstance(node, FileObject):
                 _add_operations_for_file_object(
-                    graph,
-                    operations,
-                    last_operation,
-                    node,
+                    graph, operations, last_operation, node, croissant_folder
                 )
 
         # Attach all entry nodes to a single `start` node
-        entry_operations = get_entry_nodes(operations)
+        entry_operations = get_entry_nodes(issues, operations)
         init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)

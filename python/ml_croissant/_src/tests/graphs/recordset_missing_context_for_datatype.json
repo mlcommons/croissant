@@ -7,7 +7,6 @@
     "recordSet": "ml:RecordSet",
     "field": "ml:Field",
     "subField": "ml:SubField",
-    "dataType": "ml:dataType",
     "source": "ml:source",
     "data": "ml:data",
     "applyTransform": "ml:applyTransform",
@@ -38,7 +37,11 @@
       "name": "a-record-set",
       "description": "This is a record set.",
       "field": [
-          { "name": "first-field", "@type": "WRONG_TYPE", "dataType": "sc:Integer" }
+        {
+          "name": "first-field",
+          "@type": "ml:Field",
+          "dataType": "sc:Integer"
+        }
       ]
     }
   ]

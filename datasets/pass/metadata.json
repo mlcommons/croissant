@@ -163,11 +163,13 @@
             {
               "name": "latitude",
               "@type": "ml:Field",
+              "dataType": "sc:Number",
               "source": "#{metadata/latitude}"
             },
             {
               "name": "longitude",
               "@type": "ml:Field",
+              "dataType": "sc:Number",
               "source": "#{metadata/longitude}"
             }
           ]
