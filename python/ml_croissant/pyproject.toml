@@ -1,5 +1,5 @@
 [project]
-name = "format"
+name = "ml_croissant"
 description = "MLCommons datasets format."
 version = "0.0.1"
 authors = [

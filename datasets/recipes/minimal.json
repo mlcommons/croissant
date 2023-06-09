@@ -1,0 +1,10 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/"
+  },
+  "@type": "sc:Dataset",
+  "name": "Minimal example",
+  "description": "This is a very minimal example, with only the required fields.",
+  "url": "https://example.com/dataset/minimal/about"
+}

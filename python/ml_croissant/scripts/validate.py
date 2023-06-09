@@ -5,8 +5,7 @@ import sys
 from absl import app
 from absl import flags
 from absl import logging
-from format.src import datasets
-from format.src import errors
+from ml_croissant import Dataset, ValidationError
 
 flags.DEFINE_string(
     "file",
@@ -24,9 +23,9 @@ def main(argv):
     del argv
     file = FLAGS.file
     try:
-        datasets.Dataset(file)
+        Dataset(file)
         logging.info("Done.")
-    except errors.ValidationError as exception:
+    except ValidationError as exception:
         logging.error(exception)
         sys.exit(1)
 

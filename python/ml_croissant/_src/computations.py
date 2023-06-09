@@ -11,10 +11,10 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from format.src import constants
-from format.src.data_types import EXPECTED_DATA_TYPES
-from format.src.errors import Issues
-from format.src.nodes import (
+from ml_croissant._src import constants
+from ml_croissant._src.data_types import EXPECTED_DATA_TYPES
+from ml_croissant._src.errors import Issues
+from ml_croissant._src.nodes import (
     concatenate_uid,
     Field,
     FileObject,
@@ -196,16 +196,6 @@ class Operation:
         return f"{type(self).__name__}({self.node.uid})"
 
 
-class FileOperation(Operation):
-    def __call__(self):
-        raise NotImplementedError
-
-
-class LineOperation(Operation):
-    def __call__(self):
-        raise NotImplementedError
-
-
 @dataclasses.dataclass(frozen=True, repr=False)
 class InitOperation(Operation):
     """Sets up other operations."""
@@ -223,7 +213,7 @@ def _is_url(url: str) -> bool:
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Download(FileOperation):
+class Download(Operation):
     """Downloads from a URL to the disk."""
 
     url: str
@@ -254,7 +244,7 @@ class Download(FileOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Untar(FileOperation):
+class Untar(Operation):
     """Un-tars "application/x-tar" and yields filtered lines."""
 
     node: FileObject
@@ -300,7 +290,7 @@ class Merge(Operation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadCsv(FileOperation):
+class ReadCsv(Operation):
     """Reads from a CSV file and yield lines."""
 
     url: str
@@ -332,7 +322,7 @@ def apply_transform_fn(value: str, source: Source | None = None) -> Callable[...
     return value
 
 
-class Data(LineOperation):
+class Data(Operation):
     node: Field
 
     def __call__(self):
@@ -340,7 +330,7 @@ class Data(LineOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Join(LineOperation):
+class Join(Operation):
     """Joins pd.DataFrames."""
 
     def __call__(
@@ -384,7 +374,7 @@ class Join(LineOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadField(LineOperation):
+class ReadField(Operation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
     node: Field
@@ -442,7 +432,7 @@ class ReadField(LineOperation):
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class GroupRecordSet(LineOperation):
+class GroupRecordSet(Operation):
     """Groups fields as a record set."""
 
     def __call__(self, *fields: pd.Series):
