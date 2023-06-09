@@ -94,7 +94,7 @@
                 "replace": "\\n/<eos>"
               },
               {
-                "separator": "|"
+                "separator": " "
               }
             ]
           }
