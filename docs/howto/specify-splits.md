@@ -10,7 +10,7 @@ The splits definition is done at the `RecordSet` level, with a dedicated field w
 
 The following artificial example defines the split(s) based on a CSV column:
 
-TODO: example snippet, also with `wd:` context declaration.
+https://github.com/mlcommons/datasets_format/blob/3683ea494b8952c842496d523f4e2ed9ab785627/datasets/recipes/simple-split.json#L45-L54
 
 Often, data from different splits come packaged into different files, which enable dataset consumers to only download the needed data. In such cases, the split definition is still done at the `RecordSet` level, but can refer to data file names or path.
 
@@ -38,7 +38,10 @@ and the data describing those splits actually come from a [CSV file](https://git
 
 https://github.com/mlcommons/datasets_format/blob/83dd4919ea32319703a0fa23ed013719548b4c03/datasets/coco2014/data/splits.csv#L1
 
-As you can see, here the split URLs are from the [known supported types](#known-supported-data-types) (under `wd:Q3985153`):
+As you can see, here the split URLs are from the [known supported types](https://github.com/mlcommons/datasets_format/blob/main/docs/croissant-spec.md#known-supported-data-types) (under `wd:Q3985153`):
+\
+> **Warning**
+> The follow pages are under construction and might not exist yet.
  - https://mlcommons.org/definitions/training_split
  - https://mlcommons.org/definitions/validation_split
  - https://mlcommons.org/definitions/test_split
