@@ -19,7 +19,7 @@
             "name": "books.csv",
             "@type": "sc:FileObject",
             "contentUrl": "data/books.csv",
-            "sha256": "",
+            "sha256": "d35c5a01eecbd7700faf86b4ec838eb65bd6e861633b1e10ca3294d4e58e75c9",
             "encodingFormat": "text/csv"
         }
     ],
