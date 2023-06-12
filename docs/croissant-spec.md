@@ -153,6 +153,10 @@ represent nesting (e.g., `"#{recordset2/field5}"`).
 subclassOf:	[sc:Text](https://schema.org/Text)
 
 
+### BoundingBox
+
+A `BoundingBox` describes an imaginary rectangle that outlines an object or a group of objects in an image.
+
 ## Properties
 
 We now describe the properties defined as part of the `Croissant` vocabulary.
@@ -263,14 +267,47 @@ corresponding properties must be defined using `subField`.
 
 A field may have more than a single assigned `dataType`, in which case at least
 one must inform about the expected type of data (eg: `sc:Text`), while other
-types inform about the semantic being used.
+types inform about the semantic being used, possibly semantics with ML meaning.
 
 **range**:	[sc:Text](https://schema.org/Text), [sc:URL](https://schema.org/URL)
 
 **domain**:	[Field](#field)
 
+[🔗](#known-supported-data-types) Known supported data types:
 
-In the following example, the `url` field is expected to be a URL , which
+| `dataType` | Usage |
+| -------- | ----- |
+| [**`sc:Boolean`**](https://schema.org/Boolean) | Describes a boolean. |
+| [**`sc:Date`**](https://schema.org/Date) | Describes a date. |
+| [**`sc:Float`**](https://schema.org/Float) | Describes a float. |
+| [**`sc:Integer`**](https://schema.org/Integer) | Describes an integer. |
+| [**`sc:Text`**](https://schema.org/Text) | Describes a string. |
+| [**`sc:URL`**](https://schema.org/ImageObject) | Describes a URL. |
+| [**`sc:ImageObject`**](https://schema.org/ImageObject) | Describes a field containing the content of an image (pixels). |
+| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box. |
+| [**`sc:name`**](https://schema.org/name) | Describes a field which can be used as a human-friendly label. |
+| [**`wd:Q3985153`**](https://www.wikidata.org/wiki/Q3985153) <br/>(**Training, validation and test sets**) | Describes a field used to divide data into multiple sets according to intended usage with regards to models [training](https://mlcommons.org/definitions/training_split), [validation](https://mlcommons.org/definitions/validation_split), [testing](https://mlcommons.org/definitions/test_split), and possibly others. <br/>While any value is acceptable here, it is recommended to associate the usual splits listed above with the linked semantic URL.
+
+Extension mechanism
+
+The Croissant format supports more data types, which can be used by tools consuming the data. For example:
+
+ `dataType` | Usage |
+| -------- | ----- |
+| [**`wd:Q48277`**](https://www.wikidata.org/wiki/Q48277) <br/>(**gender**) | Describes a field which values are indicative of a person gender. This can be used by Ethical AI tools to flag possible gender bias in the data. Values for this field can be associated with specific gender URLs (eg: [**`wd:Q6581097`**](https://www.wikidata.org/wiki/Q6581097), [**`wd:Q6581072`**](https://www.wikidata.org/wiki/Q6581072), etc.) |
+
+
+In the following example, `color_sample` is a field containing an image, but with no associated semantic meaning. 
+
+```json
+{
+  "name": "color_sample",
+  "@type": "ml:Field",
+  "dataType": "sc:ImageObject",
+}
+```
+
+In the following example, the `url` field is expected to be a URL, which
 semantic type is [City](https://www.wikidata.org/wiki/Q515), so one will expect
 values of this field to be URLs referring to cities (eg:
 “https://www.wikidata.org/wiki/Q90”).
@@ -279,18 +316,12 @@ values of this field to be URLs referring to cities (eg:
 {
   "name": "url",
   "@type": "ml:Field",
-  "dataType": ["https://schema.org/URL", "https://www.wikidata.org/wiki/Q515"]
+  "dataType": [
+    "https://schema.org/URL",
+    "https://www.wikidata.org/wiki/Q515"
+  ]
 }
 ```
-<!---
-Supported known semantic types:
-
-*   `https://www.wikidata.org/wiki/Q48277`: gender
-
-Supported known semantic types with an ML meaning:
-
-*   https://www.wikidata.org/wiki/Q3985153`: Training, validation and test sets.
---->
 
 
 ### references
@@ -368,7 +399,9 @@ mechanisms, or use `sc:PropertyValue` as an escape hatch.
 
 ### format
 
-A format used to parse the values coming from a `DataSource`, e.g., for dates or numbers.
+A format used to parse the values coming from a `DataSource` e.g., for dates or numbers.
+
+For bounding boxed, one of `CENTER_XYWH`, `XYWH`, `XYXY` or `REL_XYXY`, as defined by https://keras.io/api/keras_cv/bounding_box/formats/.
 
 TODO: Define the list of supported formats, and devise a mechanism to select the
 right format for a given target data type.
@@ -381,11 +414,9 @@ right format for a given target data type.
 ## Open issues/questions
 
 1. Representation of ML tasks
-2. Representation of other ML-specific information: Splits, labels, etc.
-3. Do we need parentField?
-4. Which namespace should Reference exist under?
-5. Should Reference be this general, or should it be specialized into
+1. Do we need parentField?
+1. Which namespace should Reference exist under?
+1. Should Reference be this general, or should it be specialized into
    FileObjectReference, RecordSetReference, etc..?  (A bit verbose, but more
    type-safe, and helps with namespace homing.)
-6. Non-semantic and Semantic types supported
-7. Representation of enumerated records: PropertyValue vs arbitrary JSON.
+1. Representation of enumerated records: PropertyValue vs arbitrary JSON.
