@@ -297,11 +297,13 @@
         },
         {
           "name": "bbox",
-          "@type": "ml:BoundingBox",
-          "format": "XYWH",
+          "@type": "ml:Field",
           "dataType": "ml:BoundingBox",
           "description": "The bounding box around annotated object[s].",
-          "source": "#{instancesperson_keypoints_annotations/annotations/bbox}"
+          "source": {
+            "data": "#{instancesperson_keypoints_annotations/annotations/bbox}",
+            "format": "XYWH"
+          }
         }
       ]
     }
