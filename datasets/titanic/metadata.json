@@ -36,7 +36,7 @@
     {
       "@type": "sc:FileObject",
       "name": "gender_maps",
-      "description": "Maps gender keys (0, 1) to labeled values.",
+      "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
       "contentUrl": "data/gender_maps.csv",
       "contentSize": "117743 B",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
@@ -57,20 +57,16 @@
       "@type": "ml:RecordSet",
       "name": "gender_enums",
       "description": "Maps gender keys (0, 1) to labeled values.",
-      "key": "#{key}",
+      "key": "#{label}",
       "field": [
         {
-          "name": "key",
-          "description": "0 or 1",
-          "@type": "ml:Field",
-          "dataType": "sc:Integer",
-          "source": "#{gender_maps/key}"
-        },
-        {
           "name": "label",
-          "description": "Male or Female",
+          "description": "One of {\"male\", \"female\"}",
           "@type": "ml:Field",
-          "dataType": "sc:Text",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
           "source": "#{gender_maps/label}"
         },
         {
@@ -102,7 +98,10 @@
           "name": "label",
           "description": "Human-readable label",
           "@type": "ml:Field",
-          "dataType": "sc:Text",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
           "source": "#{embarkation_maps/label}"
         },
         {
@@ -134,7 +133,8 @@
           "description": "Gender of passenger (male or female)",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/sex}"
+          "source": "#{passengers-table/sex}",
+          "references": "#{gender_enums/label}"
         },
         {
           "name": "age",
@@ -169,7 +169,8 @@
           "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/embarked}"
+          "source": "#{passengers-table/embarked}",
+          "references": "#{ports_enums/key}"
         },
         {
           "name": "fare",
