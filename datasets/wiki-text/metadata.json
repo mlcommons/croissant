@@ -1,0 +1,122 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "wd": "https://www.wikidata.org/wiki/",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator",
+    "references": "ml:references"
+  },
+  "@type": "sc:Dataset",
+  "@language": "en",
+  "name": "WikiText-103",
+  "url": "https://blog.salesforceairesearch.com/the-wikitext-long-term-dependency-language-modeling-dataset/",
+  "description": "The WikiText language modeling dataset is a collection of over 100 million tokens extracted from the set of verified Good and Featured articles on Wikipedia. The dataset is available under the Creative Commons Attribution-ShareAlike License.\n\nCompared to the preprocessed version of Penn Treebank (PTB), WikiText-2 is over 2 times larger and WikiText-103 is over 110 times larger. The WikiText dataset also features a far larger vocabulary and retains the original case, punctuation and numbers - all of which are removed in PTB. As it is composed of full articles, the dataset is well suited for models that can take advantage of long term dependencies.",
+  "license": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "citation": "@article{merity2016pointer, title={Pointer sentinel mixture models}, author={Merity, Stephen and Xiong, Caiming and Bradbury, James and Socher, Richard}, journal={arXiv preprint arXiv:1609.07843}, year={2016} }",
+  "distribution": [
+    {
+      "name": "wikitext-103-v1.zip",
+      "@type": "sc:FileObject",
+      "contentUrl": "https://s3.amazonaws.com/research.metamind.io/wikitext/wikitext-103-v1.zip",
+      "sha256": "242ba0f20b329cfdf1ccc61e9e9e5b59becf189db7f7a81cd2a0e2fc31539590",
+      "encodingFormat": "application/zip"
+    },
+    {
+      "name": "token-files",
+      "@type": "sc:FileSet",
+      "containedIn": [
+        "#{wikitext-103-v1.zip}"
+      ],
+      "includes": "wikitext-103/*.tokens",
+      "encodingFormat": "image/jpeg"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "splits.csv",
+      "contentUrl": "data/splits.csv",
+      "sha256": "dec55b82438aba979670b0eabd99b1d8cc9d385cef028314feccba1cc68af33b",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "split_enums",
+      "description": "Maps split names to semantic values.",
+      "source": "#{splits.csv}",
+      "key": "#{name}",
+      "field": [
+        {
+          "name": "name",
+          "description": "One of: train, valid, test.",
+          "@type": "ml:Field",
+          "source": "#{splits.csv/name}",
+          "dataType": "sc:Text"
+        },
+        {
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "@type": "ml:Field",
+          "source": "#{splits.csv/url}",
+          "dataType": [
+            "sc:Url",
+            "wd:Q3985153"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "words",
+      "description": "The words of the token files, including their split.",
+      "source": "#{token-files}",
+      "field": [
+        {
+          "name": "word",
+          "@type": "ml:Field",
+          "description": "A word.",
+          "dataType": "sc:Text",
+          "repeated": "true",
+          "source": {
+            "data": "#{token-files/content}",
+            "applyTransform": [
+              {
+                "replace": "\\n/<eos>"
+              },
+              {
+                "separator": " "
+              }
+            ]
+          }
+        },
+        {
+          "name": "split",
+          "@type": "ml:Field",
+          "dataType": [
+            "sc:Text",
+            "wd:Q3985153"
+          ],
+          "description": "The train, valid or test split.",
+          "source": {
+            "data": "#{token-files/fullpath}",
+            "applyTransform": {
+              "regex": "^wiki\\.(train|valid|test)\\.tokens$"
+            }
+          },
+          "references": "#{split_enums}"
+        }
+      ]
+    }
+  ]
+}
