@@ -109,8 +109,8 @@ Forthcoming
 Croissant project code and examples are licensed under Apache 2.
 
 ## Governance
-Croissant is being developed by the community as a Task Force of the [MLCommons Association](mlcommons.org) Datasets Working Group.
-The Task Force is open to anyone (as is the parent working group). 
+Croissant is being developed by the community as a Task Force of the [MLCommons Association](http://mlcommons.org) Datasets Working Group.
+The Task Force is open to anyone (as is the parent [Datasets working group](https://mlcommons.org/en/groups/datasets/)). 
 The Task Force is co-chaired by [Omar Benjello](mailto:benjello@google.com) and TBD.
 
 ## Contributors
