@@ -111,7 +111,7 @@ Croissant project code and examples are licensed under Apache 2.
 ## Governance
 Croissant is being developed by the community as a Task Force of the [MLCommons Association](http://mlcommons.org) Datasets Working Group.
 The Task Force is open to anyone (as is the parent [Datasets working group](https://mlcommons.org/en/groups/datasets/)). 
-The Task Force is co-chaired by [Omar Benjello](mailto:benjello@google.com) and TBD.
+The Task Force is co-chaired by [Omar Benjelloun](mailto:benjello@google.com) and TBD.
 
 ## Contributors
 Albert Villanova (Hugging Face), Andrew Zaldivar (Google), Baishan Guo (Meta), Carole Jean-Wu (Meta), Ce Zhang (ETH Zurich), Costanza Conforti (Google), D. Sculley (Kaggle), Dan Brickley (Schema.Org), Eduardo Arino de la Rubia (Meta), Edward Lockhart (Deepmind), Elena Simperl (King's College London), Geoff Thomas (Kaggle), Joaquin Vanschoren (TU/Eindhoven, OpenML), Jos van der Velde (TU/Eindhoven, OpenML), Julien Chaumond (Hugging Face), Kurt Bollacker (MLCommons), Lora Aroyo (Google), Meg Risdal (Kaggle), Natasha Noy (Google), Newsha Ardalani (Meta), Omar Benjelloun (Google), Peter Mattson (MLCommons), Pierre Marcenac (Google), Pierre Ruyssen(Google), Pieter Gijsbers (TU/Eindhoven, OpenML), Prabhant Singh (TU/Eindhoven, OpenML), Quentin Lhoest (Hugging Face), Taniya Das (TU/Eindhoven, OpenML)
