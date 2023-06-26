@@ -44,9 +44,9 @@
     },
     {
       "@type": "sc:FileObject",
-      "name": "embarkation_maps",
+      "name": "embarkation_ports.csv",
       "description": "Maps Embarkation port initial to labeled values.",
-      "contentUrl": "data/embarkation_maps.csv",
+      "contentUrl": "data/embarkation_ports.csv",
       "contentSize": "117743 B",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
       "encodingFormat": "text/csv"
@@ -83,7 +83,7 @@
     },
     {
       "@type": "ml:RecordSet",
-      "name": "ports_enums",
+      "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "key": "#{key}",
       "field": [
@@ -92,7 +92,7 @@
           "description": "C, Q, S or ?",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{embarkation_maps/key}"
+          "source": "#{embarkation_ports.csv/key}"
         },
         {
           "name": "label",
@@ -102,7 +102,7 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{embarkation_maps/label}"
+          "source": "#{embarkation_ports.csv/label}"
         },
         {
           "name": "url",
@@ -112,7 +112,7 @@
             "sc:URL",
             "wd:Q515"
           ],
-          "source": "#{embarkation_maps/url}"
+          "source": "#{embarkation_ports.csv/url}"
         }
       ]
     },
@@ -170,7 +170,7 @@
           "@type": "ml:Field",
           "dataType": "sc:Text",
           "source": "#{passengers.csv/embarked}",
-          "references": "#{ports_enums/key}"
+          "references": "#{embarkation_ports/key}"
         },
         {
           "name": "fare",
