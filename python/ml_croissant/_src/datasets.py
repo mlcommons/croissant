@@ -148,5 +148,5 @@ class Records:
                     yield operation(*read_fields, **kwargs)
             else:
                 if isinstance(operation, ReadField) and not previous_results:
-                    break
+                    continue
                 results[operation] = operation(*previous_results, **kwargs)
