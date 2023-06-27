@@ -10,13 +10,13 @@ The splits definition is done at the `RecordSet` level, with a dedicated field w
 
 The following artificial example defines the split(s) based on a CSV column:
 
-https://github.com/mlcommons/datasets_format/blob/3683ea494b8952c842496d523f4e2ed9ab785627/datasets/recipes/simple-split.json#L45-L54
+https://github.com/mlcommons/croissant/blob/3683ea494b8952c842496d523f4e2ed9ab785627/datasets/recipes/simple-split.json#L45-L54
 
 Often, data from different splits come packaged into different files, which enable dataset consumers to only download the needed data. In such cases, the split definition is still done at the `RecordSet` level, but can refer to data file names or path.
 
-The following example is extracted from the [COCO2014 dataset Croissant config](https://github.com/mlcommons/datasets_format/blob/main/datasets/coco2014/metadata.json):
+The following example is extracted from the [COCO2014 dataset Croissant config](https://github.com/mlcommons/croissant/blob/main/datasets/coco2014/metadata.json):
 
-<https://github.com/mlcommons/datasets_format/blob/2e05069f02a93e6154137aa267e69bd1271a95b0/datasets/coco2014/metadata.json#L173-L187>
+<https://github.com/mlcommons/croissant/blob/2e05069f02a93e6154137aa267e69bd1271a95b0/datasets/coco2014/metadata.json#L173-L187>
 
 As one would expect, tools working with the Croissant config format can still infer the packaged data files needed for each split, and if a user requests loading only the "test" split, then tools can avoid downloading the "train" split files.
 
@@ -28,17 +28,17 @@ Different names might refer to the same conceptual split. For example, `validati
 
 The above example shows how a split information can be attached to a `RecordSet`. To associate semantic meaning to the split values, one needs to "refer" to another `RecordSet` describing those splits. In the above example, this reference is done with the `references` field:
 
-https://github.com/mlcommons/datasets_format/blob/2e05069f02a93e6154137aa267e69bd1271a95b0/datasets/coco2014/metadata.json#LL186C11-L186C23
+https://github.com/mlcommons/croissant/blob/2e05069f02a93e6154137aa267e69bd1271a95b0/datasets/coco2014/metadata.json#LL186C11-L186C23
 
 The `split_enums` `RecordSet` is declared as a `name` (on which join is done), and the semantic value: a `sc:URL` of type [`wd:Q3985153`](https://www.wikidata.org/wiki/Q3985153):
 
-https://github.com/mlcommons/datasets_format/blob/2e05069f02a93e6154137aa267e69bd1271a95b0/datasets/coco2014/metadata.json#L128-L153
+https://github.com/mlcommons/croissant/blob/2e05069f02a93e6154137aa267e69bd1271a95b0/datasets/coco2014/metadata.json#L128-L153
 
-and the data describing those splits actually come from a [CSV file](https://github.com/mlcommons/datasets_format/blob/main/datasets/coco2014/data/splits.csv):
+and the data describing those splits actually come from a [CSV file](https://github.com/mlcommons/croissant/blob/main/datasets/coco2014/data/splits.csv):
 
-https://github.com/mlcommons/datasets_format/blob/83dd4919ea32319703a0fa23ed013719548b4c03/datasets/coco2014/data/splits.csv#L1
+https://github.com/mlcommons/croissant/blob/83dd4919ea32319703a0fa23ed013719548b4c03/datasets/coco2014/data/splits.csv#L1
 
-As you can see, here the split URLs are from the [known supported types](https://github.com/mlcommons/datasets_format/blob/main/docs/croissant-spec.md#known-supported-data-types) (under `wd:Q3985153`):
+As you can see, here the split URLs are from the [known supported types](https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#known-supported-data-types) (under `wd:Q3985153`):
 \
 > **Warning**
 > The follow pages are under construction and might not exist yet.
