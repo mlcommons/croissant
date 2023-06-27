@@ -27,7 +27,7 @@
   "distribution": [
     {
       "@type": "sc:FileObject",
-      "name": "passengers-table",
+      "name": "passengers.csv",
       "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
       "contentSize": "117743 B",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
@@ -35,18 +35,18 @@
     },
     {
       "@type": "sc:FileObject",
-      "name": "gender_maps",
-      "description": "Maps gender keys (0, 1) to labeled values.",
-      "contentUrl": "data/gender_maps.csv",
+      "name": "genders.csv",
+      "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
+      "contentUrl": "data/genders.csv",
       "contentSize": "117743 B",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
-      "name": "embarkation_maps",
+      "name": "embarkation_ports.csv",
       "description": "Maps Embarkation port initial to labeled values.",
-      "contentUrl": "data/embarkation_maps.csv",
+      "contentUrl": "data/embarkation_ports.csv",
       "contentSize": "117743 B",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
       "encodingFormat": "text/csv"
@@ -55,23 +55,19 @@
   "recordSet": [
     {
       "@type": "ml:RecordSet",
-      "name": "gender_enums",
-      "description": "Maps gender keys (0, 1) to labeled values.",
-      "key": "#{key}",
+      "name": "genders",
+      "description": "Maps gender labels to semantic definitions.",
+      "key": "#{label}",
       "field": [
         {
-          "name": "key",
-          "description": "0 or 1",
-          "@type": "ml:Field",
-          "dataType": "sc:Integer",
-          "source": "#{gender_maps/key}"
-        },
-        {
           "name": "label",
-          "description": "Male or Female",
+          "description": "One of {\"male\", \"female\"}",
           "@type": "ml:Field",
-          "dataType": "sc:Text",
-          "source": "#{gender_maps/label}"
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": "#{genders.csv/label}"
         },
         {
           "name": "url",
@@ -81,13 +77,13 @@
             "sc:URL",
             "wd:Q48277"
           ],
-          "source": "#{gender_maps/url}"
+          "source": "#{genders.csv/url}"
         }
       ]
     },
     {
       "@type": "ml:RecordSet",
-      "name": "ports_enums",
+      "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "key": "#{key}",
       "field": [
@@ -96,14 +92,17 @@
           "description": "C, Q, S or ?",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{embarkation_maps/key}"
+          "source": "#{embarkation_ports.csv/key}"
         },
         {
           "name": "label",
           "description": "Human-readable label",
           "@type": "ml:Field",
-          "dataType": "sc:Text",
-          "source": "#{embarkation_maps/label}"
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": "#{embarkation_ports.csv/label}"
         },
         {
           "name": "url",
@@ -113,7 +112,7 @@
             "sc:URL",
             "wd:Q515"
           ],
-          "source": "#{embarkation_maps/url}"
+          "source": "#{embarkation_ports.csv/url}"
         }
       ]
     },
@@ -127,98 +126,100 @@
           "description": "Name of the passenger",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/name}"
+          "source": "#{passengers.csv/name}"
         },
         {
           "name": "gender",
           "description": "Gender of passenger (male or female)",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/sex}"
+          "source": "#{passengers.csv/sex}",
+          "references": "#{genders/label}"
         },
         {
           "name": "age",
           "description": "Age of passenger at time of death.",
           "@type": "ml:Field",
           "dataType": "sc:Float",
-          "source": "#{passengers-table/age}"
+          "source": "#{passengers.csv/age}"
         },
         {
           "name": "survived",
           "description": "Survival status of passenger (0: Lost, 1: Saved)",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source": "#{passengers-table/survived}"
+          "source": "#{passengers.csv/survived}"
         },
         {
           "name": "pclass",
           "description": "Passenger Class (1st/2nd/3rd)",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source": "#{passengers-table/pclass}"
+          "source": "#{passengers.csv/pclass}"
         },
         {
           "name": "cabin",
           "description": "Passenger cabin.",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/cabin}"
+          "source": "#{passengers.csv/cabin}"
         },
         {
           "name": "embarked",
           "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/embarked}"
+          "source": "#{passengers.csv/embarked}",
+          "references": "#{embarkation_ports/key}"
         },
         {
           "name": "fare",
           "description": "Passenger Fare (British pound)",
           "@type": "ml:Field",
           "dataType": "sc:Float",
-          "source": "#{passengers-table/fare}"
+          "source": "#{passengers.csv/fare}"
         },
         {
           "name": "home_destination",
           "description": "Home and destination",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/home.dest}"
+          "source": "#{passengers.csv/home.dest}"
         },
         {
           "name": "ticket",
           "description": "Ticket Number, may include a letter.",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/ticket}"
+          "source": "#{passengers.csv/ticket}"
         },
         {
           "name": "num_parents_children",
           "description": "Number of Parents/Children Aboard",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source": "#{passengers-table/parch}"
+          "source": "#{passengers.csv/parch}"
         },
         {
           "name": "num_siblings_spouses",
           "description": "Number of Siblings/Spouses Aboard",
           "@type": "ml:Field",
           "dataType": "sc:Integer",
-          "source": "#{passengers-table/sibsp}"
+          "source": "#{passengers.csv/sibsp}"
         },
         {
           "name": "boat",
           "description": "Lifeboat used by passenger",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/boat}"
+          "source": "#{passengers.csv/boat}"
         },
         {
           "name": "body",
           "description": "Body Identification Number",
           "@type": "ml:Field",
           "dataType": "sc:Text",
-          "source": "#{passengers-table/body}"
+          "source": "#{passengers.csv/body}"
         }
       ]
     }
