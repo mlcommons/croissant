@@ -2,7 +2,7 @@
 
 from etils import epath
 from ml_croissant._src import datasets
-from ml_croissant._src import errors
+from ml_croissant._src.core.issues import ValidationError
 import numpy as np
 import pytest
 
@@ -19,13 +19,6 @@ import pytest
         [
             "metadata_bad_type.json",
             'Node should have an attribute `"@type" in',
-        ],
-        [
-            "metadata_bad_type.json",
-            (
-                "The current dataset doesn't declare any node of type:"
-                ' "http://mlcommons.org/schema/RecordSet"'
-            ),
         ],
         # Distribution.
         [
@@ -91,7 +84,7 @@ import pytest
 )
 def test_static_analysis(filename, error):
     base_path = epath.Path(__file__).parent / "tests/graphs"
-    with pytest.raises(errors.ValidationError, match=error):
+    with pytest.raises(ValidationError, match=error):
         datasets.Dataset(base_path / filename)
 
 

@@ -15,7 +15,7 @@
     "regex": "ml:regex",
     "separator": "ml:separator"
   },
-  "@type": "mydataset",
+  "@type": "sc:Dataset",
   "@language": "en",
   "url": "https://www.google.com/dataset",
   "description": "This is a description.",

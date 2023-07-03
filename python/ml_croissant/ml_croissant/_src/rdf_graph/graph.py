@@ -1,4 +1,4 @@
-"""graphs module."""
+"""RDF graph module."""
 
 from __future__ import annotations
 

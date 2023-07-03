@@ -10,6 +10,7 @@
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
     },
+    "explorer.excludeGitIgnore": true,
     "files.watcherExclude": {
         "**/.git/**": true,
     },

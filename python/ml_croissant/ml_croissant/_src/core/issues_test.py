@@ -1,4 +1,4 @@
-"""errors_test module."""
+"""issues_test module."""
 
 import textwrap
 
