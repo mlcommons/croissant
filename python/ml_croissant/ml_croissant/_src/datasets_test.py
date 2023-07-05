@@ -97,7 +97,7 @@ def test_static_analysis(filename, error):
 
 def test_generation_titanic():
     titanic_config = (
-        epath.Path(__file__).parent.parent.parent.parent
+        epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / "titanic"
         / "metadata.json"
@@ -145,7 +145,7 @@ def test_generation_titanic():
 
 def test_generation_simple_join():
     titanic_config = (
-        epath.Path(__file__).parent.parent.parent.parent
+        epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / "simple-join"
         / "metadata.json"
