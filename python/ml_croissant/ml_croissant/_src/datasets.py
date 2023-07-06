@@ -8,11 +8,13 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from ml_croissant._src import errors
-from ml_croissant._src import graphs
-from ml_croissant._src.computations import (
+from ml_croissant._src.core.issues import Issues, ValidationError
+from ml_croissant._src.rdf_graph import graph
+from ml_croissant._src.operation_graph import (
     build_structure_graph,
     ComputationGraph,
+)
+from ml_croissant._src.operation_graph.operations import (
     GroupRecordSet,
     ReadField,
 )
@@ -40,16 +42,16 @@ class Validator:
     """Static analysis of the issues in the Croissant file."""
 
     file_or_file_path: epath.PathLike
-    issues: errors.Issues = dataclasses.field(default_factory=errors.Issues)
+    issues: Issues = dataclasses.field(default_factory=Issues)
     file: dict = dataclasses.field(init=False)
     operations: ComputationGraph | None = None
 
     def run_static_analysis(self):
         try:
             file_path, self.file = _load_file(self.file_or_file_path)
-            rdf_graph, rdf_nx_graph = graphs.load_rdf_graph(self.file)
+            rdf_graph, rdf_nx_graph = graph.load_rdf_graph(self.file)
             rdf_namespace_manager = rdf_graph.namespace_manager
-            nodes = graphs.check_rdf_graph(self.issues, rdf_nx_graph)
+            nodes = graph.check_rdf_graph(self.issues, rdf_nx_graph)
 
             entry_node, structure_graph = build_structure_graph(self.issues, nodes)
             # Feature toggling: do not check for MovieLens, because we need more
@@ -66,10 +68,10 @@ class Validator:
             self.operations.check_graph()
         except Exception as exception:
             if self.issues.errors:
-                raise errors.ValidationError(self.issues.report()) from exception
+                raise ValidationError(self.issues.report()) from exception
             raise exception
         if self.issues.errors:
-            raise errors.ValidationError(self.issues.report())
+            raise ValidationError(self.issues.report())
         elif self.issues.warnings:
             logging.warning(self.issues.report())
 
