@@ -56,6 +56,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "genders",
+      "ml:isEnumeration": true,
       "description": "Maps gender labels to semantic definitions.",
       "key": "#{label}",
       "field": [
@@ -84,6 +85,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "embarkation_ports",
+      "ml:isEnumeration": true,
       "description": "Maps Embarkation port initial to labeled values.",
       "key": "#{key}",
       "field": [
