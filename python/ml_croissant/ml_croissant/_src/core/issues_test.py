@@ -2,7 +2,7 @@
 
 import textwrap
 
-from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.core.issues import Context, Issues
 
 
 def test_issues():
@@ -11,47 +11,29 @@ def test_issues():
     assert not issues.warnings
 
     # With context
-    with issues.context(dataset_name="abc"):
-        issues.add_error("foo")
-        issues.add_warning("bar")
+    issues.add_error("foo", Context(dataset_name='abc'))
+    issues.add_warning("bar", Context(dataset_name='abc', distribution_name='xyz'))
     assert issues.errors == {"[dataset(abc)] foo"}
-    assert issues.warnings == {"[dataset(abc)] bar"}
-
-    # With nested context
-    with issues.context(dataset_name="abc", distribution_name="xyz"):
-        issues.add_error("foo")
-        issues.add_warning("bar")
-    assert issues.errors == {
-        "[dataset(abc)] foo",
-        "[dataset(abc) > distribution(xyz)] foo",
-    }
-    assert issues.warnings == {
-        "[dataset(abc)] bar",
-        "[dataset(abc) > distribution(xyz)] bar",
-    }
+    assert issues.warnings == {"[dataset(abc) > distribution(xyz)] bar"}
 
     # Without context
     issues.add_error("foo")
     issues.add_warning("bar")
     assert issues.errors == {
         "[dataset(abc)] foo",
-        "[dataset(abc) > distribution(xyz)] foo",
         "foo",
     }
     assert issues.warnings == {
-        "[dataset(abc)] bar",
         "[dataset(abc) > distribution(xyz)] bar",
         "bar",
     }
 
     # Final report
     assert issues.report() == textwrap.dedent(
-        """Found the following 3 error(s) during the validation:
-  -  [dataset(abc) > distribution(xyz)] foo
+        """Found the following 2 error(s) during the validation:
   -  [dataset(abc)] foo
   -  foo
-Found the following 3 warning(s) during the validation:
+Found the following 2 warning(s) during the validation:
   -  [dataset(abc) > distribution(xyz)] bar
-  -  [dataset(abc)] bar
   -  bar"""
     )

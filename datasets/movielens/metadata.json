@@ -183,7 +183,7 @@
       ]
     },
     {
-      "name": "movies+ratings+tags",
+      "name": "movies_with_ratings_with_tags",
       "@type": "ml:RecordSet",
       "source": "#{movies}",
       "key": "#{movie_id}",
@@ -209,7 +209,6 @@
           "dataType": "ml:RecordSet",
           "source": "#{ratings}",
           "parentField": {
-            "@type": "ml:Field",
             "source": "#{ratings/movie_id}",
             "references": "#{movies}"
           },
@@ -237,7 +236,6 @@
           "dataType": "ml:RecordSet",
           "source": "#{tags}",
           "parentField": {
-            "@type": "ml:Field",
             "source": "#{tags/movie_id}",
             "references": "#{movies}"
           },

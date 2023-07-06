@@ -7,7 +7,7 @@ from typing import Any
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.source import Source
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, repr=False)
 class Field(Node):
     """Nodes to describe a dataset Field."""
 
@@ -19,7 +19,7 @@ class Field(Node):
     references: Source = dataclasses.field(default_factory=Source)
     source: Source = dataclasses.field(default_factory=Source)
 
-    def __post_init__(self):
+    def check(self):
         self.assert_has_mandatory_properties("data_type", "name")
         self.assert_has_optional_properties("description")
         # TODO(marcenacp): check that `data` has the expected form if it exists.
