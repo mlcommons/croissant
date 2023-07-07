@@ -14,6 +14,7 @@
     "applyTransform": "ml:applyTransform",
     "format": "ml:format",
     "regex": "ml:regex",
+    "replace": "ml:replace",
     "separator": "ml:separator",
     "references": "ml:references"
   },

@@ -1,5 +1,6 @@
 """Base node module."""
 
+import abc
 import dataclasses
 import re
 
@@ -7,14 +8,14 @@ import networkx as nx
 import rdflib
 
 from ml_croissant._src.core import constants
-from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.core.issues import Context, Issues
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
 
 
-@dataclasses.dataclass(frozen=True)
-class Node:
+@dataclasses.dataclass(frozen=True, repr=False)
+class Node(abc.ABC):
     """Structure node in Croissant.
 
     This generic class will be inherited by the actual Croissant nodes:
@@ -31,8 +32,12 @@ class Node:
         graph: The NetworkX RDF graph to validate.
         node: The node in the graph to convert.
         name: The name of the node.
-        parent_uid: UID of the parent node if it exists. This is the parent in the
-            JSON-LD structure, whereas `sources` are the parents in the resource tree.
+        rdf_id: The RDF @id created by RDFLib.
+        uid: Croissant unique identifier. It's the concatenation of the path within
+            the Croissant hierarchy. For instance, for a field:
+            dataset.name/record_set.name/field.name.
+        context: Context of the node in the Croissant hierarchy (dataset, distribution,
+            record set, field).
 
     Usage:
 
@@ -53,10 +58,12 @@ class Node:
     """
 
     issues: Issues
-    graph: nx.MultiDiGraph
-    node: rdflib.term.BNode
+    graph: nx.MultiDiGraph = None
+    node: rdflib.term.BNode = None
     name: str = ""
-    parent_uid: str | None = None
+    rdf_id: str | None = None
+    uid: str | None = None
+    context: Context | None = None
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
@@ -66,20 +73,6 @@ class Node:
     @property
     def _edges_from_node(self):
         return self.graph.edges(self.node, keys=True)
-
-    @property
-    def uid(self):
-        """Creates a UID from the name.
-
-        For fields, the UID cannot be the name, as a dataset
-        can contain two fields with the same name if they are
-        in different record sets for instancd.
-        """
-        is_field = hasattr(self, 'has_sub_fields')
-        if is_field:
-            # Concatenate all names except the dataset name.
-            return f"{self.parent_uid}/{self.name}"
-        return self.name
 
     def assert_has_mandatory_properties(self, *mandatory_properties: list[str]):
         """Checks a node in the graph for existing properties with constraints.
@@ -95,7 +88,7 @@ class Node:
                     f'Property "{constants.FROM_CROISSANT.get(mandatory_property)}" is'
                     " mandatory, but does not exist."
                 )
-                self.issues.add_error(error)
+                self.add_error(error)
 
     def assert_has_optional_properties(self, *optional_properties: list[str]):
         """Checks a node in the graph for existing properties with constraints.
@@ -111,7 +104,7 @@ class Node:
                     f'Property "{constants.FROM_CROISSANT.get(optional_property)}" is'
                     " recommended, but does not exist."
                 )
-                self.issues.add_warning(error)
+                self.add_warning(error)
 
     def assert_has_exclusive_properties(self, *exclusive_properties: list[list[str]]):
         """Checks a node in the graph for existing properties with constraints.
@@ -128,7 +121,29 @@ class Node:
                     "At least one of these properties should be defined:"
                     f" {possible_exclusive_properties}."
                 )
-                self.issues.add_error(error)
+                self.add_error(error)
+
+    def add_error(self, error: str):
+        """Adds a new error."""
+        self.issues.add_error(error, self.context)
+
+    def add_warning(self, warning: str):
+        """Adds a new warning."""
+        self.issues.add_warning(warning, self.context)
+
+    @abc.abstractmethod
+    def check(self):
+        raise NotImplementedError
+
+    def __repr__(self):
+        attributes = self.__dict__.copy()
+        attributes_to_remove = ["context", "graph", "issues", "node"]
+        for attribute in attributes_to_remove:
+            if attribute in attributes:
+                del attributes[attribute]
+        attributes_items = sorted(list(attributes.items()))
+        attributes_str = ", ".join(f"{key}={value}" for key, value in attributes_items)
+        return f"{self.__class__.__name__}({attributes_str})"
 
 
 def validate_name(issues: Issues, name: str):
@@ -143,6 +158,7 @@ def validate_name(issues: Issues, name: str):
     if not regex.match(name):
         issues.add_error(f'The identifier "{name}" contains forbidden characters.')
     return name
+
 
 def there_exists_at_least_one_property(node: Node, possible_properties: list[str]):
     """Checks for the existence of one of `possible_exclusive_properties` in `keys`."""

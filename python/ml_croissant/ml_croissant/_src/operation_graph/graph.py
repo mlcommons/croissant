@@ -4,13 +4,11 @@ from collections.abc import Mapping
 import dataclasses
 
 from etils import epath
-from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.nodes import (
     Field,
     FileObject,
     FileSet,
-    Metadata,
     RecordSet,
 )
 from ml_croissant._src.operation_graph.base_operation import Operation
@@ -26,12 +24,9 @@ from ml_croissant._src.operation_graph.operations import (
     ReadField,
 )
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.graph import get_entry_nodes
 import networkx as nx
 from rdflib import namespace
-
-
-def concatenate_uid(source: tuple[str]) -> str:
-    return "/".join(source)
 
 
 def _find_record_set(graph: nx.MultiDiGraph, node: Node) -> RecordSet:
@@ -224,129 +219,3 @@ class ComputationGraph:
             self.issues.add_error(
                 f"The following operations refered to themselves: {selfloops}"
             )
-
-
-def get_entry_nodes(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
-    """Retrieves the entry nodes (without predecessors) in a graph."""
-    entry_nodes = []
-    for node, indegree in graph.in_degree(graph.nodes()):
-        if indegree == 0:
-            entry_nodes.append(node)
-    # Fields should usually not be entry nodes, except if they have subFields. So we
-    # check for this:
-    for node in entry_nodes:
-        if isinstance(node, Field) and not node.has_sub_fields:
-            issues.add_error(
-                f'Node "{node.uid}" is a field and has no source. Please, use'
-                f" {constants.ML_COMMONS_SOURCE} to specify the source."
-            )
-    return entry_nodes
-
-
-def _check_no_duplicate(issues: Issues, nodes: list[Node]) -> Mapping[str, Node]:
-    """Checks that no node has duplicated UID and returns the mapping `uid`->`Node`."""
-    uid_to_node: Mapping[str, Node] = {}
-    for node in nodes:
-        if node.uid in uid_to_node:
-            issues.add_error(f"Duplicate node with the same identifier: {node.uid}")
-        uid_to_node[node.uid] = node
-    return uid_to_node
-
-
-def add_node_as_entry_node(issues: Issues, graph: nx.MultiDiGraph, node: Node):
-    """Add `node` as the entry node of the graph by updating `graph` in place."""
-    graph.add_node(node, parent=None)
-    entry_nodes = get_entry_nodes(issues, graph)
-    for entry_node in entry_nodes:
-        if isinstance(node, (FileObject, FileSet)):
-            graph.add_edge(entry_node, node)
-
-
-def add_edge(
-    issues: Issues,
-    graph: nx.MultiDiGraph,
-    uid_to_node: Mapping[str, Node],
-    uid: str,
-    node: Node,
-    expected_types: type | tuple[type],
-):
-    if uid not in uid_to_node:
-        issues.add_error(
-            f'There is a reference to node named "{uid}" in node "{node.uid}", but this'
-            " node doesn't exist."
-        )
-        return
-    if not isinstance(uid_to_node[uid], expected_types):
-        issues.add_error(
-            f'There is a reference to node named "{uid}" in node "{node.uid}", but this'
-            f" node doesn't have the expected type: {expected_types}."
-        )
-        return
-    graph.add_edge(uid_to_node[uid], node)
-
-
-def build_structure_graph(
-    issues: Issues, nodes: list[Node]
-) -> tuple[Node, nx.MultiDiGraph]:
-    """Builds the structure graph from the nodes.
-
-    The structure graph represents the relationship between the nodes:
-
-    - For ml:Fields without ml:subField, the predecessors in the structure graph are the
-    sources.
-    - For sc:FileSet or sc:FileObject with a `containedIn`, the predecessors in the
-    structure graph are those `containedId`.
-    - For other objects, the predecessors are their parents (i.e., predecessors in the
-    JSON-LD). For example: for ml:Field with subField, the predecessors are the
-    ml:RecordSet in which they are contained.
-    """
-    graph = nx.MultiDiGraph()
-    uid_to_node = _check_no_duplicate(issues, nodes)
-    for node in nodes:
-        if isinstance(node, Metadata):
-            continue
-        parent = uid_to_node[node.parent_uid]
-        graph.add_node(node, parent=parent)
-        # Distribution
-        if isinstance(node, (FileObject, FileSet)) and node.contained_in:
-            for uid in node.contained_in:
-                add_edge(issues, graph, uid_to_node, uid, node, (FileObject, FileSet))
-        # Fields
-        elif isinstance(node, Field):
-            references = []
-            if node.source is not None:
-                references.append(node.source.reference)
-            if node.references is not None:
-                references.append(node.references.reference)
-            for reference in references:
-                # The source can be either another field...
-                if (uid := concatenate_uid(reference)) in uid_to_node:
-                    # Record sets are not valid parents here.
-                    # The case can arise when a Field references a record set to have a
-                    # machine-readable explanation of the field (see datasets/titanic
-                    # for example).
-                    if not isinstance(uid_to_node[uid], RecordSet):
-                        add_edge(issues, graph, uid_to_node, uid, node, Node)
-                # ...or the source can be a metadata.
-                elif (uid := reference[0]) in uid_to_node:
-                    if not isinstance(uid_to_node[uid], RecordSet):
-                        add_edge(
-                            issues, graph, uid_to_node, uid, node, (FileObject, FileSet)
-                        )
-                else:
-                    issues.add_error(
-                        "Source refers to an unknown node"
-                        f' "{concatenate_uid(reference)}".'
-                    )
-        # Other nodes
-        elif node.parent_uid is not None:
-            add_edge(issues, graph, uid_to_node, node.parent_uid, node, Node)
-    # `Metadata` are used as the entry node.
-    metadata = next((node for node in nodes if isinstance(node, Metadata)), None)
-    if metadata is None:
-        issues.add_error("No metadata is defined in the dataset.")
-        return None, graph
-    add_node_as_entry_node(issues, graph, metadata)
-    if not graph.is_directed():
-        issues.add_error("Structure graph is not directed.")
-    return metadata, graph

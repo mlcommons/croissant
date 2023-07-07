@@ -5,7 +5,7 @@ import dataclasses
 from ml_croissant._src.structure_graph.base_node import Node
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, repr=False)
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
@@ -15,6 +15,6 @@ class Metadata(Node):
     name: str = ""
     url: str = ""
 
-    def __post_init__(self):
+    def check(self):
         self.assert_has_mandatory_properties("name", "url")
         self.assert_has_optional_properties("citation", "license")

@@ -3,38 +3,26 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import dataclasses
-import json
 from typing import Any
 
 from absl import logging
 from etils import epath
+from ml_croissant._src.core.graphs import utils as graphs_utils
 from ml_croissant._src.core.issues import Issues, ValidationError
-from ml_croissant._src.rdf_graph import graph
 from ml_croissant._src.operation_graph import (
-    build_structure_graph,
     ComputationGraph,
 )
 from ml_croissant._src.operation_graph.operations import (
     GroupRecordSet,
     ReadField,
 )
+from ml_croissant._src.structure_graph.graph import (
+    from_file_to_json,
+    from_json_to_jsonld,
+    from_jsonld_to_nodes,
+    from_nodes_to_structure_graph,
+)
 import networkx as nx
-
-
-def _load_file(filepath: epath.PathLike) -> tuple[epath.Path, dict]:
-    """Loads the file.
-
-    Args:
-        filepath: the path to the Croissant file.
-
-    Returns:
-        A tuple with the path to the file and the file content.
-    """
-    filepath = epath.Path(filepath).expanduser().resolve()
-    if not filepath.exists():
-        raise ValueError(f"File {filepath} does not exist.")
-    with filepath.open() as filedescriptor:
-        return filepath, json.load(filedescriptor)
 
 
 @dataclasses.dataclass
@@ -46,14 +34,22 @@ class Validator:
     file: dict = dataclasses.field(init=False)
     operations: ComputationGraph | None = None
 
-    def run_static_analysis(self):
+    def run_static_analysis(self, debug: bool = False):
         try:
-            file_path, self.file = _load_file(self.file_or_file_path)
-            rdf_graph, rdf_nx_graph = graph.load_rdf_graph(self.file)
-            rdf_namespace_manager = rdf_graph.namespace_manager
-            nodes = graph.check_rdf_graph(self.issues, rdf_nx_graph)
-
-            entry_node, structure_graph = build_structure_graph(self.issues, nodes)
+            file_path, self.file = from_file_to_json(self.file_or_file_path)
+            ns, json_ld = from_json_to_jsonld(self.file)
+            nodes, parents = from_jsonld_to_nodes(self.issues, json_ld)
+            # Print all nodes for debugging purposes.
+            if debug:
+                logging.info('Found the following nodes during static analysis.')
+                for node in nodes:
+                    logging.info(node)
+            entry_node, structure_graph = from_nodes_to_structure_graph(
+                self.issues, nodes, parents
+            )
+            # Draw the structure graph for debugging purposes.
+            if debug:
+                graphs_utils.pretty_print_graph(structure_graph, simplify=True)
             # Feature toggling: do not check for MovieLens, because we need more
             # features.
             if entry_node.uid == "Movielens-25M":
@@ -63,7 +59,7 @@ class Validator:
                 metadata=entry_node,
                 graph=structure_graph,
                 croissant_folder=file_path.parent,
-                rdf_namespace_manager=rdf_namespace_manager,
+                rdf_namespace_manager=ns,
             )
             self.operations.check_graph()
         except Exception as exception:
@@ -86,11 +82,12 @@ class Dataset:
 
     file: epath.PathLike
     operations: ComputationGraph | None = None
+    debug: bool = False
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
         self.validator = Validator(self.file)
-        self.validator.run_static_analysis()
+        self.validator.run_static_analysis(debug=self.debug)
         self.file = self.validator.file
         self.operations = self.validator.operations
 

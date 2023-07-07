@@ -10,7 +10,7 @@
     "source": "ml:source"
   },
   "@type": "sc:Dataset",
-  "name": "Compressed archive example",
+  "name": "compressed_archive_example",
   "description": "This is a fairly minimal example, showing a way to describe archive files.",
   "url": "https://example.com/datasets/recipes/compressed_archive/about",
   "distribution": [

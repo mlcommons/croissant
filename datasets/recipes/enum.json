@@ -11,7 +11,7 @@
     "references": "ml:references"
   },
   "@type": "sc:Dataset",
-  "name": "Enum example",
+  "name": "enum_example",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
   "url": "https://example.com/datasets/enum/about",
   "distribution": [

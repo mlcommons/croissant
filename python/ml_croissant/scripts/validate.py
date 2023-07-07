@@ -13,6 +13,12 @@ flags.DEFINE_string(
     "Path to the file to validate.",
 )
 
+flags.DEFINE_bool(
+    "debug",
+    False,
+    "Whether to print debug hints.",
+)
+
 flags.mark_flag_as_required("file")
 
 
@@ -22,8 +28,9 @@ FLAGS = flags.FLAGS
 def main(argv):
     del argv
     file = FLAGS.file
+    debug = FLAGS.debug
     try:
-        Dataset(file)
+        Dataset(file, debug=debug)
         logging.info("Done.")
     except ValidationError as exception:
         logging.error(exception)

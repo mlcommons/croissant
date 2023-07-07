@@ -10,7 +10,7 @@
     "references": "ml:references"
   },
   "@type": "sc:Dataset",
-  "name": "Minimal example with recommended fields",
+  "name": "minimal_example_with_recommended_fields",
   "description": "This is a minimal example, including the required and the recommended fields.",
   "url": "https://example.com/dataset/recipes/minimal-recommended",
   "license": "https://creativecommons.org/licenses/by/4.0/",
