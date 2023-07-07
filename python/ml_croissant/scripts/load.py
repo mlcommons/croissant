@@ -26,6 +26,12 @@ flags.DEFINE_integer(
     "The number of records to generate. Use `-1` to generate the whole dataset.",
 )
 
+flags.DEFINE_bool(
+    "debug",
+    False,
+    "Whether to print debug hints.",
+)
+
 flags.mark_flag_as_required("file")
 
 
@@ -37,7 +43,8 @@ def main(argv):
     file = FLAGS.file
     record_set = FLAGS.record_set
     num_records = FLAGS.num_records
-    dataset = Dataset(file)
+    debug = FLAGS.debug
+    dataset = Dataset(file, debug=debug)
     records = dataset.records(record_set)
     print(f"Generating the first {num_records} records.")
     for i, record in enumerate(records):

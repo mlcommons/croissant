@@ -84,4 +84,4 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files
-      run: python scripts/generate.py --file ../../datasets/titanic/metadata.json --record_set passengers
+      run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
