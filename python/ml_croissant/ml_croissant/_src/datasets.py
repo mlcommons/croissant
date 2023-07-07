@@ -10,7 +10,7 @@ from etils import epath
 from ml_croissant._src.core.graphs import utils as graphs_utils
 from ml_croissant._src.core.issues import Issues, ValidationError
 from ml_croissant._src.operation_graph import (
-    ComputationGraph,
+    OperationGraph,
 )
 from ml_croissant._src.operation_graph.operations import (
     GroupRecordSet,
@@ -32,7 +32,7 @@ class Validator:
     file_or_file_path: epath.PathLike
     issues: Issues = dataclasses.field(default_factory=Issues)
     file: dict = dataclasses.field(init=False)
-    operations: ComputationGraph | None = None
+    operations: OperationGraph | None = None
 
     def run_static_analysis(self, debug: bool = False):
         try:
@@ -41,7 +41,7 @@ class Validator:
             nodes, parents = from_jsonld_to_nodes(self.issues, json_ld)
             # Print all nodes for debugging purposes.
             if debug:
-                logging.info('Found the following nodes during static analysis.')
+                logging.info("Found the following nodes during static analysis.")
                 for node in nodes:
                     logging.info(node)
             entry_node, structure_graph = from_nodes_to_structure_graph(
@@ -54,7 +54,7 @@ class Validator:
             # features.
             if entry_node.uid == "Movielens-25M":
                 return
-            self.operations = ComputationGraph.from_nodes(
+            self.operations = OperationGraph.from_nodes(
                 issues=self.issues,
                 metadata=entry_node,
                 graph=structure_graph,
@@ -78,10 +78,12 @@ class Dataset:
 
     Args:
         file: A JSON object or a path to a Croissant file (string or pathlib.Path).
+        operations: The operation graph class. None by default.
+        debug: Whether to print debug hints. False by default.
     """
 
     file: epath.PathLike
-    operations: ComputationGraph | None = None
+    operations: OperationGraph | None = None
     debug: bool = False
 
     def __post_init__(self):
@@ -92,7 +94,7 @@ class Dataset:
         self.operations = self.validator.operations
 
     def records(self, record_set: str) -> Records:
-        return Records(self, record_set)
+        return Records(self, record_set, debug=self.debug)
 
 
 @dataclasses.dataclass
@@ -102,10 +104,12 @@ class Records:
     Args:
         dataset: The parent dataset.
         record_set: The name of the record set.
+        debug: Whether to print debug hints.
     """
 
     dataset: Dataset
     record_set: str
+    debug: bool
 
     def __iter__(self):
         """Executes all operations, runs dynamic analysis and yields examples.
@@ -114,9 +118,12 @@ class Records:
         record_set.
         """
         results: Mapping[str, Any] = {}
-        operations = self.dataset.operations.graph
+        operations = self.dataset.operations.operations
+        if self.debug:
+            graphs_utils.pretty_print_graph(operations)
         for operation in nx.topological_sort(operations):
-            logging.info('Executing "%s"', operation)
+            if self.debug:
+                logging.info('Executing "%s"', operation)
             kwargs = operations.nodes[operation].get("kwargs", {})
             previous_results = [
                 results[previous_operation]
@@ -141,9 +148,11 @@ class Records:
                     read_fields = []
                     for read_field in operations.successors(operation):
                         assert isinstance(read_field, ReadField)
-                        logging.info('Executing "%s"', read_field)
+                        if self.debug:
+                            logging.info('Executing "%s"', read_field)
                         read_fields.append(read_field(line, **kwargs))
-                    logging.info('Executing "%s"', operation)
+                    if self.debug:
+                        logging.info('Executing "%s"', operation)
                     yield operation(*read_fields, **kwargs)
             else:
                 if isinstance(operation, ReadField) and not previous_results:

@@ -149,11 +149,11 @@ def _add_operations_for_file_object(
 
 
 @dataclasses.dataclass(frozen=True)
-class ComputationGraph:
+class OperationGraph:
     """Graph of dependent operations to execute to generate the dataset."""
 
     issues: Issues
-    graph: nx.MultiDiGraph
+    operations: nx.MultiDiGraph
 
     @classmethod
     def from_nodes(
@@ -163,7 +163,7 @@ class ComputationGraph:
         graph: nx.MultiDiGraph,
         croissant_folder: epath.Path,
         rdf_namespace_manager: namespace.NamespaceManager,
-    ) -> "ComputationGraph":
+    ) -> "OperationGraph":
         """Builds the ComputationGraph from the nodes.
 
         This is done by:
@@ -208,13 +208,15 @@ class ComputationGraph:
         init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
-        return ComputationGraph(issues=issues, graph=operations)
+        return OperationGraph(issues=issues, operations=operations)
 
     def check_graph(self):
         """Checks the computation graph for issues."""
-        if not self.graph.is_directed():
+        if not self.operations.is_directed():
             self.issues.add_error("Computation graph is not directed.")
-        selfloops = [operation.uid for operation, _ in nx.selfloop_edges(self.graph)]
+        selfloops = [
+            operation.uid for operation, _ in nx.selfloop_edges(self.operations)
+        ]
         if selfloops:
             self.issues.add_error(
                 f"The following operations refered to themselves: {selfloops}"

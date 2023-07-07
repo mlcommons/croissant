@@ -1,12 +1,13 @@
 """Base operation module."""
 
+import abc
 import dataclasses
 
 from ml_croissant._src.structure_graph.base_node import Node
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Operation:
+class Operation(abc.ABC):
     """Generic base class to define an operation.
 
     `@dataclass(frozen=True)` allows having a hashable operation for NetworkX to use
@@ -22,6 +23,7 @@ class Operation:
 
     node: Node
 
+    @abc.abstractmethod
     def __call__(self, *args, **kwargs):
         raise NotImplementedError
 
