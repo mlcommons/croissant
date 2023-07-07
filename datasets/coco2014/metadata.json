@@ -236,7 +236,7 @@
     {
       "name": "categories",
       "@type": "ml:RecordSet",
-      "ml:isEnumeration": "true",
+      "ml:isEnumeration": true,
       "key": "#{id}",
       "field": [
         {
@@ -259,7 +259,7 @@
         {
           "name": "supercategory",
           "@type": "ml:Field",
-          "ml:isEnumeration": "true",
+          "ml:isEnumeration": true,
           "description": "The name of the supercategory.",
           "dataType": [
             "sc:Text",
