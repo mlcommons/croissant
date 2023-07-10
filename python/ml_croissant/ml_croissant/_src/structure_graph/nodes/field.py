@@ -14,10 +14,11 @@ class Field(Node):
     """Nodes to describe a dataset Field."""
 
     data: list[Mapping[str, Any]] | None = None
-    croissant_data_type: str | None = None
     description: str | None = None
     has_sub_fields: bool | None = None
     name: str = ""
+    # `node_data_type` is different than `node.data_type`. See `data_type` docstring.
+    node_data_type: str | None = None
     references: Source = dataclasses.field(default_factory=Source)
     source: Source = dataclasses.field(default_factory=Source)
 
@@ -27,8 +28,13 @@ class Field(Node):
         # TODO(marcenacp): check that `data` has the expected form if it exists.
 
     def data_type(self, graph: nx.MultiDiGraph) -> str | None:
-        if self.croissant_data_type is not None:
-            return self.croissant_data_type
+        """Retrieves the actual data type of the node.
+
+        The data_type can be either directly on the node (`node_data_type`) or on one
+        of the parent fields.
+        """
+        if self.node_data_type is not None:
+            return self.node_data_type
         parent = next(graph.predecessors(self), None)
         if parent is None or not isinstance(parent, Field):
             self.add_error(

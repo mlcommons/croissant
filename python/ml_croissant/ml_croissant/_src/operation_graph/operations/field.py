@@ -41,7 +41,7 @@ class ReadField(Operation):
         raise ValueError(f'No data type found for "{self.node.uid}"')
 
     def _cast_value(self, value: Any):
-        data_type = self.find_data_type(self.node.croissant_data_type)
+        data_type = self.find_data_type(self.node.node_data_type)
         if pd.isna(value):
             return value
         try:

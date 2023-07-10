@@ -18,7 +18,7 @@ import pytest
         ],
         [
             "metadata_bad_type.json",
-            'Node should have an attribute `"@type" in',
+            'No metadata is defined in the dataset',
         ],
         # Distribution.
         [

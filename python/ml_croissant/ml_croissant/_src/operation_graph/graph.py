@@ -77,7 +77,7 @@ def _add_operations_for_field_with_source(
     for predecessor in graph.predecessors(node):
         operations.add_edge(last_operation[predecessor], join)
     if len(node.source.reference) != 2:
-        node.add_error(f'Wrong source for the node')
+        node.add_error('Wrong source for the node')
         return
     # Read/extract the field
     read_field = ReadField(node=node, rdf_namespace_manager=rdf_namespace_manager)
@@ -203,7 +203,7 @@ class OperationGraph:
                 )
 
         # Attach all entry nodes to a single `start` node
-        entry_operations = get_entry_nodes(issues, operations)
+        entry_operations = get_entry_nodes(operations)
         init_operation = InitOperation(node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)

@@ -1,9 +1,7 @@
 """Join operation module."""
 
-from collections.abc import Callable
 import dataclasses
 import re
-from typing import Any
 
 from ml_croissant._src.structure_graph.nodes import Source
 from ml_croissant._src.operation_graph.base_operation import Operation

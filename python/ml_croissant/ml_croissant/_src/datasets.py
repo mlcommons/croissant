@@ -18,8 +18,8 @@ from ml_croissant._src.operation_graph.operations import (
 from ml_croissant._src.structure_graph.graph import (
     check_structure_graph,
     from_file_to_json,
-    from_json_to_jsonld,
-    from_jsonld_to_nodes,
+    from_json_to_rdf,
+    from_rdf_to_nodes,
     from_nodes_to_structure_graph,
 )
 import networkx as nx
@@ -37,15 +37,15 @@ class Validator:
     def run_static_analysis(self, debug: bool = False):
         try:
             file_path, self.file = from_file_to_json(self.file_or_file_path)
-            ns, json_ld = from_json_to_jsonld(self.file)
-            nodes, parents = from_jsonld_to_nodes(self.issues, json_ld)
+            ns, json_ld = from_json_to_rdf(self.file)
+            nodes = from_rdf_to_nodes(self.issues, json_ld)
             # Print all nodes for debugging purposes.
             if debug:
                 logging.info("Found the following nodes during static analysis.")
                 for node in nodes:
                     logging.info(node)
             entry_node, structure_graph = from_nodes_to_structure_graph(
-                self.issues, nodes, parents
+                self.issues, nodes
             )
             check_structure_graph(self.issues, structure_graph)
             # Draw the structure graph for debugging purposes.
