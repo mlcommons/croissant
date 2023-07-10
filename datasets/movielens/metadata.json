@@ -201,7 +201,7 @@
         {
           "name": "movie_genres",
           "@type": "ml:Field",
-          "source": "#{movies/genres}"
+          "source": "#{movies/genre}"
         },
         {
           "name": "ratings",

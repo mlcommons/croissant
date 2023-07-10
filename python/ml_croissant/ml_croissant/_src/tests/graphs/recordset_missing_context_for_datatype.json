@@ -40,7 +40,8 @@
         {
           "name": "first-field",
           "@type": "ml:Field",
-          "dataType": "sc:Integer"
+          "dataType": "sc:Integer",
+          "source": "#{a-csv-table/column}"
         }
       ]
     }

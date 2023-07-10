@@ -265,10 +265,10 @@ def from_jsonld_to_nodes(
     nodes_with_parents: list[Node] = []
     for node in nodes:
         predecessors = _get_predecessors(nodes, node, parents)
-        context = _get_context(predecessors)
-        node_with_parents = dataclasses.replace(
-            node, uid=_get_uid(predecessors), context=context
-        )
+        new_params = {}
+        new_params["uid"] = _get_uid(predecessors)
+        new_params["context"] = _get_context(predecessors)
+        node_with_parents = dataclasses.replace(node, **new_params)
         # Static analysis of the node:
         node_with_parents.check()
         nodes_with_parents.append(node_with_parents)
@@ -285,7 +285,7 @@ def get_entry_nodes(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     # check for this:
     for node in entry_nodes:
         if isinstance(node, Field) and not node.has_sub_fields:
-            issues.add_error(
+            node.add_error(
                 f'Node "{node.uid}" is a field and has no source. Please, use'
                 f" {constants.ML_COMMONS_SOURCE} to specify the source."
             )
@@ -298,7 +298,7 @@ def _check_no_duplicate(nodes: list[Node]) -> dict[str, Node]:
     for node in nodes:
         if node.uid in uid_to_node:
             node.add_error(
-                f"Duplicate nodes with the same identifier: {uid_to_node[node.uid]}"
+                f"Duplicate nodes with the same identifier: {uid_to_node[node.uid].uid}"
             )
         uid_to_node[node.uid] = node
     return uid_to_node
@@ -392,7 +392,7 @@ def from_nodes_to_structure_graph(
                     # for example).
                     if not isinstance(uid_to_node[uid], RecordSet):
                         _add_edge(issues, graph, uid_to_node, uid, node, Node)
-                # ...or the source can be a metadata.
+                # ...or the source can be a distribution (e.g., column of a CSV file).
                 elif reference and (uid := reference[0]) in uid_to_node:
                     if not isinstance(uid_to_node[uid], RecordSet):
                         _add_edge(
@@ -408,6 +408,23 @@ def from_nodes_to_structure_graph(
         issues.add_error("No metadata is defined in the dataset.")
         return None, graph
     _add_node_as_entry_node(issues, graph, metadata)
+    return metadata, graph
+
+
+def check_structure_graph(issues: Issues, graph: nx.MultiDiGraph):
+    """Checks the integrity of the structure graph.
+
+    The rules are the following:
+    - The graph is directed.
+    - ALl fields have a data type: either specify directly, or on a parent.
+
+    Args:
+        issues: The issues to populate in case of problem.
+        graph: The structure graph to be checked.
+    """
     if not graph.is_directed():
         issues.add_error("Structure graph is not directed.")
-    return metadata, graph
+    fields = [node for node in graph.nodes if isinstance(node, Field)]
+    # Check all fields have a data type: either on the field, on a parent.
+    for field in fields:
+        field.data_type(graph)

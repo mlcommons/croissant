@@ -52,7 +52,7 @@ SCHEMA_ORG_MD5 = rdflib.term.URIRef("https://schema.org/md5")
 
 TO_CROISSANT = {
     ML_COMMONS_APPLY_TRANSFORM: "apply_transform",
-    ML_COMMONS_DATA_TYPE: "data_type",
+    ML_COMMONS_DATA_TYPE: "croissant_data_type",
     ML_COMMONS_DATA: "data",
     ML_COMMONS_FORMAT: "format",
     ML_COMMONS_INCLUDES: "includes",

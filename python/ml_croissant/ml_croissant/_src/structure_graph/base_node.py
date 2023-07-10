@@ -137,13 +137,13 @@ class Node(abc.ABC):
 
     def __repr__(self):
         attributes = self.__dict__.copy()
-        attributes_to_remove = ["context", "graph", "issues", "node"]
-        for attribute in attributes_to_remove:
-            if attribute in attributes:
+        attributes_to_remove = ["context", "graph", "issues", "node", "rdf_id", "uid"]
+        for attribute in self.__dict__:
+            if attributes[attribute] is None or attribute in attributes_to_remove:
                 del attributes[attribute]
         attributes_items = sorted(list(attributes.items()))
         attributes_str = ", ".join(f"{key}={value}" for key, value in attributes_items)
-        return f"{self.__class__.__name__}({attributes_str})"
+        return f"{self.__class__.__name__}(uid={self.uid}, {attributes_str})"
 
 
 def validate_name(issues: Issues, name: str):

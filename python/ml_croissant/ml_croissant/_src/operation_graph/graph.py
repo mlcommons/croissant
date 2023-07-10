@@ -77,7 +77,7 @@ def _add_operations_for_field_with_source(
     for predecessor in graph.predecessors(node):
         operations.add_edge(last_operation[predecessor], join)
     if len(node.source.reference) != 2:
-        issues.add_error(f'Wrong source in node "{node.uid}"')
+        node.add_error(f'Wrong source for the node')
         return
     # Read/extract the field
     read_field = ReadField(node=node, rdf_namespace_manager=rdf_namespace_manager)

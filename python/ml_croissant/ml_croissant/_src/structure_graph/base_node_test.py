@@ -27,9 +27,10 @@ def test_repr():
     @dataclasses.dataclass(frozen=True, repr=False)
     class MyNode(base_node.Node):
         foo: str = ""
+        bar: str | None = None
 
         def check(self):
             pass
 
     node = MyNode(issues=Issues(), name="NAME", foo="bar", rdf_id="RDF_IR", uid="UID")
-    assert str(node) == "MyNode(foo=bar, name=NAME, rdf_id=RDF_IR, uid=UID)"
+    assert str(node) == "MyNode(uid=UID, foo=bar, name=NAME)"

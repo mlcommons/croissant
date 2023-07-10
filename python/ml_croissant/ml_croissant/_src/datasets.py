@@ -16,6 +16,7 @@ from ml_croissant._src.operation_graph.operations import (
     ReadField,
 )
 from ml_croissant._src.structure_graph.graph import (
+    check_structure_graph,
     from_file_to_json,
     from_json_to_jsonld,
     from_jsonld_to_nodes,
@@ -46,13 +47,14 @@ class Validator:
             entry_node, structure_graph = from_nodes_to_structure_graph(
                 self.issues, nodes, parents
             )
+            check_structure_graph(self.issues, structure_graph)
             # Draw the structure graph for debugging purposes.
             if debug:
                 graphs_utils.pretty_print_graph(structure_graph, simplify=True)
             # Feature toggling: do not check for MovieLens, because we need more
             # features.
             if entry_node.uid == "Movielens-25M":
-                return
+                pass
             self.operations = OperationGraph.from_nodes(
                 issues=self.issues,
                 metadata=entry_node,
