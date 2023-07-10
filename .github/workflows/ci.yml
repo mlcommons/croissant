@@ -38,6 +38,26 @@ jobs:
     - name: PyLint
       run: pylint **/*.py
 
+  pytype-test:
+    name: PyType
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/ml_croissant
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies except ml_croissant itself
+      run: pip install absl-py etils[epath] networkx pandas pytest pytype rdflib requests tqdm
+
+    - name: PyType
+      run: pytype --jobs="$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml
+
   validation-test:
     name: Validation / JSON-LD Tests / Python 3.11
     runs-on: ubuntu-latest

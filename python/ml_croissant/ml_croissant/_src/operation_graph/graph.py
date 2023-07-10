@@ -1,6 +1,5 @@
 """graph module."""
 
-from collections.abc import Mapping
 import dataclasses
 
 from etils import epath
@@ -47,7 +46,7 @@ def _add_operations_for_field_with_source(
     issues: Issues,
     graph: nx.MultiDiGraph,
     operations: nx.MultiDiGraph,
-    last_operation: Mapping[Node, Operation],
+    last_operation: dict[Node, Operation],
     node: Field,
     rdf_namespace_manager: namespace.NamespaceManager,
 ):
@@ -89,7 +88,7 @@ def _add_operations_for_field_with_source(
 def _add_operations_for_field_with_data(
     graph: nx.MultiDiGraph,
     operations: nx.MultiDiGraph,
-    last_operation: Mapping[Node, Operation],
+    last_operation: dict[Node, Operation],
     node: Field,
 ):
     """Adds a `Data` operation for a node of type `Field` with data.
@@ -105,8 +104,8 @@ def _add_operations_for_field_with_data(
 def _add_operations_for_file_object(
     graph: nx.MultiDiGraph,
     operations: nx.MultiDiGraph,
-    last_operation: Mapping[Node, Operation],
-    node: Node,
+    last_operation: dict[Node, Operation],
+    node: FileObject,
     croissant_folder: epath.Path,
 ):
     """Adds all operations for a node of type `FileObject`.
@@ -125,7 +124,7 @@ def _add_operations_for_file_object(
         # Extract the file if needed
         if (
             node.encoding_format == "application/x-tar"
-            and isinstance(successor, (FileObject, FileSet))
+            and isinstance(successor, FileSet)
             and successor.encoding_format != "application/x-tar"
         ):
             untar = Untar(node=node, target_node=successor)
@@ -172,7 +171,7 @@ class OperationGraph:
         2. Building the computation graph by exploring the structure graph layers by
         layers in a breadth-first search.
         """
-        last_operation: Mapping[Node, Operation] = {}
+        last_operation: dict[Node, Operation] = {}
         operations = nx.MultiDiGraph()
         # Find all fields
         for node in nx.topological_sort(graph):

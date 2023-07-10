@@ -10,12 +10,14 @@ from ml_croissant._src.operation_graph.base_operation import Operation
 import pandas as pd
 
 
-def apply_transform_fn(value: str, source: Source | None = None) -> Callable[..., Any]:
+def apply_transform_fn(value: str, source: Source | None = None) -> str:
     if source is None:
         return value
     if source.apply_transform_regex is not None:
         source_regex = re.compile(source.apply_transform_regex)
         match = source_regex.match(value)
+        if match is None:
+            return value
         for group in match.groups():
             if group is not None:
                 return group
@@ -32,8 +34,12 @@ class Join(Operation):
         if len(args) == 1:
             return args[0]
         elif len(args) == 2:
-            assert left.reference is not None, (
-                f'Reference for "{self.node.uid}" is None. It should be a valid'
+            assert left is not None and left.reference is not None, (
+                f'Left reference for "{self.node.uid}" is None. It should be a valid'
+                " reference."
+            )
+            assert right is not None and right.reference is not None, (
+                f'Right reference for "{self.node.uid}" is None. It should be a valid'
                 " reference."
             )
             left_key = left.reference[1]

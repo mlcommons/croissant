@@ -7,12 +7,15 @@ from ml_croissant._src.structure_graph import base_node
 
 
 def test_there_exists_at_least_one_property():
-    @dataclasses.dataclass
-    class Node:
-        property1: str
-        property2: str
+    @dataclasses.dataclass(frozen=True, repr=False)
+    class Node(base_node.Node):
+        property1: str = ""
+        property2: str = ""
 
-    node = Node(property1="property1", property2="property2")
+        def check(self):
+            pass
+
+    node = Node(issues=Issues(), property1="property1", property2="property2")
     assert base_node.there_exists_at_least_one_property(
         node, ["property0", "property1"]
     )

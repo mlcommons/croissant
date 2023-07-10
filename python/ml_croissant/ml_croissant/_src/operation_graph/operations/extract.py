@@ -23,7 +23,7 @@ class Untar(Operation):
     """Un-tars "application/x-tar" and yields filtered lines."""
 
     node: FileObject
-    target_node: FileObject | FileSet
+    target_node: FileSet
 
     def __call__(self):
         includes = fnmatch.translate(self.target_node.includes)

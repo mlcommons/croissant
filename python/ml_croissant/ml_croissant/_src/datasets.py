@@ -1,7 +1,6 @@
 """datasets module."""
 from __future__ import annotations
 
-from collections.abc import Mapping
 import dataclasses
 from typing import Any
 
@@ -117,7 +116,7 @@ class Records:
         Warning: at the moment, this method yields examples from the first explored
         record_set.
         """
-        results: Mapping[str, Any] = {}
+        results: dict[str, Any] = {}
         operations = self.dataset.operations.operations
         if self.debug:
             graphs_utils.pretty_print_graph(operations)

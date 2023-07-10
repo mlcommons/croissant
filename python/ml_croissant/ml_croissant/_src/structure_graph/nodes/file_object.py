@@ -12,7 +12,7 @@ class FileObject(Node):
 
     content_url: str = ""
     content_size: str = ""
-    contained_in: tuple[str] = ()
+    contained_in: tuple[str, ...] = ()
     description: str | None = None
     encoding_format: str = ""
     md5: str | None = None
