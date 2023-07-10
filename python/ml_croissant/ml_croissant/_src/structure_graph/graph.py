@@ -14,7 +14,6 @@ The important functions of this module are:
 - from_nodes_to_structure_graph nodes -> structure graph
 """
 
-from collections.abc import Mapping
 import dataclasses
 import json
 from typing import Any
@@ -36,7 +35,8 @@ import networkx as nx
 import rdflib
 from rdflib import namespace
 
-Json = dict[str, Any] | list["Json"]
+Json = dict[str, Any]
+JsonLd = list[Json]
 
 _EXPECTED_TYPES = [
     constants.SCHEMA_ORG_DATASET,
@@ -67,7 +67,7 @@ def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
 
 def from_json_to_jsonld(
     data: Json,
-) -> tuple[namespace.NamespaceManager, Json]:
+) -> tuple[namespace.NamespaceManager, JsonLd]:
     """Expands JSON->JSON-LD using RDFLib.
 
     We use RDFLib instead of reinventing a JSON-LD parser. This may be more cumbersome
@@ -112,7 +112,7 @@ def _get_uid(predecessors: list[Node]) -> str:
 
 
 def _get_predecessors(
-    nodes: list[Node], node: Node, parents: Mapping[str, str]
+    nodes: list[Node], node: Node, parents: dict[str, str]
 ) -> list[Node]:
     """Lists predecessors in the Croissant hierarchy.
 
@@ -122,10 +122,10 @@ def _get_predecessors(
     if node_id not in parents:
         return [node]
     parent_id = parents[node_id]
-    parents = [_node for _node in nodes if _node.rdf_id == parent_id]
-    if not parents:
+    parent_nodes = [_node for _node in nodes if _node.rdf_id == parent_id]
+    if not parent_nodes:
         raise ValueError(f"Node {node} has no parent {parent_id}")
-    parent = parents[0]
+    parent = parent_nodes[0]
     predecessors_of_parent = _get_predecessors(nodes, parent, parents)
     return predecessors_of_parent + [node]
 
@@ -152,7 +152,7 @@ def _get_type(node: Json) -> str | None:
     return rdflib.term.URIRef(node_type[0])
 
 
-def _get_value(issues: Issues, json_ld: Json, value: Any):
+def _get_value(issues: Issues, json_ld: JsonLd, value: Any):
     """Helper for _parse_node_params."""
     values = []
     for element in value:
@@ -171,7 +171,7 @@ def _get_value(issues: Issues, json_ld: Json, value: Any):
     return tuple(values)
 
 
-def _parse_node_params(issues: Issues, json_ld: Json, node: Json) -> Json:
+def _parse_node_params(issues: Issues, json_ld: JsonLd, node: Json) -> Json:
     """Recursively parses all information from a node to Croissant."""
     node_params = {}
     node_type = _get_type(node)
@@ -201,8 +201,8 @@ def _parse_node_params(issues: Issues, json_ld: Json, node: Json) -> Json:
 
 
 def from_jsonld_to_nodes(
-    issues: Issues, json_ld: Json
-) -> tuple[list[Node], Mapping[str, str]]:
+    issues: Issues, json_ld: JsonLd
+) -> tuple[list[Node], dict[str, str]]:
     """Converts JSON-LD to a list of Python-readable nodes.
 
     Args:
@@ -213,10 +213,12 @@ def from_jsonld_to_nodes(
         A tuple with the nodes and the parents (a dictionary: rdf_id -> parent_rdf_id).
     """
     nodes: list[Node] = []
-    parents: Mapping[str, str] = {}
+    parents: dict[str, str] = {}
     for node in json_ld:
         child_node_ids = []
         node_id = node.get("@id")
+        if node_id is None:
+            raise ValueError("RDF node {node} has no @id.")
         for possible_child in [
             constants.SCHEMA_ORG_DISTRIBUTION,
             constants.ML_COMMONS_RECORD_SET,
@@ -290,9 +292,9 @@ def get_entry_nodes(issues: Issues, graph: nx.MultiDiGraph) -> list[Node]:
     return entry_nodes
 
 
-def _check_no_duplicate(nodes: list[Node]) -> Mapping[str, Node]:
+def _check_no_duplicate(nodes: list[Node]) -> dict[str, Node]:
     """Checks that no node has duplicated UID and returns the mapping `uid`->`Node`."""
-    uid_to_node: Mapping[str, Node] = {}
+    uid_to_node: dict[str, Node] = {}
     for node in nodes:
         if node.uid in uid_to_node:
             node.add_error(
@@ -314,7 +316,7 @@ def _add_node_as_entry_node(issues: Issues, graph: nx.MultiDiGraph, node: Node):
 def _add_edge(
     issues: Issues,
     graph: nx.MultiDiGraph,
-    uid_to_node: Mapping[str, Node],
+    uid_to_node: dict[str, Node],
     uid: str,
     node: Node,
     expected_types: type | tuple[type],
@@ -340,7 +342,7 @@ def _concatenate_uid(source: tuple[str]) -> str:
 
 
 def from_nodes_to_structure_graph(
-    issues: Issues, nodes: list[Node], parents: Mapping[str, str]
+    issues: Issues, nodes: list[Node], parents: dict[str, str]
 ) -> nx.MultiDiGraph:
     """Converts the list of nodes to a structure graph.
 

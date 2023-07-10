@@ -16,7 +16,7 @@ class ReadField(Operation):
     node: Field
     rdf_namespace_manager: namespace.NamespaceManager
 
-    def find_data_type(self, data_types: list[str] | tuple[str] | str) -> type:
+    def find_data_type(self, data_types: list[str] | tuple[str, ...] | str) -> type:
         """Finds the data type by expanding its name from the namespace manager.
 
         In some cases, we specify a list of data types. In that case, we take the first

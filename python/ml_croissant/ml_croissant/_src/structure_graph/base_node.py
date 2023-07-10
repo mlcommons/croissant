@@ -74,7 +74,7 @@ class Node(abc.ABC):
     def _edges_from_node(self):
         return self.graph.edges(self.node, keys=True)
 
-    def assert_has_mandatory_properties(self, *mandatory_properties: list[str]):
+    def assert_has_mandatory_properties(self, *mandatory_properties: str):
         """Checks a node in the graph for existing properties with constraints.
 
         Args:
@@ -90,7 +90,7 @@ class Node(abc.ABC):
                 )
                 self.add_error(error)
 
-    def assert_has_optional_properties(self, *optional_properties: list[str]):
+    def assert_has_optional_properties(self, *optional_properties: str):
         """Checks a node in the graph for existing properties with constraints.
 
         Args:
@@ -106,7 +106,7 @@ class Node(abc.ABC):
                 )
                 self.add_warning(error)
 
-    def assert_has_exclusive_properties(self, *exclusive_properties: list[list[str]]):
+    def assert_has_exclusive_properties(self, *exclusive_properties: list[str]):
         """Checks a node in the graph for existing properties with constraints.
 
         Args:

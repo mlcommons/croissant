@@ -13,7 +13,7 @@ class Merge(Operation):
 
     node: FileSet
 
-    def __call__(self, *args: list[pd.DataFrame]) -> pd.DataFrame:
+    def __call__(self, *args: pd.DataFrame) -> pd.DataFrame:
         assert len(args) > 0, "No dataframe to merge."
         df = args[0]
         for other_df in args[1:]:

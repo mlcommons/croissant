@@ -1,10 +1,13 @@
 """graph_test module."""
 
+from typing import Any
+
 from ml_croissant._src.core.issues import Context, Issues
 from ml_croissant._src.structure_graph.graph import (
     from_json_to_jsonld,
     from_jsonld_to_nodes,
     Json,
+    JsonLd,
 )
 from ml_croissant._src.structure_graph.nodes import (
     FileObject,
@@ -12,7 +15,7 @@ from ml_croissant._src.structure_graph.nodes import (
 )
 
 
-def _remove_keys(json: Json, keys: list[str]) -> Json:
+def _remove_keys(json: Json | JsonLd, keys: list[str]) -> Any:
     """Edits a dict in place by removing the `keys` recursively."""
     if isinstance(json, dict):
         for key, value in json.copy().items():
@@ -25,7 +28,7 @@ def _remove_keys(json: Json, keys: list[str]) -> Json:
     return json
 
 
-def assert_jsons_are_equal(json1: Json, json2: Json, ignore_keys: list[str] = []):
+def assert_jsons_are_equal(json1: JsonLd, json2: JsonLd, ignore_keys: list[str] = []):
     """Asserts two JSONs are equal by ignoring some keys."""
     _remove_keys(json1, ignore_keys)
     _remove_keys(json2, ignore_keys)

@@ -24,7 +24,10 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["black", "pylint", "pytest"]
+dev = ["black", "pylint", "pytest", "pytype"]
 
 [tool.black]
 line-length = 88
+
+[tool.pytype]
+inputs = ["."]

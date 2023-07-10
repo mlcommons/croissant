@@ -8,7 +8,7 @@ from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import ID_REGEX, validate_name
 
 
-def parse_reference(issues: Issues, source_data: str) -> tuple[str]:
+def parse_reference(issues: Issues, source_data: str) -> tuple[str, ...]:
     source_regex = re.compile(rf"^\#\{{({ID_REGEX})(?:\/([^\/]+))*\}}$")
     match = source_regex.match(source_data)
     if match is None:
@@ -16,7 +16,7 @@ def parse_reference(issues: Issues, source_data: str) -> tuple[str]:
             f"Malformed source data: {source_data}. The source data should be written"
             " as `#{name}` where name is valid ID."
         )
-        return ""
+        return ()
     groups = tuple(group for group in match.groups() if group is not None)
     # Only validate the root group, because others can point to external columns
     # (like in a CSV) with fuzzy names.
@@ -50,7 +50,7 @@ class Source:
     ```
     """
 
-    reference: tuple[str] = ()
+    reference: tuple[str, ...] = ()
     apply_transform_regex: str | None = None
     apply_transform_separator: str | None = None
 
@@ -70,10 +70,10 @@ class Source:
                 issues.add_error(
                     f"Malformed `source`: {field}. Got exception: {exception}"
                 )
-                return cls(reference="")
+                return cls(reference=())
         else:
             issues.add_error(f"`source` has wrong type: {type(field)} ({field})")
-            return cls(reference="")
+            return cls(reference=())
 
     def __bool__(self):
         """Allows to write `if not node.source` / `if node.source`"""
