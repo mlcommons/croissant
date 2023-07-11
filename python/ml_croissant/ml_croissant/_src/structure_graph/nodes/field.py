@@ -4,6 +4,7 @@ from collections.abc import Mapping
 import dataclasses
 from typing import Any
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.source import Source
 import networkx as nx
@@ -15,10 +16,10 @@ class Field(Node):
 
     data: list[Mapping[str, Any]] | None = None
     description: str | None = None
+    # `field_data_type` is different than `node.data_type`. See `data_type` docstring.
+    field_data_type: str | None = None
     has_sub_fields: bool | None = None
     name: str = ""
-    # `node_data_type` is different than `node.data_type`. See `data_type` docstring.
-    node_data_type: str | None = None
     references: Source = dataclasses.field(default_factory=Source)
     source: Source = dataclasses.field(default_factory=Source)
 
@@ -27,19 +28,20 @@ class Field(Node):
         self.assert_has_optional_properties("description")
         # TODO(marcenacp): check that `data` has the expected form if it exists.
 
-    def data_type(self, graph: nx.MultiDiGraph) -> str | None:
-        """Retrieves the actual data type of the node.
+    @property
+    def data_type(self) -> str | None:
+        """Recrusively retrieves the actual data type of the node.
 
-        The data_type can be either directly on the node (`node_data_type`) or on one
+        The data_type can be either directly on the node (`field_data_type`) or on one
         of the parent fields.
         """
-        if self.node_data_type is not None:
-            return self.node_data_type
-        parent = next(graph.predecessors(self), None)
+        if self.field_data_type is not None:
+            return self.field_data_type
+        parent = next(self.graph.predecessors(self), None)
         if parent is None or not isinstance(parent, Field):
             self.add_error(
-                "The field does not specify any dataType, neither does any of its"
-                " predecessor."
+                f"The field does not specify any {constants.ML_COMMONS_DATA_TYPE},"
+                " neither does any of its predecessor."
             )
             return None
-        return parent.data_type(graph)
+        return parent.data_type

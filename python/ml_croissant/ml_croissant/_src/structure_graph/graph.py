@@ -36,16 +36,6 @@ from rdflib import namespace
 from rdflib import term
 
 Json = dict[str, Any]
-JsonLd = list[Json]
-
-_EXPECTED_TYPES = [
-    constants.SCHEMA_ORG_DATASET,
-    constants.SCHEMA_ORG_FILE_OBJECT,
-    constants.SCHEMA_ORG_FILE_SET,
-    constants.ML_COMMONS_RECORD_SET,
-    constants.ML_COMMONS_FIELD,
-    constants.ML_COMMONS_SUB_FIELD,
-]
 
 
 def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
@@ -65,9 +55,7 @@ def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
         return filepath, json.load(f)
 
 
-def from_json_to_rdf(
-    data: Json,
-) -> tuple[namespace.NamespaceManager, nx.MultiDiGraph]:
+def from_json_to_rdf(data: Json) -> tuple[namespace.NamespaceManager, rdflib.Graph]:
     """Converts the JSON to an RDF graph with expanded JSON-LD attributes using RDFLib.
 
     We use RDFLib instead of reinventing a JSON-LD parser. This may be more cumbersome
@@ -95,12 +83,12 @@ def from_json_to_rdf(
 
 
 def _parse_node_params(
-    issues: Issues, graph: rdflib.Graph, bnode: term.BNode, no_filter: bool = False
+    issues: Issues, rdf_graph: rdflib.Graph, bnode: term.BNode, no_filter: bool = False
 ) -> Json:
     """Recursively parses all information from a node to Croissant."""
     # TODO(marcenacp): Type node params.
     node_params = {}
-    for _, _predicate, _object in graph.triples((bnode, None, None)):
+    for _, _predicate, _object in rdf_graph.triples((bnode, None, None)):
         if _predicate == constants.ML_COMMONS_SUB_FIELD:
             node_params["has_sub_fields"] = True
         elif no_filter or _predicate in constants.TO_CROISSANT:
@@ -109,7 +97,7 @@ def _parse_node_params(
                 node_params[croissant_key] = str(_object)
             elif isinstance(_object, term.BNode):
                 node_params[croissant_key] = _parse_node_params(
-                    issues, graph, _object, no_filter=True
+                    issues, rdf_graph, _object, no_filter=True
                 )
     # Parse `source`.
     if (source := node_params.get("source")) is not None:
@@ -130,12 +118,13 @@ def _parse_node_params(
 
 def _parse_node(
     issues: Issues,
-    graph: rdflib.Graph,
+    rdf_graph: rdflib.Graph,
     bnode: term.BNode,
     expected_types: tuple[str, ...],
+    graph: nx.MultiDiGraph(),
     parents: tuple[Node, ...],
 ) -> Node | None:
-    node_type = graph.value(bnode, constants.RDF_TYPE)
+    node_type = rdf_graph.value(bnode, constants.RDF_TYPE)
     if node_type is None:
         issues.add_error('The node doesn\'t define the "@type" property.')
         return None
@@ -161,29 +150,32 @@ def _parse_node(
             f" {node_type} instead."
         )
         return None
-    node_params = _parse_node_params(issues, graph, bnode)
-    return node_cls(issues=issues, bnode=bnode, parents=parents, **node_params)
+    node_params = _parse_node_params(issues, rdf_graph, bnode)
+    return node_cls(
+        issues=issues, bnode=bnode, graph=graph, parents=parents, **node_params
+    )
 
 
 def _parse_children(
     issues: Issues,
-    graph: rdflib.Graph,
+    rdf_graph: rdflib.Graph,
     expected_property: str,
     expected_types: tuple[str, ...],
+    graph: nx.MultiDiGraph,
     parents: tuple[Node, ...],
 ) -> list[Node]:
     children: list[Node] = []
     if len(parents) == 0:
         raise ValueError("This function should not be used on metadata.")
     parent = parents[-1]
-    for _, _, _object in graph.triples((parent.bnode, expected_property, None)):
-        node = _parse_node(issues, graph, _object, expected_types, parents)
+    for _, _, _object in rdf_graph.triples((parent.bnode, expected_property, None)):
+        node = _parse_node(issues, rdf_graph, _object, expected_types, graph, parents)
         if node is not None:
             children.append(node)
     return children
 
 
-def from_rdf_to_nodes(issues: Issues, graph: rdflib.Graph) -> list[Node]:
+def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
     """Converts the RDF graph to a list of Python-readable nodes.
 
     Args:
@@ -193,7 +185,8 @@ def from_rdf_to_nodes(issues: Issues, graph: rdflib.Graph) -> list[Node]:
     Returns:
         The list of nodes.
     """
-    entry_nodes = graph.subjects(
+    graph = nx.MultiDiGraph()
+    entry_nodes = rdf_graph.subjects(
         predicate=constants.RDF_TYPE, object=constants.SCHEMA_ORG_DATASET
     )
     metadata_bnode = next(entry_nodes, None)
@@ -201,9 +194,10 @@ def from_rdf_to_nodes(issues: Issues, graph: rdflib.Graph) -> list[Node]:
         return []
     metadata = _parse_node(
         issues=issues,
-        graph=graph,
+        rdf_graph=rdf_graph,
         bnode=metadata_bnode,
         expected_types=(constants.SCHEMA_ORG_DATASET,),
+        graph=graph,
         parents=(),
     )
     if metadata is None:
@@ -211,19 +205,21 @@ def from_rdf_to_nodes(issues: Issues, graph: rdflib.Graph) -> list[Node]:
     nodes: list[Node] = [metadata]
     distributions = _parse_children(
         issues=issues,
-        graph=graph,
+        rdf_graph=rdf_graph,
         expected_property=constants.SCHEMA_ORG_DISTRIBUTION,
         expected_types=(
             constants.SCHEMA_ORG_FILE_OBJECT,
             constants.SCHEMA_ORG_FILE_SET,
         ),
+        graph=graph,
         parents=(metadata,),
     )
     record_sets = _parse_children(
         issues=issues,
-        graph=graph,
+        rdf_graph=rdf_graph,
         expected_property=constants.ML_COMMONS_RECORD_SET,
         expected_types=(constants.ML_COMMONS_RECORD_SET,),
+        graph=graph,
         parents=(metadata,),
     )
 
@@ -232,18 +228,20 @@ def from_rdf_to_nodes(issues: Issues, graph: rdflib.Graph) -> list[Node]:
     for record_set in record_sets:
         fields = _parse_children(
             issues=issues,
-            graph=graph,
+            rdf_graph=rdf_graph,
             expected_property=constants.ML_COMMONS_FIELD,
             expected_types=(constants.ML_COMMONS_FIELD,),
+            graph=graph,
             parents=(metadata, record_set),
         )
         nodes += fields
         for field in fields:
             sub_fields = _parse_children(
                 issues=issues,
-                graph=graph,
+                rdf_graph=rdf_graph,
                 expected_property=constants.ML_COMMONS_SUB_FIELD,
                 expected_types=(constants.ML_COMMONS_FIELD,),
+                graph=graph,
                 parents=(metadata, record_set, field),
             )
             nodes += sub_fields
@@ -319,7 +317,7 @@ def _concatenate_uid(source: tuple[str]) -> str:
 
 
 def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.MultiDiGraph:
-    """Converts the list of nodes to a structure graph.
+    """Populates the structure graph from the list of node.
 
     In the structure graph:
     - Nodes are Metadata, FileObjects, FileSets and Fields.
@@ -336,14 +334,17 @@ def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.Multi
     Returns:
         The structure graph with the proper hierarchy.
     """
-    graph = nx.MultiDiGraph()
     uid_to_node = _check_no_duplicate(nodes)
     metadata = None
+    graph = None
     for node in nodes:
+        graph = node.graph
         # Metadata
         if isinstance(node, Metadata):
             metadata = node
             continue
+        if not node.parents:
+            raise ValueError("Non metadata nodes always have at least one parent.")
         parent = node.parents[-1]
         graph.add_node(node, parent=parent)
         # Distribution
@@ -378,12 +379,12 @@ def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.Multi
                         f' "{_concatenate_uid(reference)}".'
                     )
     # `Metadata` are used as the entry node.
-    if metadata is None:
+    if metadata is None or graph is None:
         issues.add_error(
             "No metadata is defined in the dataset. Make sure you defined a node with"
             f" @type={constants.SCHEMA_ORG_DATASET}."
         )
-        return None, graph
+        return metadata, graph
     _add_node_as_entry_node(graph, metadata)
     return metadata, graph
 
@@ -399,9 +400,10 @@ def check_structure_graph(issues: Issues, graph: nx.MultiDiGraph):
         issues: The issues to populate in case of problem.
         graph: The structure graph to be checked.
     """
+    # Check that the graph is directed.
     if not graph.is_directed():
         issues.add_error("Structure graph is not directed.")
     fields = [node for node in graph.nodes if isinstance(node, Field)]
     # Check all fields have a data type: either on the field, on a parent.
     for field in fields:
-        field.data_type(graph)
+        field.data_type

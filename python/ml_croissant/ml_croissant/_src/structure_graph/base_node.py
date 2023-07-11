@@ -7,6 +7,7 @@ import re
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context, Issues
 from rdflib import term
+import networkx as nx
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -27,15 +28,17 @@ class Node(abc.ABC):
 
     Args:
         issues: the issues that will be modified in-place.
-        bnode: The RDF BNode.
+        bnode: The RDF BNode this node is based on.
+        graph: The structure graph.
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
         name: The name of the node.
     """
 
     issues: Issues
     bnode: term.BNode
+    graph: nx.MultiDiGraph
     parents: tuple["Node", ...]
-    name: str = ""
+    name: str
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
@@ -105,7 +108,7 @@ class Node(abc.ABC):
 
     def __repr__(self):
         attributes = self.__dict__.copy()
-        attributes_to_remove = ["bnode", "issues", "parents"]
+        attributes_to_remove = ["bnode", "graph", "issues", "parents"]
         for attribute in self.__dict__:
             if attributes[attribute] is None or attribute in attributes_to_remove:
                 del attributes[attribute]

@@ -58,7 +58,7 @@ import pytest
         ],
         [
             "recordset_missing_context_for_datatype.json",
-            "The field does not specify any dataType",
+            "The field does not specify any http://mlcommons.org/schema/dataType",
         ],
         # ML field.
         [

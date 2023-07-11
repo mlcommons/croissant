@@ -4,6 +4,7 @@ import dataclasses
 
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph import base_node
+import networkx as nx
 from rdflib import term
 
 
@@ -19,6 +20,7 @@ def test_there_exists_at_least_one_property():
     node = Node(
         issues=Issues(),
         bnode=term.BNode("rdf_id"),
+        graph=nx.MultiDiGraph(),
         parents=(),
         name="name",
         property1="property1",
@@ -43,6 +45,7 @@ def test_repr():
     node = MyNode(
         issues=Issues(),
         bnode=term.BNode("rdf_id"),
+        graph=nx.MultiDiGraph(),
         parents=(),
         name="name",
         foo="foo",
