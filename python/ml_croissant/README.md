@@ -40,12 +40,12 @@ pytest .
 The most important modules in the library are:
 
 - [`ml_croissant/_src/structure_graph`](./ml_croissant/_src/structure_graph/graph.py) is responsible for the **static analysis** of the Croissant files. We convert Croissant files to a Python representation called "**structure graph**" (using [NetworkX](https://networkx.org/)). In the process, we catch any static analysis issues (e.g., a missing mandatory field or a logic problem in the file).
-- [`ml_croissant/_src/operation_graph`](./ml_croissant/_src/operation_graph/graph.py) is responsible for the **dynamic analysis** of the Croissant files (i.e., actually loading the dataset by yielding examples). We convert the structure graph into an "**operation graph**". Operations are the unit transformation that allow to build the dataset (like [`Download`](./ml_croissant/_src/operation_graph/operations/download.py), [`Extract`](./ml_croissant/_src/operation_graph/operations/extract.py), etc).
+- [`ml_croissant/_src/operation_graph`](./ml_croissant/_src/operation_graph/graph.py) is responsible for the **dynamic analysis** of the Croissant files (i.e., actually loading the dataset by yielding examples). We convert the structure graph into an "**operation graph**". Operations are the unit transformations that allow to build the dataset (like [`Download`](./ml_croissant/_src/operation_graph/operations/download.py), [`Extract`](./ml_croissant/_src/operation_graph/operations/extract.py), etc).
 
 Other important modules are:
 
 - [`ml_croissant/_src/core`](./ml_croissant/_src/core) defines all needed core internals. For instance, [`Issues`](./ml_croissant/_src/core/issues.py) are a way to track errors and warning during the analysis of Croissant files.
-- [`ml_croissant/__init__`](./ml_croissant/__init__.py) declares the public API with [`ml_croissant.Dataset`](./ml_croissant/_src/datasets.py).
+- [`ml_croissant/__init__.py`](./ml_croissant/__init__.py) declares the public API with [`ml_croissant.Dataset`](./ml_croissant/_src/datasets.py).
 
 For the full design, refer to the [design doc](https://docs.google.com/document/d/1zYQIUX9ae1sZOOBq9OCsJ8JW8-Ejy3NLSeqaI5LtOEM/edit?resourcekey=0-CK78DfFvF7fnufyZqF3h3Q) for an overview of the implementation.
 
