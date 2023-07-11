@@ -1,5 +1,7 @@
 """Base node module."""
 
+from __future__ import annotations
+
 import abc
 import dataclasses
 import re
@@ -106,7 +108,7 @@ class Node(abc.ABC):
     def check(self):
         raise NotImplementedError
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         attributes = self.__dict__.copy()
         attributes_to_remove = ["bnode", "graph", "issues", "parents"]
         for attribute in self.__dict__:
@@ -117,13 +119,13 @@ class Node(abc.ABC):
         return f"{self.__class__.__name__}(uid={self.uid}, {attributes_str})"
 
     @property
-    def uid(self):
+    def uid(self) -> str:
         if len(self.parents) <= 1:
             return self.name
         return f"{self.parents[-1].uid}/{self.name}"
 
     @property
-    def context(self):
+    def context(self) -> Context:
         nodes = self.parents + (self,)
         return Context(
             dataset_name=_get_element(nodes, ["Metadata"]),
@@ -132,6 +134,12 @@ class Node(abc.ABC):
             field_name=_get_element(nodes, ["Field"]),
             sub_field_name=_get_element(nodes, []),
         )
+
+    @property
+    def parent(self) -> Node | None:
+        if not self.parents:
+            return None
+        return self.parents[-1]
 
 
 def validate_name(issues: Issues, name: str):

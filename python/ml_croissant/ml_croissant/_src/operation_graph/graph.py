@@ -35,13 +35,10 @@ def _find_record_set(graph: nx.MultiDiGraph, node: Node) -> RecordSet:
 
     The record set will be typically either the parent or the parent's parent.
     """
-    parent_node = graph.nodes[node].get("parent")
-    if isinstance(parent_node, RecordSet):
-        return parent_node
-    elif parent_node is None:
-        raise ValueError(f"Node {node} is not in a RecordSet.")
-    # Recursively returns the parent's the parent.
-    return _find_record_set(graph, parent_node)
+    for parent in reversed(node.parents):
+        if isinstance(parent, RecordSet):
+            return parent
+    raise ValueError(f"Node {node} has no RecordSet parent.")
 
 
 def _add_operations_for_field_with_source(
@@ -62,8 +59,7 @@ def _add_operations_for_field_with_source(
     # Attach the field to a record set
     record_set = _find_record_set(graph, node)
     group_record_set = GroupRecordSet(node=record_set)
-    parent_node = graph.nodes[node].get("parent")
-    join = Join(node=parent_node)
+    join = Join(node=node.parent)
     # `Join()` takes left=Source and right=Source as kwargs.
     if node.references is not None and len(node.references.reference) > 1:
         kwargs = {

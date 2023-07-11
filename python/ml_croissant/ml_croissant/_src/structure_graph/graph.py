@@ -37,7 +37,7 @@ from rdflib import term
 
 Json = dict[str, Any]
 
-TO_CROISSANT = constants.TO_CROISSANT
+NodeType = type[Field | FileObject | FileSet | Metadata | Node | RecordSet]
 
 
 def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
@@ -93,8 +93,8 @@ def _parse_node_params(
     for _, _predicate, _object in rdf_graph.triples((bnode, None, None)):
         if _predicate == constants.ML_COMMONS_SUB_FIELD:
             node_params["has_sub_fields"] = True
-        elif no_filter or _predicate in TO_CROISSANT:
-            croissant_key = TO_CROISSANT[_predicate]
+        elif no_filter or _predicate in constants.TO_CROISSANT:
+            croissant_key = constants.TO_CROISSANT[_predicate]
             if isinstance(_object, term.Literal):
                 node_params[croissant_key] = str(_object)
             elif isinstance(_object, term.BNode):
@@ -185,7 +185,7 @@ def _parse_children(
     return children
 
 
-def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
+def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGraph:
     """Converts the RDF graph to a list of Python-readable nodes.
 
     Args:
@@ -193,7 +193,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
         graph: The RDF graph with expanded properties.
 
     Returns:
-        The list of nodes.
+        The structure graph with only nodes and without edges.
     """
     graph = nx.MultiDiGraph()
     entry_nodes = rdf_graph.subjects(
@@ -201,7 +201,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
     )
     metadata_bnode = next(entry_nodes, None)
     if not metadata_bnode:
-        return []
+        return graph
     metadata = _parse_node(
         issues=issues,
         rdf_graph=rdf_graph,
@@ -211,8 +211,8 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
         parents=(),
     )
     if metadata is None:
-        return []
-    nodes: list[Node] = [metadata]
+        return graph
+    graph.add_node(metadata)
     distributions = _parse_children(
         issues=issues,
         rdf_graph=rdf_graph,
@@ -233,8 +233,10 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
         parents=(metadata,),
     )
 
-    nodes += distributions
-    nodes += record_sets
+    for distribution in distributions:
+        graph.add_node(distribution)
+    for record_set in record_sets:
+        graph.add_node(record_set)
     for record_set in record_sets:
         fields = _parse_children(
             issues=issues,
@@ -244,8 +246,8 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
             graph=graph,
             parents=(metadata, record_set),
         )
-        nodes += fields
         for field in fields:
+            graph.add_node(field)
             sub_fields = _parse_children(
                 issues=issues,
                 rdf_graph=rdf_graph,
@@ -254,15 +256,17 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> list[Node]:
                 graph=graph,
                 parents=(metadata, record_set, field),
             )
-            nodes += sub_fields
-    for node in nodes:
+            for sub_field in sub_fields:
+                graph.add_node(sub_field)
+    node: Node
+    for node in graph.nodes:
         node.check()
-    return nodes
+    return graph
 
 
 def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     """Retrieves the entry nodes (without predecessors) in a graph."""
-    entry_nodes = []
+    entry_nodes: list[Node] = []
     for node, indegree in graph.in_degree(graph.nodes()):
         if indegree == 0:
             entry_nodes.append(node)
@@ -277,10 +281,11 @@ def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     return entry_nodes
 
 
-def _check_no_duplicate(nodes: list[Node]) -> dict[str, Node]:
+def _check_no_duplicate(graph: nx.MultiDiGraph) -> dict[str, Node]:
     """Checks that no node has duplicated UID and returns the mapping `uid`->`Node`."""
     uid_to_node: dict[str, Node] = {}
-    for node in nodes:
+    node: Node
+    for node in graph.nodes:
         if node.uid in uid_to_node:
             node.add_error(
                 f"Duplicate nodes with the same identifier: {uid_to_node[node.uid].uid}"
@@ -304,7 +309,7 @@ def _add_edge(
     uid_to_node: dict[str, Node],
     uid: str,
     node: Node,
-    expected_types: type | tuple[type],
+    expected_types: NodeType | tuple[NodeType, ...],
 ):
     """Adds an edge in the structure graph."""
     if uid not in uid_to_node:
@@ -326,7 +331,9 @@ def _concatenate_uid(source: tuple[str]) -> str:
     return "/".join(source)
 
 
-def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.MultiDiGraph:
+def from_nodes_to_structure_graph(
+    issues: Issues, graph: nx.MultiDiGraph
+) -> tuple[Metadata | None, nx.MultiDiGraph]:
     """Populates the structure graph from the list of node.
 
     In the structure graph:
@@ -344,19 +351,16 @@ def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.Multi
     Returns:
         The structure graph with the proper hierarchy.
     """
-    uid_to_node = _check_no_duplicate(nodes)
+    uid_to_node = _check_no_duplicate(graph)
     metadata = None
-    graph = None
-    for node in nodes:
-        graph = node.graph
+    node: Node
+    for node in graph.nodes:
         # Metadata
         if isinstance(node, Metadata):
             metadata = node
             continue
         if not node.parents:
             raise ValueError("Non metadata nodes always have at least one parent.")
-        parent = node.parents[-1]
-        graph.add_node(node, parent=parent)
         # Distribution
         if isinstance(node, (FileObject, FileSet)) and node.contained_in:
             for uid in node.contained_in:
@@ -393,7 +397,7 @@ def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.Multi
                         f' "{_concatenate_uid(reference)}".'
                     )
     # `Metadata` are used as the entry node.
-    if metadata is None or graph is None:
+    if metadata is None:
         issues.add_error(
             "No metadata is defined in the dataset. Make sure you defined a node with"
             f" @type={constants.SCHEMA_ORG_DATASET}."
