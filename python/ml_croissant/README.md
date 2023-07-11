@@ -1,11 +1,20 @@
 # 🥐 ML Croissant
 
-## Install
+## Python requirements
 
-Using Python>=3.8:
+Python version >= 3.10.
+
+If you do not have a Python environment:
 
 ```bash
-python -m pip install .
+python3 -m venv ~/py3
+source ~/py3/bin/activate
+```
+
+## Install
+
+```bash
+python -m pip install ".[dev]"
 ```
 
 ## Verify/load a Croissant dataset
@@ -31,7 +40,6 @@ python scripts/load.py \
 ## Run tests
 
 ```bash
-python -m pip install ".[dev]"
 pytest .
 ```
 
