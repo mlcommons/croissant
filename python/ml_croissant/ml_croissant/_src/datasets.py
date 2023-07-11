@@ -51,10 +51,6 @@ class Validator:
             # Draw the structure graph for debugging purposes.
             if debug:
                 graphs_utils.pretty_print_graph(structure_graph, simplify=True)
-            # Feature toggling: do not check for MovieLens, because we need more
-            # features.
-            if entry_node.uid == "Movielens-25M":
-                pass
             self.operations = OperationGraph.from_nodes(
                 issues=self.issues,
                 metadata=entry_node,
