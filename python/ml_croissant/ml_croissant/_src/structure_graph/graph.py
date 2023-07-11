@@ -96,9 +96,17 @@ def _parse_node_params(
             if isinstance(_object, term.Literal):
                 node_params[croissant_key] = str(_object)
             elif isinstance(_object, term.BNode):
-                node_params[croissant_key] = _parse_node_params(
+                current_node_params = _parse_node_params(
                     issues, rdf_graph, _object, no_filter=True
                 )
+                if croissant_key not in node_params:
+                    node_params[croissant_key] = [current_node_params]
+                elif isinstance(node_params[croissant_key], list):
+                    node_params[croissant_key].append(current_node_params)
+                else:
+                    raise ValueError("Recursive calls should always be lists.")
+            else:
+                raise ValueError("Objects are either Bnodes or Literals.")
     # Parse `source`.
     if (source := node_params.get("source")) is not None:
         node_params["source"] = Source.from_json_ld(issues, source)

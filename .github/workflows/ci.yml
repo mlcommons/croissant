@@ -76,9 +76,8 @@ jobs:
       run: pip install .
 
     - name: Validate JSON-LD files
-      # wiki-text is excluded at the moment. See: https://github.com/mlcommons/croissant/issues/101.
       run: |
-        JSON_FILES=$(find ../../datasets/ -type f -name "*.json" ! -path '*wiki-text*')
+        JSON_FILES=$(find ../../datasets/ -type f -name "*.json")
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
