@@ -9,7 +9,10 @@
     "subField": "ml:SubField",
     "dataType": "ml:dataType",
     "source": "ml:source",
-    "data": "ml:data",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
     "applyTransform": "ml:applyTransform",
     "format": "ml:format",
     "regex": "ml:regex",
@@ -24,13 +27,6 @@
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "distribution": [
     {
-      "name": "users",
-      "@type": "sc:FileObject",
-      "contentUrl": "data/users.csv",
-      "encodingFormat": "text/csv",
-      "sha256": "2e276d68f6f690fef8ec86cfd92367a40c600ce057a232a4295d6ea915fbdbab"
-    },
-    {
       "name": "publications",
       "@type": "sc:FileObject",
       "contentUrl": "data/publications.csv",
@@ -39,6 +35,43 @@
     }
   ],
   "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "users",
+      "description": "List of users.",
+      "field": [
+        {
+          "name": "email",
+          "@type": "ml:Field",
+          "description": "Email of the author.",
+          "dataType": "sc:email"
+        },
+        {
+          "name": "fullname",
+          "@type": "ml:Field",
+          "description": "Full name of the author.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "email": "john.smith@gmail.com",
+          "fullname": "John Smith"
+        },
+        {
+          "email": "jane.doe@yahoo.com",
+          "fullname": "Jane Doe"
+        },
+        {
+          "email": "david.lee@outlook.com",
+          "fullname": "David Lee"
+        },
+        {
+          "email": "mary.jones@hotmail.com",
+          "fullname": "Mary Jones"
+        }
+      ]
+    },
     {
       "@type": "ml:RecordSet",
       "name": "publications_by_user",

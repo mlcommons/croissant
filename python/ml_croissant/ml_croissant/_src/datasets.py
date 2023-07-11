@@ -38,23 +38,23 @@ class Validator:
         try:
             file_path, self.file = from_file_to_json(self.file_or_file_path)
             ns, json_ld = from_json_to_rdf(self.file)
-            nodes = from_rdf_to_nodes(self.issues, json_ld)
+            graph = from_rdf_to_nodes(self.issues, json_ld)
             # Print all nodes for debugging purposes.
             if debug:
                 logging.info("Found the following nodes during static analysis.")
-                for node in nodes:
+                for node in graph.nodes:
                     logging.info(node)
-            entry_node, structure_graph = from_nodes_to_structure_graph(
-                self.issues, nodes
+            metadata, graph = from_nodes_to_structure_graph(
+                self.issues, graph
             )
-            check_structure_graph(self.issues, structure_graph)
+            check_structure_graph(self.issues, graph)
             # Draw the structure graph for debugging purposes.
             if debug:
-                graphs_utils.pretty_print_graph(structure_graph, simplify=True)
+                graphs_utils.pretty_print_graph(graph, simplify=True)
             self.operations = OperationGraph.from_nodes(
                 issues=self.issues,
-                metadata=entry_node,
-                graph=structure_graph,
+                metadata=metadata,
+                graph=graph,
                 croissant_folder=file_path.parent,
                 rdf_namespace_manager=ns,
             )

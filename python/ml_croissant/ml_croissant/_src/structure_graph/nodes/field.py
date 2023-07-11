@@ -6,6 +6,7 @@ from typing import Any
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 from ml_croissant._src.structure_graph.nodes.source import Source
 import networkx as nx
 
@@ -14,7 +15,6 @@ import networkx as nx
 class Field(Node):
     """Nodes to describe a dataset Field."""
 
-    data: list[Mapping[str, Any]] | None = None
     description: str | None = None
     # `field_data_type` is different than `node.data_type`. See `data_type` docstring.
     field_data_type: str | None = None
@@ -45,3 +45,10 @@ class Field(Node):
             )
             return None
         return parent.data_type
+
+    @property
+    def data(self) -> str | None:
+        parent = self.parents[-1]
+        if isinstance(parent, RecordSet):
+            return parent.data
+        return None

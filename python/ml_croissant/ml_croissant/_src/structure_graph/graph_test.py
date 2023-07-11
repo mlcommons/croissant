@@ -36,12 +36,12 @@ def test_from_rdf_to_nodes():
     graph.add((bnode2, constants.SCHEMA_ORG_ENCODING_FORMAT, Literal("text/csv")))
     graph.add((bnode2, constants.SCHEMA_ORG_SHA256, Literal("xxx")))
 
-    nodes = from_rdf_to_nodes(issues, graph)
-    structure_graph = nodes[0].graph
+    graph = from_rdf_to_nodes(issues, graph)
+    nodes = list(graph.nodes)
     metadata = Metadata(
         issues=issues,
         bnode=bnode1,
-        graph=structure_graph,
+        graph=graph,
         parents=(),
         name="mydataset",
         citation="Citation.",
@@ -54,7 +54,7 @@ def test_from_rdf_to_nodes():
         FileObject(
             issues=issues,
             bnode=bnode2,
-            graph=structure_graph,
+            graph=graph,
             parents=(metadata,),
             name="a-csv-table",
             content_url="ratings.csv",
