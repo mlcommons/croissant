@@ -37,6 +37,8 @@ from rdflib import term
 
 Json = dict[str, Any]
 
+TO_CROISSANT = constants.TO_CROISSANT
+
 
 def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
     """Loads the file as a JSON.
@@ -91,8 +93,8 @@ def _parse_node_params(
     for _, _predicate, _object in rdf_graph.triples((bnode, None, None)):
         if _predicate == constants.ML_COMMONS_SUB_FIELD:
             node_params["has_sub_fields"] = True
-        elif no_filter or _predicate in constants.TO_CROISSANT:
-            croissant_key = constants.TO_CROISSANT[_predicate]
+        elif no_filter or _predicate in TO_CROISSANT:
+            croissant_key = TO_CROISSANT[_predicate]
             if isinstance(_object, term.Literal):
                 node_params[croissant_key] = str(_object)
             elif isinstance(_object, term.BNode):
@@ -267,7 +269,7 @@ def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     # Fields should usually not be entry nodes, except if they have subFields. So we
     # check for this:
     for node in entry_nodes:
-        if isinstance(node, Field) and not node.has_sub_fields:
+        if isinstance(node, Field) and not node.has_sub_fields and not node.data:
             node.add_error(
                 f'Node "{node.uid}" is a field and has no source. Please, use'
                 f" {constants.ML_COMMONS_SOURCE} to specify the source."
@@ -366,6 +368,10 @@ def from_nodes_to_structure_graph(issues: Issues, nodes: list[Node]) -> nx.Multi
                 references.append(node.source.reference)
             if node.references:
                 references.append(node.references.reference)
+            # The source can be embedded with in-line data in the parent record set.
+            if node.data:
+                parent = node.parents[-1]
+                _add_edge(issues, graph, uid_to_node, parent.uid, node, RecordSet)
             for reference in references:
                 # The source can be either another field...
                 if (uid := _concatenate_uid(reference)) in uid_to_node:

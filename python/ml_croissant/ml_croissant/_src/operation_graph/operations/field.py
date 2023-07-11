@@ -15,6 +15,7 @@ class ReadField(Operation):
 
     node: Field
     rdf_namespace_manager: namespace.NamespaceManager
+    field: str | None = None
 
     def find_data_type(self, data_types: list[str] | tuple[str, ...] | str) -> type:
         """Finds the data type by expanding its name from the namespace manager.
@@ -41,7 +42,7 @@ class ReadField(Operation):
         raise ValueError(f'No data type found for "{self.node.uid}"')
 
     def _cast_value(self, value: Any):
-        data_type = self.find_data_type(self.node.field_data_type)
+        data_type = self.find_data_type(self.node.data_type)
         if pd.isna(value):
             return value
         try:
@@ -53,11 +54,14 @@ class ReadField(Operation):
             ) from exception
 
     def __call__(self, series: pd.Series):
-        assert len(self.node.source.reference) == 2, (
-            f'Node "{self.node.uid}" refers to a wrong reference in its source:'
-            f" {self.node.source}."
-        )
-        field = self.node.source.reference[1]
+        if self.field is None:
+            assert len(self.node.source.reference) == 2, (
+                f'Node "{self.node.uid}" refers to a wrong reference in its source:'
+                f" {self.node.source}."
+            )
+            field = self.node.source.reference[1]
+        else:
+            field = self.field
         assert field in series, (
             f'Field "{field}" does not exist. Possible fields:'
             f" {list(series.axes) if isinstance(series, pd.Series) else series.keys()}"

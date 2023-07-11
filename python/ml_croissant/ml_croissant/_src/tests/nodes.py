@@ -2,7 +2,12 @@
 
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.structure_graph.nodes import Field, FileObject, FileSet
+from ml_croissant._src.structure_graph.nodes import (
+    Field,
+    FileObject,
+    FileSet,
+    RecordSet,
+)
 import networkx as nx
 from rdflib import term
 
@@ -41,5 +46,13 @@ empty_file_set = FileSet(
     bnode=term.BNode("rdf_id"),
     graph=nx.MultiDiGraph(),
     name="file_set_name",
+    parents=(),
+)
+
+empty_record_set = RecordSet(
+    issues=Issues(),
+    bnode=term.BNode("rdf_id"),
+    graph=nx.MultiDiGraph(),
+    name="record_set_name",
     parents=(),
 )
