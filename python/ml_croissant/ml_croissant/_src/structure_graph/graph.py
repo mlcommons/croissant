@@ -334,7 +334,7 @@ def _concatenate_uid(source: tuple[str]) -> str:
 def from_nodes_to_structure_graph(
     issues: Issues, graph: nx.MultiDiGraph
 ) -> tuple[Metadata | None, nx.MultiDiGraph]:
-    """Populates the structure graph from the list of node.
+    """Populates the structure graph from the list of node with the proper edges.
 
     In the structure graph:
     - Nodes are Metadata, FileObjects, FileSets and Fields.
@@ -345,8 +345,7 @@ def from_nodes_to_structure_graph(
 
     Args:
         issues: The issues to populate in case of problem.
-        nodes: The list of Python nodes.
-        parents: The list of nodes
+        graph: The structure graph without edges.
 
     Returns:
         The structure graph with the proper hierarchy.
