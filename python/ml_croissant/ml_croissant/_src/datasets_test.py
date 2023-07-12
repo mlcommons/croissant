@@ -1,6 +1,5 @@
 """datasets_test module."""
 
-import json
 import math
 import pickle
 from typing import Any
@@ -8,7 +7,6 @@ from typing import Any
 from etils import epath
 from ml_croissant._src import datasets
 from ml_croissant._src.core.issues import ValidationError
-import numpy as np
 import pytest
 
 

@@ -4,7 +4,6 @@ from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.tests.nodes import create_test_field, create_test_record_set
 import networkx as nx
 import pytest
-from rdflib import term
 
 
 @pytest.mark.parametrize(
