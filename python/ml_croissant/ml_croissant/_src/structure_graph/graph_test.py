@@ -1,5 +1,6 @@
 """graph_test module."""
 
+from etils import epath
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.graph import (
@@ -36,11 +37,12 @@ def test_from_rdf_to_nodes():
     graph.add((bnode2, constants.SCHEMA_ORG_ENCODING_FORMAT, Literal("text/csv")))
     graph.add((bnode2, constants.SCHEMA_ORG_SHA256, Literal("xxx")))
 
-    graph = from_rdf_to_nodes(issues, graph)
+    graph = from_rdf_to_nodes(issues, graph, epath.Path())
     nodes = list(graph.nodes)
     metadata = Metadata(
         issues=issues,
         bnode=bnode1,
+        folder=epath.Path(),
         graph=graph,
         parents=(),
         name="mydataset",
@@ -54,6 +56,7 @@ def test_from_rdf_to_nodes():
         FileObject(
             issues=issues,
             bnode=bnode2,
+            folder=epath.Path(),
             graph=graph,
             parents=(metadata,),
             name="a-csv-table",

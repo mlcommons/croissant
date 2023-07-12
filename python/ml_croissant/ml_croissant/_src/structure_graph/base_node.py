@@ -6,6 +6,7 @@ import abc
 import dataclasses
 import re
 
+from etils import epath
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context, Issues
 from rdflib import term
@@ -33,6 +34,7 @@ class Node(abc.ABC):
         bnode: The RDF BNode this node is based on.
         graph: The structure graph.
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
+        folder: The path of the Croissant folder.
         name: The name of the node.
     """
 
@@ -40,6 +42,7 @@ class Node(abc.ABC):
     bnode: term.BNode
     graph: nx.MultiDiGraph
     parents: tuple["Node", ...]
+    folder: epath.Path
     name: str
 
     def __post_init__(self):
@@ -110,7 +113,7 @@ class Node(abc.ABC):
 
     def __repr__(self) -> str:
         attributes = self.__dict__.copy()
-        attributes_to_remove = ["bnode", "graph", "issues", "parents"]
+        attributes_to_remove = ["bnode", "folder", "graph", "issues", "parents"]
         for attribute in self.__dict__:
             if attributes[attribute] is None or attribute in attributes_to_remove:
                 del attributes[attribute]

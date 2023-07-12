@@ -7,6 +7,7 @@ import os
 
 from etils import epath
 from ml_croissant._src.core.constants import DOWNLOAD_PATH
+from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.operation_graph.base_operation import Operation
 import requests
 import tqdm
@@ -26,7 +27,19 @@ def get_hash(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()
 
 
-def get_download_filepath(url: str) -> epath.Path:
+def get_download_filepath(node: Node, url: str) -> epath.Path:
+    if not is_url(url):
+        assert url.startswith("data/"), (
+            'Local file "{self.node.uid}" should point to a file within the data/'
+            ' folder next to the JSON-LD Croissant file. But got: "{self.url}"'
+        )
+        filepath = node.folder / url
+        assert filepath.exists(), (
+                f'In node "{node.uid}", file "{url}" is either an invalid URL'
+                " or an invalid path."
+        )
+        # No need to download local files
+        return filepath
     hashed_url = get_hash(url)
     DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
     return DOWNLOAD_PATH / f"croissant-{hashed_url}"
@@ -39,14 +52,7 @@ class Download(Operation):
     url: str
 
     def __call__(self):
-        if not is_url(self.url):
-            assert self.url.startswith("data/"), (
-                'Local file "{self.node.uid}" should point to a file within the data/'
-                ' folder next to the JSON-LD Croissant file. But got: "{self.url}"'
-            )
-            # No need to download local files
-            return
-        filepath = get_download_filepath(self.url)
+        filepath = get_download_filepath(self.node, self.url)
         if not filepath.exists():
             response = requests.get(self.url, stream=True, timeout=10)
             total = int(response.headers.get("Content-Length", 0))

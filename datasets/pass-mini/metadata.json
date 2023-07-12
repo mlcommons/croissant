@@ -1,0 +1,118 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "ml": "http://mlcommons.org/schema/",
+    "includes": "ml:includes",
+    "recordSet": "ml:RecordSet",
+    "field": "ml:Field",
+    "subField": "ml:SubField",
+    "dataType": "ml:dataType",
+    "source": "ml:source",
+    "data": "ml:data",
+    "applyTransform": "ml:applyTransform",
+    "format": "ml:format",
+    "regex": "ml:regex",
+    "separator": "ml:separator",
+    "references": "ml:references"
+  },
+  "@type": "sc:Dataset",
+  "@language": "en",
+  "name": "Mini-PASS",
+  "url": "None",
+  "description": "Smaller downloadable version of PASS to be used in unit tests.",
+  "license": "None",
+  "citation": "None",
+  "distribution": [
+    {
+      "name": "metadata",
+      "@type": "sc:FileObject",
+      "contentUrl": "data/pass_metadata.csv",
+      "sha256": "foo",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "name": "pass0",
+      "@type": "sc:FileObject",
+      "contentUrl": "data/PASS.0.tar",
+      "sha256": "bar",
+      "encodingFormat": "application/x-tar"
+    },
+    {
+      "name": "image-files",
+      "@type": "sc:FileSet",
+      "containedIn": [
+        "#{pass0}"
+      ],
+      "includes": "*.jpg",
+      "encodingFormat": "image/jpeg"
+    }
+  ],
+  "recordSet": [
+    {
+      "name": "images",
+      "@type": "ml:RecordSet",
+      "source": "#{image-files}",
+      "key": "#{hash}",
+      "field": [
+        {
+          "name": "hash",
+          "@type": "ml:Field",
+          "description": "The hash of the image, as computed from YFCC-100M.",
+          "dataType": "sc:Text",
+          "source": {
+            "data": "#{image-files/filename}",
+            "applyTransform": {
+              "regex": "([^\\/]*)\\.jpg"
+            }
+          },
+          "references": "#{metadata/image_hash}"
+        },
+        {
+          "name": "image_content",
+          "@type": "ml:Field",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        },
+        {
+          "name": "creator_uname",
+          "@type": "ml:Field",
+          "description": "Unique name of photo creator.",
+          "dataType": "sc:Text",
+          "source": "#{metadata/unickname}"
+        },
+        {
+          "name": "gps_coordinates",
+          "@type": "ml:Field",
+          "description": "GPS coordinates where the image was taken.",
+          "dataType": "sc:GeoCoordinates",
+          "subField": [
+            {
+              "name": "latitude",
+              "@type": "ml:Field",
+              "dataType": "sc:Number",
+              "source": "#{metadata/latitude}"
+            },
+            {
+              "name": "longitude",
+              "@type": "ml:Field",
+              "dataType": "sc:Number",
+              "source": "#{metadata/longitude}"
+            }
+          ]
+        },
+        {
+          "name": "date_taken",
+          "@type": "ml:Field",
+          "description": "The date the photo was taken.",
+          "dataType": "sc:Date",
+          "source": {
+            "data": "#{metadata/datetaken}",
+            "format": "yyyy-MM-dd HH:mm:ss.S"
+          }
+        }
+      ]
+    }
+  ]
+}
