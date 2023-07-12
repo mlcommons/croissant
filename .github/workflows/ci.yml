@@ -101,5 +101,8 @@ jobs:
     - name: Install library
       run: pip install .
 
-    - name: Generate JSON-LD files
+    - name: Generate JSON-LD files - Titanic
       run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
+
+    - name: Generate JSON-LD files - PASS
+      run: python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
