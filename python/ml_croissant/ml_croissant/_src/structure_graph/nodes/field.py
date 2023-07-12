@@ -1,14 +1,11 @@
 """Field module."""
 
-from collections.abc import Mapping
 import dataclasses
-from typing import Any
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 from ml_croissant._src.structure_graph.nodes.source import Source
-import networkx as nx
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -26,7 +23,6 @@ class Field(Node):
     def check(self):
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
-        # TODO(marcenacp): check that `data` has the expected form if it exists.
 
     @property
     def data_type(self) -> str | None:

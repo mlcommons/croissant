@@ -7,6 +7,6 @@ from ml_croissant._src.tests.nodes import empty_node
 
 def test_str_representation():
     operation = read.ReadCsv(
-        node=empty_node, croissant_folder=epath.Path(), url="http://mlcommons.org"
+        node=empty_node, folder=epath.Path(), url="http://mlcommons.org"
     )
     assert str(operation) == "ReadCsv(node_name)"

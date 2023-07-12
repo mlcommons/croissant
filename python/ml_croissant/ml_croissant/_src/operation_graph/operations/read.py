@@ -16,14 +16,14 @@ class ReadCsv(Operation):
     """Reads from a CSV file and yield lines."""
 
     url: str
-    croissant_folder: epath.Path
+    folder: epath.Path
 
     def __call__(self):
         if is_url(self.url):
-            filepath = get_download_filepath(self.url)
+            filepath = get_download_filepath(self.node, self.url)
         else:
             # Read from the local path
-            filepath = self.croissant_folder / self.url
+            filepath = self.folder / self.url
             assert filepath.exists(), (
                 f'In node "{self.node.uid}", file "{self.url}" is either an invalid URL'
                 " or an invalid path."

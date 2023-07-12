@@ -12,6 +12,10 @@ The important functions of this module are:
 - from_json_to_rdf              JSON -> RDF
 - from_rdf_to_nodes             RDF -> nodes
 - from_nodes_to_structure_graph nodes -> structure graph
+
+TODO(https://github.com/mlcommons/croissant/issues/114):
+A lot of methods in this file share common data structures (issues, graph, folder, etc),
+so they should be grouped under a common `StructureGraph` class.
 """
 
 import json
@@ -131,6 +135,7 @@ def _parse_node(
     rdf_graph: rdflib.Graph,
     bnode: term.BNode,
     expected_types: tuple[str, ...],
+    folder: epath.Path,
     graph: nx.MultiDiGraph(),
     parents: tuple[Node, ...],
 ) -> Node | None:
@@ -162,7 +167,12 @@ def _parse_node(
         return None
     node_params = _parse_node_params(issues, rdf_graph, bnode)
     return node_cls(
-        issues=issues, bnode=bnode, graph=graph, parents=parents, **node_params
+        issues=issues,
+        bnode=bnode,
+        folder=folder,
+        graph=graph,
+        parents=parents,
+        **node_params,
     )
 
 
@@ -171,6 +181,7 @@ def _parse_children(
     rdf_graph: rdflib.Graph,
     expected_property: str,
     expected_types: tuple[str, ...],
+    folder: epath.Path,
     graph: nx.MultiDiGraph,
     parents: tuple[Node, ...],
 ) -> list[Node]:
@@ -179,18 +190,23 @@ def _parse_children(
         raise ValueError("This function should not be used on metadata.")
     parent = parents[-1]
     for _, _, _object in rdf_graph.triples((parent.bnode, expected_property, None)):
-        node = _parse_node(issues, rdf_graph, _object, expected_types, graph, parents)
+        node = _parse_node(
+            issues, rdf_graph, _object, expected_types, folder, graph, parents
+        )
         if node is not None:
             children.append(node)
     return children
 
 
-def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGraph:
+def from_rdf_to_nodes(
+    issues: Issues, rdf_graph: rdflib.Graph, folder: epath.Path
+) -> nx.MultiDiGraph:
     """Converts the RDF graph to a list of Python-readable nodes.
 
     Args:
         issues: The issues to populate in case of problem.
         graph: The RDF graph with expanded properties.
+        folder: The path to the folder of the Croissant file.
 
     Returns:
         The structure graph with only nodes and without edges.
@@ -207,6 +223,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGrap
         rdf_graph=rdf_graph,
         bnode=metadata_bnode,
         expected_types=(constants.SCHEMA_ORG_DATASET,),
+        folder=folder,
         graph=graph,
         parents=(),
     )
@@ -221,6 +238,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGrap
             constants.SCHEMA_ORG_FILE_OBJECT,
             constants.SCHEMA_ORG_FILE_SET,
         ),
+        folder=folder,
         graph=graph,
         parents=(metadata,),
     )
@@ -229,6 +247,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGrap
         rdf_graph=rdf_graph,
         expected_property=constants.ML_COMMONS_RECORD_SET,
         expected_types=(constants.ML_COMMONS_RECORD_SET,),
+        folder=folder,
         graph=graph,
         parents=(metadata,),
     )
@@ -243,6 +262,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGrap
             rdf_graph=rdf_graph,
             expected_property=constants.ML_COMMONS_FIELD,
             expected_types=(constants.ML_COMMONS_FIELD,),
+            folder=folder,
             graph=graph,
             parents=(metadata, record_set),
         )
@@ -253,6 +273,7 @@ def from_rdf_to_nodes(issues: Issues, rdf_graph: rdflib.Graph) -> nx.MultiDiGrap
                 rdf_graph=rdf_graph,
                 expected_property=constants.ML_COMMONS_SUB_FIELD,
                 expected_types=(constants.ML_COMMONS_FIELD,),
+                folder=folder,
                 graph=graph,
                 parents=(metadata, record_set, field),
             )

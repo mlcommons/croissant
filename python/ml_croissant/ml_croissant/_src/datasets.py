@@ -37,8 +37,9 @@ class Validator:
     def run_static_analysis(self, debug: bool = False):
         try:
             file_path, self.file = from_file_to_json(self.file_or_file_path)
+            folder = file_path.parent
             ns, json_ld = from_json_to_rdf(self.file)
-            graph = from_rdf_to_nodes(self.issues, json_ld)
+            graph = from_rdf_to_nodes(self.issues, json_ld, folder)
             # Print all nodes for debugging purposes.
             if debug:
                 logging.info("Found the following nodes during static analysis.")
@@ -55,7 +56,7 @@ class Validator:
                 issues=self.issues,
                 metadata=metadata,
                 graph=graph,
-                croissant_folder=file_path.parent,
+                folder=file_path.parent,
                 rdf_namespace_manager=ns,
             )
             self.operations.check_graph()

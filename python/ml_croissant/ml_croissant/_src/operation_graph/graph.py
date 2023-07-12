@@ -30,7 +30,7 @@ from rdflib import namespace
 LastOperation = dict[Node, Operation]
 
 
-def _find_record_set(graph: nx.MultiDiGraph, node: Node) -> RecordSet:
+def _find_record_set(node: Node) -> RecordSet:
     """Finds the record set to which a field is attached.
 
     The record set will be typically either the parent or the parent's parent.
@@ -57,7 +57,7 @@ def _add_operations_for_field_with_source(
     - `GroupRecordSet` to structure the final dict that is sent back to the user.
     """
     # Attach the field to a record set
-    record_set = _find_record_set(graph, node)
+    record_set = _find_record_set(node)
     group_record_set = GroupRecordSet(node=record_set)
     join = Join(node=node.parent)
     # `Join()` takes left=Source and right=Source as kwargs.
@@ -99,7 +99,7 @@ def _add_operations_for_file_object(
     operations: nx.MultiDiGraph,
     last_operation: LastOperation,
     node: FileObject,
-    croissant_folder: epath.Path,
+    folder: epath.Path,
 ):
     """Adds all operations for a node of type `FileObject`.
 
@@ -133,7 +133,7 @@ def _add_operations_for_file_object(
         read_csv = ReadCsv(
             node=node,
             url=node.content_url,
-            croissant_folder=croissant_folder,
+            folder=folder,
         )
         operations.add_edge(operation, read_csv)
         operation = read_csv
@@ -153,7 +153,7 @@ class OperationGraph:
         issues: Issues,
         metadata: Node,
         graph: nx.MultiDiGraph,
-        croissant_folder: epath.Path,
+        folder: epath.Path,
         rdf_namespace_manager: namespace.NamespaceManager,
     ) -> "OperationGraph":
         """Builds the ComputationGraph from the nodes.
@@ -189,7 +189,7 @@ class OperationGraph:
                 )
             elif isinstance(node, FileObject):
                 _add_operations_for_file_object(
-                    graph, operations, last_operation, node, croissant_folder
+                    graph, operations, last_operation, node, folder
                 )
 
         # Attach all entry nodes to a single `start` node

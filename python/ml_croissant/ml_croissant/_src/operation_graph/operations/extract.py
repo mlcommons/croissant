@@ -28,7 +28,7 @@ class Untar(Operation):
     def __call__(self):
         includes = fnmatch.translate(self.target_node.includes)
         url = self.node.content_url
-        archive_file = get_download_filepath(url)
+        archive_file = get_download_filepath(self.node, url)
         hashed_url = get_hash(url)
         extract_dir = EXTRACT_PATH / hashed_url
         if not extract_dir.exists():

@@ -1,7 +1,7 @@
 """record_set module."""
 
 from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.nodes import Field, RecordSet
+from ml_croissant._src.tests.nodes import create_test_field, create_test_record_set
 import networkx as nx
 import pytest
 from rdflib import term
@@ -43,21 +43,8 @@ from rdflib import term
 def test_invalid_data(data, error):
     issues = Issues()
     graph = nx.MultiDiGraph()
-    record_set = RecordSet(
-        issues=issues,
-        bnode=term.BNode("rdf_id"),
-        graph=graph,
-        name="record_set_name",
-        parents=(),
-        data=data,
-    )
-    field = Field(
-        issues=issues,
-        bnode=term.BNode("rdf_id"),
-        graph=graph,
-        name="field_name",
-        parents=(record_set,),
-    )
+    record_set = create_test_record_set(issues=issues, graph=graph, data=data)
+    field = create_test_field(issues=issues, graph=graph, parents=(record_set,))
     graph.add_node(record_set)
     graph.add_node(field)
     record_set.check()
