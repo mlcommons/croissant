@@ -108,14 +108,7 @@ def test_dicts_are_equal():
     assert _dicts_are_equal(dict1, dict2) and dict1 != dict2
 
 
-def _there_exists_an_equal_dict(dict: dict, list_of_dicts: list[dict]) -> bool:
-    for other_dict in list_of_dicts:
-        if _dicts_are_equal(dict, other_dict):
-            return True
-    return False
-
-
-# IF THIS TEST FAILS:
+# IF THIS TEST FAILS OR YOU ADD A NEW DATASET:
 # You can regenerate .pkl files by launching
 # ```bash
 # python scripts/load.py \
@@ -132,28 +125,20 @@ def _there_exists_an_equal_dict(dict: dict, list_of_dicts: list[dict]) -> bool:
     ],
 )
 def test_loading(dataset_name, record_set_name):
-    config = (
+    dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / dataset_name
-        / "metadata.json"
     )
-    pkl_file = (
-        epath.Path(__file__).parent.parent.parent.parent.parent
-        / "datasets"
-        / dataset_name
-        / "output.pkl"
-    )
+    config = dataset_folder / "metadata.json"
+    pkl_file = dataset_folder / "output.pkl"
     with pkl_file.open("rb") as f:
         expected_records = pickle.load(f)
     dataset = datasets.Dataset(config)
     records = dataset.records(record_set_name)
     records = iter(records)
     length = 0
-    for record in records:
-        # TODO(https://github.com/mlcommons/croissant/issues/121):
-        # At the moment, we cannot compare record by record as the generation is not
-        # reproducible.
-        assert _there_exists_an_equal_dict(record, expected_records)
+    for i, record in enumerate(records):
+        assert _dicts_are_equal(record, expected_records[i])
         length += 1
     assert len(expected_records) == length
