@@ -26,6 +26,7 @@ def parse_reference(issues: Issues, source_data: str) -> tuple[str, ...]:
 
 @dataclasses.dataclass(frozen=True)
 class Transform:
+    format: str | None = None
     regex: str | None = None
     replace: str | None = None
     separator: str | None = None
@@ -76,6 +77,7 @@ class Source:
                         'Field "apply_transform" should be parsed as a list.'
                     )
                 transforms = tuple(Transform(
+                    format=transform.get("format"),
                     regex=transform.get("regex"),
                     replace=transform.get("replace"),
                     separator=transform.get("separator"),
