@@ -59,7 +59,7 @@ def _add_operations_for_field_with_source(
     # Attach the field to a record set
     record_set = _find_record_set(node)
     group_record_set = GroupRecordSet(node=record_set)
-    join = Join(node=node.parent)
+    join = Join(node=record_set)
     # `Join()` takes left=Source and right=Source as kwargs.
     if node.references is not None and len(node.references.reference) > 1:
         kwargs = {
