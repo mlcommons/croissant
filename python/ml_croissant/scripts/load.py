@@ -64,8 +64,8 @@ def main(argv):
         pickled_records.append(record)
     print("Done.")
     if update_pkl:
-        pickle_file = epath.Path(file).parent / 'output.pkl'
-        with pickle_file.open('wb') as f:
+        pickle_file = epath.Path(file).parent / "output.pkl"
+        with pickle_file.open("wb") as f:
             pickle.dump(pickled_records, f)
         print(f"Wrote pickle to {pickle_file}.")
 

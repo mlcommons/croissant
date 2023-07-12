@@ -91,7 +91,7 @@ def test_static_analysis(filename, error):
 def _dicts_are_equal(dict1: Any, dict2: Any) -> bool:
     if not isinstance(dict1, dict) or not isinstance(dict2, dict):
         if isinstance(dict1, float) and math.isnan(dict1):
-            return math.isnan(dict2)
+            return isinstance(dict2, float) and math.isnan(dict2)
         else:
             return dict1 == dict2
     for key, value1 in dict1.items():
@@ -106,6 +106,13 @@ def test_dicts_are_equal():
     dict1 = {"key1": 1, "key2": {"key3": 2, "key4": {"key5": 3, "key6": float("nan")}}}
     dict2 = {"key1": 1, "key2": {"key3": 2, "key4": {"key5": 3, "key6": float("nan")}}}
     assert _dicts_are_equal(dict1, dict2) and dict1 != dict2
+
+
+def _there_exists_an_equal_dict(dict: dict, list_of_dicts: list[dict]) -> bool:
+    for other_dict in list_of_dicts:
+        if _dicts_are_equal(dict, other_dict):
+            return True
+    return False
 
 
 # IF THIS TEST FAILS:
@@ -143,7 +150,10 @@ def test_loading(dataset_name, record_set_name):
     records = dataset.records(record_set_name)
     records = iter(records)
     length = 0
-    for i, record in enumerate(records):
-        assert _dicts_are_equal(record, expected_records[i])
+    for record in records:
+        # TODO(https://github.com/mlcommons/croissant/issues/121):
+        # At the moment, we cannot compare record by record as the generation is not
+        # reproducible.
+        assert _there_exists_an_equal_dict(record, expected_records)
         length += 1
     assert len(expected_records) == length
