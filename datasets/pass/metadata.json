@@ -138,7 +138,7 @@
               "regex": "([^\\/]*)\\.jpg"
             }
           },
-          "references": "#{metadata/image_hash}"
+          "references": "#{metadata/hash}"
         },
         {
           "name": "image_content",
@@ -163,13 +163,13 @@
             {
               "name": "latitude",
               "@type": "ml:Field",
-              "dataType": "sc:Number",
+              "dataType": "sc:Float",
               "source": "#{metadata/latitude}"
             },
             {
               "name": "longitude",
               "@type": "ml:Field",
-              "dataType": "sc:Number",
+              "dataType": "sc:Float",
               "source": "#{metadata/longitude}"
             }
           ]
@@ -181,7 +181,9 @@
           "dataType": "sc:Date",
           "source": {
             "data": "#{metadata/datetaken}",
-            "format": "yyyy-MM-dd HH:mm:ss.S"
+            "applyTransform": {
+              "format": "%Y-%m-%d %H:%M:%S.%f"
+            }
           }
         }
       ]
