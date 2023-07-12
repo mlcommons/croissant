@@ -10,7 +10,6 @@ from ml_croissant._src.structure_graph.nodes import (
     Field,
     FileObject,
     FileSet,
-    Metadata,
     RecordSet,
 )
 import networkx as nx

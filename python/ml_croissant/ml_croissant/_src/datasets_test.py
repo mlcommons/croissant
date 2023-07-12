@@ -1,9 +1,12 @@
 """datasets_test module."""
 
+import math
+import pickle
+from typing import Any
+
 from etils import epath
 from ml_croissant._src import datasets
 from ml_croissant._src.core.issues import ValidationError
-import numpy as np
 import pytest
 
 
@@ -18,7 +21,7 @@ import pytest
         ],
         [
             "metadata_bad_type.json",
-            'No metadata is defined in the dataset',
+            "No metadata is defined in the dataset",
         ],
         # Distribution.
         [
@@ -85,93 +88,72 @@ def test_static_analysis(filename, error):
         datasets.Dataset(base_path / filename)
 
 
-def test_generation_titanic():
-    titanic_config = (
-        epath.Path(__file__).parent.parent.parent.parent.parent
-        / "datasets"
-        / "titanic"
-        / "metadata.json"
-    )
-    dataset = datasets.Dataset(titanic_config)
-    records = dataset.records("passengers")
-    records = iter(records)
-    assert next(records) == {
-        "passengers": {
-            "survived": 1,
-            "embarked": "S",
-            "pclass": 1,
-            "age": 29,
-            "boat": "2",
-            "body": "?",
-            "num_siblings_spouses": 0,
-            "name": "Allen, Miss. Elisabeth Walton",
-            "fare": 211.3375,
-            "cabin": "B5",
-            "ticket": "24160",
-            "gender": "female",
-            "home_destination": "St Louis, MO",
-            "num_parents_children": 0,
-        }
-    }
-    assert next(records) == {
-        "passengers": {
-            "survived": 1,
-            "embarked": "S",
-            "pclass": 1,
-            "age": 0.9167,
-            "boat": "11",
-            "body": "?",
-            "num_siblings_spouses": 1,
-            "name": "Allison, Master. Hudson Trevor",
-            "fare": 151.55,
-            "cabin": "C22 C26",
-            "ticket": "113781",
-            "gender": "male",
-            "home_destination": "Montreal, PQ / Chesterville, ON",
-            "num_parents_children": 2,
-        }
-    }
+def _dicts_are_equal(dict1: Any, dict2: Any) -> bool:
+    if not isinstance(dict1, dict) or not isinstance(dict2, dict):
+        if isinstance(dict1, float) and math.isnan(dict1):
+            return isinstance(dict2, float) and math.isnan(dict2)
+        else:
+            return dict1 == dict2
+    for key, value1 in dict1.items():
+        if key not in dict2:
+            return False
+        value2 = dict2[key]
+        return _dicts_are_equal(value1, value2)
+    return True
 
 
-def test_generation_simple_join():
-    titanic_config = (
+def test_dicts_are_equal():
+    dict1 = {"key1": 1, "key2": {"key3": 2, "key4": {"key5": 3, "key6": float("nan")}}}
+    dict2 = {"key1": 1, "key2": {"key3": 2, "key4": {"key5": 3, "key6": float("nan")}}}
+    assert _dicts_are_equal(dict1, dict2) and dict1 != dict2
+
+
+def _there_exists_an_equal_dict(dict: dict, list_of_dicts: list[dict]) -> bool:
+    for other_dict in list_of_dicts:
+        if _dicts_are_equal(dict, other_dict):
+            return True
+    return False
+
+
+# IF THIS TEST FAILS:
+# You can regenerate .pkl files by launching
+# ```bash
+# python scripts/load.py \
+#   --file {{dataset_name}} \
+#   --record_set {{record_set_name}} \
+#   --num_records -1
+# ```
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name"],
+    [
+        ["pass-mini", "images"],
+        ["simple-join", "publications_by_user"],
+        ["titanic", "passengers"],
+    ],
+)
+def test_loading(dataset_name, record_set_name):
+    config = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
-        / "simple-join"
+        / dataset_name
         / "metadata.json"
     )
-    dataset = datasets.Dataset(titanic_config)
-    records = dataset.records("publications_by_user")
+    pkl_file = (
+        epath.Path(__file__).parent.parent.parent.parent.parent
+        / "datasets"
+        / dataset_name
+        / "output.pkl"
+    )
+    with pkl_file.open("rb") as f:
+        expected_records = pickle.load(f)
+    dataset = datasets.Dataset(config)
+    records = dataset.records(record_set_name)
     records = iter(records)
-    assert next(records) == {
-        "publications_by_user": {
-            "author_email": "john.smith@gmail.com",
-            "author_fullname": "John Smith",
-            "title": "A New Approach to Machine Learning Using Neural Networks",
-        }
-    }
-    assert next(records) == {
-        "publications_by_user": {
-            "author_email": "jane.doe@yahoo.com",
-            "author_fullname": "Jane Doe",
-            "title": (
-                "The Application of Machine Learning to Natural Language Processing"
-            ),
-        }
-    }
-    assert next(records) == {
-        "publications_by_user": {
-            "author_email": "david.lee@outlook.com",
-            "author_fullname": "David Lee",
-            "title": "The Use of Machine Learning to Predict the Stock Market",
-        }
-    }
-    assert next(records) == {
-        "publications_by_user": {
-            "author_email": "mary.jones@hotmail.com",
-            "author_fullname": "Mary Jones",
-            "title": np.nan,
-        }
-    }
-    with pytest.raises(StopIteration):
-        next(records)
+    length = 0
+    for record in records:
+        # TODO(https://github.com/mlcommons/croissant/issues/121):
+        # At the moment, we cannot compare record by record as the generation is not
+        # reproducible.
+        assert _there_exists_an_equal_dict(record, expected_records)
+        length += 1
+    assert len(expected_records) == length

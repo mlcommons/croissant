@@ -38,6 +38,10 @@ jobs:
     - name: PyLint
       run: pylint **/*.py
 
+    # Pyflakes can see unused imports
+    - name: PyFlakes
+      run: pyflakes .
+
   pytype-test:
     name: PyType
     runs-on: ubuntu-latest

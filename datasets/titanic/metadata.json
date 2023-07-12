@@ -140,9 +140,9 @@
         },
         {
           "name": "age",
-          "description": "Age of passenger at time of death.",
+          "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
           "@type": "ml:Field",
-          "dataType": "sc:Float",
+          "dataType": "sc:Text",
           "source": "#{passengers.csv/age}"
         },
         {
@@ -176,9 +176,9 @@
         },
         {
           "name": "fare",
-          "description": "Passenger Fare (British pound)",
+          "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
           "@type": "ml:Field",
-          "dataType": "sc:Float",
+          "dataType": "sc:Text",
           "source": "#{passengers.csv/fare}"
         },
         {
