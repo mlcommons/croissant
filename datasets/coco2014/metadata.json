@@ -122,6 +122,8 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
+      "key": "#{name}",
+      "source": "#{splits.csv}",
       "field": [
         {
           "@type": "ml:Field",
@@ -140,13 +142,12 @@
           ],
           "source": "#{splits.csv/url}"
         }
-      ],
-      "key": "#{name}",
-      "source": "#{splits.csv}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "images",
+      "key": "#{img_id}",
       "field": [
         {
           "@type": "ml:Field",
@@ -177,12 +178,12 @@
             "data": "#{image-files/fullpath}"
           }
         }
-      ],
-      "key": "#{img_id}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "captions",
+      "key": "#{id}",
       "field": [
         {
           "@type": "ml:Field",
@@ -223,12 +224,13 @@
             "data": "#{caption_annotations-files/filename}"
           }
         }
-      ],
-      "key": "#{id}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "categories",
+      "isEnumeration": true,
+      "key": "#{id}",
       "field": [
         {
           "@type": "ml:Field",
@@ -258,13 +260,12 @@
           "isEnumeration": true,
           "source": "#{instancesperson_keypoints_annotations/categories/supercategory}"
         }
-      ],
-      "isEnumeration": true,
-      "key": "#{id}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "annotations",
+      "key": "#{id}",
       "field": [
         {
           "@type": "ml:Field",
@@ -299,8 +300,7 @@
             "format": "XYWH"
           }
         }
-      ],
-      "key": "#{id}"
+      ]
     }
   ]
 }

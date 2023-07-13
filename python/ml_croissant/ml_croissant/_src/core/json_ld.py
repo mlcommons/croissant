@@ -59,7 +59,7 @@ def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     """
     items = sorted(jsonld.items())
     start_keys = ["@context", "@type", "name", "description"]
-    end_keys = ["distribution", "recordSet"]
+    end_keys = ["distribution", "field", "recordSet", "subField"]
     sorted_items = []
     for key in start_keys:
         if key in jsonld:

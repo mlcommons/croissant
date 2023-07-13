@@ -53,6 +53,8 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
+      "key": "#{name}",
+      "source": "#{splits.csv}",
       "field": [
         {
           "@type": "ml:Field",
@@ -71,14 +73,13 @@
           ],
           "source": "#{splits.csv/url}"
         }
-      ],
-      "key": "#{name}",
-      "source": "#{splits.csv}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "words",
       "description": "The words of the token files, including their split.",
+      "source": "#{token-files}",
       "field": [
         {
           "@type": "ml:Field",
@@ -114,8 +115,7 @@
             "data": "#{token-files/fullpath}"
           }
         }
-      ],
-      "source": "#{token-files}"
+      ]
     }
   ]
 }

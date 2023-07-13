@@ -51,6 +51,8 @@
   "recordSet": {
     "@type": "ml:RecordSet",
     "name": "images",
+    "key": "#{hash}",
+    "source": "#{image-files}",
     "field": [
       {
         "@type": "ml:Field",
@@ -111,8 +113,6 @@
           "data": "#{metadata/datetaken}"
         }
       }
-    ],
-    "key": "#{hash}",
-    "source": "#{image-files}"
+    ]
   }
 }

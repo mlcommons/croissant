@@ -34,6 +34,7 @@
     "@type": "ml:RecordSet",
     "name": "examples",
     "description": "Records extracted from the example table, with their schema.",
+    "source": "#{minimal.csv}",
     "field": [
       {
         "@type": "ml:Field",
@@ -49,7 +50,6 @@
         "dataType": "sc:Number",
         "references": "#{minimal.csv/age}"
       }
-    ],
-    "source": "#{minimal.csv}"
+    ]
   }
 }

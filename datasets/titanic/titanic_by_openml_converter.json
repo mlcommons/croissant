@@ -40,6 +40,7 @@
   "recordSet": {
     "@type": "ml:RecordSet",
     "name": "titanic_records",
+    "source": "#{Titanic.arff}",
     "field": [
       {
         "@type": "ml:Field",
@@ -125,7 +126,6 @@
         "dataType": "Text",
         "source": "#{Titanic.arff/home.dest}"
       }
-    ],
-    "source": "#{Titanic.arff}"
+    ]
   }
 }

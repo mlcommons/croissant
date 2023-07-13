@@ -41,6 +41,7 @@
   "recordSet": {
     "@type": "ml:RecordSet",
     "name": "birds_records",
+    "source": "#{birds.arff}",
     "field": [
       {
         "@type": "ml:Field",
@@ -1716,7 +1717,6 @@
         "dataType": "Boolean",
         "source": "#{birds.arff/Common.Nighthawk}"
       }
-    ],
-    "source": "#{birds.arff}"
+    ]
   }
 }

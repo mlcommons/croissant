@@ -78,6 +78,8 @@
     {
       "@type": "ml:RecordSet",
       "name": "movies",
+      "key": "#{movie_id}",
+      "source": "#{movies-table}",
       "field": [
         {
           "@type": "ml:Field",
@@ -105,13 +107,16 @@
             "data": "#{movies-table/genres}"
           }
         }
-      ],
-      "key": "#{movie_id}",
-      "source": "#{movies-table}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "ratings",
+      "key": [
+        "#{user_id}",
+        "#{movie_id}"
+      ],
+      "source": "#{ratings-table}",
       "field": [
         {
           "@type": "ml:Field",
@@ -139,16 +144,17 @@
           "dataType": "sc:Integer",
           "source": "#{ratings-table/timestamp}"
         }
-      ],
-      "key": [
-        "#{user_id}",
-        "#{movie_id}"
-      ],
-      "source": "#{ratings-table}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "tags",
+      "key": [
+        "#{user_id}",
+        "#{movie_id}",
+        "#{timestamp}"
+      ],
+      "source": "#{tags-table}",
       "field": [
         {
           "@type": "ml:Field",
@@ -176,17 +182,13 @@
           "dataType": "sc:Integer",
           "source": "#{tags-table/timestamp}"
         }
-      ],
-      "key": [
-        "#{user_id}",
-        "#{movie_id}",
-        "#{timestamp}"
-      ],
-      "source": "#{tags-table}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "movies_with_ratings_with_tags",
+      "key": "#{movie_id}",
+      "source": "#{movies}",
       "field": [
         {
           "@type": "ml:Field",
@@ -257,9 +259,7 @@
             }
           ]
         }
-      ],
-      "key": "#{movie_id}",
-      "source": "#{movies}"
+      ]
     }
   ]
 }
