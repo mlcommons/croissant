@@ -8,7 +8,6 @@ from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
 from ml_croissant._src.structure_graph.nodes import Field
 from ml_croissant._src.operation_graph.base_operation import Operation
 import pandas as pd
-from rdflib import namespace
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -16,7 +15,6 @@ class ReadField(Operation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
     node: Field
-    rdf_namespace_manager: namespace.NamespaceManager
     field: str | None = None
 
     def find_data_type(self, data_types: list[str] | tuple[str, ...] | str) -> type:

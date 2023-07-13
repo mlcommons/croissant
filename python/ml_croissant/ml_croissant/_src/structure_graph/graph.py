@@ -36,7 +36,6 @@ from ml_croissant._src.structure_graph.nodes import (
 from ml_croissant._src.structure_graph.nodes.source import parse_reference
 import networkx as nx
 import rdflib
-from rdflib import namespace
 from rdflib import term
 
 Json = dict[str, Any]
@@ -61,7 +60,7 @@ def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
         return filepath, json.load(f)
 
 
-def from_json_to_rdf(data: Json) -> tuple[namespace.NamespaceManager, rdflib.Graph]:
+def from_json_to_rdf(data: Json) -> rdflib.Graph:
     """Converts the JSON to an RDF graph with expanded JSON-LD attributes using RDFLib.
 
     We use RDFLib instead of reinventing a JSON-LD parser. This may be more cumbersome
@@ -84,8 +83,7 @@ def from_json_to_rdf(data: Json) -> tuple[namespace.NamespaceManager, rdflib.Gra
         data=data,
         format="json-ld",
     )
-    ns = graph.namespace_manager
-    return ns, graph
+    return graph
 
 
 def _parse_node_params(

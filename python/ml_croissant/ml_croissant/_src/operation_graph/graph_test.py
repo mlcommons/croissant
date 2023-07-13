@@ -3,17 +3,11 @@
 from ml_croissant._src.operation_graph.operations import ReadField
 from ml_croissant._src.tests.nodes import empty_field
 import pytest
-import rdflib
-from rdflib import namespace, term
+from rdflib import term
 
 
 def test_find_data_type():
-    sc = rdflib.Namespace("https://schema.org/")
-    rdf_namespace_manager = namespace.NamespaceManager(rdflib.Graph())
-    rdf_namespace_manager.bind("sc", sc)
-    read_field = ReadField(
-        node=empty_field, rdf_namespace_manager=rdf_namespace_manager
-    )
+    read_field = ReadField(node=empty_field)
     assert read_field.find_data_type(term.URIRef("https://schema.org/Boolean")) == bool
     assert (
         read_field.find_data_type([term.URIRef("https://schema.org/Boolean"), "bar"])

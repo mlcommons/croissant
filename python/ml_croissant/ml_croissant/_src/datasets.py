@@ -38,16 +38,14 @@ class Validator:
         try:
             file_path, self.file = from_file_to_json(self.file_or_file_path)
             folder = file_path.parent
-            ns, json_ld = from_json_to_rdf(self.file)
+            json_ld = from_json_to_rdf(self.file)
             graph = from_rdf_to_nodes(self.issues, json_ld, folder)
             # Print all nodes for debugging purposes.
             if debug:
                 logging.info("Found the following nodes during static analysis.")
                 for node in graph.nodes:
                     logging.info(node)
-            metadata, graph = from_nodes_to_structure_graph(
-                self.issues, graph
-            )
+            metadata, graph = from_nodes_to_structure_graph(self.issues, graph)
             check_structure_graph(self.issues, graph)
             # Draw the structure graph for debugging purposes.
             if debug:
@@ -57,7 +55,6 @@ class Validator:
                 metadata=metadata,
                 graph=graph,
                 folder=file_path.parent,
-                rdf_namespace_manager=ns,
             )
             self.operations.check_graph()
         except Exception as exception:
