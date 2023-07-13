@@ -8,7 +8,6 @@ from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
 from ml_croissant._src.structure_graph.nodes import Field
 from ml_croissant._src.operation_graph.base_operation import Operation
 import pandas as pd
-from rdflib import namespace
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -16,7 +15,6 @@ class ReadField(Operation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
     node: Field
-    rdf_namespace_manager: namespace.NamespaceManager
     field: str | None = None
 
     def find_data_type(self, data_types: list[str] | tuple[str, ...] | str) -> type:
@@ -32,10 +30,7 @@ class ReadField(Operation):
                 except ValueError:
                     continue
         elif isinstance(data_types, str):
-            if ":" in data_types:
-                data_type = self.rdf_namespace_manager.expand_curie(data_types)
-            else:
-                data_type = data_types
+            data_type = data_types
             if data_type not in EXPECTED_DATA_TYPES:
                 raise ValueError(
                     f'Unknown data type "{data_type}" found for "{self.node.uid}".'
@@ -78,7 +73,7 @@ class ReadField(Operation):
             field = self.field
         if field == "content":
             filepath = series["filepath"]
-            with epath.Path(filepath).open('rb') as f:
+            with epath.Path(filepath).open("rb") as f:
                 value = f.read()
         else:
             assert field in series, (

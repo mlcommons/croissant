@@ -25,7 +25,6 @@ from ml_croissant._src.operation_graph.operations import (
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.graph import get_entry_nodes
 import networkx as nx
-from rdflib import namespace
 
 LastOperation = dict[Node, Operation]
 
@@ -46,7 +45,6 @@ def _add_operations_for_field_with_source(
     operations: nx.MultiDiGraph,
     last_operation: LastOperation,
     node: Field,
-    rdf_namespace_manager: namespace.NamespaceManager,
 ):
     """Adds all operations for a node of type `Field`.
 
@@ -77,7 +75,7 @@ def _add_operations_for_field_with_source(
         node.add_error("Wrong source for the node")
         return
     # Read/extract the field
-    read_field = ReadField(node=node, rdf_namespace_manager=rdf_namespace_manager)
+    read_field = ReadField(node=node)
     operations.add_edge(group_record_set, read_field)
     last_operation[node] = read_field
 
@@ -154,7 +152,6 @@ class OperationGraph:
         metadata: Node,
         graph: nx.MultiDiGraph,
         folder: epath.Path,
-        rdf_namespace_manager: namespace.NamespaceManager,
     ) -> "OperationGraph":
         """Builds the ComputationGraph from the nodes.
 
@@ -180,7 +177,6 @@ class OperationGraph:
                         operations,
                         last_operation,
                         node,
-                        rdf_namespace_manager,
                     )
             elif isinstance(node, RecordSet) and node.data:
                 _add_operations_for_record_set_with_data(

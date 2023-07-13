@@ -16,6 +16,7 @@ Json = dict[str, Any]
 
 _ML_COMMONS_PREFIX = str(constants.ML_COMMONS)
 _SCHEMA_ORG_PREFIX = str(constants.SCHEMA_ORG)
+_WD_PREFIX = "https://www.wikidata.org/wiki/"
 # Mapping for non-trivial conversion:
 _PREFIX_MAP = {
     "http://mlcommons.org/schema/Field": "field",
@@ -29,7 +30,7 @@ def _make_context():
         "@vocab": "https://schema.org/",
         "applyTransform": "ml:applyTransform",
         "data": "ml:data",
-        "dataType": "ml:dataType",
+        "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
         "field": "ml:Field",
         "format": "ml:format",
         "includes": "ml:includes",
@@ -87,8 +88,11 @@ def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) 
         return entry_node["@value"]
     elif len(entry_node) == 1 and "@id" in entry_node:
         node_id = entry_node["@id"]
-        node = id_to_node[node_id]
-        return _recursively_populate_fields(node, id_to_node)
+        if node_id in id_to_node:
+            node = id_to_node[node_id]
+            return _recursively_populate_fields(node, id_to_node)
+        else:
+            return entry_node
     for key, value in entry_node.items():
         if key == "@type":
             entry_node[key] = value[0]
@@ -109,6 +113,8 @@ def expand_json_ld(data: Json) -> Json:
     need to reconstruct the hierarchy.
     """
     graph = rdflib.Graph()
+    # Parse with the new context if it has been changed.
+    data["@context"] = _make_context()
     graph.parse(
         data=data,
         format="json-ld",
@@ -129,27 +135,36 @@ def expand_json_ld(data: Json) -> Json:
     return entry_node
 
 
-def reduce_json_ld(json: Any) -> Any:
-    """Recursively reduces the JSON-LD value to human-readable values.
+def compact_json_ld(json: Any) -> Any:
+    """Recursively compacts the JSON-LD value to human-readable values.
 
     For example: "http://schema.org/Dataset" -> "sc:Dataset".
     """
     if isinstance(json, list):
-        return [reduce_json_ld(element) for element in json]
+        return [compact_json_ld(element) for element in json]
     elif not isinstance(json, dict):
         if isinstance(json, str) and _SCHEMA_ORG_PREFIX in json:
             return json.replace(_SCHEMA_ORG_PREFIX, "sc:")
         elif isinstance(json, str) and _ML_COMMONS_PREFIX in json:
             return json.replace(_ML_COMMONS_PREFIX, "ml:")
+        elif isinstance(json, str) and _WD_PREFIX in json:
+            return json.replace(_WD_PREFIX, "wd:")
         else:
             return json
     for key, value in json.copy().items():
         if key == "@context":
             # `@context` is left untouched.
             continue
-        new_value = reduce_json_ld(value)
+        new_value = compact_json_ld(value)
         if key == "@id":
-            del json[key]
+            if (
+                value.startswith(_SCHEMA_ORG_PREFIX)
+                or value.startswith(_ML_COMMONS_PREFIX)
+                or value.startswith(_WD_PREFIX)
+            ):
+                return new_value
+            else:
+                del json[key]
         elif key in _PREFIX_MAP:
             del json[key]
             json[_PREFIX_MAP[key]] = new_value
