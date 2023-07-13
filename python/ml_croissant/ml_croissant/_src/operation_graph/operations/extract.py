@@ -39,10 +39,11 @@ class Untar(Operation):
         )
         included_files = []
         for basepath, _, files in os.walk(extract_dir):
-            # We need to sort `files` to have a deterministic/reproducible order.
-            for file in sorted(files):
+            for file in files:
                 if re.match(includes, os.fspath(file)):
                     included_files.append(epath.Path(basepath) / file)
+        # We need to sort `files` to have a deterministic/reproducible order.
+        included_files.sort()
         return pd.DataFrame(
             {
                 "filepath": included_files,
