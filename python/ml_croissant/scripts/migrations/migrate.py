@@ -1,4 +1,5 @@
-"""migrate module."""
+"""Migrates Croissant configs from an older or non canonical Croissant format to a
+canonical and possibly newer Croissant format."""
 
 import json
 

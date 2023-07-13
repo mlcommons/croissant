@@ -1,4 +1,9 @@
-"""json_ld module."""
+"""Core utils to manipulate JSON-LD.
+
+The main functions are:
+- `expand_json_ld`: human-readable JSON-LD   -> machine-readable JSON-LD.
+- `reduce_json_ld`: machine-readable JSON-LD -> human-readable JSON-LD.
+"""
 
 import json
 from typing import Any
@@ -44,25 +49,25 @@ def _is_dataset_node(node: Json) -> bool:
     return node.get("@type") == [str(constants.SCHEMA_ORG_DATASET)]
 
 
-def _sort_items(json_ld: Json) -> list[tuple[str, Any]]:
+def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     """Sorts items from dict.items().
 
     For human readability, we want "@type"/"name"/"description" to be at the beginning
     of the JSON, while long lists (""distribution"/"recordSet") are at the end.
     """
-    items = sorted(json_ld.items())
+    items = sorted(jsonld.items())
     start_keys = ["@context", "@type", "name", "description"]
     end_keys = ["distribution", "recordSet"]
     sorted_items = []
     for key in start_keys:
-        if key in json_ld:
-            sorted_items.append((key, json_ld[key]))
+        if key in jsonld:
+            sorted_items.append((key, jsonld[key]))
     for item in items:
         if item[0] not in start_keys and item[0] not in end_keys:
             sorted_items.append(item)
     for key in end_keys:
-        if key in json_ld:
-            sorted_items.append((key, json_ld[key]))
+        if key in jsonld:
+            sorted_items.append((key, jsonld[key]))
     return sorted_items
 
 
@@ -95,6 +100,12 @@ def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) 
 
 
 def expand_json_ld(data: Json) -> Json:
+    """Expands a Croissant JSON to a nested JSON-LD with expanded.
+
+    For this we use RDFLib. RDFLib expands the CURIE of the form "rdf:type" into their
+    full expression, but RDFLib also flattens the JSON-LD in a list of nodes. We then
+    need to reconstruct the hierarchy.
+    """
     graph = rdflib.Graph()
     graph.parse(
         data=data,
