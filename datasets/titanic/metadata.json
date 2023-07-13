@@ -8,14 +8,14 @@
     "format": "ml:format",
     "includes": "ml:includes",
     "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
     "references": "ml:references",
     "regex": "ml:regex",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:SubField",
-    "wd": "https://www.wikidata.org/wiki/",
-    "recordSet": "ml:RecordSet"
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "Titanic",

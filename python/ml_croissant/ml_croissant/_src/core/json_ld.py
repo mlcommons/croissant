@@ -68,7 +68,10 @@ def _sort_items(json_ld: Json) -> list[tuple[str, Any]]:
 
 def _sort_dict(d: dict[str, Any]):
     """Sorts the keys of a nested dict."""
-    return {k: _sort_dict(v) if isinstance(v, dict) else v for k, v in _sort_items(d)}
+    return {
+        k: _sort_dict(v) if isinstance(v, dict) and k != "@context" else v
+        for k, v in _sort_items(d)
+    }
 
 
 def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
