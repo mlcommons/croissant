@@ -3,7 +3,7 @@
 import json
 
 from etils import epath
-from ml_croissant._src.core.json_ld import expand_json_ld, reduce_json_ld
+from ml_croissant._src.core.json_ld import expand_json_ld, compact_json_ld
 import pytest
 
 _DATASETS_FOLDER = (
@@ -21,4 +21,4 @@ _JSON_LD_PATHS = [path for path in _DATASETS_FOLDER.glob("*/*.json")]
 def test_expand_and_reduce_json_ld(path):
     with path.open() as f:
         json_ld = json.load(f)
-    assert reduce_json_ld(expand_json_ld(json_ld)) == json_ld
+    assert compact_json_ld(expand_json_ld(json_ld)) == json_ld

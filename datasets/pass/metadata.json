@@ -3,7 +3,10 @@
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
     "data": "ml:data",
-    "dataType": "ml:dataType",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
     "field": "ml:Field",
     "format": "ml:format",
     "includes": "ml:includes",

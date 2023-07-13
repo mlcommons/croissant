@@ -32,10 +32,7 @@ class ReadField(Operation):
                 except ValueError:
                     continue
         elif isinstance(data_types, str):
-            if ":" in data_types:
-                data_type = self.rdf_namespace_manager.expand_curie(data_types)
-            else:
-                data_type = data_types
+            data_type = data_types
             if data_type not in EXPECTED_DATA_TYPES:
                 raise ValueError(
                     f'Unknown data type "{data_type}" found for "{self.node.uid}".'
@@ -78,7 +75,7 @@ class ReadField(Operation):
             field = self.field
         if field == "content":
             filepath = series["filepath"]
-            with epath.Path(filepath).open('rb') as f:
+            with epath.Path(filepath).open("rb") as f:
                 value = f.read()
         else:
             assert field in series, (
