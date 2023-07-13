@@ -11,6 +11,7 @@
     "recordSet": "ml:RecordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",

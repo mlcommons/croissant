@@ -1,64 +1,65 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "wd": "https://www.wikidata.org/wiki/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "subField": "ml:SubField",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "data": "ml:data",
     "applyTransform": "ml:applyTransform",
+    "data": "ml:data",
+    "dataType": "ml:dataType",
+    "field": "ml:Field",
     "format": "ml:format",
+    "includes": "ml:includes",
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
     "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
     "separator": "ml:separator",
-    "references": "ml:references"
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
-  "@language": "en",
   "name": "COCO",
-  "url": "https://cocodataset.org/",
   "description": "COCO is a large-scale object detection, segmentation, and captioning dataset.  WARNING: `metadata.json` is incomplete and does not fully define the COCO2014 dataset. It lacks `recordSet` definitions that would enable automatic loading of all the annotations.",
+  "@language": "en",
+  "citation": "@article{DBLP:journals/corr/LinMBHPRDZ14,\n  author    = {Tsung{-}Yi Lin and\n               Michael Maire and\n               Serge J. Belongie and\n               Lubomir D. Bourdev and\n               Ross B. Girshick and\n               James Hays and\n               Pietro Perona and\n               Deva Ramanan and\n               Piotr Doll{'{a}}r and\n               C. Lawrence Zitnick},\n  title     = {Microsoft {COCO:} Common Objects in Context},\n  journal   = {CoRR},\n  volume    = {abs/1405.0312},\n  year      = {2014},\n  url       = {http://arxiv.org/abs/1405.0312},\n  archivePrefix = {arXiv},\n  eprint    = {1405.0312},\n  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}",
   "license": [
     "Creative Commons Attribution 4.0 License",
     "https://www.flickr.com/creativecommons/"
   ],
-  "citation": "@article{DBLP:journals/corr/LinMBHPRDZ14,\n  author    = {Tsung{-}Yi Lin and\n               Michael Maire and\n               Serge J. Belongie and\n               Lubomir D. Bourdev and\n               Ross B. Girshick and\n               James Hays and\n               Pietro Perona and\n               Deva Ramanan and\n               Piotr Doll{'{a}}r and\n               C. Lawrence Zitnick},\n  title     = {Microsoft {COCO:} Common Objects in Context},\n  journal   = {CoRR},\n  volume    = {abs/1405.0312},\n  year      = {2014},\n  url       = {http://arxiv.org/abs/1405.0312},\n  archivePrefix = {arXiv},\n  eprint    = {1405.0312},\n  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}",
+  "url": "https://cocodataset.org/",
   "distribution": [
     {
       "@type": "sc:FileObject",
       "name": "splits.csv",
-      "contentUrl": "data/splits.csv",
       "contentSize": " B",
-      "sha256": "",
-      "encodingFormat": "text/csv"
+      "contentUrl": "data/splits.csv",
+      "encodingFormat": "text/csv",
+      "sha256": ""
     },
     {
       "@type": "sc:FileObject",
       "name": "train2014.zip",
-      "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
       "contentSize": " B",
-      "sha256": "",
-      "encodingFormat": "application/zip"
+      "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": ""
     },
     {
       "@type": "sc:FileObject",
       "name": "val2014.zip",
-      "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
       "contentSize": " B",
-      "sha256": "",
-      "encodingFormat": "application/zip"
+      "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": ""
     },
     {
       "@type": "sc:FileObject",
       "name": "test2014.zip",
-      "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
       "contentSize": " B",
-      "sha256": "",
-      "encodingFormat": "application/zip"
+      "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": ""
     },
     {
       "@type": "sc:FileSet",
@@ -68,60 +69,52 @@
         "#{val2014.zip}",
         "#{test2014.zip}"
       ],
-      "includes": "*.jpg",
-      "encodingFormat": "image/jpeg"
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
     },
     {
       "@type": "sc:FileObject",
       "name": "annotations_trainval2014.zip",
-      "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
       "contentSize": " B",
-      "sha256": "",
-      "encodingFormat": "application/zip"
+      "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": ""
     },
     {
       "@type": "sc:FileSet",
       "name": "caption_annotations-files",
-      "containedIn": [
-        "#{annotations_trainval2014.zip}"
-      ],
-      "includes": "annotations/captions_(val|train)2014.json",
-      "encodingFormat": "application/json"
+      "containedIn": "#{annotations_trainval2014.zip}",
+      "encodingFormat": "application/json",
+      "includes": "annotations/captions_(val|train)2014.json"
     },
     {
       "@type": "sc:FileSet",
       "name": "person_keypoints_annotations",
-      "containedIn": [
-        "#{annotations_trainval2014.zip}"
-      ],
-      "includes": "annotations/person_keypoints_(val|train)2014.json",
-      "encodingFormat": "application/json"
+      "containedIn": "#{annotations_trainval2014.zip}",
+      "encodingFormat": "application/json",
+      "includes": "annotations/person_keypoints_(val|train)2014.json"
     },
     {
       "@type": "sc:FileSet",
       "name": "instancesperson_keypoints_annotations",
-      "containedIn": [
-        "#{annotations_trainval2014.zip}"
-      ],
-      "includes": "annotations/instances_(val|train)2014.json",
-      "encodingFormat": "application/json"
+      "containedIn": "#{annotations_trainval2014.zip}",
+      "encodingFormat": "application/json",
+      "includes": "annotations/instances_(val|train)2014.json"
     },
     {
       "@type": "sc:FileObject",
       "name": "image_info_test2014.zip",
-      "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
       "contentSize": " B",
-      "sha256": "",
-      "encodingFormat": "application/zip"
+      "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": ""
     },
     {
       "@type": "sc:FileSet",
       "name": "imageinfo",
-      "containedIn": [
-        "#{image_info_test2014.zip}"
-      ],
-      "includes": "annotations/image_info_test.json",
-      "encodingFormat": "application/json"
+      "containedIn": "#{image_info_test2014.zip}",
+      "encodingFormat": "application/json",
+      "includes": "annotations/image_info_test.json"
     }
   ],
   "recordSet": [
@@ -129,86 +122,85 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "source": "#{splits.csv}",
-      "key": "#{name}",
       "field": [
         {
+          "@type": "ml:Field",
           "name": "name",
           "description": "One of: train, val, test.",
-          "@type": "ml:Field",
-          "source": "#{splits.csv/name}",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": "#{splits.csv/name}"
         },
         {
+          "@type": "ml:Field",
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
-          "@type": "ml:Field",
-          "source": "#{splits.csv/url}",
           "dataType": [
             "sc:Url",
             "wd:Q3985153"
-          ]
+          ],
+          "source": "#{splits.csv/url}"
         }
-      ]
+      ],
+      "key": "#{name}",
+      "source": "#{splits.csv}"
     },
     {
-      "name": "images",
       "@type": "ml:RecordSet",
-      "key": "#{img_id}",
+      "name": "images",
       "field": [
         {
-          "name": "image_filename",
           "@type": "ml:Field",
+          "name": "image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": "#{image-files/filename}"
         },
         {
-          "name": "image_content",
           "@type": "ml:Field",
+          "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": "#{image-files/content}"
         },
         {
-          "name": "split",
           "@type": "ml:Field",
+          "name": "split",
           "dataType": [
             "sc:Text",
             "wd:Q3985153"
           ],
+          "references": "#{split_enums}",
           "source": {
-            "data": "#{image-files/fullpath}",
             "applyTransform": {
               "regex": "^(train|val|test)2014.zip/.+2014/.*\\.jpg$"
-            }
-          },
-          "references": "#{split_enums}"
+            },
+            "data": "#{image-files/fullpath}"
+          }
         }
-      ]
+      ],
+      "key": "#{img_id}"
     },
     {
-      "name": "captions",
       "@type": "ml:RecordSet",
-      "key": "#{id}",
+      "name": "captions",
       "field": [
         {
-          "name": "id",
           "@type": "ml:Field",
+          "name": "id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": "#{caption_annotations-files/annotations/id}"
         },
         {
-          "name": "image_id",
           "@type": "ml:Field",
+          "name": "image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": "#{caption_annotations-files/annotations/image_id}"
         },
         {
-          "name": "caption",
           "@type": "ml:Field",
+          "name": "caption",
           "description": "The caption",
           "dataType": [
             "sc:Text",
@@ -217,38 +209,37 @@
           "source": "#{caption_annotations-files/annotations/caption}"
         },
         {
-          "name": "split",
           "@type": "ml:Field",
+          "name": "split",
           "dataType": [
             "sc:Text",
             "wd:Q3985153"
           ],
+          "references": "#{split_enums/name}",
           "source": {
-            "data": "#{caption_annotations-files/filename}",
             "applyTransform": {
               "regex": ".*_(val|train)2014\\.json$"
-            }
-          },
-          "references": "#{split_enums/name}"
+            },
+            "data": "#{caption_annotations-files/filename}"
+          }
         }
-      ]
+      ],
+      "key": "#{id}"
     },
     {
-      "name": "categories",
       "@type": "ml:RecordSet",
-      "ml:isEnumeration": true,
-      "key": "#{id}",
+      "name": "categories",
       "field": [
         {
-          "name": "id",
           "@type": "ml:Field",
+          "name": "id",
           "description": "The ID of the category",
           "dataType": "sc:Integer",
           "source": "#{instancesperson_keypoints_annotations/categories/id}"
         },
         {
-          "name": "name",
           "@type": "ml:Field",
+          "name": "name",
           "description": "The name of the category.",
           "dataType": [
             "sc:Text",
@@ -257,49 +248,50 @@
           "source": "#{instancesperson_keypoints_annotations/categories/name}"
         },
         {
-          "name": "supercategory",
           "@type": "ml:Field",
-          "ml:isEnumeration": true,
+          "name": "supercategory",
           "description": "The name of the supercategory.",
           "dataType": [
             "sc:Text",
             "sc:name"
           ],
+          "isEnumeration": true,
           "source": "#{instancesperson_keypoints_annotations/categories/supercategory}"
         }
-      ]
+      ],
+      "isEnumeration": true,
+      "key": "#{id}"
     },
     {
-      "name": "annotations",
       "@type": "ml:RecordSet",
-      "key": "#{id}",
+      "name": "annotations",
       "field": [
         {
-          "name": "id",
           "@type": "ml:Field",
+          "name": "id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": "#{instancesperson_keypoints_annotations/annotations/id}"
         },
         {
-          "name": "category_id",
           "@type": "ml:Field",
+          "name": "category_id",
           "description": "The ID of the category.",
           "dataType": "sc:Integer",
-          "source": "#{instancesperson_keypoints_annotations/annotations/category_id}",
-          "references": "#{categories/id}"
+          "references": "#{categories/id}",
+          "source": "#{instancesperson_keypoints_annotations/annotations/category_id}"
         },
         {
-          "name": "image_id",
           "@type": "ml:Field",
+          "name": "image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
-          "source": "#{instancesperson_keypoints_annotations/annotations/image_id}",
-          "references": "#{images/id}"
+          "references": "#{images/id}",
+          "source": "#{instancesperson_keypoints_annotations/annotations/image_id}"
         },
         {
-          "name": "bbox",
           "@type": "ml:Field",
+          "name": "bbox",
           "description": "The bounding box around annotated object[s].",
           "dataType": "ml:BoundingBox",
           "source": {
@@ -307,7 +299,8 @@
             "format": "XYWH"
           }
         }
-      ]
+      ],
+      "key": "#{id}"
     }
   ]
 }

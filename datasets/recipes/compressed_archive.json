@@ -1,13 +1,22 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
+    "applyTransform": "ml:applyTransform",
+    "data": "ml:data",
     "dataType": "ml:dataType",
-    "source": "ml:source"
+    "field": "ml:Field",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "compressed_archive_example",
@@ -15,37 +24,31 @@
   "url": "https://example.com/datasets/recipes/compressed_archive/about",
   "distribution": [
     {
-      "name": "compressed_archive.zip",
       "@type": "sc:FileObject",
+      "name": "compressed_archive.zip",
       "contentUrl": "data/compressed_archive.zip",
-      "sha256": "4cee7cd36f1d874072b6a96c95ce53c9b01d158f0737e754e6c9cc80aeb06e5a",
-      "encodingFormat": "application/zip"
+      "encodingFormat": "application/zip",
+      "sha256": "4cee7cd36f1d874072b6a96c95ce53c9b01d158f0737e754e6c9cc80aeb06e5a"
     },
     {
-      "name": "image-files",
       "@type": "sc:FileSet",
-      "containedIn": [
-        "#{compressed_archive.zip}"
-      ],
-      "includes": "*.jpeg",
-      "encodingFormat": "image/jpeg"
+      "name": "image-files",
+      "containedIn": "#{compressed_archive.zip}",
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpeg"
     }
   ],
-  "recordSet": [
-    {
-      "name": "images",
-      "@type": "ml:RecordSet",
-      "source": "#{image-files}",
-      "description": "Records extracted from the image files, with their schema.",
-      "field": [
-        {
-          "name": "image_content",
-          "@type": "ml:Field",
-          "description": "The content of the image.",
-          "dataType": "sc:ImageObject",
-          "source": "#{image-files/content}"
-        }
-      ]
-    }
-  ]
+  "recordSet": {
+    "@type": "ml:RecordSet",
+    "name": "images",
+    "description": "Records extracted from the image files, with their schema.",
+    "field": {
+      "@type": "ml:Field",
+      "name": "image_content",
+      "description": "The content of the image.",
+      "dataType": "sc:ImageObject",
+      "source": "#{image-files/content}"
+    },
+    "source": "#{image-files}"
+  }
 }
