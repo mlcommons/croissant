@@ -1,74 +1,70 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "subField": "ml:SubField",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "data": "ml:data",
     "applyTransform": "ml:applyTransform",
+    "data": "ml:data",
+    "dataType": "ml:dataType",
+    "field": "ml:Field",
     "format": "ml:format",
+    "includes": "ml:includes",
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
     "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
     "separator": "ml:separator",
-    "references": "ml:references"
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
-  "@language": "en",
   "name": "simple-pass",
-  "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "@language": "en",
   "citation": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "distribution": [
     {
+      "@type": "sc:FileObject",
       "name": "metadata",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
-      "sha256": "0b033707ea49365a5ffdd14615825511",
-      "encodingFormat": "text/csv"
+      "encodingFormat": "text/csv",
+      "sha256": "0b033707ea49365a5ffdd14615825511"
     },
     {
-      "name": "pass9",
       "@type": "sc:FileObject",
+      "name": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
-      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc"
     },
     {
-      "name": "image-files",
       "@type": "sc:FileSet",
-      "containedIn": [
-        "#{pass9}"
-      ],
-      "includes": "*.jpg",
-      "encodingFormat": "image/jpeg"
+      "name": "image-files",
+      "containedIn": "#{pass9}",
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
     }
   ],
-  "recordSet": [
-    {
-      "name": "images",
-      "@type": "ml:RecordSet",
-      "source": "#{image-files}",
-      "key": "#{hash}",
-      "field": [
-        {
-          "name": "hash",
-          "@type": "ml:Field",
-          "description": "The hash of the image, as computed from YFCC-100M.",
-          "dataType": "sc:Text",
-          "source": {
-            "data": "#{image-files/filename}",
-            "applyTransform": {
-              "regex": "([^\\/]*)\\.jpg"
-            }
-          },
-          "references": "#{metadata/hash}"
-        }
-      ]
+  "recordSet": {
+    "@type": "ml:RecordSet",
+    "name": "images",
+    "key": "#{hash}",
+    "source": "#{image-files}",
+    "field": {
+      "@type": "ml:Field",
+      "name": "hash",
+      "description": "The hash of the image, as computed from YFCC-100M.",
+      "dataType": "sc:Text",
+      "references": "#{metadata/hash}",
+      "source": {
+        "applyTransform": {
+          "regex": "([^\\/]*)\\.jpg"
+        },
+        "data": "#{image-files/filename}"
+      }
     }
-  ]
+  }
 }

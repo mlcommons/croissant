@@ -1,109 +1,111 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "subField": "ml:SubField",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "data": "ml:data",
     "applyTransform": "ml:applyTransform",
+    "data": "ml:data",
+    "dataType": "ml:dataType",
+    "field": "ml:Field",
     "format": "ml:format",
+    "includes": "ml:includes",
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
     "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
     "separator": "ml:separator",
-    "references": "ml:references"
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
-  "@language": "en",
   "name": "PASS",
-  "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "@language": "en",
   "citation": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "distribution": [
     {
+      "@type": "sc:FileObject",
       "name": "metadata",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
-      "sha256": "0b033707ea49365a5ffdd14615825511",
-      "encodingFormat": "text/csv"
+      "encodingFormat": "text/csv",
+      "sha256": "0b033707ea49365a5ffdd14615825511"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass0",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.0.tar",
-      "sha256": "0be3a104d6257d83296460b419f82c71",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "0be3a104d6257d83296460b419f82c71"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass1",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.1.tar",
-      "sha256": "dddaf2840997cb181572863587899b53",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "dddaf2840997cb181572863587899b53"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass2",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.2.tar",
-      "sha256": "dddaf2840997cb181572863587899b53",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "dddaf2840997cb181572863587899b53"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass3",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.3.tar",
-      "sha256": "9b9b9e1ee65747e47ad835a4f99c8e70",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "9b9b9e1ee65747e47ad835a4f99c8e70"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass4",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.4.tar",
-      "sha256": "e2c85293cbe6178477eea7d277d95dd7",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "e2c85293cbe6178477eea7d277d95dd7"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass5",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.5.tar",
-      "sha256": "a2d174f7042d98ad037cda0e3313ea00",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "a2d174f7042d98ad037cda0e3313ea00"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass6",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.6.tar",
-      "sha256": "2be85748c184b058f8d95a886dab161b",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "2be85748c184b058f8d95a886dab161b"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass7",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.7.tar",
-      "sha256": "83e07eee33df5fcc63a4b0db4e94abb4",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "83e07eee33df5fcc63a4b0db4e94abb4"
     },
     {
+      "@type": "sc:FileObject",
       "name": "pass8",
-      "@type": "sc:FileObject",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.8.tar",
-      "sha256": "3f708993aa168b57306e5de08ba71373",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "3f708993aa168b57306e5de08ba71373"
     },
     {
-      "name": "pass9",
       "@type": "sc:FileObject",
+      "name": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
-      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc",
-      "encodingFormat": "application/x-tar"
+      "encodingFormat": "application/x-tar",
+      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc"
     },
     {
-      "name": "image-files",
       "@type": "sc:FileSet",
+      "name": "image-files",
       "containedIn": [
         "#{pass0}",
         "#{pass1}",
@@ -116,77 +118,75 @@
         "#{pass8}",
         "#{pass9}"
       ],
-      "includes": "*.jpg",
-      "encodingFormat": "image/jpeg"
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
     }
   ],
-  "recordSet": [
-    {
-      "name": "images",
-      "@type": "ml:RecordSet",
-      "source": "#{image-files}",
-      "key": "#{hash}",
-      "field": [
-        {
-          "name": "hash",
-          "@type": "ml:Field",
-          "description": "The hash of the image, as computed from YFCC-100M.",
-          "dataType": "sc:Text",
-          "source": {
-            "data": "#{image-files/filename}",
-            "applyTransform": {
-              "regex": "([^\\/]*)\\.jpg"
-            }
+  "recordSet": {
+    "@type": "ml:RecordSet",
+    "name": "images",
+    "key": "#{hash}",
+    "source": "#{image-files}",
+    "field": [
+      {
+        "@type": "ml:Field",
+        "name": "hash",
+        "description": "The hash of the image, as computed from YFCC-100M.",
+        "dataType": "sc:Text",
+        "references": "#{metadata/hash}",
+        "source": {
+          "applyTransform": {
+            "regex": "([^\\/]*)\\.jpg"
           },
-          "references": "#{metadata/hash}"
-        },
-        {
-          "name": "image_content",
-          "@type": "ml:Field",
-          "description": "The content of the image.",
-          "dataType": "sc:ImageObject",
-          "source": "#{image-files/content}"
-        },
-        {
-          "name": "creator_uname",
-          "@type": "ml:Field",
-          "description": "Unique name of photo creator.",
-          "dataType": "sc:Text",
-          "source": "#{metadata/unickname}"
-        },
-        {
-          "name": "gps_coordinates",
-          "@type": "ml:Field",
-          "description": "GPS coordinates where the image was taken.",
-          "dataType": "sc:GeoCoordinates",
-          "subField": [
-            {
-              "name": "latitude",
-              "@type": "ml:Field",
-              "dataType": "sc:Float",
-              "source": "#{metadata/latitude}"
-            },
-            {
-              "name": "longitude",
-              "@type": "ml:Field",
-              "dataType": "sc:Float",
-              "source": "#{metadata/longitude}"
-            }
-          ]
-        },
-        {
-          "name": "date_taken",
-          "@type": "ml:Field",
-          "description": "The date the photo was taken.",
-          "dataType": "sc:Date",
-          "source": {
-            "data": "#{metadata/datetaken}",
-            "applyTransform": {
-              "format": "%Y-%m-%d %H:%M:%S.%f"
-            }
-          }
+          "data": "#{image-files/filename}"
         }
-      ]
-    }
-  ]
+      },
+      {
+        "@type": "ml:Field",
+        "name": "image_content",
+        "description": "The content of the image.",
+        "dataType": "sc:ImageObject",
+        "source": "#{image-files/content}"
+      },
+      {
+        "@type": "ml:Field",
+        "name": "creator_uname",
+        "description": "Unique name of photo creator.",
+        "dataType": "sc:Text",
+        "source": "#{metadata/unickname}"
+      },
+      {
+        "@type": "ml:Field",
+        "name": "gps_coordinates",
+        "description": "GPS coordinates where the image was taken.",
+        "dataType": "sc:GeoCoordinates",
+        "subField": [
+          {
+            "@type": "ml:Field",
+            "name": "latitude",
+            "dataType": "sc:Float",
+            "source": "#{metadata/latitude}"
+          },
+          {
+            "@type": "ml:Field",
+            "name": "longitude",
+            "dataType": "sc:Float",
+            "source": "#{metadata/longitude}"
+          }
+        ]
+      },
+      {
+        "@type": "ml:Field",
+        "name": "date_taken",
+        "description": "The date the photo was taken.",
+        "dataType": "sc:Date",
+        "source": {
+          "applyTransform": {
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          "data": "#{metadata/datetaken}"
+        }
+      }
+    ]
+  }
 }

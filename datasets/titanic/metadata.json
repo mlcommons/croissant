@@ -11,6 +11,7 @@
     "recordSet": "ml:RecordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
@@ -57,6 +58,8 @@
       "@type": "ml:RecordSet",
       "name": "genders",
       "description": "Maps gender labels to semantic definitions.",
+      "isEnumeration": true,
+      "key": "#{label}",
       "field": [
         {
           "@type": "ml:Field",
@@ -78,14 +81,14 @@
           ],
           "source": "#{genders.csv/url}"
         }
-      ],
-      "isEnumeration": true,
-      "key": "#{label}"
+      ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
+      "isEnumeration": true,
+      "key": "#{key}",
       "field": [
         {
           "@type": "ml:Field",
@@ -114,9 +117,7 @@
           ],
           "source": "#{embarkation_ports.csv/url}"
         }
-      ],
-      "isEnumeration": true,
-      "key": "#{key}"
+      ]
     },
     {
       "@type": "ml:RecordSet",

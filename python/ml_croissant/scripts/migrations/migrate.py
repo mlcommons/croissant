@@ -7,9 +7,7 @@ from etils import epath
 from ml_croissant._src.core.json_ld import expand_json_ld, reduce_json_ld
 
 if __name__ == "__main__":
-    datasets = [
-        path for path in epath.Path("../../datasets").glob("*titanic*/metadata.json")
-    ]
+    datasets = [path for path in epath.Path("../../datasets").glob("*/*.json")]
     for dataset in datasets:
         print(f"Converting {dataset}...")
         with dataset.open("r") as f:

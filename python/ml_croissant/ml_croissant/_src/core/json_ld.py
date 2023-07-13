@@ -20,6 +20,7 @@ _SCHEMA_ORG_PREFIX = str(constants.SCHEMA_ORG)
 _PREFIX_MAP = {
     "http://mlcommons.org/schema/Field": "field",
     "http://mlcommons.org/schema/RecordSet": "recordSet",
+    "http://mlcommons.org/schema/SubField": "subField",
 }
 
 
@@ -36,6 +37,7 @@ def _make_context():
         "recordSet": "ml:RecordSet",
         "references": "ml:references",
         "regex": "ml:regex",
+        "replace": "ml:replace",
         "sc": "https://schema.org/",
         "separator": "ml:separator",
         "source": "ml:source",
@@ -57,7 +59,7 @@ def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     """
     items = sorted(jsonld.items())
     start_keys = ["@context", "@type", "name", "description"]
-    end_keys = ["distribution", "recordSet"]
+    end_keys = ["distribution", "field", "recordSet", "subField"]
     sorted_items = []
     for key in start_keys:
         if key in jsonld:
