@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import tarfile
+import zipfile
 
 from etils import epath
 from ml_croissant._src.core.constants import EXTRACT_PATH
@@ -18,9 +19,28 @@ from ml_croissant._src.structure_graph.nodes import FileObject, FileSet
 import pandas as pd
 
 
+def should_extract(encoding_format: str) -> bool:
+    """Whether the encoding format is supported by Croissant (zip or tar)."""
+    return (
+        encoding_format == "application/x-tar" or encoding_format == "application/zip"
+    )
+
+
+def _extract_file(source: epath.Path, target: epath.Path) -> None:
+    """Extracts the `source` file to `target`."""
+    if zipfile.is_zipfile(source):
+        with zipfile.ZipFile(source) as zip:
+            zip.extractall(target)
+    elif tarfile.is_tarfile(source):
+        with tarfile.open(source) as tar:
+            tar.extractall(target)
+    else:
+        raise ValueError(f"Unsupported compression method for file: {source}")
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
-class Untar(Operation):
-    """Un-tars "application/x-tar" and yields filtered lines."""
+class Extract(Operation):
+    """Extracts tar/zip and yields filtered pd.DataFrame."""
 
     node: FileObject
     target_node: FileSet
@@ -32,10 +52,9 @@ class Untar(Operation):
         hashed_url = get_hash(url)
         extract_dir = EXTRACT_PATH / hashed_url
         if not extract_dir.exists():
-            with tarfile.open(archive_file) as tar:
-                tar.extractall(extract_dir)
+            _extract_file(archive_file, extract_dir)
         logging.info(
-            "Found directory where data is extracted: %s.", os.fspath(extract_dir)
+            "Found directory where data is extracted: %s", os.fspath(extract_dir)
         )
         included_files = []
         for basepath, _, files in os.walk(extract_dir):
@@ -44,9 +63,14 @@ class Untar(Operation):
                     included_files.append(epath.Path(basepath) / file)
         # We need to sort `files` to have a deterministic/reproducible order.
         included_files.sort()
+        fullpaths = [
+            os.fspath(file).replace(os.fspath(extract_dir), "")[1:]
+            for file in included_files
+        ]
         return pd.DataFrame(
             {
                 "filepath": included_files,
                 "filename": [file.name for file in included_files],
+                "fullpath": fullpaths,
             }
         )

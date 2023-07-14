@@ -68,7 +68,7 @@ class Download(Operation):
                 for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
                     size = file.write(data)
                     bar.update(size)
-        logging.info("File %s is downloaded to %s.", self.url, os.fspath(filepath))
+        logging.info("File %s is downloaded to %s", self.url, os.fspath(filepath))
 
 
 def execute_downloads(operations: nx.MultiDiGraph):
