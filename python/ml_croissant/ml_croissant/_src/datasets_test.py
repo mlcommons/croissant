@@ -1,12 +1,11 @@
 """datasets_test module."""
 
-import math
-import pickle
-from typing import Any
+import json
 
 from etils import epath
 from ml_croissant._src import datasets
 from ml_croissant._src.core.issues import ValidationError
+from ml_croissant._src.tests.records import record_to_python
 import pytest
 
 
@@ -88,32 +87,13 @@ def test_static_analysis(filename, error):
         datasets.Dataset(base_path / filename)
 
 
-def _dicts_are_equal(dict1: Any, dict2: Any) -> bool:
-    if not isinstance(dict1, dict) or not isinstance(dict2, dict):
-        if isinstance(dict1, float) and math.isnan(dict1):
-            return isinstance(dict2, float) and math.isnan(dict2)
-        else:
-            return dict1 == dict2
-    for key, value1 in dict1.items():
-        if key not in dict2:
-            return False
-        value2 = dict2[key]
-        return _dicts_are_equal(value1, value2)
-    return True
-
-
-def test_dicts_are_equal():
-    dict1 = {"key1": 1, "key2": {"key3": 2, "key4": {"key5": 3, "key6": float("nan")}}}
-    dict2 = {"key1": 1, "key2": {"key3": 2, "key4": {"key5": 3, "key6": float("nan")}}}
-    assert _dicts_are_equal(dict1, dict2) and dict1 != dict2
-
-
 # IF THIS TEST FAILS OR YOU ADD A NEW DATASET:
 # You can regenerate .pkl files by launching
 # ```bash
 # python scripts/load.py \
 #   --file {{dataset_name}} \
 #   --record_set {{record_set_name}} \
+#   --update_output \
 #   --num_records -1
 # ```
 @pytest.mark.parametrize(
@@ -125,20 +105,26 @@ def test_dicts_are_equal():
     ],
 )
 def test_loading(dataset_name, record_set_name):
+    print(
+        f"Update JSONL with: `python scripts/load.py --file {dataset_name} --record_set"
+        f" {record_set_name} --update_output --num_records -1`"
+    )
     dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / dataset_name
     )
     config = dataset_folder / "metadata.json"
-    pkl_file = dataset_folder / "output.pkl"
+    pkl_file = dataset_folder / "output.jsonl"
     with pkl_file.open("rb") as f:
-        expected_records = pickle.load(f)
+        lines = f.readlines()
+        expected_records = [json.loads(line) for line in lines]
     dataset = datasets.Dataset(config)
     records = dataset.records(record_set_name)
     records = iter(records)
     length = 0
     for i, record in enumerate(records):
-        assert _dicts_are_equal(record, expected_records[i])
+        record = record_to_python(record)
+        assert record == expected_records[i]
         length += 1
     assert len(expected_records) == length

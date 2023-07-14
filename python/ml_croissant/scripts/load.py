@@ -1,11 +1,12 @@
 """Generates the dataset and yields the first example."""
 
-import pickle
+import json
 
 from absl import app
 from absl import flags
 from etils import epath
 from ml_croissant import Dataset
+from ml_croissant._src.tests.records import record_to_python
 
 _NUM_MAX_RECORDS = 10
 
@@ -35,9 +36,9 @@ flags.DEFINE_bool(
 )
 
 flags.DEFINE_bool(
-    "update_pkl",
+    "update_output",
     False,
-    "Whether to update the pickle test files.",
+    "Whether to update the JSONL output test files.",
 )
 
 flags.mark_flag_as_required("file")
@@ -52,22 +53,24 @@ def main(argv):
     record_set = FLAGS.record_set
     num_records = FLAGS.num_records
     debug = FLAGS.debug
-    update_pkl = FLAGS.update_pkl
+    update_output = FLAGS.update_output
     dataset = Dataset(file, debug=debug)
     records = dataset.records(record_set)
     print(f"Generating the first {num_records} records.")
-    pickled_records = []
+    output_records = []
     for i, record in enumerate(records):
         if num_records != -1 and i >= num_records:
             break
         print(record)
-        pickled_records.append(record)
+        output_records.append(record_to_python(record))
     print("Done.")
-    if update_pkl:
-        pickle_file = epath.Path(file).parent / "output.pkl"
-        with pickle_file.open("wb") as f:
-            pickle.dump(pickled_records, f)
-        print(f"Wrote pickle to {pickle_file}.")
+    if update_output:
+        output_file = epath.Path(file).parent / "output.jsonl"
+        with output_file.open("w") as f:
+            for output_record in output_records:
+                output_record = json.dumps(output_record)
+                f.write(f"{output_record}\n")
+        print(f"Wrote pickle to {output_file}.")
 
 
 if __name__ == "__main__":
