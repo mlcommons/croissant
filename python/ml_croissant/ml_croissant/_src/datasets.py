@@ -11,7 +11,9 @@ from ml_croissant._src.core.issues import Issues, ValidationError
 from ml_croissant._src.operation_graph import (
     OperationGraph,
 )
+from ml_croissant._src.operation_graph.operations.download import execute_downloads
 from ml_croissant._src.operation_graph.operations import (
+    Download,
     GroupRecordSet,
     ReadField,
 )
@@ -116,6 +118,8 @@ class Records:
         operations = self.dataset.operations.operations
         if self.debug:
             graphs_utils.pretty_print_graph(operations)
+        # Downloads can be parallelized, so we execute them in priority.
+        execute_downloads(operations)
         for operation in nx.topological_sort(operations):
             if self.debug:
                 logging.info('Executing "%s"', operation)
