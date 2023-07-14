@@ -51,9 +51,19 @@
       "sha256": "bar"
     },
     {
+      "@type": "sc:FileObject",
+      "name": "pass1",
+      "contentUrl": "data/PASS.1.tar",
+      "encodingFormat": "application/x-tar",
+      "sha256": "bar"
+    },
+    {
       "@type": "sc:FileSet",
       "name": "image-files",
-      "containedIn": "#{pass0}",
+      "containedIn": [
+        "#{pass0}",
+        "#{pass1}"
+      ],
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
     }
