@@ -1,7 +1,8 @@
-# How to specify classes
+# How to specify labels
 
 **Note**
-
+The term label may designate several concepts. Please check the
+[`ml:label`](/definitions/label) definition.
 
 
 Often, datasets contain labels: human readable descriptions (usually a word or

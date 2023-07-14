@@ -9,10 +9,11 @@ the data – or a subset of the data – into a **finite** set of options.
 The different possible options an output variable can take are often
 referred to as classes.
 
-**Warning**
+**Note**
 Classes and labels, although sometimes used indistinctively, do not share the
 exact same definition. Be sure to check the
-[label definition](/definitions/label). A class is the possible value a label
-may take, but a label is not necessarily a class.
+[`ml:label` definition](/definitions/label). A class is the possible value a
+`ml:label` may take, but a `ml:label` is not necessarily a class.
 
-Classes are [defined using enumerations](/howto/enumerations)
+See the [howto define labels documentation](/howto/labels) to
+use all kind of labels, including classes.
