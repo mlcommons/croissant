@@ -1,59 +1,74 @@
 {
-    "@context": {
-        "@vocab": "https://schema.org/",
-        "sc": "https://schema.org/",
-        "ml": "http://mlcommons.org/schema/",
-        "wd": "https://www.wikidata.org/wiki/",
-        "recordSet": "ml:RecordSet",
-        "field": "ml:Field",
-        "dataType": "ml:dataType",
-        "source": "ml:source"
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
     },
-    "@type": "sc:Dataset",
-    "@language": "en",
-    "name": "simple-split",
-    "description": "An artificial example dataset defining splits from a CSV column",
-    "url": "https://mlcommons.org",
-    "license": "https://creativecommons.org/licenses/by/4.0/",
-    "distribution": [
-        {
-            "name": "books.csv",
-            "@type": "sc:FileObject",
-            "contentUrl": "data/books.csv",
-            "sha256": "d35c5a01eecbd7700faf86b4ec838eb65bd6e861633b1e10ca3294d4e58e75c9",
-            "encodingFormat": "text/csv"
-        }
-    ],
-    "recordSet": [
-        {
-            "name": "books",
-            "@type": "ml:RecordSet",
-            "field": [
-                {
-                    "name": "title",
-                    "@type": "ml:Field",
-                    "description": "The title of the book",
-                    "dataType": "sc:Text",
-                    "source": "#{books.csv/Title}"
-                },
-                {
-                    "name": "Author",
-                    "@type": "ml:Field",
-                    "description": "The author of the book",
-                    "dataType": "sc:Text",
-                    "source": "#{books.csv/Author}"
-                },
-                {
-                    "name": "split",
-                    "@type": "ml:Field",
-                    "description": "The data split to which belongs the record",
-                    "dataType": [
-                        "sc:Text",
-                        "wd:Q3985153"
-                    ],
-                    "source": "#{books.csv/Split}"
-                }
-            ]
-        }
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:Field",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-split",
+  "description": "An artificial example dataset defining splits from a CSV column",
+  "@language": "en",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": {
+    "@type": "sc:FileObject",
+    "name": "books.csv",
+    "contentUrl": "data/books.csv",
+    "encodingFormat": "text/csv",
+    "sha256": "d35c5a01eecbd7700faf86b4ec838eb65bd6e861633b1e10ca3294d4e58e75c9"
+  },
+  "recordSet": {
+    "@type": "ml:RecordSet",
+    "name": "books",
+    "field": [
+      {
+        "@type": "ml:Field",
+        "name": "title",
+        "description": "The title of the book",
+        "dataType": "sc:Text",
+        "source": "#{books.csv/Title}"
+      },
+      {
+        "@type": "ml:Field",
+        "name": "Author",
+        "description": "The author of the book",
+        "dataType": "sc:Text",
+        "source": "#{books.csv/Author}"
+      },
+      {
+        "@type": "ml:Field",
+        "name": "split",
+        "description": "The data split to which belongs the record",
+        "dataType": [
+          "sc:Text",
+          "wd:Q3985153"
+        ],
+        "source": "#{books.csv/Split}"
+      }
     ]
+  }
 }

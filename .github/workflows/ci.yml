@@ -38,6 +38,30 @@ jobs:
     - name: PyLint
       run: pylint **/*.py
 
+    # Pyflakes can see unused imports
+    - name: PyFlakes
+      run: pyflakes .
+
+  pytype-test:
+    name: PyType
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/ml_croissant
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies except ml_croissant itself
+      run: pip install absl-py etils[epath] networkx pandas pytest pytype rdflib requests tqdm
+
+    - name: PyType
+      run: pytype --jobs="$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml
+
   validation-test:
     name: Validation / JSON-LD Tests / Python 3.11
     runs-on: ubuntu-latest
@@ -55,13 +79,9 @@ jobs:
     - name: Install library
       run: pip install .
 
-    - name: Add folder to PYTHONPATH
-      run: |
-        echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
-
     - name: Validate JSON-LD files
       run: |
-        JSON_FILES=$(python -c "import os; from etils import epath; [print(os.fspath(path)) for path in epath.Path('../../datasets').glob('*/*.json')]")
+        JSON_FILES=$(find ../../datasets/ -type f -name "*.json")
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
@@ -85,9 +105,8 @@ jobs:
     - name: Install library
       run: pip install .
 
-    - name: Add folder to PYTHONPATH
-      run: |
-        echo "PYTHONPATH=$PYTHONPATH:$PWD/.." >> "$GITHUB_ENV"
+    - name: Generate JSON-LD files - Titanic
+      run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
 
-    - name: Generate JSON-LD files
-      run: python scripts/generate.py --file ../../datasets/titanic/metadata.json --record_set passengers
+    - name: Generate JSON-LD files - PASS
+      run: python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images

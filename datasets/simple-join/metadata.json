@@ -1,67 +1,107 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "subField": "ml:SubField",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "data": "ml:data",
     "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:Field",
     "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
     "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
     "separator": "ml:separator",
-    "references": "ml:references"
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
-  "@language": "en",
   "name": "simple-join",
   "description": "Example to showcase the use of join.",
-  "url": "https://mlcommons.org",
+  "@language": "en",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "distribution": [
-    {
-      "name": "users",
-      "@type": "sc:FileObject",
-      "contentUrl": "data/users.csv",
-      "encodingFormat": "text/csv",
-      "sha256": "2e276d68f6f690fef8ec86cfd92367a40c600ce057a232a4295d6ea915fbdbab"
-    },
-    {
-      "name": "publications",
-      "@type": "sc:FileObject",
-      "contentUrl": "data/publications.csv",
-      "encodingFormat": "text/csv",
-      "sha256": "d1bd4b903d5de29e6d455f28a68aff7095d3393a19a7cdfdeea3b9ad799e1ce1"
-    }
-  ],
+  "url": "https://mlcommons.org",
+  "distribution": {
+    "@type": "sc:FileObject",
+    "name": "publications",
+    "contentUrl": "data/publications.csv",
+    "encodingFormat": "text/csv",
+    "sha256": "d1bd4b903d5de29e6d455f28a68aff7095d3393a19a7cdfdeea3b9ad799e1ce1"
+  },
   "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "users",
+      "description": "List of users.",
+      "inlineData": [
+        {
+          "email": "john.smith@gmail.com",
+          "fullname": "John Smith"
+        },
+        {
+          "email": "jane.doe@yahoo.com",
+          "fullname": "Jane Doe"
+        },
+        {
+          "email": "david.lee@outlook.com",
+          "fullname": "David Lee"
+        },
+        {
+          "email": "mary.jones@hotmail.com",
+          "fullname": "Mary Jones"
+        }
+      ],
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "email",
+          "description": "Email of the author.",
+          "dataType": "sc:email"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "fullname",
+          "description": "Full name of the author.",
+          "dataType": "sc:Text"
+        }
+      ]
+    },
     {
       "@type": "ml:RecordSet",
       "name": "publications_by_user",
       "description": "List of publications by user.",
       "field": [
         {
-          "name": "title",
           "@type": "ml:Field",
+          "name": "title",
           "description": "Full title of the publication.",
           "dataType": "sc:Text",
           "source": "#{publications/title}"
         },
         {
-          "name": "author_email",
           "@type": "ml:Field",
+          "name": "author_email",
           "description": "Email of the author.",
           "dataType": "sc:email",
-          "source": "#{users/email}",
-          "references": "#{publications/by}"
+          "references": "#{publications/by}",
+          "source": "#{users/email}"
         },
         {
-          "name": "author_fullname",
           "@type": "ml:Field",
+          "name": "author_fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text",
           "source": "#{users/fullname}"

@@ -1,17 +1,35 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
+    "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
     "field": "ml:Field",
-    "dataType": "ml:dataType",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
     "source": "ml:source",
-    "references": "ml:references"
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
-  "name": "Enum example",
+  "name": "enum_example",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
   "url": "https://example.com/datasets/enum/about",
   "distribution": [
@@ -19,15 +37,15 @@
       "@type": "sc:FileObject",
       "name": "enum.csv",
       "contentUrl": "data/enum.csv",
-      "sha256": "52121a5df209dc2d63069710923e25f769d380a1388d00798e84d432c54fd934",
-      "encodingFormat": "text/csv"
+      "encodingFormat": "text/csv",
+      "sha256": "52121a5df209dc2d63069710923e25f769d380a1388d00798e84d432c54fd934"
     },
     {
       "@type": "sc:FileObject",
       "name": "enum_directions.csv",
       "contentUrl": "data/enum_directions.csv",
-      "sha256": "b993e19ae54b3f4f0264ada1eca3b9d84b62c2c52d71b8049876e9cc952d5685",
-      "encodingFormat": "text/csv"
+      "encodingFormat": "text/csv",
+      "sha256": "b993e19ae54b3f4f0264ada1eca3b9d84b62c2c52d71b8049876e9cc952d5685"
     }
   ],
   "recordSet": [
@@ -38,16 +56,16 @@
       "key": "#{key}",
       "field": [
         {
+          "@type": "ml:Field",
           "name": "key",
           "description": "0, 1, 2 or 3",
-          "@type": "ml:Field",
           "dataType": "sc:Integer",
           "source": "#{enum_directions.csv/key}"
         },
         {
+          "@type": "ml:Field",
           "name": "label",
           "description": "North, East, South or West",
-          "@type": "ml:Field",
           "dataType": [
             "sc:Text",
             "sc:name"
@@ -59,26 +77,26 @@
     {
       "@type": "ml:RecordSet",
       "name": "examples",
-      "source": "#{enum.csv}",
       "description": "Records extracted from the examples table, with their schema.",
+      "source": "#{enum.csv}",
       "field": [
         {
-          "name": "name",
           "@type": "ml:Field",
-          "dataType": "sc:Text",
+          "name": "name",
           "description": "The first column contains the name of the object.",
+          "dataType": "sc:Text",
           "references": "#{enum.csv/name}"
         },
         {
-          "name": "direction",
           "@type": "ml:Field",
+          "name": "direction",
+          "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "dataType": [
             "sc:Text",
             "ml:Enum"
           ],
-          "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
-          "source": "#{enum.csv/direction}",
-          "references": "#{direction_enum/key}"
+          "references": "#{direction_enum/key}",
+          "source": "#{enum.csv/direction}"
         }
       ]
     }

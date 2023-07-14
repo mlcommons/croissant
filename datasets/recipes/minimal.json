@@ -1,10 +1,35 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/"
+    "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:Field",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
-  "name": "Minimal example",
+  "name": "minimal_example",
   "description": "This is a very minimal example, with only the required fields.",
   "url": "https://example.com/dataset/minimal/about"
 }
