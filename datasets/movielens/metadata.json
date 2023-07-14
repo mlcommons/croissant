@@ -2,7 +2,10 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
-    "data": "ml:data",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
@@ -10,6 +13,10 @@
     "field": "ml:Field",
     "format": "ml:format",
     "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
     "ml": "http://mlcommons.org/schema/",
     "recordSet": "ml:RecordSet",
     "references": "ml:references",

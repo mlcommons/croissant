@@ -11,6 +11,7 @@ from typing import Any
 from ml_croissant._src.core import constants
 
 import rdflib
+from rdflib import namespace
 
 Json = dict[str, Any]
 
@@ -29,11 +30,12 @@ def _make_context():
     return {
         "@vocab": "https://schema.org/",
         "applyTransform": "ml:applyTransform",
-        "data": "ml:data",
+        "data": {"@id": "ml:data", "@nest": "source"},
         "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
         "field": "ml:Field",
         "format": "ml:format",
         "includes": "ml:includes",
+        "inlineData": {"@id": "ml:data", "@type": "@json"},
         "ml": "http://mlcommons.org/schema/",
         "recordSet": "ml:RecordSet",
         "references": "ml:references",
@@ -84,8 +86,13 @@ def _sort_dict(d: dict[str, Any]):
 
 def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
     """Changes in place `entry_node` with its children."""
-    if len(entry_node) == 1 and "@value" in entry_node:
-        return entry_node["@value"]
+    if "@value" in entry_node:
+        if entry_node.get("@type") == str(namespace.RDF.JSON):
+            # Stringified JSON is loaded as a dict.
+            return json.loads(entry_node["@value"])
+        else:
+            # Other values are loaded as is.
+            return entry_node["@value"]
     elif len(entry_node) == 1 and "@id" in entry_node:
         node_id = entry_node["@id"]
         if node_id in id_to_node:
@@ -165,6 +172,14 @@ def compact_json_ld(json: Any) -> Any:
                 return new_value
             else:
                 del json[key]
+        elif key == str(constants.ML_COMMONS_DATA):
+            del json[key]
+            # Data can either be inline JSON data...
+            if isinstance(value, (dict, list)):
+                json["inlineData"] = value
+            # ...or "source.data":
+            else:
+                json["data"] = value
         elif key in _PREFIX_MAP:
             del json[key]
             json[_PREFIX_MAP[key]] = new_value
