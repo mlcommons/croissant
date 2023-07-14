@@ -73,7 +73,8 @@ When declaring an enumeration using a `ml:RecordSet`, that `ml:RecordSet` is
 expected to have at least one key field (here named `id`), which may be of
 various `dataType`s, but will most often be of type `sc:Integer` or `sc:Text`.
 
-The `ml:RecordSet` may also have the fields of the following type:
+As also described in the [labels howto](/howto/labels), the `ml:RecordSet` may
+also have fields of the following type:
 
 - `sc:name`, which may be the same field as the key field, if the key is of
 type `sc:Text`. That field holds a human readable name of what the

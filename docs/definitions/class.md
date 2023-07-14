@@ -1,4 +1,4 @@
-# `ml:class`
+# Class
 
 In ML, a **class** (or category) is a possible value a discrete **output**
 variable can take. It is therefore used in the context of classification (or
