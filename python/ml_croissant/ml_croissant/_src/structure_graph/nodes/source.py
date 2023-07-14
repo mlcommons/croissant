@@ -76,12 +76,15 @@ class Source:
                     raise ValueError(
                         'Field "apply_transform" should be parsed as a list.'
                     )
-                transforms = tuple(Transform(
-                    format=transform.get("format"),
-                    regex=transform.get("regex"),
-                    replace=transform.get("replace"),
-                    separator=transform.get("separator"),
-                ) for transform in transforms)
+                transforms = tuple(
+                    Transform(
+                        format=transform.get("format"),
+                        regex=transform.get("regex"),
+                        replace=transform.get("replace"),
+                        separator=transform.get("separator"),
+                    )
+                    for transform in transforms
+                )
                 return cls(
                     reference=parse_reference(issues, field.get("data")),
                     apply_transform=transforms,
