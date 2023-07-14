@@ -1,4 +1,4 @@
-"""Merge operation module."""
+"""Concatenate operation module."""
 
 import dataclasses
 
@@ -8,14 +8,11 @@ import pandas as pd
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Merge(Operation):
-    """Merges several pd.DataFrame into one."""
+class Concatenate(Operation):
+    """Concatenates several pd.DataFrames into one."""
 
     node: FileSet
 
     def __call__(self, *args: pd.DataFrame) -> pd.DataFrame:
         assert len(args) > 0, "No dataframe to merge."
-        df = args[0]
-        for other_df in args[1:]:
-            df = df.merge(other_df)
-        return df
+        return pd.concat(args)

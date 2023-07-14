@@ -56,10 +56,14 @@ def main(argv):
     update_output = FLAGS.update_output
     dataset = Dataset(file, debug=debug)
     records = dataset.records(record_set)
-    print(f"Generating the first {num_records} records.")
+    generate_all_records = num_records == -1
+    if generate_all_records:
+        print(f"Generating all records from {file}.")
+    else:
+        print(f"Generating the first {num_records} records from {file}.")
     output_records = []
     for i, record in enumerate(records):
-        if num_records != -1 and i >= num_records:
+        if not generate_all_records and i >= num_records:
             break
         print(record)
         output_records.append(record_to_python(record))

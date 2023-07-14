@@ -12,12 +12,12 @@ from ml_croissant._src.structure_graph.nodes import (
 )
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations import (
+    Concatenate,
     Data,
     Download,
     GroupRecordSet,
     InitOperation,
     Join,
-    Merge,
     Untar,
     ReadCsv,
     ReadField,
@@ -123,7 +123,7 @@ def _add_operations_for_file_object(
             last_operation[node] = untar
             operation = untar
         if isinstance(successor, FileSet):
-            merge = Merge(node=successor)
+            merge = Concatenate(node=successor)
             operations.add_edge(operation, merge)
             operation = merge
     # Read the file

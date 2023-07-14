@@ -86,15 +86,27 @@ def from_json_to_rdf(data: Json) -> rdflib.Graph:
     return graph
 
 
+def _append_to_list(dict: dict[str, list[Any]], key: str, value: Any):
+    """Appends an element in a list or create the list if it doesn't exist."""
+    if key not in dict:
+        dict[key] = [value]
+    else:
+        if not isinstance(dict[key], list):
+            raise ValueError("Cannot append if the element is not a list.")
+        dict[key].append(value)
+
+
 def _parse_node_params(
     issues: Issues, rdf_graph: rdflib.Graph, bnode: term.BNode, no_filter: bool = False
 ) -> Json:
     """Recursively parses all information from a node to Croissant."""
-    # TODO(marcenacp): Type node params.
-    node_params = {}
+    node_params: Json = {}
     for _, _predicate, _object in rdf_graph.triples((bnode, None, None)):
         if _predicate == constants.ML_COMMONS_SUB_FIELD:
             node_params["has_sub_fields"] = True
+        if _predicate == constants.SCHEMA_ORG_CONTAINED_IN:
+            croissant_key = constants.TO_CROISSANT[_predicate]
+            _append_to_list(node_params, croissant_key, _object)
         elif no_filter or _predicate in constants.TO_CROISSANT:
             croissant_key = constants.TO_CROISSANT[_predicate]
             if isinstance(_object, term.Literal):
@@ -105,12 +117,7 @@ def _parse_node_params(
                 current_node_params = _parse_node_params(
                     issues, rdf_graph, _object, no_filter=True
                 )
-                if croissant_key not in node_params:
-                    node_params[croissant_key] = [current_node_params]
-                elif isinstance(node_params[croissant_key], list):
-                    node_params[croissant_key].append(current_node_params)
-                else:
-                    raise ValueError("Recursive calls should always be lists.")
+                _append_to_list(node_params, croissant_key, current_node_params)
             else:
                 raise ValueError("Objects are either BNodes, URIRef or Literals.")
     # Parse `source`.
