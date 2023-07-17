@@ -15,13 +15,14 @@ from ml_croissant._src.operation_graph.operations import (
     Concatenate,
     Data,
     Download,
+    Extract,
     GroupRecordSet,
     InitOperation,
     Join,
-    Untar,
     ReadCsv,
     ReadField,
 )
+from ml_croissant._src.operation_graph.operations.extract import should_extract
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.graph import get_entry_nodes
 import networkx as nx
@@ -104,7 +105,7 @@ def _add_operations_for_file_object(
     Operations are:
 
     - `Download`.
-    - `Untar` if the file needs to be extracted.
+    - `Extract` if the file needs to be extracted.
     - `Merge` to merge several dataframes into one.
     - `ReadCsv` to read the file if it's a CSV.
     """
@@ -114,11 +115,11 @@ def _add_operations_for_file_object(
     for successor in graph.successors(node):
         # Extract the file if needed
         if (
-            node.encoding_format == "application/x-tar"
+            should_extract(node.encoding_format)
             and isinstance(successor, FileSet)
-            and successor.encoding_format != "application/x-tar"
+            and not should_extract(successor.encoding_format)
         ):
-            untar = Untar(node=node, target_node=successor)
+            untar = Extract(node=node, target_node=successor)
             operations.add_edge(operation, untar)
             last_operation[node] = untar
             operation = untar

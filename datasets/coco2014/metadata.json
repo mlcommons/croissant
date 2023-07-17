@@ -41,14 +41,6 @@
   "distribution": [
     {
       "@type": "sc:FileObject",
-      "name": "splits.csv",
-      "contentSize": " B",
-      "contentUrl": "data/splits.csv",
-      "encodingFormat": "text/csv",
-      "sha256": ""
-    },
-    {
-      "@type": "sc:FileObject",
       "name": "train2014.zip",
       "contentSize": " B",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
@@ -133,14 +125,12 @@
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
       "key": "#{name}",
-      "source": "#{splits.csv}",
       "field": [
         {
           "@type": "ml:Field",
           "name": "name",
           "description": "One of: train, val, test.",
-          "dataType": "sc:Text",
-          "source": "#{splits.csv/name}"
+          "dataType": "sc:Text"
         },
         {
           "@type": "ml:Field",
@@ -149,8 +139,21 @@
           "dataType": [
             "sc:Url",
             "wd:Q3985153"
-          ],
-          "source": "#{splits.csv/url}"
+          ]
+        }
+      ],
+      "inlineData": [
+        {
+          "name": "train",
+          "url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "name": "val",
+          "url": "https://mlcommons.org/definitions/validation_split"
+        },
+        {
+          "name": "test",
+          "url": "https://mlcommons.org/definitions/test_split"
         }
       ]
     },

@@ -91,7 +91,7 @@ def test_static_analysis(filename, error):
 # You can regenerate .pkl files by launching
 # ```bash
 # python scripts/load.py \
-#   --file {{dataset_name}} \
+#   --file ../../datasets/{{dataset_name}}/metadata.json \
 #   --record_set {{record_set_name}} \
 #   --update_output \
 #   --num_records -1
@@ -99,6 +99,7 @@ def test_static_analysis(filename, error):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name"],
     [
+        ["coco2014-mini", "images"],
         ["pass-mini", "images"],
         ["simple-join", "publications_by_user"],
         ["titanic", "passengers"],
@@ -106,8 +107,9 @@ def test_static_analysis(filename, error):
 )
 def test_loading(dataset_name, record_set_name):
     print(
-        f"Update JSONL with: `python scripts/load.py --file {dataset_name} --record_set"
-        f" {record_set_name} --update_output --num_records -1`"
+        "Update JSONL with: `python scripts/load.py --file"
+        f" ../../datasets/{dataset_name}/metadata.json --record_set"
+        f" {record_set_name} --update_output --num_records -1 --debug`"
     )
     dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent

@@ -1,0 +1,130 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:Field",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:RecordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:SubField",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "Mini-COCO",
+  "description": "Smaller downloadable version of COCO to be used in unit tests.",
+  "@language": "en",
+  "citation": "None",
+  "license": "None",
+  "url": "None",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "train2014.zip",
+      "contentSize": " B",
+      "contentUrl": "data/train2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": ""
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "image-files",
+      "containedIn": "#{train2014.zip}",
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "split_enums",
+      "description": "Maps split names to semantic values.",
+      "key": "#{name}",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "One of: train, val, test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "sc:Url",
+            "wd:Q3985153"
+          ]
+        }
+      ],
+      "inlineData": [
+        {
+          "name": "train",
+          "url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "name": "val",
+          "url": "https://mlcommons.org/definitions/validation_split"
+        },
+        {
+          "name": "test",
+          "url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "key": "#{img_id}",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image_filename",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": "#{image-files/filename}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": "#{split_enums}",
+          "source": {
+            "applyTransform": {
+              "regex": "^(train|val|test)2014/.+2014/.*\\.jpg$"
+            },
+            "data": "#{image-files/fullpath}"
+          }
+        }
+      ]
+    }
+  ]
+}
