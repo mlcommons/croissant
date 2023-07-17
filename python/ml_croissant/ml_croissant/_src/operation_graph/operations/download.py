@@ -1,5 +1,6 @@
 """Download operation module."""
 
+import concurrent.futures
 import dataclasses
 import hashlib
 import logging
@@ -9,6 +10,7 @@ from etils import epath
 from ml_croissant._src.core.constants import DOWNLOAD_PATH
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.operation_graph.base_operation import Operation
+import networkx as nx
 import requests
 import tqdm
 
@@ -35,8 +37,8 @@ def get_download_filepath(node: Node, url: str) -> epath.Path:
         )
         filepath = node.folder / url
         assert filepath.exists(), (
-                f'In node "{node.uid}", file "{url}" is either an invalid URL'
-                " or an invalid path."
+            f'In node "{node.uid}", file "{url}" is either an invalid URL'
+            " or an invalid path."
         )
         # No need to download local files
         return filepath
@@ -67,3 +69,13 @@ class Download(Operation):
                     size = file.write(data)
                     bar.update(size)
         logging.info("File %s is downloaded to %s.", self.url, os.fspath(filepath))
+
+
+def execute_downloads(operations: nx.MultiDiGraph):
+    """Executes all the downloads in the graph of operations."""
+    downloads = [
+        operation for operation in operations.nodes if isinstance(operation, Download)
+    ]
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        for download in downloads:
+            executor.submit(download)
