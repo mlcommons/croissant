@@ -20,10 +20,23 @@ import pandas as pd
 
 
 def should_extract(encoding_format: str) -> bool:
-    """Whether the encoding format is supported by Croissant (zip or tar)."""
+    """Whether the encoding format should be extracted (zip or tar)."""
     return (
         encoding_format == "application/x-tar" or encoding_format == "application/zip"
     )
+
+
+def _get_fullpaths(files: list[epath.Path], extract_dir: epath.Path) -> list[str]:
+    """Fullpaths are the full paths from the extraction directory."""
+    fullpaths = []
+    for file in files:
+        # Path since the root of the extraction dir.
+        root_path = os.fspath(file).replace(os.fspath(extract_dir), "")
+        # Remove the trailing slash.
+        if root_path.startswith("/"):
+            root_path = root_path[1:]
+        fullpaths.append(root_path)
+    return fullpaths
 
 
 def _extract_file(source: epath.Path, target: epath.Path) -> None:
@@ -63,14 +76,10 @@ class Extract(Operation):
                     included_files.append(epath.Path(basepath) / file)
         # We need to sort `files` to have a deterministic/reproducible order.
         included_files.sort()
-        fullpaths = [
-            os.fspath(file).replace(os.fspath(extract_dir), "")[1:]
-            for file in included_files
-        ]
         return pd.DataFrame(
             {
                 "filepath": included_files,
                 "filename": [file.name for file in included_files],
-                "fullpath": fullpaths,
+                "fullpath": _get_fullpaths(included_files, extract_dir),
             }
         )
