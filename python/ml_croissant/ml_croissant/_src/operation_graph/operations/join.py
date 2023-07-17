@@ -1,7 +1,6 @@
 """Join operation module."""
 
 import dataclasses
-import re
 
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.structure_graph.nodes import Source
