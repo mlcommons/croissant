@@ -105,6 +105,7 @@ class Source:
 
 
 def _apply_transform_fn(value: str, transform: Transform) -> str:
+    """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
         match = source_regex.match(value)
@@ -118,6 +119,7 @@ def _apply_transform_fn(value: str, transform: Transform) -> str:
 
 
 def apply_transforms_fn(value: str, source: Source | None = None) -> str:
+    """Applies all transforms in `source` to `value`."""
     if source is None:
         return value
     transforms = source.apply_transform
