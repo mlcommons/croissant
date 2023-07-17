@@ -13,7 +13,6 @@ from ml_croissant._src.operation_graph import (
 )
 from ml_croissant._src.operation_graph.operations.download import execute_downloads
 from ml_croissant._src.operation_graph.operations import (
-    Download,
     GroupRecordSet,
     ReadField,
 )
