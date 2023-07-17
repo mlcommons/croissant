@@ -69,7 +69,10 @@ def main(argv):
         output_records.append(record_to_python(record))
     print("Done.")
     if update_output:
-        output_file = epath.Path(file).parent / "output.jsonl"
+        output_folder = epath.Path(file).parent / "output"
+        if not output_folder.exists():
+            output_folder.mkdir()
+        output_file = output_folder / f"{record_set}.jsonl"
         with output_file.open("w") as f:
             for output_record in output_records:
                 output_record = json.dumps(output_record)
