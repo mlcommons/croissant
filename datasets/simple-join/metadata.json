@@ -46,6 +46,20 @@
       "@type": "ml:RecordSet",
       "name": "users",
       "description": "List of users.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "email",
+          "description": "Email of the author.",
+          "dataType": "sc:email"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "fullname",
+          "description": "Full name of the author.",
+          "dataType": "sc:Text"
+        }
+      ],
       "inlineData": [
         {
           "email": "john.smith@gmail.com",
@@ -62,20 +76,6 @@
         {
           "email": "mary.jones@hotmail.com",
           "fullname": "Mary Jones"
-        }
-      ],
-      "field": [
-        {
-          "@type": "ml:Field",
-          "name": "email",
-          "description": "Email of the author.",
-          "dataType": "sc:email"
-        },
-        {
-          "@type": "ml:Field",
-          "name": "fullname",
-          "description": "Full name of the author.",
-          "dataType": "sc:Text"
         }
       ]
     },
