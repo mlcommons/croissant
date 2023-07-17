@@ -9,7 +9,7 @@ Croissant 🥐 is a high-level format for machine learning datasets that combine
 
 Croissant builds on [schema.org](https://schema.org/), and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable.
 
-Croissant is currently under development by the community, with the official launch planned at the ICML DMLR workshop on July 29th, 2023. 
+Croissant is currently under development by the community.
 
 ## Why a standard format for ML datasets?
 
