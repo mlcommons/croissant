@@ -48,17 +48,21 @@
       "includes": "*.jpeg"
     }
   ],
-  "recordSet": {
-    "@type": "ml:RecordSet",
-    "name": "images",
-    "description": "Records extracted from the image files, with their schema.",
-    "source": "#{image-files}",
-    "field": {
-      "@type": "ml:Field",
-      "name": "image_content",
-      "description": "The content of the image.",
-      "dataType": "sc:ImageObject",
-      "source": "#{image-files/content}"
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "description": "Records extracted from the image files, with their schema.",
+      "source": "#{image-files}",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        }
+      ]
     }
-  }
+  ]
 }

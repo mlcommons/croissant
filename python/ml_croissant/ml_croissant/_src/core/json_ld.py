@@ -11,7 +11,7 @@ from typing import Any
 from ml_croissant._src.core import constants
 
 import rdflib
-from rdflib import namespace
+from rdflib import namespace, term
 
 Json = dict[str, Any]
 
@@ -23,6 +23,12 @@ _PREFIX_MAP = {
     "http://mlcommons.org/schema/Field": "field",
     "http://mlcommons.org/schema/RecordSet": "recordSet",
     "http://mlcommons.org/schema/SubField": "subField",
+}
+# Keys that always output lists:
+_KEYS_WITH_LIST = {
+    constants.ML_COMMONS_FIELD,
+    constants.ML_COMMONS_RECORD_SET,
+    constants.ML_COMMONS_SUB_FIELD,
 }
 
 
@@ -105,7 +111,9 @@ def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) 
             entry_node[key] = value[0]
         elif isinstance(value, list):
             value = [_recursively_populate_fields(child, id_to_node) for child in value]
-            if len(value) == 1:
+            if term.URIRef(key) in _KEYS_WITH_LIST:
+                entry_node[key] = value
+            elif len(value) == 1:
                 entry_node[key] = value[0]
             else:
                 entry_node[key] = value

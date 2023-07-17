@@ -68,71 +68,73 @@
       "includes": "*.jpg"
     }
   ],
-  "recordSet": {
-    "@type": "ml:RecordSet",
-    "name": "images",
-    "key": "#{hash}",
-    "source": "#{image-files}",
-    "field": [
-      {
-        "@type": "ml:Field",
-        "name": "hash",
-        "description": "The hash of the image, as computed from YFCC-100M.",
-        "dataType": "sc:Text",
-        "references": "#{metadata/hash}",
-        "source": {
-          "applyTransform": {
-            "regex": "([^\\/]*)\\.jpg"
-          },
-          "data": "#{image-files/filename}"
-        }
-      },
-      {
-        "@type": "ml:Field",
-        "name": "image_content",
-        "description": "The content of the image.",
-        "dataType": "sc:ImageObject",
-        "source": "#{image-files/content}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "creator_uname",
-        "description": "Unique name of photo creator.",
-        "dataType": "sc:Text",
-        "source": "#{metadata/unickname}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "gps_coordinates",
-        "description": "GPS coordinates where the image was taken.",
-        "dataType": "sc:GeoCoordinates",
-        "subField": [
-          {
-            "@type": "ml:Field",
-            "name": "latitude",
-            "dataType": "sc:Float",
-            "source": "#{metadata/latitude}"
-          },
-          {
-            "@type": "ml:Field",
-            "name": "longitude",
-            "dataType": "sc:Float",
-            "source": "#{metadata/longitude}"
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "key": "#{hash}",
+      "source": "#{image-files}",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "hash",
+          "description": "The hash of the image, as computed from YFCC-100M.",
+          "dataType": "sc:Text",
+          "references": "#{metadata/hash}",
+          "source": {
+            "applyTransform": {
+              "regex": "([^\\/]*)\\.jpg"
+            },
+            "data": "#{image-files/filename}"
           }
-        ]
-      },
-      {
-        "@type": "ml:Field",
-        "name": "date_taken",
-        "description": "The date the photo was taken.",
-        "dataType": "sc:Date",
-        "source": {
-          "applyTransform": {
-            "format": "%Y-%m-%d %H:%M:%S.%f"
-          },
-          "data": "#{metadata/datetaken}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": "#{image-files/content}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "creator_uname",
+          "description": "Unique name of photo creator.",
+          "dataType": "sc:Text",
+          "source": "#{metadata/unickname}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "gps_coordinates",
+          "description": "GPS coordinates where the image was taken.",
+          "dataType": "sc:GeoCoordinates",
+          "subField": [
+            {
+              "@type": "ml:Field",
+              "name": "latitude",
+              "dataType": "sc:Float",
+              "source": "#{metadata/latitude}"
+            },
+            {
+              "@type": "ml:Field",
+              "name": "longitude",
+              "dataType": "sc:Float",
+              "source": "#{metadata/longitude}"
+            }
+          ]
+        },
+        {
+          "@type": "ml:Field",
+          "name": "date_taken",
+          "description": "The date the photo was taken.",
+          "dataType": "sc:Date",
+          "source": {
+            "applyTransform": {
+              "format": "%Y-%m-%d %H:%M:%S.%f"
+            },
+            "data": "#{metadata/datetaken}"
+          }
         }
-      }
-    ]
-  }
+      ]
+    }
+  ]
 }
