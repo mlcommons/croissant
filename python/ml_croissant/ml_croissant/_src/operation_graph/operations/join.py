@@ -3,30 +3,10 @@
 import dataclasses
 import re
 
-from ml_croissant._src.structure_graph.nodes import Source, Transform
 from ml_croissant._src.operation_graph.base_operation import Operation
+from ml_croissant._src.structure_graph.nodes import Source
+from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
 import pandas as pd
-
-
-def apply_transform_fn(value: str, transform: Transform) -> str:
-    if transform.regex is not None:
-        source_regex = re.compile(transform.regex)
-        match = source_regex.match(value)
-        if match is None:
-            return value
-        for group in match.groups():
-            if group is not None:
-                return group
-    return value
-
-
-def apply_transforms_fn(value: str, source: Source | None = None) -> str:
-    if source is None:
-        return value
-    transforms = source.apply_transform
-    for transform in transforms:
-        value = apply_transform_fn(value, transform)
-    return value
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
