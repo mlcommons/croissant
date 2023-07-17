@@ -5,8 +5,9 @@ from typing import Any
 
 from etils import epath
 from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
-from ml_croissant._src.structure_graph.nodes import Field
 from ml_croissant._src.operation_graph.base_operation import Operation
+from ml_croissant._src.structure_graph.nodes import Field
+from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
 import pandas as pd
 
 
@@ -82,4 +83,5 @@ class ReadField(Operation):
             )
             value = series[field]
             value = self._cast_value(value)
+        value = apply_transforms_fn(value, self.node.source)
         return {self.node.name: value}

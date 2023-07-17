@@ -1,6 +1,7 @@
 """Source module."""
 
 import dataclasses
+import logging
 import re
 from typing import Any
 
@@ -101,3 +102,27 @@ class Source:
     def __bool__(self):
         """Allows to write `if not node.source` / `if node.source`"""
         return len(self.reference) > 0
+
+
+def _apply_transform_fn(value: str, transform: Transform) -> str:
+    """Applies one transform to `value`."""
+    if transform.regex is not None:
+        source_regex = re.compile(transform.regex)
+        match = source_regex.match(value)
+        if match is None:
+            logging.debug(f"Could not match {source_regex} in {value}")
+            return value
+        for group in match.groups():
+            if group is not None:
+                return group
+    return value
+
+
+def apply_transforms_fn(value: str, source: Source | None = None) -> str:
+    """Applies all transforms in `source` to `value`."""
+    if source is None:
+        return value
+    transforms = source.apply_transform
+    for transform in transforms:
+        value = _apply_transform_fn(value, transform)
+    return value
