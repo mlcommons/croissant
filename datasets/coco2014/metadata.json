@@ -186,7 +186,7 @@
           "references": "#{split_enums}",
           "source": {
             "applyTransform": {
-              "regex": "^(train|val|test)2014.zip/.+2014/.*\\.jpg$"
+              "regex": "^(train|val|test)2014/.*\\.jpg$"
             },
             "data": "#{image-files/fullpath}"
           }
