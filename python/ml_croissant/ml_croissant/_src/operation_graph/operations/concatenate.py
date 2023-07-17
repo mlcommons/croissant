@@ -14,5 +14,6 @@ class Concatenate(Operation):
     node: FileSet
 
     def __call__(self, *args: pd.DataFrame) -> pd.DataFrame:
+        """See class' docstring."""
         assert len(args) > 0, "No dataframe to merge."
         return pd.concat(args)

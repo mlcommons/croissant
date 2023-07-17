@@ -59,6 +59,7 @@ class Extract(Operation):
     target_node: FileSet
 
     def __call__(self):
+        """See class' docstring."""
         includes = fnmatch.translate(self.target_node.includes)
         url = self.node.content_url
         archive_file = get_download_filepath(self.node, url)

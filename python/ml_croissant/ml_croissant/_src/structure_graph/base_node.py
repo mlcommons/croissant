@@ -109,9 +109,11 @@ class Node(abc.ABC):
 
     @abc.abstractmethod
     def check(self):
+        """Abstract method to implement checks that will be performed on the node."""
         raise NotImplementedError
 
     def __repr__(self) -> str:
+        """Prints a simplified string representation of the node."""
         attributes = self.__dict__.copy()
         attributes_to_remove = ["bnode", "folder", "graph", "issues", "parents"]
         for attribute in self.__dict__:
@@ -123,12 +125,18 @@ class Node(abc.ABC):
 
     @property
     def uid(self) -> str:
+        """Unique identifier for the node.
+
+        For fields, the UID is the path from their RecordSet. For other nodes, it is
+        their names.
+        """
         if len(self.parents) <= 1:
             return self.name
         return f"{self.parents[-1].uid}/{self.name}"
 
     @property
     def context(self) -> Context:
+        """Context for the current node according to its parents."""
         nodes = self.parents + (self,)
         return Context(
             dataset_name=_get_element(nodes, ["Metadata"]),
@@ -140,6 +148,7 @@ class Node(abc.ABC):
 
     @property
     def parent(self) -> Node | None:
+        """Direct parent of the node or None if no parent."""
         if not self.parents:
             return None
         return self.parents[-1]

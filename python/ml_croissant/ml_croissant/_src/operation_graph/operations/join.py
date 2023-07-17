@@ -15,6 +15,7 @@ class Join(Operation):
     def __call__(
         self, *args: pd.Series, left: Source | None = None, right: Source | None = None
     ) -> pd.Series:
+        """See class' docstring."""
         if len(args) == 1:
             return args[0]
         elif len(args) == 2:

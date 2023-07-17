@@ -64,6 +64,7 @@ class ReadField(Operation):
             ) from exception
 
     def __call__(self, series: pd.Series):
+        """See class' docstring."""
         if self.field is None:
             assert len(self.node.source.reference) == 2, (
                 f'Node "{self.node.uid}" refers to a wrong reference in its source:'
@@ -77,10 +78,12 @@ class ReadField(Operation):
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
         else:
-            assert field in series, (
-                f'Field "{field}" does not exist. Possible fields:'
-                f" {list(series.axes) if isinstance(series, pd.Series) else series.keys()}"
+            possible_fields = (
+                list(series.axes) if isinstance(series, pd.Series) else series.keys()
             )
+            assert (
+                field in series
+            ), f'Field "{field}" does not exist. Possible fields: {possible_fields}'
             value = series[field]
             value = self._cast_value(value)
         value = apply_transforms_fn(value, self.node.source)

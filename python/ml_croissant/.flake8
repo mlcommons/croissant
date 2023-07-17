@@ -1,0 +1,5 @@
+[flake8]
+docstring-convention = google
+exclude =
+    *_test.py
+max-line-length = 88

@@ -36,6 +36,7 @@ class Validator:
     operations: OperationGraph | None = None
 
     def run_static_analysis(self, debug: bool = False):
+        """Runs the static analysis on the file."""
         try:
             file_path, self.file = from_file_to_json(self.file_or_file_path)
             folder = file_path.parent
@@ -90,6 +91,7 @@ class Dataset:
         self.operations = self.validator.operations
 
     def records(self, record_set: str) -> Records:
+        """Accesses all records belonging to the RecordSet named `record_set`."""
         return Records(self, record_set, debug=self.debug)
 
 

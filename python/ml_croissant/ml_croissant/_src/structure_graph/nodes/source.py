@@ -1,5 +1,7 @@
 """Source module."""
 
+from __future__ import annotations
+
 import dataclasses
 import logging
 import re
@@ -10,6 +12,7 @@ from ml_croissant._src.structure_graph.base_node import ID_REGEX, validate_name
 
 
 def parse_reference(issues: Issues, source_data: str) -> tuple[str, ...]:
+    """Parses a reference from a string called `source_data`."""
     source_regex = re.compile(rf"^\#\{{({ID_REGEX})(?:\/([^\/]+))*\}}$")
     match = source_regex.match(source_data)
     if match is None:
@@ -27,6 +30,16 @@ def parse_reference(issues: Issues, source_data: str) -> tuple[str, ...]:
 
 @dataclasses.dataclass(frozen=True)
 class Transform:
+    """Container for transformation.
+
+    Args:
+        format: The format for a date, e.g. "%Y-%m-%d %H:%M:%S.%f".
+        regex: A regex pattern with a capturing group to extract information in a
+            string.
+        replace: A replace pattern, e.g. "pattern_to_remove/pattern_to_add".
+        separator: A separator in a string to yield a list.
+    """
+
     format: str | None = None
     regex: str | None = None
     replace: str | None = None
@@ -35,7 +48,7 @@ class Transform:
 
 @dataclasses.dataclass(frozen=True)
 class Source:
-    """Standardizes the usage of sources.
+    r"""Standardizes the usage of sources.
 
     Croissant accepts several manners to declare sources:
 
@@ -63,7 +76,8 @@ class Source:
     apply_transform: tuple[Transform, ...] = ()
 
     @classmethod
-    def from_json_ld(cls, issues: Issues, field: Any) -> "Source":
+    def from_json_ld(cls, issues: Issues, field: Any) -> Source:
+        """Creates a new source from a JSON-LD `field` and populates issues."""
         if isinstance(field, str):
             return cls(reference=parse_reference(issues, field))
         elif isinstance(field, list):
@@ -100,7 +114,7 @@ class Source:
             return cls()
 
     def __bool__(self):
-        """Allows to write `if not node.source` / `if node.source`"""
+        """Allows to write `if not node.source` / `if node.source`."""
         return len(self.reference) > 0
 
 

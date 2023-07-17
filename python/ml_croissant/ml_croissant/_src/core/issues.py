@@ -28,8 +28,7 @@ class Context:
 
 @dataclasses.dataclass(frozen=True)
 class Issues:
-    """
-    Issues during the validation of the format.
+    """Issues during the validation of the format.
 
     Issues can either be errors (blocking) or warnings (informative).
 

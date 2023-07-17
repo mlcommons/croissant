@@ -10,7 +10,10 @@ import pandas as pd
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Data(Operation):
+    """Operation for inline data."""
+
     node: RecordSet
 
     def __call__(self):
+        """See class' docstring."""
         return pd.DataFrame.from_records(json.loads(self.node.data))

@@ -8,10 +8,12 @@ import networkx as nx
 def pretty_print_graph(graph: nx.Graph, simplify=False):
     """Pretty prints a NetworkX graph.
 
+    Warning: this function is for debugging purposes only.
+
     Args:
         graph: Any NetworkX graph.
-
-    Warning: this function is for debugging purposes only."""
+        simplify: Whether to print a simplified version of nodes.
+    """
     if simplify:
         simple_graph = nx.Graph()
         for x, y in graph.edges():
@@ -29,10 +31,11 @@ def pretty_print_graph(graph: nx.Graph, simplify=False):
 def print_graph_traversal(graph: nx.Graph):
     """Pretty prints a NetworkX graph.
 
+    Warning: this function is for debugging purposes only.
+
     Args:
         graph: Any NetworkX graph.
-
-    Warning: this function is for debugging purposes only."""
+    """
     visited = {}
     print("--- Graph traversal ---")
     for start, end, _ in nx.edge_bfs(graph):

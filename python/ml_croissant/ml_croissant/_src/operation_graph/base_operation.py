@@ -25,7 +25,9 @@ class Operation(abc.ABC):
 
     @abc.abstractmethod
     def __call__(self, *args, **kwargs):
+        """Abstract method to implement when an operation is called."""
         raise NotImplementedError
 
     def __repr__(self):
+        """Prints a simplified string representation of the operation."""
         return f"{type(self).__name__}({self.node.uid})"

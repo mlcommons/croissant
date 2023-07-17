@@ -26,10 +26,12 @@ def is_url(url: str) -> bool:
 
 
 def get_hash(url: str) -> str:
+    """Retrieves the sha256 hash of an URL."""
     return hashlib.sha256(url.encode()).hexdigest()
 
 
 def get_download_filepath(node: Node, url: str) -> epath.Path:
+    """Retrieves the download filepath of an URL."""
     if not is_url(url):
         assert url.startswith("data/"), (
             'Local file "{self.node.uid}" should point to a file within the data/'
@@ -54,6 +56,7 @@ class Download(Operation):
     url: str
 
     def __call__(self):
+        """See class' docstring."""
         filepath = get_download_filepath(self.node, self.url)
         if not filepath.exists():
             response = requests.get(self.url, stream=True, timeout=10)
