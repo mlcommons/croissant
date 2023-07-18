@@ -117,8 +117,8 @@ def test_loading(dataset_name, record_set_name):
         / dataset_name
     )
     config = dataset_folder / "metadata.json"
-    pkl_file = dataset_folder / "output.jsonl"
-    with pkl_file.open("rb") as f:
+    output_file = dataset_folder / "output" / f"{record_set_name}.jsonl"
+    with output_file.open("rb") as f:
         lines = f.readlines()
         expected_records = [json.loads(line) for line in lines]
     dataset = datasets.Dataset(config)
