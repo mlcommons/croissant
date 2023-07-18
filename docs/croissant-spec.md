@@ -70,7 +70,7 @@ potentially filtered by inclusion and/or exclusion filters.
 
 *   [containedIn](#containedin): The container of the files in the `FileSet`.
 *   [includes](#includes): A glob pattern that specifies the files to include,
-    e.g., `"*.jpg" `.
+    e.g., `"*.jpg"`.
 *   [excludes](#excudes): A glob pattern that specifies the files to exclude.
 
 
@@ -88,19 +88,13 @@ typically to prepare data for ingestion by ML applications.
 
 **Properties**:
 
-*   [source](#source): A data source for the records, typically a reference to a
-    `FileObject` or `FileSet` of the form `"#{<source_name>}"`. A source can be
-    a single structured file (e.g., a `csv` or `jsonl` `FileObject`) that yields
-    one record per line, or a set of unstructured files (e.g., a directory of
-    images) that yield one record per file.
 *   [field](#field): A data element that appears in the records in the
     `RecordSet` (e.g., one column of a table).
 *   [key](#key): One or more fields whose value uniquely identify each record in
     the `RecordSet`.
-*   [record](#record): One or more inlined records that belongs to the `RecordSet`,
-    typically used for small enumerations that do not have an external source of
-    data.
-
+*   [data](#data): One or more inlined records that belongs to the
+    `RecordSet`, typically used for small enumerations that do not have an
+    external source of data.
 
 ### Field
 
@@ -112,9 +106,7 @@ the case of hierarchical data.
 
 **Properties**:
 
-*   [source](#source): The data source of the field, or the form
-    `"#{<record_source>/<field_source>}"`. For example if the source of records is a table,
-    the field source is of the form `"#{<table_name>/<column_name>}"`.
+*   [source](#source): The data source of the field.
 *   [dataType](#datatype): The data type of the field, which could be either an
     atomic type (e.g, `sc:Integer`) or a semantic type (e.g., `sc:GeoLocation`).
 *   [references](#references): Another `Field` of another `RecordSet` that this
@@ -136,11 +128,50 @@ instead.
 
 **Properties**:
 
-*   [data](#data): The referenced data source.
-*   [applyTransform](#applutransform): A transformation to apply to the source
-    data, e.g., a regular expression or json query.
-*   [format](#format): A format to apply to the source data, e.g., a date format
-    or number format.
+*   [distribution](#fileset): The name of the referenced FileSet or FileObject source.
+*   [recordSet](#recordset): The name of the referenced RecordSet source.
+*   [dataExtraction](#dataextraction): The extraction method from the provided
+    source.
+*   [applyTransform](#applytransform): A transformation to apply on source data
+    on top of the extracted method as specified through `dataExtraction`, e.g., a
+    regular expression or json query.
+
+### dataExtraction
+
+The extraction method from the provided source. It can the name of a Field, or
+the property of a file (e.g., its name), etc.
+
+**subclassOf**:	[sc:Intangible](https://schema.org/Intangible)
+
+**Properties**:
+
+*   [fileProperty](#fileproperty): The information to extract from the file.
+*   [path](#path): The path to the data.
+
+### path
+
+The path to filter the data. This allows to filter out:
+
+*   a field name: the path is the name of the field (e.g., `field_name`),
+    possibly with subfields (e.g., `field_name/subfield_name`);
+*   a CSV column name (e.g., `date`);
+*   a JSON Path within a JSON (e.g., `/bookstore/book[1]/title`);
+*   an XPath within XML (e.g., `/bookstore/book[1]/title`).
+
+**subclassOf**:	[sc:Text](https://schema.org/Text)
+
+### fileProperty
+
+The information to extract from the file. It can be: `filename`, `fullpath`,
+`content`.
+
+*   `fullpath`: The full path to the file within the Croissant extraction
+    or download folders. Example: `data/train/metadata.csv`.
+*   `filename`: The name of the file. In `data/train/metadata.csv`, the file
+    name is `metadata.csv`.
+*   `content`: The byte content of the file.
+
+**subclassOf**:	[sc:Text](https://schema.org/Text)
 
 ### Reference
 
@@ -150,8 +181,7 @@ the dataset (e.g., a `FileObject`, or a `RecordSet`), or one of its components
 (e.g., a `Field` in a `RecordSet`). For the latter case, `ref` uses '/' to
 represent nesting (e.g., `"#{recordset2/field5}"`).
 
-subclassOf:	[sc:Text](https://schema.org/Text)
-
+**subclassOf**:	[sc:Text](https://schema.org/Text)
 
 ### BoundingBox
 
@@ -196,20 +226,15 @@ specifies files to exclude from the `FileSet`. If multiple values are provided,
 then their union is taken, i.e., any file matched by any of the exclude patterns
 is excluded.
 
-**range**:	[sc:Text](https://schema.org/Text)
+**range**: [sc:Text](https://schema.org/Text)
 
-**domain**:	[FileSet](#fileset)
-
+**domain**: [FileSet](#fileset)
 
 ### source
 
-The source of the data for a `RecordSet` or `Field`. In the case of a
-`RecordSet`, this can be one or more `FileObject`, `FileSet` or `RecordSet`. In
-the case of a `Field`, this can be an addressable subset of the contents of a
-`FileObject` or `FileSet` (e.g., the name of a column in a CSV file, or a known
-property of a `FileSet` such as `"filename"` or `"content"`).
-
-**range**:	[Reference](#reference), [DataSource](#datasource)
+The source of the data for a `Field`. This can be an addressable subset of the
+contents of a `FileObject` or `FileSet` (e.g., the name of a column in a CSV
+file, or a known property of a `FileSet` such as `"filename"` or `"content"`).
 
 **domain**:	[RecordSet](#recordset), [Field](#field)
 
@@ -335,18 +360,7 @@ target RecordSet, these are assumed to constitute a composite foreign key.
 
 **domain**: [Field](#field)
 
-
 ### data
-
-In a `DataSource` object, this property specifies the data source that is being
-referenced (e.g., a `FileObject`, `RecordSet` or `Field`).
-
-**range**: [Reference](#reference)
-
-**domain**:	[DataSource](#datasource)
-
-
-### record
 
 In a `RecordSet` object, this property defines the RecordSet data inline. This
 inline mechanism is only expected to be used with small `RecordSet` instances,
@@ -373,8 +387,7 @@ list, and each object within that list must define the RecordSet fields.
 }
 ```
 
-**range**: JSON Text that matches the fields of the `RecordSet`. TODO: Consider
-switching to use `sc:PropertyValue` to keep the json-ld valid.
+**range**: JSON Text that matches the fields of the `RecordSet`.
 
 **domain**: [RecordSet](#recordset)
 
@@ -419,4 +432,3 @@ right format for a given target data type.
 1. Should Reference be this general, or should it be specialized into
    FileObjectReference, RecordSetReference, etc..?  (A bit verbose, but more
    type-safe, and helps with namespace homing.)
-1. Representation of enumerated records: PropertyValue vs arbitrary JSON.
