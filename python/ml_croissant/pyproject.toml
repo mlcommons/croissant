@@ -24,7 +24,7 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["black", "pyflakes", "pylint", "pytest", "pytype"]
+dev = ["black", "flake8-docstrings", "pyflakes", "pylint", "pytest", "pytype"]
 
 [tool.black]
 line-length = 88

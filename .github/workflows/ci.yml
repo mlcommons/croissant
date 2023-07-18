@@ -42,6 +42,9 @@ jobs:
     - name: PyFlakes
       run: pyflakes .
 
+    - name: Docstrings are defined
+      run: flake8 .
+
   pytype-test:
     name: PyType
     runs-on: ubuntu-latest

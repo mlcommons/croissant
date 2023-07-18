@@ -19,6 +19,7 @@ class ReadCsv(Operation):
     folder: epath.Path
 
     def __call__(self):
+        """See class' docstring."""
         if is_url(self.url):
             filepath = get_download_filepath(self.node, self.url)
         else:

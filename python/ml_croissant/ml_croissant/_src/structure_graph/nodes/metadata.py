@@ -16,5 +16,6 @@ class Metadata(Node):
     url: str = ""
 
     def check(self):
+        """Implements checks on the node."""
         self.assert_has_mandatory_properties("name", "url")
         self.assert_has_optional_properties("citation", "license")

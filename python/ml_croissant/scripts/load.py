@@ -48,6 +48,7 @@ FLAGS = flags.FLAGS
 
 
 def main(argv):
+    """Main function launched by the script."""
     del argv
     file = FLAGS.file
     record_set = FLAGS.record_set

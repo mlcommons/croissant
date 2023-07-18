@@ -56,7 +56,7 @@ def _make_context():
 
 
 def _is_dataset_node(node: Json) -> bool:
-    """Checks if the type of a node is schema.org/Dataset/"""
+    """Checks if the type of a node is schema.org/Dataset."""
     return node.get("@type") == [str(constants.SCHEMA_ORG_DATASET)]
 
 

@@ -16,4 +16,5 @@ class FileSet(Node):
     name: str = ""
 
     def check(self):
+        """Implements checks on the node."""
         self.assert_has_mandatory_properties("includes", "encoding_format", "name")

@@ -21,6 +21,7 @@ class Field(Node):
     source: Source = dataclasses.field(default_factory=Source)
 
     def check(self):
+        """Implements checks on the node."""
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
 
@@ -44,6 +45,7 @@ class Field(Node):
 
     @property
     def data(self) -> str | None:
+        """The data of the parent RecordSet."""
         parent = self.parents[-1]
         if isinstance(parent, RecordSet):
             return parent.data

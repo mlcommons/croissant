@@ -21,6 +21,7 @@ class FileObject(Node):
     source: Source | None = None
 
     def check(self):
+        """Implements checks on the node."""
         self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
         if not self.contained_in:
             self.assert_has_exclusive_properties(["md5", "sha256"])
