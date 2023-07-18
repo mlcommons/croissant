@@ -48,1685 +48,1687 @@
     "encodingFormat": "text/plain",
     "md5": "6c69596d2dbd1add5e9a22352fa71e30"
   },
-  "recordSet": {
-    "@type": "ml:RecordSet",
-    "name": "birds_records",
-    "source": "#{birds.arff}",
-    "field": [
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd1",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd1}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd2",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd2}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd3",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd3}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd4",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd4}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd5",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd5}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd6",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd6}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd7",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd7}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd8",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd8}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd9",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd9}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd10",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd10}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd11",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd11}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd12",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd12}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd13",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd13}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd14",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd14}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd15",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd15}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd16",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd16}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd17",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd17}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd18",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd18}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd19",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd19}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd20",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd20}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd21",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd21}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd22",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd22}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd25",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd25}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd26",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd26}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd27",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd27}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd28",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd28}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd29",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd29}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd30",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd30}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd31",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd31}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd32",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd32}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd33",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd33}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd34",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd34}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd35",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd35}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd36",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd36}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd37",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd37}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd38",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd38}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd39",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd39}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd40",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd40}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd41",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd41}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd42",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd42}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd43",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd43}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd44",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd44}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd45",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd45}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd46",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd46}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd49",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd49}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd50",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd50}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd51",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd51}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd52",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd52}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd53",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd53}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd54",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd54}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd55",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd55}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd56",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd56}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd57",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd57}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd58",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd58}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd59",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd59}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd60",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd60}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd61",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd61}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd62",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd62}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd63",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd63}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd64",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd64}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd65",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd65}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd66",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd66}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd67",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd67}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd68",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd68}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd69",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd69}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd70",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd70}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd73",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd73}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd74",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd74}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd75",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd75}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd76",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd76}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd77",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd77}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd78",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd78}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd79",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd79}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd80",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd80}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd81",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd81}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd82",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd82}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd83",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd83}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd84",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd84}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd85",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd85}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd86",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd86}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd87",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd87}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd88",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd88}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd89",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd89}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd90",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd90}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd91",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd91}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd92",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd92}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd93",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd93}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd94",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd94}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd97",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd97}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd98",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd98}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd99",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd99}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd100",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd100}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd101",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd101}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd102",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd102}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd103",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd103}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd104",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd104}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd105",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd105}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd106",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd106}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd107",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd107}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd108",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd108}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd109",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd109}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd110",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd110}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd111",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd111}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd112",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd112}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd113",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd113}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd114",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd114}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd115",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd115}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd116",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd116}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd117",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd117}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd118",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd118}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd121",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd121}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd122",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd122}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd123",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd123}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd124",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd124}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd125",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd125}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd126",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd126}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd127",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd127}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd128",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd128}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd129",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd129}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd130",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd130}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd131",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd131}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd132",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd132}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd133",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd133}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd134",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd134}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd135",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd135}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd136",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd136}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd137",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd137}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd138",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd138}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd139",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd139}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd140",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd140}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd141",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd141}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd145",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd145}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd146",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd146}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd147",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd147}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd148",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd148}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd149",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd149}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd150",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd150}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd151",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd151}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd152",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd152}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd153",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd153}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd154",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd154}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd155",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd155}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd156",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd156}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd157",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd157}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd158",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd158}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd159",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd159}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd160",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd160}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd161",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd161}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd162",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd162}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd163",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd163}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd164",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd164}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd165",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd165}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "audio_ssd166",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/audio.ssd166}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster1",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster1}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster2",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster2}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster3",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster3}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster4",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster4}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster5",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster5}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster6",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster6}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster7",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster7}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster8",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster8}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster9",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster9}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster10",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster10}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster11",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster11}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster12",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster12}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster13",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster13}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster14",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster14}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster15",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster15}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster16",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster16}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster17",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster17}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster18",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster18}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster19",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster19}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster20",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster20}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster21",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster21}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster22",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster22}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster23",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster23}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster24",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster24}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster25",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster25}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster26",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster26}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster27",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster27}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster28",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster28}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster29",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster29}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster30",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster30}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster31",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster31}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster32",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster32}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster33",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster33}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster34",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster34}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster35",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster35}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster36",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster36}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster37",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster37}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster38",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster38}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster39",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster39}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster40",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster40}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster41",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster41}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster42",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster42}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster43",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster43}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster44",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster44}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster45",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster45}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster46",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster46}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster47",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster47}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster48",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster48}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster49",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster49}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster50",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster50}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster51",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster51}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster52",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster52}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster53",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster53}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster54",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster54}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster55",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster55}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster56",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster56}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster57",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster57}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster59",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster59}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster60",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster60}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster61",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster61}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster62",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster62}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster63",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster63}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster64",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster64}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster65",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster65}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster66",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster66}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster67",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster67}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster68",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster68}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster69",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster69}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster70",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster70}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster71",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster71}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster72",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster72}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster73",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster73}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster74",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster74}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster75",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster75}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster76",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster76}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster78",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster78}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster79",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster79}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster80",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster80}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster81",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster81}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster82",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster82}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster83",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster83}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster84",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster84}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster85",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster85}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster86",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster86}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster87",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster87}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster88",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster88}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster89",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster89}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster90",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster90}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster91",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster91}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster92",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster92}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster93",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster93}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster94",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster94}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster95",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster95}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster96",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster96}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster97",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster97}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster98",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster98}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster99",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster99}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "cluster100",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/cluster100}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "segments",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/segments}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "mean_rect_width",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/mean_rect_width}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "std_rect_width",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/std_rect_width}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "mean_rect_height",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/mean_rect_height}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "std_rect_height",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/std_rect_height}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "mean_rect_volume",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/mean_rect_volume}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "std_rect_volume",
-        "dataType": "sc:Number",
-        "source": "#{birds.arff/std_rect_volume}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "hassegments",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/hasSegments}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "location",
-        "dataType": "sc:Text",
-        "source": "#{birds.arff/location}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "brown_creeper",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Brown.Creeper}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "pacific_wren",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Pacific.Wren}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "pacific_slope_flycatcher",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Pacific.slope.Flycatcher}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "red_breasted_nuthatch",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Red.breasted.Nuthatch}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "dark_eyed_junco",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Dark.eyed.Junco}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "olive_sided_flycatcher",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Olive.sided.Flycatcher}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "hermit_thrush",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Hermit.Thrush}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "chestnut_backed_chickadee",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Chestnut.backed.Chickadee}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "varied_thrush",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Varied.Thrush}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "hermit_warbler",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Hermit.Warbler}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "swainson_s_thrush",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Swainson.s.Thrush}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "hammond_s_flycatcher",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Hammond.s.Flycatcher}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "western_tanager",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Western.Tanager}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "black_headed_grosbeak",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Black.headed.Grosbeak}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "golden_crowned_kinglet",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Golden.Crowned.Kinglet}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "warbling_vireo",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Warbling.Vireo}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "macgillivray_s_warbler",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/MacGillivray.s.Warbler}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "stellar_s_jay",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Stellar.s.Jay}"
-      },
-      {
-        "@type": "ml:Field",
-        "name": "common_nighthawk",
-        "dataType": "sc:Boolean",
-        "source": "#{birds.arff/Common.Nighthawk}"
-      }
-    ]
-  }
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "birds_records",
+      "source": "#{birds.arff}",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd1",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd1}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd2",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd2}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd3",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd3}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd4",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd4}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd5",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd5}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd6",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd6}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd7",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd7}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd8",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd8}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd9",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd9}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd10",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd10}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd11",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd11}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd12",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd12}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd13",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd13}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd14",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd14}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd15",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd15}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd16",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd16}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd17",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd17}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd18",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd18}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd19",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd19}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd20",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd20}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd21",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd21}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd22",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd22}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd25",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd25}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd26",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd26}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd27",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd27}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd28",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd28}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd29",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd29}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd30",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd30}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd31",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd31}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd32",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd32}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd33",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd33}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd34",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd34}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd35",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd35}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd36",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd36}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd37",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd37}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd38",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd38}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd39",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd39}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd40",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd40}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd41",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd41}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd42",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd42}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd43",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd43}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd44",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd44}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd45",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd45}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd46",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd46}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd49",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd49}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd50",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd50}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd51",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd51}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd52",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd52}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd53",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd53}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd54",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd54}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd55",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd55}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd56",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd56}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd57",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd57}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd58",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd58}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd59",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd59}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd60",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd60}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd61",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd61}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd62",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd62}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd63",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd63}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd64",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd64}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd65",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd65}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd66",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd66}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd67",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd67}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd68",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd68}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd69",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd69}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd70",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd70}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd73",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd73}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd74",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd74}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd75",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd75}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd76",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd76}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd77",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd77}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd78",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd78}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd79",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd79}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd80",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd80}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd81",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd81}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd82",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd82}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd83",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd83}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd84",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd84}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd85",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd85}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd86",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd86}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd87",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd87}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd88",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd88}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd89",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd89}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd90",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd90}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd91",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd91}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd92",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd92}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd93",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd93}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd94",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd94}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd97",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd97}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd98",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd98}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd99",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd99}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd100",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd100}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd101",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd101}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd102",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd102}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd103",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd103}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd104",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd104}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd105",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd105}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd106",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd106}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd107",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd107}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd108",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd108}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd109",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd109}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd110",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd110}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd111",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd111}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd112",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd112}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd113",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd113}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd114",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd114}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd115",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd115}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd116",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd116}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd117",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd117}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd118",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd118}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd121",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd121}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd122",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd122}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd123",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd123}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd124",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd124}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd125",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd125}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd126",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd126}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd127",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd127}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd128",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd128}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd129",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd129}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd130",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd130}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd131",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd131}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd132",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd132}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd133",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd133}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd134",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd134}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd135",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd135}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd136",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd136}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd137",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd137}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd138",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd138}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd139",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd139}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd140",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd140}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd141",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd141}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd145",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd145}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd146",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd146}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd147",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd147}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd148",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd148}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd149",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd149}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd150",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd150}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd151",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd151}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd152",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd152}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd153",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd153}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd154",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd154}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd155",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd155}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd156",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd156}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd157",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd157}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd158",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd158}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd159",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd159}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd160",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd160}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd161",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd161}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd162",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd162}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd163",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd163}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd164",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd164}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd165",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd165}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio_ssd166",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/audio.ssd166}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster1",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster1}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster2",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster2}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster3",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster3}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster4",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster4}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster5",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster5}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster6",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster6}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster7",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster7}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster8",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster8}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster9",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster9}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster10",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster10}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster11",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster11}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster12",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster12}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster13",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster13}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster14",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster14}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster15",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster15}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster16",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster16}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster17",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster17}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster18",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster18}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster19",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster19}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster20",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster20}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster21",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster21}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster22",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster22}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster23",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster23}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster24",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster24}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster25",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster25}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster26",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster26}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster27",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster27}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster28",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster28}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster29",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster29}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster30",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster30}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster31",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster31}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster32",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster32}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster33",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster33}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster34",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster34}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster35",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster35}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster36",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster36}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster37",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster37}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster38",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster38}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster39",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster39}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster40",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster40}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster41",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster41}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster42",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster42}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster43",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster43}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster44",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster44}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster45",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster45}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster46",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster46}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster47",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster47}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster48",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster48}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster49",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster49}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster50",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster50}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster51",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster51}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster52",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster52}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster53",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster53}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster54",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster54}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster55",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster55}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster56",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster56}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster57",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster57}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster59",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster59}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster60",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster60}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster61",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster61}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster62",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster62}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster63",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster63}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster64",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster64}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster65",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster65}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster66",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster66}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster67",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster67}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster68",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster68}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster69",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster69}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster70",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster70}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster71",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster71}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster72",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster72}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster73",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster73}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster74",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster74}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster75",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster75}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster76",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster76}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster78",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster78}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster79",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster79}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster80",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster80}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster81",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster81}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster82",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster82}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster83",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster83}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster84",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster84}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster85",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster85}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster86",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster86}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster87",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster87}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster88",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster88}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster89",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster89}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster90",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster90}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster91",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster91}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster92",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster92}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster93",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster93}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster94",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster94}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster95",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster95}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster96",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster96}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster97",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster97}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster98",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster98}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster99",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster99}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cluster100",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/cluster100}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "segments",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/segments}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "mean_rect_width",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/mean_rect_width}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "std_rect_width",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/std_rect_width}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "mean_rect_height",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/mean_rect_height}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "std_rect_height",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/std_rect_height}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "mean_rect_volume",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/mean_rect_volume}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "std_rect_volume",
+          "dataType": "sc:Number",
+          "source": "#{birds.arff/std_rect_volume}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "hassegments",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/hasSegments}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "location",
+          "dataType": "sc:Text",
+          "source": "#{birds.arff/location}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "brown_creeper",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Brown.Creeper}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "pacific_wren",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Pacific.Wren}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "pacific_slope_flycatcher",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Pacific.slope.Flycatcher}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "red_breasted_nuthatch",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Red.breasted.Nuthatch}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "dark_eyed_junco",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Dark.eyed.Junco}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "olive_sided_flycatcher",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Olive.sided.Flycatcher}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "hermit_thrush",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Hermit.Thrush}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "chestnut_backed_chickadee",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Chestnut.backed.Chickadee}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "varied_thrush",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Varied.Thrush}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "hermit_warbler",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Hermit.Warbler}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "swainson_s_thrush",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Swainson.s.Thrush}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "hammond_s_flycatcher",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Hammond.s.Flycatcher}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "western_tanager",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Western.Tanager}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "black_headed_grosbeak",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Black.headed.Grosbeak}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "golden_crowned_kinglet",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Golden.Crowned.Kinglet}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "warbling_vireo",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Warbling.Vireo}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "macgillivray_s_warbler",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/MacGillivray.s.Warbler}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "stellar_s_jay",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Stellar.s.Jay}"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "common_nighthawk",
+          "dataType": "sc:Boolean",
+          "source": "#{birds.arff/Common.Nighthawk}"
+        }
+      ]
+    }
+  ]
 }

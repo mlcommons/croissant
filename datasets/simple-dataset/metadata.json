@@ -58,23 +58,27 @@
       "includes": "*.jpg"
     }
   ],
-  "recordSet": {
-    "@type": "ml:RecordSet",
-    "name": "images",
-    "key": "#{hash}",
-    "source": "#{image-files}",
-    "field": {
-      "@type": "ml:Field",
-      "name": "hash",
-      "description": "The hash of the image, as computed from YFCC-100M.",
-      "dataType": "sc:Text",
-      "references": "#{metadata/hash}",
-      "source": {
-        "applyTransform": {
-          "regex": "([^\\/]*)\\.jpg"
-        },
-        "data": "#{image-files/filename}"
-      }
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "key": "#{hash}",
+      "source": "#{image-files}",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "hash",
+          "description": "The hash of the image, as computed from YFCC-100M.",
+          "dataType": "sc:Text",
+          "references": "#{metadata/hash}",
+          "source": {
+            "applyTransform": {
+              "regex": "([^\\/]*)\\.jpg"
+            },
+            "data": "#{image-files/filename}"
+          }
+        }
+      ]
     }
-  }
+  ]
 }
