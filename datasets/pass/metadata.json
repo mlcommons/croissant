@@ -142,7 +142,6 @@
       "@type": "ml:RecordSet",
       "name": "images",
       "key": "#{hash}",
-      "source": "#{image-files}",
       "field": [
         {
           "@type": "ml:Field",

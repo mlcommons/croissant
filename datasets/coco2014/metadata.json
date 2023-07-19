@@ -198,7 +198,9 @@
             "sc:Text",
             "wd:Q3985153"
           ],
-          "references": "#{split_enums}",
+          "references": {
+            "field": "split_enums/name"
+          },
           "source": {
             "applyTransform": {
               "regex": "^(train|val|test)2014/.*\\.jpg$"

@@ -135,7 +135,9 @@
             "sc:Text",
             "wd:Q3985153"
           ],
-          "references": "#{split_enums}",
+          "references": {
+            "field": "split_enums/name"
+          },
           "source": {
             "applyTransform": {
               "regex": "^wiki\\.(train|valid|test)\\.tokens$"
