@@ -10,7 +10,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
-    "field": "ml:Field",
+    "field": "ml:field",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
@@ -18,14 +18,14 @@
       "@type": "@json"
     },
     "ml": "http://mlcommons.org/schema/",
-    "recordSet": "ml:RecordSet",
+    "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:SubField",
+    "subField": "ml:subField",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -34,13 +34,15 @@
   "@language": "en",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://mlcommons.org",
-  "distribution": {
-    "@type": "sc:FileObject",
-    "name": "publications",
-    "contentUrl": "data/publications.csv",
-    "encodingFormat": "text/csv",
-    "sha256": "d1bd4b903d5de29e6d455f28a68aff7095d3393a19a7cdfdeea3b9ad799e1ce1"
-  },
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "publications",
+      "contentUrl": "data/publications.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "d1bd4b903d5de29e6d455f28a68aff7095d3393a19a7cdfdeea3b9ad799e1ce1"
+    }
+  ],
   "recordSet": [
     {
       "@type": "ml:RecordSet",

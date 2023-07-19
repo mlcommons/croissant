@@ -10,7 +10,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
-    "field": "ml:Field",
+    "field": "ml:field",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
@@ -18,14 +18,14 @@
       "@type": "@json"
     },
     "ml": "http://mlcommons.org/schema/",
-    "recordSet": "ml:RecordSet",
+    "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:SubField",
+    "subField": "ml:subField",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -34,13 +34,15 @@
   "@language": "en",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://mlcommons.org",
-  "distribution": {
-    "@type": "sc:FileObject",
-    "name": "books.csv",
-    "contentUrl": "data/books.csv",
-    "encodingFormat": "text/csv",
-    "sha256": "d35c5a01eecbd7700faf86b4ec838eb65bd6e861633b1e10ca3294d4e58e75c9"
-  },
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "books.csv",
+      "contentUrl": "data/books.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "d35c5a01eecbd7700faf86b4ec838eb65bd6e861633b1e10ca3294d4e58e75c9"
+    }
+  ],
   "recordSet": [
     {
       "@type": "ml:RecordSet",

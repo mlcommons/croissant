@@ -29,6 +29,7 @@ _KEYS_WITH_LIST = {
     constants.ML_COMMONS_FIELD,
     constants.ML_COMMONS_RECORD_SET,
     constants.ML_COMMONS_SUB_FIELD,
+    constants.SCHEMA_ORG_DISTRIBUTION,
 }
 
 
@@ -38,19 +39,19 @@ def _make_context():
         "applyTransform": "ml:applyTransform",
         "data": {"@id": "ml:data", "@nest": "source"},
         "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
-        "field": "ml:Field",
+        "field": "ml:field",
         "format": "ml:format",
         "includes": "ml:includes",
         "inlineData": {"@id": "ml:data", "@type": "@json"},
         "ml": "http://mlcommons.org/schema/",
-        "recordSet": "ml:RecordSet",
+        "recordSet": "ml:recordSet",
         "references": "ml:references",
         "regex": "ml:regex",
         "replace": "ml:replace",
         "sc": "https://schema.org/",
         "separator": "ml:separator",
         "source": "ml:source",
-        "subField": "ml:SubField",
+        "subField": "ml:subField",
         "wd": "https://www.wikidata.org/wiki/",
     }
 
@@ -137,10 +138,11 @@ def expand_json_ld(data: Json) -> Json:
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
+    assert nodes, "Found no node in graph"
     # Find the entry node (schema.org/Dataset).
-    entry_node = next((record for record in nodes if _is_dataset_node(record)), None)
-    if entry_node is None:
-        raise ValueError(f"File does not define {constants.SCHEMA_ORG_DATASET}.")
+    entry_node = next(
+        (record for record in nodes if _is_dataset_node(record)), nodes[0]
+    )
     id_to_node: dict[str, Json] = {}
     for node in nodes:
         node_id = node.get("@id")

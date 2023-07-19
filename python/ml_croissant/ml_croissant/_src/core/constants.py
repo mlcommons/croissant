@@ -12,16 +12,18 @@ ML_COMMONS_DATA = ML_COMMONS.data
 ML_COMMONS_DATA_TYPE = ML_COMMONS.dataType
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
 ML_COMMONS_FORMAT = term.URIRef("http://mlcommons.org/schema/format")
-ML_COMMONS_FIELD = ML_COMMONS.Field
+ML_COMMONS_FIELD = ML_COMMONS.field
+ML_COMMONS_FIELD_TYPE = ML_COMMONS.Field
 ML_COMMONS_INCLUDES = ML_COMMONS.includes
-ML_COMMONS_RECORD_SET = ML_COMMONS.RecordSet
+ML_COMMONS_RECORD_SET = ML_COMMONS.recordSet
+ML_COMMONS_RECORD_SET_TYPE = ML_COMMONS.RecordSet
 ML_COMMONS_REFERENCES = ML_COMMONS.references
 ML_COMMONS_REGEX = ML_COMMONS.regex
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
 ML_COMMONS_REPLACE = term.URIRef("http://mlcommons.org/schema/replace")
 ML_COMMONS_SEPARATOR = ML_COMMONS.separator
 ML_COMMONS_SOURCE = ML_COMMONS.source
-ML_COMMONS_SUB_FIELD = ML_COMMONS.SubField
+ML_COMMONS_SUB_FIELD = ML_COMMONS.subField
 
 # RDF standard URIs.
 # For "@type" key:
