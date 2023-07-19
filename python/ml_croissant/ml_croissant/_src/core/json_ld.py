@@ -24,12 +24,12 @@ _PREFIX_MAP = {
     "http://mlcommons.org/schema/RecordSet": "recordSet",
     "http://mlcommons.org/schema/SubField": "subField",
 }
-# Keys that always output lists:
+# List of key/type where `key` always outputs lists when used in nodes of type `type`.
 _KEYS_WITH_LIST = {
-    constants.ML_COMMONS_FIELD,
-    constants.ML_COMMONS_RECORD_SET,
-    constants.ML_COMMONS_SUB_FIELD,
-    constants.SCHEMA_ORG_DISTRIBUTION,
+    (constants.ML_COMMONS_FIELD, constants.ML_COMMONS_RECORD_SET_TYPE),
+    (constants.ML_COMMONS_RECORD_SET, constants.SCHEMA_ORG_DATASET),
+    (constants.ML_COMMONS_SUB_FIELD, constants.ML_COMMONS_FIELD_TYPE),
+    (constants.SCHEMA_ORG_DISTRIBUTION, constants.SCHEMA_ORG_DATASET),
 }
 
 
@@ -37,13 +37,18 @@ def _make_context():
     return {
         "@vocab": "https://schema.org/",
         "applyTransform": "ml:applyTransform",
+        "csvColumn": "ml:csvColumn",
         "data": {"@id": "ml:data", "@nest": "source"},
+        "dataExtraction": "ml:dataExtraction",
         "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
         "field": "ml:field",
+        "fileProperty": "ml:fileProperty",
         "format": "ml:format",
         "includes": "ml:includes",
         "inlineData": {"@id": "ml:data", "@type": "@json"},
+        "jsonPath": "ml:jsonPath",
         "ml": "http://mlcommons.org/schema/",
+        "path": "ml:path",
         "recordSet": "ml:recordSet",
         "references": "ml:references",
         "regex": "ml:regex",
@@ -112,7 +117,8 @@ def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) 
             entry_node[key] = value[0]
         elif isinstance(value, list):
             value = [_recursively_populate_fields(child, id_to_node) for child in value]
-            if term.URIRef(key) in _KEYS_WITH_LIST:
+            node_type = entry_node.get("@type", "")
+            if (term.URIRef(key), term.URIRef(node_type)) in _KEYS_WITH_LIST:
                 entry_node[key] = value
             elif len(value) == 1:
                 entry_node[key] = value[0]

@@ -8,13 +8,18 @@ from rdflib import namespace, term
 # MLCommons-defined URIs (still draft).
 ML_COMMONS = rdflib.Namespace("http://mlcommons.org/schema/")
 ML_COMMONS_APPLY_TRANSFORM = ML_COMMONS.applyTransform
+ML_COMMONS_CSV_COLUMN = ML_COMMONS.csvColumn
 ML_COMMONS_DATA = ML_COMMONS.data
+ML_COMMONS_DATA_EXTRACTION = ML_COMMONS.dataExtraction
 ML_COMMONS_DATA_TYPE = ML_COMMONS.dataType
-# ML_COMMONS.format is understood as the `format` method on the class Namespace.
-ML_COMMONS_FORMAT = term.URIRef("http://mlcommons.org/schema/format")
+ML_COMMONS_FILE_PROPERTY = ML_COMMONS.fileProperty
 ML_COMMONS_FIELD = ML_COMMONS.field
 ML_COMMONS_FIELD_TYPE = ML_COMMONS.Field
+# ML_COMMONS.format is understood as the `format` method on the class Namespace.
+ML_COMMONS_FORMAT = term.URIRef("http://mlcommons.org/schema/format")
 ML_COMMONS_INCLUDES = ML_COMMONS.includes
+ML_COMMONS_JSON_PATH = ML_COMMONS.jsonPath
+ML_COMMONS_PATH = ML_COMMONS.path
 ML_COMMONS_RECORD_SET = ML_COMMONS.recordSet
 ML_COMMONS_RECORD_SET_TYPE = ML_COMMONS.RecordSet
 ML_COMMONS_REFERENCES = ML_COMMONS.references

@@ -5,11 +5,47 @@ newer Croissant format.
 """
 
 import json
+import importlib
 
+from absl import app
+from absl import flags
 from etils import epath
 from ml_croissant._src.core.json_ld import expand_json_ld, compact_json_ld
 
-if __name__ == "__main__":
+
+_PREVIOUS_MIGRATIONS_FOLDER = "previous"
+
+flags.DEFINE_string(
+    "migration",
+    None,
+    "The name of the Python file with the migration.",
+)
+
+FLAGS = flags.FLAGS
+
+
+def get_migration_fn(migration: str | None):
+    if migration is None:
+        identity_function = lambda x: x
+        return identity_function
+    try:
+        mod = importlib.import_module(f"{_PREVIOUS_MIGRATIONS_FOLDER}.{migration}")
+    except ImportError as e:
+        raise ValueError(
+            "Did you create a file in named"
+            f" {_PREVIOUS_MIGRATIONS_FOLDER}/{migration}.py?"
+        ) from e
+    try:
+        return getattr(mod, "up")
+    except AttributeError as e:
+        raise ValueError(
+            f"Does the file {_PREVIOUS_MIGRATIONS_FOLDER}/{migration}.py declare a `up`"
+            " function?"
+        ) from e
+
+
+def main(argv):
+    del argv
     # Datasets in croissant/datasets
     datasets = [path for path in epath.Path("../../datasets").glob("*/*.json")]
     # Datasets in croissant/python/ml_croissant/_src/tests
@@ -20,6 +56,8 @@ if __name__ == "__main__":
         print(f"Converting {dataset}...")
         with dataset.open("r") as f:
             json_ld = json.load(f)
+            up = get_migration_fn(FLAGS.migration)
+            json_ld = up(json_ld)
             json_ld = compact_json_ld(expand_json_ld(json_ld))
         with dataset.open("w") as f:
             # Special cases for test datasets without @context
@@ -30,3 +68,7 @@ if __name__ == "__main__":
             json.dump(json_ld, f, indent="  ")
             f.write("\n")
     print("Done.")
+
+
+if __name__ == "__main__":
+    app.run(main)
