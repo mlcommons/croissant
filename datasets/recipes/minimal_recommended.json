@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -54,14 +59,24 @@
           "name": "name",
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
-          "references": "#{minimal.csv/name}"
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "minimal.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "age",
           "description": "The second column contains the age.",
           "dataType": "sc:Number",
-          "references": "#{minimal.csv/age}"
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "age"
+            },
+            "distribution": "minimal.csv"
+          }
         }
       ]
     }

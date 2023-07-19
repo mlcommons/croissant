@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -79,7 +84,12 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{genders.csv/label}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "label"
+            },
+            "distribution": "genders.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -89,7 +99,12 @@
             "sc:URL",
             "wd:Q48277"
           ],
-          "source": "#{genders.csv/url}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "url"
+            },
+            "distribution": "genders.csv"
+          }
         }
       ]
     },
@@ -105,7 +120,12 @@
           "name": "key",
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
-          "source": "#{embarkation_ports.csv/key}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "key"
+            },
+            "distribution": "embarkation_ports.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -115,7 +135,12 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{embarkation_ports.csv/label}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "label"
+            },
+            "distribution": "embarkation_ports.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -125,7 +150,12 @@
             "sc:URL",
             "wd:Q515"
           ],
-          "source": "#{embarkation_ports.csv/url}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "url"
+            },
+            "distribution": "embarkation_ports.csv"
+          }
         }
       ]
     },
@@ -139,100 +169,174 @@
           "name": "name",
           "description": "Name of the passenger",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/name}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "gender",
           "description": "Gender of passenger (male or female)",
           "dataType": "sc:Text",
-          "references": "#{genders/label}",
-          "source": "#{passengers.csv/sex}"
+          "references": {
+            "field": "genders/label"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "sex"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "age",
           "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/age}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "age"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "survived",
           "description": "Survival status of passenger (0: Lost, 1: Saved)",
           "dataType": "sc:Integer",
-          "source": "#{passengers.csv/survived}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "survived"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "pclass",
           "description": "Passenger Class (1st/2nd/3rd)",
           "dataType": "sc:Integer",
-          "source": "#{passengers.csv/pclass}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "pclass"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cabin",
           "description": "Passenger cabin.",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/cabin}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cabin"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "embarked",
           "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
           "dataType": "sc:Text",
-          "references": "#{embarkation_ports/key}",
-          "source": "#{passengers.csv/embarked}"
+          "references": {
+            "field": "embarkation_ports/key"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "embarked"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "fare",
           "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/fare}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "fare"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "home_destination",
           "description": "Home and destination",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/home.dest}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "home.dest"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "ticket",
           "description": "Ticket Number, may include a letter.",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/ticket}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "ticket"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "num_parents_children",
           "description": "Number of Parents/Children Aboard",
           "dataType": "sc:Integer",
-          "source": "#{passengers.csv/parch}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "parch"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "num_siblings_spouses",
           "description": "Number of Siblings/Spouses Aboard",
           "dataType": "sc:Integer",
-          "source": "#{passengers.csv/sibsp}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "sibsp"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "boat",
           "description": "Lifeboat used by passenger",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/boat}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "boat"
+            },
+            "distribution": "passengers.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "body",
           "description": "Body Identification Number",
           "dataType": "sc:Text",
-          "source": "#{passengers.csv/body}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "body"
+            },
+            "distribution": "passengers.csv"
+          }
         }
       ]
     }

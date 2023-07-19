@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -100,14 +105,24 @@
           "name": "image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
-          "source": "#{image-files/filename}"
+          "source": {
+            "dataExtraction": {
+              "fileProperty": "filename"
+            },
+            "distribution": "image-files"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
-          "source": "#{image-files/content}"
+          "source": {
+            "dataExtraction": {
+              "fileProperty": "content"
+            },
+            "distribution": "image-files"
+          }
         },
         {
           "@type": "ml:Field",
@@ -121,7 +136,10 @@
             "applyTransform": {
               "regex": "^(train|val|test)2014/.*\\.jpg$"
             },
-            "data": "#{image-files/fullpath}"
+            "dataExtraction": {
+              "fileProperty": "fullpath"
+            },
+            "distribution": "image-files"
           }
         }
       ]

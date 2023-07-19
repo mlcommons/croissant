@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -80,12 +85,20 @@
           "name": "hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
-          "references": "#{metadata/hash}",
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "hash"
+            },
+            "distribution": "metadata"
+          },
           "source": {
             "applyTransform": {
               "regex": "([^\\/]*)\\.jpg"
             },
-            "data": "#{image-files/filename}"
+            "dataExtraction": {
+              "fileProperty": "filename"
+            },
+            "distribution": "image-files"
           }
         },
         {
@@ -93,14 +106,24 @@
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
-          "source": "#{image-files/content}"
+          "source": {
+            "dataExtraction": {
+              "fileProperty": "content"
+            },
+            "distribution": "image-files"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "creator_uname",
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
-          "source": "#{metadata/unickname}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "unickname"
+            },
+            "distribution": "metadata"
+          }
         },
         {
           "@type": "ml:Field",
@@ -112,13 +135,23 @@
               "@type": "ml:Field",
               "name": "latitude",
               "dataType": "sc:Float",
-              "source": "#{metadata/latitude}"
+              "source": {
+                "dataExtraction": {
+                  "csvColumn": "latitude"
+                },
+                "distribution": "metadata"
+              }
             },
             {
               "@type": "ml:Field",
               "name": "longitude",
               "dataType": "sc:Float",
-              "source": "#{metadata/longitude}"
+              "source": {
+                "dataExtraction": {
+                  "csvColumn": "longitude"
+                },
+                "distribution": "metadata"
+              }
             }
           ]
         },
@@ -131,7 +164,10 @@
             "applyTransform": {
               "format": "%Y-%m-%d %H:%M:%S.%f"
             },
-            "data": "#{metadata/datetaken}"
+            "dataExtraction": {
+              "csvColumn": "datetaken"
+            },
+            "distribution": "metadata"
           }
         }
       ]

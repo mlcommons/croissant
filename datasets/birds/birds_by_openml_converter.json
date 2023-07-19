@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -60,1675 +65,3070 @@
           "@type": "ml:Field",
           "name": "audio_ssd1",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd1}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd1"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd2",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd2}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd2"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd3",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd3}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd3"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd4",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd4}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd4"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd5",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd5}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd5"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd6",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd6}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd6"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd7",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd7}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd7"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd8",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd8}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd8"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd9",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd9}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd9"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd10",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd10}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd10"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd11",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd11}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd11"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd12",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd12}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd12"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd13",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd13}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd13"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd14",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd14}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd14"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd15",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd15}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd15"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd16",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd16}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd16"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd17",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd17}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd17"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd18",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd18}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd18"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd19",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd19}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd19"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd20",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd20}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd20"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd21",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd21}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd21"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd22",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd22}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd22"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd25",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd25}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd25"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd26",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd26}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd26"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd27",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd27}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd27"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd28",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd28}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd28"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd29",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd29}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd29"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd30",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd30}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd30"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd31",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd31}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd31"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd32",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd32}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd32"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd33",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd33}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd33"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd34",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd34}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd34"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd35",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd35}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd35"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd36",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd36}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd36"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd37",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd37}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd37"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd38",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd38}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd38"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd39",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd39}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd39"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd40",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd40}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd40"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd41",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd41}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd41"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd42",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd42}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd42"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd43",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd43}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd43"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd44",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd44}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd44"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd45",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd45}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd45"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd46",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd46}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd46"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd49",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd49}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd49"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd50",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd50}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd50"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd51",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd51}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd51"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd52",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd52}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd52"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd53",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd53}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd53"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd54",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd54}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd54"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd55",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd55}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd55"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd56",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd56}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd56"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd57",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd57}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd57"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd58",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd58}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd58"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd59",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd59}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd59"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd60",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd60}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd60"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd61",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd61}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd61"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd62",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd62}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd62"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd63",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd63}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd63"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd64",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd64}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd64"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd65",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd65}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd65"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd66",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd66}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd66"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd67",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd67}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd67"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd68",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd68}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd68"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd69",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd69}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd69"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd70",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd70}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd70"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd73",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd73}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd73"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd74",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd74}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd74"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd75",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd75}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd75"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd76",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd76}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd76"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd77",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd77}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd77"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd78",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd78}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd78"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd79",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd79}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd79"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd80",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd80}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd80"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd81",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd81}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd81"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd82",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd82}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd82"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd83",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd83}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd83"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd84",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd84}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd84"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd85",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd85}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd85"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd86",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd86}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd86"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd87",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd87}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd87"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd88",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd88}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd88"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd89",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd89}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd89"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd90",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd90}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd90"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd91",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd91}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd91"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd92",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd92}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd92"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd93",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd93}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd93"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd94",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd94}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd94"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd97",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd97}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd97"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd98",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd98}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd98"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd99",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd99}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd99"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd100",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd100}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd100"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd101",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd101}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd101"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd102",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd102}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd102"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd103",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd103}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd103"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd104",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd104}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd104"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd105",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd105}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd105"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd106",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd106}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd106"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd107",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd107}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd107"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd108",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd108}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd108"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd109",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd109}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd109"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd110",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd110}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd110"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd111",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd111}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd111"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd112",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd112}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd112"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd113",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd113}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd113"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd114",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd114}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd114"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd115",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd115}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd115"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd116",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd116}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd116"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd117",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd117}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd117"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd118",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd118}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd118"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd121",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd121}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd121"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd122",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd122}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd122"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd123",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd123}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd123"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd124",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd124}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd124"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd125",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd125}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd125"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd126",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd126}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd126"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd127",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd127}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd127"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd128",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd128}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd128"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd129",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd129}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd129"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd130",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd130}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd130"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd131",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd131}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd131"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd132",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd132}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd132"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd133",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd133}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd133"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd134",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd134}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd134"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd135",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd135}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd135"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd136",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd136}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd136"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd137",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd137}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd137"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd138",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd138}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd138"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd139",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd139}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd139"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd140",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd140}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd140"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd141",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd141}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd141"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd145",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd145}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd145"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd146",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd146}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd146"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd147",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd147}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd147"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd148",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd148}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd148"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd149",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd149}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd149"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd150",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd150}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd150"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd151",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd151}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd151"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd152",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd152}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd152"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd153",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd153}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd153"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd154",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd154}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd154"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd155",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd155}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd155"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd156",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd156}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd156"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd157",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd157}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd157"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd158",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd158}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd158"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd159",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd159}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd159"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd160",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd160}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd160"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd161",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd161}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd161"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd162",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd162}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd162"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd163",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd163}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd163"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd164",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd164}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd164"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd165",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd165}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd165"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd166",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/audio.ssd166}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "audio.ssd166"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster1",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster1}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster1"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster2",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster2}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster2"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster3",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster3}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster3"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster4",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster4}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster4"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster5",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster5}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster5"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster6",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster6}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster6"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster7",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster7}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster7"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster8",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster8}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster8"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster9",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster9}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster9"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster10",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster10}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster10"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster11",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster11}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster11"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster12",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster12}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster12"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster13",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster13}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster13"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster14",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster14}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster14"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster15",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster15}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster15"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster16",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster16}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster16"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster17",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster17}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster17"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster18",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster18}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster18"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster19",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster19}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster19"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster20",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster20}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster20"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster21",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster21}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster21"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster22",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster22}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster22"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster23",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster23}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster23"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster24",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster24}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster24"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster25",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster25}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster25"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster26",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster26}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster26"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster27",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster27}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster27"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster28",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster28}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster28"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster29",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster29}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster29"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster30",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster30}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster30"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster31",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster31}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster31"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster32",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster32}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster32"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster33",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster33}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster33"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster34",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster34}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster34"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster35",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster35}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster35"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster36",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster36}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster36"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster37",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster37}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster37"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster38",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster38}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster38"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster39",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster39}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster39"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster40",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster40}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster40"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster41",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster41}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster41"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster42",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster42}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster42"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster43",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster43}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster43"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster44",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster44}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster44"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster45",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster45}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster45"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster46",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster46}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster46"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster47",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster47}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster47"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster48",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster48}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster48"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster49",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster49}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster49"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster50",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster50}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster50"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster51",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster51}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster51"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster52",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster52}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster52"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster53",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster53}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster53"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster54",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster54}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster54"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster55",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster55}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster55"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster56",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster56}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster56"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster57",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster57}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster57"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster59",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster59}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster59"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster60",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster60}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster60"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster61",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster61}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster61"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster62",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster62}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster62"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster63",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster63}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster63"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster64",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster64}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster64"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster65",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster65}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster65"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster66",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster66}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster66"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster67",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster67}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster67"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster68",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster68}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster68"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster69",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster69}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster69"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster70",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster70}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster70"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster71",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster71}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster71"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster72",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster72}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster72"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster73",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster73}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster73"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster74",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster74}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster74"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster75",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster75}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster75"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster76",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster76}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster76"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster78",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster78}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster78"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster79",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster79}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster79"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster80",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster80}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster80"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster81",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster81}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster81"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster82",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster82}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster82"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster83",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster83}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster83"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster84",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster84}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster84"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster85",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster85}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster85"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster86",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster86}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster86"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster87",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster87}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster87"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster88",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster88}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster88"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster89",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster89}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster89"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster90",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster90}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster90"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster91",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster91}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster91"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster92",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster92}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster92"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster93",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster93}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster93"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster94",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster94}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster94"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster95",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster95}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster95"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster96",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster96}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster96"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster97",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster97}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster97"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster98",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster98}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster98"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster99",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster99}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster99"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cluster100",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/cluster100}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cluster100"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "segments",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/segments}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "segments"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "mean_rect_width",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/mean_rect_width}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "mean_rect_width"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "std_rect_width",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/std_rect_width}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "std_rect_width"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "mean_rect_height",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/mean_rect_height}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "mean_rect_height"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "std_rect_height",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/std_rect_height}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "std_rect_height"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "mean_rect_volume",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/mean_rect_volume}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "mean_rect_volume"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "std_rect_volume",
           "dataType": "sc:Number",
-          "source": "#{birds.arff/std_rect_volume}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "std_rect_volume"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "hassegments",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/hasSegments}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "hasSegments"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "location",
           "dataType": "sc:Text",
-          "source": "#{birds.arff/location}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "location"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "brown_creeper",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Brown.Creeper}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Brown.Creeper"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "pacific_wren",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Pacific.Wren}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Pacific.Wren"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "pacific_slope_flycatcher",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Pacific.slope.Flycatcher}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Pacific.slope.Flycatcher"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "red_breasted_nuthatch",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Red.breasted.Nuthatch}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Red.breasted.Nuthatch"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "dark_eyed_junco",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Dark.eyed.Junco}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Dark.eyed.Junco"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "olive_sided_flycatcher",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Olive.sided.Flycatcher}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Olive.sided.Flycatcher"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "hermit_thrush",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Hermit.Thrush}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Hermit.Thrush"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "chestnut_backed_chickadee",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Chestnut.backed.Chickadee}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Chestnut.backed.Chickadee"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "varied_thrush",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Varied.Thrush}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Varied.Thrush"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "hermit_warbler",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Hermit.Warbler}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Hermit.Warbler"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "swainson_s_thrush",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Swainson.s.Thrush}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Swainson.s.Thrush"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "hammond_s_flycatcher",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Hammond.s.Flycatcher}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Hammond.s.Flycatcher"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "western_tanager",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Western.Tanager}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Western.Tanager"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "black_headed_grosbeak",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Black.headed.Grosbeak}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Black.headed.Grosbeak"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "golden_crowned_kinglet",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Golden.Crowned.Kinglet}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Golden.Crowned.Kinglet"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "warbling_vireo",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Warbling.Vireo}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Warbling.Vireo"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "macgillivray_s_warbler",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/MacGillivray.s.Warbler}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "MacGillivray.s.Warbler"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "stellar_s_jay",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Stellar.s.Jay}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Stellar.s.Jay"
+            },
+            "distribution": "birds.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "common_nighthawk",
           "dataType": "sc:Boolean",
-          "source": "#{birds.arff/Common.Nighthawk}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Common.Nighthawk"
+            },
+            "distribution": "birds.arff"
+          }
         }
       ]
     }
