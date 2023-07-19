@@ -181,6 +181,16 @@ the dataset (e.g., a `FileObject`, or a `RecordSet`), or one of its components
 (e.g., a `Field` in a `RecordSet`). For the latter case, `ref` uses '/' to
 represent nesting (e.g., `"#{recordset2/field5}"`).
 
+References thus allow to join RecordSets. When writing:
+
+```json
+"source": "#{recordSet1/fieldA}",
+"references": "#{recordSet2/fieldB}",
+```
+
+we actually join `recordSet1` with `recordSet2` on `fieldA == fieldB`. The join
+is a left join with `recordSet1` on the left.
+
 **subclassOf**:	[sc:Text](https://schema.org/Text)
 
 ### BoundingBox
