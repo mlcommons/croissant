@@ -146,8 +146,8 @@ def _parse_node(
         constants.SCHEMA_ORG_DATASET: Metadata,
         constants.SCHEMA_ORG_FILE_OBJECT: FileObject,
         constants.SCHEMA_ORG_FILE_SET: FileSet,
-        constants.ML_COMMONS_FIELD: Field,
-        constants.ML_COMMONS_RECORD_SET: RecordSet,
+        constants.ML_COMMONS_FIELD_TYPE: Field,
+        constants.ML_COMMONS_RECORD_SET_TYPE: RecordSet,
     }
     if node_type not in rdf_to_croissant:
         # TODO(marcenacp): Propagate the context here.
@@ -244,7 +244,7 @@ def from_rdf_to_nodes(
         issues=issues,
         rdf_graph=rdf_graph,
         expected_property=constants.ML_COMMONS_RECORD_SET,
-        expected_types=(constants.ML_COMMONS_RECORD_SET,),
+        expected_types=(constants.ML_COMMONS_RECORD_SET_TYPE,),
         folder=folder,
         graph=graph,
         parents=(metadata,),
@@ -259,7 +259,7 @@ def from_rdf_to_nodes(
             issues=issues,
             rdf_graph=rdf_graph,
             expected_property=constants.ML_COMMONS_FIELD,
-            expected_types=(constants.ML_COMMONS_FIELD,),
+            expected_types=(constants.ML_COMMONS_FIELD_TYPE,),
             folder=folder,
             graph=graph,
             parents=(metadata, record_set),
@@ -270,7 +270,7 @@ def from_rdf_to_nodes(
                 issues=issues,
                 rdf_graph=rdf_graph,
                 expected_property=constants.ML_COMMONS_SUB_FIELD,
-                expected_types=(constants.ML_COMMONS_FIELD,),
+                expected_types=(constants.ML_COMMONS_FIELD_TYPE,),
                 folder=folder,
                 graph=graph,
                 parents=(metadata, record_set, field),

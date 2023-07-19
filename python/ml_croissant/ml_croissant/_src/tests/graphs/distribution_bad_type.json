@@ -1,36 +1,48 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "subField": "ml:SubField",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "data": "ml:data",
     "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:field",
     "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
     "regex": "ml:regex",
-    "separator": "ml:separator"
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
-  "@type": "Dataset",
-  "@language": "en",
+  "@type": "sc:Dataset",
   "name": "mydataset",
-  "url": "https://www.google.com/dataset",
   "description": "This is a description.",
-  "license": "This is a license.",
+  "@language": "en",
   "citation": "This is a citation.",
+  "license": "This is a license.",
+  "url": "https://www.google.com/dataset",
   "distribution": [
     {
-      "@type": "WRONG_TYPE_HERE",
+      "@type": "sc:WRONG_TYPE_HERE",
       "name": "a-csv-table",
-      "contentUrl": "https://www.google.com/data.csv",
       "contentSize": "117743 B",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
-      "encodingFormat": "text/csv"
+      "contentUrl": "https://www.google.com/data.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
     }
-  ],
-  "recordSet": []
+  ]
 }

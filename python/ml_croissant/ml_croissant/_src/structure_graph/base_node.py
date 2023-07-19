@@ -59,6 +59,7 @@ class Node(abc.ABC):
         """
         for mandatory_property in mandatory_properties:
             value = getattr(self, mandatory_property)
+            print(self, mandatory_property, value)
             if not value:
                 error = (
                     f'Property "{constants.FROM_CROISSANT.get(mandatory_property)}" is'

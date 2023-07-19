@@ -1,27 +1,38 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "includes": "ml:includes",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "subField": "ml:SubField",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "data": "ml:data",
     "applyTransform": "ml:applyTransform",
+    "data": {
+      "@id": "ml:data",
+      "@nest": "source"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:field",
     "format": "ml:format",
+    "includes": "ml:includes",
+    "inlineData": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "ml": "http://mlcommons.org/schema/",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
     "regex": "ml:regex",
-    "separator": "ml:separator"
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "wd": "https://www.wikidata.org/wiki/"
   },
-  "@type": "WRONG_TYPE",
-  "@language": "en",
+  "@type": "sc:WRONG_TYPE",
   "name": "mydataset",
-  "url": "https://www.google.com/dataset",
   "description": "This is a description.",
-  "license": "This is a license.",
+  "@language": "en",
   "citation": "This is a citation.",
-  "distribution": [],
-  "recordSet": []
+  "license": "This is a license.",
+  "url": "https://www.google.com/dataset"
 }

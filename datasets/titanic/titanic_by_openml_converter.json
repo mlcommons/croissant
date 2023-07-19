@@ -10,7 +10,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
-    "field": "ml:Field",
+    "field": "ml:field",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
@@ -18,14 +18,14 @@
       "@type": "@json"
     },
     "ml": "http://mlcommons.org/schema/",
-    "recordSet": "ml:RecordSet",
+    "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:SubField",
+    "subField": "ml:subField",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -40,13 +40,15 @@
   "license": "Public",
   "url": "https://www.openml.org/search?type=data&id=40945",
   "version": "1",
-  "distribution": {
-    "@type": "sc:FileObject",
-    "name": "Titanic.arff",
-    "contentUrl": "https://api.openml.org/data/v1/download/16826755/Titanic.arff",
-    "encodingFormat": "text/plain",
-    "md5": "60ac7205eee0ba5045c90b3bba95b1c4"
-  },
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "Titanic.arff",
+      "contentUrl": "https://api.openml.org/data/v1/download/16826755/Titanic.arff",
+      "encodingFormat": "text/plain",
+      "md5": "60ac7205eee0ba5045c90b3bba95b1c4"
+    }
+  ],
   "recordSet": [
     {
       "@type": "ml:RecordSet",

@@ -10,7 +10,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
-    "field": "ml:Field",
+    "field": "ml:field",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
@@ -18,14 +18,14 @@
       "@type": "@json"
     },
     "ml": "http://mlcommons.org/schema/",
-    "recordSet": "ml:RecordSet",
+    "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:SubField",
+    "subField": "ml:subField",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
