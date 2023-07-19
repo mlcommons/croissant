@@ -96,8 +96,8 @@
           "name": "author_email",
           "description": "Email of the author.",
           "dataType": "sc:email",
-          "references": "#{publications/by}",
-          "source": "#{users/email}"
+          "references": "#{users/email}",
+          "source": "#{publications/by}"
         },
         {
           "@type": "ml:Field",
