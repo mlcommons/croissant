@@ -146,19 +146,8 @@ the property of a file (e.g., its name), etc.
 **Properties**:
 
 *   [fileProperty](#fileproperty): The information to extract from the file.
-*   [path](#path): The path to the data.
-
-### path
-
-The path to filter the data. This allows to filter out:
-
-*   a field name: the path is the name of the field (e.g., `field_name`),
-    possibly with subfields (e.g., `field_name/subfield_name`);
-*   a CSV column name (e.g., `date`);
-*   a JSON Path within a JSON (e.g., `/bookstore/book[1]/title`);
-*   an XPath within XML (e.g., `/bookstore/book[1]/title`).
-
-**subclassOf**:	[sc:Text](https://schema.org/Text)
+*   [csvColumn](#csvcolumn): The column of the source CSV.
+*   [jsonPath](#jsonpath): The JSON path if the source is a JSON.
 
 ### fileProperty
 
@@ -171,7 +160,22 @@ The information to extract from the file. It can be: `filename`, `fullpath`,
     name is `metadata.csv`.
 *   `content`: The byte content of the file.
 
-**subclassOf**:	[sc:Text](https://schema.org/Text)
+**range**:	[sc:Text](https://schema.org/Text)
+
+### csvcolumn
+
+The column of the source CSV (e.g., `date`).
+
+**range**:	[sc:Text](https://schema.org/Text)
+
+### jsonPath
+
+The JSON path if the source is a JSON. Refer to the original
+[JSONPath standard](https://goessner.net/articles/JsonPath/) for more
+details.
+
+**range**:	[sc:Text](https://schema.org/Text)
+
 
 ### Reference
 
@@ -179,19 +183,23 @@ A reference to another object defined within the dataset. References are string
 of the form `"#{[ref]}"`, where `ref` is either the name of an object defined in
 the dataset (e.g., a `FileObject`, or a `RecordSet`), or one of its components
 (e.g., a `Field` in a `RecordSet`). For the latter case, `ref` uses '/' to
-represent nesting (e.g., `"#{recordset2/field5}"`).
+represent nesting within a RecordSet or a Field (e.g., `"#{recordset2/field5}"`).
 
 References thus allow to join RecordSets. When writing:
 
 ```json
-"source": "#{recordSet1/fieldA}",
-"references": "#{recordSet2/fieldB}",
+"source": {
+  "field": "recordSet1/fieldA"
+},
+"references": {
+  "field": "recordSet2/fieldB"
+}
 ```
 
 we actually join `recordSet1` with `recordSet2` on `fieldA == fieldB`. The join
 is a left join with `recordSet1` on the left.
 
-**subclassOf**:	[sc:Text](https://schema.org/Text)
+**range**:	[sc:Text](https://schema.org/Text)
 
 ### BoundingBox
 
@@ -209,8 +217,7 @@ starting from the object specified by `containedIn` (e.g., a path within an
 archive). If multiple values are provided for `containedIn`, then their union is
 taken (e.g., this can be used to to combine files from multiple archives).
 
-**range**: [Reference](#reference) (to a [FileObject](#fileobject) or
-[FileSet](#fileset))
+**range**:	[sc:Text](https://schema.org/Text)
 
 **domain**: [FileObject](#fileobject), [FileSet](#fileset)
 
@@ -255,7 +262,7 @@ The key of a `RecordSet`, i.e., the subset of its fields that uniquely
 identifies each record. Multiple values can be provided to represent a composite
 key. A `RecordSet` can only define a single key.
 
-**range**: [Reference](#reference) (to 1+ [Field](#field))
+**range**:	[sc:Text](https://schema.org/Text)
 
 **domain**: [RecordSet](#recordset)
 
@@ -385,7 +392,7 @@ list, and each object within that list must define the RecordSet fields.
   "@type": "ml:RecordSet",
    "name": "gender_enums",
    "description": "Maps gender keys (0, 1) to labeled values.",
-   "key": "key,
+   "key": "key",
    "field": [
      { "name": "key", "@type": "ml:Field", "dataType": "sc:Integer" },
      { "name": "label", "@type": "ml:Field", "dataType": "sc:String" }
