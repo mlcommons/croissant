@@ -59,7 +59,6 @@
     {
       "@type": "ml:RecordSet",
       "name": "birds_records",
-      "source": "#{birds.arff}",
       "field": [
         {
           "@type": "ml:Field",

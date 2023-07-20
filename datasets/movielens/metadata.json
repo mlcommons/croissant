@@ -93,8 +93,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "movies",
-      "key": "#{movie_id}",
-      "source": "#{movies-table}",
+      "key": "movie_id",
       "field": [
         {
           "@type": "ml:Field",
@@ -141,10 +140,9 @@
       "@type": "ml:RecordSet",
       "name": "ratings",
       "key": [
-        "#{user_id}",
-        "#{movie_id}"
+        "user_id",
+        "movie_id"
       ],
-      "source": "#{ratings-table}",
       "field": [
         {
           "@type": "ml:Field",
@@ -161,7 +159,9 @@
           "@type": "ml:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
-          "references": "#{movies}",
+          "references": {
+            "field": "movies/movie_id"
+          },
           "source": {
             "dataExtraction": {
               "csvColumn": "movieId"
@@ -198,11 +198,10 @@
       "@type": "ml:RecordSet",
       "name": "tags",
       "key": [
-        "#{user_id}",
-        "#{movie_id}",
-        "#{timestamp}"
+        "user_id",
+        "movie_id",
+        "timestamp"
       ],
-      "source": "#{tags-table}",
       "field": [
         {
           "@type": "ml:Field",
@@ -219,7 +218,9 @@
           "@type": "ml:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
-          "references": "#{movies}",
+          "references": {
+            "field": "movies/movie_id"
+          },
           "source": {
             "dataExtraction": {
               "csvColumn": "movieId"
@@ -255,8 +256,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "movies_with_ratings_with_tags",
-      "key": "#{movie_id}",
-      "source": "#{movies}",
+      "key": "movie_id",
       "field": [
         {
           "@type": "ml:Field",
@@ -284,10 +284,13 @@
           "name": "ratings",
           "dataType": "ml:RecordSet",
           "parentField": {
-            "references": "#{movies}",
-            "source": "#{ratings/movie_id}"
+            "references": {
+              "field": "movies/movie_id"
+            },
+            "source": {
+              "field": "ratings/movie_id"
+            }
           },
-          "source": "#{ratings}",
           "subField": [
             {
               "@type": "ml:Field",
@@ -317,10 +320,13 @@
           "name": "tags",
           "dataType": "ml:RecordSet",
           "parentField": {
-            "references": "#{movies}",
-            "source": "#{tags/movie_id}"
+            "references": {
+              "field": "movies/movie_id"
+            },
+            "source": {
+              "field": "tags/movie_id"
+            }
           },
-          "source": "#{tags}",
           "subField": [
             {
               "@type": "ml:Field",

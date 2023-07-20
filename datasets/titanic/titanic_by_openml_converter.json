@@ -58,7 +58,6 @@
     {
       "@type": "ml:RecordSet",
       "name": "titanic_records",
-      "source": "#{Titanic.arff}",
       "field": [
         {
           "@type": "ml:Field",

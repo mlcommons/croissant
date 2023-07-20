@@ -77,7 +77,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "images",
-      "key": "#{hash}",
+      "key": "hash",
       "field": [
         {
           "@type": "ml:Field",

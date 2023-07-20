@@ -63,8 +63,7 @@ def get_migration_fn(migration: str | None):
         mod = importlib.import_module(f"{_PREVIOUS_MIGRATIONS_FOLDER}.{migration}")
     except ImportError as e:
         raise ValueError(
-            "Did you create a file in named"
-            f" {_PREVIOUS_MIGRATIONS_FOLDER}/{migration}.py?"
+            f"Did you create a file named {_PREVIOUS_MIGRATIONS_FOLDER}/{migration}.py?"
         ) from e
     try:
         return getattr(mod, "up")

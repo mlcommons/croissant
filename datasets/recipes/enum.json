@@ -58,7 +58,7 @@
       "@type": "ml:RecordSet",
       "name": "direction_enum",
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
-      "key": "#{key}",
+      "key": "key",
       "field": [
         {
           "@type": "ml:Field",
@@ -93,7 +93,6 @@
       "@type": "ml:RecordSet",
       "name": "examples",
       "description": "Records extracted from the examples table, with their schema.",
-      "source": "#{enum.csv}",
       "field": [
         {
           "@type": "ml:Field",

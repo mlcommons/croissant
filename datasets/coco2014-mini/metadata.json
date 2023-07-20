@@ -62,7 +62,7 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "#{name}",
+      "key": "name",
       "field": [
         {
           "@type": "ml:Field",
@@ -98,7 +98,7 @@
     {
       "@type": "ml:RecordSet",
       "name": "images",
-      "key": "#{img_id}",
+      "key": "img_id",
       "field": [
         {
           "@type": "ml:Field",
