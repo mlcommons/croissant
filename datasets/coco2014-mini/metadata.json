@@ -5,7 +5,7 @@
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
-      "@nest": "source"
+      "@type": "@json"
     },
     "dataExtraction": "ml:dataExtraction",
     "dataType": {
@@ -16,10 +16,6 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
-    "inlineData": {
-      "@id": "ml:data",
-      "@type": "@json"
-    },
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
     "path": "ml:path",
@@ -80,7 +76,7 @@
           ]
         }
       ],
-      "inlineData": [
+      "data": [
         {
           "name": "train",
           "url": "https://mlcommons.org/definitions/training_split"

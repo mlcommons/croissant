@@ -5,7 +5,7 @@
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
-      "@nest": "source"
+      "@type": "@json"
     },
     "dataExtraction": "ml:dataExtraction",
     "dataType": {
@@ -16,10 +16,6 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
-    "inlineData": {
-      "@id": "ml:data",
-      "@type": "@json"
-    },
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
     "path": "ml:path",
@@ -67,7 +63,7 @@
           "dataType": "sc:Text"
         }
       ],
-      "inlineData": [
+      "data": [
         {
           "email": "john.smith@gmail.com",
           "fullname": "John Smith"
