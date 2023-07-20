@@ -1,4 +1,3 @@
-# pytype: skip-file
 """Migrations for containedIn: https://github.com/mlcommons/croissant/issues/115."""
 
 
