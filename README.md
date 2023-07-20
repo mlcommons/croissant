@@ -29,56 +29,54 @@ Here is an extremely simple example of the croissant format, with comments showi
 
 ```json
 {
-  "@context": {
-    "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
-    "ml": "http://mlcommons.org/schema/",
-    "recordSet": "ml:RecordSet",
-    "field": "ml:Field",
-    "dataType": "ml:dataType",
-    "source": "ml:source",
-    "references": "ml:references"
-  },
   "@type": "sc:Dataset",
-  "name": "Minimal example with recommended fields",
+  "name": "minimal_example_with_recommended_fields",
   "description": "This is a minimal example, including the required and the recommended fields.",
-  "url": "https://example.com/dataset/recipes/minimal-recommended",
   "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://example.com/dataset/recipes/minimal-recommended",
   "distribution": [
     {
       "@type": "sc:FileObject",
       "name": "minimal.csv",
       "contentUrl": "data/minimal.csv",
-      "sha256": "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354",
-      "encodingFormat": "text/csv"
+      "encodingFormat": "text/csv",
+      "sha256": "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
     }
   ],
   "recordSet": [
     {
-      "name": "examples",
       "@type": "ml:RecordSet",
-      "source": "#{minimal.csv}",
+      "name": "examples",
       "description": "Records extracted from the example table, with their schema.",
       "field": [
         {
-          "name": "name",
           "@type": "ml:Field",
-          "dataType": "sc:Text",
+          "name": "name",
           "description": "The first column contains the name.",
-          "references": "#{minimal.csv/name}"
+          "dataType": "sc:Text",
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "minimal.csv"
+          }
         },
         {
-          "name": "age",
           "@type": "ml:Field",
-          "dataType": "sc:Number",
+          "name": "age",
           "description": "The second column contains the age.",
-          "references": "#{minimal.csv/age}"
+          "dataType": "sc:Number",
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "age"
+            },
+            "distribution": "minimal.csv"
+          }
         }
       ]
     }
   ]
 }
-
 ```
 
 ## Resources
