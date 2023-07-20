@@ -2,18 +2,19 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
-      "@id": "ml:data",
-      "@nest": "source"
-    },
-    "field": "ml:field",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataExtraction": "ml:dataExtraction",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",

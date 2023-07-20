@@ -38,14 +38,13 @@ def _make_context():
         "@vocab": "https://schema.org/",
         "applyTransform": "ml:applyTransform",
         "csvColumn": "ml:csvColumn",
-        "data": {"@id": "ml:data", "@nest": "source"},
+        "data": {"@id": "ml:data", "@type": "@json"},
         "dataExtraction": "ml:dataExtraction",
         "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
         "field": "ml:field",
         "fileProperty": "ml:fileProperty",
         "format": "ml:format",
         "includes": "ml:includes",
-        "inlineData": {"@id": "ml:data", "@type": "@json"},
         "jsonPath": "ml:jsonPath",
         "ml": "http://mlcommons.org/schema/",
         "path": "ml:path",
@@ -74,7 +73,7 @@ def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     """
     items = sorted(jsonld.items())
     start_keys = ["@context", "@type", "name", "description"]
-    end_keys = ["distribution", "field", "inlineData", "recordSet", "subField"]
+    end_keys = ["distribution", "field", "data", "recordSet", "subField"]
     sorted_items = []
     for key in start_keys:
         if key in jsonld:
@@ -192,7 +191,7 @@ def compact_json_ld(json: Any) -> Any:
             del json[key]
             # Data can either be inline JSON data...
             if isinstance(value, (dict, list)):
-                json["inlineData"] = value
+                json["data"] = value
             # ...or "source.data":
             else:
                 json["data"] = value
