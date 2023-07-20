@@ -60,7 +60,7 @@ def _add_operations_for_field_with_source(
     group_record_set = GroupRecordSet(node=record_set)
     join = Join(node=record_set)
     # `Join()` takes left=Source and right=Source as kwargs.
-    if node.references is not None and len(node.references.reference) > 1:
+    if node.references.uid:
         kwargs = {
             "left": node.source,
             "right": node.references,
@@ -72,7 +72,7 @@ def _add_operations_for_field_with_source(
     operations.add_edge(join, group_record_set)
     for predecessor in graph.predecessors(node):
         operations.add_edge(last_operation[predecessor], join)
-    if len(node.source.reference) != 2:
+    if not node.source:
         node.add_error("Wrong source for the node")
         return
     # Read/extract the field

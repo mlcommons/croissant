@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -124,7 +129,7 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "#{name}",
+      "key": "name",
       "field": [
         {
           "@type": "ml:Field",
@@ -160,21 +165,31 @@
     {
       "@type": "ml:RecordSet",
       "name": "images",
-      "key": "#{img_id}",
+      "key": "img_id",
       "field": [
         {
           "@type": "ml:Field",
           "name": "image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
-          "source": "#{image-files/filename}"
+          "source": {
+            "dataExtraction": {
+              "fileProperty": "filename"
+            },
+            "distribution": "image-files"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
-          "source": "#{image-files/content}"
+          "source": {
+            "dataExtraction": {
+              "fileProperty": "content"
+            },
+            "distribution": "image-files"
+          }
         },
         {
           "@type": "ml:Field",
@@ -183,12 +198,17 @@
             "sc:Text",
             "wd:Q3985153"
           ],
-          "references": "#{split_enums}",
+          "references": {
+            "field": "split_enums/name"
+          },
           "source": {
             "applyTransform": {
               "regex": "^(train|val|test)2014/.*\\.jpg$"
             },
-            "data": "#{image-files/fullpath}"
+            "dataExtraction": {
+              "fileProperty": "fullpath"
+            },
+            "distribution": "image-files"
           }
         }
       ]
@@ -196,21 +216,31 @@
     {
       "@type": "ml:RecordSet",
       "name": "captions",
-      "key": "#{id}",
+      "key": "id",
       "field": [
         {
           "@type": "ml:Field",
           "name": "id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
-          "source": "#{caption_annotations-files/annotations/id}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "id"
+            },
+            "distribution": "caption_annotations-files"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
-          "source": "#{caption_annotations-files/annotations/image_id}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "image_id"
+            },
+            "distribution": "caption_annotations-files"
+          }
         },
         {
           "@type": "ml:Field",
@@ -220,7 +250,12 @@
             "sc:Text",
             "wd:Q18585177"
           ],
-          "source": "#{caption_annotations-files/annotations/caption}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "caption"
+            },
+            "distribution": "caption_annotations-files"
+          }
         },
         {
           "@type": "ml:Field",
@@ -229,12 +264,17 @@
             "sc:Text",
             "wd:Q3985153"
           ],
-          "references": "#{split_enums/name}",
+          "references": {
+            "field": "split_enums/name"
+          },
           "source": {
             "applyTransform": {
               "regex": ".*_(val|train)2014\\.json$"
             },
-            "data": "#{caption_annotations-files/filename}"
+            "dataExtraction": {
+              "fileProperty": "filename"
+            },
+            "distribution": "caption_annotations-files"
           }
         }
       ]
@@ -243,14 +283,19 @@
       "@type": "ml:RecordSet",
       "name": "categories",
       "isEnumeration": true,
-      "key": "#{id}",
+      "key": "id",
       "field": [
         {
           "@type": "ml:Field",
           "name": "id",
           "description": "The ID of the category",
           "dataType": "sc:Integer",
-          "source": "#{instancesperson_keypoints_annotations/categories/id}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "id"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
+          }
         },
         {
           "@type": "ml:Field",
@@ -260,7 +305,12 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{instancesperson_keypoints_annotations/categories/name}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
+          }
         },
         {
           "@type": "ml:Field",
@@ -271,37 +321,61 @@
             "sc:name"
           ],
           "isEnumeration": true,
-          "source": "#{instancesperson_keypoints_annotations/categories/supercategory}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "supercategory"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
+          }
         }
       ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "annotations",
-      "key": "#{id}",
+      "key": "id",
       "field": [
         {
           "@type": "ml:Field",
           "name": "id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
-          "source": "#{instancesperson_keypoints_annotations/annotations/id}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "id"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "category_id",
           "description": "The ID of the category.",
           "dataType": "sc:Integer",
-          "references": "#{categories/id}",
-          "source": "#{instancesperson_keypoints_annotations/annotations/category_id}"
+          "references": {
+            "field": "categories/id"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "category_id"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
-          "references": "#{images/id}",
-          "source": "#{instancesperson_keypoints_annotations/annotations/image_id}"
+          "references": {
+            "field": "images/id"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "image_id"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
+          }
         },
         {
           "@type": "ml:Field",
@@ -309,8 +383,10 @@
           "description": "The bounding box around annotated object[s].",
           "dataType": "ml:BoundingBox",
           "source": {
-            "data": "#{instancesperson_keypoints_annotations/annotations/bbox}",
-            "format": "XYWH"
+            "dataExtraction": {
+              "csvColumn": "bbox"
+            },
+            "distribution": "instancesperson_keypoints_annotations"
           }
         }
       ]

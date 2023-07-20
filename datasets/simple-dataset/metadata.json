@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -62,20 +67,27 @@
     {
       "@type": "ml:RecordSet",
       "name": "images",
-      "key": "#{hash}",
-      "source": "#{image-files}",
+      "key": "hash",
       "field": [
         {
           "@type": "ml:Field",
           "name": "hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
-          "references": "#{metadata/hash}",
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "hash"
+            },
+            "distribution": "metadata"
+          },
           "source": {
             "applyTransform": {
               "regex": "([^\\/]*)\\.jpg"
             },
-            "data": "#{image-files/filename}"
+            "dataExtraction": {
+              "fileProperty": "filename"
+            },
+            "distribution": "image-files"
           }
         }
       ]

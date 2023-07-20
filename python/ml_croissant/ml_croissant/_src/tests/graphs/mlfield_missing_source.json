@@ -54,7 +54,12 @@
           "@type": "ml:Field",
           "name": "first-field",
           "dataType": "sc:Integer",
-          "source": "#{a-csv-table/field}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "a-column"
+            },
+            "distribution": "a-csv-table"
+          }
         }
       ]
     }

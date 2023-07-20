@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -53,14 +58,24 @@
           "name": "title",
           "description": "The title of the book",
           "dataType": "sc:Text",
-          "source": "#{books.csv/Title}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Title"
+            },
+            "distribution": "books.csv"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "Author",
           "description": "The author of the book",
           "dataType": "sc:Text",
-          "source": "#{books.csv/Author}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Author"
+            },
+            "distribution": "books.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -70,7 +85,12 @@
             "sc:Text",
             "wd:Q3985153"
           ],
-          "source": "#{books.csv/Split}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "Split"
+            },
+            "distribution": "books.csv"
+          }
         }
       ]
     }

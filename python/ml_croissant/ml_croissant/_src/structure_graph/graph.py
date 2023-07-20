@@ -19,6 +19,7 @@ so they should be grouped under a common `StructureGraph` class.
 """
 
 import collections
+import dataclasses
 import json
 from typing import Any
 
@@ -93,13 +94,14 @@ def _parse_node_params(
     """Recursively parses all information from a node to Croissant."""
     node_params = collections.defaultdict(list)
     for _, _predicate, _object in rdf_graph.triples((bnode, None, None)):
+        croissant_key: str = constants.TO_CROISSANT.get(_predicate, _predicate)
         if _predicate == constants.ML_COMMONS_SUB_FIELD:
             node_params["has_sub_fields"] = True
-        if _predicate == constants.SCHEMA_ORG_CONTAINED_IN:
-            croissant_key = constants.TO_CROISSANT[_predicate]
+        elif _predicate == constants.SCHEMA_ORG_CONTAINED_IN:
+            # croissant_key = constants.TO_CROISSANT[_predicate]
             node_params[croissant_key].append(_object)
         elif no_filter or _predicate in constants.TO_CROISSANT:
-            croissant_key = constants.TO_CROISSANT[_predicate]
+            # croissant_key = constants.TO_CROISSANT[_predicate]
             if isinstance(_object, term.Literal):
                 node_params[croissant_key] = str(_object)
             elif isinstance(_object, term.URIRef):
@@ -112,17 +114,20 @@ def _parse_node_params(
             else:
                 raise ValueError("Objects are either BNodes, URIRef or Literals.")
     # Parse `source`.
-    if (source := node_params.get("source")) is not None:
-        node_params["source"] = Source.from_json_ld(issues, source)
+    source_field = constants.TO_CROISSANT[constants.ML_COMMONS_SOURCE]
+    if (source := node_params.get(source_field)) is not None:
+        node_params[source_field] = Source.from_json_ld(issues, source)
     # Parse `references`.
-    if (references := node_params.get("references")) is not None:
-        node_params["references"] = Source.from_json_ld(issues, references)
+    references_field = constants.TO_CROISSANT[constants.ML_COMMONS_REFERENCES]
+    if (references := node_params.get(references_field)) is not None:
+        node_params[references_field] = Source.from_json_ld(issues, references)
     # Parse `contained_in`.
-    if (contained_in := node_params.get("contained_in")) is not None:
+    contained_in_field = constants.TO_CROISSANT[constants.SCHEMA_ORG_CONTAINED_IN]
+    if (contained_in := node_params.get(contained_in_field)) is not None:
         if isinstance(contained_in, str):
-            node_params["contained_in"] = parse_reference(issues, contained_in)
+            node_params[contained_in_field] = parse_reference(issues, contained_in)
         else:
-            node_params["contained_in"] = (
+            node_params[contained_in_field] = (
                 parse_reference(issues, reference)[0] for reference in contained_in
             )
     return node_params
@@ -150,7 +155,6 @@ def _parse_node(
         constants.ML_COMMONS_RECORD_SET_TYPE: RecordSet,
     }
     if node_type not in rdf_to_croissant:
-        # TODO(marcenacp): Propagate the context here.
         issues.add_error(
             'Node should have an attribute `"@type" in'
             f" {list(rdf_to_croissant.keys())}. Got {node_type} instead."
@@ -164,6 +168,11 @@ def _parse_node(
         )
         return None
     node_params = _parse_node_params(issues, rdf_graph, bnode)
+    # Only keep relevant field for the dataclass.
+    # TODO(https://github.com/mlcommons/croissant/issues/148): find a way to remove
+    # this part of the code.
+    cls_fields = [field.name for field in dataclasses.fields(node_cls)]
+    node_params = {k: v for k, v in node_params.items() if k in cls_fields}
     return node_cls(
         issues=issues,
         bnode=bnode,
@@ -293,10 +302,21 @@ def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     # check for this:
     for node in entry_nodes:
         if isinstance(node, Field) and not node.has_sub_fields and not node.data:
-            node.add_error(
-                f'Node "{node.uid}" is a field and has no source. Please, use'
-                f" {constants.ML_COMMONS_SOURCE} to specify the source."
-            )
+            if not node.source:
+                node.add_error(
+                    f'Node "{node.uid}" is a field and has no source. Please, use'
+                    f" {constants.ML_COMMONS_SOURCE} to specify the source."
+                )
+            else:
+                uid = node.source.uid
+                node.add_error(
+                    f"Malformed source data: {uid}. It does not refer to any existing"
+                    f" node. Have you used {constants.ML_COMMONS_FIELD} or"
+                    f" {constants.SCHEMA_ORG_DISTRIBUTION} to indicate the source field"
+                    " or the source distribution? If you specified a field, it should"
+                    " contain all the names from the RecordSet separated by `/`, e.g.:"
+                    ' "record_set_name/field_name"'
+                )
     return entry_nodes
 
 
@@ -346,10 +366,6 @@ def _add_edge(
     graph.add_edge(uid_to_node[uid], node)
 
 
-def _concatenate_uid(source: tuple[str]) -> str:
-    return "/".join(source)
-
-
 def from_nodes_to_structure_graph(
     issues: Issues, graph: nx.MultiDiGraph
 ) -> tuple[Metadata | None, nx.MultiDiGraph]:
@@ -385,35 +401,14 @@ def from_nodes_to_structure_graph(
                 _add_edge(issues, graph, uid_to_node, uid, node, (FileObject, FileSet))
         # Fields
         elif isinstance(node, Field):
-            references = []
-            if node.source:
-                references.append(node.source.reference)
-            if node.references:
-                references.append(node.references.reference)
             # The source can be embedded with in-line data in the parent record set.
             if node.data:
                 parent = node.parents[-1]
                 _add_edge(issues, graph, uid_to_node, parent.uid, node, RecordSet)
-            for reference in references:
-                # The source can be either another field...
-                if (uid := _concatenate_uid(reference)) in uid_to_node:
-                    # Record sets are not valid parents here.
-                    # The case can arise when a Field references a record set to have a
-                    # machine-readable explanation of the field (see datasets/titanic
-                    # for example).
-                    if not isinstance(uid_to_node[uid], RecordSet):
-                        _add_edge(issues, graph, uid_to_node, uid, node, Node)
-                # ...or the source can be a distribution (e.g., column of a CSV file).
-                elif reference and (uid := reference[0]) in uid_to_node:
-                    if not isinstance(uid_to_node[uid], RecordSet):
-                        _add_edge(
-                            issues, graph, uid_to_node, uid, node, (FileObject, FileSet)
-                        )
-                else:
-                    issues.add_error(
-                        "Source refers to an unknown node"
-                        f' "{_concatenate_uid(reference)}".'
-                    )
+            for origin in [node.source, node.references]:
+                uid = origin.uid
+                if uid in uid_to_node:
+                    _add_edge(issues, graph, uid_to_node, uid, node, Node)
     # `Metadata` are used as the entry node.
     if metadata is None:
         issues.add_error(

@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -91,22 +96,36 @@
           "name": "title",
           "description": "Full title of the publication.",
           "dataType": "sc:Text",
-          "source": "#{publications/title}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "title"
+            },
+            "distribution": "publications"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "author_email",
           "description": "Email of the author.",
           "dataType": "sc:email",
-          "references": "#{users/email}",
-          "source": "#{publications/by}"
+          "references": {
+            "field": "users/email"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "by"
+            },
+            "distribution": "publications"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "author_fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text",
-          "source": "#{users/fullname}"
+          "source": {
+            "field": "users/fullname"
+          }
         }
       ]
     }

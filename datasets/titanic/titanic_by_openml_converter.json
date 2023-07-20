@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -53,91 +58,160 @@
     {
       "@type": "ml:RecordSet",
       "name": "titanic_records",
-      "source": "#{Titanic.arff}",
       "field": [
         {
           "@type": "ml:Field",
           "name": "pclass",
           "dataType": "sc:Number",
-          "source": "#{Titanic.arff/pclass}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "pclass"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "survived",
           "dataType": "sc:Boolean",
-          "source": "#{Titanic.arff/survived}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "survived"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "name",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/name}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "sex",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/sex}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "sex"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "age",
           "dataType": "sc:Number",
-          "source": "#{Titanic.arff/age}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "age"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "sibsp",
           "dataType": "sc:Number",
-          "source": "#{Titanic.arff/sibsp}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "sibsp"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "parch",
           "dataType": "sc:Number",
-          "source": "#{Titanic.arff/parch}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "parch"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "ticket",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/ticket}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "ticket"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "fare",
           "dataType": "sc:Number",
-          "source": "#{Titanic.arff/fare}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "fare"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "cabin",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/cabin}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "cabin"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "embarked",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/embarked}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "embarked"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "boat",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/boat}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "boat"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "body",
           "dataType": "sc:Number",
-          "source": "#{Titanic.arff/body}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "body"
+            },
+            "distribution": "Titanic.arff"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "home_dest",
           "dataType": "sc:Text",
-          "source": "#{Titanic.arff/home.dest}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "home.dest"
+            },
+            "distribution": "Titanic.arff"
+          }
         }
       ]
     }

@@ -7,7 +7,10 @@ from etils import epath
 from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.structure_graph.nodes import Field
-from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
+from ml_croissant._src.structure_graph.nodes.source import (
+    apply_transforms_fn,
+    FileProperty,
+)
 import pandas as pd
 
 
@@ -16,7 +19,6 @@ class ReadField(Operation):
     """Reads a field from a Pandas DataFrame and applies transformations."""
 
     node: Field
-    field: str | None = None
 
     def find_data_type(self, data_types: list[str] | tuple[str, ...] | str) -> type:
         """Finds the data type by expanding its name from the namespace manager.
@@ -49,7 +51,7 @@ class ReadField(Operation):
             format = next(
                 (
                     transform.format
-                    for transform in self.node.source.apply_transform
+                    for transform in self.node.source.transforms
                     if transform.format
                 ),
                 None,
@@ -65,19 +67,13 @@ class ReadField(Operation):
 
     def __call__(self, series: pd.Series):
         """See class' docstring."""
-        if self.field is None:
-            assert len(self.node.source.reference) == 2, (
-                f'Node "{self.node.uid}" refers to a wrong reference in its source:'
-                f" {self.node.source}."
-            )
-            field = self.node.source.reference[1]
-        else:
-            field = self.field
-        if field == "content":
-            filepath = series["filepath"]
+        source = self.node.source
+        if source.extract.file_property == FileProperty.content:
+            filepath = series[FileProperty.filepath.name]
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
         else:
+            field = source.get_field()
             possible_fields = (
                 list(series.axes) if isinstance(series, pd.Series) else series.keys()
             )

@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -53,14 +58,18 @@
       "@type": "ml:RecordSet",
       "name": "images",
       "description": "Records extracted from the image files, with their schema.",
-      "source": "#{image-files}",
       "field": [
         {
           "@type": "ml:Field",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
-          "source": "#{image-files/content}"
+          "source": {
+            "dataExtraction": {
+              "fileProperty": "content"
+            },
+            "distribution": "image-files"
+          }
         }
       ]
     }

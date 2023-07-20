@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -88,21 +93,30 @@
     {
       "@type": "ml:RecordSet",
       "name": "movies",
-      "key": "#{movie_id}",
-      "source": "#{movies-table}",
+      "key": "movie_id",
       "field": [
         {
           "@type": "ml:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
-          "source": "#{movies-table/movieId}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "movieId"
+            },
+            "distribution": "movies-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "title",
           "description": "The title of the  movie with the release year in parentheses.",
           "dataType": "sc:Text",
-          "source": "#{movies-table/title}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "title"
+            },
+            "distribution": "movies-table"
+          }
         },
         {
           "@type": "ml:Field",
@@ -114,7 +128,10 @@
             "applyTransform": {
               "separator": "|"
             },
-            "data": "#{movies-table/genres}"
+            "dataExtraction": {
+              "csvColumn": "genres"
+            },
+            "distribution": "movies-table"
           }
         }
       ]
@@ -123,36 +140,57 @@
       "@type": "ml:RecordSet",
       "name": "ratings",
       "key": [
-        "#{user_id}",
-        "#{movie_id}"
+        "user_id",
+        "movie_id"
       ],
-      "source": "#{ratings-table}",
       "field": [
         {
           "@type": "ml:Field",
           "name": "user_id",
           "dataType": "sc:Integer",
-          "source": "#{ratings-table/userId}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "userId"
+            },
+            "distribution": "ratings-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
-          "references": "#{movies}",
-          "source": "#{ratings-table/movieId}"
+          "references": {
+            "field": "movies/movie_id"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "movieId"
+            },
+            "distribution": "ratings-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "rating",
           "description": "The score of the rating on a five-star scale.",
           "dataType": "sc:Float",
-          "source": "#{ratings-table/rating}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "rating"
+            },
+            "distribution": "ratings-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "timestamp",
           "dataType": "sc:Integer",
-          "source": "#{ratings-table/timestamp}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "timestamp"
+            },
+            "distribution": "ratings-table"
+          }
         }
       ]
     },
@@ -160,85 +198,120 @@
       "@type": "ml:RecordSet",
       "name": "tags",
       "key": [
-        "#{user_id}",
-        "#{movie_id}",
-        "#{timestamp}"
+        "user_id",
+        "movie_id",
+        "timestamp"
       ],
-      "source": "#{tags-table}",
       "field": [
         {
           "@type": "ml:Field",
           "name": "user_id",
           "dataType": "sc:Integer",
-          "source": "#{tags-table/userId}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "userId"
+            },
+            "distribution": "tags-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
-          "references": "#{movies}",
-          "source": "#{tags-table/movieId}"
+          "references": {
+            "field": "movies/movie_id"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "movieId"
+            },
+            "distribution": "tags-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "tag",
           "description": "Tags assigned to the movie.",
           "dataType": "sc:Text",
-          "source": "#{tags-table/tag}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "tag"
+            },
+            "distribution": "tags-table"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "timestamp",
           "dataType": "sc:Integer",
-          "source": "#{tags-table/timestamp}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "timestamp"
+            },
+            "distribution": "tags-table"
+          }
         }
       ]
     },
     {
       "@type": "ml:RecordSet",
       "name": "movies_with_ratings_with_tags",
-      "key": "#{movie_id}",
-      "source": "#{movies}",
+      "key": "movie_id",
       "field": [
         {
           "@type": "ml:Field",
           "name": "movie_id",
-          "source": "#{movies/movie_id}"
+          "source": {
+            "field": "movies/movie_id"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "movie_title",
-          "source": "#{movies/title}"
+          "source": {
+            "field": "movies/title"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "movie_genres",
-          "source": "#{movies/genre}"
+          "source": {
+            "field": "movies/genre"
+          }
         },
         {
           "@type": "ml:Field",
           "name": "ratings",
           "dataType": "ml:RecordSet",
           "parentField": {
-            "references": "#{movies}",
-            "source": "#{ratings/movie_id}"
+            "references": {
+              "field": "movies/movie_id"
+            },
+            "source": {
+              "field": "ratings/movie_id"
+            }
           },
-          "source": "#{ratings}",
           "subField": [
             {
               "@type": "ml:Field",
               "name": "user_id",
-              "source": "#{ratings/user_id}"
+              "source": {
+                "field": "ratings/user_id"
+              }
             },
             {
               "@type": "ml:Field",
               "name": "rating",
-              "source": "#{ratings/rating}"
+              "source": {
+                "field": "ratings/rating"
+              }
             },
             {
               "@type": "ml:Field",
               "name": "timestamp",
-              "source": "#{ratings/timestamp}"
+              "source": {
+                "field": "ratings/timestamp"
+              }
             }
           ]
         },
@@ -247,25 +320,34 @@
           "name": "tags",
           "dataType": "ml:RecordSet",
           "parentField": {
-            "references": "#{movies}",
-            "source": "#{tags/movie_id}"
+            "references": {
+              "field": "movies/movie_id"
+            },
+            "source": {
+              "field": "tags/movie_id"
+            }
           },
-          "source": "#{tags}",
           "subField": [
             {
               "@type": "ml:Field",
               "name": "user_id",
-              "source": "#{tags/user_id}"
+              "source": {
+                "field": "tags/user_id"
+              }
             },
             {
               "@type": "ml:Field",
               "name": "tag",
-              "source": "#{tags/tag}"
+              "source": {
+                "field": "tags/tag"
+              }
             },
             {
               "@type": "ml:Field",
               "name": "timestamp",
-              "source": "#{tags/timestamp}"
+              "source": {
+                "field": "tags/timestamp"
+              }
             }
           ]
         }

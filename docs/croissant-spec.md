@@ -385,7 +385,7 @@ list, and each object within that list must define the RecordSet fields.
   "@type": "ml:RecordSet",
    "name": "gender_enums",
    "description": "Maps gender keys (0, 1) to labeled values.",
-   "key": "#{key}",
+   "key": "key,
    "field": [
      { "name": "key", "@type": "ml:Field", "dataType": "sc:Integer" },
      { "name": "label", "@type": "ml:Field", "dataType": "sc:String" }

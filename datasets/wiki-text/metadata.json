@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -63,15 +68,19 @@
       "@type": "ml:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "#{name}",
-      "source": "#{splits.csv}",
+      "key": "name",
       "field": [
         {
           "@type": "ml:Field",
           "name": "name",
           "description": "One of: train, valid, test.",
           "dataType": "sc:Text",
-          "source": "#{splits.csv/name}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "splits.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -81,7 +90,12 @@
             "sc:Url",
             "wd:Q3985153"
           ],
-          "source": "#{splits.csv/url}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "url"
+            },
+            "distribution": "splits.csv"
+          }
         }
       ]
     },
@@ -89,7 +103,6 @@
       "@type": "ml:RecordSet",
       "name": "words",
       "description": "The words of the token files, including their split.",
-      "source": "#{token-files}",
       "field": [
         {
           "@type": "ml:Field",
@@ -106,7 +119,10 @@
                 "separator": " "
               }
             ],
-            "data": "#{token-files/content}"
+            "dataExtraction": {
+              "fileProperty": "content"
+            },
+            "distribution": "token-files"
           }
         },
         {
@@ -117,12 +133,17 @@
             "sc:Text",
             "wd:Q3985153"
           ],
-          "references": "#{split_enums}",
+          "references": {
+            "field": "split_enums/name"
+          },
           "source": {
             "applyTransform": {
               "regex": "^wiki\\.(train|valid|test)\\.tokens$"
             },
-            "data": "#{token-files/fullpath}"
+            "dataExtraction": {
+              "fileProperty": "fullpath"
+            },
+            "distribution": "token-files"
           }
         }
       ]

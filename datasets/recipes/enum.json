@@ -2,22 +2,27 @@
   "@context": {
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@nest": "source"
     },
+    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
     "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
     "inlineData": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -53,14 +58,19 @@
       "@type": "ml:RecordSet",
       "name": "direction_enum",
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
-      "key": "#{key}",
+      "key": "key",
       "field": [
         {
           "@type": "ml:Field",
           "name": "key",
           "description": "0, 1, 2 or 3",
           "dataType": "sc:Integer",
-          "source": "#{enum_directions.csv/key}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "key"
+            },
+            "distribution": "enum_directions.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -70,7 +80,12 @@
             "sc:Text",
             "sc:name"
           ],
-          "source": "#{enum_directions.csv/label}"
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "label"
+            },
+            "distribution": "enum_directions.csv"
+          }
         }
       ]
     },
@@ -78,14 +93,18 @@
       "@type": "ml:RecordSet",
       "name": "examples",
       "description": "Records extracted from the examples table, with their schema.",
-      "source": "#{enum.csv}",
       "field": [
         {
           "@type": "ml:Field",
           "name": "name",
           "description": "The first column contains the name of the object.",
           "dataType": "sc:Text",
-          "references": "#{enum.csv/name}"
+          "references": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "enum.csv"
+          }
         },
         {
           "@type": "ml:Field",
@@ -95,8 +114,15 @@
             "sc:Text",
             "ml:Enum"
           ],
-          "references": "#{direction_enum/key}",
-          "source": "#{enum.csv/direction}"
+          "references": {
+            "field": "direction_enum/key"
+          },
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "direction"
+            },
+            "distribution": "enum.csv"
+          }
         }
       ]
     }
