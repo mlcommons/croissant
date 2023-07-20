@@ -2,6 +2,33 @@
 
 Migration from an older or non canonical Croissant format to a canonical and possibly
 newer Croissant format.
+
+The migration consists in:
+
+- Add the `@context` defined in `ml_croissant/_src/core/json_ld.py`.
+- Expanding the Croissant file to JSON-LD (see `expand_json_ld`).
+- Possibly apply a custom `up` function (see `compact_json_ld`).
+- Re-compacting back the Croissant file.
+
+There are different cases:
+
+- If you want to change the `@context` in Croissant files. Then change the context in
+ml_croissant/_src/core/json_ld.py and launch the migration:
+
+```bash
+python scripts/migrations/migrate.py
+```
+
+- If you want to migrate a property in every file, you'll need to write a custom
+migration function. You can do this by writing a file like
+in `previous/YYYYmmddHHmm.py` (similar to previous/202307171508.py) that defines a `up`
+function.
+
+```bash
+python scripts/migrations/migrate.py --migration 202307171508
+```
+
+Commiting your migration allows to keep track of previous migrations in the codebase.
 """
 
 import json
