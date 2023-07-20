@@ -25,8 +25,12 @@ FLAGS = flags.FLAGS
 
 
 def get_migration_fn(migration: str | None):
+    """Retrieves the `up` migration function from the migration file if it exists."""
     if migration is None:
-        identity_function = lambda x: x
+
+        def identity_function(x):
+            return x
+
         return identity_function
     try:
         mod = importlib.import_module(f"{_PREVIOUS_MIGRATIONS_FOLDER}.{migration}")
@@ -45,6 +49,7 @@ def get_migration_fn(migration: str | None):
 
 
 def main(argv):
+    """Main function launched for the migration."""
     del argv
     # Datasets in croissant/datasets
     datasets = [path for path in epath.Path("../../datasets").glob("*/*.json")]

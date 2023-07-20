@@ -32,6 +32,8 @@ def parse_reference(issues: Issues, source_data: str) -> tuple[str, ...]:
 
 
 class FileProperty(enum.Enum):
+    """Lists the intrinsic properties of a file that are accessible from Croissant."""
+
     content = enum.auto()
     filename = enum.auto()
     filepath = enum.auto()
@@ -39,6 +41,7 @@ class FileProperty(enum.Enum):
 
 
 def is_file_property(file_property: str):
+    """Checks if a string is a FileProperty (e.g., "content"->FileProperty.content)."""
     for possible_file_property in FileProperty:
         if possible_file_property.name == file_property:
             return True
@@ -46,7 +49,9 @@ def is_file_property(file_property: str):
 
 
 @dataclasses.dataclass(frozen=True)
-class DataExtraction:
+class Extract:
+    """Container for possible ways of extracting the data."""
+
     csv_column: str | None = None
     file_property: FileProperty | None = None
     json_path: str | None = None
@@ -111,7 +116,7 @@ class Source:
     ```
     """
 
-    extraction: DataExtraction = dataclasses.field(default_factory=DataExtraction)
+    extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: tuple[Transform, ...] = ()
     uid: str | None = None
 
@@ -175,13 +180,13 @@ class Source:
                         f" {file_property}"
                     )
                 # Build the source.
-                extraction = DataExtraction(
+                extraction = Extract(
                     csv_column=data_extraction.get(constants.CROISSANT_CSV_COLUMN),
                     file_property=file_property,
                     json_path=data_extraction.get(constants.CROISSANT_JSON_PATH),
                 )
                 return Source(
-                    extraction=extraction,
+                    extract=extraction,
                     transforms=transforms,
                     uid=uid,
                 )
@@ -199,15 +204,16 @@ class Source:
         return self.uid is not None
 
     def get_field(self) -> str:
+        """Retrieves the name of the field/column/query associated to the source."""
         if self.uid is None:
             # This case already rose an issue and should not happen at run time.
             raise ""
-        if self.extraction.csv_column:
-            return self.extraction.csv_column
-        elif self.extraction.file_property:
-            return self.extraction.file_property.name
-        elif self.extraction.json_path:
-            return self.extraction.json_path
+        if self.extract.csv_column:
+            return self.extract.csv_column
+        elif self.extract.file_property:
+            return self.extract.file_property.name
+        elif self.extract.json_path:
+            return self.extract.json_path
         else:
             return self.uid.split("/")[-1]
 

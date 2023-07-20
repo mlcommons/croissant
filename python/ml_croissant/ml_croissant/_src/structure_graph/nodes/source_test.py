@@ -3,7 +3,7 @@
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.nodes.source import (
     apply_transforms_fn,
-    DataExtraction,
+    Extract,
     FileProperty,
     Source,
     Transform,
@@ -63,7 +63,7 @@ def test_source_bool():
                 "data_extraction": {"csv_column": "my-column"},
             },
             Source(
-                extraction=DataExtraction(csv_column="my-column"),
+                extract=Extract(csv_column="my-column"),
                 uid="my-csv",
                 transforms=(Transform(replace="\\n/<eos>", separator=" "),),
             ),
@@ -98,7 +98,7 @@ def test_declaring_multiple_data_extraction_in_one():
     }
     assert Source.from_json_ld(issues, json_ld) == Source(
         uid="my-csv",
-        extraction=DataExtraction(csv_column="csv_column", json_path="json_path"),
+        extract=Extract(csv_column="csv_column", json_path="json_path"),
     )
     assert len(issues.errors) == 1
     assert (
@@ -151,20 +151,20 @@ def test_apply_transforms_fn(value, source, expected_value):
     ["source", "expected_field"],
     [
         [
-            Source(uid="my-csv", extraction=DataExtraction(csv_column="my-csv-column")),
+            Source(uid="my-csv", extract=Extract(csv_column="my-csv-column")),
             "my-csv-column",
         ],
         [
             Source(
                 uid="my-csv",
-                extraction=DataExtraction(file_property=FileProperty.content),
+                extract=Extract(file_property=FileProperty.content),
             ),
             "content",
         ],
         [
             Source(
                 uid="my-csv",
-                extraction=DataExtraction(json_path="/some/json/path"),
+                extract=Extract(json_path="/some/json/path"),
             ),
             "/some/json/path",
         ],

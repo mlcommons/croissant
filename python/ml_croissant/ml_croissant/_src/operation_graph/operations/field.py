@@ -68,7 +68,7 @@ class ReadField(Operation):
     def __call__(self, series: pd.Series):
         """See class' docstring."""
         source = self.node.source
-        if source.extraction.file_property == FileProperty.content:
+        if source.extract.file_property == FileProperty.content:
             filepath = series[FileProperty.filepath.name]
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
