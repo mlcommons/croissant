@@ -207,7 +207,6 @@ class Source:
             try:
                 jsonpath_rw.parse(self.extract.json_path)
             except lexer.JsonPathLexerError as exception:
-                print(exception)
                 add_error(
                     "Wrong JSONPath (https://goessner.net/articles/JsonPath/):"
                     f" {exception}"
