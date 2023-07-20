@@ -58,7 +58,7 @@
     {
       "@type": "sc:FileSet",
       "name": "image-files",
-      "containedIn": "#{pass9}",
+      "containedIn": "pass9",
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
     }

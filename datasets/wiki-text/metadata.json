@@ -51,7 +51,7 @@
     {
       "@type": "sc:FileSet",
       "name": "token-files",
-      "containedIn": "#{wikitext-103-v1.zip}",
+      "containedIn": "wikitext-103-v1.zip",
       "encodingFormat": "image/jpeg",
       "includes": "wikitext-103/*.tokens"
     },
