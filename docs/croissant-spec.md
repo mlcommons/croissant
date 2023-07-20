@@ -170,7 +170,9 @@ The column of the source CSV (e.g., `date`).
 
 ### jsonPath
 
-The JSON path if the source is a JSON (e.g., `/bookstore/book[1]/title`).
+The JSON path if the source is a JSON. Refer to the original
+[JSONPath standard](https://goessner.net/articles/JsonPath/) for more
+details.
 
 **range**:	[sc:Text](https://schema.org/Text)
 
