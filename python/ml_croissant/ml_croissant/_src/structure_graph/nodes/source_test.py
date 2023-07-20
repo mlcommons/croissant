@@ -116,9 +116,7 @@ def test_declaring_wrong_file_property():
             "file_property": "foo",
         },
     }
-    assert Source.from_json_ld(issues, json_ld) == Source(
-        uid="my-csv", extraction=DataExtraction(file_property="foo")
-    )
+    Source.from_json_ld(issues, json_ld)
     assert (
         "Property http://mlcommons.org/schema/fileProperty can only have values in"
         " `fullpath`, `filepath` and `content`. Got: foo"

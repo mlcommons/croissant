@@ -409,8 +409,6 @@ def from_nodes_to_structure_graph(
                 uid = origin.uid
                 if uid in uid_to_node:
                     _add_edge(issues, graph, uid_to_node, uid, node, Node)
-                # ADD SOME MORE CONTEXT??
-                # VALIDATE THE SOURCE (eg, by checking csv_column refers to CSV)???
     # `Metadata` are used as the entry node.
     if metadata is None:
         issues.add_error(

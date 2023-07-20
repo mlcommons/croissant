@@ -35,11 +35,11 @@ class Join(Operation):
             if left_key not in df_left.columns or right_key not in df_right.columns:
                 df_left, df_right = df_right, df_left
             assert left_key in df_left.columns, (
-                f'Column "{left_key}" does not exist in node "{left.reference[0]}".'
+                f'Column "{left_key}" does not exist in node "{left.uid}".'
                 f" Existing columns: {df_left.columns}"
             )
             assert right_key in df_right.columns, (
-                f'Column "{right_key}" does not exist in node "{right.reference[0]}".'
+                f'Column "{right_key}" does not exist in node "{right.uid}".'
                 f" Existing columns: {df_right.columns}"
             )
             df_left[left_key] = df_left[left_key].transform(

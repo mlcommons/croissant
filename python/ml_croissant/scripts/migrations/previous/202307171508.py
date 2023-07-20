@@ -1,4 +1,9 @@
-"""Migrations for source: https://github.com/mlcommons/croissant/issues/115."""
+# pytype: skip-file
+"""Migrations for source: https://github.com/mlcommons/croissant/issues/115.
+
+PyLint is skipped for this file as the migration is supposed to be launched on a
+fixed version of the code.
+"""
 
 from typing import Any
 
