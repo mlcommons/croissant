@@ -66,8 +66,8 @@
       "@type": "sc:FileSet",
       "name": "image-files",
       "containedIn": [
-        "#{pass0}",
-        "#{pass1}"
+        "pass0",
+        "pass1"
       ],
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"

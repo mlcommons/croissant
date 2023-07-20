@@ -35,7 +35,6 @@ from ml_croissant._src.structure_graph.nodes import (
     RecordSet,
     Source,
 )
-from ml_croissant._src.structure_graph.nodes.source import parse_reference
 import networkx as nx
 import rdflib
 from rdflib import term
@@ -121,15 +120,10 @@ def _parse_node_params(
     references_field = constants.TO_CROISSANT[constants.ML_COMMONS_REFERENCES]
     if (references := node_params.get(references_field)) is not None:
         node_params[references_field] = Source.from_json_ld(issues, references)
-    # Parse `contained_in`.
+    # Parse `contained_in` as a tuple of str.
     contained_in_field = constants.TO_CROISSANT[constants.SCHEMA_ORG_CONTAINED_IN]
     if (contained_in := node_params.get(contained_in_field)) is not None:
-        if isinstance(contained_in, str):
-            node_params[contained_in_field] = parse_reference(issues, contained_in)
-        else:
-            node_params[contained_in_field] = (
-                parse_reference(issues, reference)[0] for reference in contained_in
-            )
+        node_params[contained_in_field] = tuple(str(uid) for uid in contained_in)
     return node_params
 
 

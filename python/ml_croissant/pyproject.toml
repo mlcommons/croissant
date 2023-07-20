@@ -31,3 +31,6 @@ line-length = 88
 
 [tool.pytype]
 inputs = ["."]
+# PyLint is skipped for migrations as migrations are supposed to be launched on
+# fixed previous versions of the code.
+exclude = ["*/migrations/previous/*"]

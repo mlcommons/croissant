@@ -49,42 +49,42 @@
     {
       "@type": "sc:FileObject",
       "name": "ratings-table",
-      "containedIn": "#{ml-25m-archive}",
+      "containedIn": "ml-25m-archive",
       "contentUrl": "ratings.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "movies-table",
-      "containedIn": "#{ml-25m-archive}",
+      "containedIn": "ml-25m-archive",
       "contentUrl": "movies.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "tags-table",
-      "containedIn": "#{ml-25m-archive}",
+      "containedIn": "ml-25m-archive",
       "contentUrl": "tags.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "links-table",
-      "containedIn": "#{ml-25m-archive}",
+      "containedIn": "ml-25m-archive",
       "contentUrl": "links.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-scores-table",
-      "containedIn": "#{ml-25m-archive}",
+      "containedIn": "ml-25m-archive",
       "contentUrl": "genome-scores.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-tags-table",
-      "containedIn": "#{ml-25m-archive}",
+      "containedIn": "ml-25m-archive",
       "contentUrl": "genome-tags.csv",
       "encodingFormat": "text/csv"
     }

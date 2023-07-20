@@ -48,7 +48,7 @@
     {
       "@type": "sc:FileSet",
       "name": "image-files",
-      "containedIn": "#{compressed_archive.zip}",
+      "containedIn": "compressed_archive.zip",
       "encodingFormat": "image/jpeg",
       "includes": "*.jpeg"
     }

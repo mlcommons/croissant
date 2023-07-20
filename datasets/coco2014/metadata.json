@@ -72,9 +72,9 @@
       "@type": "sc:FileSet",
       "name": "image-files",
       "containedIn": [
-        "#{train2014.zip}",
-        "#{val2014.zip}",
-        "#{test2014.zip}"
+        "train2014.zip",
+        "val2014.zip",
+        "test2014.zip"
       ],
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
@@ -90,21 +90,21 @@
     {
       "@type": "sc:FileSet",
       "name": "caption_annotations-files",
-      "containedIn": "#{annotations_trainval2014.zip}",
+      "containedIn": "annotations_trainval2014.zip",
       "encodingFormat": "application/json",
       "includes": "annotations/captions_(val|train)2014.json"
     },
     {
       "@type": "sc:FileSet",
       "name": "person_keypoints_annotations",
-      "containedIn": "#{annotations_trainval2014.zip}",
+      "containedIn": "annotations_trainval2014.zip",
       "encodingFormat": "application/json",
       "includes": "annotations/person_keypoints_(val|train)2014.json"
     },
     {
       "@type": "sc:FileSet",
       "name": "instancesperson_keypoints_annotations",
-      "containedIn": "#{annotations_trainval2014.zip}",
+      "containedIn": "annotations_trainval2014.zip",
       "encodingFormat": "application/json",
       "includes": "annotations/instances_(val|train)2014.json"
     },
@@ -119,7 +119,7 @@
     {
       "@type": "sc:FileSet",
       "name": "imageinfo",
-      "containedIn": "#{image_info_test2014.zip}",
+      "containedIn": "image_info_test2014.zip",
       "encodingFormat": "application/json",
       "includes": "annotations/image_info_test.json"
     }

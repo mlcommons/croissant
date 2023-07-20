@@ -52,7 +52,7 @@
     {
       "@type": "sc:FileSet",
       "name": "image-files",
-      "containedIn": "#{train2014.zip}",
+      "containedIn": "train2014.zip",
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
     }

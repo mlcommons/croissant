@@ -11,24 +11,6 @@ from typing import Any
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.base_node import ID_REGEX, validate_name
-
-
-def parse_reference(issues: Issues, source_data: str) -> tuple[str, ...]:
-    """Parses a reference from a string called `source_data`."""
-    source_regex = re.compile(rf"^\#\{{({ID_REGEX})(?:\/([^\/]+))*\}}$")
-    match = source_regex.match(source_data)
-    if match is None:
-        issues.add_error(
-            f"Malformed source data: {source_data}. The source data should be written"
-            " as `#{name}` where name is valid ID."
-        )
-        return ()
-    groups = tuple(group for group in match.groups() if group is not None)
-    # Only validate the root group, because others can point to external columns
-    # (like in a CSV) with fuzzy names.
-    validate_name(issues, groups[0])
-    return groups
 
 
 class FileProperty(enum.Enum):
