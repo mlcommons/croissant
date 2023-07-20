@@ -63,6 +63,7 @@ All contributions are welcome! We even have [good first issues](https://github.c
 
 The development workflow goes as follow:
 
+- Read above how the repo is [designed](#design).
 - [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository: https://github.com/mlcommons/croissant.
 - Clone the newly forked repository:
   ```bash
@@ -73,12 +74,20 @@ The development workflow goes as follow:
   cd croissant/
   git checkout -b feature/my-awesome-new-feature
   ```
+- Install the repository and dev tools:
+  ```bash
+  cd python/ml_croissant
+  pip install -e .[dev]
+  ```
 - Code the feature. We support [VS Code](https://code.visualstudio.com) with pre-set settings.
 - Push to GitHub:
   ```bash
   git add .
   git push --set-upstream origin feature/my-awesome-new-feature
   ```
+- Update your code until all tests are green:
+  - `pytest` runs unit tests.
+  - `pytype -j auto` runs pytype.
 - Open a pull request (PR) with the main branch of https://github.com/mlcommons/croissant, and ask for feedback!
 
 ## Debug
