@@ -24,6 +24,7 @@ class Field(Node):
         """Implements checks on the node."""
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
+        self.source.check_source(self.add_error)
 
     @property
     def data_type(self) -> str | None:

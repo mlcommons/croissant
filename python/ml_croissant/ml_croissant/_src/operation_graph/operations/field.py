@@ -74,8 +74,8 @@ class ReadField(Operation):
                 value = f.read()
         else:
             field = source.get_field()
-            possible_fields = (
-                list(series.axes) if isinstance(series, pd.Series) else series.keys()
+            possible_fields = list(
+                series.axes if isinstance(series, pd.Series) else series.keys()
             )
             assert (
                 field in series

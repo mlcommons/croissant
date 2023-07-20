@@ -9,6 +9,8 @@ import logging
 import re
 from typing import Any
 
+import jsonpath_rw
+from jsonpath_rw import lexer
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 
@@ -198,6 +200,17 @@ class Source:
             return self.extract.json_path
         else:
             return self.uid.split("/")[-1]
+
+    def check_source(self, add_error: Any):
+        """Checks if the source is valid and adds error otherwise."""
+        if self.extract.json_path:
+            try:
+                jsonpath_rw.parse(self.extract.json_path)
+            except lexer.JsonPathLexerError as exception:
+                add_error(
+                    "Wrong JSONPath (https://goessner.net/articles/JsonPath/):"
+                    f" {exception}"
+                )
 
 
 def _apply_transform_fn(value: str, transform: Transform) -> str:

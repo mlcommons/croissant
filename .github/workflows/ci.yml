@@ -60,7 +60,7 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies except ml_croissant itself
-      run: pip install absl-py etils[epath] networkx pandas pytest pytype rdflib requests tqdm
+      run: pip install absl-py etils[epath] jsonpath_rw networkx pandas pytest pytype rdflib requests tqdm
 
     - name: PyType
       run: pytype --jobs="$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml
@@ -84,7 +84,7 @@ jobs:
 
     - name: Validate JSON-LD files
       run: |
-        JSON_FILES=$(find ../../datasets/ -type f -name "*.json")
+        JSON_FILES=$(find ../../datasets/ -type f -name "*.json" !  -path '*/data/*')
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
