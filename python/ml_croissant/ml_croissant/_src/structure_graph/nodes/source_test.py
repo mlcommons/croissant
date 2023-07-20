@@ -5,6 +5,7 @@ from ml_croissant._src.structure_graph.nodes.source import (
     apply_transforms_fn,
     Extract,
     FileProperty,
+    is_file_property,
     Source,
     Transform,
 )
@@ -176,3 +177,11 @@ def test_apply_transforms_fn(value, source, expected_value):
 )
 def test_get_field(source: Source, expected_field: str):
     assert source.get_field() == expected_field
+
+
+def test_is_file_property():
+    assert is_file_property("content")
+    assert is_file_property("filename")
+    assert is_file_property("filepath")
+    assert is_file_property("fullpath")
+    assert not is_file_property("foo")
