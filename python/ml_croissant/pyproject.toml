@@ -15,6 +15,7 @@ authors = [
 dependencies = [
   "absl-py",
   "etils[epath]",
+  "jsonpath-rw",
   "networkx",
   "pandas",
   "rdflib",

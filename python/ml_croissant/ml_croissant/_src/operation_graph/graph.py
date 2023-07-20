@@ -19,7 +19,8 @@ from ml_croissant._src.operation_graph.operations import (
     GroupRecordSet,
     InitOperation,
     Join,
-    ReadCsv,
+    ParseJson,
+    Read,
     ReadField,
 )
 from ml_croissant._src.operation_graph.operations.extract import should_extract
@@ -69,7 +70,19 @@ def _add_operations_for_field_with_source(
     else:
         # Else, we add a dummy JOIN operation.
         operations.add_node(join)
-    operations.add_edge(join, group_record_set)
+    # Parse JSON if necessary.
+    if node.source.extract.json_path:
+        parse_json = ParseJson(node=record_set)
+        if parse_json in operations:
+            kwargs = operations[parse_json].get("kwargs")
+        else:
+            kwargs = {"fields": []}
+        kwargs["fields"].append(node)
+        operations.add_node(parse_json, kwargs=kwargs)
+        operations.add_edge(join, parse_json)
+        operations.add_edge(parse_json, group_record_set)
+    else:
+        operations.add_edge(join, group_record_set)
     for predecessor in graph.predecessors(node):
         operations.add_edge(last_operation[predecessor], join)
     if not node.source:
@@ -106,8 +119,8 @@ def _add_operations_for_file_object(
 
     - `Download`.
     - `Extract` if the file needs to be extracted.
-    - `Merge` to merge several dataframes into one.
-    - `ReadCsv` to read the file if it's a CSV.
+    - `Concatenate` to merge several dataframes into one.
+    - `Read` to read the file if it's a CSV.
     """
     # Download the file
     operation = Download(node=node, url=node.content_url)
@@ -119,23 +132,22 @@ def _add_operations_for_file_object(
             and isinstance(successor, FileSet)
             and not should_extract(successor.encoding_format)
         ):
-            untar = Extract(node=node, target_node=successor)
-            operations.add_edge(operation, untar)
-            last_operation[node] = untar
-            operation = untar
+            extract = Extract(node=node, target_node=successor)
+            operations.add_edge(operation, extract)
+            last_operation[node] = extract
+            operation = extract
         if isinstance(successor, FileSet):
-            merge = Concatenate(node=successor)
-            operations.add_edge(operation, merge)
-            operation = merge
-    # Read the file
-    if node.encoding_format == "text/csv":
-        read_csv = ReadCsv(
+            concatenate = Concatenate(node=successor)
+            operations.add_edge(operation, concatenate)
+            operation = concatenate
+    if not should_extract(node.encoding_format):
+        read = Read(
             node=node,
             url=node.content_url,
             folder=folder,
         )
-        operations.add_edge(operation, read_csv)
-        operation = read_csv
+        operations.add_edge(operation, read)
+        operation = read
     last_operation[node] = operation
 
 

@@ -185,3 +185,21 @@ def test_is_file_property():
     assert is_file_property("filepath")
     assert is_file_property("fullpath")
     assert not is_file_property("foo")
+
+
+def test_check_source_for_valid_json_path():
+    issues = Issues()
+    Source(uid="uid", extract=Extract(json_path="*.first.second")).check_source(
+        issues.add_error
+    )
+    assert not issues.errors
+
+
+def test_check_source_for_invalid_json_path():
+    issues = Issues()
+    Source(uid="uid", extract=Extract(json_path="invalid/json/path")).check_source(
+        issues.add_error
+    )
+    errors = list(issues.errors)
+    assert len(errors) == 1
+    assert "Wrong JSONPath" in errors[0]

@@ -51,6 +51,14 @@
       "containedIn": "train2014.zip",
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "caption_annotations-files",
+      "contentSize": " B",
+      "contentUrl": "data/captions_train2014.json",
+      "encodingFormat": "application/json",
+      "sha256": ""
     }
   ],
   "recordSet": [
@@ -138,6 +146,25 @@
               "fileProperty": "fullpath"
             },
             "distribution": "image-files"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "captions",
+      "key": "id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the caption",
+          "dataType": "sc:Integer",
+          "source": {
+            "dataExtraction": {
+              "jsonPath": "$.annotations[*].id"
+            },
+            "distribution": "caption_annotations-files"
           }
         }
       ]

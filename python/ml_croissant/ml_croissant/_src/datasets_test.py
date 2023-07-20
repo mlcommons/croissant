@@ -99,6 +99,7 @@ def test_static_analysis(filename, error):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name"],
     [
+        ["coco2014-mini", "captions"],
         ["coco2014-mini", "images"],
         ["pass-mini", "images"],
         ["simple-join", "publications_by_user"],
