@@ -92,7 +92,7 @@ The development workflow goes as follow:
 
 ## Debug
 
-You can debug the validation of the file with the `--debug` flag:
+You can debug the validation of the file using the `--debug` flag:
 
 ```bash
 python scripts/validate.py --file ../../datasets/titanic/metadata.json --debug
