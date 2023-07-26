@@ -85,6 +85,7 @@ def get_error_msg(folder):
                           "metadata_missing_property_name",
                           # ML field.
                           "mlfield_bad_source",
+                          "mlfield_missing_source",
                         ])
 
 def test_static_analysis(folder):
