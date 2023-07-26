@@ -51,11 +51,6 @@ import pytest
             "recordset_missing_context_for_datatype.json",
             "The field does not specify any http://mlcommons.org/schema/dataType",
         ],
-        # ML field.
-        [
-            "mlfield_missing_property_name.json",
-            'Property "https://schema.org/name" is mandatory, but does not exist.',
-        ],
     ],
 )
 def test_static_analysis_old(filename, error):
@@ -78,6 +73,7 @@ def get_error_msg(folder):
                           # ML field.
                           "mlfield_bad_source",
                           "mlfield_bad_type",
+                          "mlfield_missing_property_name",
                           "mlfield_missing_source",
                         ])
 
