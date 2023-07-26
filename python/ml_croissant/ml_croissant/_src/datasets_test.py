@@ -20,13 +20,6 @@ import pytest
         ],
         # Distribution.
         [
-            "distribution_missing_property_content_url.json",
-            (
-                'Property "https://schema.org/contentUrl" is mandatory, but does not '
-                "exist."
-            ),
-        ],
-        [
             "distribution_bad_type.json",
             'Node should have an attribute `"@type" in',
         ],
@@ -54,7 +47,9 @@ def get_error_msg(folder):
 # TODO(https://github.com/mlcommons/croissant/issues/14): Progressively move tests from
 # test_static_analysis_old to test_static_analysis
 @pytest.mark.parametrize("folder",
-                         ["distribution_bad_contained_in",
+                         [# Distribution.
+                          "distribution_bad_contained_in",
+                          "distribution_missing_property_content_url",
                           # Metadata.
                           "metadata_missing_property_name",
                           # ML field.
