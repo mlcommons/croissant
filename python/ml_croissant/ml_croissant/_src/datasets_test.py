@@ -38,11 +38,6 @@ import pytest
                 r'"https://schema.org/name" is mandatory'
             ),
         ],
-        # Record set.
-        [
-            "recordset_missing_property_name.json",
-            'Property "https://schema.org/name" is mandatory, but does not exist.',
-        ],
     ],
 )
 def test_static_analysis_old(filename, error):
@@ -70,6 +65,7 @@ def get_error_msg(folder):
                           # Record set.
                           "recordset_bad_type",
                           "recordset_missing_context_for_datatype",
+                          "recordset_missing_property_name",
                         ])
 
 def test_static_analysis(folder):
