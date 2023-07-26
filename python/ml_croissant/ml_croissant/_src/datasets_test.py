@@ -10,36 +10,17 @@ import pytest
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
-@pytest.mark.parametrize(
-    ["filename", "error"],
-    [
-        [
-            # When the name misses, the context should still appear without the name.
-            "distribution_missing_name.json",
-            (
-                r"\[dataset\(mydataset\) \> distribution\(\)\] Property "
-                r'"https://schema.org/name" is mandatory'
-            ),
-        ],
-    ],
-)
-def test_static_analysis_old(filename, error):
-    base_path = epath.Path(__file__).parent / "tests/graphs"
-    with pytest.raises(ValidationError, match=error):
-        datasets.Dataset(base_path / filename)
-
-
 def get_error_msg(folder):
     with open(f"{folder}/output.txt", "r") as file:
         return file.read().strip()
 
 
-# TODO(https://github.com/mlcommons/croissant/issues/14): Progressively move tests from
-# test_static_analysis_old to test_static_analysis
 @pytest.mark.parametrize("folder", [
                           # Distribution.
                           "distribution_bad_contained_in",
                           "distribution_bad_type",
+                          # When the name is missing, the context should still appear without the name.
+                          "distribution_missing_name",
                           "distribution_missing_property_content_url",
                           # Metadata.
                           "metadata_bad_type",
