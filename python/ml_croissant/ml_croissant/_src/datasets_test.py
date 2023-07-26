@@ -56,14 +56,6 @@ import pytest
             "mlfield_missing_property_name.json",
             'Property "https://schema.org/name" is mandatory, but does not exist.',
         ],
-        [
-            "mlfield_bad_type.json",
-            'Node should have an attribute `"@type" in',
-        ],
-        [
-            "mlfield_missing_source.json",
-            'Node "a-record-set/first-field" is a field and has no source.',
-        ],
     ],
 )
 def test_static_analysis_old(filename, error):
@@ -85,6 +77,7 @@ def get_error_msg(folder):
                           "metadata_missing_property_name",
                           # ML field.
                           "mlfield_bad_source",
+                          "mlfield_bad_type",
                           "mlfield_missing_source",
                         ])
 
