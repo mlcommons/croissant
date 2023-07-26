@@ -9,7 +9,7 @@ from ml_croissant._src.tests.records import record_to_python
 import pytest
 
 
-# End-to-end tests on real data. The data is in `tests/end-to-end/*.json`.
+# End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
 @pytest.mark.parametrize(
     ["filename", "error"],
     [
@@ -33,13 +33,6 @@ import pytest
         [
             "distribution_bad_type.json",
             'Node should have an attribute `"@type" in',
-        ],
-        [
-            "distribution_bad_contained_in.json",
-            (
-                'There is a reference to node named "THISDOESNOTEXIST" in node'
-                ' "a-csv-table", but this node doesn\'t exist.'
-            ),
         ],
         [
             # When the name misses, the context should still appear without the name.
@@ -81,10 +74,26 @@ import pytest
         ],
     ],
 )
-def test_static_analysis(filename, error):
+def test_static_analysis_old(filename, error):
     base_path = epath.Path(__file__).parent / "tests/graphs"
     with pytest.raises(ValidationError, match=error):
         datasets.Dataset(base_path / filename)
+
+
+def get_error_msg(folder):
+    with open(f"{folder}/output.txt", "r") as file:
+        return file.read().strip()
+
+
+# TODO(https://github.com/mlcommons/croissant/issues/14): Progressively move tests from
+# test_static_analysis_old to test_static_analysis
+@pytest.mark.parametrize("folder", ["distribution_bad_contained_in"])
+
+def test_static_analysis(folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs"
+    with pytest.raises(ValidationError) as error_info:
+        datasets.Dataset(base_path / f"{folder}/metadata.json")
+    assert str(error_info.value) == get_error_msg(base_path / folder)
 
 
 # IF THIS TEST FAILS OR YOU ADD A NEW DATASET:
