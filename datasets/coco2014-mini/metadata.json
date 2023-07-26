@@ -79,8 +79,8 @@
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
-            "sc:Url",
-            "wd:Q3985153"
+            "wd:Q3985153",
+            "sc:URL"
           ]
         }
       ],
@@ -163,6 +163,53 @@
           "source": {
             "dataExtraction": {
               "jsonPath": "$.annotations[*].id"
+            },
+            "distribution": "caption_annotations-files"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image",
+          "dataType": "sc:Integer",
+          "source": {
+            "dataExtraction": {
+              "jsonPath": "$.annotations[*].image_id"
+            },
+            "distribution": "caption_annotations-files"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "caption",
+          "description": "The caption",
+          "dataType": [
+            "wd:Q18585177",
+            "sc:Text"
+          ],
+          "source": {
+            "dataExtraction": {
+              "jsonPath": "$.annotations[*].caption"
+            },
+            "distribution": "caption_annotations-files"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": "split_enums/name"
+          },
+          "source": {
+            "applyTransform": {
+              "regex": ".*_(val|train)2014\\.json$"
+            },
+            "dataExtraction": {
+              "fileProperty": "filename"
             },
             "distribution": "caption_annotations-files"
           }

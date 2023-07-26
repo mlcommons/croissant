@@ -14,6 +14,6 @@ class Data(Operation):
 
     node: RecordSet
 
-    def __call__(self):
+    def __call__(self) -> pd.DataFrame:
         """See class' docstring."""
         return pd.DataFrame.from_records(json.loads(self.node.data))

@@ -97,10 +97,8 @@ def _parse_node_params(
         if _predicate == constants.ML_COMMONS_SUB_FIELD:
             node_params["has_sub_fields"] = True
         elif _predicate == constants.SCHEMA_ORG_CONTAINED_IN:
-            # croissant_key = constants.TO_CROISSANT[_predicate]
             node_params[croissant_key].append(_object)
         elif no_filter or _predicate in constants.TO_CROISSANT:
-            # croissant_key = constants.TO_CROISSANT[_predicate]
             if isinstance(_object, term.Literal):
                 node_params[croissant_key] = str(_object)
             elif isinstance(_object, term.URIRef):

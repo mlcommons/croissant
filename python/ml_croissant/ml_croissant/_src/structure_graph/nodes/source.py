@@ -18,10 +18,12 @@ from ml_croissant._src.core.issues import Issues
 class FileProperty(enum.Enum):
     """Lists the intrinsic properties of a file that are accessible from Croissant."""
 
-    content = enum.auto()
-    filename = enum.auto()
-    filepath = enum.auto()
-    fullpath = enum.auto()
+    # Note that at the moment there may be an overlap with existing columns if columns
+    # have one of the following names:
+    content = "__content__"
+    filename = "__filename__"
+    filepath = "__filepath__"
+    fullpath = "__fullpath__"
 
 
 def is_file_property(file_property: str):
@@ -195,7 +197,7 @@ class Source:
         if self.extract.csv_column:
             return self.extract.csv_column
         elif self.extract.file_property:
-            return self.extract.file_property.name
+            return self.extract.file_property.value
         elif self.extract.json_path:
             return self.extract.json_path
         else:

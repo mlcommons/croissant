@@ -19,7 +19,6 @@ from ml_croissant._src.operation_graph.operations import (
     GroupRecordSet,
     InitOperation,
     Join,
-    ParseJson,
     Read,
     ReadField,
 )
@@ -59,30 +58,9 @@ def _add_operations_for_field_with_source(
     # Attach the field to a record set
     record_set = _find_record_set(node)
     group_record_set = GroupRecordSet(node=record_set)
-    join = Join(node=record_set)
-    # `Join()` takes left=Source and right=Source as kwargs.
-    if node.references.uid:
-        kwargs = {
-            "left": node.source,
-            "right": node.references,
-        }
-        operations.add_node(join, kwargs=kwargs)
-    else:
-        # Else, we add a dummy JOIN operation.
-        operations.add_node(join)
-    # Parse JSON if necessary.
-    if node.source.extract.json_path:
-        parse_json = ParseJson(node=record_set)
-        if parse_json in operations:
-            kwargs = operations[parse_json].get("kwargs")
-        else:
-            kwargs = {"fields": []}
-        kwargs["fields"].append(node)
-        operations.add_node(parse_json, kwargs=kwargs)
-        operations.add_edge(join, parse_json)
-        operations.add_edge(parse_json, group_record_set)
-    else:
-        operations.add_edge(join, group_record_set)
+    join = Join(graph=graph, node=record_set)
+    operations.add_node(join)
+    operations.add_edge(join, group_record_set)
     for predecessor in graph.predecessors(node):
         operations.add_edge(last_operation[predecessor], join)
     if not node.source:
@@ -145,6 +123,7 @@ def _add_operations_for_file_object(
             node=node,
             url=node.content_url,
             folder=folder,
+            fields=graph.successors(node),
         )
         operations.add_edge(operation, read)
         operation = read
