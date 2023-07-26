@@ -64,10 +64,6 @@ import pytest
             "mlfield_missing_source.json",
             'Node "a-record-set/first-field" is a field and has no source.',
         ],
-        [
-            "mlfield_bad_source.json",
-            "Malformed source data: THISDOESNOTEXIST.",
-        ],
     ],
 )
 def test_static_analysis_old(filename, error):
@@ -86,7 +82,10 @@ def get_error_msg(folder):
 @pytest.mark.parametrize("folder",
                          ["distribution_bad_contained_in",
                           # Metadata.
-                          "metadata_missing_property_name"])
+                          "metadata_missing_property_name",
+                          # ML field.
+                          "mlfield_bad_source",
+                        ])
 
 def test_static_analysis(folder):
     base_path = epath.Path(__file__).parent / "tests/graphs"
