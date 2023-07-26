@@ -15,10 +15,6 @@ import pytest
     [
         # Metadata.
         [
-            "metadata_missing_property_name.json",
-            'Property "https://schema.org/name" is mandatory, but does not exist.',
-        ],
-        [
             "metadata_bad_type.json",
             "No metadata is defined in the dataset",
         ],
@@ -87,7 +83,10 @@ def get_error_msg(folder):
 
 # TODO(https://github.com/mlcommons/croissant/issues/14): Progressively move tests from
 # test_static_analysis_old to test_static_analysis
-@pytest.mark.parametrize("folder", ["distribution_bad_contained_in"])
+@pytest.mark.parametrize("folder",
+                         ["distribution_bad_contained_in",
+                          # Metadata.
+                          "metadata_missing_property_name"])
 
 def test_static_analysis(folder):
     base_path = epath.Path(__file__).parent / "tests/graphs"
