@@ -85,8 +85,8 @@ def get_error_msg(folder):
         return file.read().strip()
 
 
-# TODO(ccl-core): Progressively move tests from test_static_analysis_old to
-# test_static_analysis
+# TODO(https://github.com/mlcommons/croissant/issues/14): Progressively move tests from
+# test_static_analysis_old to test_static_analysis
 @pytest.mark.parametrize("folder", ["distribution_bad_contained_in"])
 
 def test_static_analysis(folder):
