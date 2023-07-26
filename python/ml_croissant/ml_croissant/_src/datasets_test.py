@@ -47,10 +47,6 @@ import pytest
             "recordset_bad_type.json",
             'Node should have an attribute `"@type" in',
         ],
-        [
-            "recordset_missing_context_for_datatype.json",
-            "The field does not specify any http://mlcommons.org/schema/dataType",
-        ],
     ],
 )
 def test_static_analysis_old(filename, error):
@@ -75,6 +71,8 @@ def get_error_msg(folder):
                           "mlfield_bad_type",
                           "mlfield_missing_property_name",
                           "mlfield_missing_source",
+                          # Record set.
+                          "recordset_missing_context_for_datatype",
                         ])
 
 def test_static_analysis(folder):
