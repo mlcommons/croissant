@@ -13,11 +13,6 @@ import pytest
 @pytest.mark.parametrize(
     ["filename", "error"],
     [
-        # Metadata.
-        [
-            "metadata_bad_type.json",
-            "No metadata is defined in the dataset",
-        ],
         # Distribution.
         [
             "distribution_bad_type.json",
@@ -51,6 +46,7 @@ def get_error_msg(folder):
                           "distribution_bad_contained_in",
                           "distribution_missing_property_content_url",
                           # Metadata.
+                          "metadata_bad_type",
                           "metadata_missing_property_name",
                           # ML field.
                           "mlfield_bad_source",
