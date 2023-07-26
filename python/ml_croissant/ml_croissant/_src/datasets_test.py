@@ -72,6 +72,7 @@ def get_error_msg(folder):
                           "mlfield_missing_property_name",
                           "mlfield_missing_source",
                           # Record set.
+                          "recordset_bad_type",
                           "recordset_missing_context_for_datatype",
                         ])
 
