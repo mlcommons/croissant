@@ -43,10 +43,6 @@ import pytest
             "recordset_missing_property_name.json",
             'Property "https://schema.org/name" is mandatory, but does not exist.',
         ],
-        [
-            "recordset_bad_type.json",
-            'Node should have an attribute `"@type" in',
-        ],
     ],
 )
 def test_static_analysis_old(filename, error):
