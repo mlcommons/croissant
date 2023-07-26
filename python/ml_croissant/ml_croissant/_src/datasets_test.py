@@ -13,11 +13,6 @@ import pytest
 @pytest.mark.parametrize(
     ["filename", "error"],
     [
-        # Distribution.
-        [
-            "distribution_bad_type.json",
-            'Node should have an attribute `"@type" in',
-        ],
         [
             # When the name misses, the context should still appear without the name.
             "distribution_missing_name.json",
@@ -41,9 +36,10 @@ def get_error_msg(folder):
 
 # TODO(https://github.com/mlcommons/croissant/issues/14): Progressively move tests from
 # test_static_analysis_old to test_static_analysis
-@pytest.mark.parametrize("folder",
-                         [# Distribution.
+@pytest.mark.parametrize("folder", [
+                          # Distribution.
                           "distribution_bad_contained_in",
+                          "distribution_bad_type",
                           "distribution_missing_property_content_url",
                           # Metadata.
                           "metadata_bad_type",
