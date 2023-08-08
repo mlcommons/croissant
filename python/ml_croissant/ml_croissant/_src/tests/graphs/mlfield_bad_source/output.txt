@@ -1,0 +1,4 @@
+Found the following 1 error(s) during the validation:
+  -  [dataset(mydataset) > record_set(a-record-set) > field(first-field)] Malformed source data: THISDOESNOTEXIST. It does not refer to any existing node. Have you used http://mlcommons.org/schema/field or https://schema.org/distribution to indicate the source field or the source distribution? If you specified a field, it should contain all the names from the RecordSet separated by `/`, e.g.: "record_set_name/field_name"
+Found the following 1 warning(s) during the validation:
+  -  [dataset(mydataset) > record_set(a-record-set) > field(first-field)] Property "https://schema.org/description" is recommended, but does not exist.
