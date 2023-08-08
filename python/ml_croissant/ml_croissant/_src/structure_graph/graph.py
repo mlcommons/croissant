@@ -419,7 +419,7 @@ def check_structure_graph(issues: Issues, graph: nx.MultiDiGraph):
 
     The rules are the following:
     - The graph is directed.
-    - ALl fields have a data type: either specify directly, or on a parent.
+    - All fields have a data type: either directly specified, or on a parent.
 
     Args:
         issues: The issues to populate in case of problem.
@@ -427,7 +427,7 @@ def check_structure_graph(issues: Issues, graph: nx.MultiDiGraph):
     """
     # Check that the graph is directed.
     if not graph.is_directed():
-        issues.add_error("Structure graph is not directed.")
+        issues.add_error("The structure graph is not directed.")
     fields = [node for node in graph.nodes if isinstance(node, Field)]
     # Check all fields have a data type: either on the field, on a parent.
     for field in fields:
