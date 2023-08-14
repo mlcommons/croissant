@@ -61,7 +61,7 @@ class Join(Operation):
                     left_on=left_key,
                     right_on=right_key,
                     how="left",
-                    suffixes=("", "_right"),
+                    suffixes=(None, "_right"),
                 )
         else:
             raise NotImplementedError(

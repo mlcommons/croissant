@@ -79,10 +79,8 @@ class Extract(Operation):
         included_files.sort()
         return pd.DataFrame(
             {
-                FileProperty.filepath.value: included_files,
-                FileProperty.filename.value: [file.name for file in included_files],
-                FileProperty.fullpath.value: _get_fullpaths(
-                    included_files, extract_dir
-                ),
+                FileProperty.filepath: included_files,
+                FileProperty.filename: [file.name for file in included_files],
+                FileProperty.fullpath: _get_fullpaths(included_files, extract_dir),
             }
         )

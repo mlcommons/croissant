@@ -197,7 +197,7 @@ class Source:
         if self.extract.csv_column:
             return self.extract.csv_column
         elif self.extract.file_property:
-            return self.extract.file_property.value
+            return self.extract.file_property
         elif self.extract.json_path:
             return self.extract.json_path
         else:

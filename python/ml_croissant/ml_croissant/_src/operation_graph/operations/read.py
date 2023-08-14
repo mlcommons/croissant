@@ -39,7 +39,7 @@ class Read(Operation):
                 # Raw files are returned as a one-line pd.DataFrame.
                 return pd.DataFrame(
                     {
-                        FileProperty.content.value: [json_content],
+                        FileProperty.content: [json_content],
                     }
                 )
             else:
@@ -59,7 +59,7 @@ class Read(Operation):
                 " or an invalid path."
             )
         file_content = self._read_file_content(self.node.encoding_format, filepath)
-        file_content[FileProperty.filepath.value] = filepath
-        file_content[FileProperty.filename.value] = filepath.name
-        file_content[FileProperty.fullpath.value] = filepath
+        file_content[FileProperty.filepath] = filepath
+        file_content[FileProperty.filename] = filepath.name
+        file_content[FileProperty.fullpath] = filepath
         return file_content
