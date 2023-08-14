@@ -15,6 +15,7 @@ from rdflib import term
 
 Literal = term.Literal
 
+
 def test_from_rdf_to_nodes():
     issues = Issues()
     graph = rdflib.Graph()

@@ -9,8 +9,8 @@ import tarfile
 import zipfile
 
 from etils import epath
-from ml_croissant._src.core.constants import EXTRACT_PATH
 from ml_croissant._src.operation_graph.base_operation import Operation
+from ml_croissant._src.core.constants import EXTRACT_PATH
 from ml_croissant._src.operation_graph.operations.download import (
     get_download_filepath,
     get_hash,
