@@ -2,6 +2,8 @@
 
 import dataclasses
 
+import pandas as pd
+
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations.parse_json import get_fields
 from ml_croissant._src.structure_graph.nodes import RecordSet

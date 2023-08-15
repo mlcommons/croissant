@@ -5,7 +5,9 @@ import sys
 from absl import app
 from absl import flags
 from absl import logging
-from ml_croissant import Dataset, ValidationError
+
+from ml_croissant import Dataset
+from ml_croissant import ValidationError
 
 flags.DEFINE_string(
     "file",

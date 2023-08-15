@@ -1,9 +1,10 @@
 """graph_test module."""
 
-from ml_croissant._src.operation_graph.operations import ReadField
-from ml_croissant._src.tests.nodes import empty_field
 import pytest
 from rdflib import term
+
+from ml_croissant._src.operation_graph.operations import ReadField
+from ml_croissant._src.tests.nodes import empty_field
 
 
 def test_find_data_type():

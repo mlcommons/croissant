@@ -24,20 +24,19 @@ import json
 from typing import Any
 
 from etils import epath
-from ml_croissant._src.core import constants
-from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.structure_graph.nodes import (
-    Field,
-    FileObject,
-    FileSet,
-    Metadata,
-    RecordSet,
-    Source,
-)
 import networkx as nx
 import rdflib
 from rdflib import term
+
+from ml_croissant._src.core import constants
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes import Field
+from ml_croissant._src.structure_graph.nodes import FileObject
+from ml_croissant._src.structure_graph.nodes import FileSet
+from ml_croissant._src.structure_graph.nodes import Metadata
+from ml_croissant._src.structure_graph.nodes import RecordSet
+from ml_croissant._src.structure_graph.nodes import Source
 
 Json = dict[str, Any]
 

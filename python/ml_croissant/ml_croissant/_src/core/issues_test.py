@@ -2,7 +2,8 @@
 
 import textwrap
 
-from ml_croissant._src.core.issues import Context, Issues
+from ml_croissant._src.core.issues import Context
+from ml_croissant._src.core.issues import Issues
 
 
 def test_issues():

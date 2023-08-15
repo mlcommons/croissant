@@ -4,16 +4,15 @@ import functools
 from typing import Any
 
 from etils import epath
-from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.structure_graph.nodes import (
-    Field,
-    FileObject,
-    FileSet,
-    RecordSet,
-)
 import networkx as nx
 from rdflib import term
+
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes import Field
+from ml_croissant._src.structure_graph.nodes import FileObject
+from ml_croissant._src.structure_graph.nodes import FileSet
+from ml_croissant._src.structure_graph.nodes import RecordSet
 
 
 class _EmptyNode(Node):

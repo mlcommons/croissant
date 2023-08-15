@@ -11,6 +11,7 @@ from typing import Any
 
 import jsonpath_rw
 from jsonpath_rw import lexer
+
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 

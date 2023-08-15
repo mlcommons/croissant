@@ -15,6 +15,11 @@ from ml_croissant._src.operation_graph.operations.parse_json import parse_json_c
 from ml_croissant._src.structure_graph.nodes import Field, FileObject, FileProperty
 import pandas as pd
 
+from ml_croissant._src.operation_graph.base_operation import Operation
+from ml_croissant._src.operation_graph.operations.download import get_download_filepath
+from ml_croissant._src.operation_graph.operations.download import is_url
+from ml_croissant._src.structure_graph.nodes import FileObject
+
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Read(Operation):

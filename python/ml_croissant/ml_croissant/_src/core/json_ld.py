@@ -8,10 +8,11 @@ The main functions are:
 import json
 from typing import Any
 
-from ml_croissant._src.core import constants
-
 import rdflib
-from rdflib import namespace, term
+from rdflib import namespace
+from rdflib import term
+
+from ml_croissant._src.core import constants
 
 Json = dict[str, Any]
 

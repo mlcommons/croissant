@@ -2,8 +2,8 @@
 
 from etils import epath
 import rdflib
-from rdflib import namespace, term
-
+from rdflib import namespace
+from rdflib import term
 
 # MLCommons-defined URIs (still draft).
 ML_COMMONS = rdflib.Namespace("http://mlcommons.org/schema/")

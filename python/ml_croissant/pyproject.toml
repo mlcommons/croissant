@@ -35,3 +35,10 @@ inputs = ["."]
 # PyLint is skipped for migrations as migrations are supposed to be launched on
 # fixed previous versions of the code.
 exclude = ["*/migrations/previous/*"]
+
+[tool.isort]
+profile = "google"
+line_length = 88
+use_parentheses = true
+known_first_party = ["ml_croissant"]
+multi_line_output = 3

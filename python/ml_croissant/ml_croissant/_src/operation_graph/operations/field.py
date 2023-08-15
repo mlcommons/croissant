@@ -4,14 +4,13 @@ import dataclasses
 from typing import Any
 
 from etils import epath
+import pandas as pd
+
 from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.structure_graph.nodes import Field
-from ml_croissant._src.structure_graph.nodes.source import (
-    apply_transforms_fn,
-    FileProperty,
-)
-import pandas as pd
+from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
+from ml_croissant._src.structure_graph.nodes.source import FileProperty
 
 
 @dataclasses.dataclass(frozen=True, repr=False)

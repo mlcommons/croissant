@@ -7,10 +7,12 @@ import dataclasses
 import re
 
 from etils import epath
-from ml_croissant._src.core import constants
-from ml_croissant._src.core.issues import Context, Issues
-from rdflib import term
 import networkx as nx
+from rdflib import term
+
+from ml_croissant._src.core import constants
+from ml_croissant._src.core.issues import Context
+from ml_croissant._src.core.issues import Issues
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255

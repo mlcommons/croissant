@@ -38,6 +38,13 @@ jobs:
     - name: PyLint
       run: pylint **/*.py
 
+    # Pyflakes can see unused imports
+    - name: PyFlakes
+      run: pyflakes .
+
+    - name: Docstrings are defined
+      run: flake8 .
+
   python-format:
     name: Python format
     runs-on: ubuntu-latest
@@ -51,13 +58,8 @@ jobs:
         options: --line-length 88 --preview --experimental-string-processing
         src: './python/ml_croissant'
     - uses: isort/isort-action@master
-
-    # Pyflakes can see unused imports
-    - name: PyFlakes
-      run: pyflakes .
-
-    - name: Docstrings are defined
-      run: flake8 .
+      with:
+        sort-paths: './python/ml_croissant'
 
   pytype-test:
     name: PyType
@@ -71,7 +73,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.10'
 
     - name: Install dependencies except ml_croissant itself
       run: pip install absl-py etils[epath] jsonpath_rw networkx pandas pytest pytype rdflib requests tqdm
