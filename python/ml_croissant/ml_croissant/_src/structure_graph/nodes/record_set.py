@@ -1,29 +1,41 @@
 """RecordSet module."""
 
+from __future__ import annotations
+
 import dataclasses
-import json
+
+from etils import epath
 
 from ml_croissant._src.core import constants
+from ml_croissant._src.core.data_types import check_expected_type
+from ml_croissant._src.core.issues import Context
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.core.json_ld import remove_empty_values
+from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.field import Field
 
 
-@dataclasses.dataclass(frozen=True, repr=False)
+@dataclasses.dataclass(eq=False, repr=False)
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
     # `data` is passed as a string for the moment, because dicts and lists are not
     # hashable.
-    data: str | None = None
+    data: list[Json] | None = None
     description: str | None = None
-    key: str | None = None
+    is_enumeration: bool | None = None
+    key: str | list[str] | None = None
     name: str = ""
+    fields: list[Field] = dataclasses.field(default_factory=list)
 
-    def check(self):
-        """Implements checks on the node."""
+    def __post_init__(self):
+        """Checks arguments of the node."""
+        self.validate_name()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
-        if self.data:
-            data = json.loads(self.data)
+        if self.data is not None:
+            data = self.data
             if not isinstance(data, list):
                 self.add_error(
                     f"{constants.ML_COMMONS_DATA} should declare a list. Got:"
@@ -34,12 +46,7 @@ class RecordSet(Node):
                 self.add_error(
                     f"{constants.ML_COMMONS_DATA} should declare a non empty list."
                 )
-            fields = [
-                node
-                for node in self.graph.nodes
-                if node.parent is not None and node.parent.uid == self.uid
-            ]
-            expected_keys = {field.name for field in fields}
+            expected_keys = {field.name for field in self.fields}
             for i, line in enumerate(data):
                 if not isinstance(line, dict):
                     self.add_error(
@@ -53,3 +60,52 @@ class RecordSet(Node):
                         f"Line #{i} doesn't have the expected columns. Expected:"
                         f" {expected_keys}. Got: {keys}."
                     )
+
+    def to_json(self) -> Json:
+        """Converts the `RecordSet` to JSON."""
+        return remove_empty_values(
+            {
+                "@type": "ml:RecordSet",
+                "name": self.name,
+                "description": self.description,
+                "isEnumeration": self.is_enumeration,
+                "key": self.key,
+                "field": [field.to_json() for field in self.fields],
+                "data": self.data,
+            }
+        )
+
+    @classmethod
+    def from_jsonld(
+        cls,
+        issues: Issues,
+        context: Context,
+        folder: epath.Path,
+        record_set: Json,
+    ) -> RecordSet:
+        """Creates a `RecordSet` from JSON-LD."""
+        check_expected_type(issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE)
+        record_set_name = record_set.get(str(constants.SCHEMA_ORG_NAME), "")
+        context = Context(
+            dataset_name=context.dataset_name, record_set_name=record_set_name
+        )
+        fields = record_set.pop(str(constants.ML_COMMONS_FIELD), [])
+        if isinstance(fields, dict):
+            fields = [fields]
+        fields = [Field.from_jsonld(issues, context, folder, field) for field in fields]
+        key = record_set.get(str(constants.SCHEMA_ORG_KEY))
+        data = record_set.get(str(constants.ML_COMMONS_DATA))
+        is_enumeration = record_set.get(str(constants.SCHEMA_ORG_IS_ENUMERATION))
+        return cls(
+            issues=issues,
+            folder=folder,
+            context=Context(
+                dataset_name=context.dataset_name, record_set_name=record_set_name
+            ),
+            data=data,
+            description=record_set.get(str(constants.SCHEMA_ORG_DESCRIPTION)),
+            is_enumeration=is_enumeration,
+            key=key,
+            fields=fields,
+            name=record_set_name,
+        )

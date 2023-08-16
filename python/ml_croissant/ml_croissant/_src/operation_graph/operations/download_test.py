@@ -9,6 +9,7 @@ from ml_croissant._src.operation_graph.operations.download import Download
 from ml_croissant._src.operation_graph.operations.download import execute_downloads
 from ml_croissant._src.tests.nodes import create_test_file_object
 from ml_croissant._src.tests.nodes import empty_node
+from ml_croissant._src.tests.nodes import empty_record_set
 
 
 def test_str_representation():
@@ -22,7 +23,7 @@ def test_execute_downloads():
     node2 = create_test_file_object(name="node2")
     download1 = Download(node=node1, url="http://mlcommons.org")
     download2 = Download(node=node2, url="http://mlcommons.org")
-    data = Data(node=empty_node)
+    data = Data(node=empty_record_set)
     operations.add_node(download1)
     operations.add_node(download2)
     operations.add_node(download2)

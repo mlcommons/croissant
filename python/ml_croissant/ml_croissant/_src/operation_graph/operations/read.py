@@ -12,9 +12,9 @@ from ml_croissant._src.operation_graph.operations.download import get_download_f
 from ml_croissant._src.operation_graph.operations.download import is_url
 from ml_croissant._src.operation_graph.operations.extract import get_fullpath
 from ml_croissant._src.operation_graph.operations.parse_json import parse_json_content
-from ml_croissant._src.structure_graph.nodes import Field
-from ml_croissant._src.structure_graph.nodes import FileObject
-from ml_croissant._src.structure_graph.nodes import FileProperty
+from ml_croissant._src.structure_graph.nodes.field import Field
+from ml_croissant._src.structure_graph.nodes.file_object import FileObject
+from ml_croissant._src.structure_graph.nodes.source import FileProperty
 
 
 @dataclasses.dataclass(frozen=True, repr=False)

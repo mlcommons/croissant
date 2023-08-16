@@ -1,10 +1,16 @@
-"""record_set module."""
+"""Tests for RecordSets."""
 
-import networkx as nx
+from unittest import mock
+
+from etils import epath
 import pytest
 
+from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 from ml_croissant._src.tests.nodes import create_test_field
+from ml_croissant._src.tests.nodes import create_test_node
 from ml_croissant._src.tests.nodes import create_test_record_set
 
 
@@ -12,28 +18,28 @@ from ml_croissant._src.tests.nodes import create_test_record_set
     ["data", "error"],
     [
         [
-            '{"foo": "bar"}',
+            {"foo": "bar"},
             (
                 "[record_set(record_set_name)] http://mlcommons.org/schema/data should"
                 " declare a list. Got: <class 'dict'>."
             ),
         ],
         [
-            "[]",
+            [],
             (
                 "[record_set(record_set_name)] http://mlcommons.org/schema/data should"
                 " declare a non empty list."
             ),
         ],
         [
-            '[[{"foo": "bar"}]]',
+            [[{"foo": "bar"}]],
             (
                 "[record_set(record_set_name)] http://mlcommons.org/schema/data should"
                 " declare a list of dict. Got: a list of <class 'list'>."
             ),
         ],
         [
-            '[{"foo": "bar"}]',
+            [{"foo": "bar"}],
             (
                 "[record_set(record_set_name)] Line #0 doesn't have the expected"
                 " columns. Expected: {'field_name'}. Got: {'foo'}."
@@ -43,10 +49,56 @@ from ml_croissant._src.tests.nodes import create_test_record_set
 )
 def test_invalid_data(data, error):
     issues = Issues()
-    graph = nx.MultiDiGraph()
-    record_set = create_test_record_set(issues=issues, graph=graph, data=data)
-    field = create_test_field(issues=issues, graph=graph, parents=(record_set,))
-    graph.add_node(record_set)
-    graph.add_node(field)
-    record_set.check()
+    field = create_test_field(issues=issues)
+    create_test_record_set(
+        issues=issues,
+        context=Context(record_set_name="record_set_name"),
+        data=data,
+        fields=[field],
+    )
     assert error in issues.errors
+
+
+def test_checks_are_performed():
+    with mock.patch.object(
+        Node, "assert_has_mandatory_properties"
+    ) as mandatory_mock, mock.patch.object(
+        Node, "assert_has_optional_properties"
+    ) as optional_mock, mock.patch.object(
+        Node, "validate_name"
+    ) as validate_name_mock:
+        create_test_node(RecordSet)
+        mandatory_mock.assert_called_once_with("name")
+        optional_mock.assert_called_once_with("description")
+        validate_name_mock.assert_called_once()
+
+
+def test_from_jsonld():
+    issues = Issues()
+    context = Context()
+    folder = epath.Path("/foo/bar")
+    jsonld = {
+        "@type": "http://mlcommons.org/schema/RecordSet",
+        "https://schema.org/name": "foo",
+        "https://schema.org/description": "bar",
+        "https://schema.org/isEnumeration": True,
+        "https://schema.org/key": ["key1", "key2"],
+        "http://mlcommons.org/schema/data": [{"column1": ["value1", "value2"]}],
+    }
+    assert RecordSet.from_jsonld(issues, context, folder, jsonld) == RecordSet(
+        issues=issues,
+        context=context,
+        folder=folder,
+        name="foo",
+        description="bar",
+        is_enumeration=True,
+        key=["key1", "key2"],
+        data=[{"column1": ["value1", "value2"]}],
+    )
+    assert issues.errors == {
+        "Line #0 doesn't have the expected columns. Expected: set(). Got: {'column1'}.",
+        (
+            "[record_set(foo)] Line #0 doesn't have the expected columns. Expected:"
+            " set(). Got: {'column1'}."
+        ),
+    }

@@ -7,7 +7,7 @@ class ValidationError(Exception):
     """Error during the validation of the format."""
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass
 class Context:
     """Context to identify an issue.
 

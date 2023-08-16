@@ -1,3 +1,2 @@
-Found the following 2 error(s) during the validation:
-  -  The identifier "" contains forbidden characters.
+Found the following 1 error(s) during the validation:
   -  [dataset()] Property "https://schema.org/name" is mandatory, but does not exist.

@@ -1,2 +1,2 @@
 Found the following 1 error(s) during the validation:
-  -  No metadata is defined in the dataset. Make sure you defined a node with @type=https://schema.org/Dataset.
+  -  "mydataset" should have an attribute "@type": "https://schema.org/Dataset". Got https://schema.org/WRONG_TYPE instead.

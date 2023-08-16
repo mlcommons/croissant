@@ -2,18 +2,19 @@
 
 from __future__ import annotations
 
-import collections
 import dataclasses
 import enum
 import logging
 import re
-from typing import Any
+from typing import Any, Literal
 
 import jsonpath_rw
 from jsonpath_rw import lexer
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.core.json_ld import remove_empty_values
+from ml_croissant._src.core.types import Json
 
 
 class FileProperty(enum.Enum):
@@ -43,6 +44,16 @@ class Extract:
     file_property: FileProperty | None = None
     json_path: str | None = None
 
+    def to_json(self) -> Json:
+        """Converts the `Extract` to JSON."""
+        return remove_empty_values(
+            {
+                "csvColumn": self.csv_column,
+                "fileProperty": self.file_property.name if self.file_property else None,
+                "jsonPath": self.json_path,
+            }
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class Transform:
@@ -60,6 +71,17 @@ class Transform:
     regex: str | None = None
     replace: str | None = None
     separator: str | None = None
+
+    def to_json(self) -> Json:
+        """Converts the `Transform` to JSON."""
+        return remove_empty_values(
+            {
+                "format": self.format,
+                "regex": self.regex,
+                "replace": self.replace,
+                "separator": self.separator,
+            }
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -106,58 +128,81 @@ class Source:
     extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: tuple[Transform, ...] = ()
     uid: str | None = None
+    node_type: Literal["distribution", "field"] | None = None
+
+    def to_json(self) -> Json:
+        """Converts the `Source` to JSON."""
+        transforms = [transform.to_json() for transform in self.transforms]
+        if len(transforms) == 1:
+            transforms = transforms[0]
+        return remove_empty_values(
+            {
+                self.node_type: self.uid,
+                "applyTransform": transforms,
+                "dataExtraction": self.extract.to_json(),
+            }
+        )
 
     @classmethod
-    def from_json_ld(cls, issues: Issues, json_ld: Any) -> Source:
+    def from_jsonld(cls, issues: Issues, jsonld: Any) -> Source:
         """Creates a new source from a JSON-LD `field` and populates issues."""
-        if isinstance(json_ld, list):
-            if len(json_ld) != 1:
-                raise ValueError(f"Field {json_ld} should have one element.")
-            return Source.from_json_ld(issues, json_ld[0])
-        elif isinstance(json_ld, (dict, collections.defaultdict)):
+        if jsonld is None:
+            return Source()
+        elif isinstance(jsonld, list):
+            if len(jsonld) != 1:
+                raise ValueError(f"Field {jsonld} should have one element.")
+            return Source.from_jsonld(issues, jsonld[0])
+        elif isinstance(jsonld, dict):
             try:
-                transforms = json_ld.get(constants.CROISSANT_APPLY_TRANSFORM, [])
+                transforms = jsonld.get(str(constants.ML_COMMONS_APPLY_TRANSFORM), [])
                 if not isinstance(transforms, list):
-                    raise ValueError(
-                        'Field "apply_transform" should be parsed as a list.'
-                    )
+                    transforms = [transforms]
                 transforms = tuple(
                     Transform(
-                        format=transform.get(constants.CROISSANT_FORMAT),
-                        regex=transform.get(constants.CROISSANT_REGEX),
-                        replace=transform.get(constants.CROISSANT_REPLACE),
-                        separator=transform.get(constants.CROISSANT_SEPARATOR),
+                        format=transform.get(str(constants.ML_COMMONS_FORMAT)),
+                        regex=transform.get(str(constants.ML_COMMONS_REGEX)),
+                        replace=transform.get(str(constants.ML_COMMONS_REPLACE)),
+                        separator=transform.get(str(constants.ML_COMMONS_SEPARATOR)),
                     )
                     for transform in transforms
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
-                data_extraction = json_ld.get(constants.CROISSANT_DATA_EXTRACTION, {})
+                data_extraction = jsonld.get(
+                    str(constants.ML_COMMONS_DATA_EXTRACTION), {}
+                )
                 if isinstance(data_extraction, list) and data_extraction:
                     data_extraction = data_extraction[0]
+                # Remove the JSON-LD @id property if it exists:
+                data_extraction.pop("@id", None)
                 if len(data_extraction) > 1:
                     issues.add_error(
                         f"{constants.ML_COMMONS_DATA_EXTRACTION} should have one of the"
                         f" following properties: {constants.ML_COMMONS_FORMAT},"
                         f" {constants.ML_COMMONS_REGEX},"
-                        f" {constants.CROISSANT_REPLACE} or"
+                        f" {constants.ML_COMMONS_REPLACE} or"
                         f" {constants.ML_COMMONS_SEPARATOR}"
                     )
                 # Safely access and check "uid" from JSON-LD.
-                distribution = json_ld.get(constants.CROISSANT_DISTRIBUTION)
-                field = json_ld.get(constants.CROISSANT_FIELD)
+                distribution = jsonld.get(str(constants.SCHEMA_ORG_DISTRIBUTION))
+                field = jsonld.get(str(constants.ML_COMMONS_FIELD))
                 if distribution is not None and field is None:
                     uid = distribution
+                    node_type = "distribution"
                 elif distribution is None and field is not None:
                     uid = field
+                    node_type = "field"
                 else:
                     uid = None
+                    node_type = None
                     issues.add_error(
                         f"Every {constants.ML_COMMONS_SOURCE} should declare either"
                         f" {constants.ML_COMMONS_FIELD} or"
                         f" {constants.SCHEMA_ORG_DISTRIBUTION}"
                     )
                 # Safely access and check "file_property" from JSON-LD.
-                file_property = data_extraction.get(constants.CROISSANT_FILE_PROPERTY)
+                file_property = data_extraction.get(
+                    str(constants.ML_COMMONS_FILE_PROPERTY)
+                )
                 if is_file_property(file_property):
                     file_property = FileProperty[file_property]
                 elif file_property is not None:
@@ -167,23 +212,26 @@ class Source:
                         f" {file_property}"
                     )
                 # Build the source.
-                extraction = Extract(
-                    csv_column=data_extraction.get(constants.CROISSANT_CSV_COLUMN),
+                json_path = data_extraction.get(str(constants.ML_COMMONS_JSON_PATH))
+                csv_column = data_extraction.get(str(constants.ML_COMMONS_CSV_COLUMN))
+                extract = Extract(
+                    csv_column=csv_column,
                     file_property=file_property,
-                    json_path=data_extraction.get(constants.CROISSANT_JSON_PATH),
+                    json_path=json_path,
                 )
                 return Source(
-                    extract=extraction,
+                    extract=extract,
                     transforms=transforms,
                     uid=uid,
+                    node_type=node_type,
                 )
             except TypeError as exception:
                 issues.add_error(
-                    f"Malformed `source`: {json_ld}. Got exception: {exception}"
+                    f"Malformed `source`: {jsonld}. Got exception: {exception}"
                 )
                 return Source()
         else:
-            issues.add_error(f"`source` has wrong type: {type(json_ld)} ({json_ld})")
+            issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
             return Source()
 
     def __bool__(self):

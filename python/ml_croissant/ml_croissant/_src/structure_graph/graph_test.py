@@ -1,68 +1,47 @@
 """graph_test module."""
 
+import json
+import os
+
 from etils import epath
-import rdflib
+import pytest
 from rdflib import term
 
-from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.graph import from_rdf_to_nodes
-from ml_croissant._src.structure_graph.nodes import FileObject
-from ml_croissant._src.structure_graph.nodes import Metadata
+from ml_croissant._src.structure_graph.graph import Structure
 
 Literal = term.Literal
 
 
-def test_from_rdf_to_nodes():
+_DATASETS_FOLDER = (
+    epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
+)
+_JSON_LD_PATHS = [
+    path
+    for path in _DATASETS_FOLDER.glob("*/*.json")
+    if not os.fspath(path).endswith("_by_openml_converter.json")
+]
+
+
+# If this test fails, you probably manually updated a dataset in datasets/.
+# Please, use scripts/migrations/migrate.py to migrate datasets.
+@pytest.mark.parametrize(
+    ["path"],
+    [[path] for path in _JSON_LD_PATHS],
+)
+def test_jsonld_to_python_to_jsonld(path):
+    with path.open() as f:
+        json_ld = json.load(f)
     issues = Issues()
-    graph = rdflib.Graph()
-    bnode1 = term.BNode("ID_DATASET")
-    bnode2 = term.BNode("ID_FILE_OBJECT")
-
-    # Metadata
-    graph.add((bnode1, constants.RDF_TYPE, constants.SCHEMA_ORG_DATASET))
-    graph.add((bnode1, constants.SCHEMA_ORG_CITATION, Literal("Citation.")))
-    graph.add((bnode1, constants.SCHEMA_ORG_DESCRIPTION, Literal("Description.")))
-    graph.add((bnode1, constants.SCHEMA_ORG_LICENSE, Literal("License.")))
-    graph.add((bnode1, constants.SCHEMA_ORG_NAME, Literal("mydataset")))
-    graph.add((bnode1, constants.SCHEMA_ORG_URL, Literal("google.com/dataset")))
-    graph.add((bnode1, constants.SCHEMA_ORG_DISTRIBUTION, bnode2))
-
-    # FileObject
-    graph.add((bnode2, constants.RDF_TYPE, constants.SCHEMA_ORG_FILE_OBJECT))
-    graph.add((bnode2, constants.SCHEMA_ORG_NAME, Literal("a-csv-table")))
-    graph.add((bnode2, constants.SCHEMA_ORG_CONTENT_URL, Literal("ratings.csv")))
-    graph.add((bnode2, constants.SCHEMA_ORG_ENCODING_FORMAT, Literal("text/csv")))
-    graph.add((bnode2, constants.SCHEMA_ORG_SHA256, Literal("xxx")))
-
-    graph = from_rdf_to_nodes(issues, graph, epath.Path())
-    nodes = list(graph.nodes)
-    metadata = Metadata(
-        issues=issues,
-        bnode=bnode1,
-        folder=epath.Path(),
-        graph=graph,
-        parents=(),
-        name="mydataset",
-        citation="Citation.",
-        description="Description.",
-        license="License.",
-        url="google.com/dataset",
-    )
-    expected_nodes = [
-        metadata,
-        FileObject(
-            issues=issues,
-            bnode=bnode2,
-            folder=epath.Path(),
-            graph=graph,
-            parents=(metadata,),
-            name="a-csv-table",
-            content_url="ratings.csv",
-            encoding_format="text/csv",
-            sha256="xxx",
-        ),
-    ]
+    structure = Structure.from_file(issues, path)
+    result = structure.to_json()
+    # `distribution` may not be in the right order:
+    if "distribution" in result:
+        distribution = result.pop("distribution")
+        distribution = {file["name"]: file for file in distribution}
+        expected_distribution = json_ld.pop("distribution")
+        expected_distribution = {file["name"]: file for file in expected_distribution}
+        assert distribution == expected_distribution
+    # Check the expected JSON-LD:
+    assert result == json_ld
     assert not issues.errors
-    assert not issues.warnings
-    assert nodes == expected_nodes
