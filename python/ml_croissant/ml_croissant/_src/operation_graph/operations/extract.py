@@ -26,17 +26,19 @@ def should_extract(encoding_format: str) -> bool:
     )
 
 
+def get_fullpath(file: epath.Path, data_dir: epath.Path) -> str:
+    """Fullpaths are the full paths from the extraction directory."""
+    # Path since the root of the dir.
+    fullpath = os.fspath(file).replace(os.fspath(data_dir), "")
+    # Remove the trailing slash.
+    if fullpath.startswith("/"):
+        fullpath = fullpath[1:]
+    return fullpath
+
+
 def _get_fullpaths(files: list[epath.Path], extract_dir: epath.Path) -> list[str]:
     """Fullpaths are the full paths from the extraction directory."""
-    fullpaths = []
-    for file in files:
-        # Path since the root of the extraction dir.
-        root_path = os.fspath(file).replace(os.fspath(extract_dir), "")
-        # Remove the trailing slash.
-        if root_path.startswith("/"):
-            root_path = root_path[1:]
-        fullpaths.append(root_path)
-    return fullpaths
+    return [get_fullpath(file, extract_dir) for file in files]
 
 
 def _extract_file(source: epath.Path, target: epath.Path) -> None:
@@ -79,10 +81,8 @@ class Extract(Operation):
         included_files.sort()
         return pd.DataFrame(
             {
-                FileProperty.filepath.value: included_files,
-                FileProperty.filename.value: [file.name for file in included_files],
-                FileProperty.fullpath.value: _get_fullpaths(
-                    included_files, extract_dir
-                ),
+                FileProperty.filepath: included_files,
+                FileProperty.filename: [file.name for file in included_files],
+                FileProperty.fullpath: _get_fullpaths(included_files, extract_dir),
             }
         )

@@ -72,7 +72,7 @@ class ReadField(Operation):
         """See class' docstring."""
         source = self.node.source
         if source.extract.file_property == FileProperty.content:
-            filepath = series[FileProperty.filepath.value]
+            filepath = series[FileProperty.filepath]
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
         else:

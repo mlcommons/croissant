@@ -21,7 +21,7 @@ class Join(Operation):
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
-        if len(args) == 2:
+        elif len(args) == 2:
             fields = get_fields(self.node, self.graph)
             joins = set()
             for field in fields:
@@ -61,7 +61,7 @@ class Join(Operation):
                     left_on=left_key,
                     right_on=right_key,
                     how="left",
-                    suffixes=("", "_right"),
+                    suffixes=(None, "_right"),
                 )
         else:
             raise NotImplementedError(

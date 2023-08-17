@@ -189,7 +189,7 @@ class Source:
         """Allows to write `if not node.source` / `if node.source`."""
         return self.uid is not None
 
-    def get_field(self) -> str:
+    def get_field(self) -> str | FileProperty:
         """Retrieves the name of the field/column/query associated to the source."""
         if self.uid is None:
             # This case already rose an issue and should not happen at run time.
@@ -197,7 +197,7 @@ class Source:
         if self.extract.csv_column:
             return self.extract.csv_column
         elif self.extract.file_property:
-            return self.extract.file_property.value
+            return self.extract.file_property
         elif self.extract.json_path:
             return self.extract.json_path
         else:
