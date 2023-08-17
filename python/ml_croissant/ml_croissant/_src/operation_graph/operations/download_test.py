@@ -2,13 +2,13 @@
 
 from unittest import mock
 
-from ml_croissant._src.operation_graph.operations import Data
-from ml_croissant._src.operation_graph.operations.download import (
-    Download,
-    execute_downloads,
-)
-from ml_croissant._src.tests.nodes import create_test_file_object, empty_node
 import networkx as nx
+
+from ml_croissant._src.operation_graph.operations import Data
+from ml_croissant._src.operation_graph.operations.download import Download
+from ml_croissant._src.operation_graph.operations.download import execute_downloads
+from ml_croissant._src.tests.nodes import create_test_file_object
+from ml_croissant._src.tests.nodes import empty_node
 
 
 def test_str_representation():

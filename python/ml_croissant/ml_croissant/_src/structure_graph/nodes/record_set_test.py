@@ -1,9 +1,11 @@
 """record_set module."""
 
-from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.tests.nodes import create_test_field, create_test_record_set
 import networkx as nx
 import pytest
+
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.tests.nodes import create_test_field
+from ml_croissant._src.tests.nodes import create_test_record_set
 
 
 @pytest.mark.parametrize(

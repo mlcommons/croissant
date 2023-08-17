@@ -31,14 +31,15 @@ python scripts/migrations/migrate.py --migration 202307171508
 Commiting your migration allows to keep track of previous migrations in the codebase.
 """
 
-import json
 import importlib
+import json
 
 from absl import app
 from absl import flags
 from etils import epath
-from ml_croissant._src.core.json_ld import expand_json_ld, compact_json_ld
 
+from ml_croissant._src.core.json_ld import compact_json_ld
+from ml_croissant._src.core.json_ld import expand_json_ld
 
 _PREVIOUS_MIGRATIONS_FOLDER = "previous"
 

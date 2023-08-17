@@ -3,29 +3,26 @@
 import dataclasses
 
 from etils import epath
+import networkx as nx
+
 from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.nodes import (
-    Field,
-    FileObject,
-    FileSet,
-    RecordSet,
-)
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations import (
-    Concatenate,
-    Data,
-    Download,
-    Extract,
-    GroupRecordSet,
-    InitOperation,
-    Join,
-    Read,
-    ReadField,
-)
+from ml_croissant._src.operation_graph.operations import Concatenate
+from ml_croissant._src.operation_graph.operations import Data
+from ml_croissant._src.operation_graph.operations import Download
+from ml_croissant._src.operation_graph.operations import Extract
+from ml_croissant._src.operation_graph.operations import GroupRecordSet
+from ml_croissant._src.operation_graph.operations import InitOperation
+from ml_croissant._src.operation_graph.operations import Join
+from ml_croissant._src.operation_graph.operations import Read
+from ml_croissant._src.operation_graph.operations import ReadField
 from ml_croissant._src.operation_graph.operations.extract import should_extract
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.graph import get_entry_nodes
-import networkx as nx
+from ml_croissant._src.structure_graph.nodes import Field
+from ml_croissant._src.structure_graph.nodes import FileObject
+from ml_croissant._src.structure_graph.nodes import FileSet
+from ml_croissant._src.structure_graph.nodes import RecordSet
 
 LastOperation = dict[Node, Operation]
 

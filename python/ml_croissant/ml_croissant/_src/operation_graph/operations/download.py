@@ -7,12 +7,13 @@ import logging
 import os
 
 from etils import epath
-from ml_croissant._src.core.constants import DOWNLOAD_PATH
-from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.operation_graph.base_operation import Operation
 import networkx as nx
 import requests
 import tqdm
+
+from ml_croissant._src.core.constants import DOWNLOAD_PATH
+from ml_croissant._src.operation_graph.base_operation import Operation
+from ml_croissant._src.structure_graph.base_node import Node
 
 _DOWNLOAD_CHUNK_SIZE = 1024
 

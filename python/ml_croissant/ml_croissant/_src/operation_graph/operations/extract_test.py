@@ -1,8 +1,11 @@
 """extract_test module."""
 
 from etils import epath
-from ml_croissant._src.operation_graph.operations.extract import _get_fullpaths, Extract
-from ml_croissant._src.tests.nodes import empty_file_object, empty_file_set
+
+from ml_croissant._src.operation_graph.operations.extract import _get_fullpaths
+from ml_croissant._src.operation_graph.operations.extract import Extract
+from ml_croissant._src.tests.nodes import empty_file_object
+from ml_croissant._src.tests.nodes import empty_file_set
 
 
 def test_str_representation():

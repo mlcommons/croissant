@@ -2,9 +2,10 @@
 
 import dataclasses
 
-from ml_croissant._src.structure_graph.nodes import FileSet
-from ml_croissant._src.operation_graph.base_operation import Operation
 import pandas as pd
+
+from ml_croissant._src.operation_graph.base_operation import Operation
+from ml_croissant._src.structure_graph.nodes import FileSet
 
 
 @dataclasses.dataclass(frozen=True, repr=False)

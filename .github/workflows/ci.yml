@@ -10,7 +10,7 @@ on:
   merge_group:
 
 jobs:
-  format-test:
+  python-test:
     name: Format / Unit Tests / Python ${{ matrix.python-version }}
     strategy:
       fail-fast: false
@@ -44,6 +44,22 @@ jobs:
 
     - name: Docstrings are defined
       run: flake8 .
+
+  python-format:
+    name: Python format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - uses: psf/black@stable
+      with:
+        options: --line-length 88 --preview --experimental-string-processing
+        src: './python/ml_croissant'
+    - uses: isort/isort-action@master
+      with:
+        sort-paths: './python/ml_croissant'
 
   pytype-test:
     name: PyType

@@ -3,8 +3,10 @@
 import json
 
 from etils import epath
-from ml_croissant._src.core.json_ld import expand_json_ld, compact_json_ld
 import pytest
+
+from ml_croissant._src.core.json_ld import compact_json_ld
+from ml_croissant._src.core.json_ld import expand_json_ld
 
 _DATASETS_FOLDER = (
     epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"

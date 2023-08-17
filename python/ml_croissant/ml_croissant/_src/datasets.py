@@ -6,24 +6,20 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-from ml_croissant._src.core.graphs import utils as graphs_utils
-from ml_croissant._src.core.issues import Issues, ValidationError
-from ml_croissant._src.operation_graph import (
-    OperationGraph,
-)
-from ml_croissant._src.operation_graph.operations.download import execute_downloads
-from ml_croissant._src.operation_graph.operations import (
-    GroupRecordSet,
-    ReadField,
-)
-from ml_croissant._src.structure_graph.graph import (
-    check_structure_graph,
-    from_file_to_json,
-    from_json_to_rdf,
-    from_rdf_to_nodes,
-    from_nodes_to_structure_graph,
-)
 import networkx as nx
+
+from ml_croissant._src.core.graphs import utils as graphs_utils
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.core.issues import ValidationError
+from ml_croissant._src.operation_graph import OperationGraph
+from ml_croissant._src.operation_graph.operations import GroupRecordSet
+from ml_croissant._src.operation_graph.operations import ReadField
+from ml_croissant._src.operation_graph.operations.download import execute_downloads
+from ml_croissant._src.structure_graph.graph import check_structure_graph
+from ml_croissant._src.structure_graph.graph import from_file_to_json
+from ml_croissant._src.structure_graph.graph import from_json_to_rdf
+from ml_croissant._src.structure_graph.graph import from_nodes_to_structure_graph
+from ml_croissant._src.structure_graph.graph import from_rdf_to_nodes
 
 
 @dataclasses.dataclass

@@ -1,15 +1,14 @@
 """source_test module."""
 
-from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.nodes.source import (
-    apply_transforms_fn,
-    Extract,
-    FileProperty,
-    is_file_property,
-    Source,
-    Transform,
-)
 import pytest
+
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
+from ml_croissant._src.structure_graph.nodes.source import Extract
+from ml_croissant._src.structure_graph.nodes.source import FileProperty
+from ml_croissant._src.structure_graph.nodes.source import is_file_property
+from ml_croissant._src.structure_graph.nodes.source import Source
+from ml_croissant._src.structure_graph.nodes.source import Transform
 
 
 def test_source_bool():

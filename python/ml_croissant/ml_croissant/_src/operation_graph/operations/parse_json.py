@@ -3,9 +3,11 @@
 from typing import Any
 
 import jsonpath_rw
-from ml_croissant._src.structure_graph.nodes import Field, RecordSet
 import networkx as nx
 import pandas as pd
+
+from ml_croissant._src.structure_graph.nodes import Field
+from ml_croissant._src.structure_graph.nodes import RecordSet
 
 Json = dict[str, Any]
 

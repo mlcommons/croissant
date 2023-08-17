@@ -1,7 +1,8 @@
 """records_test module."""
 
-from ml_croissant._src.tests.records import record_to_python
 import pandas as pd
+
+from ml_croissant._src.tests.records import record_to_python
 
 
 def test_record_to_python():

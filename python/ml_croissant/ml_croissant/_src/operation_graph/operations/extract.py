@@ -9,14 +9,15 @@ import tarfile
 import zipfile
 
 from etils import epath
+import pandas as pd
+
 from ml_croissant._src.core.constants import EXTRACT_PATH
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations.download import (
-    get_download_filepath,
-    get_hash,
-)
-from ml_croissant._src.structure_graph.nodes import FileObject, FileProperty, FileSet
-import pandas as pd
+from ml_croissant._src.operation_graph.operations.download import get_download_filepath
+from ml_croissant._src.operation_graph.operations.download import get_hash
+from ml_croissant._src.structure_graph.nodes import FileObject
+from ml_croissant._src.structure_graph.nodes import FileProperty
+from ml_croissant._src.structure_graph.nodes import FileSet
 
 
 def should_extract(encoding_format: str) -> bool:

@@ -1,19 +1,17 @@
 """graph_test module."""
 
 from etils import epath
-from ml_croissant._src.core import constants
-from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.graph import (
-    from_rdf_to_nodes,
-)
-from ml_croissant._src.structure_graph.nodes import (
-    FileObject,
-    Metadata,
-)
 import rdflib
 from rdflib import term
 
+from ml_croissant._src.core import constants
+from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.structure_graph.graph import from_rdf_to_nodes
+from ml_croissant._src.structure_graph.nodes import FileObject
+from ml_croissant._src.structure_graph.nodes import Metadata
+
 Literal = term.Literal
+
 
 def test_from_rdf_to_nodes():
     issues = Issues()

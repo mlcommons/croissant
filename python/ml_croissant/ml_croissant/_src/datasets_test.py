@@ -3,10 +3,11 @@
 import json
 
 from etils import epath
+import pytest
+
 from ml_croissant._src import datasets
 from ml_croissant._src.core.issues import ValidationError
 from ml_croissant._src.tests.records import record_to_python
-import pytest
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
