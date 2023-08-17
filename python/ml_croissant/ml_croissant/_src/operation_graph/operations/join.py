@@ -2,14 +2,13 @@
 
 import dataclasses
 
+import networkx as nx
 import pandas as pd
 
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations.parse_json import get_fields
 from ml_croissant._src.structure_graph.nodes import RecordSet
 from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
-import networkx as nx
-import pandas as pd
 
 
 @dataclasses.dataclass(frozen=True, repr=False)

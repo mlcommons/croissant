@@ -4,21 +4,17 @@ import dataclasses
 import json
 
 from etils import epath
-from ml_croissant._src.core.constants import DOWNLOAD_PATH
-from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations.download import (
-    is_url,
-    get_download_filepath,
-)
-from ml_croissant._src.operation_graph.operations.extract import get_fullpath
-from ml_croissant._src.operation_graph.operations.parse_json import parse_json_content
-from ml_croissant._src.structure_graph.nodes import Field, FileObject, FileProperty
 import pandas as pd
 
+from ml_croissant._src.core.constants import DOWNLOAD_PATH
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations.download import get_download_filepath
 from ml_croissant._src.operation_graph.operations.download import is_url
+from ml_croissant._src.operation_graph.operations.extract import get_fullpath
+from ml_croissant._src.operation_graph.operations.parse_json import parse_json_content
+from ml_croissant._src.structure_graph.nodes import Field
 from ml_croissant._src.structure_graph.nodes import FileObject
+from ml_croissant._src.structure_graph.nodes import FileProperty
 
 
 @dataclasses.dataclass(frozen=True, repr=False)

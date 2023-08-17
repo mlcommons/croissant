@@ -1,8 +1,9 @@
 """join_test module."""
 
+import networkx as nx
+
 from ml_croissant._src.operation_graph.operations import join
 from ml_croissant._src.tests.nodes import empty_node
-import networkx as nx
 
 
 def test_str_representation():

@@ -7,17 +7,6 @@ import networkx as nx
 
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations import (
-    Concatenate,
-    Data,
-    Download,
-    Extract,
-    GroupRecordSet,
-    InitOperation,
-    Join,
-    Read,
-    ReadField,
-)
 from ml_croissant._src.operation_graph.operations import Concatenate
 from ml_croissant._src.operation_graph.operations import Data
 from ml_croissant._src.operation_graph.operations import Download
@@ -25,7 +14,6 @@ from ml_croissant._src.operation_graph.operations import Extract
 from ml_croissant._src.operation_graph.operations import GroupRecordSet
 from ml_croissant._src.operation_graph.operations import InitOperation
 from ml_croissant._src.operation_graph.operations import Join
-from ml_croissant._src.operation_graph.operations import ParseJson
 from ml_croissant._src.operation_graph.operations import Read
 from ml_croissant._src.operation_graph.operations import ReadField
 from ml_croissant._src.operation_graph.operations.extract import should_extract
