@@ -41,7 +41,7 @@ class Node(abc.ABC):
     issues: Issues
     bnode: term.BNode
     graph: nx.MultiDiGraph
-    parents: tuple["Node", ...]
+    parents: tuple[Node, ...]
     folder: epath.Path
     name: str
 

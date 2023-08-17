@@ -15,7 +15,7 @@ from ml_croissant._src.operation_graph.operations.download import (
     get_download_filepath,
     get_hash,
 )
-from ml_croissant._src.structure_graph.nodes import FileObject, FileSet
+from ml_croissant._src.structure_graph.nodes import FileObject, FileProperty, FileSet
 import pandas as pd
 
 
@@ -79,8 +79,10 @@ class Extract(Operation):
         included_files.sort()
         return pd.DataFrame(
             {
-                "filepath": included_files,
-                "filename": [file.name for file in included_files],
-                "fullpath": _get_fullpaths(included_files, extract_dir),
+                FileProperty.filepath.value: included_files,
+                FileProperty.filename.value: [file.name for file in included_files],
+                FileProperty.fullpath.value: _get_fullpaths(
+                    included_files, extract_dir
+                ),
             }
         )

@@ -160,7 +160,7 @@ def test_apply_transforms_fn(value, source, expected_value):
                 uid="my-csv",
                 extract=Extract(file_property=FileProperty.content),
             ),
-            "content",
+            "__content__",
         ],
         [
             Source(

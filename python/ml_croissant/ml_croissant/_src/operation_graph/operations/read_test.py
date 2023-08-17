@@ -7,6 +7,9 @@ from ml_croissant._src.tests.nodes import empty_file_object
 
 def test_str_representation():
     operation = Read(
-        node=empty_file_object, folder=epath.Path(), url="http://mlcommons.org"
+        node=empty_file_object,
+        folder=epath.Path(),
+        url="http://mlcommons.org",
+        fields=[],
     )
     assert str(operation) == "Read(file_object_name)"

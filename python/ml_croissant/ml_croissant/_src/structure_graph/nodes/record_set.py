@@ -5,7 +5,6 @@ import json
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.structure_graph.nodes.source import Source
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -18,7 +17,6 @@ class RecordSet(Node):
     description: str | None = None
     key: str | None = None
     name: str = ""
-    source: Source | None = None
 
     def check(self):
         """Implements checks on the node."""

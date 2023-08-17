@@ -15,27 +15,29 @@ def get_error_msg(folder):
         return file.read().strip()
 
 
-@pytest.mark.parametrize("folder", [
-                          # Distribution.
-                          "distribution_bad_contained_in",
-                          "distribution_bad_type",
-                          # When the name is missing, the context should still appear without the name.
-                          "distribution_missing_name",
-                          "distribution_missing_property_content_url",
-                          # Metadata.
-                          "metadata_bad_type",
-                          "metadata_missing_property_name",
-                          # ML field.
-                          "mlfield_bad_source",
-                          "mlfield_bad_type",
-                          "mlfield_missing_property_name",
-                          "mlfield_missing_source",
-                          # Record set.
-                          "recordset_bad_type",
-                          "recordset_missing_context_for_datatype",
-                          "recordset_missing_property_name",
-                        ])
-
+@pytest.mark.parametrize(
+    "folder",
+    [
+        # Distribution.
+        "distribution_bad_contained_in",
+        "distribution_bad_type",
+        # When the name is missing, the context should still appear without the name.
+        "distribution_missing_name",
+        "distribution_missing_property_content_url",
+        # Metadata.
+        "metadata_bad_type",
+        "metadata_missing_property_name",
+        # ML field.
+        "mlfield_bad_source",
+        "mlfield_bad_type",
+        "mlfield_missing_property_name",
+        "mlfield_missing_source",
+        # Record set.
+        "recordset_bad_type",
+        "recordset_missing_context_for_datatype",
+        "recordset_missing_property_name",
+    ],
+)
 def test_static_analysis(folder):
     base_path = epath.Path(__file__).parent / "tests/graphs"
     with pytest.raises(ValidationError) as error_info:
@@ -64,7 +66,7 @@ def test_static_analysis(folder):
 )
 def test_loading(dataset_name, record_set_name):
     print(
-        "Update JSONL with: `python scripts/load.py --file"
+        "If this test fails, update JSONL with: `python scripts/load.py --file"
         f" ../../datasets/{dataset_name}/metadata.json --record_set"
         f" {record_set_name} --update_output --num_records -1 --debug`"
     )

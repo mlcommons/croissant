@@ -40,7 +40,10 @@ class ReadField(Operation):
                     f' Possible types: {", ".join(EXPECTED_DATA_TYPES)}.'
                 )
             return EXPECTED_DATA_TYPES[data_type]
-        raise ValueError(f'No data type found for "{self.node.uid}"')
+        raise ValueError(
+            f'No data type found for "{self.node.uid}". Possible types:'
+            f' {", ".join(EXPECTED_DATA_TYPES)}'
+        )
 
     def _cast_value(self, value: Any):
         data_type = self.find_data_type(self.node.data_type)
@@ -69,7 +72,7 @@ class ReadField(Operation):
         """See class' docstring."""
         source = self.node.source
         if source.extract.file_property == FileProperty.content:
-            filepath = series[FileProperty.filepath.name]
+            filepath = series[FileProperty.filepath.value]
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
         else:

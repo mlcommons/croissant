@@ -54,7 +54,7 @@
           "@type": "ml:Field",
           "name": "email",
           "description": "Email of the author.",
-          "dataType": "sc:email"
+          "dataType": "sc:Text"
         },
         {
           "@type": "ml:Field",
@@ -103,7 +103,7 @@
           "@type": "ml:Field",
           "name": "author_email",
           "description": "Email of the author.",
-          "dataType": "sc:email",
+          "dataType": "sc:Text",
           "references": {
             "field": "users/email"
           },
