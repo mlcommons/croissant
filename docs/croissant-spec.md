@@ -136,6 +136,21 @@ instead.
     on top of the extracted method as specified through `dataExtraction`, e.g., a
     regular expression or json query.
 
+For example, to extract information from a filename with respect to a regular
+expression, write:
+
+```json
+{
+  "applyTransform": {
+    "regex": "^(train|val|test)2014/.*\\.jpg$"
+  },
+  "dataExtraction": {
+    "fileProperty": "filename"
+  },
+  "distribution": "files"
+}
+```
+
 ### dataExtraction
 
 The extraction method from the provided source. It can the name of a Field, or
