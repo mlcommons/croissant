@@ -21,7 +21,7 @@ class Join(Operation):
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
-        if len(args) == 2:
+        elif len(args) == 2:
             fields = get_fields(self.node, self.graph)
             joins = set()
             for field in fields:
