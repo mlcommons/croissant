@@ -4,6 +4,10 @@
         "editor.rulers": [
             88
         ],
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
     },
     "[json]": {
         "editor.formatOnSave": true,
@@ -17,10 +21,21 @@
     "pylint.args": [
         "--rcfile=${workspaceFolder}/python/format/.pylintrc"
     ],
-    "python.formatting.blackArgs": [
+    "black-formatter.args": [
         "--line-length",
         "88",
         "--preview",
         "--experimental-string-processing"
+    ],
+    "isort.args": [
+        "--profile",
+        "google",
+        "--line-length",
+        "88",
+        "--use-parentheses",
+        "--project",
+        "ml_croissant",
+        "--multi-line",
+        "3",
     ],
 }
