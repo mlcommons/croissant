@@ -98,7 +98,7 @@ class Transform:
             ]
             if not isinstance(transform, dict):
                 issues.add_error(
-                    f'Transform "{transform}" should a dict with the keys'
+                    f'Transform "{transform}" should be a dict with the keys'
                     f' {", ".join(possible_keys)}'
                 )
                 continue
@@ -113,7 +113,7 @@ class Transform:
                 and separator is None
             ):
                 issues.add_error(
-                    f'Transform "{transform}" should a dict at least one key in'
+                    f'Transform "{transform}" should be a dict with at least one key in'
                     f' {", ".join(possible_keys)}'
                 )
                 continue
