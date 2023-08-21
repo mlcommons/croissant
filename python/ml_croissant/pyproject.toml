@@ -26,6 +26,7 @@ readme = "README.md"
 
 [project.optional-dependencies]
 dev = ["black", "flake8-docstrings", "pyflakes", "pylint", "pytest", "pytype"]
+docs = ["ml_croissant[dev]", "sphinx-apitree[ext]"]
 
 [tool.black]
 line-length = 88
