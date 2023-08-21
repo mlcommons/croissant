@@ -12,7 +12,7 @@ from ml_croissant._src.structure_graph.nodes.source import Transform
 
 
 def test_source_bool():
-    empty_source = Source(transforms=(Transform(replace="\\n/<eos>"),))
+    empty_source = Source(transforms=[Transform(replace="\\n/<eos>")])
     assert not empty_source
 
     whole_source = Source(uid="one/two")
@@ -38,10 +38,10 @@ def test_source_bool():
             },
             Source(
                 uid="token-files/content",
-                transforms=(
+                transforms=[
                     Transform(replace="\\n/<eos>"),
                     Transform(separator=" "),
-                ),
+                ],
                 node_type="field",
             ),
         ],
@@ -57,10 +57,10 @@ def test_source_bool():
             ],
             Source(
                 uid="token-files/content",
-                transforms=(
+                transforms=[
                     Transform(replace="\\n/<eos>"),
                     Transform(separator=" "),
-                ),
+                ],
                 node_type="field",
             ),
         ],
@@ -80,7 +80,7 @@ def test_source_bool():
             Source(
                 extract=Extract(csv_column="my-column"),
                 uid="my-csv",
-                transforms=(Transform(replace="\\n/<eos>", separator=" "),),
+                transforms=[Transform(replace="\\n/<eos>", separator=" ")],
                 node_type="distribution",
             ),
         ],
@@ -91,6 +91,41 @@ def test_source_parses_list(json_ld, expected_source):
     assert Source.from_jsonld(issues, json_ld) == expected_source
     assert not issues.errors
     assert not issues.warnings
+
+
+@pytest.mark.parametrize(
+    ["jsonld", "expected_errors"],
+    [
+        [
+            "this is not a list",
+            set(
+                [
+                    'Transform "this is not a list" should a dict with the keys'
+                    " http://mlcommons.org/schema/format,"
+                    " http://mlcommons.org/schema/regex,"
+                    " http://mlcommons.org/schema/replace,"
+                    " http://mlcommons.org/schema/separator"
+                ]
+            ),
+        ],
+        [
+            [{"not": "the right keys"}],
+            set(
+                [
+                    "Transform \"{'not': 'the right keys'}\" should a dict at least one"
+                    " key in http://mlcommons.org/schema/format,"
+                    " http://mlcommons.org/schema/regex,"
+                    " http://mlcommons.org/schema/replace,"
+                    " http://mlcommons.org/schema/separator"
+                ]
+            ),
+        ],
+    ],
+)
+def test_transformations_with_errors(jsonld, expected_errors):
+    issues = Issues()
+    Transform.from_jsonld(issues=issues, jsonld=jsonld)
+    assert issues.errors == expected_errors
 
 
 def test_declaring_multiple_sources_in_one():
@@ -153,13 +188,13 @@ def test_declaring_wrong_file_property():
         # Capturing group
         [
             "train1234",
-            Source(transforms=(Transform(regex="(train|val)\\d\\d\\d\\d"),)),
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             "train",
         ],
         # Non working capturing group
         [
             "foo1234",
-            Source(transforms=(Transform(regex="(train|val)\\d\\d\\d\\d"),)),
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             "foo1234",
         ],
     ],

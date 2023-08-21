@@ -83,8 +83,52 @@ class Transform:
             }
         )
 
+    @classmethod
+    def from_jsonld(cls, issues: Issues, jsonld: Json) -> list[Transform]:
+        """Creates a list of `Transform` from JSON-LD."""
+        transforms = []
+        if not isinstance(jsonld, list):
+            jsonld = [jsonld]
+        for transform in jsonld:
+            possible_keys = [
+                constants.ML_COMMONS_FORMAT,
+                constants.ML_COMMONS_REGEX,
+                constants.ML_COMMONS_REPLACE,
+                constants.ML_COMMONS_SEPARATOR,
+            ]
+            if not isinstance(transform, dict):
+                issues.add_error(
+                    f'Transform "{transform}" should a dict with the keys'
+                    f' {", ".join(possible_keys)}'
+                )
+                continue
+            format = transform.get(str(constants.ML_COMMONS_FORMAT))
+            regex = transform.get(str(constants.ML_COMMONS_REGEX))
+            replace = transform.get(str(constants.ML_COMMONS_REPLACE))
+            separator = transform.get(str(constants.ML_COMMONS_SEPARATOR))
+            if (
+                format is None
+                and regex is None
+                and replace is None
+                and separator is None
+            ):
+                issues.add_error(
+                    f'Transform "{transform}" should a dict at least one key in'
+                    f' {", ".join(possible_keys)}'
+                )
+                continue
+            transforms.append(
+                Transform(
+                    format=format,
+                    regex=regex,
+                    replace=replace,
+                    separator=separator,
+                )
+            )
+        return transforms
 
-@dataclasses.dataclass(frozen=True)
+
+@dataclasses.dataclass(eq=False)
 class Source:
     r"""Python representation of sources and references.
 
@@ -126,7 +170,7 @@ class Source:
     """
 
     extract: Extract = dataclasses.field(default_factory=Extract)
-    transforms: tuple[Transform, ...] = ()
+    transforms: list[Transform] = dataclasses.field(default_factory=list)
     uid: str | None = None
     node_type: Literal["distribution", "field"] | None = None
 
@@ -154,17 +198,8 @@ class Source:
             return Source.from_jsonld(issues, jsonld[0])
         elif isinstance(jsonld, dict):
             try:
-                transforms = jsonld.get(str(constants.ML_COMMONS_APPLY_TRANSFORM), [])
-                if not isinstance(transforms, list):
-                    transforms = [transforms]
-                transforms = tuple(
-                    Transform(
-                        format=transform.get(str(constants.ML_COMMONS_FORMAT)),
-                        regex=transform.get(str(constants.ML_COMMONS_REGEX)),
-                        replace=transform.get(str(constants.ML_COMMONS_REPLACE)),
-                        separator=transform.get(str(constants.ML_COMMONS_SEPARATOR)),
-                    )
-                    for transform in transforms
+                transforms = Transform.from_jsonld(
+                    issues, jsonld.get(str(constants.ML_COMMONS_APPLY_TRANSFORM), [])
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
                 data_extraction = jsonld.get(
@@ -237,6 +272,16 @@ class Source:
     def __bool__(self):
         """Allows to write `if not node.source` / `if node.source`."""
         return self.uid is not None
+
+    def __hash__(self):
+        """Hashes all immutable arguments."""
+        return hash((self.extract, tuple(self.transforms), self.uid, self.node_type))
+
+    def __eq__(self, other: Any) -> bool:
+        """Overwrites the equality between two sources."""
+        if not isinstance(other, Source):
+            return False
+        return hash(self) == hash(other)
 
     def get_field(self) -> str | FileProperty:
         """Retrieves the name of the field/column/query associated to the source."""
