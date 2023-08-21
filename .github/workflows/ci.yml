@@ -33,17 +33,17 @@ jobs:
       run: pip install .[dev]
 
     - name: PyTest
-      run: pytest .
+      run: make pytest
 
     - name: PyLint
-      run: pylint **/*.py
+      run: make pylint
 
     # Pyflakes can see unused imports
     - name: PyFlakes
-      run: pyflakes .
+      run: make pyflakes
 
     - name: Docstrings are defined
-      run: flake8 .
+      run: make flake8
 
   python-format:
     name: Python format
@@ -79,7 +79,7 @@ jobs:
       run: pip install absl-py etils[epath] jsonpath_rw networkx pandas pytest pytype rdflib requests tqdm
 
     - name: PyType
-      run: pytype --jobs="$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml
+      run: make pytype
 
   validation-test:
     name: Validation / JSON-LD Tests / Python 3.11

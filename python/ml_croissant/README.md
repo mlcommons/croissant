@@ -39,8 +39,10 @@ python scripts/load.py \
 
 ## Run tests
 
+All tests can be run from the Makefile:
+
 ```bash
-pytest .
+make tests
 ```
 
 ## Design
