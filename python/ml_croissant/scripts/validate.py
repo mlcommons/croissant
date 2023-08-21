@@ -1,4 +1,11 @@
-"""validate script."""
+"""Script to validate a Croissant JSON-LD file and output errors & warnings if any.
+
+Usage:
+
+```
+python scripts/validate.py --file /path/to/file.json
+```
+"""
 
 import sys
 
