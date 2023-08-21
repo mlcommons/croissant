@@ -39,14 +39,14 @@ from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 
 def from_file_to_jsonld(filepath: epath.PathLike) -> tuple[epath.Path, list[Json]]:
-    """Loads the file as a JSON.
+    """Loads the file as a JSON-LD.
 
     Args:
         filepath: The path to the file as a str or a path. The path can be absolute or
             relative.
 
     Returns:
-        A tuple with the absolute path to the file and the JSON.
+        A tuple with the absolute path to the file and the JSON-LD.
     """
     filepath = epath.Path(filepath).expanduser().resolve()
     if not filepath.exists():
