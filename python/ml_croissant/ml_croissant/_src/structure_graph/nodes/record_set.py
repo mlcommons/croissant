@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+import json
 
 from etils import epath
 
@@ -85,17 +86,25 @@ class RecordSet(Node):
     ) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
         check_expected_type(issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE)
-        record_set_name = record_set.get(str(constants.SCHEMA_ORG_NAME), "")
+        record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
         context = Context(
             dataset_name=context.dataset_name, record_set_name=record_set_name
         )
-        fields = record_set.pop(str(constants.ML_COMMONS_FIELD), [])
+        fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
         if isinstance(fields, dict):
             fields = [fields]
         fields = [Field.from_jsonld(issues, context, folder, field) for field in fields]
-        key = record_set.get(str(constants.SCHEMA_ORG_KEY))
-        data = record_set.get(str(constants.ML_COMMONS_DATA))
-        is_enumeration = record_set.get(str(constants.SCHEMA_ORG_IS_ENUMERATION))
+        key = record_set.get(constants.SCHEMA_ORG_KEY)
+        data = record_set.get(constants.ML_COMMONS_DATA)
+        if isinstance(data, str):
+            try:
+                data = json.loads(data)
+            except json.decoder.JSONDecodeError:
+                data = None
+                issues.add_error(
+                    f"{constants.ML_COMMONS_DATA} is not a proper list of JSON: {data}"
+                )
+        is_enumeration = record_set.get(constants.SCHEMA_ORG_IS_ENUMERATION)
         return cls(
             issues=issues,
             folder=folder,
@@ -103,7 +112,7 @@ class RecordSet(Node):
                 dataset_name=context.dataset_name, record_set_name=record_set_name
             ),
             data=data,
-            description=record_set.get(str(constants.SCHEMA_ORG_DESCRIPTION)),
+            description=record_set.get(constants.SCHEMA_ORG_DESCRIPTION),
             is_enumeration=is_enumeration,
             key=key,
             fields=fields,

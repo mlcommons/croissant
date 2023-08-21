@@ -4,6 +4,7 @@ from unittest import mock
 
 from etils import epath
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
@@ -30,11 +31,11 @@ def test_from_jsonld():
     context = Context()
     folder = epath.Path("/foo/bar")
     jsonld = {
-        "@type": "https://schema.org/Dataset",
-        "https://schema.org/name": "foo",
-        "https://schema.org/description": "bar",
-        "https://schema.org/license": "License",
-        "https://schema.org/url": "https://mlcommons.org",
+        "@type": constants.SCHEMA_ORG_DATASET,
+        constants.SCHEMA_ORG_NAME: "foo",
+        constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.SCHEMA_ORG_LICENSE: "License",
+        constants.SCHEMA_ORG_URL: "https://mlcommons.org",
     }
     assert Metadata.from_jsonld(issues, folder, jsonld) == Metadata(
         issues=issues,

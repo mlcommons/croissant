@@ -28,8 +28,8 @@ class ParentField:
         """Creates a `ParentField` from JSON-LD."""
         if json_ is None:
             return None
-        references = json_.get(str(constants.ML_COMMONS_REFERENCES))
-        source = json_.get(str(constants.ML_COMMONS_SOURCE))
+        references = json_.get(constants.ML_COMMONS_REFERENCES)
+        source = json_.get(constants.ML_COMMONS_SOURCE)
         return cls(
             references=Source.from_jsonld(issues, references),
             source=Source.from_jsonld(issues, source),
@@ -125,24 +125,24 @@ class Field(Node):
             field,
             constants.ML_COMMONS_FIELD_TYPE,
         )
-        references_jsonld = field.get(str(constants.ML_COMMONS_REFERENCES))
+        references_jsonld = field.get(constants.ML_COMMONS_REFERENCES)
         references = Source.from_jsonld(issues, references_jsonld)
-        source_jsonld = field.get(str(constants.ML_COMMONS_SOURCE))
+        source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
         source = Source.from_jsonld(issues, source_jsonld)
-        data_type = field.get(str(constants.ML_COMMONS_DATA_TYPE), {})
-        is_enumeration = field.get(str(constants.SCHEMA_ORG_IS_ENUMERATION))
+        data_type = field.get(constants.ML_COMMONS_DATA_TYPE, {})
+        is_enumeration = field.get(constants.SCHEMA_ORG_IS_ENUMERATION)
         if isinstance(data_type, dict):
             data_type = data_type.get("@id")
         elif isinstance(data_type, list):
             data_type = [d.get("@id") for d in data_type]
         else:
             data_type = None
-        field_name = field.get(str(constants.SCHEMA_ORG_NAME), "")
+        field_name = field.get(constants.SCHEMA_ORG_NAME, "")
         if context.field_name is None:
             context.field_name = field_name
         else:
             context.sub_field_name = field_name
-        sub_fields = field.get(str(constants.ML_COMMONS_SUB_FIELD), [])
+        sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD, [])
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]
         sub_fields = [
@@ -150,14 +150,14 @@ class Field(Node):
             for sub_field in sub_fields
         ]
         parent_field = ParentField.from_jsonld(
-            issues, field.get(str(constants.SCHEMA_ORG_PARENT_FIELD))
+            issues, field.get(constants.SCHEMA_ORG_PARENT_FIELD)
         )
-        repeated = field.get(str(constants.SCHEMA_ORG_REPEATED))
+        repeated = field.get(constants.SCHEMA_ORG_REPEATED)
         return cls(
             issues=issues,
             context=context,
             folder=folder,
-            description=field.get(str(constants.SCHEMA_ORG_DESCRIPTION)),
+            description=field.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_type=data_type,
             is_enumeration=is_enumeration,
             name=field_name,

@@ -102,10 +102,10 @@ class Transform:
                     f' {", ".join(possible_keys)}'
                 )
                 continue
-            format = transform.get(str(constants.ML_COMMONS_FORMAT))
-            regex = transform.get(str(constants.ML_COMMONS_REGEX))
-            replace = transform.get(str(constants.ML_COMMONS_REPLACE))
-            separator = transform.get(str(constants.ML_COMMONS_SEPARATOR))
+            format = transform.get(constants.ML_COMMONS_FORMAT)
+            regex = transform.get(constants.ML_COMMONS_REGEX)
+            replace = transform.get(constants.ML_COMMONS_REPLACE)
+            separator = transform.get(constants.ML_COMMONS_SEPARATOR)
             if (
                 format is None
                 and regex is None
@@ -199,12 +199,10 @@ class Source:
         elif isinstance(jsonld, dict):
             try:
                 transforms = Transform.from_jsonld(
-                    issues, jsonld.get(str(constants.ML_COMMONS_APPLY_TRANSFORM), [])
+                    issues, jsonld.get(constants.ML_COMMONS_APPLY_TRANSFORM, [])
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
-                data_extraction = jsonld.get(
-                    str(constants.ML_COMMONS_DATA_EXTRACTION), {}
-                )
+                data_extraction = jsonld.get(constants.ML_COMMONS_DATA_EXTRACTION, {})
                 if isinstance(data_extraction, list) and data_extraction:
                     data_extraction = data_extraction[0]
                 # Remove the JSON-LD @id property if it exists:
@@ -218,8 +216,8 @@ class Source:
                         f" {constants.ML_COMMONS_SEPARATOR}"
                     )
                 # Safely access and check "uid" from JSON-LD.
-                distribution = jsonld.get(str(constants.SCHEMA_ORG_DISTRIBUTION))
-                field = jsonld.get(str(constants.ML_COMMONS_FIELD))
+                distribution = jsonld.get(constants.SCHEMA_ORG_DISTRIBUTION)
+                field = jsonld.get(constants.ML_COMMONS_FIELD)
                 if distribution is not None and field is None:
                     uid = distribution
                     node_type = "distribution"
@@ -235,9 +233,7 @@ class Source:
                         f" {constants.SCHEMA_ORG_DISTRIBUTION}"
                     )
                 # Safely access and check "file_property" from JSON-LD.
-                file_property = data_extraction.get(
-                    str(constants.ML_COMMONS_FILE_PROPERTY)
-                )
+                file_property = data_extraction.get(constants.ML_COMMONS_FILE_PROPERTY)
                 if is_file_property(file_property):
                     file_property = FileProperty[file_property]
                 elif file_property is not None:
@@ -247,8 +243,8 @@ class Source:
                         f" {file_property}"
                     )
                 # Build the source.
-                json_path = data_extraction.get(str(constants.ML_COMMONS_JSON_PATH))
-                csv_column = data_extraction.get(str(constants.ML_COMMONS_CSV_COLUMN))
+                json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH)
+                csv_column = data_extraction.get(constants.ML_COMMONS_CSV_COLUMN)
                 extract = Extract(
                     csv_column=csv_column,
                     file_property=file_property,

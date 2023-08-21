@@ -2,6 +2,7 @@
 
 import pytest
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
 from ml_croissant._src.structure_graph.nodes.source import Extract
@@ -24,16 +25,16 @@ def test_source_bool():
     [
         [
             {
-                "http://mlcommons.org/schema/field": "token-files/content",
+                constants.ML_COMMONS_FIELD: "token-files/content",
             },
             Source(uid="token-files/content", node_type="field"),
         ],
         [
             {
-                "http://mlcommons.org/schema/field": "token-files/content",
-                "http://mlcommons.org/schema/applyTransform": [
-                    {"http://mlcommons.org/schema/replace": "\\n/<eos>"},
-                    {"http://mlcommons.org/schema/separator": " "},
+                constants.ML_COMMONS_FIELD: "token-files/content",
+                constants.ML_COMMONS_APPLY_TRANSFORM: [
+                    {constants.ML_COMMONS_REPLACE: "\\n/<eos>"},
+                    {constants.ML_COMMONS_SEPARATOR: " "},
                 ],
             },
             Source(
@@ -48,10 +49,10 @@ def test_source_bool():
         [
             [
                 {
-                    "http://mlcommons.org/schema/field": "token-files/content",
-                    "http://mlcommons.org/schema/applyTransform": [
-                        {"http://mlcommons.org/schema/replace": "\\n/<eos>"},
-                        {"http://mlcommons.org/schema/separator": " "},
+                    constants.ML_COMMONS_FIELD: "token-files/content",
+                    constants.ML_COMMONS_APPLY_TRANSFORM: [
+                        {constants.ML_COMMONS_REPLACE: "\\n/<eos>"},
+                        {constants.ML_COMMONS_SEPARATOR: " "},
                     ],
                 }
             ],
@@ -66,15 +67,15 @@ def test_source_bool():
         ],
         [
             {
-                "https://schema.org/distribution": "my-csv",
-                "http://mlcommons.org/schema/applyTransform": [
+                constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
+                constants.ML_COMMONS_APPLY_TRANSFORM: [
                     {
-                        "http://mlcommons.org/schema/replace": "\\n/<eos>",
-                        "http://mlcommons.org/schema/separator": " ",
+                        constants.ML_COMMONS_REPLACE: "\\n/<eos>",
+                        constants.ML_COMMONS_SEPARATOR: " ",
                     }
                 ],
-                "http://mlcommons.org/schema/dataExtraction": {
-                    "http://mlcommons.org/schema/csvColumn": "my-column"
+                constants.ML_COMMONS_DATA_EXTRACTION: {
+                    constants.ML_COMMONS_CSV_COLUMN: "my-column"
                 },
             },
             Source(
@@ -131,8 +132,8 @@ def test_transformations_with_errors(jsonld, expected_errors):
 def test_declaring_multiple_sources_in_one():
     issues = Issues()
     json_ld = {
-        "https://schema.org/distribution": "my-csv",
-        "http://mlcommons.org/schema/field": "my-record-set/my-field",
+        constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
+        constants.ML_COMMONS_FIELD: "my-record-set/my-field",
     }
     assert Source.from_jsonld(issues, json_ld) == Source()
     assert issues.errors == {
@@ -144,11 +145,11 @@ def test_declaring_multiple_sources_in_one():
 def test_declaring_multiple_data_extraction_in_one():
     issues = Issues()
     json_ld = {
-        "https://schema.org/distribution": "my-csv",
-        "http://mlcommons.org/schema/dataExtraction": {
+        constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
+        constants.ML_COMMONS_DATA_EXTRACTION: {
             "@id": "jsonld-id",
-            "http://mlcommons.org/schema/csvColumn": "csv_column",
-            "http://mlcommons.org/schema/jsonPath": "json_path",
+            constants.ML_COMMONS_CSV_COLUMN: "csv_column",
+            constants.ML_COMMONS_JSON_PATH: "json_path",
         },
     }
     assert Source.from_jsonld(issues, json_ld) == Source(
@@ -167,9 +168,9 @@ def test_declaring_multiple_data_extraction_in_one():
 def test_declaring_wrong_file_property():
     issues = Issues()
     json_ld = {
-        "https://schema.org/distribution": "my-csv",
-        "http://mlcommons.org/schema/dataExtraction": {
-            "http://mlcommons.org/schema/fileProperty": "foo",
+        constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
+        constants.ML_COMMONS_DATA_EXTRACTION: {
+            constants.ML_COMMONS_FILE_PROPERTY: "foo",
         },
     }
     Source.from_jsonld(issues, json_ld)
