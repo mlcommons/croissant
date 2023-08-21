@@ -170,7 +170,6 @@ class Field(Node):
 
 
 def _data_type_to_json(data_type: str | list[str] | None):
-    # Find a clean alternative to this...
     WIKI = "https://www.wikidata.org/wiki/"
     if data_type is None:
         return None
