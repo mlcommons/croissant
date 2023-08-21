@@ -13,19 +13,19 @@ def main(argv):
     del argv
     metadata = mlc.nodes.Metadata(
         name="my-new-dataset",
-        description="This is a new dataset",
+        description="This is a new dataset.",
         url="https://mlcommons.org/dataset",
         file_objects=[
             mlc.nodes.FileObject(
                 name="source_csv",
-                description="The source CSV",
+                description="The source CSV.",
                 content_url="https://mlcommons.org/dataset.csv",
             )
         ],
         record_sets=[
             mlc.nodes.RecordSet(
                 name="default",
-                description="The default set of records in the dataset",
+                description="The default set of records in the dataset.",
                 fields=[
                     mlc.nodes.Field(
                         name="column_name", description="This is a dataset field"
