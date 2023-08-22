@@ -46,7 +46,7 @@
       "contentSize": " B",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": ""
+      "sha256": "sha256"
     },
     {
       "@type": "sc:FileObject",
@@ -54,7 +54,7 @@
       "contentSize": " B",
       "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": ""
+      "sha256": "sha256"
     },
     {
       "@type": "sc:FileObject",
@@ -62,7 +62,7 @@
       "contentSize": " B",
       "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": ""
+      "sha256": "sha256"
     },
     {
       "@type": "sc:FileSet",
@@ -81,7 +81,7 @@
       "contentSize": " B",
       "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": ""
+      "sha256": "sha256"
     },
     {
       "@type": "sc:FileSet",
@@ -110,7 +110,7 @@
       "contentSize": " B",
       "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": ""
+      "sha256": "sha256"
     },
     {
       "@type": "sc:FileSet",
@@ -161,8 +161,23 @@
     {
       "@type": "ml:RecordSet",
       "name": "images",
-      "key": "img_id",
+      "key": "image_id",
       "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": {
+            "applyTransform": {
+              "regex": "^COCO_[train|val|test]2014_(\\d+)\\.jpg$"
+            },
+            "dataExtraction": {
+              "fileProperty": "filename"
+            },
+            "distribution": "image-files"
+          }
+        },
         {
           "@type": "ml:Field",
           "name": "image_filename",
@@ -364,7 +379,7 @@
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
           "references": {
-            "field": "images/id"
+            "field": "images/image_id"
           },
           "source": {
             "dataExtraction": {

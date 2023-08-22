@@ -55,6 +55,7 @@
                 {
                     "@type": "sc:WRONG_TYPE",
                     "name": "first-field",
+                    "description": "Field description",
                     "dataType": "sc:Integer",
                     "source": {
                         "dataExtraction": {

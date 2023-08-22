@@ -5,10 +5,11 @@ from typing import Any
 
 from etils import epath
 import pandas as pd
+from rdflib import term
 
 from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.structure_graph.nodes import Field
+from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
 from ml_croissant._src.structure_graph.nodes.source import FileProperty
 
@@ -32,7 +33,7 @@ class ReadField(Operation):
                 except ValueError:
                     continue
         elif isinstance(data_types, str):
-            data_type = data_types
+            data_type = term.URIRef(data_types)
             if data_type not in EXPECTED_DATA_TYPES:
                 raise ValueError(
                     f'Unknown data type "{data_type}" found for "{self.node.uid}".'
@@ -45,7 +46,7 @@ class ReadField(Operation):
         )
 
     def _cast_value(self, value: Any):
-        data_type = self.find_data_type(self.node.data_type)
+        data_type = self.find_data_type(self.node.actual_data_type)
         if pd.isna(value):
             return value
         elif data_type == pd.Timestamp:

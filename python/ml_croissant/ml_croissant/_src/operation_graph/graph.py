@@ -19,10 +19,10 @@ from ml_croissant._src.operation_graph.operations import ReadField
 from ml_croissant._src.operation_graph.operations.extract import should_extract
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.graph import get_entry_nodes
-from ml_croissant._src.structure_graph.nodes import Field
-from ml_croissant._src.structure_graph.nodes import FileObject
-from ml_croissant._src.structure_graph.nodes import FileSet
-from ml_croissant._src.structure_graph.nodes import RecordSet
+from ml_croissant._src.structure_graph.nodes.field import Field
+from ml_croissant._src.structure_graph.nodes.file_object import FileObject
+from ml_croissant._src.structure_graph.nodes.file_set import FileSet
+from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 
 LastOperation = dict[Node, Operation]
 
@@ -55,7 +55,7 @@ def _add_operations_for_field_with_source(
     # Attach the field to a record set
     record_set = _find_record_set(node)
     group_record_set = GroupRecordSet(node=record_set)
-    join = Join(graph=graph, node=record_set)
+    join = Join(node=record_set)
     operations.add_node(join)
     operations.add_edge(join, group_record_set)
     for predecessor in graph.predecessors(node):
@@ -160,7 +160,9 @@ class OperationGraph:
                 if predecessor in last_operation:
                     last_operation[node] = last_operation[predecessor]
             if isinstance(node, Field):
-                if node.source and not node.has_sub_fields and not node.data:
+                parent = node.parent
+                parent_has_data = isinstance(parent, RecordSet) and parent.data
+                if node.source and not node.sub_fields and not parent_has_data:
                     _add_operations_for_field_with_source(
                         graph,
                         operations,

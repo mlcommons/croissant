@@ -2,12 +2,10 @@
 
 import dataclasses
 
-import networkx as nx
 import pandas as pd
 
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations.parse_json import get_fields
-from ml_croissant._src.structure_graph.nodes import RecordSet
+from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
 
 
@@ -15,7 +13,6 @@ from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
 class Join(Operation):
     """Joins pd.DataFrames."""
 
-    graph: nx.MultiDiGraph
     node: RecordSet
 
     def __call__(self, *args: pd.Series) -> pd.Series:
@@ -23,7 +20,7 @@ class Join(Operation):
         if len(args) == 1:
             return args[0]
         elif len(args) == 2:
-            fields = get_fields(self.node, self.graph)
+            fields = self.node.fields
             joins = set()
             for field in fields:
                 left = field.source

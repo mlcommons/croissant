@@ -54,6 +54,7 @@
             "field": {
                 "@type": "ml:Field",
                 "name": "first-field",
+                "description": "field description",
                 "dataType": "sc:Integer",
                 "source": {
                     "dataExtraction": {

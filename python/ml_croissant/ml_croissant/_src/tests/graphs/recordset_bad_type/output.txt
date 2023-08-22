@@ -1,2 +1,2 @@
 Found the following 1 error(s) during the validation:
-  -  Node should have an attribute `"@type" in [rdflib.term.URIRef('https://schema.org/Dataset'), rdflib.term.URIRef('https://schema.org/FileObject'), rdflib.term.URIRef('https://schema.org/FileSet'), rdflib.term.URIRef('http://mlcommons.org/schema/Field'), rdflib.term.URIRef('http://mlcommons.org/schema/RecordSet')]. Got https://schema.org/WRONG_TYPE instead.
+  -  "a-record-set" should have an attribute "@type": "http://mlcommons.org/schema/RecordSet". Got https://schema.org/WRONG_TYPE instead.

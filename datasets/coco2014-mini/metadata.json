@@ -43,7 +43,7 @@
       "contentSize": " B",
       "contentUrl": "data/train2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": ""
+      "sha256": "sha256"
     },
     {
       "@type": "sc:FileSet",
@@ -58,7 +58,7 @@
       "contentSize": " B",
       "contentUrl": "data/captions_train2014.json",
       "encodingFormat": "application/json",
-      "sha256": ""
+      "sha256": "sha256"
     }
   ],
   "recordSet": [

@@ -15,9 +15,9 @@ from ml_croissant._src.core.constants import EXTRACT_PATH
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations.download import get_download_filepath
 from ml_croissant._src.operation_graph.operations.download import get_hash
-from ml_croissant._src.structure_graph.nodes import FileObject
-from ml_croissant._src.structure_graph.nodes import FileProperty
-from ml_croissant._src.structure_graph.nodes import FileSet
+from ml_croissant._src.structure_graph.nodes.file_object import FileObject
+from ml_croissant._src.structure_graph.nodes.file_set import FileSet
+from ml_croissant._src.structure_graph.nodes.source import FileProperty
 
 
 def should_extract(encoding_format: str) -> bool:

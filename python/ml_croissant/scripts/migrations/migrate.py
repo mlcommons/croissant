@@ -38,8 +38,8 @@ from absl import app
 from absl import flags
 from etils import epath
 
-from ml_croissant._src.core.json_ld import compact_json_ld
-from ml_croissant._src.core.json_ld import expand_json_ld
+from ml_croissant._src.core.json_ld import compact_jsonld
+from ml_croissant._src.core.json_ld import expand_jsonld
 
 _PREVIOUS_MIGRATIONS_FOLDER = "previous"
 
@@ -90,7 +90,7 @@ def main(argv):
             json_ld = json.load(f)
             up = get_migration_fn(FLAGS.migration)
             json_ld = up(json_ld)
-            json_ld = compact_json_ld(expand_json_ld(json_ld))
+            json_ld = compact_jsonld(expand_jsonld(json_ld))
         with dataset.open("w") as f:
             # Special cases for test datasets without @context
             if dataset.name == "recordset_missing_context_for_datatype.json":

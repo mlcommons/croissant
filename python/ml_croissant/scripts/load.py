@@ -6,7 +6,7 @@ from absl import app
 from absl import flags
 from etils import epath
 
-from ml_croissant import Dataset
+import ml_croissant as mlc
 from ml_croissant._src.tests.records import record_to_python
 
 _NUM_MAX_RECORDS = 10
@@ -56,7 +56,7 @@ def main(argv):
     num_records = FLAGS.num_records
     debug = FLAGS.debug
     update_output = FLAGS.update_output
-    dataset = Dataset(file, debug=debug)
+    dataset = mlc.Dataset(file, debug=debug)
     records = dataset.records(record_set)
     generate_all_records = num_records == -1
     if generate_all_records:

@@ -1,4 +1,11 @@
-"""validate script."""
+"""Script to validate a Croissant JSON-LD file and output errors & warnings if any.
+
+Usage:
+
+```
+python scripts/validate.py --file /path/to/file.json
+```
+"""
 
 import sys
 
@@ -6,8 +13,7 @@ from absl import app
 from absl import flags
 from absl import logging
 
-from ml_croissant import Dataset
-from ml_croissant import ValidationError
+import ml_croissant as mlc
 
 flags.DEFINE_string(
     "file",
@@ -33,9 +39,9 @@ def main(argv):
     file = FLAGS.file
     debug = FLAGS.debug
     try:
-        Dataset(file, debug=debug)
+        mlc.Dataset(file, debug=debug)
         logging.info("Done.")
-    except ValidationError as exception:
+    except mlc.ValidationError as exception:
         logging.error(exception)
         sys.exit(1)
 

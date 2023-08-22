@@ -57,9 +57,17 @@ SCHEMA_ORG_URL = namespace.SDO.url
 
 # Schema.org URIs that do not exist yet in the standard.
 SCHEMA_ORG = rdflib.Namespace("https://schema.org/")
+SCHEMA_ORG_KEY = SCHEMA_ORG.key
 SCHEMA_ORG_FILE_OBJECT = SCHEMA_ORG.FileObject
 SCHEMA_ORG_FILE_SET = SCHEMA_ORG.FileSet
 SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
+
+# TODO(https://github.com/mlcommons/croissant/issues/171): schema.org URIs that should
+# be migrated to mlcommons.org.
+SCHEMA_ORG_IS_ENUMERATION = SCHEMA_ORG.isEnumeration
+SCHEMA_ORG_LANGUAGE = SCHEMA_ORG["@language"]
+SCHEMA_ORG_PARENT_FIELD = SCHEMA_ORG.parentField
+SCHEMA_ORG_REPEATED = SCHEMA_ORG.repeated
 
 # Croissant equivalent.
 CROISSANT_APPLY_TRANSFORM = "apply_transform"
@@ -70,7 +78,7 @@ CROISSANT_CONTENT_URL = "content_url"
 CROISSANT_CSV_COLUMN = "csv_column"
 CROISSANT_DATA = "data"
 CROISSANT_DATA_EXTRACTION = "data_extraction"
-CROISSANT_DATA_TYPE = "field_data_type"
+CROISSANT_DATA_TYPE = "data_type"
 CROISSANT_DESCRIPTION = "description"
 CROISSANT_DISTRIBUTION = "distribution"
 CROISSANT_ENCODING_FORMAT = "encoding_format"

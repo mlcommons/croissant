@@ -13,8 +13,7 @@ from rdflib import namespace
 from rdflib import term
 
 from ml_croissant._src.core import constants
-
-Json = dict[str, Any]
+from ml_croissant._src.core.types import Json
 
 _ML_COMMONS_PREFIX = str(constants.ML_COMMONS)
 _SCHEMA_ORG_PREFIX = str(constants.SCHEMA_ORG)
@@ -88,7 +87,7 @@ def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     return sorted_items
 
 
-def _sort_dict(d: dict[str, Any]):
+def _sort_dict(d: Json):
     """Sorts the keys of a nested dict."""
     return {
         k: _sort_dict(v) if isinstance(v, dict) and k != "@context" else v
@@ -96,7 +95,12 @@ def _sort_dict(d: dict[str, Any]):
     }
 
 
-def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
+def remove_empty_values(d: Json) -> Json:
+    """Removes empty values in a JSON."""
+    return {k: v for k, v in d.items() if v}
+
+
+def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
     """Changes in place `entry_node` with its children."""
     if "@value" in entry_node:
         if entry_node.get("@type") == str(namespace.RDF.JSON):
@@ -109,14 +113,14 @@ def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) 
         node_id = entry_node["@id"]
         if node_id in id_to_node:
             node = id_to_node[node_id]
-            return _recursively_populate_fields(node, id_to_node)
+            return recursively_populate_jsonld(node, id_to_node)
         else:
             return entry_node
     for key, value in entry_node.items():
         if key == "@type":
             entry_node[key] = value[0]
         elif isinstance(value, list):
-            value = [_recursively_populate_fields(child, id_to_node) for child in value]
+            value = [recursively_populate_jsonld(child, id_to_node) for child in value]
             node_type = entry_node.get("@type", "")
             if (term.URIRef(key), term.URIRef(node_type)) in _KEYS_WITH_LIST:
                 entry_node[key] = value
@@ -127,7 +131,26 @@ def _recursively_populate_fields(entry_node: Json, id_to_node: dict[str, Json]) 
     return entry_node
 
 
-def expand_json_ld(data: Json) -> Json:
+def from_jsonld_to_json(jsonld: list[Json]) -> Json:
+    """Converts an RDFLib JSON-LD representation to Croissant JSON.
+
+    RDFLib JSON-LD is a list of nodes. So to output a JSON, we have to recursively
+    populate the output JSON.
+    """
+    # Check jsonld is not empty
+    id_to_node: dict[str, Json] = {}
+    for node in jsonld:
+        node_id = str(node.get("@id"))
+        id_to_node[node_id] = node
+    # Find the entry node (schema.org/Dataset).
+    entry_node = next(
+        (record for record in jsonld if _is_dataset_node(record)), jsonld[0]
+    )
+    recursively_populate_jsonld(entry_node, id_to_node)
+    return entry_node
+
+
+def expand_jsonld(data: Json) -> Json:
     """Expands a Croissant JSON to a nested JSON-LD with expanded.
 
     For this we use RDFLib. RDFLib expands the CURIE of the form "rdf:type" into their
@@ -153,18 +176,18 @@ def expand_json_ld(data: Json) -> Json:
     for node in nodes:
         node_id = node.get("@id")
         id_to_node[node_id] = node
-    _recursively_populate_fields(entry_node, id_to_node)
+    recursively_populate_jsonld(entry_node, id_to_node)
     entry_node["@context"] = _make_context()
     return entry_node
 
 
-def compact_json_ld(json: Any) -> Any:
+def compact_jsonld(json: Any) -> Any:
     """Recursively compacts the JSON-LD value to human-readable values.
 
     For example: "http://schema.org/Dataset" -> "sc:Dataset".
     """
     if isinstance(json, list):
-        return [compact_json_ld(element) for element in json]
+        return [compact_jsonld(element) for element in json]
     elif not isinstance(json, dict):
         if isinstance(json, str) and _SCHEMA_ORG_PREFIX in json:
             return json.replace(_SCHEMA_ORG_PREFIX, "sc:")
@@ -178,7 +201,7 @@ def compact_json_ld(json: Any) -> Any:
         if key == "@context":
             # `@context` is left untouched.
             continue
-        new_value = compact_json_ld(value)
+        new_value = compact_jsonld(value)
         if key == "@id":
             if (
                 value.startswith(_SCHEMA_ORG_PREFIX)
