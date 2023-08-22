@@ -28,7 +28,9 @@ def main(argv):
                 description="The default set of records in the dataset.",
                 fields=[
                     mlc.nodes.Field(
-                        name="column_name", description="This is a dataset field"
+                        name="column_name",
+                        description="This is a dataset field",
+                        source=mlc.nodes.Source(uid="source_csv/column_name"),
                     )
                 ],
             )
