@@ -62,6 +62,7 @@ def test_static_analysis(folder):
         ["coco2014-mini", "images"],
         ["pass-mini", "images"],
         ["simple-join", "publications_by_user"],
+        ["simple-parquet", "persons"],
         ["titanic", "passengers"],
     ],
 )
