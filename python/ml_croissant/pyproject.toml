@@ -25,7 +25,16 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["black", "flake8-docstrings", "pyflakes", "pylint", "pytest", "pytype"]
+dev = [
+  "black",
+  "flake8-docstrings",
+  "ml_croissant[parquet]",
+  "pyflakes",
+  "pylint",
+  "pytest",
+  "pytype",
+]
+parquet = ["pyarrow"]
 
 [tool.black]
 line-length = 88

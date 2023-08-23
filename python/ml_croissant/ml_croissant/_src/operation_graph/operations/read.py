@@ -45,6 +45,15 @@ class Read(Operation):
                         FileProperty.content: [json_content],
                     }
                 )
+            elif encoding_format == "application/x-parquet":
+                try:
+                    return pd.read_parquet(file)
+                except ImportError as e:
+                    raise ImportError(
+                        "Missing dependency to read Parquet files. pyarrow is not"
+                        " installed. Please, install `pip install"
+                        " ml_croissant[parquet]`."
+                    ) from e
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"

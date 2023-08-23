@@ -1,0 +1,80 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataExtraction": "ml:dataExtraction",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-parquet",
+  "description": "Example to read Parquet files.",
+  "@language": "en",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "dataframe",
+      "contentUrl": "data/dataframe.parquet",
+      "encodingFormat": "application/x-parquet",
+      "sha256": "SHA256"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "persons",
+      "description": "List of persons.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "Name of the person.",
+          "dataType": "sc:Text",
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "name"
+            },
+            "distribution": "dataframe"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "age",
+          "description": "Age of the person.",
+          "dataType": "sc:Integer",
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "age"
+            },
+            "distribution": "dataframe"
+          }
+        }
+      ]
+    }
+  ]
+}
