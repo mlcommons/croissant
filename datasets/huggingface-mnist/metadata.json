@@ -1,0 +1,75 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataExtraction": "ml:dataExtraction",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-parquet",
+  "description": "Example to read Parquet files.",
+  "@language": "en",
+  "license": "Unknown",
+  "url": "https://huggingface.co/datasets/mnist",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "repo",
+      "contentUrl": "https://huggingface.co/datasets/mnist/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "thisshouldnotbehere"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "parquet-files",
+      "containedIn": "repo",
+      "encodingFormat": "application/x-parquet",
+      "includes": "mnist/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "default",
+      "description": "Images and labels.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "label",
+          "description": "An integer between 0 and 9 representing the digit.",
+          "dataType": "sc:Text",
+          "source": {
+            "dataExtraction": {
+              "csvColumn": "label"
+            },
+            "distribution": "parquet-files"
+          }
+        }
+      ]
+    }
+  ]
+}

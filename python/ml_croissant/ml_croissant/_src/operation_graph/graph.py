@@ -5,12 +5,14 @@ import dataclasses
 from etils import epath
 import networkx as nx
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations import Concatenate
 from ml_croissant._src.operation_graph.operations import Data
 from ml_croissant._src.operation_graph.operations import Download
 from ml_croissant._src.operation_graph.operations import Extract
+from ml_croissant._src.operation_graph.operations import Filter
 from ml_croissant._src.operation_graph.operations import GroupRecordSet
 from ml_croissant._src.operation_graph.operations import InitOperation
 from ml_croissant._src.operation_graph.operations import Join
@@ -109,8 +111,10 @@ def _add_operations_for_file_object(
         ):
             extract = Extract(node=node, target_node=successor)
             operations.add_edge(operation, extract)
-            last_operation[node] = extract
-            operation = extract
+            filter = Filter(node=successor)
+            operations.add_edge(extract, filter)
+            last_operation[node] = filter
+            operation = filter
         if isinstance(successor, FileSet):
             concatenate = Concatenate(node=successor)
             operations.add_edge(operation, concatenate)
@@ -124,6 +128,39 @@ def _add_operations_for_file_object(
         )
         operations.add_edge(operation, read)
         operation = read
+    last_operation[node] = operation
+
+
+def _add_operations_for_git(
+    graph: nx.MultiDiGraph,
+    operations: nx.MultiDiGraph,
+    last_operation: LastOperation,
+    node: FileObject,
+    folder: epath.Path,
+):
+    """Adds all operations for a node of type `FileObject`.
+
+    Operations are:
+
+    - `Download`.
+    - `Extract` if the file needs to be extracted.
+    - `Concatenate` to merge several dataframes into one.
+    - `Read` to read the file if it's a CSV.
+    """
+    operation = Download(node=node, url=node.content_url)
+    operations.add_node(operation)
+    for successor in graph.successors(node):
+        if isinstance(successor, FileSet):
+            filter = Filter(node=successor)
+            operations.add_edge(operation, filter)
+            read = Read(
+                node=successor,
+                url=node.content_url,
+                folder=folder,
+                fields=graph.successors(node),
+            )
+            operations.add_edge(filter, read)
+            operation = read
     last_operation[node] = operation
 
 
@@ -175,9 +212,14 @@ class OperationGraph:
                     node,
                 )
             elif isinstance(node, FileObject):
-                _add_operations_for_file_object(
-                    graph, operations, last_operation, node, folder
-                )
+                if node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
+                    _add_operations_for_git(
+                        graph, operations, last_operation, node, folder
+                    )
+                else:
+                    _add_operations_for_file_object(
+                        graph, operations, last_operation, node, folder
+                    )
 
         # Attach all entry nodes to a single `start` node
         entry_operations = get_entry_nodes(operations)

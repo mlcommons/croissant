@@ -1,0 +1,46 @@
+"""Core utils to manipulate paths."""
+
+import dataclasses
+import os
+
+from etils import epath
+
+
+@dataclasses.dataclass
+class Path:
+    """Container class for paths in Croissant.
+
+    Args:
+        filepath: The full file path on disk.
+        fullpath: `fullpath` in the sense of Croissant, i.e. the full path relative to
+            the Croissant folders. Example: for
+            filepath=`/tmp/croissant-XXXX/downloads/my-dataset/my-file`, the fullpath is
+            `my-dataset/my-file`.
+    """
+
+    filepath: epath.Path
+    fullpath: str
+
+    def __lt__(self, other):
+        """Implements < for File allowing to sort a list[File]."""
+        return os.fspath(self.filepath) < os.fspath(other.filepath)
+
+    @property
+    def filename(self) -> str:
+        """The name of the file if it is a file."""
+        return self.filepath.name
+
+
+def get_fullpath(file: epath.Path, data_dir: epath.Path) -> str:
+    """Fullpaths are the full paths from the extraction directory."""
+    # Path since the root of the dir.
+    fullpath = os.fspath(file).replace(os.fspath(data_dir), "")
+    # Remove the trailing slash.
+    if fullpath.startswith("/"):
+        fullpath = fullpath[1:]
+    return fullpath
+
+
+def get_fullpaths(files: list[epath.Path], extract_dir: epath.Path) -> list[str]:
+    """Fullpaths are the full paths from the extraction directory."""
+    return [get_fullpath(file, extract_dir) for file in files]

@@ -120,7 +120,6 @@ class Records:
         for operation in nx.topological_sort(operations):
             if self.debug:
                 logging.info('Executing "%s"', operation)
-            kwargs = operations.nodes[operation].get("kwargs", {})
             previous_results = [
                 results[previous_operation]
                 for previous_operation in operations.predecessors(operation)
@@ -146,11 +145,11 @@ class Records:
                         assert isinstance(read_field, ReadField)
                         if self.debug:
                             logging.info('Executing "%s"', read_field)
-                        read_fields.append(read_field(line, **kwargs))
+                        read_fields.append(read_field(line))
                     if self.debug:
                         logging.info('Executing "%s"', operation)
-                    yield operation(*read_fields, **kwargs)
+                    yield operation(*read_fields)
             else:
                 if isinstance(operation, ReadField) and not previous_results:
                     continue
-                results[operation] = operation(*previous_results, **kwargs)
+                results[operation] = operation(*previous_results)
