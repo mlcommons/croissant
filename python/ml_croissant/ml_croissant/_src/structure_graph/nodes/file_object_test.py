@@ -4,6 +4,7 @@ from unittest import mock
 
 from etils import epath
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
@@ -33,12 +34,12 @@ def test_from_jsonld():
     context = Context()
     folder = epath.Path("/foo/bar")
     jsonld = {
-        "@type": "https://schema.org/FileObject",
-        "https://schema.org/name": "foo",
-        "https://schema.org/description": "bar",
-        "https://schema.org/contentUrl": "https://mlcommons.org",
-        "https://schema.org/encodingFormat": "text/csv",
-        "https://schema.org/sha256": (
+        "@type": constants.SCHEMA_ORG_FILE_OBJECT,
+        constants.SCHEMA_ORG_NAME: "foo",
+        constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.SCHEMA_ORG_CONTENT_URL: "https://mlcommons.org",
+        constants.SCHEMA_ORG_ENCODING_FORMAT: "text/csv",
+        constants.SCHEMA_ORG_SHA256: (
             "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
         ),
     }

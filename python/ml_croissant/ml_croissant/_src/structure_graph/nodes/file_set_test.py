@@ -4,6 +4,7 @@ from unittest import mock
 
 from etils import epath
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
@@ -30,12 +31,12 @@ def test_from_jsonld():
     context = Context()
     folder = epath.Path("/foo/bar")
     jsonld = {
-        "@type": "https://schema.org/FileSet",
-        "https://schema.org/name": "foo",
-        "https://schema.org/description": "bar",
-        "https://schema.org/containedIn": "some.zip",
-        "https://schema.org/encodingFormat": "application/json",
-        "http://mlcommons.org/schema/includes": "*.json",
+        "@type": constants.SCHEMA_ORG_FILE_SET,
+        constants.SCHEMA_ORG_NAME: "foo",
+        constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.SCHEMA_ORG_CONTAINED_IN: "some.zip",
+        constants.SCHEMA_ORG_ENCODING_FORMAT: "application/json",
+        constants.ML_COMMONS_INCLUDES: "*.json",
     }
     assert FileSet.from_jsonld(issues, context, folder, jsonld) == FileSet(
         issues=issues,

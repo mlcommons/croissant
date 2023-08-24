@@ -15,14 +15,14 @@ from rdflib import term
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.types import Json
 
-_ML_COMMONS_PREFIX = str(constants.ML_COMMONS)
-_SCHEMA_ORG_PREFIX = str(constants.SCHEMA_ORG)
+_ML_COMMONS_PREFIX = constants.ML_COMMONS
+_SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
 _WD_PREFIX = "https://www.wikidata.org/wiki/"
 # Mapping for non-trivial conversion:
 _PREFIX_MAP = {
-    "http://mlcommons.org/schema/Field": "field",
-    "http://mlcommons.org/schema/RecordSet": "recordSet",
-    "http://mlcommons.org/schema/SubField": "subField",
+    constants.ML_COMMONS_FIELD_TYPE: "field",
+    constants.ML_COMMONS_RECORD_SET_TYPE: "recordSet",
+    constants.ML_COMMONS_SUB_FIELD_TYPE: "subField",
 }
 # List of key/type where `key` always outputs lists when used in nodes of type `type`.
 _KEYS_WITH_LIST = {
@@ -62,7 +62,7 @@ def _make_context():
 
 def _is_dataset_node(node: Json) -> bool:
     """Checks if the type of a node is schema.org/Dataset."""
-    return node.get("@type") == [str(constants.SCHEMA_ORG_DATASET)]
+    return node.get("@type") == [constants.SCHEMA_ORG_DATASET]
 
 
 def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
@@ -103,7 +103,7 @@ def remove_empty_values(d: Json) -> Json:
 def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
     """Changes in place `entry_node` with its children."""
     if "@value" in entry_node:
-        if entry_node.get("@type") == str(namespace.RDF.JSON):
+        if entry_node.get("@type") == namespace.RDF.JSON:
             # Stringified JSON is loaded as a dict.
             return json.loads(entry_node["@value"])
         else:
@@ -112,17 +112,19 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     elif len(entry_node) == 1 and "@id" in entry_node:
         node_id = entry_node["@id"]
         if node_id in id_to_node:
-            node = id_to_node[node_id]
-            return recursively_populate_jsonld(node, id_to_node)
+            entry_node = id_to_node[node_id]
+            return recursively_populate_jsonld(entry_node, id_to_node)
         else:
             return entry_node
-    for key, value in entry_node.items():
+    for key, value in entry_node.copy().items():
         if key == "@type":
-            entry_node[key] = value[0]
+            entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
+            del entry_node[key]
             value = [recursively_populate_jsonld(child, id_to_node) for child in value]
             node_type = entry_node.get("@type", "")
-            if (term.URIRef(key), term.URIRef(node_type)) in _KEYS_WITH_LIST:
+            key, node_type = term.URIRef(key), term.URIRef(node_type)
+            if (key, node_type) in _KEYS_WITH_LIST:
                 entry_node[key] = value
             elif len(value) == 1:
                 entry_node[key] = value[0]
@@ -181,27 +183,28 @@ def expand_jsonld(data: Json) -> Json:
     return entry_node
 
 
-def compact_jsonld(json: Any) -> Any:
+def compact_jsonld(json_: Any) -> Any:
     """Recursively compacts the JSON-LD value to human-readable values.
 
     For example: "http://schema.org/Dataset" -> "sc:Dataset".
     """
-    if isinstance(json, list):
-        return [compact_jsonld(element) for element in json]
-    elif not isinstance(json, dict):
-        if isinstance(json, str) and _SCHEMA_ORG_PREFIX in json:
-            return json.replace(_SCHEMA_ORG_PREFIX, "sc:")
-        elif isinstance(json, str) and _ML_COMMONS_PREFIX in json:
-            return json.replace(_ML_COMMONS_PREFIX, "ml:")
-        elif isinstance(json, str) and _WD_PREFIX in json:
-            return json.replace(_WD_PREFIX, "wd:")
+    if isinstance(json_, list):
+        return [compact_jsonld(element) for element in json_]
+    elif not isinstance(json_, dict):
+        if isinstance(json_, str) and _SCHEMA_ORG_PREFIX in json_:
+            return json_.replace(_SCHEMA_ORG_PREFIX, "sc:")
+        elif isinstance(json_, str) and _ML_COMMONS_PREFIX in json_:
+            return json_.replace(_ML_COMMONS_PREFIX, "ml:")
+        elif isinstance(json_, str) and _WD_PREFIX in json_:
+            return json_.replace(_WD_PREFIX, "wd:")
         else:
-            return json
-    for key, value in json.copy().items():
+            return json_
+    for key, value in json_.copy().items():
         if key == "@context":
             # `@context` is left untouched.
             continue
         new_value = compact_jsonld(value)
+        del json_[key]
         if key == "@id":
             if (
                 value.startswith(_SCHEMA_ORG_PREFIX)
@@ -209,27 +212,16 @@ def compact_jsonld(json: Any) -> Any:
                 or value.startswith(_WD_PREFIX)
             ):
                 return new_value
-            else:
-                del json[key]
-        elif key == str(constants.ML_COMMONS_DATA):
-            del json[key]
-            # Data can either be inline JSON data...
-            if isinstance(value, (dict, list)):
-                json["data"] = value
-            # ...or "source.data":
-            else:
-                json["data"] = value
+        elif key == constants.ML_COMMONS_DATA:
+            json_["data"] = json.loads(value)
         elif key in _PREFIX_MAP:
-            del json[key]
-            json[_PREFIX_MAP[key]] = new_value
+            json_[_PREFIX_MAP[key]] = new_value
         elif _SCHEMA_ORG_PREFIX in key:
             new_key = key.replace(_SCHEMA_ORG_PREFIX, "")
-            del json[key]
-            json[new_key] = new_value
+            json_[new_key] = new_value
         elif _ML_COMMONS_PREFIX in key:
             new_key = key.replace(_ML_COMMONS_PREFIX, "")
-            del json[key]
-            json[new_key] = new_value
+            json_[new_key] = new_value
         else:
-            json[key] = new_value
-    return _sort_dict(json)
+            json_[key] = new_value
+    return _sort_dict(json_)

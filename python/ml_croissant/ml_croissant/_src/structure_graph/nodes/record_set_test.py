@@ -5,6 +5,7 @@ from unittest import mock
 from etils import epath
 import pytest
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
@@ -78,12 +79,12 @@ def test_from_jsonld():
     context = Context()
     folder = epath.Path("/foo/bar")
     jsonld = {
-        "@type": "http://mlcommons.org/schema/RecordSet",
-        "https://schema.org/name": "foo",
-        "https://schema.org/description": "bar",
-        "https://schema.org/isEnumeration": True,
-        "https://schema.org/key": ["key1", "key2"],
-        "http://mlcommons.org/schema/data": [{"column1": ["value1", "value2"]}],
+        "@type": constants.ML_COMMONS_RECORD_SET_TYPE,
+        constants.SCHEMA_ORG_NAME: "foo",
+        constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.SCHEMA_ORG_IS_ENUMERATION: True,
+        constants.SCHEMA_ORG_KEY: ["key1", "key2"],
+        constants.ML_COMMONS_DATA: [{"column1": ["value1", "value2"]}],
     }
     assert RecordSet.from_jsonld(issues, context, folder, jsonld) == RecordSet(
         issues=issues,

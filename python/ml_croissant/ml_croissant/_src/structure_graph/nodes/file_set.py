@@ -57,8 +57,8 @@ class FileSet(Node):
     ) -> FileSet:
         """Creates a `FileSet` from JSON-LD."""
         check_expected_type(issues, file_set, constants.SCHEMA_ORG_FILE_SET)
-        name = file_set.get(str(constants.SCHEMA_ORG_NAME), "")
-        contained_in = file_set.get(str(constants.SCHEMA_ORG_CONTAINED_IN))
+        name = file_set.get(constants.SCHEMA_ORG_NAME, "")
+        contained_in = file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
         if contained_in is not None and not isinstance(contained_in, list):
             contained_in = [contained_in]
         return cls(
@@ -66,8 +66,8 @@ class FileSet(Node):
             context=Context(dataset_name=context.dataset_name, distribution_name=name),
             folder=folder,
             contained_in=contained_in,
-            description=file_set.get(str(constants.SCHEMA_ORG_DESCRIPTION)),
-            encoding_format=file_set.get(str(constants.SCHEMA_ORG_ENCODING_FORMAT)),
-            includes=file_set.get(str(constants.ML_COMMONS_INCLUDES)),
+            description=file_set.get(constants.SCHEMA_ORG_DESCRIPTION),
+            encoding_format=file_set.get(constants.SCHEMA_ORG_ENCODING_FORMAT),
+            includes=file_set.get(constants.ML_COMMONS_INCLUDES),
             name=name,
         )

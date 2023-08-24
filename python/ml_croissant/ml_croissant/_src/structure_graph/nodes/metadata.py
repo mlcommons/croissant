@@ -97,28 +97,28 @@ class Metadata(Node):
         file_sets: list[FileSet] = []
         file_objects: list[FileObject] = []
         record_sets: list[RecordSet] = []
-        distributions = metadata.get(str(constants.SCHEMA_ORG_DISTRIBUTION), [])
-        dataset_name = metadata.get(str(constants.SCHEMA_ORG_NAME), "")
+        distributions = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
+        dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
         context = Context(dataset_name=dataset_name)
         for distribution in distributions:
-            name = distribution.get(str(constants.SCHEMA_ORG_NAME), "")
+            name = distribution.get(constants.SCHEMA_ORG_NAME, "")
             distribution_type = distribution.get("@type")
-            if distribution_type == str(constants.SCHEMA_ORG_FILE_OBJECT):
+            if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 file_objects.append(
                     FileObject.from_jsonld(issues, context, folder, distribution)
                 )
-            elif distribution_type == str(constants.SCHEMA_ORG_FILE_SET):
+            elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 file_sets.append(
                     FileSet.from_jsonld(issues, context, folder, distribution)
                 )
             else:
                 issues.add_error(
                     f'"{name}" should have an attribute "@type":'
-                    f' "{str(constants.SCHEMA_ORG_FILE_OBJECT)}" or "@type":'
-                    f' "{str(constants.SCHEMA_ORG_FILE_SET)}". Got'
+                    f' "{constants.SCHEMA_ORG_FILE_OBJECT}" or "@type":'
+                    f' "{constants.SCHEMA_ORG_FILE_SET}". Got'
                     f" {distribution_type} instead."
                 )
-        record_sets = metadata.get(str(constants.ML_COMMONS_RECORD_SET), [])
+        record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
             RecordSet.from_jsonld(issues, context, folder, record_set)
             for record_set in record_sets
@@ -127,15 +127,15 @@ class Metadata(Node):
             issues=issues,
             context=context,
             folder=folder,
-            citation=metadata.get(str(constants.SCHEMA_ORG_CITATION)),
-            description=metadata.get(str(constants.SCHEMA_ORG_DESCRIPTION)),
+            citation=metadata.get(constants.SCHEMA_ORG_CITATION),
+            description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             file_objects=file_objects,
             file_sets=file_sets,
-            language=metadata.get(str(constants.SCHEMA_ORG_LANGUAGE)),
-            license=metadata.get(str(constants.SCHEMA_ORG_LICENSE)),
+            language=metadata.get(constants.SCHEMA_ORG_LANGUAGE),
+            license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             record_sets=record_sets,
-            url=metadata.get(str(constants.SCHEMA_ORG_URL)),
+            url=metadata.get(constants.SCHEMA_ORG_URL),
         )
         # Define parents
         for node in new_cls.distribution:

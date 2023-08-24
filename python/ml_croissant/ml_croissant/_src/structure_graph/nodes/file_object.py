@@ -68,14 +68,14 @@ class FileObject(Node):
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
         check_expected_type(issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
-        content_url = file_object.get(str(constants.SCHEMA_ORG_CONTENT_URL))
-        contained_in = file_object.get(str(constants.SCHEMA_ORG_CONTAINED_IN), [])
-        name = file_object.get(str(constants.SCHEMA_ORG_NAME), "")
+        content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
+        contained_in = file_object.get(constants.SCHEMA_ORG_CONTAINED_IN, [])
+        name = file_object.get(constants.SCHEMA_ORG_NAME, "")
         if contained_in is not None and not isinstance(contained_in, list):
             contained_in = [contained_in]
-        content_size = file_object.get(str(constants.SCHEMA_ORG_CONTENT_SIZE))
-        description = file_object.get(str(constants.SCHEMA_ORG_DESCRIPTION))
-        encoding_format = file_object.get(str(constants.SCHEMA_ORG_ENCODING_FORMAT))
+        content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
+        description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
+        encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
         return cls(
             issues=issues,
             context=Context(dataset_name=context.dataset_name, distribution_name=name),
@@ -85,8 +85,8 @@ class FileObject(Node):
             contained_in=contained_in,
             description=description,
             encoding_format=encoding_format,
-            md5=file_object.get(str(constants.SCHEMA_ORG_MD5)),
+            md5=file_object.get(constants.SCHEMA_ORG_MD5),
             name=name,
-            sha256=file_object.get(str(constants.SCHEMA_ORG_SHA256)),
-            source=file_object.get(str(constants.ML_COMMONS_SOURCE)),
+            sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
+            source=file_object.get(constants.ML_COMMONS_SOURCE),
         )
