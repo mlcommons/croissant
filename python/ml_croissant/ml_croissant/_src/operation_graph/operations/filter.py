@@ -22,6 +22,7 @@ class FilterFiles(Operation):
     def __call__(self, *dirs: Path) -> list[Path]:
         """See class' docstring."""
         includes = fnmatch.translate(self.node.includes)
+        includes_re = re.compile(includes)
         included_files: list[epath.Path] = []
         for dir_ in dirs:
             dir_ = os.fspath(dir_.filepath)
@@ -29,7 +30,7 @@ class FilterFiles(Operation):
                 for file in files:
                     filepath = epath.Path(basepath) / file
                     fullpath = get_fullpath(filepath, dir_)
-                    if re.match(includes, fullpath):
+                    if includes_re.match(fullpath):
                         included_files.append(
                             Path(
                                 filepath=filepath,
