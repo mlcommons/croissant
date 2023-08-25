@@ -3,7 +3,7 @@ from ml_croissant._src.operation_graph.operations.data import Data
 from ml_croissant._src.operation_graph.operations.download import Download
 from ml_croissant._src.operation_graph.operations.extract import Extract
 from ml_croissant._src.operation_graph.operations.field import ReadField
-from ml_croissant._src.operation_graph.operations.filter import Filter
+from ml_croissant._src.operation_graph.operations.filter import FilterFiles
 from ml_croissant._src.operation_graph.operations.group import GroupRecordSet
 from ml_croissant._src.operation_graph.operations.init import InitOperation
 from ml_croissant._src.operation_graph.operations.join import Join
@@ -14,7 +14,7 @@ __all__ = [
     "Data",
     "Download",
     "Extract",
-    "Filter",
+    "FilterFiles",
     "GroupRecordSet",
     "InitOperation",
     "Join",

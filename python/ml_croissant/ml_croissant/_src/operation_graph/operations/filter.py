@@ -14,8 +14,8 @@ from ml_croissant._src.structure_graph.nodes.file_set import FileSet
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Filter(Operation):
-    """Filters within a FileSet."""
+class FilterFiles(Operation):
+    """Filters files within a FileSet given a glob pattern."""
 
     node: FileSet
 

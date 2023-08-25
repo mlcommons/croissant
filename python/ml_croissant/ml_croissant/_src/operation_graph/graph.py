@@ -12,7 +12,7 @@ from ml_croissant._src.operation_graph.operations import Concatenate
 from ml_croissant._src.operation_graph.operations import Data
 from ml_croissant._src.operation_graph.operations import Download
 from ml_croissant._src.operation_graph.operations import Extract
-from ml_croissant._src.operation_graph.operations import Filter
+from ml_croissant._src.operation_graph.operations import FilterFiles
 from ml_croissant._src.operation_graph.operations import GroupRecordSet
 from ml_croissant._src.operation_graph.operations import InitOperation
 from ml_croissant._src.operation_graph.operations import Join
@@ -111,7 +111,7 @@ def _add_operations_for_file_object(
         ):
             extract = Extract(node=node, target_node=successor)
             operations.add_edge(operation, extract)
-            filter = Filter(node=successor)
+            filter = FilterFiles(node=successor)
             operations.add_edge(extract, filter)
             last_operation[node] = filter
             operation = filter
@@ -151,7 +151,7 @@ def _add_operations_for_git(
     operations.add_node(operation)
     for successor in graph.successors(node):
         if isinstance(successor, FileSet):
-            filter = Filter(node=successor)
+            filter = FilterFiles(node=successor)
             operations.add_edge(operation, filter)
             read = Read(
                 node=successor,
