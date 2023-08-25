@@ -2,6 +2,7 @@
 
 import dataclasses
 import os
+import pathlib
 
 from etils import epath
 
@@ -20,7 +21,7 @@ class Path:
     """
 
     filepath: epath.Path
-    fullpath: str
+    fullpath: pathlib.PurePath
 
     def __lt__(self, other):
         """Implements < for File allowing to sort a list[File]."""
