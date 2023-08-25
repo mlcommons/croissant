@@ -27,7 +27,6 @@ def should_extract(encoding_format: str) -> bool:
 
 def _extract_file(source: epath.Path, target: epath.Path) -> None:
     """Extracts the `source` file to `target`."""
-    print(source)
     if zipfile.is_zipfile(source):
         with zipfile.ZipFile(source) as zip:
             zip.extractall(target)

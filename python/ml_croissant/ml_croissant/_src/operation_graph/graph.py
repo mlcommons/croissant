@@ -90,15 +90,7 @@ def _add_operations_for_file_object(
     node: FileObject,
     folder: epath.Path,
 ):
-    """Adds all operations for a node of type `FileObject`.
-
-    Operations are:
-
-    - `Download`.
-    - `Extract` if the file needs to be extracted.
-    - `Concatenate` to merge several dataframes into one.
-    - `Read` to read the file if it's a CSV.
-    """
+    """Adds all operations for a FileObject reading from a Git repository."""
     # Download the file
     operation = Download(node=node, url=node.content_url)
     operations.add_node(operation)
