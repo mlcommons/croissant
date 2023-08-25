@@ -13,9 +13,10 @@ class Path:
     Args:
         filepath: The full file path on disk.
         fullpath: `fullpath` in the sense of Croissant, i.e. the full path relative to
-            the Croissant folders. Example: for
-            filepath=`/tmp/croissant-XXXX/downloads/my-dataset/my-file`, the fullpath is
-            `my-dataset/my-file`.
+            the Croissant folders. This field may sound wrongly named, but it is named
+            after the same JSON-LD field (see `fileProperty` in the Croissant specs).
+            Example: for filepath=`${CROISSANT_CACHE}/downloads/my-dataset/my-file`, the
+            fullpath is `my-dataset/my-file`.
     """
 
     filepath: epath.Path
