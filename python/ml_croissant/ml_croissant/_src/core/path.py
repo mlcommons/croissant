@@ -34,7 +34,7 @@ class Path:
 
 
 def get_fullpath(file: epath.Path, data_dir: epath.Path) -> str:
-    """Fullpaths are the full paths from the extraction directory."""
+    """Returns the relative path relatively to `data_dir`."""
     # Path since the root of the dir.
     fullpath = os.fspath(file).replace(os.fspath(data_dir), "")
     # Remove the trailing slash.
@@ -43,6 +43,6 @@ def get_fullpath(file: epath.Path, data_dir: epath.Path) -> str:
     return fullpath
 
 
-def get_fullpaths(files: list[epath.Path], extract_dir: epath.Path) -> list[str]:
-    """Fullpaths are the full paths from the extraction directory."""
-    return [get_fullpath(file, extract_dir) for file in files]
+def get_fullpaths(files: list[epath.Path], data_dir: epath.Path) -> list[str]:
+    """Returns the relative paths relatively to `data_dir`."""
+    return [get_fullpath(file, data_dir) for file in files]
