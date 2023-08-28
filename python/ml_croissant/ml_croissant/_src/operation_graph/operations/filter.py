@@ -30,7 +30,7 @@ class FilterFiles(Operation):
                 for file in files:
                     filepath = epath.Path(basepath) / file
                     fullpath = get_fullpath(filepath, dir_)
-                    if includes_re.match(fullpath):
+                    if includes_re.match(os.fspath(fullpath)):
                         included_files.append(
                             Path(
                                 filepath=filepath,

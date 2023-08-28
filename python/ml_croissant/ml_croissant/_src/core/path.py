@@ -33,16 +33,18 @@ class Path:
         return self.filepath.name
 
 
-def get_fullpath(file: epath.Path, data_dir: epath.Path) -> str:
+def get_fullpath(file: epath.Path, data_dir: epath.Path) -> pathlib.PurePath:
     """Returns the relative path relatively to `data_dir`."""
     # Path since the root of the dir.
     fullpath = os.fspath(file).replace(os.fspath(data_dir), "")
     # Remove the trailing slash.
     if fullpath.startswith("/"):
         fullpath = fullpath[1:]
-    return fullpath
+    return pathlib.PurePath(fullpath)
 
 
-def get_fullpaths(files: list[epath.Path], data_dir: epath.Path) -> list[str]:
+def get_fullpaths(
+    files: list[epath.Path], data_dir: epath.Path
+) -> list[pathlib.PurePath]:
     """Returns the relative paths relatively to `data_dir`."""
     return [get_fullpath(file, data_dir) for file in files]

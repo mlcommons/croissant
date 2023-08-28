@@ -1,5 +1,6 @@
 """read_test module."""
 
+import pathlib
 import tempfile
 from unittest import mock
 
@@ -30,7 +31,7 @@ def test_explicit_message_when_pyarrow_is_not_installed():
             folder = epath.Path(folder)
             # Create filepath = `folder/file.parquet`.
             filepath = folder / url
-            file = Path(filepath=filepath, fullpath="")
+            file = Path(filepath=filepath, fullpath=pathlib.PurePath())
             filepath.touch()
             read = Read(
                 node=create_test_file_object(encoding_format="application/x-parquet"),

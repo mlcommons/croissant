@@ -1,6 +1,7 @@
 """Concatenate operation module."""
 
 import dataclasses
+import os
 
 import pandas as pd
 
@@ -22,8 +23,8 @@ class Concatenate(Operation):
         files = [file for files in args for file in files]
         return pd.DataFrame(
             {
-                FileProperty.filepath: [file.filepath for file in files],
+                FileProperty.filepath: [os.fspath(file.filepath) for file in files],
                 FileProperty.filename: [file.filename for file in files],
-                FileProperty.fullpath: [file.fullpath for file in files],
+                FileProperty.fullpath: [os.fspath(file.fullpath) for file in files],
             }
         )

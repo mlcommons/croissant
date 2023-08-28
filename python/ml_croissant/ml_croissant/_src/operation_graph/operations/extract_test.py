@@ -1,5 +1,7 @@
 """extract_test module."""
 
+import pathlib
+
 from etils import epath
 
 from ml_croissant._src.core.path import get_fullpaths
@@ -20,4 +22,8 @@ def test_get_fullpaths():
         epath.Path("/path/to/extract/file2/bar"),
     ]
     extract_dir = epath.Path("/path/to/extract")
-    assert get_fullpaths(files, extract_dir) == ["file1", "file2/foo", "file2/bar"]
+    assert get_fullpaths(files, extract_dir) == [
+        pathlib.PurePath("file1"),
+        pathlib.PurePath("file2/foo"),
+        pathlib.PurePath("file2/bar"),
+    ]
