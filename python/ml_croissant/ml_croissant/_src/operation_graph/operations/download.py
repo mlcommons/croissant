@@ -5,17 +5,26 @@ import dataclasses
 import hashlib
 import logging
 import os
+import time
+import urllib
 
 from etils import epath
 import networkx as nx
 import requests
 import tqdm
 
-from ml_croissant._src.core.constants import DOWNLOAD_PATH
+from ml_croissant._src.core import constants
+from ml_croissant._src.core.path import get_fullpath
+from ml_croissant._src.core.path import Path
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 
 _DOWNLOAD_CHUNK_SIZE = 1024
+_HUGGING_FACE_GIT = "https://huggingface.co/datasets"
+_SUPPORTED_HOSTS = [
+    _HUGGING_FACE_GIT,
+]
 
 
 def is_url(url: str) -> bool:
@@ -46,33 +55,83 @@ def get_download_filepath(node: Node, url: str) -> epath.Path:
         # No need to download local files
         return filepath
     hashed_url = get_hash(url)
-    DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
-    return DOWNLOAD_PATH / f"croissant-{hashed_url}"
+    constants.DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
+    return constants.DOWNLOAD_PATH / f"croissant-{hashed_url}"
+
+
+def extract_git_info(full_url: str) -> tuple[str, str | None]:
+    """Extracts git-related information.
+
+    Args:
+        full_url: The full git URL for an HTTP clone.
+
+    Returns:
+        A tuple containing the base URL of the repository to clone and the refs to
+        checkout if any is provided.
+    """
+    full_url = os.fspath(full_url)
+    if full_url.startswith(_HUGGING_FACE_GIT):
+        splits = full_url.rsplit("/tree/refs%2F", 1)
+        if len(splits) == 1:
+            # There is no refs in the URL: returning None.
+            return splits[0], None
+        else:
+            url, refs = splits
+            return url, f"refs/{urllib.parse.unquote(refs)}"
+    else:
+        raise ValueError(
+            f"unknown git host: {full_url}. Supported git hosts:"
+            f" {_SUPPORTED_HOSTS}. Contact the Croissant team to support more hosts."
+        )
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Download(Operation):
     """Downloads from a URL to the disk."""
 
+    node: FileObject
     url: str
 
-    def __call__(self):
+    def _download_from_http(self, filepath: epath.Path):
+        response = requests.get(self.url, stream=True, timeout=10)
+        total = int(response.headers.get("Content-Length", 0))
+        with filepath.open("wb") as file, tqdm.tqdm(
+            desc=f"Downloading {self.url}...",
+            total=total,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as bar:
+            for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
+                size = file.write(data)
+                bar.update(size)
+
+    def _download_from_git(self, filepath: epath.Path):
+        try:
+            import git
+        except ImportError as e:
+            raise ImportError("Use GitPython with: `pip install GitPython`.") from e
+        url, refs = extract_git_info(self.node.content_url)
+        repo = git.Repo.clone_from(url, filepath)
+        # Hugging Face uses https://git-scm.com/book/en/v2/Git-Internals-Git-References.
+        if refs:
+            branch_name = f"branch_{time.time()}"  # Branch name with no conflict
+            repo.remote().fetch(f"{refs}:{branch_name}")
+            repo.branches[branch_name].checkout()
+
+    def __call__(self) -> epath.Path:
         """See class' docstring."""
         filepath = get_download_filepath(self.node, self.url)
         if not filepath.exists():
-            response = requests.get(self.url, stream=True, timeout=10)
-            total = int(response.headers.get("Content-Length", 0))
-            with filepath.open("wb") as file, tqdm.tqdm(
-                desc=f"Downloading {self.url}...",
-                total=total,
-                unit="iB",
-                unit_scale=True,
-                unit_divisor=1024,
-            ) as bar:
-                for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
-                    size = file.write(data)
-                    bar.update(size)
+            if self.node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
+                self._download_from_git(filepath)
+            else:
+                self._download_from_http(filepath)
         logging.info("File %s is downloaded to %s", self.url, os.fspath(filepath))
+        return Path(
+            filepath=filepath,
+            fullpath=get_fullpath(filepath, constants.DOWNLOAD_PATH),
+        )
 
 
 def execute_downloads(operations: nx.MultiDiGraph):

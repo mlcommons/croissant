@@ -105,3 +105,6 @@ FROM_CROISSANT = {v: k for k, v in TO_CROISSANT.items()}
 CROISSANT_CACHE = epath.Path("~/.cache/croissant").expanduser()
 DOWNLOAD_PATH = CROISSANT_CACHE / "download"
 EXTRACT_PATH = CROISSANT_CACHE / "extract"
+
+# Encoding formats
+GIT_HTTPS_ENCODING_FORMAT = "git+https"

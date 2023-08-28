@@ -6,14 +6,13 @@ import json
 from etils import epath
 import pandas as pd
 
-from ml_croissant._src.core.constants import DOWNLOAD_PATH
+from ml_croissant._src.core.path import Path
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations.download import get_download_filepath
 from ml_croissant._src.operation_graph.operations.download import is_url
-from ml_croissant._src.operation_graph.operations.extract import get_fullpath
 from ml_croissant._src.operation_graph.operations.parse_json import parse_json_content
 from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
+from ml_croissant._src.structure_graph.nodes.file_set import FileSet
 from ml_croissant._src.structure_graph.nodes.source import FileProperty
 
 
@@ -21,7 +20,7 @@ from ml_croissant._src.structure_graph.nodes.source import FileProperty
 class Read(Operation):
     """Reads from a CSV file and yield lines."""
 
-    node: FileObject
+    node: FileObject | FileSet
     url: str
     folder: epath.Path
     fields: list[Field]
@@ -59,21 +58,23 @@ class Read(Operation):
                     f"Unsupported encoding format for file: {encoding_format}"
                 )
 
-    def __call__(self) -> tuple[str, pd.DataFrame]:
+    def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
-        if is_url(self.url):
-            filepath = get_download_filepath(self.node, self.url)
-            fullpath = get_fullpath(filepath, DOWNLOAD_PATH)
-        else:
-            # Read from the local path
-            filepath = self.folder / self.url
-            fullpath = get_fullpath(filepath, self.folder)
-            assert filepath.exists(), (
-                f'In node "{self.node.uid}", file "{self.url}" is either an invalid URL'
-                " or an invalid path."
+        if isinstance(files, Path):
+            files = [files]
+        file_contents = []
+        for file in files:
+            if not is_url(self.url):
+                # Read from the local path
+                assert file.filepath.exists(), (
+                    f'In node "{self.node.uid}", file "{self.url}" is either an invalid'
+                    " URL or an invalid path."
+                )
+            file_content = self._read_file_content(
+                self.node.encoding_format, file.filepath
             )
-        file_content = self._read_file_content(self.node.encoding_format, filepath)
-        file_content[FileProperty.filepath] = filepath
-        file_content[FileProperty.filename] = filepath.name
-        file_content[FileProperty.fullpath] = fullpath
-        return file_content
+            file_content[FileProperty.filepath] = file.filepath
+            file_content[FileProperty.filename] = file.filename
+            file_content[FileProperty.fullpath] = file.fullpath
+            file_contents.append(file_content)
+        return pd.concat(file_contents)

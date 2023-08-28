@@ -28,12 +28,14 @@ readme = "README.md"
 dev = [
   "black",
   "flake8-docstrings",
+  "ml_croissant[git]",
   "ml_croissant[parquet]",
   "pyflakes",
   "pylint",
   "pytest",
   "pytype",
 ]
+git = ["GitPython"]
 parquet = ["pyarrow"]
 
 [tool.black]

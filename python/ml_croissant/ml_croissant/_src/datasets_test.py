@@ -56,21 +56,25 @@ def test_static_analysis(folder):
 #   --num_records -1
 # ```
 @pytest.mark.parametrize(
-    ["dataset_name", "record_set_name"],
+    ["dataset_name", "record_set_name", "num_records"],
     [
-        ["coco2014-mini", "captions"],
-        ["coco2014-mini", "images"],
-        ["pass-mini", "images"],
-        ["simple-join", "publications_by_user"],
-        ["simple-parquet", "persons"],
-        ["titanic", "passengers"],
+        # Hermetic test cases (data from local folders).
+        ["coco2014-mini", "captions", -1],
+        ["coco2014-mini", "images", -1],
+        ["pass-mini", "images", -1],
+        ["simple-join", "publications_by_user", -1],
+        ["simple-parquet", "persons", -1],
+        # Non-hermetic test cases (data from the internet). If non-hermetic tests are
+        # not maintainable/suitable for unit tests, we can isolate them elsewhere.
+        ["huggingface-mnist", "default", 10],
+        ["titanic", "passengers", -1],
     ],
 )
-def test_loading(dataset_name, record_set_name):
+def test_loading(dataset_name, record_set_name, num_records):
     print(
         "If this test fails, update JSONL with: `python scripts/load.py --file"
         f" ../../datasets/{dataset_name}/metadata.json --record_set"
-        f" {record_set_name} --update_output --num_records -1 --debug`"
+        f" {record_set_name} --update_output --num_records {num_records} --debug`"
     )
     dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent
@@ -87,6 +91,8 @@ def test_loading(dataset_name, record_set_name):
     records = iter(records)
     length = 0
     for i, record in enumerate(records):
+        if num_records > 0 and i >= num_records:
+            break
         record = record_to_python(record)
         assert record == expected_records[i]
         length += 1

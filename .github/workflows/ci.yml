@@ -76,7 +76,19 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies except ml_croissant itself
-      run: pip install absl-py etils[epath] jsonpath_rw networkx pandas pytest pytype rdflib requests tqdm
+      run: >
+        pip install absl-py \
+          etils[epath] \
+          GitPython \
+          jsonpath_rw \
+          networkx \
+          pandas \
+          pyarrow \
+          pytest \
+          pytype \
+          rdflib \
+          requests \
+          tqdm
 
     - name: PyType
       run: make pytype

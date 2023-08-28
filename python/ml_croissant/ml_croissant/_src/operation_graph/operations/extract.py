@@ -1,10 +1,8 @@
 """Extract operation module."""
 
 import dataclasses
-import fnmatch
 import logging
 import os
-import re
 import tarfile
 import zipfile
 
@@ -12,12 +10,12 @@ from etils import epath
 import pandas as pd
 
 from ml_croissant._src.core.constants import EXTRACT_PATH
+from ml_croissant._src.core.path import get_fullpath
+from ml_croissant._src.core.path import Path
 from ml_croissant._src.operation_graph.base_operation import Operation
-from ml_croissant._src.operation_graph.operations.download import get_download_filepath
 from ml_croissant._src.operation_graph.operations.download import get_hash
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
-from ml_croissant._src.structure_graph.nodes.source import FileProperty
 
 
 def should_extract(encoding_format: str) -> bool:
@@ -25,21 +23,6 @@ def should_extract(encoding_format: str) -> bool:
     return (
         encoding_format == "application/x-tar" or encoding_format == "application/zip"
     )
-
-
-def get_fullpath(file: epath.Path, data_dir: epath.Path) -> str:
-    """Fullpaths are the full paths from the extraction directory."""
-    # Path since the root of the dir.
-    fullpath = os.fspath(file).replace(os.fspath(data_dir), "")
-    # Remove the trailing slash.
-    if fullpath.startswith("/"):
-        fullpath = fullpath[1:]
-    return fullpath
-
-
-def _get_fullpaths(files: list[epath.Path], extract_dir: epath.Path) -> list[str]:
-    """Fullpaths are the full paths from the extraction directory."""
-    return [get_fullpath(file, extract_dir) for file in files]
 
 
 def _extract_file(source: epath.Path, target: epath.Path) -> None:
@@ -61,29 +44,17 @@ class Extract(Operation):
     node: FileObject
     target_node: FileSet
 
-    def __call__(self):
+    def __call__(self, archive_file: Path) -> pd.DataFrame:
         """See class' docstring."""
-        includes = fnmatch.translate(self.target_node.includes)
         url = self.node.content_url
-        archive_file = get_download_filepath(self.node, url)
         hashed_url = get_hash(url)
         extract_dir = EXTRACT_PATH / hashed_url
         if not extract_dir.exists():
-            _extract_file(archive_file, extract_dir)
+            _extract_file(archive_file.filepath, extract_dir)
         logging.info(
             "Found directory where data is extracted: %s", os.fspath(extract_dir)
         )
-        included_files = []
-        for basepath, _, files in os.walk(extract_dir):
-            for file in files:
-                if re.match(includes, os.fspath(file)):
-                    included_files.append(epath.Path(basepath) / file)
-        # We need to sort `files` to have a deterministic/reproducible order.
-        included_files.sort()
-        return pd.DataFrame(
-            {
-                FileProperty.filepath: included_files,
-                FileProperty.filename: [file.name for file in included_files],
-                FileProperty.fullpath: _get_fullpaths(included_files, extract_dir),
-            }
+        return Path(
+            filepath=extract_dir,
+            fullpath=get_fullpath(extract_dir, EXTRACT_PATH),
         )
