@@ -44,6 +44,8 @@ class Read(Operation):
                         FileProperty.content: [json_content],
                     }
                 )
+            elif encoding_format == "application/jsonlines":
+                return pd.read_json(file, lines=True)
             elif encoding_format == "application/x-parquet":
                 try:
                     return pd.read_parquet(file)

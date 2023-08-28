@@ -41,8 +41,16 @@ def test_execute_downloads():
 
 def test_extract_git_info():
     with pytest.raises(ValueError, match="unknown git host"):
-        extract_git_info("https://github.com/mlcommons/croissant")
+        extract_git_info("https://thisisnotagithost.com")
 
+    assert extract_git_info("https://github.com/mlcommons/croissant") == (
+        "https://github.com/mlcommons/croissant",
+        None,
+    )
+    assert extract_git_info("https://gitlab.com/mlcommons/croissant") == (
+        "https://gitlab.com/mlcommons/croissant",
+        None,
+    )
     assert extract_git_info("https://huggingface.co/datasets/mnist") == (
         "https://huggingface.co/datasets/mnist",
         None,

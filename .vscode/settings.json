@@ -10,7 +10,9 @@
         },
     },
     "[json]": {
+        "editor.detectIndentation": false,
         "editor.formatOnSave": true,
+        "editor.tabSize": 2,
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
     },
