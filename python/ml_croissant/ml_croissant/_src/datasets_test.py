@@ -66,6 +66,7 @@ def test_static_analysis(folder):
         ["simple-parquet", "persons", -1],
         # Non-hermetic test cases (data from the internet). If non-hermetic tests are
         # not maintainable/suitable for unit tests, we can isolate them elsewhere.
+        ["gpt-3", "default", 10],
         ["huggingface-mnist", "default", 10],
         ["titanic", "passengers", -1],
     ],

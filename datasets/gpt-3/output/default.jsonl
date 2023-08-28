@@ -1,0 +1,10 @@
+{"default": {"context": "\n\nQ: What is 65360 plus 16204?\n\nA:", "completion": "81564", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 91169 plus 57223?\n\nA:", "completion": "148392", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 52888 plus 52240?\n\nA:", "completion": "105128", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 35742 plus 78660?\n\nA:", "completion": "114402", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 69074 plus 90431?\n\nA:", "completion": "159505", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 61530 plus 83035?\n\nA:", "completion": "144565", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 98901 plus 6004?\n\nA:", "completion": "104905", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 60097 plus 38097?\n\nA:", "completion": "98194", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 35779 plus 79717?\n\nA:", "completion": "115496", "task": "five_digit_addition"}}
+{"default": {"context": "\n\nQ: What is 67255 plus 99168?\n\nA:", "completion": "166423", "task": "five_digit_addition"}}

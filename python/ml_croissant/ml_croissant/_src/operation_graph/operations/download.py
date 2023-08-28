@@ -21,8 +21,12 @@ from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 
 _DOWNLOAD_CHUNK_SIZE = 1024
+_GITHUB_GIT = "https://github.com"
+_GITLAB_GIT = "https://gitlab.com"
 _HUGGING_FACE_GIT = "https://huggingface.co/datasets"
 _SUPPORTED_HOSTS = [
+    _GITHUB_GIT,
+    _GITLAB_GIT,
     _HUGGING_FACE_GIT,
 ]
 
@@ -62,7 +66,14 @@ def get_download_filepath(node: Node, url: str) -> epath.Path:
 def insert_credentials(url: str, username: str | None, password: str | None) -> str:
     """Inserts credentials in the URL for an HTTP authentication.
 
-    Example: https://{username}:{password}@github.com/account/repo
+    Args:
+        url: The Git URL.
+        username: The username to use for the HTTPS authentication.
+        password: The password to use for the HTTPS authentication.
+
+    Returns:
+        The URL populated with the given credentials. For example:
+        `https://{username}:{password}@github.com/account/repo`.
     """
     https = "https://"
     if not url.startswith(https):
@@ -91,6 +102,8 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
         checkout if any is provided.
     """
     full_url = os.fspath(full_url)
+    if full_url.startswith(_GITHUB_GIT) or full_url.startswith(_GITLAB_GIT):
+        return full_url, None
     if full_url.startswith(_HUGGING_FACE_GIT):
         splits = full_url.rsplit("/tree/refs%2F", 1)
         if len(splits) == 1:
