@@ -158,7 +158,6 @@ class Structure:
         """Creates the Structure from a Croissant file."""
         filepath, jsonld = from_file_to_jsonld(file)
         json_ = from_jsonld_to_json(jsonld)
-        print(json_.get(constants.ML_COMMONS_RECORD_SET))
         return cls.from_json(issues, json_, filepath=filepath)
 
     def check_graph(self):

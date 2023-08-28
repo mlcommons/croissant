@@ -39,5 +39,7 @@
         "ml_croissant",
         "--multi-line",
         "3",
+        "--thirdparty",
+        "datasets"
     ],
 }
