@@ -78,6 +78,7 @@ jobs:
     - name: Install dependencies except ml_croissant itself
       run: >
         pip install absl-py \
+          datasets \
           etils[epath] \
           GitPython \
           jsonpath_rw \
