@@ -6,7 +6,7 @@ import hashlib
 import logging
 import os
 import time
-import urllib
+import urllib.parse
 
 from etils import epath
 import networkx as nx
@@ -57,6 +57,27 @@ def get_download_filepath(node: Node, url: str) -> epath.Path:
     hashed_url = get_hash(url)
     constants.DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
     return constants.DOWNLOAD_PATH / f"croissant-{hashed_url}"
+
+
+def insert_credentials(url: str, username: str | None, password: str | None) -> str:
+    """Inserts credentials in the URL for an HTTP authentication.
+
+    Example: https://{username}:{password}@github.com/account/repo
+    """
+    https = "https://"
+    if not url.startswith(https):
+        raise ValueError("use secured HTTPS protocol for {url}.")
+    if username is None and password is None:
+        return url
+    if username is None or password is None:
+        raise ValueError(
+            f"please provide both {constants.CROISSANT_GIT_USERNAME} and"
+            f" {constants.CROISSANT_GIT_PASSWORD}."
+        )
+    username = urllib.parse.quote(username)
+    password = urllib.parse.quote(password)
+    https_with_credentials = f"{https}{username}:{password}@"
+    return url.replace(https, https_with_credentials)
 
 
 def extract_git_info(full_url: str) -> tuple[str, str | None]:
@@ -111,7 +132,10 @@ class Download(Operation):
             import git
         except ImportError as e:
             raise ImportError("Use GitPython with: `pip install GitPython`.") from e
+        username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
+        password = os.environ.get(constants.CROISSANT_GIT_PASSWORD)
         url, refs = extract_git_info(self.node.content_url)
+        url = insert_credentials(url, username, password)
         repo = git.Repo.clone_from(url, filepath)
         # Hugging Face uses https://git-scm.com/book/en/v2/Git-Internals-Git-References.
         if refs:

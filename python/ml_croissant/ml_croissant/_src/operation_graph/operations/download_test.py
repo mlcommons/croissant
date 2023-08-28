@@ -9,6 +9,7 @@ from ml_croissant._src.operation_graph.operations import Data
 from ml_croissant._src.operation_graph.operations.download import Download
 from ml_croissant._src.operation_graph.operations.download import execute_downloads
 from ml_croissant._src.operation_graph.operations.download import extract_git_info
+from ml_croissant._src.operation_graph.operations.download import insert_credentials
 from ml_croissant._src.tests.nodes import create_test_file_object
 from ml_croissant._src.tests.nodes import empty_file_object
 from ml_croissant._src.tests.nodes import empty_record_set
@@ -56,3 +57,32 @@ def test_extract_git_info():
     assert extract_git_info(
         "https://huggingface.co/datasets/mlcommons/mnist/tree/refs%2Fconvert%2Fparquet"
     ) == ("https://huggingface.co/datasets/mlcommons/mnist", "refs/convert/parquet")
+
+
+def test_insert_credentials():
+    assert (
+        insert_credentials(
+            "https://github.com/mlcommons/croissant", username=None, password=None
+        )
+        == "https://github.com/mlcommons/croissant"
+    )
+    assert (
+        insert_credentials(
+            "https://github.com/mlcommons/croissant",
+            username="username@mlcommons.com",
+            password="my/password",
+        )
+        == "https://username%40mlcommons.com:my/password@github.com/mlcommons/croissant"
+    )
+    with pytest.raises(ValueError, match="provide both"):
+        insert_credentials(
+            "https://github.com/mlcommons/croissant",
+            username="username@mlcommons.com",
+            password=None,
+        )
+    with pytest.raises(ValueError, match="provide both"):
+        insert_credentials(
+            "https://github.com/mlcommons/croissant",
+            username=None,
+            password="my/password",
+        )
