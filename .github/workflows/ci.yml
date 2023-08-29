@@ -109,7 +109,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install library
-      run: pip install .
+      run: pip install .[git]
 
     - name: Validate JSON-LD files
       run: |
@@ -135,7 +135,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install library
-      run: pip install .
+      run: pip install .[git]
 
     - name: Generate JSON-LD files - Titanic
       run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
