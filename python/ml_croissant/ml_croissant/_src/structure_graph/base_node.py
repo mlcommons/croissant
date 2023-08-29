@@ -47,9 +47,9 @@ class Node(abc.ABC):
     folder: epath.Path | None = None
     name: str = ""
     graph: nx.MultiDiGraph = dataclasses.field(
-        default_factory=nx.MultiDiGraph, compare=False
+        default_factory=nx.MultiDiGraph, compare=False, init=False
     )
-    parents: list[Node] = dataclasses.field(default_factory=list)
+    parents: list[Node] = dataclasses.field(default_factory=list, init=False)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""

@@ -67,10 +67,14 @@ def test_validate_name(name, expected_errors):
 
 
 def test_eq():
-    node_1_with_parent_a = create_test_node(Node, name="node1", parents=["parentA"])
-    node_1_with_parent_b = create_test_node(Node, name="node1", parents=["parentB"])
-    node_2_with_parent_a = create_test_node(Node, name="node2", parents=["parentA"])
-    node_2_with_parent_b = create_test_node(Node, name="node2", parents=["parentB"])
+    node_1_with_parent_a = create_test_node(Node, name="node1")
+    node_1_with_parent_a.parents = ["parentA"]
+    node_1_with_parent_b = create_test_node(Node, name="node1")
+    node_1_with_parent_b.parents = ["parentB"]
+    node_2_with_parent_a = create_test_node(Node, name="node2")
+    node_2_with_parent_a.parents = ["parentA"]
+    node_2_with_parent_b = create_test_node(Node, name="node2")
+    node_2_with_parent_b.parents = ["parentB"]
     assert node_1_with_parent_a == node_1_with_parent_b
     assert node_2_with_parent_a == node_2_with_parent_b
     assert node_1_with_parent_a != node_2_with_parent_a

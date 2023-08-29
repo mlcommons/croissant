@@ -37,6 +37,22 @@ python scripts/load.py \
     --num_records 10
 ```
 
+## Programmatically build JSON-LD files
+
+You can programmatically build Croissant JSON-LD files using the Python API.
+
+```python
+import ml_croissant as mlc
+metadata=mlc.nodes.Metadata(
+  name="...",
+)
+metadata.to_json()  # this returns the JSON-LD file.
+```
+
+For a full working example, refer to
+[the script to convert Hugging Face datasets to Croissant files](./scripts/from_huggingface_to_croissant.py).
+This script uses the Python API to programmatically build JSON-LD files.
+
 ## Run tests
 
 All tests can be run from the Makefile:

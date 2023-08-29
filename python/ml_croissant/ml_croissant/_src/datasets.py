@@ -15,7 +15,6 @@ from ml_croissant._src.operation_graph import OperationGraph
 from ml_croissant._src.operation_graph.operations import GroupRecordSet
 from ml_croissant._src.operation_graph.operations import ReadField
 from ml_croissant._src.operation_graph.operations.download import execute_downloads
-from ml_croissant._src.structure_graph.graph import Structure
 from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 
@@ -25,31 +24,26 @@ class Verifier:
 
     filepath: epath.PathLike
     issues: Issues = dataclasses.field(default_factory=Issues)
-    structure: Structure = dataclasses.field(init=False)
+    metadata: Metadata = dataclasses.field(init=False)
     operations: OperationGraph = dataclasses.field(init=False)
 
     def run_static_analysis(self, debug: bool = False):
         """Runs the static analysis on the file."""
         try:
-            self.structure = Structure.from_file(issues=self.issues, file=self.filepath)
-            filepath, graph, metadata = (
-                self.structure.filepath,
-                self.structure.graph,
-                self.structure.metadata,
-            )
-            folder = filepath.parent
+            self.metadata = Metadata.from_file(issues=self.issues, file=self.filepath)
+            graph = self.metadata.graph
+            folder = self.metadata.folder
             # Print all nodes for debugging purposes.
             if debug:
                 logging.info("Found the following nodes during static analysis.")
                 for node in graph.nodes:
                     logging.info(node)
-            self.structure.check_graph()
             # Draw the structure graph for debugging purposes.
             if debug:
                 graphs_utils.pretty_print_graph(graph, simplify=True)
             self.operations = OperationGraph.from_nodes(
                 issues=self.issues,
-                metadata=metadata,
+                metadata=self.metadata,
                 graph=graph,
                 folder=folder,
             )
@@ -83,7 +77,7 @@ class Dataset:
         """Runs the static analysis of `file`."""
         self.verifier = Verifier(self.file)
         self.verifier.run_static_analysis(debug=self.debug)
-        self.metadata = self.verifier.structure.metadata
+        self.metadata = self.verifier.metadata
         self.operations = self.verifier.operations
 
     def records(self, record_set: str) -> Records:
