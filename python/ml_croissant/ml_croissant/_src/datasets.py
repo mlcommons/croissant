@@ -20,28 +20,15 @@ from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 def get_operations(issues: Issues, metadata: Metadata, debug: bool) -> OperationGraph:
     """Returns operations from the metadata."""
-    try:
-        graph = metadata.graph
-        folder = metadata.folder
-        # Print all nodes for debugging purposes.
-        if debug:
-            logging.info("Found the following nodes during static analysis.")
-            for node in graph.nodes:
-                logging.info(node)
-        # Draw the structure graph for debugging purposes.
-        if debug:
-            graphs_utils.pretty_print_graph(graph, simplify=True)
-        operations = OperationGraph.from_nodes(
-            issues=issues,
-            metadata=metadata,
-            graph=graph,
-            folder=folder,
-        )
-        operations.check_graph()
-    except Exception as exception:
-        if issues.errors:
-            raise ValidationError(issues.report()) from exception
-        raise exception
+    graph = metadata.graph
+    folder = metadata.folder
+    operations = OperationGraph.from_nodes(
+        issues=issues,
+        metadata=metadata,
+        graph=graph,
+        folder=folder,
+    )
+    operations.check_graph()
     if issues.errors:
         raise ValidationError(issues.report())
     elif issues.warnings:
@@ -68,7 +55,13 @@ class Dataset:
         """Runs the static analysis of `file`."""
         issues = Issues()
         self.metadata = Metadata.from_file(issues=issues, file=self.file)
+        # Draw the structure graph for debugging purposes.
+        if self.debug:
+            graphs_utils.pretty_print_graph(self.metadata.graph, simplify=True)
         self.operations = get_operations(issues, self.metadata, self.debug)
+        # Draw the operations graph for debugging purposes.
+        if self.debug:
+            graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
 
     def records(self, record_set: str) -> Records:
         """Accesses all records belonging to the RecordSet named `record_set`."""
