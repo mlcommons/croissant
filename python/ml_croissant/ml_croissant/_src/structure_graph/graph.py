@@ -135,13 +135,12 @@ class Structure:
     """
 
     issues: Issues
-    graph: nx.MultiDiGraph
     metadata: Metadata
     filepath: epath.Path | None
+    graph: nx.MultiDiGraph = dataclasses.field(init=False)
 
-    def to_json(self) -> Json:
-        """Converts the metadata to JSON."""
-        return self.metadata.to_json()
+    def __post_init__(self):
+        self.graph = from_nodes_to_graph(self.metadata)
 
     @classmethod
     def from_json(
@@ -150,8 +149,7 @@ class Structure:
         """Creates the Structure from a Croissant JSON-LD."""
         folder = filepath.parent if filepath else None
         metadata = Metadata.from_jsonld(issues, folder, json_)
-        graph = from_nodes_to_graph(metadata)
-        return cls(issues=issues, graph=graph, metadata=metadata, filepath=filepath)
+        return cls(issues=issues, metadata=metadata, filepath=filepath)
 
     @classmethod
     def from_file(cls, issues: Issues, file: epath.PathLike) -> Structure:

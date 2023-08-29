@@ -20,71 +20,79 @@ from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 
 @dataclasses.dataclass
-class Verifier:
-    """Static analysis of the issues in the Croissant file."""
+class Dataset:
+    """Python representation of a Croissant dataset.
 
-    filepath: epath.PathLike
-    issues: Issues = dataclasses.field(default_factory=Issues)
-    structure: Structure = dataclasses.field(init=False)
+    Args:
+        file: A JSON object or a path to a Croissant file (string or pathlib.Path).
+        metadata: The metadata of the dataset.
+        debug: Whether to print debug hints. False by default.
+
+    Usage:
+
+    - To build a `Dataset` from a file:
+
+    ```python
+    dataset = mlc.Dataset(file="/path/to/croissant.json")
+    ```
+
+    - To build a `Dataset` from programmatic metadata:
+
+    ```python
+    dataset = mlc.Dataset(
+        metadata=mlc.nodes.Metadata(...),
+    )
+    ```
+    """
+
+    file: epath.PathLike | None = None
+    metadata: Metadata | None = None
+    debug: bool = False
     operations: OperationGraph = dataclasses.field(init=False)
 
-    def run_static_analysis(self, debug: bool = False):
-        """Runs the static analysis on the file."""
+    def __post_init__(self):
+        """Runs the static analysis of `file`."""
+        issues = Issues()
+        if self.file is not None and self.metadata is None:
+            structure = Structure.from_file(issues=issues, file=self.file)
+            self.metadata = structure.metadata
+        elif self.file is None and self.metadata is not None:
+            structure = Structure(issues=issues, metadata=self.metadata)
+        else:
+            raise ValueError(
+                "New `Dataset` instance needs either `file` or `metadata`. See the"
+                " docstring for more information."
+            )
         try:
-            self.structure = Structure.from_file(issues=self.issues, file=self.filepath)
             filepath, graph, metadata = (
-                self.structure.filepath,
-                self.structure.graph,
-                self.structure.metadata,
+                structure.filepath,
+                structure.graph,
+                structure.metadata,
             )
             folder = filepath.parent
-            # Print all nodes for debugging purposes.
-            if debug:
-                logging.info("Found the following nodes during static analysis.")
-                for node in graph.nodes:
-                    logging.info(node)
-            self.structure.check_graph()
+            structure.check_graph()
             # Draw the structure graph for debugging purposes.
-            if debug:
+            if self.debug:
                 graphs_utils.pretty_print_graph(graph, simplify=True)
             self.operations = OperationGraph.from_nodes(
-                issues=self.issues,
+                issues=issues,
                 metadata=metadata,
                 graph=graph,
                 folder=folder,
             )
             self.operations.check_graph()
         except Exception as exception:
-            if self.issues.errors:
-                raise ValidationError(self.issues.report()) from exception
+            if issues.errors:
+                raise ValidationError(issues.report()) from exception
             raise exception
-        if self.issues.errors:
-            raise ValidationError(self.issues.report())
-        elif self.issues.warnings:
-            logging.warning(self.issues.report())
+        if issues.errors:
+            raise ValidationError(issues.report())
+        elif issues.warnings:
+            logging.warning(issues.report())
 
-
-@dataclasses.dataclass
-class Dataset:
-    """Python representation of a Croissant dataset.
-
-    Args:
-        file: A JSON object or a path to a Croissant file (string or pathlib.Path).
-        operations: The operation graph class. None by default.
-        debug: Whether to print debug hints. False by default.
-    """
-
-    file: epath.PathLike
-    operations: OperationGraph = dataclasses.field(init=False)
-    metadata: Metadata = dataclasses.field(init=False)
-    debug: bool = False
-
-    def __post_init__(self):
-        """Runs the static analysis of `file`."""
-        self.verifier = Verifier(self.file)
-        self.verifier.run_static_analysis(debug=self.debug)
-        self.metadata = self.verifier.structure.metadata
-        self.operations = self.verifier.operations
+    def to_json(self) -> Json:
+        """Converts the `Dataset` to JSON."""
+        return self.metadata.to_json()
 
     def records(self, record_set: str) -> Records:
         """Accesses all records belonging to the RecordSet named `record_set`."""

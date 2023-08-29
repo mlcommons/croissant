@@ -104,46 +104,45 @@ def convert(dataset: str) -> dict[str, Any]:
     """Converts from Hugging Face to Croissant JSON-LD."""
     dataset_url, dataset_builder = _standardize_dataset(dataset)
     fields = _get_fields(dataset_builder)
-    metadata = mlc.nodes.Metadata(
-        name=dataset_builder.name,
-        citation=dataset_builder.info.citation,
-        license=dataset_builder.info.license,
-        description=dataset_builder.info.description,
-        url=dataset_url,
-        file_objects=[
-            mlc.nodes.FileObject(
-                name=_REPO,
-                description="The Hugging Face git repository.",
-                content_url=dataset_url + "/tree/refs%2Fconvert%2Fparquet",
-                encoding_format="git+https",
-                sha256="https://github.com/mlcommons/croissant/issues/80",
-            )
-        ],
-        file_sets=[
-            mlc.nodes.FileSet(
-                name=_PARQUET_FILES,
-                description=(
-                    "The underlying Parquet files as converted by Hugging Face (see:"
-                    " https://huggingface.co/docs/datasets-server/parquet)."
-                ),
-                contained_in=[_REPO],
-                encoding_format="application/x-parquet",
-                includes=dataset_builder.name + "/*/*.parquet",
-            )
-        ],
-        record_sets=[
-            mlc.nodes.RecordSet(
-                name="default",
-                description="The default set of records in the dataset.",
-                fields=fields,
-            )
-        ],
+    dataset = mlc.Dataset(
+        metadata=mlc.nodes.Metadata(
+            name=dataset_builder.name,
+            citation=dataset_builder.info.citation,
+            license=dataset_builder.info.license,
+            description=dataset_builder.info.description,
+            url=dataset_url,
+            file_objects=[
+                mlc.nodes.FileObject(
+                    name=_REPO,
+                    description="The Hugging Face git repository.",
+                    content_url=dataset_url + "/tree/refs%2Fconvert%2Fparquet",
+                    encoding_format="git+https",
+                    sha256="https://github.com/mlcommons/croissant/issues/80",
+                )
+            ],
+            file_sets=[
+                mlc.nodes.FileSet(
+                    name=_PARQUET_FILES,
+                    description=(
+                        "The underlying Parquet files as converted by Hugging Face"
+                        " (see: https://huggingface.co/docs/datasets-server/parquet)."
+                    ),
+                    contained_in=[_REPO],
+                    encoding_format="application/x-parquet",
+                    includes=dataset_builder.name + "/*/*.parquet",
+                )
+            ],
+            record_sets=[
+                mlc.nodes.RecordSet(
+                    name="default",
+                    description="The default set of records in the dataset.",
+                    fields=fields,
+                )
+            ],
+        )
     )
-    # Check if there are errors:
-    if metadata.issues.errors:
-        logging.error(metadata.issues.report())
     # Serialize to JSON-LD:
-    return metadata.to_json()
+    return dataset.to_json()
 
 
 def main(argv):
