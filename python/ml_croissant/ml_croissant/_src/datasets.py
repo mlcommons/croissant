@@ -18,44 +18,35 @@ from ml_croissant._src.operation_graph.operations.download import execute_downlo
 from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 
-@dataclasses.dataclass
-class Verifier:
-    """Static analysis of the issues in the Croissant file."""
-
-    filepath: epath.PathLike
-    issues: Issues = dataclasses.field(default_factory=Issues)
-    metadata: Metadata = dataclasses.field(init=False)
-    operations: OperationGraph = dataclasses.field(init=False)
-
-    def run_static_analysis(self, debug: bool = False):
-        """Runs the static analysis on the file."""
-        try:
-            self.metadata = Metadata.from_file(issues=self.issues, file=self.filepath)
-            graph = self.metadata.graph
-            folder = self.metadata.folder
-            # Print all nodes for debugging purposes.
-            if debug:
-                logging.info("Found the following nodes during static analysis.")
-                for node in graph.nodes:
-                    logging.info(node)
-            # Draw the structure graph for debugging purposes.
-            if debug:
-                graphs_utils.pretty_print_graph(graph, simplify=True)
-            self.operations = OperationGraph.from_nodes(
-                issues=self.issues,
-                metadata=self.metadata,
-                graph=graph,
-                folder=folder,
-            )
-            self.operations.check_graph()
-        except Exception as exception:
-            if self.issues.errors:
-                raise ValidationError(self.issues.report()) from exception
-            raise exception
-        if self.issues.errors:
-            raise ValidationError(self.issues.report())
-        elif self.issues.warnings:
-            logging.warning(self.issues.report())
+def get_operations(issues: Issues, metadata: Metadata, debug: bool) -> OperationGraph:
+    """Returns operations from the metadata."""
+    try:
+        graph = metadata.graph
+        folder = metadata.folder
+        # Print all nodes for debugging purposes.
+        if debug:
+            logging.info("Found the following nodes during static analysis.")
+            for node in graph.nodes:
+                logging.info(node)
+        # Draw the structure graph for debugging purposes.
+        if debug:
+            graphs_utils.pretty_print_graph(graph, simplify=True)
+        operations = OperationGraph.from_nodes(
+            issues=issues,
+            metadata=metadata,
+            graph=graph,
+            folder=folder,
+        )
+        operations.check_graph()
+    except Exception as exception:
+        if issues.errors:
+            raise ValidationError(issues.report()) from exception
+        raise exception
+    if issues.errors:
+        raise ValidationError(issues.report())
+    elif issues.warnings:
+        logging.warning(issues.report())
+    return operations
 
 
 @dataclasses.dataclass
@@ -75,10 +66,9 @@ class Dataset:
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
-        self.verifier = Verifier(self.file)
-        self.verifier.run_static_analysis(debug=self.debug)
-        self.metadata = self.verifier.metadata
-        self.operations = self.verifier.operations
+        issues = Issues()
+        self.metadata = Metadata.from_file(issues=issues, file=self.file)
+        self.operations = get_operations(issues, self.metadata, self.debug)
 
     def records(self, record_set: str) -> Records:
         """Accesses all records belonging to the RecordSet named `record_set`."""
