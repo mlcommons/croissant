@@ -62,8 +62,9 @@ class Metadata(Node):
         self.assert_has_optional_properties("citation", "license")
 
         # Raise exception if there are errors.
-        if self.issues.errors:
-            raise ValidationError(self.issues.report())
+        for node in self.nodes():
+            if node.issues.errors:
+                raise ValidationError(node.issues.report())
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
