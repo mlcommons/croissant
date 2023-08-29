@@ -108,8 +108,8 @@ class Records:
         if can_stream_dataset:
             yield from execute_operations_in_streaming(
                 record_set=self.record_set,
-                graph=operations,
-                operations=list(nx.topological_sort(operations)),
+                operations=operations,
+                list_of_operations=list(nx.topological_sort(operations)),
             )
         else:
             yield from execute_operations_sequentially(
@@ -145,9 +145,8 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
 
 def execute_operations_in_streaming(
     record_set: str,
-    graph: nx.MultiDiGraph,
-    # TODO: Rename me
-    operations: list[Operation],
+    operations: nx.DiGraph,
+    list_of_operations: list[Operation],
     result: Any = None,
 ):
     """Executes operation and streams results when reading files.
@@ -156,11 +155,11 @@ def execute_operations_in_streaming(
     order not to block on long operations. Instead of downloading the entire dataset,
     we only download the needed files, yield element, then proceed to the next file.
     """
-    for i, operation in enumerate(operations):
+    for i, operation in enumerate(list_of_operations):
         if isinstance(operation, GroupRecordSet):
             if operation.node.name != record_set:
                 continue
-            yield from build_record_set(graph, operation, result)
+            yield from build_record_set(operations, operation, result)
             return
         elif isinstance(operation, Read):
             # At this stage `result` can be either a Path or a list of Paths.
@@ -172,8 +171,8 @@ def execute_operations_in_streaming(
                 read_file = operation(file)
                 yield from execute_operations_in_streaming(
                     record_set=record_set,
-                    graph=graph,
-                    operations=operations[i + 1 :],
+                    operations=operations,
+                    list_of_operations=list_of_operations[i + 1 :],
                     result=[read_file],
                 )
                 return
