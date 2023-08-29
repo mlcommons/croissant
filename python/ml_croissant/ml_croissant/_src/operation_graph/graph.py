@@ -42,7 +42,7 @@ def _find_record_set(node: Node) -> RecordSet:
 
 def _add_operations_for_field_with_source(
     graph: nx.MultiDiGraph,
-    operations: nx.MultiDiGraph,
+    operations: nx.DiGraph,
     last_operation: LastOperation,
     node: Field,
 ):
@@ -85,7 +85,7 @@ def _add_operations_for_record_set_with_data(
 
 def _add_operations_for_file_object(
     graph: nx.MultiDiGraph,
-    operations: nx.MultiDiGraph,
+    operations: nx.DiGraph,
     last_operation: LastOperation,
     node: FileObject,
     folder: epath.Path,
@@ -133,7 +133,7 @@ def _add_operations_for_file_object(
 
 def _add_operations_for_git(
     graph: nx.MultiDiGraph,
-    operations: nx.MultiDiGraph,
+    operations: nx.DiGraph,
     last_operation: LastOperation,
     node: FileObject,
     folder: epath.Path,
@@ -161,14 +161,14 @@ class OperationGraph:
     """Graph of dependent operations to execute to generate the dataset."""
 
     issues: Issues
-    operations: nx.MultiDiGraph
+    operations: nx.DiGraph
 
     @classmethod
     def from_nodes(
         cls,
         issues: Issues,
         metadata: Node,
-        graph: nx.MultiDiGraph,
+        graph: nx.DiGraph,
         folder: epath.Path,
     ) -> "OperationGraph":
         """Builds the ComputationGraph from the nodes.
@@ -180,7 +180,7 @@ class OperationGraph:
         layers in a breadth-first search.
         """
         last_operation: LastOperation = {}
-        operations = nx.MultiDiGraph()
+        operations = nx.DiGraph()
         # Find all fields
         for node in nx.topological_sort(graph):
             predecessors = graph.predecessors(node)

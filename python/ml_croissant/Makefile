@@ -1,6 +1,6 @@
 # flake8 enforces docstrings.
 flake8:
-	flake8 .
+	flake8 . --ignore=E203,W503
 
 pyflakes:
 	pyflakes .

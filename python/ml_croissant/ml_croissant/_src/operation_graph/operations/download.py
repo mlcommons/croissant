@@ -159,8 +159,9 @@ class Download(Operation):
             repo.remote().fetch(f"{refs}:{branch_name}")
             repo.branches[branch_name].checkout()
 
-    def __call__(self) -> epath.Path:
+    def __call__(self, *args) -> epath.Path:
         """See class' docstring."""
+        del args  # unused
         filepath = get_download_filepath(self.node, self.url)
         if not filepath.exists():
             if self.node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
