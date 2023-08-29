@@ -1,0 +1,94 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataExtraction": "ml:dataExtraction",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "bigcode-the-stack",
+  "description": "The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.",
+  "citation": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Mu\u00f1oz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
+  "url": "https://huggingface.co/datasets/bigcode/the-stack",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/bigcode/the-stack",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "parquet-files",
+      "containedIn": "repo",
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "default",
+      "description": "The default set of records in the dataset.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "content",
+          "description": "Content of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "dataExtraction": {
+              "csvColumn": "content"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "Programming language of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "applyTransform": {
+              "regex": "^data\\/(\\d\\w\\+\\-)+\\/train-\\d\\d\\d\\d\\d-of-\\d\\d\\d\\d\\d\\.parquet$"
+            },
+            "dataExtraction": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
