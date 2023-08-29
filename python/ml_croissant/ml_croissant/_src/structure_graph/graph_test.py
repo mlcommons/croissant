@@ -8,7 +8,7 @@ import pytest
 from rdflib import term
 
 from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.structure_graph.graph import Structure
+from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 Literal = term.Literal
 
@@ -33,8 +33,8 @@ def test_jsonld_to_python_to_jsonld(path):
     with path.open() as f:
         json_ld = json.load(f)
     issues = Issues()
-    structure = Structure.from_file(issues, path)
-    result = structure.to_json()
+    metadata = Metadata.from_file(issues, path)
+    result = metadata.to_json()
     # `distribution` may not be in the right order:
     if "distribution" in result:
         distribution = result.pop("distribution")

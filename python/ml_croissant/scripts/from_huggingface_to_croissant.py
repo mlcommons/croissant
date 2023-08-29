@@ -139,9 +139,6 @@ def convert(dataset: str) -> dict[str, Any]:
             )
         ],
     )
-    # Check if there are errors:
-    if metadata.issues.errors:
-        logging.error(metadata.issues.report())
     # Serialize to JSON-LD:
     return metadata.to_json()
 

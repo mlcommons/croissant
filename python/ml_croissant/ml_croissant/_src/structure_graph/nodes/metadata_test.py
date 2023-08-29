@@ -3,12 +3,15 @@
 from unittest import mock
 
 from etils import epath
+import pytest
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
+from ml_croissant._src.core.issues import ValidationError
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.metadata import Metadata
+from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 from ml_croissant._src.tests.nodes import create_test_node
 
 
@@ -47,3 +50,14 @@ def test_from_jsonld():
         url="https://mlcommons.org",
     )
     assert not issues.errors
+
+
+def test_issues_in_metadata_are_shared_with_children():
+    with pytest.raises(ValidationError, match="is mandatory, but does not exist"):
+        Metadata(
+            name="name",
+            description="description",
+            url="https://mlcommons.org",
+            # We did not specify the RecordSet's name. Hence the exception above:
+            record_sets=[RecordSet(description="description")],
+        )

@@ -4,7 +4,6 @@ import functools
 from typing import Callable, TypeVar
 
 from etils import epath
-import networkx as nx
 
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
@@ -31,10 +30,8 @@ def _node_params(**kwargs):
     params = {
         "issues": Issues(),
         "context": Context(),
-        "graph": nx.MultiDiGraph(),
         "name": "node_name",
         "folder": epath.Path(),
-        "parents": [],
     }
     for key, value in kwargs.items():
         params[key] = value
@@ -53,10 +50,8 @@ def create_test_node(cls: type[T], **kwargs) -> T:
     ```python
     node = FileSet(
         issues=...,
-        graph=...,
         name=...,
         folder=...,
-        parents=...,
         description="Description"
     )
     ```

@@ -8,10 +8,8 @@ issues (errors or warnings) when necessary. See the docstring of
 `from_nodes_to_structure_graph` for more information.
 
 The important functions of this module are:
-- from_file_to_json             file -> JSON
-- from_json_to_rdf              JSON -> RDF
-- from_rdf_to_nodes             RDF -> nodes
-- from_nodes_to_structure_graph nodes -> structure graph
+- from_file_to_jsonld           file -> JSON-LD
+- from_nodes_to_graph           Metadata -> graph
 
 TODO(https://github.com/mlcommons/croissant/issues/114):
 A lot of methods in this file share common data structures (issues, graph, folder, etc),
@@ -20,7 +18,6 @@ so they should be grouped under a common `StructureGraph` class.
 
 from __future__ import annotations
 
-import dataclasses
 import json
 
 from etils import epath
@@ -28,14 +25,11 @@ import networkx as nx
 import rdflib
 
 from ml_croissant._src.core import constants
-from ml_croissant._src.core.issues import Issues
-from ml_croissant._src.core.json_ld import from_jsonld_to_json
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
-from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 
 def from_file_to_jsonld(filepath: epath.PathLike) -> tuple[epath.Path, list[Json]]:
@@ -46,7 +40,7 @@ def from_file_to_jsonld(filepath: epath.PathLike) -> tuple[epath.Path, list[Json
             relative.
 
     Returns:
-        A tuple with the absolute path to the file and the JSON-LD.
+        A tuple with the absolute path to the folder and the JSON-LD.
     """
     filepath = epath.Path(filepath).expanduser().resolve()
     if not filepath.exists():
@@ -61,10 +55,10 @@ def from_file_to_jsonld(filepath: epath.PathLike) -> tuple[epath.Path, list[Json
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
-    return filepath, nodes
+    return filepath.parent, nodes
 
 
-def from_nodes_to_graph(metadata: Metadata) -> nx.MultiDiGraph:
+def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     """Converts the metadata to a structure graph linking nodes to their sources."""
     graph = nx.MultiDiGraph()
     # Bind graph to nodes:
@@ -90,94 +84,6 @@ def from_nodes_to_graph(metadata: Metadata) -> nx.MultiDiGraph:
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
-
-
-def from_json_to_rdf(data: Json) -> rdflib.Graph:
-    """Converts the JSON to an RDF graph with expanded JSON-LD attributes using RDFLib.
-
-    We use RDFLib instead of reinventing a JSON-LD parser. This may be more cumbersome
-    short-term, but will prove handy long-term, when we integrate more advanced feature
-    of RDF/JSON-LD, or other parsers (e.g., YAML-LD).
-
-    We prefer the RDF graph representation over the JSON-LD representation because the
-    former is easier to traverse the graph than the JSON.
-
-    Args:
-        data: The JSON dict.
-
-    Returns:
-        A tuple with the RDF namespace manager (see:
-            https://rdflib.readthedocs.io/en/stable/namespaces_and_bindings.html) and
-            the RDF graph.
-    """
-    graph = rdflib.Graph()
-    graph.parse(
-        data=data,
-        format="json-ld",
-    )
-    return graph
-
-
-@dataclasses.dataclass
-class Structure:
-    """Represents the structure of the Croissant file.
-
-    Args:
-        issues: The issues to populate in case of problem.
-        graph: The graph linking each node (Metadata, FileSet, FileObject, RecordSet and
-            Fields) to their sources. For example, a Field may be contained in a
-            RecordSet, but its true original source in the `graph` will be the
-            FileObject it originates from.
-        metadata: The Python representation of the Croissant JSON-LD file (e.g., the
-            metadata node has a distribution and record sets, etc). See the Croissant
-            specs on GitHub for more info on how the Croissant JSON-LD is structured.
-        filepath: The path to the Croissant file if it exists.
-    """
-
-    issues: Issues
-    graph: nx.MultiDiGraph
-    metadata: Metadata
-    filepath: epath.Path | None
-
-    def to_json(self) -> Json:
-        """Converts the metadata to JSON."""
-        return self.metadata.to_json()
-
-    @classmethod
-    def from_json(
-        cls, issues: Issues, json_: Json, filepath: epath.Path | None = None
-    ) -> Structure:
-        """Creates the Structure from a Croissant JSON-LD."""
-        folder = filepath.parent if filepath else None
-        metadata = Metadata.from_jsonld(issues, folder, json_)
-        graph = from_nodes_to_graph(metadata)
-        return cls(issues=issues, graph=graph, metadata=metadata, filepath=filepath)
-
-    @classmethod
-    def from_file(cls, issues: Issues, file: epath.PathLike) -> Structure:
-        """Creates the Structure from a Croissant file."""
-        filepath, jsonld = from_file_to_jsonld(file)
-        json_ = from_jsonld_to_json(jsonld)
-        return cls.from_json(issues, json_, filepath=filepath)
-
-    def check_graph(self):
-        """Checks the integrity of the structure graph.
-
-        The rules are the following:
-        - The graph is directed.
-        - All fields have a data type: either directly specified, or on a parent.
-
-        Args:
-            issues: The issues to populate in case of problem.
-            graph: The structure graph to be checked.
-        """
-        # Check that the graph is directed.
-        if not self.graph.is_directed():
-            self.issues.add_error("The structure graph is not directed.")
-        fields = [node for node in self.graph.nodes if isinstance(node, Field)]
-        # Check all fields have a data type: either on the field, on a parent.
-        for field in fields:
-            field.actual_data_type
 
 
 def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
@@ -208,7 +114,7 @@ def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     return entry_nodes
 
 
-def _check_no_duplicate(metadata: Metadata) -> dict[str, Node]:
+def _check_no_duplicate(metadata) -> dict[str, Node]:
     """Checks that no node has duplicated UID and returns the mapping `uid`->`Node`."""
     uid_to_node: dict[str, Node] = {}
     for node in metadata.nodes():
