@@ -147,6 +147,9 @@ class Download(Operation):
             raise ImportError("Use GitPython with: `pip install GitPython`.") from e
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
         password = os.environ.get(constants.CROISSANT_GIT_PASSWORD)
+        # GIT_LFS_SKIP_SMUDGE allows to not download git-lfs files by default. Those
+        # files may be big, so we want to download them just-in-time (see `Read`):
+        os.environ["GIT_LFS_SKIP_SMUDGE"] = "1"
         url, refs = extract_git_info(self.node.content_url)
         url = insert_credentials(url, username, password)
         repo = git.Repo.clone_from(url, filepath)

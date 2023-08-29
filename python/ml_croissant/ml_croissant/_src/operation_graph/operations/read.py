@@ -6,6 +6,8 @@ import json
 from etils import epath
 import pandas as pd
 
+from ml_croissant._src.core.git import download_git_lfs_file
+from ml_croissant._src.core.git import is_git_lfs_file
 from ml_croissant._src.core.path import Path
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.operation_graph.operations.download import is_url
@@ -25,10 +27,11 @@ class Read(Operation):
     folder: epath.Path
     fields: list[Field]
 
-    def _read_file_content(
-        self, encoding_format: str, filepath: epath.Path
-    ) -> pd.DataFrame:
+    def _read_file_content(self, encoding_format: str, file: Path) -> pd.DataFrame:
         """Extracts the `source` file to `target`."""
+        filepath = file.filepath
+        if is_git_lfs_file(filepath):
+            download_git_lfs_file(file)
         with filepath.open("rb") as file:
             if encoding_format == "text/csv":
                 return pd.read_csv(file)
@@ -72,9 +75,7 @@ class Read(Operation):
                     f'In node "{self.node.uid}", file "{self.url}" is either an invalid'
                     " URL or an invalid path."
                 )
-            file_content = self._read_file_content(
-                self.node.encoding_format, file.filepath
-            )
+            file_content = self._read_file_content(self.node.encoding_format, file)
             file_content[FileProperty.filepath] = file.filepath
             file_content[FileProperty.filename] = file.filename
             file_content[FileProperty.fullpath] = file.fullpath
