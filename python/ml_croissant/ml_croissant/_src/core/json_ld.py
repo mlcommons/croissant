@@ -35,6 +35,7 @@ _KEYS_WITH_LIST = {
 
 def _make_context():
     return {
+        "@language": "en",
         "@vocab": "https://schema.org/",
         "applyTransform": "ml:applyTransform",
         "csvColumn": "ml:csvColumn",
@@ -45,12 +46,15 @@ def _make_context():
         "fileProperty": "ml:fileProperty",
         "format": "ml:format",
         "includes": "ml:includes",
+        "isEnumeration": "ml:isEnumeration",
         "jsonPath": "ml:jsonPath",
         "ml": "http://mlcommons.org/schema/",
+        "parentField": "ml:parentField",
         "path": "ml:path",
         "recordSet": "ml:recordSet",
         "references": "ml:references",
         "regex": "ml:regex",
+        "repeated": "ml:repeated",
         "replace": "ml:replace",
         "sc": "https://schema.org/",
         "separator": "ml:separator",

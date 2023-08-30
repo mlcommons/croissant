@@ -176,9 +176,8 @@ class Node(abc.ABC):
             # Do not hash children, graphs, issues and context:
             if field.name not in (
                 "context",
+                "distribution",
                 "fields",
-                "file_objects",
-                "file_sets",
                 "graph",
                 "issues",
                 "parents",

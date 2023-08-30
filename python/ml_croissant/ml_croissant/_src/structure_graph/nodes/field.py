@@ -130,7 +130,7 @@ class Field(Node):
         source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
         source = Source.from_jsonld(issues, source_jsonld)
         data_type = field.get(constants.ML_COMMONS_DATA_TYPE, {})
-        is_enumeration = field.get(constants.SCHEMA_ORG_IS_ENUMERATION)
+        is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
         if isinstance(data_type, dict):
             data_type = data_type.get("@id")
         elif isinstance(data_type, list):
@@ -150,9 +150,9 @@ class Field(Node):
             for sub_field in sub_fields
         ]
         parent_field = ParentField.from_jsonld(
-            issues, field.get(constants.SCHEMA_ORG_PARENT_FIELD)
+            issues, field.get(constants.ML_COMMONS_PARENT_FIELD)
         )
-        repeated = field.get(constants.SCHEMA_ORG_REPEATED)
+        repeated = field.get(constants.ML_COMMONS_REPEATED)
         return cls(
             issues=issues,
             context=context,

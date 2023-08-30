@@ -3,14 +3,14 @@
 Migration from an older or non canonical Croissant format to a canonical and possibly
 newer Croissant format.
 
-The migration consists in:
+## What the migration script does
 
+- Read the current file.
+- Possibly apply a custom `up` function.
 - Add the `@context` defined in `ml_croissant/_src/core/json_ld.py`.
-- Expanding the Croissant file to JSON-LD (see `expand_json_ld`).
-- Possibly apply a custom `up` function (see `compact_json_ld`).
 - Re-compacting back the Croissant file.
 
-There are different cases:
+## What you have to do
 
 - If you want to change the `@context` in Croissant files. Then change the context in
 ml_croissant/_src/core/json_ld.py and launch the migration:
@@ -33,11 +33,14 @@ Commiting your migration allows to keep track of previous migrations in the code
 
 import importlib
 import json
+import os
 
 from absl import app
 from absl import flags
 from etils import epath
 
+import ml_croissant as mlc
+from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.json_ld import compact_jsonld
 from ml_croissant._src.core.json_ld import expand_jsonld
 
@@ -75,28 +78,55 @@ def get_migration_fn(migration: str | None):
         ) from e
 
 
+def migrate_dataset(json_ld):
+    """Migrates a regular Croissant file using ml_croissant Python API."""
+    metadata = mlc.nodes.Metadata.from_json(issues=Issues(), json_=json_ld, folder=None)
+    return metadata.to_json()
+
+
+def migrate_test_dataset(dataset: epath.Path, json_ld):
+    """Migrates a test Croissant files.
+
+    Cannot use mlc.nodes.Metadata as test Croissant files may contain errors.
+    """
+    json_ld = compact_jsonld(expand_jsonld(json_ld))
+    # Special cases for test datasets without @context
+    if "recordset_missing_context_for_datatype" in os.fspath(dataset):
+        del json_ld["@context"]["dataType"]
+    if "mlfield_missing_source" in os.fspath(dataset):
+        del json_ld["@context"]["source"]
+    return json_ld
+
+
 def main(argv):
     """Main function launched for the migration."""
     del argv
     # Datasets in croissant/datasets
     datasets = [path for path in epath.Path("../../datasets").glob("*/*.json")]
     # Datasets in croissant/python/ml_croissant/_src/tests
-    datasets += [
-        path for path in epath.Path("ml_croissant/_src/tests/graphs").glob("*.json")
-    ]
+    test_path = (
+        epath.Path(__file__).parent.parent.parent / "ml_croissant/_src/tests/graphs"
+    )
+    test_datasets = list(test_path.glob("*/*.json"))
+    assert test_datasets, f"No dataset found in {test_path}"
     for dataset in datasets:
         print(f"Converting {dataset}...")
         with dataset.open("r") as f:
             json_ld = json.load(f)
             up = get_migration_fn(FLAGS.migration)
             json_ld = up(json_ld)
-            json_ld = compact_jsonld(expand_jsonld(json_ld))
+        json_ld = migrate_dataset(json_ld)
         with dataset.open("w") as f:
-            # Special cases for test datasets without @context
-            if dataset.name == "recordset_missing_context_for_datatype.json":
-                del json_ld["@context"]["dataType"]
-            if dataset.name == "mlfield_missing_source.json":
-                del json_ld["@context"]["source"]
+            json.dump(json_ld, f, indent="  ")
+            f.write("\n")
+    for dataset in test_datasets:
+        print(f"Converting test dataset {dataset}...")
+        with dataset.open("r") as f:
+            json_ld = json.load(f)
+            up = get_migration_fn(FLAGS.migration)
+            json_ld = up(json_ld)
+        json_ld = migrate_test_dataset(dataset, json_ld)
+        with dataset.open("w") as f:
             json.dump(json_ld, f, indent="  ")
             f.write("\n")
     print("Done.")

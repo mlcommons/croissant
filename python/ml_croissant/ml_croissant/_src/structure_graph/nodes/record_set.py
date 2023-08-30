@@ -104,7 +104,7 @@ class RecordSet(Node):
                 issues.add_error(
                     f"{constants.ML_COMMONS_DATA} is not a proper list of JSON: {data}"
                 )
-        is_enumeration = record_set.get(constants.SCHEMA_ORG_IS_ENUMERATION)
+        is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION)
         return cls(
             issues=issues,
             folder=folder,

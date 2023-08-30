@@ -18,18 +18,22 @@ ML_COMMONS_FIELD_TYPE = ML_COMMONS.Field
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
 ML_COMMONS_FORMAT = term.URIRef("http://mlcommons.org/schema/format")
 ML_COMMONS_INCLUDES = ML_COMMONS.includes
+ML_COMMONS_IS_ENUMERATION = ML_COMMONS.isEnumeration
 ML_COMMONS_JSON_PATH = ML_COMMONS.jsonPath
+ML_COMMONS_PARENT_FIELD = ML_COMMONS.parentField
 ML_COMMONS_PATH = ML_COMMONS.path
 ML_COMMONS_RECORD_SET = ML_COMMONS.recordSet
 ML_COMMONS_RECORD_SET_TYPE = ML_COMMONS.RecordSet
 ML_COMMONS_REFERENCES = ML_COMMONS.references
 ML_COMMONS_REGEX = ML_COMMONS.regex
+ML_COMMONS_REPEATED = ML_COMMONS.repeated
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
 ML_COMMONS_REPLACE = term.URIRef("http://mlcommons.org/schema/replace")
 ML_COMMONS_SEPARATOR = ML_COMMONS.separator
 ML_COMMONS_SOURCE = ML_COMMONS.source
 ML_COMMONS_SUB_FIELD = ML_COMMONS.subField
 ML_COMMONS_SUB_FIELD_TYPE = ML_COMMONS.SubField
+
 
 # RDF standard URIs.
 # For "@type" key:
@@ -62,13 +66,6 @@ SCHEMA_ORG_KEY = SCHEMA_ORG.key
 SCHEMA_ORG_FILE_OBJECT = SCHEMA_ORG.FileObject
 SCHEMA_ORG_FILE_SET = SCHEMA_ORG.FileSet
 SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
-
-# TODO(https://github.com/mlcommons/croissant/issues/171): schema.org URIs that should
-# be migrated to mlcommons.org.
-SCHEMA_ORG_IS_ENUMERATION = SCHEMA_ORG.isEnumeration
-SCHEMA_ORG_LANGUAGE = SCHEMA_ORG["@language"]
-SCHEMA_ORG_PARENT_FIELD = SCHEMA_ORG.parentField
-SCHEMA_ORG_REPEATED = SCHEMA_ORG.repeated
 
 TO_CROISSANT = {
     ML_COMMONS_APPLY_TRANSFORM: "apply_transform",
