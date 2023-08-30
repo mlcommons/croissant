@@ -12,9 +12,9 @@ from ml_croissant._src.core.data_types import check_expected_type
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.issues import ValidationError
-from ml_croissant._src.core.json_ld import _make_context
 from ml_croissant._src.core.json_ld import expand_jsonld
 from ml_croissant._src.core.json_ld import from_jsonld_to_json
+from ml_croissant._src.core.json_ld import make_context
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
@@ -68,7 +68,7 @@ class Metadata(Node):
         """Converts the `Metadata` to JSON."""
         return remove_empty_values(
             {
-                "@context": _make_context(),
+                "@context": make_context(),
                 "@type": "sc:Dataset",
                 "name": self.name,
                 "description": self.description,
