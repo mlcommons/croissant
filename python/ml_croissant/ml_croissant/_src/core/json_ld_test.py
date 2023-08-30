@@ -54,6 +54,5 @@ def test_make_context():
         "separator": "ml:separator",
         "source": "ml:source",
         "subField": "ml:subField",
-        "wd": "https://www.wikidata.org/wiki/",
         "foo": "bar",
     }

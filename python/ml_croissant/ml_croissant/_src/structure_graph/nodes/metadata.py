@@ -13,17 +13,30 @@ from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.issues import ValidationError
 from ml_croissant._src.core.json_ld import expand_jsonld
-from ml_croissant._src.core.json_ld import from_jsonld_to_json
+from ml_croissant._src.core.json_ld import get_context
 from ml_croissant._src.core.json_ld import make_context
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.structure_graph.graph import from_file_to_jsonld
+from ml_croissant._src.structure_graph.graph import from_file_to_json
 from ml_croissant._src.structure_graph.graph import from_nodes_to_graph
 from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
 from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
+
+
+@dataclasses.dataclass(eq=False, repr=False)
+class Rdf:
+    """RDF-specific vocabulary on the metadata."""
+
+    context: Json = dataclasses.field(default_factory=make_context)
+
+    @classmethod
+    def from_json(cls, json: Json) -> Rdf:
+        """Creates a `Rdf` from JSON."""
+        context = get_context(json)
+        return cls(context=make_context(**context))
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -37,6 +50,7 @@ class Metadata(Node):
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
+    rdf: Rdf = dataclasses.field(default_factory=Rdf)
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -68,7 +82,7 @@ class Metadata(Node):
         """Converts the `Metadata` to JSON."""
         return remove_empty_values(
             {
-                "@context": make_context(),
+                "@context": self.rdf.context,
                 "@type": "sc:Dataset",
                 "name": self.name,
                 "description": self.description,
@@ -129,8 +143,7 @@ class Metadata(Node):
     @classmethod
     def from_file(cls, issues: Issues, file: epath.PathLike) -> Metadata:
         """Creates the Metadata from a Croissant file."""
-        folder, jsonld = from_file_to_jsonld(file)
-        json_ = from_jsonld_to_json(jsonld)
+        folder, json_ = from_file_to_json(file)
         return cls.from_json(issues=issues, json_=json_, folder=folder)
 
     @classmethod
@@ -140,8 +153,9 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON."""
         if isinstance(json_, str):
             json_ = json.loads(json_)
+        rdf = Rdf.from_json(json_)
         metadata = expand_jsonld(json_)
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata)
+        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
 
     @classmethod
     def from_jsonld(
@@ -149,8 +163,11 @@ class Metadata(Node):
         issues: Issues,
         folder: epath.Path | None,
         metadata: Json,
+        rdf: Rdf | None = None,
     ) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
+        if rdf is None:
+            rdf = Rdf()
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         record_sets: list[RecordSet] = []
@@ -191,4 +208,5 @@ class Metadata(Node):
             name=dataset_name,
             record_sets=record_sets,
             url=metadata.get(constants.SCHEMA_ORG_URL),
+            rdf=rdf,
         )

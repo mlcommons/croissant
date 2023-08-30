@@ -23,6 +23,7 @@ import json
 from etils import epath
 import networkx as nx
 import rdflib
+from rdflib import namespace
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.types import Json
@@ -32,7 +33,7 @@ from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
 
 
-def from_file_to_jsonld(filepath: epath.PathLike) -> tuple[epath.Path, list[Json]]:
+def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, list[Json]]:
     """Loads the file as a JSON-LD.
 
     Args:
@@ -47,15 +48,7 @@ def from_file_to_jsonld(filepath: epath.PathLike) -> tuple[epath.Path, list[Json
         raise ValueError(f"File {filepath} does not exist.")
     with filepath.open() as f:
         data = json.load(f)
-    graph = rdflib.Graph()
-    graph.parse(
-        data=data,
-        format="json-ld",
-    )
-    # `graph.serialize` outputs a stringified list of JSON-LD nodes.
-    nodes = graph.serialize(format="json-ld")
-    nodes = json.loads(nodes)
-    return filepath.parent, nodes
+    return filepath.parent, data
 
 
 def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:

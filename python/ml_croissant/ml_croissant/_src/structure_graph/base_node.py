@@ -181,6 +181,7 @@ class Node(abc.ABC):
                 "graph",
                 "issues",
                 "parents",
+                "rdf",
                 "record_sets",
                 "sub_fields",
             ):
