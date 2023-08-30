@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@language": "en",
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
@@ -16,12 +17,15 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
     "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "repeated": "ml:repeated",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
@@ -32,7 +36,6 @@
   "@type": "sc:Dataset",
   "name": "Mini-COCO",
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
-  "@language": "en",
   "citation": "None",
   "license": "None",
   "url": "None",
@@ -110,10 +113,10 @@
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "image-files",
             "dataExtraction": {
               "fileProperty": "filename"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -122,10 +125,10 @@
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
+            "distribution": "image-files",
             "dataExtraction": {
               "fileProperty": "content"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -139,13 +142,13 @@
             "field": "split_enums/name"
           },
           "source": {
+            "distribution": "image-files",
             "applyTransform": {
               "regex": "^(train|val|test)2014/.*\\.jpg$"
             },
             "dataExtraction": {
               "fileProperty": "fullpath"
-            },
-            "distribution": "image-files"
+            }
           }
         }
       ]
@@ -161,10 +164,10 @@
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "caption_annotations-files",
             "dataExtraction": {
               "jsonPath": "$.annotations[*].id"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         },
         {
@@ -173,10 +176,10 @@
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "caption_annotations-files",
             "dataExtraction": {
               "jsonPath": "$.annotations[*].image_id"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         },
         {
@@ -188,10 +191,10 @@
             "sc:Text"
           ],
           "source": {
+            "distribution": "caption_annotations-files",
             "dataExtraction": {
               "jsonPath": "$.annotations[*].caption"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         },
         {
@@ -205,13 +208,13 @@
             "field": "split_enums/name"
           },
           "source": {
+            "distribution": "caption_annotations-files",
             "applyTransform": {
               "regex": ".*_(val|train)2014\\.json$"
             },
             "dataExtraction": {
               "fileProperty": "filename"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         }
       ]
