@@ -32,12 +32,10 @@ class Metadata(Node):
 
     citation: str | None = None
     description: str | None = None
-    language: str | None = None
     license: str | None = None
     name: str = ""
     url: str = ""
-    file_objects: list[FileObject] = dataclasses.field(default_factory=list)
-    file_sets: list[FileSet] = dataclasses.field(default_factory=list)
+    distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
@@ -71,7 +69,6 @@ class Metadata(Node):
         return remove_empty_values(
             {
                 "@context": _make_context(),
-                "@language": self.language,
                 "@type": "sc:Dataset",
                 "name": self.name,
                 "description": self.description,
@@ -84,9 +81,20 @@ class Metadata(Node):
         )
 
     @property
-    def distribution(self) -> list[FileObject | FileSet]:
-        """Gets `https://schema.org/distribution`: union of FileSets and FileObjects."""
-        return self.file_objects + self.file_sets
+    def file_objects(self) -> list[FileObject]:
+        """Gets `https://schema.org/FileObject` in the distribution."""
+        return [
+            file_object
+            for file_object in self.distribution
+            if isinstance(file_object, FileObject)
+        ]
+
+    @property
+    def file_sets(self) -> list[FileSet]:
+        """Gets `https://schema.org/FileSet` in the distribution."""
+        return [
+            file_set for file_set in self.distribution if isinstance(file_set, FileSet)
+        ]
 
     def nodes(self) -> list[Node]:
         """List all nodes in metadata."""
@@ -144,22 +152,21 @@ class Metadata(Node):
     ) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
-        file_sets: list[FileSet] = []
-        file_objects: list[FileObject] = []
+        distribution: list[FileObject | FileSet] = []
         record_sets: list[RecordSet] = []
-        distributions = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
+        json_distributions = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
         context = Context(dataset_name=dataset_name)
-        for distribution in distributions:
-            name = distribution.get(constants.SCHEMA_ORG_NAME, "")
-            distribution_type = distribution.get("@type")
+        for json_distribution in json_distributions:
+            name = json_distribution.get(constants.SCHEMA_ORG_NAME, "")
+            distribution_type = json_distribution.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
-                file_objects.append(
-                    FileObject.from_jsonld(issues, context, folder, distribution)
+                distribution.append(
+                    FileObject.from_jsonld(issues, context, folder, json_distribution)
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
-                file_sets.append(
-                    FileSet.from_jsonld(issues, context, folder, distribution)
+                distribution.append(
+                    FileSet.from_jsonld(issues, context, folder, json_distribution)
                 )
             else:
                 issues.add_error(
@@ -179,9 +186,7 @@ class Metadata(Node):
             folder=folder,
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
-            file_objects=file_objects,
-            file_sets=file_sets,
-            language=metadata.get(constants.SCHEMA_ORG_LANGUAGE),
+            distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             record_sets=record_sets,

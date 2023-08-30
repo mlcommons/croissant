@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@language": "en",
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
@@ -16,12 +17,15 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
     "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "repeated": "ml:repeated",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
@@ -32,7 +36,6 @@
   "@type": "sc:Dataset",
   "name": "Mini-PASS",
   "description": "Smaller downloadable version of PASS to be used in unit tests.",
-  "@language": "en",
   "citation": "None",
   "license": "None",
   "url": "None",
@@ -81,19 +84,19 @@
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
+            "distribution": "metadata",
             "dataExtraction": {
               "csvColumn": "hash"
-            },
-            "distribution": "metadata"
+            }
           },
           "source": {
+            "distribution": "image-files",
             "applyTransform": {
               "regex": "([^\\/]*)\\.jpg"
             },
             "dataExtraction": {
               "fileProperty": "filename"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -102,10 +105,10 @@
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
+            "distribution": "image-files",
             "dataExtraction": {
               "fileProperty": "content"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -114,10 +117,10 @@
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "metadata",
             "dataExtraction": {
               "csvColumn": "unickname"
-            },
-            "distribution": "metadata"
+            }
           }
         },
         {
@@ -131,10 +134,10 @@
               "name": "latitude",
               "dataType": "sc:Float",
               "source": {
+                "distribution": "metadata",
                 "dataExtraction": {
                   "csvColumn": "latitude"
-                },
-                "distribution": "metadata"
+                }
               }
             },
             {
@@ -142,10 +145,10 @@
               "name": "longitude",
               "dataType": "sc:Float",
               "source": {
+                "distribution": "metadata",
                 "dataExtraction": {
                   "csvColumn": "longitude"
-                },
-                "distribution": "metadata"
+                }
               }
             }
           ]
@@ -156,13 +159,13 @@
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
+            "distribution": "metadata",
             "applyTransform": {
               "format": "%Y-%m-%d %H:%M:%S.%f"
             },
             "dataExtraction": {
               "csvColumn": "datetaken"
-            },
-            "distribution": "metadata"
+            }
           }
         }
       ]

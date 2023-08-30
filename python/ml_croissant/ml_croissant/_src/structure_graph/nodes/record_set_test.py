@@ -82,7 +82,7 @@ def test_from_jsonld():
         "@type": constants.ML_COMMONS_RECORD_SET_TYPE,
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
-        constants.SCHEMA_ORG_IS_ENUMERATION: True,
+        constants.ML_COMMONS_IS_ENUMERATION: True,
         constants.SCHEMA_ORG_KEY: ["key1", "key2"],
         constants.ML_COMMONS_DATA: [{"column1": ["value1", "value2"]}],
     }

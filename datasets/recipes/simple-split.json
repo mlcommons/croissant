@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@language": "en",
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
@@ -16,12 +17,15 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
     "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "repeated": "ml:repeated",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
@@ -32,7 +36,6 @@
   "@type": "sc:Dataset",
   "name": "simple-split",
   "description": "An artificial example dataset defining splits from a CSV column",
-  "@language": "en",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://mlcommons.org",
   "distribution": [
@@ -55,10 +58,10 @@
           "description": "The title of the book",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "books.csv",
             "dataExtraction": {
               "csvColumn": "Title"
-            },
-            "distribution": "books.csv"
+            }
           }
         },
         {
@@ -67,10 +70,10 @@
           "description": "The author of the book",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "books.csv",
             "dataExtraction": {
               "csvColumn": "Author"
-            },
-            "distribution": "books.csv"
+            }
           }
         },
         {
@@ -82,10 +85,10 @@
             "wd:Q3985153"
           ],
           "source": {
+            "distribution": "books.csv",
             "dataExtraction": {
               "csvColumn": "Split"
-            },
-            "distribution": "books.csv"
+            }
           }
         }
       ]

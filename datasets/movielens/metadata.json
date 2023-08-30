@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@language": "en",
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
@@ -16,12 +17,15 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
     "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "repeated": "ml:repeated",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
@@ -32,7 +36,6 @@
   "@type": "sc:Dataset",
   "name": "Movielens-25M",
   "description": "MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019",
-  "@language": "en",
   "url": "https://grouplens.org/datasets/movielens/25m/",
   "distribution": [
     {
@@ -45,43 +48,43 @@
     {
       "@type": "sc:FileObject",
       "name": "ratings-table",
-      "containedIn": "ml-25m-archive",
       "contentUrl": "ratings.csv",
+      "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "movies-table",
-      "containedIn": "ml-25m-archive",
       "contentUrl": "movies.csv",
+      "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "tags-table",
-      "containedIn": "ml-25m-archive",
       "contentUrl": "tags.csv",
+      "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "links-table",
-      "containedIn": "ml-25m-archive",
       "contentUrl": "links.csv",
+      "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-scores-table",
-      "containedIn": "ml-25m-archive",
       "contentUrl": "genome-scores.csv",
+      "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-tags-table",
-      "containedIn": "ml-25m-archive",
       "contentUrl": "genome-tags.csv",
+      "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     }
   ],
@@ -96,10 +99,10 @@
           "name": "movie_id",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "movies-table",
             "dataExtraction": {
               "csvColumn": "movieId"
-            },
-            "distribution": "movies-table"
+            }
           }
         },
         {
@@ -108,10 +111,10 @@
           "description": "The title of the  movie with the release year in parentheses.",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "movies-table",
             "dataExtraction": {
               "csvColumn": "title"
-            },
-            "distribution": "movies-table"
+            }
           }
         },
         {
@@ -121,13 +124,13 @@
           "dataType": "sc:Text",
           "repeated": "true",
           "source": {
+            "distribution": "movies-table",
             "applyTransform": {
               "separator": "|"
             },
             "dataExtraction": {
               "csvColumn": "genres"
-            },
-            "distribution": "movies-table"
+            }
           }
         }
       ]
@@ -145,10 +148,10 @@
           "name": "user_id",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "ratings-table",
             "dataExtraction": {
               "csvColumn": "userId"
-            },
-            "distribution": "ratings-table"
+            }
           }
         },
         {
@@ -159,10 +162,10 @@
             "field": "movies/movie_id"
           },
           "source": {
+            "distribution": "ratings-table",
             "dataExtraction": {
               "csvColumn": "movieId"
-            },
-            "distribution": "ratings-table"
+            }
           }
         },
         {
@@ -171,10 +174,10 @@
           "description": "The score of the rating on a five-star scale.",
           "dataType": "sc:Float",
           "source": {
+            "distribution": "ratings-table",
             "dataExtraction": {
               "csvColumn": "rating"
-            },
-            "distribution": "ratings-table"
+            }
           }
         },
         {
@@ -182,10 +185,10 @@
           "name": "timestamp",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "ratings-table",
             "dataExtraction": {
               "csvColumn": "timestamp"
-            },
-            "distribution": "ratings-table"
+            }
           }
         }
       ]
@@ -204,10 +207,10 @@
           "name": "user_id",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "tags-table",
             "dataExtraction": {
               "csvColumn": "userId"
-            },
-            "distribution": "tags-table"
+            }
           }
         },
         {
@@ -218,10 +221,10 @@
             "field": "movies/movie_id"
           },
           "source": {
+            "distribution": "tags-table",
             "dataExtraction": {
               "csvColumn": "movieId"
-            },
-            "distribution": "tags-table"
+            }
           }
         },
         {
@@ -230,10 +233,10 @@
           "description": "Tags assigned to the movie.",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "tags-table",
             "dataExtraction": {
               "csvColumn": "tag"
-            },
-            "distribution": "tags-table"
+            }
           }
         },
         {
@@ -241,10 +244,10 @@
           "name": "timestamp",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "tags-table",
             "dataExtraction": {
               "csvColumn": "timestamp"
-            },
-            "distribution": "tags-table"
+            }
           }
         }
       ]

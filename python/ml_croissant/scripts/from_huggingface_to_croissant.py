@@ -129,6 +129,29 @@ def _get_record_sets(
 def convert(dataset: str) -> dict[str, Any]:
     """Converts from Hugging Face to Croissant JSON-LD."""
     dataset_url, builders = _standardize_dataset(dataset)
+    file_objects = [
+        mlc.nodes.FileObject(
+            name=_REPO,
+            description="The Hugging Face git repository.",
+            content_url=dataset_url + "/tree/refs%2Fconvert%2Fparquet",
+            encoding_format="git+https",
+            sha256="https://github.com/mlcommons/croissant/issues/80",
+        )
+    ]
+    file_sets = [
+        mlc.nodes.FileSet(
+            name=_PARQUET_FILES,
+            description=(
+                "The underlying Parquet files as converted by Hugging Face (see:"
+                " https://huggingface.co/docs/datasets-server/parquet)."
+            ),
+            contained_in=[_REPO],
+            encoding_format="application/x-parquet",
+            # Without config (mnist), the file structure is: mnist/train/000.parquet
+            # With config (c4), the file structure is: en/train/000.parquet
+            includes="*/*/*.parquet",
+        )
+    ]
     record_sets = _get_record_sets(builders)
     metadata = mlc.nodes.Metadata(
         name=builders[0].name,
@@ -136,29 +159,7 @@ def convert(dataset: str) -> dict[str, Any]:
         license=builders[0].info.license,
         description=builders[0].info.description,
         url=dataset_url,
-        file_objects=[
-            mlc.nodes.FileObject(
-                name=_REPO,
-                description="The Hugging Face git repository.",
-                content_url=dataset_url + "/tree/refs%2Fconvert%2Fparquet",
-                encoding_format="git+https",
-                sha256="https://github.com/mlcommons/croissant/issues/80",
-            )
-        ],
-        file_sets=[
-            mlc.nodes.FileSet(
-                name=_PARQUET_FILES,
-                description=(
-                    "The underlying Parquet files as converted by Hugging Face (see:"
-                    " https://huggingface.co/docs/datasets-server/parquet)."
-                ),
-                contained_in=[_REPO],
-                encoding_format="application/x-parquet",
-                # Without config (mnist), the file structure is: mnist/train/000.parquet
-                # With config (c4), the file structure is: en/train/000.parquet
-                includes="*/*/*.parquet",
-            )
-        ],
+        distribution=file_objects + file_sets,
         record_sets=record_sets,
     )
     # Serialize to JSON-LD:

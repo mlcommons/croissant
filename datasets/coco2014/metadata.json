@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@language": "en",
     "@vocab": "https://schema.org/",
     "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
@@ -16,12 +17,15 @@
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
     "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
     "path": "ml:path",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
+    "repeated": "ml:repeated",
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
@@ -32,7 +36,6 @@
   "@type": "sc:Dataset",
   "name": "COCO",
   "description": "COCO is a large-scale object detection, segmentation, and captioning dataset.  WARNING: `metadata.json` is incomplete and does not fully define the COCO2014 dataset. It lacks `recordSet` definitions that would enable automatic loading of all the annotations.",
-  "@language": "en",
   "citation": "@article{DBLP:journals/corr/LinMBHPRDZ14,\n  author    = {Tsung{-}Yi Lin and\n               Michael Maire and\n               Serge J. Belongie and\n               Lubomir D. Bourdev and\n               Ross B. Girshick and\n               James Hays and\n               Pietro Perona and\n               Deva Ramanan and\n               Piotr Doll{'{a}}r and\n               C. Lawrence Zitnick},\n  title     = {Microsoft {COCO:} Common Objects in Context},\n  journal   = {CoRR},\n  volume    = {abs/1405.0312},\n  year      = {2014},\n  url       = {http://arxiv.org/abs/1405.0312},\n  archivePrefix = {arXiv},\n  eprint    = {1405.0312},\n  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}",
   "license": [
     "Creative Commons Attribution 4.0 License",
@@ -169,13 +172,13 @@
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "image-files",
             "applyTransform": {
               "regex": "^COCO_[train|val|test]2014_(\\d+)\\.jpg$"
             },
             "dataExtraction": {
               "fileProperty": "filename"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -184,10 +187,10 @@
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
+            "distribution": "image-files",
             "dataExtraction": {
               "fileProperty": "filename"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -196,10 +199,10 @@
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
+            "distribution": "image-files",
             "dataExtraction": {
               "fileProperty": "content"
-            },
-            "distribution": "image-files"
+            }
           }
         },
         {
@@ -213,13 +216,13 @@
             "field": "split_enums/name"
           },
           "source": {
+            "distribution": "image-files",
             "applyTransform": {
               "regex": "^(train|val|test)2014/.*\\.jpg$"
             },
             "dataExtraction": {
               "fileProperty": "fullpath"
-            },
-            "distribution": "image-files"
+            }
           }
         }
       ]
@@ -235,10 +238,10 @@
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "caption_annotations-files",
             "dataExtraction": {
               "csvColumn": "id"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         },
         {
@@ -247,10 +250,10 @@
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "caption_annotations-files",
             "dataExtraction": {
               "csvColumn": "image_id"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         },
         {
@@ -262,10 +265,10 @@
             "wd:Q18585177"
           ],
           "source": {
+            "distribution": "caption_annotations-files",
             "dataExtraction": {
               "csvColumn": "caption"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         },
         {
@@ -279,13 +282,13 @@
             "field": "split_enums/name"
           },
           "source": {
+            "distribution": "caption_annotations-files",
             "applyTransform": {
               "regex": ".*_(val|train)2014\\.json$"
             },
             "dataExtraction": {
               "fileProperty": "filename"
-            },
-            "distribution": "caption_annotations-files"
+            }
           }
         }
       ]
@@ -302,10 +305,10 @@
           "description": "The ID of the category",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "id"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         },
         {
@@ -317,10 +320,10 @@
             "sc:name"
           ],
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "name"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         },
         {
@@ -333,10 +336,10 @@
           ],
           "isEnumeration": true,
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "supercategory"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         }
       ]
@@ -352,10 +355,10 @@
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "id"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         },
         {
@@ -367,10 +370,10 @@
             "field": "categories/id"
           },
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "category_id"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         },
         {
@@ -382,10 +385,10 @@
             "field": "images/image_id"
           },
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "image_id"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         },
         {
@@ -394,10 +397,10 @@
           "description": "The bounding box around annotated object[s].",
           "dataType": "ml:BoundingBox",
           "source": {
+            "distribution": "instancesperson_keypoints_annotations",
             "dataExtraction": {
               "csvColumn": "bbox"
-            },
-            "distribution": "instancesperson_keypoints_annotations"
+            }
           }
         }
       ]
