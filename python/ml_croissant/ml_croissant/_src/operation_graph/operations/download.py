@@ -1,6 +1,5 @@
 """Download operation module."""
 
-import concurrent.futures
 import dataclasses
 import hashlib
 import logging
@@ -9,7 +8,6 @@ import time
 import urllib.parse
 
 from etils import epath
-import networkx as nx
 import requests
 import tqdm
 
@@ -173,13 +171,3 @@ class Download(Operation):
             filepath=filepath,
             fullpath=get_fullpath(filepath, constants.DOWNLOAD_PATH),
         )
-
-
-def execute_downloads(operations: nx.MultiDiGraph):
-    """Executes all the downloads in the graph of operations."""
-    downloads = [
-        operation for operation in operations.nodes if isinstance(operation, Download)
-    ]
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        for download in downloads:
-            executor.submit(download)
