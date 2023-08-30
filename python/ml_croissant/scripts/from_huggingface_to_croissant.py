@@ -42,14 +42,23 @@ _PARQUET_FILES = "parquet-files"
 FLAGS = flags.FLAGS
 
 
-def _standardize_dataset(dataset: str) -> tuple[str, datasets.DatasetBuilder]:
-    """Standardizes the user input `--dataset` to a tuple (URL, builder)."""
+def _standardize_dataset(
+    dataset: str,
+) -> tuple[str, list[datasets.DatasetBuilder]]:
+    """Standardizes the user input `--dataset` to a tuple (URL, builder, configs)."""
     if dataset.startswith(_HUGGING_FACE_URL):
         url, dataset_name = dataset, dataset.replace(_HUGGING_FACE_URL, "")
     else:
         url, dataset_name = _HUGGING_FACE_URL + dataset, dataset
-    builder = datasets.load_dataset_builder(dataset_name)
-    return url, builder
+    configs = datasets.get_dataset_config_names(dataset_name)
+    if not configs:
+        builder = datasets.load_dataset_builder(dataset_name)
+        return url, [builder]
+    else:
+        builders = [
+            datasets.load_dataset_builder(dataset_name, config) for config in configs
+        ]
+        return url, builders
 
 
 def _standardize_output(output: str | None) -> epath.Path:
@@ -100,15 +109,32 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
     return fields
 
 
+def _get_record_sets(
+    builders: list[datasets.DatasetBuilder],
+) -> list[mlc.nodes.RecordSet]:
+    record_sets: list[mlc.nodes.RecordSet] = []
+    for builder in builders:
+        name = builder.config.name if len(builders) > 1 else "default"
+        fields = _get_fields(builder)
+        record_sets.append(
+            mlc.nodes.RecordSet(
+                name=name,
+                description=f"The {name} set of records in the dataset.",
+                fields=fields,
+            )
+        )
+    return record_sets
+
+
 def convert(dataset: str) -> dict[str, Any]:
     """Converts from Hugging Face to Croissant JSON-LD."""
-    dataset_url, dataset_builder = _standardize_dataset(dataset)
-    fields = _get_fields(dataset_builder)
+    dataset_url, builders = _standardize_dataset(dataset)
+    record_sets = _get_record_sets(builders)
     metadata = mlc.nodes.Metadata(
-        name=dataset_builder.name,
-        citation=dataset_builder.info.citation,
-        license=dataset_builder.info.license,
-        description=dataset_builder.info.description,
+        name=builders[0].name,
+        citation=builders[0].info.citation,
+        license=builders[0].info.license,
+        description=builders[0].info.description,
         url=dataset_url,
         file_objects=[
             mlc.nodes.FileObject(
@@ -128,16 +154,12 @@ def convert(dataset: str) -> dict[str, Any]:
                 ),
                 contained_in=[_REPO],
                 encoding_format="application/x-parquet",
-                includes=dataset_builder.name + "/*/*.parquet",
+                # Without config (mnist), the file structure is: mnist/train/000.parquet
+                # With config (c4), the file structure is: en/train/000.parquet
+                includes="*/*/*.parquet",
             )
         ],
-        record_sets=[
-            mlc.nodes.RecordSet(
-                name="default",
-                description="The default set of records in the dataset.",
-                fields=fields,
-            )
-        ],
+        record_sets=record_sets,
     )
     # Serialize to JSON-LD:
     return metadata.to_json()

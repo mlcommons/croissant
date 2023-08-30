@@ -2,6 +2,7 @@
 
 import os
 
+from absl import logging
 from etils import epath
 import git
 
@@ -27,6 +28,10 @@ def download_git_lfs_file(file: Path):
     """Downloads a specific git-lfs file within its repo."""
     # Path(filepath="/tmp/full/path.json", fullpath="path.json")
     # => working_dir = "/tmp/full"
-    working_dir = os.fspath(file.filepath).rsplit(os.fspath(file.fullpath))[0]
+    fullpath = os.fspath(file.fullpath)
+    working_dir = os.fspath(file.filepath).rsplit(fullpath)[0]
     repo = git.Git(working_dir)
-    repo.execute(["git", "lfs", "pull", "--include", os.fspath(file.fullpath)])
+    logging.info(
+        "Downloading git-lfs file: %s in working dir: %s", fullpath, working_dir
+    )
+    repo.execute(["git", "lfs", "pull", "--include", fullpath])

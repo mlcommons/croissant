@@ -3,11 +3,16 @@
 import json
 
 from etils import epath
+import pytest
 
 from .from_huggingface_to_croissant import convert
 
 
-def test_convert():
+@pytest.mark.parametrize(
+    ["croissant_dataset_name", "hf_dataset_name"],
+    [["huggingface-mnist", "mnist"], ["huggingface-c4", "c4"]],
+)
+def test_convert(croissant_dataset_name, hf_dataset_name):
     """Tests that huggingface.co/datasets/mnist can be generated using `convert`.
 
     Warning: this test is an end-to-end test of the script. It is not hermetic as it
@@ -16,10 +21,9 @@ def test_convert():
     metadata_file = (
         epath.Path(__file__).parent.parent.parent.parent
         / "datasets"
-        / "huggingface-mnist"
+        / croissant_dataset_name
         / "metadata.json"
     )
-    hf_dataset_name = "mnist"
     print(
         "If this test fails, run: `python scripts/from_huggingface_to_croissant.py"
         f" --dataset {hf_dataset_name} --output {metadata_file}`"
