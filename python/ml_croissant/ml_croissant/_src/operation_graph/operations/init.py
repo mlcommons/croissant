@@ -10,6 +10,7 @@ from ml_croissant._src.operation_graph.base_operation import Operation
 class InitOperation(Operation):
     """Sets up other operations."""
 
-    def __call__(self):
+    def __call__(self, *args):
         """See class' docstring."""
+        del args  # unused
         logging.info("Setting up generation for dataset: %s", self.node.uid)

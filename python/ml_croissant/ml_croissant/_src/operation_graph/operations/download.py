@@ -1,6 +1,5 @@
 """Download operation module."""
 
-import concurrent.futures
 import dataclasses
 import hashlib
 import logging
@@ -9,7 +8,6 @@ import time
 import urllib.parse
 
 from etils import epath
-import networkx as nx
 import requests
 import tqdm
 
@@ -159,8 +157,9 @@ class Download(Operation):
             repo.remote().fetch(f"{refs}:{branch_name}")
             repo.branches[branch_name].checkout()
 
-    def __call__(self) -> epath.Path:
+    def __call__(self, *args) -> epath.Path:
         """See class' docstring."""
+        del args  # unused
         filepath = get_download_filepath(self.node, self.url)
         if not filepath.exists():
             if self.node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
@@ -172,13 +171,3 @@ class Download(Operation):
             filepath=filepath,
             fullpath=get_fullpath(filepath, constants.DOWNLOAD_PATH),
         )
-
-
-def execute_downloads(operations: nx.MultiDiGraph):
-    """Executes all the downloads in the graph of operations."""
-    downloads = [
-        operation for operation in operations.nodes if isinstance(operation, Download)
-    ]
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        for download in downloads:
-            executor.submit(download)

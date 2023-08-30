@@ -10,15 +10,15 @@ import networkx as nx
 from ml_croissant._src.core.graphs import utils as graphs_utils
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.issues import ValidationError
-from ml_croissant._src.core.types import Json
 from ml_croissant._src.operation_graph import OperationGraph
+from ml_croissant._src.operation_graph.execute import execute_downloads
+from ml_croissant._src.operation_graph.execute import execute_operations_in_streaming
+from ml_croissant._src.operation_graph.execute import execute_operations_sequentially
 from ml_croissant._src.operation_graph.operations import GroupRecordSet
-from ml_croissant._src.operation_graph.operations import ReadField
-from ml_croissant._src.operation_graph.operations.download import execute_downloads
 from ml_croissant._src.structure_graph.nodes.metadata import Metadata
 
 
-def get_operations(issues: Issues, metadata: Metadata, debug: bool) -> OperationGraph:
+def get_operations(issues: Issues, metadata: Metadata) -> OperationGraph:
     """Returns operations from the metadata."""
     graph = metadata.graph
     folder = metadata.folder
@@ -58,7 +58,7 @@ class Dataset:
         # Draw the structure graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.metadata.graph, simplify=True)
-        self.operations = get_operations(issues, self.metadata, self.debug)
+        self.operations = get_operations(issues, self.metadata)
         # Draw the operations graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
@@ -88,45 +88,27 @@ class Records:
         Warning: at the moment, this method yields examples from the first explored
         record_set.
         """
-        results: Json = {}
         operations = self.dataset.operations.operations
         if self.debug:
             graphs_utils.pretty_print_graph(operations)
         # Downloads can be parallelized, so we execute them in priority.
         execute_downloads(operations)
-        for operation in nx.topological_sort(operations):
-            if self.debug:
-                logging.info('Executing "%s"', operation)
-            previous_results = [
-                results[previous_operation]
-                for previous_operation in operations.predecessors(operation)
-                if previous_operation in results
-                # Filter out results that yielded `None`.
-                and results[previous_operation] is not None
-            ]
-            if isinstance(operation, GroupRecordSet):
-                # Only keep the record set whose name is `self.record_set`.
-                # Note: this is a short-term solution. The long-term solution is to
-                # re-compute the sub-graph of operations that is sufficient to compute
-                # `self.record_set`.
-                if operation.node.name != self.record_set:
-                    continue
-                assert len(previous_results) == 1, (
-                    f'"{operation}" should have one and only one predecessor. Got:'
-                    f" {len(previous_results)}."
-                )
-                previous_result = previous_results[0]
-                for _, line in previous_result.iterrows():
-                    read_fields = []
-                    for read_field in operations.successors(operation):
-                        assert isinstance(read_field, ReadField)
-                        if self.debug:
-                            logging.info('Executing "%s"', read_field)
-                        read_fields.append(read_field(line))
-                    if self.debug:
-                        logging.info('Executing "%s"', operation)
-                    yield operation(*read_fields)
-            else:
-                if isinstance(operation, ReadField) and not previous_results:
-                    continue
-                results[operation] = operation(*previous_results)
+        # We can stream the dataset iff the operation graph is a path graph (meaning
+        # that all operations lie on a single straight line, i.e. have an
+        # in-degree of 0 or 1. That means that the operation graph is a single line
+        # (without external joins for example).
+        can_stream_dataset = all(
+            d == 1 or d == 2
+            for operation, d in operations.degree()
+            if not isinstance(operation, GroupRecordSet)
+        )
+        if can_stream_dataset:
+            yield from execute_operations_in_streaming(
+                record_set=self.record_set,
+                operations=operations,
+                list_of_operations=list(nx.topological_sort(operations)),
+            )
+        else:
+            yield from execute_operations_sequentially(
+                record_set=self.record_set, operations=operations
+            )

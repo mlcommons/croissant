@@ -14,6 +14,7 @@ class Data(Operation):
 
     node: RecordSet
 
-    def __call__(self) -> pd.DataFrame:
+    def __call__(self, *args) -> pd.DataFrame:
         """See class' docstring."""
+        del args  # unused
         return pd.DataFrame.from_records(self.node.data)
