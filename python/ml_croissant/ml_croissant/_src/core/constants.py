@@ -7,11 +7,10 @@ from rdflib import term
 
 # MLCommons-defined URIs (still draft).
 ML_COMMONS = rdflib.Namespace("http://mlcommons.org/schema/")
-ML_COMMONS_APPLY_TRANSFORM = ML_COMMONS.applyTransform
 ML_COMMONS_CSV_COLUMN = ML_COMMONS.csvColumn
 ML_COMMONS_DATA = ML_COMMONS.data
-ML_COMMONS_DATA_EXTRACTION = ML_COMMONS.dataExtraction
 ML_COMMONS_DATA_TYPE = ML_COMMONS.dataType
+ML_COMMONS_EXTRACT = ML_COMMONS.extract
 ML_COMMONS_FILE_PROPERTY = ML_COMMONS.fileProperty
 ML_COMMONS_FIELD = ML_COMMONS.field
 ML_COMMONS_FIELD_TYPE = ML_COMMONS.Field
@@ -33,6 +32,7 @@ ML_COMMONS_SEPARATOR = ML_COMMONS.separator
 ML_COMMONS_SOURCE = ML_COMMONS.source
 ML_COMMONS_SUB_FIELD = ML_COMMONS.subField
 ML_COMMONS_SUB_FIELD_TYPE = ML_COMMONS.SubField
+ML_COMMONS_TRANSFORM = ML_COMMONS.transform
 
 
 # RDF standard URIs.
@@ -68,11 +68,11 @@ SCHEMA_ORG_FILE_SET = SCHEMA_ORG.FileSet
 SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
 
 TO_CROISSANT = {
-    ML_COMMONS_APPLY_TRANSFORM: "apply_transform",
+    ML_COMMONS_TRANSFORM: "transforms",
     ML_COMMONS_CSV_COLUMN: "csv_column",
     ML_COMMONS_DATA_TYPE: "data_type",
     ML_COMMONS_DATA: "data",
-    ML_COMMONS_DATA_EXTRACTION: "data_extraction",
+    ML_COMMONS_EXTRACT: "extract",
     ML_COMMONS_FIELD: "field",
     ML_COMMONS_FILE_PROPERTY: "file_property",
     ML_COMMONS_FORMAT: "format",

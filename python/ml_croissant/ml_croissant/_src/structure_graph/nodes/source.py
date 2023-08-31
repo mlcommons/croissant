@@ -147,20 +147,20 @@ class Source:
     ```json
     "source": {
         "distribution": "my-csv",
-        "dataExtraction": {
+        "extract": {
             "csvColumn": "my-csv-column"
         }
     }
     ```
 
-    See the specs for all supported parameters by `dataExtraction`.
+    See the specs for all supported parameters by `extract`.
 
-    You can also add one or more transformations with `applyTransform`:
+    You can also add one or more transformations with `transform`:
 
     ```json
     "source": {
         "field": "record_set/name",
-        "applyTransform": {
+        "transform": {
             "format": "yyyy-MM-dd HH:mm:ss.S",
             "regex": "([^\\/]*)\\.jpg",
             "separator": "|"
@@ -182,8 +182,8 @@ class Source:
         return remove_empty_values(
             {
                 self.node_type: self.uid,
-                "applyTransform": transforms,
-                "dataExtraction": self.extract.to_json(),
+                "extract": self.extract.to_json(),
+                "transform": transforms,
             }
         )
 
@@ -199,17 +199,17 @@ class Source:
         elif isinstance(jsonld, dict):
             try:
                 transforms = Transform.from_jsonld(
-                    issues, jsonld.get(constants.ML_COMMONS_APPLY_TRANSFORM, [])
+                    issues, jsonld.get(constants.ML_COMMONS_TRANSFORM, [])
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
-                data_extraction = jsonld.get(constants.ML_COMMONS_DATA_EXTRACTION, {})
+                data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT, {})
                 if isinstance(data_extraction, list) and data_extraction:
                     data_extraction = data_extraction[0]
                 # Remove the JSON-LD @id property if it exists:
                 data_extraction.pop("@id", None)
                 if len(data_extraction) > 1:
                     issues.add_error(
-                        f"{constants.ML_COMMONS_DATA_EXTRACTION} should have one of the"
+                        f"{constants.ML_COMMONS_EXTRACT} should have one of the"
                         f" following properties: {constants.ML_COMMONS_FORMAT},"
                         f" {constants.ML_COMMONS_REGEX},"
                         f" {constants.ML_COMMONS_REPLACE} or"
