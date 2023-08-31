@@ -1,8 +1,5 @@
 """Migration: https://github.com/mlcommons/croissant/discussions/151."""
 
-import ml_croissant as mlc
-from ml_croissant._src.core.issues import Issues
-
 
 def _migrate_field(json_ld):
     for field in ["source", "references"]:
@@ -33,7 +30,6 @@ def up(json_ld):
             sub_fields = field.get("subField", [])
             if isinstance(sub_fields, dict):
                 sub_fields = [sub_fields]
-                field["subField"] = sub_field
             for k, sub_field in enumerate(sub_fields):
                 sub_field = _migrate_field(sub_field)
                 field["subField"][k] = sub_field
