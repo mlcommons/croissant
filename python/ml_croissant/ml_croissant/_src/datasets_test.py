@@ -99,3 +99,12 @@ def test_loading(dataset_name, record_set_name, num_records):
         assert record == expected_records[i]
         length += 1
     assert len(expected_records) == length
+
+
+def test_raises_when_the_record_set_does_not_exist():
+    dataset_folder = (
+        epath.Path(__file__).parent.parent.parent.parent.parent / "datasets" / "titanic"
+    )
+    dataset = datasets.Dataset(dataset_folder / "metadata.json")
+    with pytest.raises(ValueError, match="did not find"):
+        dataset.records("this_record_set_does_not_exist")
