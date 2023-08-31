@@ -30,8 +30,7 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField",
-    "wd": "https://www.wikidata.org/wiki/"
+    "subField": "ml:subField"
   },
   "@type": "sc:Dataset",
   "name": "PASS",

@@ -29,8 +29,7 @@
     "replace": "ml:replace",
     "sc": "https://schema.org/",
     "separator": "ml:separator",
-    "subField": "ml:subField",
-    "wd": "https://www.wikidata.org/wiki/"
+    "subField": "ml:subField"
   },
   "@type": "sc:Dataset",
   "name": "mydataset",
