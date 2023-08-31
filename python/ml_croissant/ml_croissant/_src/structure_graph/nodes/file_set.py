@@ -13,6 +13,7 @@ from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -53,6 +54,7 @@ class FileSet(Node):
         issues: Issues,
         context: Context,
         folder: epath.Path,
+        rdf: Rdf,
         file_set: Json,
     ) -> FileSet:
         """Creates a `FileSet` from JSON-LD."""
@@ -70,4 +72,5 @@ class FileSet(Node):
             encoding_format=file_set.get(constants.SCHEMA_ORG_ENCODING_FORMAT),
             includes=file_set.get(constants.ML_COMMONS_INCLUDES),
             name=name,
+            rdf=rdf,
         )

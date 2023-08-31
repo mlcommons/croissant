@@ -32,36 +32,46 @@ _KEYS_WITH_LIST = {
     (constants.SCHEMA_ORG_DISTRIBUTION, constants.SCHEMA_ORG_DATASET),
 }
 
+BASE_CONTEXT = {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "applyTransform": "ml:applyTransform",
+    "csvColumn": "ml:csvColumn",
+    "data": {"@id": "ml:data", "@type": "@json"},
+    "dataExtraction": "ml:dataExtraction",
+    "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+}
 
-def _make_context():
-    return {
-        "@language": "en",
-        "@vocab": "https://schema.org/",
-        "applyTransform": "ml:applyTransform",
-        "csvColumn": "ml:csvColumn",
-        "data": {"@id": "ml:data", "@type": "@json"},
-        "dataExtraction": "ml:dataExtraction",
-        "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
-        "field": "ml:field",
-        "fileProperty": "ml:fileProperty",
-        "format": "ml:format",
-        "includes": "ml:includes",
-        "isEnumeration": "ml:isEnumeration",
-        "jsonPath": "ml:jsonPath",
-        "ml": "http://mlcommons.org/schema/",
-        "parentField": "ml:parentField",
-        "path": "ml:path",
-        "recordSet": "ml:recordSet",
-        "references": "ml:references",
-        "regex": "ml:regex",
-        "repeated": "ml:repeated",
-        "replace": "ml:replace",
-        "sc": "https://schema.org/",
-        "separator": "ml:separator",
-        "source": "ml:source",
-        "subField": "ml:subField",
-        "wd": "https://www.wikidata.org/wiki/",
-    }
+
+def get_context(json_: Json) -> Json:
+    """Returns the context and raises an error if it is not a dictionary as expected."""
+    context = json_.get("@context", {})
+    if not isinstance(context, dict):
+        raise ValueError("@context should be a dictionary. Got: {existing_context}")
+    return context
+
+
+def make_context(**kwargs):
+    """Returns the JSON-LD @context with additional keys."""
+    return {**BASE_CONTEXT, **kwargs}
 
 
 def _is_dataset_node(node: Json) -> bool:
@@ -137,25 +147,6 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     return entry_node
 
 
-def from_jsonld_to_json(jsonld: list[Json]) -> Json:
-    """Converts an RDFLib JSON-LD representation to Croissant JSON.
-
-    RDFLib JSON-LD is a list of nodes. So to output a JSON, we have to recursively
-    populate the output JSON.
-    """
-    # Check jsonld is not empty
-    id_to_node: dict[str, Json] = {}
-    for node in jsonld:
-        node_id = str(node.get("@id"))
-        id_to_node[node_id] = node
-    # Find the entry node (schema.org/Dataset).
-    entry_node = next(
-        (record for record in jsonld if _is_dataset_node(record)), jsonld[0]
-    )
-    recursively_populate_jsonld(entry_node, id_to_node)
-    return entry_node
-
-
 def expand_jsonld(data: Json) -> Json:
     """Expands a Croissant JSON to a nested JSON-LD with expanded.
 
@@ -163,9 +154,8 @@ def expand_jsonld(data: Json) -> Json:
     full expression, but RDFLib also flattens the JSON-LD in a list of nodes. We then
     need to reconstruct the hierarchy.
     """
+    context = get_context(data)
     graph = rdflib.Graph()
-    # Parse with the new context if it has been changed.
-    data["@context"] = _make_context()
     graph.parse(
         data=data,
         format="json-ld",
@@ -183,7 +173,7 @@ def expand_jsonld(data: Json) -> Json:
         node_id = node.get("@id")
         id_to_node[node_id] = node
     recursively_populate_jsonld(entry_node, id_to_node)
-    entry_node["@context"] = _make_context()
+    entry_node["@context"] = make_context(**context)
     return entry_node
 
 

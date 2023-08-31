@@ -12,17 +12,16 @@ from ml_croissant._src.core.data_types import check_expected_type
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.issues import ValidationError
-from ml_croissant._src.core.json_ld import _make_context
 from ml_croissant._src.core.json_ld import expand_jsonld
-from ml_croissant._src.core.json_ld import from_jsonld_to_json
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
-from ml_croissant._src.structure_graph.graph import from_file_to_jsonld
+from ml_croissant._src.structure_graph.graph import from_file_to_json
 from ml_croissant._src.structure_graph.graph import from_nodes_to_graph
 from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 
 
@@ -68,7 +67,7 @@ class Metadata(Node):
         """Converts the `Metadata` to JSON."""
         return remove_empty_values(
             {
-                "@context": _make_context(),
+                "@context": self.rdf.context,
                 "@type": "sc:Dataset",
                 "name": self.name,
                 "description": self.description,
@@ -129,8 +128,7 @@ class Metadata(Node):
     @classmethod
     def from_file(cls, issues: Issues, file: epath.PathLike) -> Metadata:
         """Creates the Metadata from a Croissant file."""
-        folder, jsonld = from_file_to_jsonld(file)
-        json_ = from_jsonld_to_json(jsonld)
+        folder, json_ = from_file_to_json(file)
         return cls.from_json(issues=issues, json_=json_, folder=folder)
 
     @classmethod
@@ -140,8 +138,9 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON."""
         if isinstance(json_, str):
             json_ = json.loads(json_)
+        rdf = Rdf.from_json(json_)
         metadata = expand_jsonld(json_)
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata)
+        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
 
     @classmethod
     def from_jsonld(
@@ -149,24 +148,27 @@ class Metadata(Node):
         issues: Issues,
         folder: epath.Path | None,
         metadata: Json,
+        rdf: Rdf | None = None,
     ) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
+        if rdf is None:
+            rdf = Rdf()
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         record_sets: list[RecordSet] = []
-        json_distributions = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
+        file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
         context = Context(dataset_name=dataset_name)
-        for json_distribution in json_distributions:
-            name = json_distribution.get(constants.SCHEMA_ORG_NAME, "")
-            distribution_type = json_distribution.get("@type")
+        for set_or_object in file_set_or_objects:
+            name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
+            distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, json_distribution)
+                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(
-                    FileSet.from_jsonld(issues, context, folder, json_distribution)
+                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)
                 )
             else:
                 issues.add_error(
@@ -177,7 +179,7 @@ class Metadata(Node):
                 )
         record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, record_set)
+            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
             for record_set in record_sets
         ]
         return cls(
@@ -191,4 +193,5 @@ class Metadata(Node):
             name=dataset_name,
             record_sets=record_sets,
             url=metadata.get(constants.SCHEMA_ORG_URL),
+            rdf=rdf,
         )
