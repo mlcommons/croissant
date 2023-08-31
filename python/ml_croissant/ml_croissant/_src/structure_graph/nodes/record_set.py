@@ -15,6 +15,7 @@ from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.field import Field
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -82,6 +83,7 @@ class RecordSet(Node):
         issues: Issues,
         context: Context,
         folder: epath.Path,
+        rdf: Rdf,
         record_set: Json,
     ) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
@@ -93,7 +95,9 @@ class RecordSet(Node):
         fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
         if isinstance(fields, dict):
             fields = [fields]
-        fields = [Field.from_jsonld(issues, context, folder, field) for field in fields]
+        fields = [
+            Field.from_jsonld(issues, context, folder, rdf, field) for field in fields
+        ]
         key = record_set.get(constants.SCHEMA_ORG_KEY)
         data = record_set.get(constants.ML_COMMONS_DATA)
         if isinstance(data, str):
@@ -117,4 +121,5 @@ class RecordSet(Node):
             key=key,
             fields=fields,
             name=record_set_name,
+            rdf=rdf,
         )

@@ -15,6 +15,7 @@ from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.types import Json
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -50,6 +51,7 @@ class Node(abc.ABC):
         default_factory=nx.MultiDiGraph, compare=False, init=False
     )
     parents: list[Node] = dataclasses.field(default_factory=list, init=False)
+    rdf: Rdf = dataclasses.field(default_factory=Rdf)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""

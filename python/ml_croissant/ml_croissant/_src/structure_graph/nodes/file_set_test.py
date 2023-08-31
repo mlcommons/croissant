@@ -9,6 +9,7 @@ from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 from ml_croissant._src.tests.nodes import create_test_node
 
 
@@ -30,6 +31,7 @@ def test_from_jsonld():
     issues = Issues()
     context = Context()
     folder = epath.Path("/foo/bar")
+    rdf = Rdf()
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_SET,
         constants.SCHEMA_ORG_NAME: "foo",
@@ -38,7 +40,7 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_ENCODING_FORMAT: "application/json",
         constants.ML_COMMONS_INCLUDES: "*.json",
     }
-    assert FileSet.from_jsonld(issues, context, folder, jsonld) == FileSet(
+    assert FileSet.from_jsonld(issues, context, folder, rdf, jsonld) == FileSet(
         issues=issues,
         context=context,
         folder=folder,

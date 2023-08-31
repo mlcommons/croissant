@@ -13,6 +13,7 @@ from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 from ml_croissant._src.structure_graph.nodes.source import Source
 
 
@@ -64,6 +65,7 @@ class FileObject(Node):
         issues: Issues,
         context: Context,
         folder: epath.Path,
+        rdf: Rdf,
         file_object: Json,
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
@@ -87,6 +89,7 @@ class FileObject(Node):
             encoding_format=encoding_format,
             md5=file_object.get(constants.SCHEMA_ORG_MD5),
             name=name,
+            rdf=rdf,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE),
         )

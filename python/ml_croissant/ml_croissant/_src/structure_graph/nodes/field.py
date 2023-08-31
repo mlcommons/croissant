@@ -8,11 +8,13 @@ from etils import epath
 
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.data_types import check_expected_type
+from ml_croissant._src.core.data_types import shorten_data_type
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 from ml_croissant._src.structure_graph.nodes.source import Source
 
 
@@ -94,7 +96,7 @@ class Field(Node):
 
     def to_json(self) -> Json:
         """Converts the `Field` to JSON."""
-        data_type = _data_type_to_json(self.data_type)
+        data_type = shorten_data_type(self.rdf, self.data_type)
         parent_field = self.parent_field.to_json() if self.parent_field else None
         return remove_empty_values(
             {
@@ -117,6 +119,7 @@ class Field(Node):
         issues: Issues,
         context: Context,
         folder: epath.Path,
+        rdf: Rdf,
         field: Json,
     ) -> Field:
         """Creates a `Field` from JSON-LD."""
@@ -146,7 +149,7 @@ class Field(Node):
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]
         sub_fields = [
-            Field.from_jsonld(issues, context, folder, sub_field)
+            Field.from_jsonld(issues, context, folder, rdf, sub_field)
             for sub_field in sub_fields
         ]
         parent_field = ParentField.from_jsonld(
@@ -162,26 +165,9 @@ class Field(Node):
             is_enumeration=is_enumeration,
             name=field_name,
             parent_field=parent_field,
+            rdf=rdf,
             references=references,
             repeated=repeated,
             source=source,
             sub_fields=sub_fields,
         )
-
-
-def _data_type_to_json(data_type: str | list[str] | None):
-    WIKI = "https://www.wikidata.org/wiki/"
-    if data_type is None:
-        return None
-    elif isinstance(data_type, list):
-        return [_data_type_to_json(d) for d in data_type]
-    elif isinstance(data_type, str) and data_type.startswith(constants.ML_COMMONS):
-        return data_type.replace(constants.ML_COMMONS, "ml:")
-    elif isinstance(data_type, str) and data_type.startswith(constants.SCHEMA_ORG):
-        return data_type.replace(constants.SCHEMA_ORG, "sc:")
-    # TODO(https://github.com/mlcommons/croissant/issues/168): the context should accept
-    # arbitrary JSON.
-    elif isinstance(data_type, str) and data_type.startswith(WIKI):
-        return data_type.replace(WIKI, "wd:")
-    else:
-        return data_type

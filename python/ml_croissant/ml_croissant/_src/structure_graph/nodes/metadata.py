@@ -13,8 +13,6 @@ from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.issues import ValidationError
 from ml_croissant._src.core.json_ld import expand_jsonld
-from ml_croissant._src.core.json_ld import get_context
-from ml_croissant._src.core.json_ld import make_context
 from ml_croissant._src.core.json_ld import remove_empty_values
 from ml_croissant._src.core.types import Json
 from ml_croissant._src.structure_graph.base_node import Node
@@ -23,20 +21,8 @@ from ml_croissant._src.structure_graph.graph import from_nodes_to_graph
 from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.file_object import FileObject
 from ml_croissant._src.structure_graph.nodes.file_set import FileSet
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
-
-
-@dataclasses.dataclass(eq=False, repr=False)
-class Rdf:
-    """RDF-specific vocabulary on the metadata."""
-
-    context: Json = dataclasses.field(default_factory=make_context)
-
-    @classmethod
-    def from_json(cls, json: Json) -> Rdf:
-        """Creates a `Rdf` from JSON."""
-        context = get_context(json)
-        return cls(context=make_context(**context))
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -50,7 +36,6 @@ class Metadata(Node):
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    rdf: Rdf = dataclasses.field(default_factory=Rdf)
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -171,19 +156,19 @@ class Metadata(Node):
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         record_sets: list[RecordSet] = []
-        json_distributions = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
+        file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
         context = Context(dataset_name=dataset_name)
-        for json_distribution in json_distributions:
-            name = json_distribution.get(constants.SCHEMA_ORG_NAME, "")
-            distribution_type = json_distribution.get("@type")
+        for set_or_object in file_set_or_objects:
+            name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
+            distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, json_distribution)
+                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(
-                    FileSet.from_jsonld(issues, context, folder, json_distribution)
+                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)
                 )
             else:
                 issues.add_error(
@@ -194,7 +179,7 @@ class Metadata(Node):
                 )
         record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, record_set)
+            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
             for record_set in record_sets
         ]
         return cls(

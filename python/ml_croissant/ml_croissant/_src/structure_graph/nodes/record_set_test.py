@@ -9,6 +9,7 @@ from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Context
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.structure_graph.base_node import Node
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 from ml_croissant._src.structure_graph.nodes.record_set import RecordSet
 from ml_croissant._src.tests.nodes import create_test_field
 from ml_croissant._src.tests.nodes import create_test_node
@@ -78,6 +79,7 @@ def test_from_jsonld():
     issues = Issues()
     context = Context()
     folder = epath.Path("/foo/bar")
+    rdf = Rdf()
     jsonld = {
         "@type": constants.ML_COMMONS_RECORD_SET_TYPE,
         constants.SCHEMA_ORG_NAME: "foo",
@@ -86,7 +88,7 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_KEY: ["key1", "key2"],
         constants.ML_COMMONS_DATA: [{"column1": ["value1", "value2"]}],
     }
-    assert RecordSet.from_jsonld(issues, context, folder, jsonld) == RecordSet(
+    assert RecordSet.from_jsonld(issues, context, folder, rdf, jsonld) == RecordSet(
         issues=issues,
         context=context,
         folder=folder,

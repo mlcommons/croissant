@@ -5,6 +5,7 @@ import pandas as pd
 from ml_croissant._src.core import constants
 from ml_croissant._src.core.issues import Issues
 from ml_croissant._src.core.types import Json
+from ml_croissant._src.structure_graph.nodes.rdf import Rdf
 
 
 def check_expected_type(issues: Issues, jsonld: Json, expected_type: str):
@@ -26,3 +27,15 @@ EXPECTED_DATA_TYPES: dict[str, type] = {
     constants.SCHEMA_ORG_DATA_TYPE_TEXT: str,
     constants.SCHEMA_ORG_DATA_TYPE_URL: str,
 }
+
+
+def shorten_data_type(rdf: Rdf, data_type: str | list[str] | None):
+    """Shorten the data type."""
+    if data_type is None:
+        return None
+    elif isinstance(data_type, list):
+        return [shorten_data_type(rdf, d) for d in data_type]
+    elif isinstance(data_type, str):
+        return rdf.shorten_value(data_type)
+    else:
+        raise ValueError(f"data_type should be a str or list[str]. Got {data_type}")
