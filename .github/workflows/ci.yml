@@ -135,7 +135,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install library
-      run: pip install .[git]
+      run: pip install .
 
     - name: Generate JSON-LD files - Titanic
       run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
