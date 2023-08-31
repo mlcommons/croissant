@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -30,7 +29,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField"
+    "subField": "ml:subField",
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "bigcode-the-stack",
@@ -66,7 +66,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "content"
             }
           }
@@ -78,11 +78,11 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "applyTransform": {
-              "regex": "^data\\/(\\d\\w\\+\\-)+\\/train-\\d\\d\\d\\d\\d-of-\\d\\d\\d\\d\\d\\.parquet$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^data\\/(\\d\\w\\+\\-)+\\/train-\\d\\d\\d\\d\\d-of-\\d\\d\\d\\d\\d\\.parquet$"
             }
           }
         },
@@ -93,7 +93,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "hexsha"
             }
           }
@@ -105,7 +105,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "size"
             }
           }
@@ -117,7 +117,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "ext"
             }
           }
@@ -129,7 +129,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "lang"
             }
           }
@@ -141,7 +141,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_stars_repo_path"
             }
           }
@@ -153,7 +153,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_stars_repo_name"
             }
           }
@@ -165,7 +165,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_stars_repo_head_hexsha"
             }
           }
@@ -177,7 +177,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_stars_count"
             }
           }
@@ -189,7 +189,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_stars_repo_stars_event_min_datetime"
             }
           }
@@ -201,7 +201,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_stars_repo_stars_event_max_datetime"
             }
           }
@@ -213,7 +213,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_issues_repo_path"
             }
           }
@@ -225,7 +225,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_issues_repo_head_hexsha"
             }
           }
@@ -237,7 +237,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_issues_count"
             }
           }
@@ -249,7 +249,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_issues_repo_issues_event_min_datetime"
             }
           }
@@ -261,7 +261,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_issues_repo_issues_event_max_datetime"
             }
           }
@@ -273,7 +273,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_forks_repo_path"
             }
           }
@@ -285,7 +285,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_forks_repo_name"
             }
           }
@@ -297,7 +297,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_forks_repo_head_hexsha"
             }
           }
@@ -309,7 +309,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_forks_count"
             }
           }
@@ -321,7 +321,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_forks_repo_forks_event_min_datetime"
             }
           }
@@ -333,7 +333,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_forks_repo_forks_event_max_datetime"
             }
           }
@@ -345,7 +345,7 @@
           "dataType": "sc:Float",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "avg_line_length"
             }
           }
@@ -357,7 +357,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "max_line_length"
             }
           }
@@ -369,7 +369,7 @@
           "dataType": "sc:Float",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "alphanum_fraction"
             }
           }

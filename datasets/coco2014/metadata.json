@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -31,6 +30,7 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
+    "transform": "ml:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -173,11 +173,11 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "image-files",
-            "applyTransform": {
-              "regex": "^COCO_[train|val|test]2014_(\\d+)\\.jpg$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^COCO_[train|val|test]2014_(\\d+)\\.jpg$"
             }
           }
         },
@@ -188,7 +188,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "image-files",
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "filename"
             }
           }
@@ -200,7 +200,7 @@
           "dataType": "sc:ImageObject",
           "source": {
             "distribution": "image-files",
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "content"
             }
           }
@@ -217,11 +217,11 @@
           },
           "source": {
             "distribution": "image-files",
-            "applyTransform": {
-              "regex": "^(train|val|test)2014/.*\\.jpg$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(train|val|test)2014/.*\\.jpg$"
             }
           }
         }
@@ -239,7 +239,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "caption_annotations-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "id"
             }
           }
@@ -251,7 +251,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "caption_annotations-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "image_id"
             }
           }
@@ -266,7 +266,7 @@
           ],
           "source": {
             "distribution": "caption_annotations-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "caption"
             }
           }
@@ -283,11 +283,11 @@
           },
           "source": {
             "distribution": "caption_annotations-files",
-            "applyTransform": {
-              "regex": ".*_(val|train)2014\\.json$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": ".*_(val|train)2014\\.json$"
             }
           }
         }
@@ -306,7 +306,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "id"
             }
           }
@@ -321,7 +321,7 @@
           ],
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "name"
             }
           }
@@ -337,7 +337,7 @@
           "isEnumeration": true,
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "supercategory"
             }
           }
@@ -356,7 +356,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "id"
             }
           }
@@ -371,7 +371,7 @@
           },
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "category_id"
             }
           }
@@ -386,7 +386,7 @@
           },
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "image_id"
             }
           }
@@ -398,7 +398,7 @@
           "dataType": "ml:BoundingBox",
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "bbox"
             }
           }

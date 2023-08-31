@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -30,7 +29,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField"
+    "subField": "ml:subField",
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "Titanic",
@@ -57,7 +57,7 @@
           "dataType": "sc:Number",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "pclass"
             }
           }
@@ -68,7 +68,7 @@
           "dataType": "sc:Boolean",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "survived"
             }
           }
@@ -79,7 +79,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "name"
             }
           }
@@ -90,7 +90,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "sex"
             }
           }
@@ -101,7 +101,7 @@
           "dataType": "sc:Number",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "age"
             }
           }
@@ -112,7 +112,7 @@
           "dataType": "sc:Number",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "sibsp"
             }
           }
@@ -123,7 +123,7 @@
           "dataType": "sc:Number",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "parch"
             }
           }
@@ -134,7 +134,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "ticket"
             }
           }
@@ -145,7 +145,7 @@
           "dataType": "sc:Number",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "fare"
             }
           }
@@ -156,7 +156,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "cabin"
             }
           }
@@ -167,7 +167,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "embarked"
             }
           }
@@ -178,7 +178,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "boat"
             }
           }
@@ -189,7 +189,7 @@
           "dataType": "sc:Number",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "body"
             }
           }
@@ -200,7 +200,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "Titanic.arff",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "home.dest"
             }
           }
