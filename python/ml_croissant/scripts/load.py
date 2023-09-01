@@ -43,6 +43,7 @@ flags.DEFINE_bool(
 )
 
 flags.mark_flag_as_required("file")
+flags.mark_flag_as_required("record_set")
 
 
 FLAGS = flags.FLAGS

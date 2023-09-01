@@ -64,7 +64,9 @@ class Dataset:
             graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
 
     def records(self, record_set: str) -> Records:
-        """Accesses all records belonging to the RecordSet named `record_set`."""
+        """Accesses all records in `record_set` if it exists."""
+        if not any(rs for rs in self.metadata.record_sets if rs.name == record_set):
+            raise ValueError(f"did not find any record set with the name {record_set}.")
         return Records(self, record_set, debug=self.debug)
 
 
