@@ -4,8 +4,8 @@ import os
 
 from absl import logging
 from etils import epath
-import git
 
+from ml_croissant._src.core.optional import deps
 from ml_croissant._src.core.path import Path
 
 
@@ -30,7 +30,7 @@ def download_git_lfs_file(file: Path):
     # => working_dir = "/tmp/full"
     fullpath = os.fspath(file.fullpath)
     working_dir = os.fspath(file.filepath).rsplit(fullpath)[0]
-    repo = git.Git(working_dir)
+    repo = deps.git.Git(working_dir)
     logging.info(
         "Downloading git-lfs file: %s in working dir: %s", fullpath, working_dir
     )

@@ -21,6 +21,7 @@ dependencies = [
   "rdflib",
   "requests",
   "tqdm",
+  "toml",
 ]
 readme = "README.md"
 

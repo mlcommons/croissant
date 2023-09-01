@@ -12,6 +12,7 @@ import requests
 import tqdm
 
 from ml_croissant._src.core import constants
+from ml_croissant._src.core.optional import deps
 from ml_croissant._src.core.path import get_fullpath
 from ml_croissant._src.core.path import Path
 from ml_croissant._src.operation_graph.base_operation import Operation
@@ -139,10 +140,6 @@ class Download(Operation):
                 bar.update(size)
 
     def _download_from_git(self, filepath: epath.Path):
-        try:
-            import git
-        except ImportError as e:
-            raise ImportError("Use GitPython with: `pip install GitPython`.") from e
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
         password = os.environ.get(constants.CROISSANT_GIT_PASSWORD)
         # GIT_LFS_SKIP_SMUDGE allows to not download git-lfs files by default. Those
@@ -150,7 +147,7 @@ class Download(Operation):
         os.environ["GIT_LFS_SKIP_SMUDGE"] = "1"
         url, refs = extract_git_info(self.node.content_url)
         url = insert_credentials(url, username, password)
-        repo = git.Repo.clone_from(url, filepath)
+        repo = deps.git.Repo.clone_from(url, filepath)
         # Hugging Face uses https://git-scm.com/book/en/v2/Git-Internals-Git-References.
         if refs:
             branch_name = f"branch_{time.time()}"  # Branch name with no conflict
