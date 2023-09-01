@@ -31,11 +31,10 @@ def test_make_context():
     assert make_context(foo="bar") == {
         "@language": "en",
         "@vocab": "https://schema.org/",
-        "applyTransform": "ml:applyTransform",
         "csvColumn": "ml:csvColumn",
         "data": {"@id": "ml:data", "@type": "@json"},
-        "dataExtraction": "ml:dataExtraction",
         "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
+        "extract": "ml:extract",
         "field": "ml:field",
         "fileProperty": "ml:fileProperty",
         "format": "ml:format",
@@ -54,5 +53,6 @@ def test_make_context():
         "separator": "ml:separator",
         "source": "ml:source",
         "subField": "ml:subField",
+        "transform": "ml:transform",
         "foo": "bar",
     }

@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -30,7 +29,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField"
+    "subField": "ml:subField",
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "c4",
@@ -68,7 +68,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "text"
             }
           }
@@ -80,7 +80,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "timestamp"
             }
           }
@@ -92,7 +92,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "url"
             }
           }
@@ -111,7 +111,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "text"
             }
           }
@@ -123,7 +123,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "timestamp"
             }
           }
@@ -135,7 +135,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "url"
             }
           }
@@ -154,7 +154,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "text"
             }
           }
@@ -166,7 +166,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "timestamp"
             }
           }
@@ -178,7 +178,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "url"
             }
           }
@@ -197,7 +197,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "text"
             }
           }
@@ -209,7 +209,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "timestamp"
             }
           }
@@ -221,7 +221,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "url"
             }
           }

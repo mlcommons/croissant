@@ -2,13 +2,12 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -26,7 +25,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField"
+    "subField": "ml:subField",
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "mydataset",
@@ -56,7 +56,7 @@
           "name": "first-field",
           "dataType": "sc:Integer",
           "source": {
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "a-column"
             },
             "distribution": "a-csv-table"

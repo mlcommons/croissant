@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -30,7 +29,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField"
+    "subField": "ml:subField",
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "Mini-PASS",
@@ -84,17 +84,17 @@
           "dataType": "sc:Text",
           "references": {
             "distribution": "metadata",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "hash"
             }
           },
           "source": {
             "distribution": "image-files",
-            "applyTransform": {
-              "regex": "([^\\/]*)\\.jpg"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "([^\\/]*)\\.jpg"
             }
           }
         },
@@ -105,7 +105,7 @@
           "dataType": "sc:ImageObject",
           "source": {
             "distribution": "image-files",
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "content"
             }
           }
@@ -117,7 +117,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "metadata",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "unickname"
             }
           }
@@ -134,7 +134,7 @@
               "dataType": "sc:Float",
               "source": {
                 "distribution": "metadata",
-                "dataExtraction": {
+                "extract": {
                   "csvColumn": "latitude"
                 }
               }
@@ -145,7 +145,7 @@
               "dataType": "sc:Float",
               "source": {
                 "distribution": "metadata",
-                "dataExtraction": {
+                "extract": {
                   "csvColumn": "longitude"
                 }
               }
@@ -159,11 +159,11 @@
           "dataType": "sc:Date",
           "source": {
             "distribution": "metadata",
-            "applyTransform": {
-              "format": "%Y-%m-%d %H:%M:%S.%f"
-            },
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "datetaken"
+            },
+            "transform": {
+              "format": "%Y-%m-%d %H:%M:%S.%f"
             }
           }
         }

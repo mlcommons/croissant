@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -30,7 +29,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "source": "ml:source",
-    "subField": "ml:subField"
+    "subField": "ml:subField",
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "Movielens-25M",
@@ -99,7 +99,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "movies-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "movieId"
             }
           }
@@ -111,7 +111,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "movies-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "title"
             }
           }
@@ -124,11 +124,11 @@
           "repeated": "true",
           "source": {
             "distribution": "movies-table",
-            "applyTransform": {
-              "separator": "|"
-            },
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "genres"
+            },
+            "transform": {
+              "separator": "|"
             }
           }
         }
@@ -148,7 +148,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "ratings-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "userId"
             }
           }
@@ -162,7 +162,7 @@
           },
           "source": {
             "distribution": "ratings-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "movieId"
             }
           }
@@ -174,7 +174,7 @@
           "dataType": "sc:Float",
           "source": {
             "distribution": "ratings-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "rating"
             }
           }
@@ -185,7 +185,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "ratings-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "timestamp"
             }
           }
@@ -207,7 +207,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "tags-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "userId"
             }
           }
@@ -221,7 +221,7 @@
           },
           "source": {
             "distribution": "tags-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "movieId"
             }
           }
@@ -233,7 +233,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "tags-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "tag"
             }
           }
@@ -244,7 +244,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "tags-table",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "timestamp"
             }
           }

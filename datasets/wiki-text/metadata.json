@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -31,6 +30,7 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
+    "transform": "ml:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -76,7 +76,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "splits.csv",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "name"
             }
           }
@@ -91,7 +91,7 @@
           ],
           "source": {
             "distribution": "splits.csv",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "url"
             }
           }
@@ -111,17 +111,17 @@
           "repeated": "true",
           "source": {
             "distribution": "token-files",
-            "applyTransform": [
+            "extract": {
+              "fileProperty": "content"
+            },
+            "transform": [
               {
                 "replace": "\\n/<eos>"
               },
               {
                 "separator": " "
               }
-            ],
-            "dataExtraction": {
-              "fileProperty": "content"
-            }
+            ]
           }
         },
         {
@@ -137,11 +137,11 @@
           },
           "source": {
             "distribution": "token-files",
-            "applyTransform": {
-              "regex": "^wiki\\.(train|valid|test)\\.tokens$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^wiki\\.(train|valid|test)\\.tokens$"
             }
           }
         }

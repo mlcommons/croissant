@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -31,6 +30,7 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
+    "transform": "ml:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -59,7 +59,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "books.csv",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "Title"
             }
           }
@@ -71,7 +71,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "books.csv",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "Author"
             }
           }
@@ -86,7 +86,7 @@
           ],
           "source": {
             "distribution": "books.csv",
-            "dataExtraction": {
+            "extract": {
               "csvColumn": "Split"
             }
           }

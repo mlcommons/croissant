@@ -2,17 +2,16 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "applyTransform": "ml:applyTransform",
     "csvColumn": "ml:csvColumn",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
-    "dataExtraction": "ml:dataExtraction",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
     "format": "ml:format",
@@ -31,6 +30,7 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
+    "transform": "ml:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -114,7 +114,7 @@
           "dataType": "sc:Text",
           "source": {
             "distribution": "image-files",
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "filename"
             }
           }
@@ -126,7 +126,7 @@
           "dataType": "sc:ImageObject",
           "source": {
             "distribution": "image-files",
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "content"
             }
           }
@@ -143,11 +143,11 @@
           },
           "source": {
             "distribution": "image-files",
-            "applyTransform": {
-              "regex": "^(train|val|test)2014/.*\\.jpg$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(train|val|test)2014/.*\\.jpg$"
             }
           }
         }
@@ -165,7 +165,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "caption_annotations-files",
-            "dataExtraction": {
+            "extract": {
               "jsonPath": "$.annotations[*].id"
             }
           }
@@ -177,7 +177,7 @@
           "dataType": "sc:Integer",
           "source": {
             "distribution": "caption_annotations-files",
-            "dataExtraction": {
+            "extract": {
               "jsonPath": "$.annotations[*].image_id"
             }
           }
@@ -192,7 +192,7 @@
           ],
           "source": {
             "distribution": "caption_annotations-files",
-            "dataExtraction": {
+            "extract": {
               "jsonPath": "$.annotations[*].caption"
             }
           }
@@ -209,11 +209,11 @@
           },
           "source": {
             "distribution": "caption_annotations-files",
-            "applyTransform": {
-              "regex": ".*_(val|train)2014\\.json$"
-            },
-            "dataExtraction": {
+            "extract": {
               "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": ".*_(val|train)2014\\.json$"
             }
           }
         }

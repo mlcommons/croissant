@@ -32,7 +32,7 @@ def test_source_bool():
         [
             {
                 constants.ML_COMMONS_FIELD: "token-files/content",
-                constants.ML_COMMONS_APPLY_TRANSFORM: [
+                constants.ML_COMMONS_TRANSFORM: [
                     {constants.ML_COMMONS_REPLACE: "\\n/<eos>"},
                     {constants.ML_COMMONS_SEPARATOR: " "},
                 ],
@@ -50,7 +50,7 @@ def test_source_bool():
             [
                 {
                     constants.ML_COMMONS_FIELD: "token-files/content",
-                    constants.ML_COMMONS_APPLY_TRANSFORM: [
+                    constants.ML_COMMONS_TRANSFORM: [
                         {constants.ML_COMMONS_REPLACE: "\\n/<eos>"},
                         {constants.ML_COMMONS_SEPARATOR: " "},
                     ],
@@ -68,13 +68,13 @@ def test_source_bool():
         [
             {
                 constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
-                constants.ML_COMMONS_APPLY_TRANSFORM: [
+                constants.ML_COMMONS_TRANSFORM: [
                     {
                         constants.ML_COMMONS_REPLACE: "\\n/<eos>",
                         constants.ML_COMMONS_SEPARATOR: " ",
                     }
                 ],
-                constants.ML_COMMONS_DATA_EXTRACTION: {
+                constants.ML_COMMONS_EXTRACT: {
                     constants.ML_COMMONS_CSV_COLUMN: "my-column"
                 },
             },
@@ -146,7 +146,7 @@ def test_declaring_multiple_data_extraction_in_one():
     issues = Issues()
     json_ld = {
         constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
-        constants.ML_COMMONS_DATA_EXTRACTION: {
+        constants.ML_COMMONS_EXTRACT: {
             "@id": "jsonld-id",
             constants.ML_COMMONS_CSV_COLUMN: "csv_column",
             constants.ML_COMMONS_JSON_PATH: "json_path",
@@ -159,7 +159,7 @@ def test_declaring_multiple_data_extraction_in_one():
     )
     assert len(issues.errors) == 1
     assert (
-        "http://mlcommons.org/schema/dataExtraction should have one of the following"
+        "http://mlcommons.org/schema/extract should have one of the following"
         " properties"
         in list(issues.errors)[0]
     )
@@ -169,7 +169,7 @@ def test_declaring_wrong_file_property():
     issues = Issues()
     json_ld = {
         constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
-        constants.ML_COMMONS_DATA_EXTRACTION: {
+        constants.ML_COMMONS_EXTRACT: {
             constants.ML_COMMONS_FILE_PROPERTY: "foo",
         },
     }
