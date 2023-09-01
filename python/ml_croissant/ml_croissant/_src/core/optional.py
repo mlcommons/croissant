@@ -60,6 +60,24 @@ class OptionalDependencies(object):
     lazily imported here.
 
     Warning: we haven't found a way to properly type the return of each property.
+
+    Usage:
+
+    - Add a new optional dependency below:
+
+    ```python
+    @cached_class_property
+    def foo(cls):
+        return _try_import("goo")
+    ```
+
+    - Use this new dependency:
+
+    ```python
+    from ml_croissant._src.core.optional import deps
+
+    foo = deps.foo  # use the `foo` module here in your code
+    ```
     """
 
     @cached_class_property
