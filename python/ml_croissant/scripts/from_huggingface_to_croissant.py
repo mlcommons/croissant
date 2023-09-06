@@ -80,6 +80,8 @@ def _get_data_type(feature: datasets.Features) -> str:
         return "sc:Float"
     elif feature_type in ["int32", "int64"]:
         return "sc:Integer"
+    elif feature_type in "PIL.Image.Image":
+        return "sc:ImageObject"
     else:
         raise ValueError(f"Cannot convert the feature {feature} to Croissant.")
 
