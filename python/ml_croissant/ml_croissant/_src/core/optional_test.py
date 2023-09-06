@@ -11,7 +11,7 @@ from ml_croissant._src.core.optional import list_optional_deps
 
 
 def test_list_optional_deps():
-    assert list(list_optional_deps().keys()) == ["dev", "git", "parquet"]
+    assert list(list_optional_deps().keys()) == ["dev", "git", "image", "parquet"]
 
 
 @pytest.mark.parametrize(
@@ -30,3 +30,5 @@ def test_explicit_error_message():
             _try_import("pyarrow")
         with pytest.raises(ImportError, match="pip install foo"):
             _try_import("foo")
+        with pytest.raises(ImportError, match="pip install ml_croissant\\[git\\]"):
+            _try_import("git", package_name="GitPython")

@@ -31,6 +31,7 @@ dev = [
   "datasets",
   "flake8-docstrings",
   "ml_croissant[git]",
+  "ml_croissant[image]",
   "ml_croissant[parquet]",
   "pyflakes",
   "pylint",
@@ -38,6 +39,7 @@ dev = [
   "pytype",
 ]
 git = ["GitPython"]
+image = ["Pillow"]
 parquet = ["pyarrow"]
 
 [tool.black]

@@ -63,6 +63,18 @@
       "field": [
         {
           "@type": "ml:Field",
+          "name": "image",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "image"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
           "name": "label",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Integer",

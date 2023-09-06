@@ -15,15 +15,22 @@ def list_optional_deps() -> dict[str, str]:
     return toml.load(toml_file).get("project", {}).get("optional-dependencies", {})
 
 
-def _try_import(module_name):
-    """Tries importing a module, with an informative error message on failure."""
+def _try_import(module_name: str, package_name: str | None = None):
+    """Tries importing a module, with an informative error message on failure.
+
+    Args:
+        module_name: The name of the module in Python, e.g.: "import git".
+        package_name: The name of the package on PyPI, e.g.: "pip install GitPython".
+    """
+    if package_name is None:
+        package_name = module_name
     try:
         return importlib.import_module(module_name)
     except ImportError as exception:
         optional_deps = list_optional_deps()
-        installs = f"`pip install {module_name}`"
+        installs = f"`pip install {package_name}`"
         for sub_module, deps in optional_deps.items():
-            if module_name in deps:
+            if package_name in deps:
                 installs = f"`pip install ml_croissant[{sub_module}]`"
         error = (
             f"Failed importing {module_name}. This likely means that the dataset"
@@ -83,7 +90,12 @@ class OptionalDependencies(object):
     @cached_class_property
     def git(cls) -> types.ModuleType:
         """Cached git module."""
-        return _try_import("git")
+        return _try_import("git", package_name="GitPython")
+
+    @cached_class_property
+    def PIL_Image(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+        """Cached git module."""
+        return _try_import("PIL.Image", package_name="Pillow")
 
 
 deps = OptionalDependencies

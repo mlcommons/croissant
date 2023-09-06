@@ -1,13 +1,16 @@
 """Field operation module."""
 
 import dataclasses
+import io
 from typing import Any
 
 from etils import epath
 import pandas as pd
 from rdflib import term
 
+from ml_croissant._src.core import constants
 from ml_croissant._src.core.data_types import EXPECTED_DATA_TYPES
+from ml_croissant._src.core.optional import deps
 from ml_croissant._src.operation_graph.base_operation import Operation
 from ml_croissant._src.structure_graph.nodes.field import Field
 from ml_croissant._src.structure_graph.nodes.source import apply_transforms_fn
@@ -49,6 +52,12 @@ class ReadField(Operation):
         data_type = self.find_data_type(self.node.actual_data_type)
         if pd.isna(value):
             return value
+        elif data_type == constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
+            # TODO(https://github.com/mlcommons/croissant/issues/199): this is
+            # temporary.For now, we only accept dictionary {"bytes": b"\x89PNG\r\n..."}.
+            if "bytes" not in value:
+                raise ValueError("reading images expects a dict with a `bytes` key.")
+            return deps.PIL_Image.open(io.BytesIO(value["bytes"]))
         elif data_type == pd.Timestamp:
             # The date format is the first format found in the field's source.
             format = next(
