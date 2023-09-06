@@ -103,6 +103,7 @@ def test_source_parses_list(json_ld, expected_source):
                 [
                     'Transform "this is not a list" should be a dict with the keys'
                     " http://mlcommons.org/schema/format,"
+                    " http://mlcommons.org/schema/jsonPath,"
                     " http://mlcommons.org/schema/regex,"
                     " http://mlcommons.org/schema/replace,"
                     " http://mlcommons.org/schema/separator"
@@ -115,6 +116,7 @@ def test_source_parses_list(json_ld, expected_source):
                 [
                     "Transform \"{'not': 'the right keys'}\" should be a dict with at"
                     " least one key in http://mlcommons.org/schema/format,"
+                    " http://mlcommons.org/schema/jsonPath,"
                     " http://mlcommons.org/schema/regex,"
                     " http://mlcommons.org/schema/replace,"
                     " http://mlcommons.org/schema/separator"
@@ -197,6 +199,11 @@ def test_declaring_wrong_file_property():
             "foo1234",
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             "foo1234",
+        ],
+        [
+            {"one": {"two": "expected_value"}, "three": "non_expected_value"},
+            Source(transforms=[Transform(json_path="one.two")]),
+            "expected_value",
         ],
     ],
 )

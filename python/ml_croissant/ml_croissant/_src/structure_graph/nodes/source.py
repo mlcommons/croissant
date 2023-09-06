@@ -68,6 +68,7 @@ class Transform:
     """
 
     format: str | None = None
+    json_path: str | None = None
     regex: str | None = None
     replace: str | None = None
     separator: str | None = None
@@ -77,6 +78,7 @@ class Transform:
         return remove_empty_values(
             {
                 "format": self.format,
+                "jsonPath": self.json_path,
                 "regex": self.regex,
                 "replace": self.replace,
                 "separator": self.separator,
@@ -92,6 +94,7 @@ class Transform:
         for transform in jsonld:
             possible_keys = [
                 constants.ML_COMMONS_FORMAT,
+                constants.ML_COMMONS_JSON_PATH,
                 constants.ML_COMMONS_REGEX,
                 constants.ML_COMMONS_REPLACE,
                 constants.ML_COMMONS_SEPARATOR,
@@ -103,11 +106,13 @@ class Transform:
                 )
                 continue
             format = transform.get(constants.ML_COMMONS_FORMAT)
+            json_path = transform.get(constants.ML_COMMONS_JSON_PATH)
             regex = transform.get(constants.ML_COMMONS_REGEX)
             replace = transform.get(constants.ML_COMMONS_REPLACE)
             separator = transform.get(constants.ML_COMMONS_SEPARATOR)
             if (
                 format is None
+                and json_path is None
                 and regex is None
                 and replace is None
                 and separator is None
@@ -120,6 +125,7 @@ class Transform:
             transforms.append(
                 Transform(
                     format=format,
+                    json_path=json_path,
                     regex=regex,
                     replace=replace,
                     separator=separator,
@@ -305,7 +311,7 @@ class Source:
                 )
 
 
-def _apply_transform_fn(value: str, transform: Transform) -> str:
+def _apply_transform_fn(value: Any, transform: Transform) -> str:
     """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
@@ -316,6 +322,9 @@ def _apply_transform_fn(value: str, transform: Transform) -> str:
         for group in match.groups():
             if group is not None:
                 return group
+    elif transform.json_path is not None:
+        jsonpath_expression = jsonpath_rw.parse(transform.json_path)
+        return next(match.value for match in jsonpath_expression.find(value))
     return value
 
 
