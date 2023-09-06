@@ -55,7 +55,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd1",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -66,7 +66,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd2",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -77,7 +77,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd3",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -88,7 +88,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd4",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -99,7 +99,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd5",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -110,7 +110,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd6",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -121,7 +121,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd7",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -132,7 +132,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd8",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -143,7 +143,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd9",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -154,7 +154,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd10",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -165,7 +165,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd11",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -176,7 +176,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd12",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -187,7 +187,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd13",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -198,7 +198,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd14",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -209,7 +209,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd15",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -220,7 +220,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd16",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -231,7 +231,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd17",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -242,7 +242,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd18",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -253,7 +253,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd19",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -264,7 +264,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd20",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -275,7 +275,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd21",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -286,7 +286,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd22",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -297,7 +297,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd25",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -308,7 +308,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd26",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -319,7 +319,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd27",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -330,7 +330,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd28",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -341,7 +341,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd29",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -352,7 +352,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd30",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -363,7 +363,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd31",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -374,7 +374,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd32",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -385,7 +385,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd33",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -396,7 +396,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd34",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -407,7 +407,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd35",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -418,7 +418,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd36",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -429,7 +429,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd37",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -440,7 +440,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd38",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -451,7 +451,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd39",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -462,7 +462,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd40",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -473,7 +473,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd41",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -484,7 +484,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd42",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -495,7 +495,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd43",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -506,7 +506,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd44",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -517,7 +517,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd45",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -528,7 +528,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd46",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -539,7 +539,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd49",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -550,7 +550,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd50",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -561,7 +561,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd51",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -572,7 +572,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd52",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -583,7 +583,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd53",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -594,7 +594,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd54",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -605,7 +605,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd55",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -616,7 +616,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd56",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -627,7 +627,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd57",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -638,7 +638,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd58",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -649,7 +649,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd59",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -660,7 +660,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd60",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -671,7 +671,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd61",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -682,7 +682,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd62",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -693,7 +693,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd63",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -704,7 +704,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd64",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -715,7 +715,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd65",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -726,7 +726,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd66",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -737,7 +737,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd67",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -748,7 +748,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd68",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -759,7 +759,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd69",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -770,7 +770,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd70",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -781,7 +781,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd73",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -792,7 +792,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd74",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -803,7 +803,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd75",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -814,7 +814,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd76",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -825,7 +825,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd77",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -836,7 +836,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd78",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -847,7 +847,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd79",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -858,7 +858,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd80",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -869,7 +869,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd81",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -880,7 +880,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd82",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -891,7 +891,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd83",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -902,7 +902,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd84",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -913,7 +913,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd85",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -924,7 +924,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd86",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -935,7 +935,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd87",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -946,7 +946,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd88",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -957,7 +957,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd89",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -968,7 +968,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd90",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -979,7 +979,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd91",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -990,7 +990,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd92",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1001,7 +1001,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd93",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1012,7 +1012,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd94",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1023,7 +1023,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd97",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1034,7 +1034,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd98",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1045,7 +1045,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd99",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1056,7 +1056,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd100",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1067,7 +1067,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd101",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1078,7 +1078,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd102",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1089,7 +1089,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd103",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1100,7 +1100,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd104",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1111,7 +1111,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd105",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1122,7 +1122,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd106",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1133,7 +1133,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd107",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1144,7 +1144,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd108",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1155,7 +1155,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd109",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1166,7 +1166,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd110",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1177,7 +1177,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd111",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1188,7 +1188,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd112",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1199,7 +1199,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd113",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1210,7 +1210,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd114",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1221,7 +1221,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd115",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1232,7 +1232,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd116",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1243,7 +1243,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd117",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1254,7 +1254,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd118",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1265,7 +1265,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd121",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1276,7 +1276,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd122",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1287,7 +1287,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd123",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1298,7 +1298,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd124",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1309,7 +1309,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd125",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1320,7 +1320,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd126",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1331,7 +1331,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd127",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1342,7 +1342,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd128",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1353,7 +1353,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd129",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1364,7 +1364,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd130",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1375,7 +1375,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd131",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1386,7 +1386,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd132",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1397,7 +1397,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd133",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1408,7 +1408,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd134",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1419,7 +1419,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd135",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1430,7 +1430,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd136",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1441,7 +1441,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd137",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1452,7 +1452,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd138",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1463,7 +1463,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd139",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1474,7 +1474,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd140",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1485,7 +1485,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd141",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1496,7 +1496,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd145",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1507,7 +1507,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd146",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1518,7 +1518,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd147",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1529,7 +1529,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd148",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1540,7 +1540,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd149",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1551,7 +1551,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd150",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1562,7 +1562,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd151",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1573,7 +1573,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd152",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1584,7 +1584,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd153",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1595,7 +1595,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd154",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1606,7 +1606,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd155",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1617,7 +1617,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd156",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1628,7 +1628,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd157",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1639,7 +1639,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd158",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1650,7 +1650,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd159",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1661,7 +1661,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd160",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1672,7 +1672,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd161",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1683,7 +1683,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd162",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1694,7 +1694,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd163",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1705,7 +1705,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd164",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1716,7 +1716,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd165",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1727,7 +1727,7 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd166",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1738,7 +1738,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster1",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1749,7 +1749,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster2",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1760,7 +1760,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster3",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1771,7 +1771,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster4",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1782,7 +1782,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster5",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1793,7 +1793,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster6",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1804,7 +1804,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster7",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1815,7 +1815,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster8",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1826,7 +1826,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster9",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1837,7 +1837,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster10",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1848,7 +1848,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster11",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1859,7 +1859,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster12",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1870,7 +1870,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster13",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1881,7 +1881,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster14",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1892,7 +1892,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster15",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1903,7 +1903,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster16",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1914,7 +1914,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster17",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1925,7 +1925,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster18",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1936,7 +1936,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster19",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1947,7 +1947,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster20",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1958,7 +1958,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster21",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1969,7 +1969,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster22",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1980,7 +1980,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster23",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -1991,7 +1991,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster24",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2002,7 +2002,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster25",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2013,7 +2013,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster26",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2024,7 +2024,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster27",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2035,7 +2035,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster28",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2046,7 +2046,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster29",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2057,7 +2057,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster30",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2068,7 +2068,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster31",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2079,7 +2079,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster32",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2090,7 +2090,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster33",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2101,7 +2101,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster34",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2112,7 +2112,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster35",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2123,7 +2123,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster36",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2134,7 +2134,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster37",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2145,7 +2145,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster38",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2156,7 +2156,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster39",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2167,7 +2167,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster40",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2178,7 +2178,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster41",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2189,7 +2189,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster42",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2200,7 +2200,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster43",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2211,7 +2211,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster44",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2222,7 +2222,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster45",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2233,7 +2233,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster46",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2244,7 +2244,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster47",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2255,7 +2255,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster48",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2266,7 +2266,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster49",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2277,7 +2277,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster50",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2288,7 +2288,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster51",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2299,7 +2299,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster52",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2310,7 +2310,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster53",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2321,7 +2321,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster54",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2332,7 +2332,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster55",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2343,7 +2343,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster56",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2354,7 +2354,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster57",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2365,7 +2365,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster59",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2376,7 +2376,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster60",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2387,7 +2387,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster61",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2398,7 +2398,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster62",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2409,7 +2409,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster63",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2420,7 +2420,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster64",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2431,7 +2431,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster65",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2442,7 +2442,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster66",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2453,7 +2453,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster67",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2464,7 +2464,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster68",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2475,7 +2475,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster69",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2486,7 +2486,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster70",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2497,7 +2497,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster71",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2508,7 +2508,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster72",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2519,7 +2519,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster73",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2530,7 +2530,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster74",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2541,7 +2541,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster75",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2552,7 +2552,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster76",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2563,7 +2563,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster78",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2574,7 +2574,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster79",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2585,7 +2585,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster80",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2596,7 +2596,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster81",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2607,7 +2607,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster82",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2618,7 +2618,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster83",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2629,7 +2629,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster84",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2640,7 +2640,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster85",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2651,7 +2651,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster86",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2662,7 +2662,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster87",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2673,7 +2673,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster88",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2684,7 +2684,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster89",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2695,7 +2695,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster90",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2706,7 +2706,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster91",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2717,7 +2717,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster92",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2728,7 +2728,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster93",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2739,7 +2739,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster94",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2750,7 +2750,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster95",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2761,7 +2761,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster96",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2772,7 +2772,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster97",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2783,7 +2783,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster98",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2794,7 +2794,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster99",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2805,7 +2805,7 @@
         {
           "@type": "ml:Field",
           "name": "cluster100",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2816,7 +2816,7 @@
         {
           "@type": "ml:Field",
           "name": "segments",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2827,7 +2827,7 @@
         {
           "@type": "ml:Field",
           "name": "mean_rect_width",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2838,7 +2838,7 @@
         {
           "@type": "ml:Field",
           "name": "std_rect_width",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2849,7 +2849,7 @@
         {
           "@type": "ml:Field",
           "name": "mean_rect_height",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2860,7 +2860,7 @@
         {
           "@type": "ml:Field",
           "name": "std_rect_height",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2871,7 +2871,7 @@
         {
           "@type": "ml:Field",
           "name": "mean_rect_volume",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
@@ -2882,7 +2882,7 @@
         {
           "@type": "ml:Field",
           "name": "std_rect_volume",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {

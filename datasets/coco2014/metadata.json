@@ -141,7 +141,7 @@
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
-            "sc:Url",
+            "sc:URL",
             "wd:Q3985153"
           ]
         }

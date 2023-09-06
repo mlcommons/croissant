@@ -54,7 +54,7 @@
         {
           "@type": "ml:Field",
           "name": "pclass",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
@@ -98,7 +98,7 @@
         {
           "@type": "ml:Field",
           "name": "age",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
@@ -109,7 +109,7 @@
         {
           "@type": "ml:Field",
           "name": "sibsp",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
@@ -120,7 +120,7 @@
         {
           "@type": "ml:Field",
           "name": "parch",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
@@ -142,7 +142,7 @@
         {
           "@type": "ml:Field",
           "name": "fare",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
@@ -186,7 +186,7 @@
         {
           "@type": "ml:Field",
           "name": "body",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "Titanic.arff",
             "extract": {

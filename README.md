@@ -65,7 +65,7 @@ Here is an extremely simple example of the croissant format, with comments showi
           "@type": "ml:Field",
           "name": "age",
           "description": "The second column contains the age.",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "references": {
             "dataExtraction": {
               "csvColumn": "age"

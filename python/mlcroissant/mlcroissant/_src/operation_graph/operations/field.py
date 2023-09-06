@@ -6,10 +6,8 @@ from typing import Any
 
 from etils import epath
 import pandas as pd
-from rdflib import term
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -23,33 +21,8 @@ class ReadField(Operation):
 
     node: Field
 
-    def find_data_type(self, data_types: list[str] | tuple[str, ...] | str) -> type:
-        """Finds the data type by expanding its name from the namespace manager.
-
-        In some cases, we specify a list of data types. In that case, we take the first
-        one in the list that can be parsed.
-        """
-        if isinstance(data_types, (list, tuple)):
-            for data_type in data_types:
-                try:
-                    return self.find_data_type(data_type)
-                except ValueError:
-                    continue
-        elif isinstance(data_types, str):
-            data_type = term.URIRef(data_types)
-            if data_type not in EXPECTED_DATA_TYPES:
-                raise ValueError(
-                    f'Unknown data type "{data_type}" found for "{self.node.uid}".'
-                    f' Possible types: {", ".join(EXPECTED_DATA_TYPES)}.'
-                )
-            return EXPECTED_DATA_TYPES[data_type]
-        raise ValueError(
-            f'No data type found for "{self.node.uid}". Possible types:'
-            f' {", ".join(EXPECTED_DATA_TYPES)}'
-        )
-
     def _cast_value(self, value: Any):
-        data_type = self.find_data_type(self.node.actual_data_type)
+        data_type = self.node.data_type
         if pd.isna(value):
             return value
         elif data_type == constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:

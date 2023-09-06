@@ -123,7 +123,7 @@ class Metadata(Node):
         fields = [node for node in self.graph.nodes if isinstance(node, Field)]
         # Check all fields have a data type: either on the field, on a parent.
         for field in fields:
-            field.actual_data_type
+            field.data_type
 
     @classmethod
     def from_file(cls, issues: Issues, file: epath.PathLike) -> Metadata:

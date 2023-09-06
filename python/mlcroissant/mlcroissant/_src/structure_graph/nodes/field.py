@@ -5,10 +5,11 @@ from __future__ import annotations
 import dataclasses
 
 from etils import epath
+from rdflib import term
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.data_types import shorten_data_type
+from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -52,8 +53,10 @@ class Field(Node):
     """Nodes to describe a dataset Field."""
 
     description: str | None = None
-    # `data_type` is different than `node.actual_data_type`. See `actual_data_type`.
-    data_type: str | list[str] | None = None
+    # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
+    data_types: str | list[str] | list[term.URIRef] = dataclasses.field(
+        default_factory=list
+    )
     is_enumeration: bool | None = None
     name: str = ""
     parent_field: ParentField | None = None
@@ -68,24 +71,42 @@ class Field(Node):
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
+        self._standardize_data_types()
+
+    def _standardize_data_types(self):
+        """Converts data_types to a list of rdflib.URIRef."""
+        if self.data_types is None:
+            self.data_types = []
+        if not isinstance(self.data_types, list):
+            self.data_types = [self.data_types]
+        self.data_types = [term.URIRef(data_type) for data_type in self.data_types]
 
     @property
-    def actual_data_type(self) -> str | list[str] | None:
+    def data_type(self) -> type | term.URIRef | None:
         """Recursively retrieves the actual data type of the node.
 
         The data_type can be either directly on the node (`data_type`) or on one
         of the parent fields.
+
+        `data_types` may contain semantic meaning, but `data_type` is the actual
+        programmatic data type (i.e., bool, str, etc).
         """
-        if self.data_type is not None:
-            return self.data_type
-        parent = next(self.graph.predecessors(self), None)
-        if parent is None or not isinstance(parent, Field):
+        if self.sub_fields:
+            return None
+        if self.data_types is not None:
+            for data_type in self.data_types:
+                if data_type in EXPECTED_DATA_TYPES:
+                    return EXPECTED_DATA_TYPES[data_type]
+        predecessor = next(
+            (p for p in self.graph.predecessors(self) if isinstance(p, Field)), None
+        )
+        if predecessor is None:
             self.add_error(
                 f"The field does not specify any {constants.ML_COMMONS_DATA_TYPE},"
-                " neither does any of its predecessor."
+                f" neither does any of its predecessor. Got: {self.data_types}"
             )
             return None
-        return parent.actual_data_type
+        return predecessor.data_type
 
     @property
     def data(self) -> str | None:
@@ -96,7 +117,9 @@ class Field(Node):
 
     def to_json(self) -> Json:
         """Converts the `Field` to JSON."""
-        data_type = shorten_data_type(self.rdf, self.data_type)
+        data_type = [self.rdf.shorten_value(data_type) for data_type in self.data_types]
+        if len(data_type) == 1:
+            data_type = data_type[0]
         parent_field = self.parent_field.to_json() if self.parent_field else None
         return remove_empty_values(
             {
@@ -132,14 +155,14 @@ class Field(Node):
         references = Source.from_jsonld(issues, references_jsonld)
         source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
         source = Source.from_jsonld(issues, source_jsonld)
-        data_type = field.get(constants.ML_COMMONS_DATA_TYPE, {})
+        data_types = field.get(constants.ML_COMMONS_DATA_TYPE, [])
         is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
-        if isinstance(data_type, dict):
-            data_type = data_type.get("@id")
-        elif isinstance(data_type, list):
-            data_type = [d.get("@id") for d in data_type]
+        if isinstance(data_types, dict):
+            data_types = [data_types.get("@id")]
+        elif isinstance(data_types, list):
+            data_types = [d.get("@id") for d in data_types]
         else:
-            data_type = None
+            data_types = []
         field_name = field.get(constants.SCHEMA_ORG_NAME, "")
         if context.field_name is None:
             context.field_name = field_name
@@ -161,7 +184,7 @@ class Field(Node):
             context=context,
             folder=folder,
             description=field.get(constants.SCHEMA_ORG_DESCRIPTION),
-            data_type=data_type,
+            data_types=data_types,
             is_enumeration=is_enumeration,
             name=field_name,
             parent_field=parent_field,
