@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -85,7 +85,7 @@
           "references": {
             "distribution": "metadata",
             "extract": {
-              "csvColumn": "hash"
+              "column": "hash"
             }
           },
           "source": {
@@ -118,7 +118,7 @@
           "source": {
             "distribution": "metadata",
             "extract": {
-              "csvColumn": "unickname"
+              "column": "unickname"
             }
           }
         },
@@ -135,7 +135,7 @@
               "source": {
                 "distribution": "metadata",
                 "extract": {
-                  "csvColumn": "latitude"
+                  "column": "latitude"
                 }
               }
             },
@@ -146,7 +146,7 @@
               "source": {
                 "distribution": "metadata",
                 "extract": {
-                  "csvColumn": "longitude"
+                  "column": "longitude"
                 }
               }
             }
@@ -160,7 +160,7 @@
           "source": {
             "distribution": "metadata",
             "extract": {
-              "csvColumn": "datetaken"
+              "column": "datetaken"
             },
             "transform": {
               "format": "%Y-%m-%d %H:%M:%S.%f"

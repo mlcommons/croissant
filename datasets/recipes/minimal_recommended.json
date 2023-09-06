@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -60,7 +60,7 @@
           "references": {
             "distribution": "minimal.csv",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -72,7 +72,7 @@
           "references": {
             "distribution": "minimal.csv",
             "extract": {
-              "csvColumn": "age"
+              "column": "age"
             }
           }
         }

@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -59,7 +59,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd1"
+              "column": "audio.ssd1"
             }
           }
         },
@@ -70,7 +70,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd2"
+              "column": "audio.ssd2"
             }
           }
         },
@@ -81,7 +81,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd3"
+              "column": "audio.ssd3"
             }
           }
         },
@@ -92,7 +92,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd4"
+              "column": "audio.ssd4"
             }
           }
         },
@@ -103,7 +103,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd5"
+              "column": "audio.ssd5"
             }
           }
         },
@@ -114,7 +114,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd6"
+              "column": "audio.ssd6"
             }
           }
         },
@@ -125,7 +125,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd7"
+              "column": "audio.ssd7"
             }
           }
         },
@@ -136,7 +136,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd8"
+              "column": "audio.ssd8"
             }
           }
         },
@@ -147,7 +147,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd9"
+              "column": "audio.ssd9"
             }
           }
         },
@@ -158,7 +158,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd10"
+              "column": "audio.ssd10"
             }
           }
         },
@@ -169,7 +169,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd11"
+              "column": "audio.ssd11"
             }
           }
         },
@@ -180,7 +180,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd12"
+              "column": "audio.ssd12"
             }
           }
         },
@@ -191,7 +191,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd13"
+              "column": "audio.ssd13"
             }
           }
         },
@@ -202,7 +202,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd14"
+              "column": "audio.ssd14"
             }
           }
         },
@@ -213,7 +213,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd15"
+              "column": "audio.ssd15"
             }
           }
         },
@@ -224,7 +224,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd16"
+              "column": "audio.ssd16"
             }
           }
         },
@@ -235,7 +235,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd17"
+              "column": "audio.ssd17"
             }
           }
         },
@@ -246,7 +246,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd18"
+              "column": "audio.ssd18"
             }
           }
         },
@@ -257,7 +257,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd19"
+              "column": "audio.ssd19"
             }
           }
         },
@@ -268,7 +268,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd20"
+              "column": "audio.ssd20"
             }
           }
         },
@@ -279,7 +279,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd21"
+              "column": "audio.ssd21"
             }
           }
         },
@@ -290,7 +290,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd22"
+              "column": "audio.ssd22"
             }
           }
         },
@@ -301,7 +301,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd25"
+              "column": "audio.ssd25"
             }
           }
         },
@@ -312,7 +312,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd26"
+              "column": "audio.ssd26"
             }
           }
         },
@@ -323,7 +323,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd27"
+              "column": "audio.ssd27"
             }
           }
         },
@@ -334,7 +334,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd28"
+              "column": "audio.ssd28"
             }
           }
         },
@@ -345,7 +345,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd29"
+              "column": "audio.ssd29"
             }
           }
         },
@@ -356,7 +356,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd30"
+              "column": "audio.ssd30"
             }
           }
         },
@@ -367,7 +367,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd31"
+              "column": "audio.ssd31"
             }
           }
         },
@@ -378,7 +378,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd32"
+              "column": "audio.ssd32"
             }
           }
         },
@@ -389,7 +389,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd33"
+              "column": "audio.ssd33"
             }
           }
         },
@@ -400,7 +400,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd34"
+              "column": "audio.ssd34"
             }
           }
         },
@@ -411,7 +411,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd35"
+              "column": "audio.ssd35"
             }
           }
         },
@@ -422,7 +422,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd36"
+              "column": "audio.ssd36"
             }
           }
         },
@@ -433,7 +433,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd37"
+              "column": "audio.ssd37"
             }
           }
         },
@@ -444,7 +444,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd38"
+              "column": "audio.ssd38"
             }
           }
         },
@@ -455,7 +455,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd39"
+              "column": "audio.ssd39"
             }
           }
         },
@@ -466,7 +466,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd40"
+              "column": "audio.ssd40"
             }
           }
         },
@@ -477,7 +477,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd41"
+              "column": "audio.ssd41"
             }
           }
         },
@@ -488,7 +488,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd42"
+              "column": "audio.ssd42"
             }
           }
         },
@@ -499,7 +499,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd43"
+              "column": "audio.ssd43"
             }
           }
         },
@@ -510,7 +510,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd44"
+              "column": "audio.ssd44"
             }
           }
         },
@@ -521,7 +521,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd45"
+              "column": "audio.ssd45"
             }
           }
         },
@@ -532,7 +532,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd46"
+              "column": "audio.ssd46"
             }
           }
         },
@@ -543,7 +543,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd49"
+              "column": "audio.ssd49"
             }
           }
         },
@@ -554,7 +554,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd50"
+              "column": "audio.ssd50"
             }
           }
         },
@@ -565,7 +565,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd51"
+              "column": "audio.ssd51"
             }
           }
         },
@@ -576,7 +576,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd52"
+              "column": "audio.ssd52"
             }
           }
         },
@@ -587,7 +587,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd53"
+              "column": "audio.ssd53"
             }
           }
         },
@@ -598,7 +598,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd54"
+              "column": "audio.ssd54"
             }
           }
         },
@@ -609,7 +609,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd55"
+              "column": "audio.ssd55"
             }
           }
         },
@@ -620,7 +620,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd56"
+              "column": "audio.ssd56"
             }
           }
         },
@@ -631,7 +631,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd57"
+              "column": "audio.ssd57"
             }
           }
         },
@@ -642,7 +642,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd58"
+              "column": "audio.ssd58"
             }
           }
         },
@@ -653,7 +653,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd59"
+              "column": "audio.ssd59"
             }
           }
         },
@@ -664,7 +664,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd60"
+              "column": "audio.ssd60"
             }
           }
         },
@@ -675,7 +675,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd61"
+              "column": "audio.ssd61"
             }
           }
         },
@@ -686,7 +686,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd62"
+              "column": "audio.ssd62"
             }
           }
         },
@@ -697,7 +697,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd63"
+              "column": "audio.ssd63"
             }
           }
         },
@@ -708,7 +708,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd64"
+              "column": "audio.ssd64"
             }
           }
         },
@@ -719,7 +719,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd65"
+              "column": "audio.ssd65"
             }
           }
         },
@@ -730,7 +730,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd66"
+              "column": "audio.ssd66"
             }
           }
         },
@@ -741,7 +741,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd67"
+              "column": "audio.ssd67"
             }
           }
         },
@@ -752,7 +752,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd68"
+              "column": "audio.ssd68"
             }
           }
         },
@@ -763,7 +763,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd69"
+              "column": "audio.ssd69"
             }
           }
         },
@@ -774,7 +774,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd70"
+              "column": "audio.ssd70"
             }
           }
         },
@@ -785,7 +785,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd73"
+              "column": "audio.ssd73"
             }
           }
         },
@@ -796,7 +796,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd74"
+              "column": "audio.ssd74"
             }
           }
         },
@@ -807,7 +807,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd75"
+              "column": "audio.ssd75"
             }
           }
         },
@@ -818,7 +818,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd76"
+              "column": "audio.ssd76"
             }
           }
         },
@@ -829,7 +829,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd77"
+              "column": "audio.ssd77"
             }
           }
         },
@@ -840,7 +840,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd78"
+              "column": "audio.ssd78"
             }
           }
         },
@@ -851,7 +851,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd79"
+              "column": "audio.ssd79"
             }
           }
         },
@@ -862,7 +862,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd80"
+              "column": "audio.ssd80"
             }
           }
         },
@@ -873,7 +873,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd81"
+              "column": "audio.ssd81"
             }
           }
         },
@@ -884,7 +884,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd82"
+              "column": "audio.ssd82"
             }
           }
         },
@@ -895,7 +895,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd83"
+              "column": "audio.ssd83"
             }
           }
         },
@@ -906,7 +906,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd84"
+              "column": "audio.ssd84"
             }
           }
         },
@@ -917,7 +917,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd85"
+              "column": "audio.ssd85"
             }
           }
         },
@@ -928,7 +928,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd86"
+              "column": "audio.ssd86"
             }
           }
         },
@@ -939,7 +939,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd87"
+              "column": "audio.ssd87"
             }
           }
         },
@@ -950,7 +950,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd88"
+              "column": "audio.ssd88"
             }
           }
         },
@@ -961,7 +961,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd89"
+              "column": "audio.ssd89"
             }
           }
         },
@@ -972,7 +972,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd90"
+              "column": "audio.ssd90"
             }
           }
         },
@@ -983,7 +983,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd91"
+              "column": "audio.ssd91"
             }
           }
         },
@@ -994,7 +994,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd92"
+              "column": "audio.ssd92"
             }
           }
         },
@@ -1005,7 +1005,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd93"
+              "column": "audio.ssd93"
             }
           }
         },
@@ -1016,7 +1016,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd94"
+              "column": "audio.ssd94"
             }
           }
         },
@@ -1027,7 +1027,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd97"
+              "column": "audio.ssd97"
             }
           }
         },
@@ -1038,7 +1038,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd98"
+              "column": "audio.ssd98"
             }
           }
         },
@@ -1049,7 +1049,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd99"
+              "column": "audio.ssd99"
             }
           }
         },
@@ -1060,7 +1060,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd100"
+              "column": "audio.ssd100"
             }
           }
         },
@@ -1071,7 +1071,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd101"
+              "column": "audio.ssd101"
             }
           }
         },
@@ -1082,7 +1082,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd102"
+              "column": "audio.ssd102"
             }
           }
         },
@@ -1093,7 +1093,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd103"
+              "column": "audio.ssd103"
             }
           }
         },
@@ -1104,7 +1104,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd104"
+              "column": "audio.ssd104"
             }
           }
         },
@@ -1115,7 +1115,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd105"
+              "column": "audio.ssd105"
             }
           }
         },
@@ -1126,7 +1126,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd106"
+              "column": "audio.ssd106"
             }
           }
         },
@@ -1137,7 +1137,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd107"
+              "column": "audio.ssd107"
             }
           }
         },
@@ -1148,7 +1148,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd108"
+              "column": "audio.ssd108"
             }
           }
         },
@@ -1159,7 +1159,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd109"
+              "column": "audio.ssd109"
             }
           }
         },
@@ -1170,7 +1170,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd110"
+              "column": "audio.ssd110"
             }
           }
         },
@@ -1181,7 +1181,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd111"
+              "column": "audio.ssd111"
             }
           }
         },
@@ -1192,7 +1192,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd112"
+              "column": "audio.ssd112"
             }
           }
         },
@@ -1203,7 +1203,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd113"
+              "column": "audio.ssd113"
             }
           }
         },
@@ -1214,7 +1214,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd114"
+              "column": "audio.ssd114"
             }
           }
         },
@@ -1225,7 +1225,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd115"
+              "column": "audio.ssd115"
             }
           }
         },
@@ -1236,7 +1236,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd116"
+              "column": "audio.ssd116"
             }
           }
         },
@@ -1247,7 +1247,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd117"
+              "column": "audio.ssd117"
             }
           }
         },
@@ -1258,7 +1258,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd118"
+              "column": "audio.ssd118"
             }
           }
         },
@@ -1269,7 +1269,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd121"
+              "column": "audio.ssd121"
             }
           }
         },
@@ -1280,7 +1280,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd122"
+              "column": "audio.ssd122"
             }
           }
         },
@@ -1291,7 +1291,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd123"
+              "column": "audio.ssd123"
             }
           }
         },
@@ -1302,7 +1302,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd124"
+              "column": "audio.ssd124"
             }
           }
         },
@@ -1313,7 +1313,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd125"
+              "column": "audio.ssd125"
             }
           }
         },
@@ -1324,7 +1324,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd126"
+              "column": "audio.ssd126"
             }
           }
         },
@@ -1335,7 +1335,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd127"
+              "column": "audio.ssd127"
             }
           }
         },
@@ -1346,7 +1346,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd128"
+              "column": "audio.ssd128"
             }
           }
         },
@@ -1357,7 +1357,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd129"
+              "column": "audio.ssd129"
             }
           }
         },
@@ -1368,7 +1368,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd130"
+              "column": "audio.ssd130"
             }
           }
         },
@@ -1379,7 +1379,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd131"
+              "column": "audio.ssd131"
             }
           }
         },
@@ -1390,7 +1390,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd132"
+              "column": "audio.ssd132"
             }
           }
         },
@@ -1401,7 +1401,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd133"
+              "column": "audio.ssd133"
             }
           }
         },
@@ -1412,7 +1412,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd134"
+              "column": "audio.ssd134"
             }
           }
         },
@@ -1423,7 +1423,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd135"
+              "column": "audio.ssd135"
             }
           }
         },
@@ -1434,7 +1434,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd136"
+              "column": "audio.ssd136"
             }
           }
         },
@@ -1445,7 +1445,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd137"
+              "column": "audio.ssd137"
             }
           }
         },
@@ -1456,7 +1456,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd138"
+              "column": "audio.ssd138"
             }
           }
         },
@@ -1467,7 +1467,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd139"
+              "column": "audio.ssd139"
             }
           }
         },
@@ -1478,7 +1478,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd140"
+              "column": "audio.ssd140"
             }
           }
         },
@@ -1489,7 +1489,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd141"
+              "column": "audio.ssd141"
             }
           }
         },
@@ -1500,7 +1500,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd145"
+              "column": "audio.ssd145"
             }
           }
         },
@@ -1511,7 +1511,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd146"
+              "column": "audio.ssd146"
             }
           }
         },
@@ -1522,7 +1522,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd147"
+              "column": "audio.ssd147"
             }
           }
         },
@@ -1533,7 +1533,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd148"
+              "column": "audio.ssd148"
             }
           }
         },
@@ -1544,7 +1544,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd149"
+              "column": "audio.ssd149"
             }
           }
         },
@@ -1555,7 +1555,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd150"
+              "column": "audio.ssd150"
             }
           }
         },
@@ -1566,7 +1566,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd151"
+              "column": "audio.ssd151"
             }
           }
         },
@@ -1577,7 +1577,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd152"
+              "column": "audio.ssd152"
             }
           }
         },
@@ -1588,7 +1588,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd153"
+              "column": "audio.ssd153"
             }
           }
         },
@@ -1599,7 +1599,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd154"
+              "column": "audio.ssd154"
             }
           }
         },
@@ -1610,7 +1610,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd155"
+              "column": "audio.ssd155"
             }
           }
         },
@@ -1621,7 +1621,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd156"
+              "column": "audio.ssd156"
             }
           }
         },
@@ -1632,7 +1632,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd157"
+              "column": "audio.ssd157"
             }
           }
         },
@@ -1643,7 +1643,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd158"
+              "column": "audio.ssd158"
             }
           }
         },
@@ -1654,7 +1654,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd159"
+              "column": "audio.ssd159"
             }
           }
         },
@@ -1665,7 +1665,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd160"
+              "column": "audio.ssd160"
             }
           }
         },
@@ -1676,7 +1676,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd161"
+              "column": "audio.ssd161"
             }
           }
         },
@@ -1687,7 +1687,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd162"
+              "column": "audio.ssd162"
             }
           }
         },
@@ -1698,7 +1698,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd163"
+              "column": "audio.ssd163"
             }
           }
         },
@@ -1709,7 +1709,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd164"
+              "column": "audio.ssd164"
             }
           }
         },
@@ -1720,7 +1720,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd165"
+              "column": "audio.ssd165"
             }
           }
         },
@@ -1731,7 +1731,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd166"
+              "column": "audio.ssd166"
             }
           }
         },
@@ -1742,7 +1742,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster1"
+              "column": "cluster1"
             }
           }
         },
@@ -1753,7 +1753,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster2"
+              "column": "cluster2"
             }
           }
         },
@@ -1764,7 +1764,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster3"
+              "column": "cluster3"
             }
           }
         },
@@ -1775,7 +1775,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster4"
+              "column": "cluster4"
             }
           }
         },
@@ -1786,7 +1786,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster5"
+              "column": "cluster5"
             }
           }
         },
@@ -1797,7 +1797,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster6"
+              "column": "cluster6"
             }
           }
         },
@@ -1808,7 +1808,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster7"
+              "column": "cluster7"
             }
           }
         },
@@ -1819,7 +1819,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster8"
+              "column": "cluster8"
             }
           }
         },
@@ -1830,7 +1830,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster9"
+              "column": "cluster9"
             }
           }
         },
@@ -1841,7 +1841,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster10"
+              "column": "cluster10"
             }
           }
         },
@@ -1852,7 +1852,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster11"
+              "column": "cluster11"
             }
           }
         },
@@ -1863,7 +1863,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster12"
+              "column": "cluster12"
             }
           }
         },
@@ -1874,7 +1874,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster13"
+              "column": "cluster13"
             }
           }
         },
@@ -1885,7 +1885,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster14"
+              "column": "cluster14"
             }
           }
         },
@@ -1896,7 +1896,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster15"
+              "column": "cluster15"
             }
           }
         },
@@ -1907,7 +1907,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster16"
+              "column": "cluster16"
             }
           }
         },
@@ -1918,7 +1918,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster17"
+              "column": "cluster17"
             }
           }
         },
@@ -1929,7 +1929,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster18"
+              "column": "cluster18"
             }
           }
         },
@@ -1940,7 +1940,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster19"
+              "column": "cluster19"
             }
           }
         },
@@ -1951,7 +1951,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster20"
+              "column": "cluster20"
             }
           }
         },
@@ -1962,7 +1962,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster21"
+              "column": "cluster21"
             }
           }
         },
@@ -1973,7 +1973,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster22"
+              "column": "cluster22"
             }
           }
         },
@@ -1984,7 +1984,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster23"
+              "column": "cluster23"
             }
           }
         },
@@ -1995,7 +1995,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster24"
+              "column": "cluster24"
             }
           }
         },
@@ -2006,7 +2006,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster25"
+              "column": "cluster25"
             }
           }
         },
@@ -2017,7 +2017,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster26"
+              "column": "cluster26"
             }
           }
         },
@@ -2028,7 +2028,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster27"
+              "column": "cluster27"
             }
           }
         },
@@ -2039,7 +2039,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster28"
+              "column": "cluster28"
             }
           }
         },
@@ -2050,7 +2050,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster29"
+              "column": "cluster29"
             }
           }
         },
@@ -2061,7 +2061,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster30"
+              "column": "cluster30"
             }
           }
         },
@@ -2072,7 +2072,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster31"
+              "column": "cluster31"
             }
           }
         },
@@ -2083,7 +2083,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster32"
+              "column": "cluster32"
             }
           }
         },
@@ -2094,7 +2094,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster33"
+              "column": "cluster33"
             }
           }
         },
@@ -2105,7 +2105,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster34"
+              "column": "cluster34"
             }
           }
         },
@@ -2116,7 +2116,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster35"
+              "column": "cluster35"
             }
           }
         },
@@ -2127,7 +2127,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster36"
+              "column": "cluster36"
             }
           }
         },
@@ -2138,7 +2138,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster37"
+              "column": "cluster37"
             }
           }
         },
@@ -2149,7 +2149,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster38"
+              "column": "cluster38"
             }
           }
         },
@@ -2160,7 +2160,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster39"
+              "column": "cluster39"
             }
           }
         },
@@ -2171,7 +2171,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster40"
+              "column": "cluster40"
             }
           }
         },
@@ -2182,7 +2182,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster41"
+              "column": "cluster41"
             }
           }
         },
@@ -2193,7 +2193,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster42"
+              "column": "cluster42"
             }
           }
         },
@@ -2204,7 +2204,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster43"
+              "column": "cluster43"
             }
           }
         },
@@ -2215,7 +2215,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster44"
+              "column": "cluster44"
             }
           }
         },
@@ -2226,7 +2226,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster45"
+              "column": "cluster45"
             }
           }
         },
@@ -2237,7 +2237,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster46"
+              "column": "cluster46"
             }
           }
         },
@@ -2248,7 +2248,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster47"
+              "column": "cluster47"
             }
           }
         },
@@ -2259,7 +2259,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster48"
+              "column": "cluster48"
             }
           }
         },
@@ -2270,7 +2270,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster49"
+              "column": "cluster49"
             }
           }
         },
@@ -2281,7 +2281,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster50"
+              "column": "cluster50"
             }
           }
         },
@@ -2292,7 +2292,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster51"
+              "column": "cluster51"
             }
           }
         },
@@ -2303,7 +2303,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster52"
+              "column": "cluster52"
             }
           }
         },
@@ -2314,7 +2314,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster53"
+              "column": "cluster53"
             }
           }
         },
@@ -2325,7 +2325,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster54"
+              "column": "cluster54"
             }
           }
         },
@@ -2336,7 +2336,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster55"
+              "column": "cluster55"
             }
           }
         },
@@ -2347,7 +2347,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster56"
+              "column": "cluster56"
             }
           }
         },
@@ -2358,7 +2358,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster57"
+              "column": "cluster57"
             }
           }
         },
@@ -2369,7 +2369,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster59"
+              "column": "cluster59"
             }
           }
         },
@@ -2380,7 +2380,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster60"
+              "column": "cluster60"
             }
           }
         },
@@ -2391,7 +2391,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster61"
+              "column": "cluster61"
             }
           }
         },
@@ -2402,7 +2402,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster62"
+              "column": "cluster62"
             }
           }
         },
@@ -2413,7 +2413,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster63"
+              "column": "cluster63"
             }
           }
         },
@@ -2424,7 +2424,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster64"
+              "column": "cluster64"
             }
           }
         },
@@ -2435,7 +2435,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster65"
+              "column": "cluster65"
             }
           }
         },
@@ -2446,7 +2446,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster66"
+              "column": "cluster66"
             }
           }
         },
@@ -2457,7 +2457,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster67"
+              "column": "cluster67"
             }
           }
         },
@@ -2468,7 +2468,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster68"
+              "column": "cluster68"
             }
           }
         },
@@ -2479,7 +2479,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster69"
+              "column": "cluster69"
             }
           }
         },
@@ -2490,7 +2490,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster70"
+              "column": "cluster70"
             }
           }
         },
@@ -2501,7 +2501,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster71"
+              "column": "cluster71"
             }
           }
         },
@@ -2512,7 +2512,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster72"
+              "column": "cluster72"
             }
           }
         },
@@ -2523,7 +2523,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster73"
+              "column": "cluster73"
             }
           }
         },
@@ -2534,7 +2534,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster74"
+              "column": "cluster74"
             }
           }
         },
@@ -2545,7 +2545,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster75"
+              "column": "cluster75"
             }
           }
         },
@@ -2556,7 +2556,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster76"
+              "column": "cluster76"
             }
           }
         },
@@ -2567,7 +2567,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster78"
+              "column": "cluster78"
             }
           }
         },
@@ -2578,7 +2578,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster79"
+              "column": "cluster79"
             }
           }
         },
@@ -2589,7 +2589,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster80"
+              "column": "cluster80"
             }
           }
         },
@@ -2600,7 +2600,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster81"
+              "column": "cluster81"
             }
           }
         },
@@ -2611,7 +2611,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster82"
+              "column": "cluster82"
             }
           }
         },
@@ -2622,7 +2622,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster83"
+              "column": "cluster83"
             }
           }
         },
@@ -2633,7 +2633,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster84"
+              "column": "cluster84"
             }
           }
         },
@@ -2644,7 +2644,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster85"
+              "column": "cluster85"
             }
           }
         },
@@ -2655,7 +2655,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster86"
+              "column": "cluster86"
             }
           }
         },
@@ -2666,7 +2666,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster87"
+              "column": "cluster87"
             }
           }
         },
@@ -2677,7 +2677,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster88"
+              "column": "cluster88"
             }
           }
         },
@@ -2688,7 +2688,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster89"
+              "column": "cluster89"
             }
           }
         },
@@ -2699,7 +2699,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster90"
+              "column": "cluster90"
             }
           }
         },
@@ -2710,7 +2710,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster91"
+              "column": "cluster91"
             }
           }
         },
@@ -2721,7 +2721,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster92"
+              "column": "cluster92"
             }
           }
         },
@@ -2732,7 +2732,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster93"
+              "column": "cluster93"
             }
           }
         },
@@ -2743,7 +2743,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster94"
+              "column": "cluster94"
             }
           }
         },
@@ -2754,7 +2754,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster95"
+              "column": "cluster95"
             }
           }
         },
@@ -2765,7 +2765,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster96"
+              "column": "cluster96"
             }
           }
         },
@@ -2776,7 +2776,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster97"
+              "column": "cluster97"
             }
           }
         },
@@ -2787,7 +2787,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster98"
+              "column": "cluster98"
             }
           }
         },
@@ -2798,7 +2798,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster99"
+              "column": "cluster99"
             }
           }
         },
@@ -2809,7 +2809,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster100"
+              "column": "cluster100"
             }
           }
         },
@@ -2820,7 +2820,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "segments"
+              "column": "segments"
             }
           }
         },
@@ -2831,7 +2831,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "mean_rect_width"
+              "column": "mean_rect_width"
             }
           }
         },
@@ -2842,7 +2842,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "std_rect_width"
+              "column": "std_rect_width"
             }
           }
         },
@@ -2853,7 +2853,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "mean_rect_height"
+              "column": "mean_rect_height"
             }
           }
         },
@@ -2864,7 +2864,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "std_rect_height"
+              "column": "std_rect_height"
             }
           }
         },
@@ -2875,7 +2875,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "mean_rect_volume"
+              "column": "mean_rect_volume"
             }
           }
         },
@@ -2886,7 +2886,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "std_rect_volume"
+              "column": "std_rect_volume"
             }
           }
         },
@@ -2897,7 +2897,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "hasSegments"
+              "column": "hasSegments"
             }
           }
         },
@@ -2908,7 +2908,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "location"
+              "column": "location"
             }
           }
         },
@@ -2919,7 +2919,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Brown.Creeper"
+              "column": "Brown.Creeper"
             }
           }
         },
@@ -2930,7 +2930,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Pacific.Wren"
+              "column": "Pacific.Wren"
             }
           }
         },
@@ -2941,7 +2941,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Pacific.slope.Flycatcher"
+              "column": "Pacific.slope.Flycatcher"
             }
           }
         },
@@ -2952,7 +2952,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Red.breasted.Nuthatch"
+              "column": "Red.breasted.Nuthatch"
             }
           }
         },
@@ -2963,7 +2963,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Dark.eyed.Junco"
+              "column": "Dark.eyed.Junco"
             }
           }
         },
@@ -2974,7 +2974,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Olive.sided.Flycatcher"
+              "column": "Olive.sided.Flycatcher"
             }
           }
         },
@@ -2985,7 +2985,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Hermit.Thrush"
+              "column": "Hermit.Thrush"
             }
           }
         },
@@ -2996,7 +2996,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Chestnut.backed.Chickadee"
+              "column": "Chestnut.backed.Chickadee"
             }
           }
         },
@@ -3007,7 +3007,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Varied.Thrush"
+              "column": "Varied.Thrush"
             }
           }
         },
@@ -3018,7 +3018,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Hermit.Warbler"
+              "column": "Hermit.Warbler"
             }
           }
         },
@@ -3029,7 +3029,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Swainson.s.Thrush"
+              "column": "Swainson.s.Thrush"
             }
           }
         },
@@ -3040,7 +3040,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Hammond.s.Flycatcher"
+              "column": "Hammond.s.Flycatcher"
             }
           }
         },
@@ -3051,7 +3051,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Western.Tanager"
+              "column": "Western.Tanager"
             }
           }
         },
@@ -3062,7 +3062,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Black.headed.Grosbeak"
+              "column": "Black.headed.Grosbeak"
             }
           }
         },
@@ -3073,7 +3073,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Golden.Crowned.Kinglet"
+              "column": "Golden.Crowned.Kinglet"
             }
           }
         },
@@ -3084,7 +3084,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Warbling.Vireo"
+              "column": "Warbling.Vireo"
             }
           }
         },
@@ -3095,7 +3095,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "MacGillivray.s.Warbler"
+              "column": "MacGillivray.s.Warbler"
             }
           }
         },
@@ -3106,7 +3106,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Stellar.s.Jay"
+              "column": "Stellar.s.Jay"
             }
           }
         },
@@ -3117,7 +3117,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Common.Nighthawk"
+              "column": "Common.Nighthawk"
             }
           }
         }

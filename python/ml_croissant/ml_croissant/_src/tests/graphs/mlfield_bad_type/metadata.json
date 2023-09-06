@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -62,7 +62,7 @@
           "dataType": "sc:Integer",
           "source": {
             "extract": {
-              "csvColumn": "a-column"
+              "column": "a-column"
             },
             "distribution": "a-csv-table"
           }
