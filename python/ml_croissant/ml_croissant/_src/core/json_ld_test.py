@@ -31,7 +31,7 @@ def test_make_context():
     assert make_context(foo="bar") == {
         "@language": "en",
         "@vocab": "https://schema.org/",
-        "csvColumn": "ml:csvColumn",
+        "column": "ml:column",
         "data": {"@id": "ml:data", "@type": "@json"},
         "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
         "extract": "ml:extract",

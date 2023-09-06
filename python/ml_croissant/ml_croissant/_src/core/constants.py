@@ -7,7 +7,7 @@ from rdflib import term
 
 # MLCommons-defined URIs (still draft).
 ML_COMMONS = rdflib.Namespace("http://mlcommons.org/schema/")
-ML_COMMONS_CSV_COLUMN = ML_COMMONS.csvColumn
+ML_COMMONS_COLUMN = ML_COMMONS.column
 ML_COMMONS_DATA = ML_COMMONS.data
 ML_COMMONS_DATA_TYPE = ML_COMMONS.dataType
 ML_COMMONS_EXTRACT = ML_COMMONS.extract
@@ -70,7 +70,7 @@ SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
 
 TO_CROISSANT = {
     ML_COMMONS_TRANSFORM: "transforms",
-    ML_COMMONS_CSV_COLUMN: "csv_column",
+    ML_COMMONS_COLUMN: "csv_column",
     ML_COMMONS_DATA_TYPE: "data_type",
     ML_COMMONS_DATA: "data",
     ML_COMMONS_EXTRACT: "extract",

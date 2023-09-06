@@ -35,7 +35,7 @@ _KEYS_WITH_LIST = {
 BASE_CONTEXT = {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {"@id": "ml:data", "@type": "@json"},
     "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
     "extract": "ml:extract",
