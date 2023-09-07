@@ -14,4 +14,3 @@ class GroupRecordSet(Operation):
     def __call__(self, *fields: pd.Series):
         """See class' docstring."""
         return {k: v for field in fields for k, v in field.items()}
-
