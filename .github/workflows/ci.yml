@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./python/ml_croissant
+        working-directory: ./python/mlcroissant
     steps:
     - uses: actions/checkout@v3
 
@@ -56,17 +56,17 @@ jobs:
     - uses: psf/black@stable
       with:
         options: --line-length 88 --preview --experimental-string-processing
-        src: './python/ml_croissant'
+        src: './python/mlcroissant'
     - uses: isort/isort-action@master
       with:
-        sort-paths: './python/ml_croissant'
+        sort-paths: './python/mlcroissant'
 
   pytype-test:
     name: PyType
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./python/ml_croissant
+        working-directory: ./python/mlcroissant
     steps:
     - uses: actions/checkout@v3
 
@@ -75,7 +75,7 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies except ml_croissant itself
+    - name: Install dependencies except mlcroissant itself
       run: >
         pip install absl-py \
           datasets \
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./python/ml_croissant
+        working-directory: ./python/mlcroissant
     steps:
     - uses: actions/checkout@v3
 
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./python/ml_croissant
+        working-directory: ./python/mlcroissant
     steps:
     - uses: actions/checkout@v3
 
