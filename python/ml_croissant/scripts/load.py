@@ -20,13 +20,13 @@ flags.DEFINE_string(
 
 flags.DEFINE_string(
     "record_set",
-    "publications_by_user",
+    None,
     "The name of the record set to generate.",
 )
 
 flags.DEFINE_integer(
     "num_records",
-    -1,
+    _NUM_MAX_RECORDS,
     "The number of records to generate. Use `-1` to generate the whole dataset.",
 )
 
@@ -38,7 +38,7 @@ flags.DEFINE_bool(
 
 flags.DEFINE_bool(
     "update_output",
-    True,
+    False,
     "Whether to update the JSONL output test files.",
 )
 
@@ -87,7 +87,7 @@ def load(
     for i, record in enumerate(records):
         if not generate_all_records and i >= num_records:
             break
-        # print(record)
+        print(record)
         output_records.append(record_to_python(record))
     print("Done.")
     if update_output:
