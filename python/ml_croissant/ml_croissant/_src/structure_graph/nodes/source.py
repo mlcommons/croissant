@@ -92,7 +92,7 @@ class Transform:
         if not isinstance(jsonld, list):
             jsonld = [jsonld]
         for transform in jsonld:
-            possible_keys = [
+            keys = [
                 constants.ML_COMMONS_FORMAT,
                 constants.ML_COMMONS_JSON_PATH,
                 constants.ML_COMMONS_REGEX,
@@ -102,35 +102,18 @@ class Transform:
             if not isinstance(transform, dict):
                 issues.add_error(
                     f'Transform "{transform}" should be a dict with the keys'
-                    f' {", ".join(possible_keys)}'
+                    f' {", ".join(keys)}'
                 )
                 continue
-            format = transform.get(constants.ML_COMMONS_FORMAT)
-            json_path = transform.get(constants.ML_COMMONS_JSON_PATH)
-            regex = transform.get(constants.ML_COMMONS_REGEX)
-            replace = transform.get(constants.ML_COMMONS_REPLACE)
-            separator = transform.get(constants.ML_COMMONS_SEPARATOR)
-            if (
-                format is None
-                and json_path is None
-                and regex is None
-                and replace is None
-                and separator is None
-            ):
+            kwargs = {constants.TO_CROISSANT[k]: transform.get(k) for k in keys}
+            all_values_are_none = all(v is None for v in kwargs.values())
+            if all_values_are_none:
                 issues.add_error(
                     f'Transform "{transform}" should be a dict with at least one key in'
-                    f' {", ".join(possible_keys)}'
+                    f' {", ".join(keys)}'
                 )
                 continue
-            transforms.append(
-                Transform(
-                    format=format,
-                    json_path=json_path,
-                    regex=regex,
-                    replace=replace,
-                    separator=separator,
-                )
-            )
+            transforms.append(Transform(**kwargs))
         return transforms
 
 
