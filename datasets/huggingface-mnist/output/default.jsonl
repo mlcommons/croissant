@@ -1,10 +1,10 @@
-{"label": 7}
-{"label": 2}
-{"label": 1}
-{"label": 0}
-{"label": 4}
-{"label": 1}
-{"label": 4}
-{"label": 9}
-{"label": 5}
-{"label": 9}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 7}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 2}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 1}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 0}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 4}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 1}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 4}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 9}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 5}
+{"image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "label": 9}

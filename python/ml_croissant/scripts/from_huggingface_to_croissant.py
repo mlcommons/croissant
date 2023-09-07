@@ -80,6 +80,8 @@ def _get_data_type(feature: datasets.Features) -> str:
         return "sc:Float"
     elif feature_type in ["int32", "int64"]:
         return "sc:Integer"
+    elif feature_type in "PIL.Image.Image":
+        return "sc:ImageObject"
     else:
         raise ValueError(f"Cannot convert the feature {feature} to Croissant.")
 
@@ -94,6 +96,12 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
         except ValueError as exception:
             logging.error(exception)
             continue
+        if data_type == "sc:ImageObject":
+            transforms = [
+                mlc.nodes.Transform(json_path="bytes"),
+            ]
+        else:
+            transforms = []
         fields.append(
             mlc.nodes.Field(
                 name=name,
@@ -102,7 +110,8 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
                 source=mlc.nodes.Source(
                     uid=_PARQUET_FILES,
                     node_type="distribution",
-                    extract=mlc.nodes.Extract(csv_column=name),
+                    extract=mlc.nodes.Extract(column=name),
+                    transforms=transforms,
                 ),
             )
         )

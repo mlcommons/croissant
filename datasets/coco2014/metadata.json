@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -240,7 +240,7 @@
           "source": {
             "distribution": "caption_annotations-files",
             "extract": {
-              "csvColumn": "id"
+              "column": "id"
             }
           }
         },
@@ -252,7 +252,7 @@
           "source": {
             "distribution": "caption_annotations-files",
             "extract": {
-              "csvColumn": "image_id"
+              "column": "image_id"
             }
           }
         },
@@ -267,7 +267,7 @@
           "source": {
             "distribution": "caption_annotations-files",
             "extract": {
-              "csvColumn": "caption"
+              "column": "caption"
             }
           }
         },
@@ -307,7 +307,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "id"
+              "column": "id"
             }
           }
         },
@@ -322,7 +322,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -338,7 +338,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "supercategory"
+              "column": "supercategory"
             }
           }
         }
@@ -357,7 +357,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "id"
+              "column": "id"
             }
           }
         },
@@ -372,7 +372,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "category_id"
+              "column": "category_id"
             }
           }
         },
@@ -387,7 +387,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "image_id"
+              "column": "image_id"
             }
           }
         },
@@ -399,7 +399,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "bbox"
+              "column": "bbox"
             }
           }
         }

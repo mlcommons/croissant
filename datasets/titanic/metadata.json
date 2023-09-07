@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -86,7 +86,7 @@
           "source": {
             "distribution": "genders.csv",
             "extract": {
-              "csvColumn": "label"
+              "column": "label"
             }
           }
         },
@@ -101,7 +101,7 @@
           "source": {
             "distribution": "genders.csv",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }
@@ -122,7 +122,7 @@
           "source": {
             "distribution": "embarkation_ports.csv",
             "extract": {
-              "csvColumn": "key"
+              "column": "key"
             }
           }
         },
@@ -137,7 +137,7 @@
           "source": {
             "distribution": "embarkation_ports.csv",
             "extract": {
-              "csvColumn": "label"
+              "column": "label"
             }
           }
         },
@@ -152,7 +152,7 @@
           "source": {
             "distribution": "embarkation_ports.csv",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }
@@ -171,7 +171,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -186,7 +186,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "sex"
+              "column": "sex"
             }
           }
         },
@@ -198,7 +198,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "age"
+              "column": "age"
             }
           }
         },
@@ -210,7 +210,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "survived"
+              "column": "survived"
             }
           }
         },
@@ -222,7 +222,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "pclass"
+              "column": "pclass"
             }
           }
         },
@@ -234,7 +234,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "cabin"
+              "column": "cabin"
             }
           }
         },
@@ -249,7 +249,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "embarked"
+              "column": "embarked"
             }
           }
         },
@@ -261,7 +261,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "fare"
+              "column": "fare"
             }
           }
         },
@@ -273,7 +273,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "home.dest"
+              "column": "home.dest"
             }
           }
         },
@@ -285,7 +285,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "ticket"
+              "column": "ticket"
             }
           }
         },
@@ -297,7 +297,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "parch"
+              "column": "parch"
             }
           }
         },
@@ -309,7 +309,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "sibsp"
+              "column": "sibsp"
             }
           }
         },
@@ -321,7 +321,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "boat"
+              "column": "boat"
             }
           }
         },
@@ -333,7 +333,7 @@
           "source": {
             "distribution": "passengers.csv",
             "extract": {
-              "csvColumn": "body"
+              "column": "body"
             }
           }
         }

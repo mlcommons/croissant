@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -100,7 +100,7 @@
           "source": {
             "distribution": "movies-table",
             "extract": {
-              "csvColumn": "movieId"
+              "column": "movieId"
             }
           }
         },
@@ -112,7 +112,7 @@
           "source": {
             "distribution": "movies-table",
             "extract": {
-              "csvColumn": "title"
+              "column": "title"
             }
           }
         },
@@ -125,7 +125,7 @@
           "source": {
             "distribution": "movies-table",
             "extract": {
-              "csvColumn": "genres"
+              "column": "genres"
             },
             "transform": {
               "separator": "|"
@@ -149,7 +149,7 @@
           "source": {
             "distribution": "ratings-table",
             "extract": {
-              "csvColumn": "userId"
+              "column": "userId"
             }
           }
         },
@@ -163,7 +163,7 @@
           "source": {
             "distribution": "ratings-table",
             "extract": {
-              "csvColumn": "movieId"
+              "column": "movieId"
             }
           }
         },
@@ -175,7 +175,7 @@
           "source": {
             "distribution": "ratings-table",
             "extract": {
-              "csvColumn": "rating"
+              "column": "rating"
             }
           }
         },
@@ -186,7 +186,7 @@
           "source": {
             "distribution": "ratings-table",
             "extract": {
-              "csvColumn": "timestamp"
+              "column": "timestamp"
             }
           }
         }
@@ -208,7 +208,7 @@
           "source": {
             "distribution": "tags-table",
             "extract": {
-              "csvColumn": "userId"
+              "column": "userId"
             }
           }
         },
@@ -222,7 +222,7 @@
           "source": {
             "distribution": "tags-table",
             "extract": {
-              "csvColumn": "movieId"
+              "column": "movieId"
             }
           }
         },
@@ -234,7 +234,7 @@
           "source": {
             "distribution": "tags-table",
             "extract": {
-              "csvColumn": "tag"
+              "column": "tag"
             }
           }
         },
@@ -245,7 +245,7 @@
           "source": {
             "distribution": "tags-table",
             "extract": {
-              "csvColumn": "timestamp"
+              "column": "timestamp"
             }
           }
         }

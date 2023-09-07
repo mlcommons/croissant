@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -58,7 +58,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "pclass"
+              "column": "pclass"
             }
           }
         },
@@ -69,7 +69,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "survived"
+              "column": "survived"
             }
           }
         },
@@ -80,7 +80,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -91,7 +91,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "sex"
+              "column": "sex"
             }
           }
         },
@@ -102,7 +102,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "age"
+              "column": "age"
             }
           }
         },
@@ -113,7 +113,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "sibsp"
+              "column": "sibsp"
             }
           }
         },
@@ -124,7 +124,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "parch"
+              "column": "parch"
             }
           }
         },
@@ -135,7 +135,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "ticket"
+              "column": "ticket"
             }
           }
         },
@@ -146,7 +146,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "fare"
+              "column": "fare"
             }
           }
         },
@@ -157,7 +157,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "cabin"
+              "column": "cabin"
             }
           }
         },
@@ -168,7 +168,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "embarked"
+              "column": "embarked"
             }
           }
         },
@@ -179,7 +179,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "boat"
+              "column": "boat"
             }
           }
         },
@@ -190,7 +190,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "body"
+              "column": "body"
             }
           }
         },
@@ -201,7 +201,7 @@
           "source": {
             "distribution": "Titanic.arff",
             "extract": {
-              "csvColumn": "home.dest"
+              "column": "home.dest"
             }
           }
         }

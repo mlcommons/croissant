@@ -43,7 +43,6 @@ flags.DEFINE_bool(
 )
 
 flags.mark_flag_as_required("file")
-flags.mark_flag_as_required("record_set")
 
 
 FLAGS = flags.FLAGS
@@ -57,7 +56,27 @@ def main(argv):
     num_records = FLAGS.num_records
     debug = FLAGS.debug
     update_output = FLAGS.update_output
+    return load(
+        file=file,
+        record_set=record_set,
+        num_records=num_records,
+        debug=debug,
+        update_output=update_output,
+    )
+
+
+def load(
+    file: str,
+    record_set: str | None,
+    num_records: int = _NUM_MAX_RECORDS,
+    debug: bool = False,
+    update_output: bool = False,
+):
+    """Yields data from the `record_set` in the input Croissant file."""
     dataset = mlc.Dataset(file, debug=debug)
+    if record_set is None:
+        record_sets = ", ".join([f"`{rs.name}`" for rs in dataset.metadata.record_sets])
+        raise ValueError(f"--record_set flag should have a value in {record_sets}")
     records = dataset.records(record_set)
     generate_all_records = num_records == -1
     if generate_all_records:
