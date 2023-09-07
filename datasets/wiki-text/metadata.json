@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -77,7 +77,7 @@
           "source": {
             "distribution": "splits.csv",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -92,7 +92,7 @@
           "source": {
             "distribution": "splits.csv",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }

@@ -75,11 +75,11 @@ def test_source_bool():
                     }
                 ],
                 constants.ML_COMMONS_EXTRACT: {
-                    constants.ML_COMMONS_CSV_COLUMN: "my-column"
+                    constants.ML_COMMONS_COLUMN: "my-column"
                 },
             },
             Source(
-                extract=Extract(csv_column="my-column"),
+                extract=Extract(column="my-column"),
                 uid="my-csv",
                 transforms=[Transform(replace="\\n/<eos>", separator=" ")],
                 node_type="distribution",
@@ -148,13 +148,13 @@ def test_declaring_multiple_data_extraction_in_one():
         constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
         constants.ML_COMMONS_EXTRACT: {
             "@id": "jsonld-id",
-            constants.ML_COMMONS_CSV_COLUMN: "csv_column",
+            constants.ML_COMMONS_COLUMN: "csv_column",
             constants.ML_COMMONS_JSON_PATH: "json_path",
         },
     }
     assert Source.from_jsonld(issues, json_ld) == Source(
         uid="my-csv",
-        extract=Extract(csv_column="csv_column", json_path="json_path"),
+        extract=Extract(column="csv_column", json_path="json_path"),
         node_type="distribution",
     )
     assert len(issues.errors) == 1
@@ -208,7 +208,7 @@ def test_apply_transforms_fn(value, source, expected_value):
     ["source", "expected_field"],
     [
         [
-            Source(uid="my-csv", extract=Extract(csv_column="my-csv-column")),
+            Source(uid="my-csv", extract=Extract(column="my-csv-column")),
             "my-csv-column",
         ],
         [

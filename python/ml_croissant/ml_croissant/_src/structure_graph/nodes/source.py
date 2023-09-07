@@ -40,7 +40,7 @@ def is_file_property(file_property: str):
 class Extract:
     """Container for possible ways of extracting the data."""
 
-    csv_column: str | None = None
+    column: str | None = None
     file_property: FileProperty | None = None
     json_path: str | None = None
 
@@ -48,7 +48,7 @@ class Extract:
         """Converts the `Extract` to JSON."""
         return remove_empty_values(
             {
-                "csvColumn": self.csv_column,
+                "column": self.column,
                 "fileProperty": self.file_property.name if self.file_property else None,
                 "jsonPath": self.json_path,
             }
@@ -148,7 +148,7 @@ class Source:
     "source": {
         "distribution": "my-csv",
         "extract": {
-            "csvColumn": "my-csv-column"
+            "column": "my-csv-column"
         }
     }
     ```
@@ -244,9 +244,9 @@ class Source:
                     )
                 # Build the source.
                 json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH)
-                csv_column = data_extraction.get(constants.ML_COMMONS_CSV_COLUMN)
+                csv_column = data_extraction.get(constants.ML_COMMONS_COLUMN)
                 extract = Extract(
-                    csv_column=csv_column,
+                    column=csv_column,
                     file_property=file_property,
                     json_path=json_path,
                 )
@@ -284,8 +284,8 @@ class Source:
         if self.uid is None:
             # This case already rose an issue and should not happen at run time.
             raise ""
-        if self.extract.csv_column:
-            return self.extract.csv_column
+        if self.extract.column:
+            return self.extract.column
         elif self.extract.file_property:
             return self.extract.file_property
         elif self.extract.json_path:

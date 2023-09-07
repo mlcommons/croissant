@@ -104,7 +104,7 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
                 source=mlc.nodes.Source(
                     uid=_PARQUET_FILES,
                     node_type="distribution",
-                    extract=mlc.nodes.Extract(csv_column=name),
+                    extract=mlc.nodes.Extract(column=name),
                 ),
             )
         )
