@@ -46,7 +46,7 @@
     {
       "@type": "sc:FileObject",
       "name": "train2014.zip",
-      "contentSize": " B",
+      "contentSize": "13510573713 B",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -54,7 +54,7 @@
     {
       "@type": "sc:FileObject",
       "name": "val2014.zip",
-      "contentSize": " B",
+      "contentSize": "6645013297 B",
       "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -62,7 +62,7 @@
     {
       "@type": "sc:FileObject",
       "name": "test2014.zip",
-      "contentSize": " B",
+      "contentSize": "6660437059 B",
       "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -81,7 +81,7 @@
     {
       "@type": "sc:FileObject",
       "name": "annotations_trainval2014.zip",
-      "contentSize": " B",
+      "contentSize": "252872794 B",
       "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -110,7 +110,7 @@
     {
       "@type": "sc:FileObject",
       "name": "image_info_test2014.zip",
-      "contentSize": " B",
+      "contentSize": "763464 B",
       "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
