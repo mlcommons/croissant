@@ -53,11 +53,7 @@ class ReadField(Operation):
         if pd.isna(value):
             return value
         elif data_type == constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
-            # TODO(https://github.com/mlcommons/croissant/issues/199): this is
-            # temporary.For now, we only accept dictionary {"bytes": b"\x89PNG\r\n..."}.
-            if "bytes" not in value:
-                raise ValueError("reading images expects a dict with a `bytes` key.")
-            return deps.PIL_Image.open(io.BytesIO(value["bytes"]))
+            return deps.PIL_Image.open(io.BytesIO(value))
         elif data_type == pd.Timestamp:
             # The date format is the first format found in the field's source.
             format = next(
@@ -93,6 +89,6 @@ class ReadField(Operation):
                 field in series
             ), f'Field "{field}" does not exist. Possible fields: {possible_fields}'
             value = series[field]
-            value = self._cast_value(value)
         value = apply_transforms_fn(value, self.node.source)
+        value = self._cast_value(value)
         return {self.node.name: value}

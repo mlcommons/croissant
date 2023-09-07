@@ -96,6 +96,12 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
         except ValueError as exception:
             logging.error(exception)
             continue
+        if data_type == "sc:ImageObject":
+            transforms = [
+                mlc.nodes.Transform(json_path="bytes"),
+            ]
+        else:
+            transforms = []
         fields.append(
             mlc.nodes.Field(
                 name=name,
@@ -105,6 +111,7 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
                     uid=_PARQUET_FILES,
                     node_type="distribution",
                     extract=mlc.nodes.Extract(column=name),
+                    transforms=transforms,
                 ),
             )
         )

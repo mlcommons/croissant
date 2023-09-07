@@ -68,6 +68,7 @@ class Transform:
     """
 
     format: str | None = None
+    json_path: str | None = None
     regex: str | None = None
     replace: str | None = None
     separator: str | None = None
@@ -77,6 +78,7 @@ class Transform:
         return remove_empty_values(
             {
                 "format": self.format,
+                "jsonPath": self.json_path,
                 "regex": self.regex,
                 "replace": self.replace,
                 "separator": self.separator,
@@ -90,8 +92,9 @@ class Transform:
         if not isinstance(jsonld, list):
             jsonld = [jsonld]
         for transform in jsonld:
-            possible_keys = [
+            keys = [
                 constants.ML_COMMONS_FORMAT,
+                constants.ML_COMMONS_JSON_PATH,
                 constants.ML_COMMONS_REGEX,
                 constants.ML_COMMONS_REPLACE,
                 constants.ML_COMMONS_SEPARATOR,
@@ -99,32 +102,18 @@ class Transform:
             if not isinstance(transform, dict):
                 issues.add_error(
                     f'Transform "{transform}" should be a dict with the keys'
-                    f' {", ".join(possible_keys)}'
+                    f' {", ".join(keys)}'
                 )
                 continue
-            format = transform.get(constants.ML_COMMONS_FORMAT)
-            regex = transform.get(constants.ML_COMMONS_REGEX)
-            replace = transform.get(constants.ML_COMMONS_REPLACE)
-            separator = transform.get(constants.ML_COMMONS_SEPARATOR)
-            if (
-                format is None
-                and regex is None
-                and replace is None
-                and separator is None
-            ):
+            kwargs = {constants.TO_CROISSANT[k]: transform.get(k) for k in keys}
+            all_values_are_none = all(v is None for v in kwargs.values())
+            if all_values_are_none:
                 issues.add_error(
                     f'Transform "{transform}" should be a dict with at least one key in'
-                    f' {", ".join(possible_keys)}'
+                    f' {", ".join(keys)}'
                 )
                 continue
-            transforms.append(
-                Transform(
-                    format=format,
-                    regex=regex,
-                    replace=replace,
-                    separator=separator,
-                )
-            )
+            transforms.append(Transform(**kwargs))
         return transforms
 
 
@@ -305,7 +294,7 @@ class Source:
                 )
 
 
-def _apply_transform_fn(value: str, transform: Transform) -> str:
+def _apply_transform_fn(value: Any, transform: Transform) -> str:
     """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
@@ -316,6 +305,9 @@ def _apply_transform_fn(value: str, transform: Transform) -> str:
         for group in match.groups():
             if group is not None:
                 return group
+    elif transform.json_path is not None:
+        jsonpath_expression = jsonpath_rw.parse(transform.json_path)
+        return next(match.value for match in jsonpath_expression.find(value))
     return value
 
 
