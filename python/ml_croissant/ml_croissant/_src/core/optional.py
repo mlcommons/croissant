@@ -5,15 +5,6 @@ from __future__ import annotations
 import importlib
 import types
 
-from etils import epath
-import toml
-
-
-def list_optional_deps() -> dict[str, str]:
-    """Lists all optional dependencies from the pyproject.toml."""
-    toml_file = epath.Path(__file__).parent.parent.parent.parent / "pyproject.toml"
-    return toml.load(toml_file).get("project", {}).get("optional-dependencies", {})
-
 
 def _try_import(module_name: str, package_name: str | None = None):
     """Tries importing a module, with an informative error message on failure.
@@ -27,11 +18,9 @@ def _try_import(module_name: str, package_name: str | None = None):
     try:
         return importlib.import_module(module_name)
     except ImportError as exception:
-        optional_deps = list_optional_deps()
+        if package_name is None:
+            package_name = module_name
         installs = f"`pip install {package_name}`"
-        for sub_module, deps in optional_deps.items():
-            if package_name in deps:
-                installs = f"`pip install ml_croissant[{sub_module}]`"
         error = (
             f"Failed importing {module_name}. This likely means that the dataset"
             " requires additional dependencies that have to be manually installed"
