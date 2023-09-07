@@ -56,3 +56,10 @@ line_length = 88
 use_parentheses = true
 known_first_party = ["mlcroissant"]
 multi_line_output = 3
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
