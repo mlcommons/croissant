@@ -60,6 +60,9 @@ multi_line_output = 3
 [tool.distutils.bdist_wheel]
 universal = true
 
+[tool.setuptools.packages.find]
+exclude = ["recipes*"]
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
