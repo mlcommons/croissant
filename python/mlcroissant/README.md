@@ -1,4 +1,7 @@
-# 🥐 ML Croissant
+# mlcroissant 🥐
+
+Discover `mlcroissant 🥐` with this
+[introduction tutorial in Google Colab](https://colab.sandbox.google.com/github/mlcommons/croissant/blob/main/python/mlcroissant/recipes/introduction.ipynb).
 
 ## Python requirements
 
