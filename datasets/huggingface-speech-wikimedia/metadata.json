@@ -1,0 +1,117 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "csvColumn": "ml:csvColumn",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "speech_wikimedia",
+  "description": "The People's Speech Dataset is among the world's largest English speech recognition corpus today that is licensed for academic and commercial usage under CC-BY-SA and CC-BY 4.0. It includes 30,000+ hours of transcribed speech in English languages with a diverse set of speakers. This open dataset is large enough to train speech-to-text systems and crucially is available with a permissive license.",
+  "citation": "@article{lecun2010mnist,\n  title={MNIST handwritten digit database},\n  author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n  journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n  volume={2},\n  year={2010}\n}\n",
+  "url": "https://huggingface.co/datasets/MLCommons/speech_wikimedia",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/MLCommons/speech_wikimedia/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": "repo",
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "training",
+      "description": "The training set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "test",
+      "description": "The test set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "validation",
+      "description": "The validation set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

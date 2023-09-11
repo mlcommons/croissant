@@ -1,0 +1,13 @@
+absl-py
+etils
+typing_extensions
+importlib_resources
+rdflib
+numpy
+pandas
+networkx
+jsonpath_rw
+requests
+tqdm
+toml
+pygraphviz
