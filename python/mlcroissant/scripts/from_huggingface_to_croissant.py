@@ -73,15 +73,15 @@ def _get_data_type(feature: datasets.Features) -> str:
     """Gets Croissant data type from Hugging Face data type."""
     feature_type = feature.dtype
     if feature_type == "string":
-        return "sc:Text"
+        return mlc.constants.SCHEMA_ORG_DATA_TYPE_TEXT
     elif feature_type == "bool":
-        return "sc:Boolean"
+        return mlc.constants.SCHEMA_ORG_DATA_TYPE_BOOL
     elif feature_type == "float":
-        return "sc:Float"
+        return mlc.constants.SCHEMA_ORG_DATA_TYPE_FLOAT
     elif feature_type in ["int32", "int64"]:
-        return "sc:Integer"
-    elif feature_type in "PIL.Image.Image":
-        return "sc:ImageObject"
+        return mlc.constants.SCHEMA_ORG_DATA_TYPE_INTEGER
+    elif feature_type == "PIL.Image.Image":
+        return mlc.constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT
     else:
         raise ValueError(f"Cannot convert the feature {feature} to Croissant.")
 
@@ -96,7 +96,7 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
         except ValueError as exception:
             logging.error(exception)
             continue
-        if data_type == "sc:ImageObject":
+        if data_type == mlc.constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
             transforms = [
                 mlc.nodes.Transform(json_path="bytes"),
             ]
@@ -106,7 +106,7 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
             mlc.nodes.Field(
                 name=name,
                 description="Column from Hugging Face parquet file.",
-                data_type=data_type,
+                data_types=data_type,
                 source=mlc.nodes.Source(
                     uid=_PARQUET_FILES,
                     node_type="distribution",
