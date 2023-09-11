@@ -4,11 +4,13 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.datasets import Dataset
 from mlcroissant._src.datasets import Records
+from mlcroissant._src.structure_graph.nodes.field import Field
 
 __all__ = [
     "constants",
     "Dataset",
+    "Field",
     "nodes",
-    "ValidationError",
     "Records",
+    "ValidationError",
 ]
