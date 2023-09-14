@@ -13,6 +13,12 @@ from absl import app
 from absl import flags
 from absl import logging
 
+# print(sys.path)
+
+sys.path.append(sys.path[0] + "/..") # This needed to be done to retrieve the mlc library
+
+# print(sys.path)
+
 import ml_croissant as mlc
 
 flags.DEFINE_string(
