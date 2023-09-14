@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -60,7 +60,7 @@
           "source": {
             "distribution": "books.csv",
             "extract": {
-              "csvColumn": "Title"
+              "column": "Title"
             }
           }
         },
@@ -72,7 +72,7 @@
           "source": {
             "distribution": "books.csv",
             "extract": {
-              "csvColumn": "Author"
+              "column": "Author"
             }
           }
         },
@@ -87,7 +87,7 @@
           "source": {
             "distribution": "books.csv",
             "extract": {
-              "csvColumn": "Split"
+              "column": "Split"
             }
           }
         }

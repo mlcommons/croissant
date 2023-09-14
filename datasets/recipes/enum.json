@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -67,7 +67,7 @@
           "source": {
             "distribution": "enum_directions.csv",
             "extract": {
-              "csvColumn": "key"
+              "column": "key"
             }
           }
         },
@@ -82,7 +82,7 @@
           "source": {
             "distribution": "enum_directions.csv",
             "extract": {
-              "csvColumn": "label"
+              "column": "label"
             }
           }
         }
@@ -101,7 +101,7 @@
           "references": {
             "distribution": "enum.csv",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -119,7 +119,7 @@
           "source": {
             "distribution": "enum.csv",
             "extract": {
-              "csvColumn": "direction"
+              "column": "direction"
             }
           }
         }

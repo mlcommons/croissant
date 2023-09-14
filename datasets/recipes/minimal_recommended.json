@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -60,7 +60,7 @@
           "references": {
             "distribution": "minimal.csv",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -68,11 +68,11 @@
           "@type": "ml:Field",
           "name": "age",
           "description": "The second column contains the age.",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "references": {
             "distribution": "minimal.csv",
             "extract": {
-              "csvColumn": "age"
+              "column": "age"
             }
           }
         }
