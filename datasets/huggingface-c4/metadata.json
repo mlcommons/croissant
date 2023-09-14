@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -69,7 +69,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "text"
+              "column": "text"
             }
           }
         },
@@ -81,7 +81,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "timestamp"
+              "column": "timestamp"
             }
           }
         },
@@ -93,7 +93,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }
@@ -112,7 +112,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "text"
+              "column": "text"
             }
           }
         },
@@ -124,7 +124,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "timestamp"
+              "column": "timestamp"
             }
           }
         },
@@ -136,7 +136,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }
@@ -155,7 +155,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "text"
+              "column": "text"
             }
           }
         },
@@ -167,7 +167,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "timestamp"
+              "column": "timestamp"
             }
           }
         },
@@ -179,7 +179,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }
@@ -198,7 +198,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "text"
+              "column": "text"
             }
           }
         },
@@ -210,7 +210,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "timestamp"
+              "column": "timestamp"
             }
           }
         },
@@ -222,7 +222,7 @@
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "url"
+              "column": "url"
             }
           }
         }

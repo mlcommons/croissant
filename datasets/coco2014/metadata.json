@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -46,7 +46,7 @@
     {
       "@type": "sc:FileObject",
       "name": "train2014.zip",
-      "contentSize": " B",
+      "contentSize": "13510573713 B",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -54,7 +54,7 @@
     {
       "@type": "sc:FileObject",
       "name": "val2014.zip",
-      "contentSize": " B",
+      "contentSize": "6645013297 B",
       "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -62,7 +62,7 @@
     {
       "@type": "sc:FileObject",
       "name": "test2014.zip",
-      "contentSize": " B",
+      "contentSize": "6660437059 B",
       "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -81,7 +81,7 @@
     {
       "@type": "sc:FileObject",
       "name": "annotations_trainval2014.zip",
-      "contentSize": " B",
+      "contentSize": "252872794 B",
       "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -110,7 +110,7 @@
     {
       "@type": "sc:FileObject",
       "name": "image_info_test2014.zip",
-      "contentSize": " B",
+      "contentSize": "763464 B",
       "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
       "encodingFormat": "application/zip",
       "sha256": "sha256"
@@ -141,7 +141,7 @@
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
-            "sc:Url",
+            "sc:URL",
             "wd:Q3985153"
           ]
         }
@@ -240,7 +240,7 @@
           "source": {
             "distribution": "caption_annotations-files",
             "extract": {
-              "csvColumn": "id"
+              "column": "id"
             }
           }
         },
@@ -252,7 +252,7 @@
           "source": {
             "distribution": "caption_annotations-files",
             "extract": {
-              "csvColumn": "image_id"
+              "column": "image_id"
             }
           }
         },
@@ -267,7 +267,7 @@
           "source": {
             "distribution": "caption_annotations-files",
             "extract": {
-              "csvColumn": "caption"
+              "column": "caption"
             }
           }
         },
@@ -307,7 +307,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "id"
+              "column": "id"
             }
           }
         },
@@ -322,7 +322,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "name"
+              "column": "name"
             }
           }
         },
@@ -338,7 +338,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "supercategory"
+              "column": "supercategory"
             }
           }
         }
@@ -357,7 +357,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "id"
+              "column": "id"
             }
           }
         },
@@ -372,7 +372,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "category_id"
+              "column": "category_id"
             }
           }
         },
@@ -387,7 +387,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "image_id"
+              "column": "image_id"
             }
           }
         },
@@ -399,7 +399,7 @@
           "source": {
             "distribution": "instancesperson_keypoints_annotations",
             "extract": {
-              "csvColumn": "bbox"
+              "column": "bbox"
             }
           }
         }

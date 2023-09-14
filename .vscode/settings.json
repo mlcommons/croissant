@@ -36,7 +36,7 @@
         "88",
         "--use-parentheses",
         "--project",
-        "ml_croissant",
+        "mlcroissant",
         "--multi-line",
         "3",
         "--thirdparty",

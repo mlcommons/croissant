@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -55,2838 +55,2838 @@
         {
           "@type": "ml:Field",
           "name": "audio_ssd1",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd1"
+              "column": "audio.ssd1"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd2",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd2"
+              "column": "audio.ssd2"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd3",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd3"
+              "column": "audio.ssd3"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd4",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd4"
+              "column": "audio.ssd4"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd5",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd5"
+              "column": "audio.ssd5"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd6",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd6"
+              "column": "audio.ssd6"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd7",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd7"
+              "column": "audio.ssd7"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd8",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd8"
+              "column": "audio.ssd8"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd9",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd9"
+              "column": "audio.ssd9"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd10",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd10"
+              "column": "audio.ssd10"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd11",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd11"
+              "column": "audio.ssd11"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd12",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd12"
+              "column": "audio.ssd12"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd13",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd13"
+              "column": "audio.ssd13"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd14",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd14"
+              "column": "audio.ssd14"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd15",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd15"
+              "column": "audio.ssd15"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd16",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd16"
+              "column": "audio.ssd16"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd17",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd17"
+              "column": "audio.ssd17"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd18",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd18"
+              "column": "audio.ssd18"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd19",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd19"
+              "column": "audio.ssd19"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd20",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd20"
+              "column": "audio.ssd20"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd21",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd21"
+              "column": "audio.ssd21"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd22",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd22"
+              "column": "audio.ssd22"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd25",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd25"
+              "column": "audio.ssd25"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd26",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd26"
+              "column": "audio.ssd26"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd27",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd27"
+              "column": "audio.ssd27"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd28",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd28"
+              "column": "audio.ssd28"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd29",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd29"
+              "column": "audio.ssd29"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd30",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd30"
+              "column": "audio.ssd30"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd31",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd31"
+              "column": "audio.ssd31"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd32",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd32"
+              "column": "audio.ssd32"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd33",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd33"
+              "column": "audio.ssd33"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd34",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd34"
+              "column": "audio.ssd34"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd35",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd35"
+              "column": "audio.ssd35"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd36",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd36"
+              "column": "audio.ssd36"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd37",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd37"
+              "column": "audio.ssd37"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd38",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd38"
+              "column": "audio.ssd38"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd39",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd39"
+              "column": "audio.ssd39"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd40",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd40"
+              "column": "audio.ssd40"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd41",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd41"
+              "column": "audio.ssd41"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd42",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd42"
+              "column": "audio.ssd42"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd43",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd43"
+              "column": "audio.ssd43"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd44",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd44"
+              "column": "audio.ssd44"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd45",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd45"
+              "column": "audio.ssd45"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd46",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd46"
+              "column": "audio.ssd46"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd49",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd49"
+              "column": "audio.ssd49"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd50",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd50"
+              "column": "audio.ssd50"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd51",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd51"
+              "column": "audio.ssd51"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd52",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd52"
+              "column": "audio.ssd52"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd53",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd53"
+              "column": "audio.ssd53"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd54",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd54"
+              "column": "audio.ssd54"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd55",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd55"
+              "column": "audio.ssd55"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd56",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd56"
+              "column": "audio.ssd56"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd57",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd57"
+              "column": "audio.ssd57"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd58",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd58"
+              "column": "audio.ssd58"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd59",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd59"
+              "column": "audio.ssd59"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd60",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd60"
+              "column": "audio.ssd60"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd61",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd61"
+              "column": "audio.ssd61"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd62",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd62"
+              "column": "audio.ssd62"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd63",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd63"
+              "column": "audio.ssd63"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd64",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd64"
+              "column": "audio.ssd64"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd65",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd65"
+              "column": "audio.ssd65"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd66",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd66"
+              "column": "audio.ssd66"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd67",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd67"
+              "column": "audio.ssd67"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd68",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd68"
+              "column": "audio.ssd68"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd69",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd69"
+              "column": "audio.ssd69"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd70",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd70"
+              "column": "audio.ssd70"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd73",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd73"
+              "column": "audio.ssd73"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd74",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd74"
+              "column": "audio.ssd74"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd75",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd75"
+              "column": "audio.ssd75"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd76",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd76"
+              "column": "audio.ssd76"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd77",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd77"
+              "column": "audio.ssd77"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd78",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd78"
+              "column": "audio.ssd78"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd79",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd79"
+              "column": "audio.ssd79"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd80",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd80"
+              "column": "audio.ssd80"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd81",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd81"
+              "column": "audio.ssd81"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd82",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd82"
+              "column": "audio.ssd82"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd83",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd83"
+              "column": "audio.ssd83"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd84",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd84"
+              "column": "audio.ssd84"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd85",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd85"
+              "column": "audio.ssd85"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd86",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd86"
+              "column": "audio.ssd86"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd87",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd87"
+              "column": "audio.ssd87"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd88",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd88"
+              "column": "audio.ssd88"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd89",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd89"
+              "column": "audio.ssd89"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd90",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd90"
+              "column": "audio.ssd90"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd91",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd91"
+              "column": "audio.ssd91"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd92",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd92"
+              "column": "audio.ssd92"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd93",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd93"
+              "column": "audio.ssd93"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd94",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd94"
+              "column": "audio.ssd94"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd97",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd97"
+              "column": "audio.ssd97"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd98",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd98"
+              "column": "audio.ssd98"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd99",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd99"
+              "column": "audio.ssd99"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd100",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd100"
+              "column": "audio.ssd100"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd101",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd101"
+              "column": "audio.ssd101"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd102",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd102"
+              "column": "audio.ssd102"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd103",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd103"
+              "column": "audio.ssd103"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd104",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd104"
+              "column": "audio.ssd104"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd105",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd105"
+              "column": "audio.ssd105"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd106",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd106"
+              "column": "audio.ssd106"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd107",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd107"
+              "column": "audio.ssd107"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd108",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd108"
+              "column": "audio.ssd108"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd109",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd109"
+              "column": "audio.ssd109"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd110",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd110"
+              "column": "audio.ssd110"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd111",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd111"
+              "column": "audio.ssd111"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd112",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd112"
+              "column": "audio.ssd112"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd113",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd113"
+              "column": "audio.ssd113"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd114",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd114"
+              "column": "audio.ssd114"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd115",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd115"
+              "column": "audio.ssd115"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd116",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd116"
+              "column": "audio.ssd116"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd117",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd117"
+              "column": "audio.ssd117"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd118",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd118"
+              "column": "audio.ssd118"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd121",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd121"
+              "column": "audio.ssd121"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd122",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd122"
+              "column": "audio.ssd122"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd123",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd123"
+              "column": "audio.ssd123"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd124",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd124"
+              "column": "audio.ssd124"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd125",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd125"
+              "column": "audio.ssd125"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd126",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd126"
+              "column": "audio.ssd126"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd127",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd127"
+              "column": "audio.ssd127"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd128",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd128"
+              "column": "audio.ssd128"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd129",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd129"
+              "column": "audio.ssd129"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd130",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd130"
+              "column": "audio.ssd130"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd131",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd131"
+              "column": "audio.ssd131"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd132",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd132"
+              "column": "audio.ssd132"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd133",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd133"
+              "column": "audio.ssd133"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd134",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd134"
+              "column": "audio.ssd134"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd135",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd135"
+              "column": "audio.ssd135"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd136",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd136"
+              "column": "audio.ssd136"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd137",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd137"
+              "column": "audio.ssd137"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd138",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd138"
+              "column": "audio.ssd138"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd139",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd139"
+              "column": "audio.ssd139"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd140",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd140"
+              "column": "audio.ssd140"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd141",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd141"
+              "column": "audio.ssd141"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd145",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd145"
+              "column": "audio.ssd145"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd146",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd146"
+              "column": "audio.ssd146"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd147",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd147"
+              "column": "audio.ssd147"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd148",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd148"
+              "column": "audio.ssd148"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd149",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd149"
+              "column": "audio.ssd149"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd150",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd150"
+              "column": "audio.ssd150"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd151",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd151"
+              "column": "audio.ssd151"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd152",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd152"
+              "column": "audio.ssd152"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd153",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd153"
+              "column": "audio.ssd153"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd154",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd154"
+              "column": "audio.ssd154"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd155",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd155"
+              "column": "audio.ssd155"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd156",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd156"
+              "column": "audio.ssd156"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd157",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd157"
+              "column": "audio.ssd157"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd158",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd158"
+              "column": "audio.ssd158"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd159",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd159"
+              "column": "audio.ssd159"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd160",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd160"
+              "column": "audio.ssd160"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd161",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd161"
+              "column": "audio.ssd161"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd162",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd162"
+              "column": "audio.ssd162"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd163",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd163"
+              "column": "audio.ssd163"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd164",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd164"
+              "column": "audio.ssd164"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd165",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd165"
+              "column": "audio.ssd165"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "audio_ssd166",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "audio.ssd166"
+              "column": "audio.ssd166"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster1",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster1"
+              "column": "cluster1"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster2",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster2"
+              "column": "cluster2"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster3",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster3"
+              "column": "cluster3"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster4",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster4"
+              "column": "cluster4"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster5",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster5"
+              "column": "cluster5"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster6",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster6"
+              "column": "cluster6"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster7",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster7"
+              "column": "cluster7"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster8",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster8"
+              "column": "cluster8"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster9",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster9"
+              "column": "cluster9"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster10",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster10"
+              "column": "cluster10"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster11",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster11"
+              "column": "cluster11"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster12",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster12"
+              "column": "cluster12"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster13",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster13"
+              "column": "cluster13"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster14",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster14"
+              "column": "cluster14"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster15",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster15"
+              "column": "cluster15"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster16",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster16"
+              "column": "cluster16"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster17",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster17"
+              "column": "cluster17"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster18",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster18"
+              "column": "cluster18"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster19",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster19"
+              "column": "cluster19"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster20",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster20"
+              "column": "cluster20"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster21",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster21"
+              "column": "cluster21"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster22",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster22"
+              "column": "cluster22"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster23",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster23"
+              "column": "cluster23"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster24",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster24"
+              "column": "cluster24"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster25",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster25"
+              "column": "cluster25"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster26",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster26"
+              "column": "cluster26"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster27",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster27"
+              "column": "cluster27"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster28",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster28"
+              "column": "cluster28"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster29",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster29"
+              "column": "cluster29"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster30",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster30"
+              "column": "cluster30"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster31",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster31"
+              "column": "cluster31"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster32",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster32"
+              "column": "cluster32"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster33",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster33"
+              "column": "cluster33"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster34",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster34"
+              "column": "cluster34"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster35",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster35"
+              "column": "cluster35"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster36",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster36"
+              "column": "cluster36"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster37",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster37"
+              "column": "cluster37"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster38",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster38"
+              "column": "cluster38"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster39",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster39"
+              "column": "cluster39"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster40",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster40"
+              "column": "cluster40"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster41",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster41"
+              "column": "cluster41"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster42",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster42"
+              "column": "cluster42"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster43",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster43"
+              "column": "cluster43"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster44",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster44"
+              "column": "cluster44"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster45",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster45"
+              "column": "cluster45"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster46",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster46"
+              "column": "cluster46"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster47",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster47"
+              "column": "cluster47"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster48",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster48"
+              "column": "cluster48"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster49",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster49"
+              "column": "cluster49"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster50",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster50"
+              "column": "cluster50"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster51",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster51"
+              "column": "cluster51"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster52",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster52"
+              "column": "cluster52"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster53",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster53"
+              "column": "cluster53"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster54",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster54"
+              "column": "cluster54"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster55",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster55"
+              "column": "cluster55"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster56",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster56"
+              "column": "cluster56"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster57",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster57"
+              "column": "cluster57"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster59",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster59"
+              "column": "cluster59"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster60",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster60"
+              "column": "cluster60"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster61",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster61"
+              "column": "cluster61"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster62",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster62"
+              "column": "cluster62"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster63",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster63"
+              "column": "cluster63"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster64",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster64"
+              "column": "cluster64"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster65",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster65"
+              "column": "cluster65"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster66",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster66"
+              "column": "cluster66"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster67",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster67"
+              "column": "cluster67"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster68",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster68"
+              "column": "cluster68"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster69",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster69"
+              "column": "cluster69"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster70",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster70"
+              "column": "cluster70"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster71",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster71"
+              "column": "cluster71"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster72",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster72"
+              "column": "cluster72"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster73",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster73"
+              "column": "cluster73"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster74",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster74"
+              "column": "cluster74"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster75",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster75"
+              "column": "cluster75"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster76",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster76"
+              "column": "cluster76"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster78",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster78"
+              "column": "cluster78"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster79",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster79"
+              "column": "cluster79"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster80",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster80"
+              "column": "cluster80"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster81",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster81"
+              "column": "cluster81"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster82",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster82"
+              "column": "cluster82"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster83",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster83"
+              "column": "cluster83"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster84",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster84"
+              "column": "cluster84"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster85",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster85"
+              "column": "cluster85"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster86",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster86"
+              "column": "cluster86"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster87",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster87"
+              "column": "cluster87"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster88",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster88"
+              "column": "cluster88"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster89",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster89"
+              "column": "cluster89"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster90",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster90"
+              "column": "cluster90"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster91",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster91"
+              "column": "cluster91"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster92",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster92"
+              "column": "cluster92"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster93",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster93"
+              "column": "cluster93"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster94",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster94"
+              "column": "cluster94"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster95",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster95"
+              "column": "cluster95"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster96",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster96"
+              "column": "cluster96"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster97",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster97"
+              "column": "cluster97"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster98",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster98"
+              "column": "cluster98"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster99",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster99"
+              "column": "cluster99"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "cluster100",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "cluster100"
+              "column": "cluster100"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "segments",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "segments"
+              "column": "segments"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "mean_rect_width",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "mean_rect_width"
+              "column": "mean_rect_width"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "std_rect_width",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "std_rect_width"
+              "column": "std_rect_width"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "mean_rect_height",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "mean_rect_height"
+              "column": "mean_rect_height"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "std_rect_height",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "std_rect_height"
+              "column": "std_rect_height"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "mean_rect_volume",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "mean_rect_volume"
+              "column": "mean_rect_volume"
             }
           }
         },
         {
           "@type": "ml:Field",
           "name": "std_rect_volume",
-          "dataType": "sc:Number",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "std_rect_volume"
+              "column": "std_rect_volume"
             }
           }
         },
@@ -2897,7 +2897,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "hasSegments"
+              "column": "hasSegments"
             }
           }
         },
@@ -2908,7 +2908,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "location"
+              "column": "location"
             }
           }
         },
@@ -2919,7 +2919,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Brown.Creeper"
+              "column": "Brown.Creeper"
             }
           }
         },
@@ -2930,7 +2930,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Pacific.Wren"
+              "column": "Pacific.Wren"
             }
           }
         },
@@ -2941,7 +2941,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Pacific.slope.Flycatcher"
+              "column": "Pacific.slope.Flycatcher"
             }
           }
         },
@@ -2952,7 +2952,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Red.breasted.Nuthatch"
+              "column": "Red.breasted.Nuthatch"
             }
           }
         },
@@ -2963,7 +2963,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Dark.eyed.Junco"
+              "column": "Dark.eyed.Junco"
             }
           }
         },
@@ -2974,7 +2974,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Olive.sided.Flycatcher"
+              "column": "Olive.sided.Flycatcher"
             }
           }
         },
@@ -2985,7 +2985,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Hermit.Thrush"
+              "column": "Hermit.Thrush"
             }
           }
         },
@@ -2996,7 +2996,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Chestnut.backed.Chickadee"
+              "column": "Chestnut.backed.Chickadee"
             }
           }
         },
@@ -3007,7 +3007,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Varied.Thrush"
+              "column": "Varied.Thrush"
             }
           }
         },
@@ -3018,7 +3018,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Hermit.Warbler"
+              "column": "Hermit.Warbler"
             }
           }
         },
@@ -3029,7 +3029,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Swainson.s.Thrush"
+              "column": "Swainson.s.Thrush"
             }
           }
         },
@@ -3040,7 +3040,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Hammond.s.Flycatcher"
+              "column": "Hammond.s.Flycatcher"
             }
           }
         },
@@ -3051,7 +3051,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Western.Tanager"
+              "column": "Western.Tanager"
             }
           }
         },
@@ -3062,7 +3062,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Black.headed.Grosbeak"
+              "column": "Black.headed.Grosbeak"
             }
           }
         },
@@ -3073,7 +3073,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Golden.Crowned.Kinglet"
+              "column": "Golden.Crowned.Kinglet"
             }
           }
         },
@@ -3084,7 +3084,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Warbling.Vireo"
+              "column": "Warbling.Vireo"
             }
           }
         },
@@ -3095,7 +3095,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "MacGillivray.s.Warbler"
+              "column": "MacGillivray.s.Warbler"
             }
           }
         },
@@ -3106,7 +3106,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Stellar.s.Jay"
+              "column": "Stellar.s.Jay"
             }
           }
         },
@@ -3117,7 +3117,7 @@
           "source": {
             "distribution": "birds.arff",
             "extract": {
-              "csvColumn": "Common.Nighthawk"
+              "column": "Common.Nighthawk"
             }
           }
         }
