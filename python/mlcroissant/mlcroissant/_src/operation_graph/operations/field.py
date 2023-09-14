@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 from rdflib import term
 
+import librosa
+
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.ml import bounding_box
 from mlcroissant._src.core.optional import deps
@@ -29,6 +31,8 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
             return value
         elif isinstance(value, bytes):
             return deps.PIL_Image.open(io.BytesIO(value))
+        elif data_type == constants.SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT:
+            return librosa.load(io.BytesIO(value))
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type == DataType.BOUNDING_BOX:
