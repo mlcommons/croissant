@@ -67,7 +67,7 @@ jobs:
     - name: Install library
       run: pip install .[dev]
 
-    - run: pip install ipython ipykernel
+    - run: pip install ipython ipykernel nbconvert
     
     # Notebooks are in the recipes/ folder. 
     - name: Run notebook
