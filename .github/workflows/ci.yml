@@ -67,7 +67,7 @@ jobs:
     - name: Install library
       run: pip install .[dev]
 
-    - run: pip install ipython
+    - run: pip install ipython ipykernel
     
     # Notebooks are in the recipes/ folder. 
     - name: Run notebook
