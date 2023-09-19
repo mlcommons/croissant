@@ -85,6 +85,22 @@ All contributions are welcome! We even have [good first issues](https://github.c
 The development workflow goes as follow:
 
 - Read above how the repo is [designed](#design).
+
+### Contribute on Codespaces.
+An easy way to contribute to `mlcroissant` is using Croissant's configured [codespaces](https://docs.github.com/en/codespaces/overview).
+To start a codespace:
+
+- On Croissant's main [repo page](https://github.com/mlcommons/croissant), click on the `<Code>` button and select the `Codespaces` tab. You can start a new codespace by clicking on the `+` sign on the left side of the tab. By default, the codespace will start on Croissant's `main` branch, unless you select otherwise from the branches drop-down menu on the left side.
+- While building the environment, your codespaces will install all `mlcroissant`'s required dependencies - so that you can start coding right away! Of course, you can [further personalize](https://docs.github.com/en/codespaces/customizing-your-codespace/personalizing-github-codespaces-for-your-account) your codespace.
+- To start contributing to Croissant:
+  - Create a new branch from the `Terminal` tab in the bottom panel of your codespace with `git checkout -b feature/my-awesome-new-feature`
+  - You can create new commits, and run most git commands from the `Source Control` tab in the left panel of your codespace. Alternatively, use the `Terminal` in the bottom panel of your codespace.
+  - Iterate on your code until all tests are green (you can run tests with `make pytest` or form the `Tests` tab in the left panel of your codespace).
+  - Open a pull request (PR) with the main branch of https://github.com/mlcommons/croissant, and ask for feedback!
+
+### Contribute via GitHub clone.
+Alternatively, you can contribute to `mlcroissant` using the "classic" GitHub workflow:
+
 - [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository: https://github.com/mlcommons/croissant.
 - Clone the newly forked repository:
   ```bash
