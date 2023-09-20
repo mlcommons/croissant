@@ -26,3 +26,4 @@ typing_extensions==4.7.1
 tzdata==2023.3
 urllib3==2.0.4
 mlcroissant==0.0.1
+pyarrow==13.0.0

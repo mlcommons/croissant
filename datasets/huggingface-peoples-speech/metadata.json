@@ -2,7 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "csvColumn": "ml:csvColumn",
+    "column": "ml:column",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -33,7 +33,7 @@
     "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
-  "name": "people_speech",
+  "name": "peoples_speech",
   "description": "The People's Speech Dataset is among the world's largest English speech recognition corpus today that is licensed for academic and commercial usage under CC-BY-SA and CC-BY 4.0. It includes 30,000+ hours of transcribed speech in English languages with a diverse set of speakers. This open dataset is large enough to train speech-to-text systems and crucially is available with a permissive license.",
   "citation": "@article{lecun2010mnist,\n  title={MNIST handwritten digit database},\n  author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n  journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n  volume={2},\n  year={2010}\n}\n",
   "url": "https://huggingface.co/datasets/MLCommons/peoples_speech",
@@ -58,14 +58,14 @@
   "recordSet": [
     {
       "@type": "ml:RecordSet",
-      "name": "train",
-      "description": "The train set of records in the database.",
+      "name": "clean",
+      "description": "The clean set of records in the database.",
       "field": [
         {
           "@type": "ml:Field",
           "name": "id",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
             "extract": {
@@ -87,13 +87,13 @@
         },
         {
           "@type": "ml:Field",
-          "name": "duration",
+          "name": "duration_ms",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "duration"
+              "csvColumn": "duration_ms"
             }
           }
         },
@@ -101,7 +101,227 @@
           "@type": "ml:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "clean_sa",
+      "description": "The clean_sa set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "duration_ms",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "duration_ms"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "text",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "dirty",
+      "description": "The dirty set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "duration_ms",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "duration_ms"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "text",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "dirty_sa",
+      "description": "The dirty_sa set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "duration_ms",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "duration_ms"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "text",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "microset",
+      "description": "The microset set of records in the database.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Audio",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "audio"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "duration_ms",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "csvColumn": "duration_ms"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "text",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
             "extract": {
@@ -120,7 +340,7 @@
           "@type": "ml:Field",
           "name": "id",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
             "extract": {
@@ -142,13 +362,13 @@
         },
         {
           "@type": "ml:Field",
-          "name": "duration",
+          "name": "duration_ms",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "duration"
+              "csvColumn": "duration_ms"
             }
           }
         },
@@ -156,7 +376,7 @@
           "@type": "ml:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
             "extract": {
@@ -175,7 +395,7 @@
           "@type": "ml:Field",
           "name": "id",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
             "extract": {
@@ -197,13 +417,13 @@
         },
         {
           "@type": "ml:Field",
-          "name": "duration",
+          "name": "duration_ms",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Integer",
           "source": {
             "distribution": "parquet-files",
             "extract": {
-              "csvColumn": "duration"
+              "csvColumn": "duration_ms"
             }
           }
         },
@@ -211,7 +431,7 @@
           "@type": "ml:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
-          "dataType": "sc:Value",
+          "dataType": "sc:Text",
           "source": {
             "distribution": "parquet-files",
             "extract": {
