@@ -1,4 +1,6 @@
 [project]
+# Project metadata. Available keys are documented at:
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
 version = "0.0.1"
@@ -12,6 +14,9 @@ authors = [
   { name = "Pierre Ruyssen" },
   { name = "Prabhant Singh" },
 ]
+
+# pip dependencies of the project
+# Installed locally with `pip install -e .`
 dependencies = [
   "absl-py",
   "etils[epath]",
@@ -25,6 +30,8 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
+# Development deps (unittest, linting, formating,...)
+# Installed through `pip install -e .[dev]`
 dev = [
   "black",
   "datasets",
@@ -41,6 +48,7 @@ git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
 
+# Formatting configurations.
 [tool.black]
 line-length = 88
 
