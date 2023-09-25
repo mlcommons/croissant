@@ -45,6 +45,43 @@ jobs:
     - name: Docstrings are defined
       run: make flake8
 
+  notebook-test:
+    name: Notebook Tests / Python ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Tests currently fail for 3.8 and 3.9.
+        python-version: ['3.10', '3.11']
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install library
+      run: pip install .[dev]
+
+    - run: pip install ipython ipykernel nbconvert
+    
+    # Notebooks are in the recipes/ folder. 
+    - name: Run notebook
+      run: |
+        ipython kernel install --user --name croissant-notebook
+        for notebook in recipes/*ipynb
+          do
+            jupyter nbconvert \
+              --ExecutePreprocessor.timeout=600 \
+              --ExecutePreprocessor.kernel_name=croissant-notebook \
+              --to notebook \
+              --execute $notebook
+          done
+          
   python-format:
     name: Python format
     runs-on: ubuntu-latest
