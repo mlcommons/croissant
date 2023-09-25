@@ -80,13 +80,8 @@ For the full design, refer to the [design doc](https://docs.google.com/document/
 
 ## Contribute
 
-All contributions are welcome! We even have [good first issues](https://github.com/mlcommons/croissant/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to start in the project. Refer to the [GitHub project](https://github.com/orgs/mlcommons/projects/26) for more detailed user stories.
+All contributions are welcome! We even have [good first issues](https://github.com/mlcommons/croissant/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to start in the project. Refer to the [GitHub project](https://github.com/orgs/mlcommons/projects/26) for more detailed user stories and read above how the repo is [designed](#design).
 
-The development workflow goes as follow:
-
-- Read above how the repo is [designed](#design).
-
-### Contribute.
 An easy way to contribute to `mlcroissant` is using Croissant's configured [codespaces](https://docs.github.com/en/codespaces/overview).
 To start a codespace:
 
