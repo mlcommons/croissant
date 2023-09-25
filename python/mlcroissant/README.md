@@ -80,36 +80,21 @@ For the full design, refer to the [design doc](https://docs.google.com/document/
 
 ## Contribute
 
-All contributions are welcome! We even have [good first issues](https://github.com/mlcommons/croissant/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to start in the project. Refer to the [GitHub project](https://github.com/orgs/mlcommons/projects/26) for more detailed user stories.
+All contributions are welcome! We even have [good first issues](https://github.com/mlcommons/croissant/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to start in the project. Refer to the [GitHub project](https://github.com/orgs/mlcommons/projects/26) for more detailed user stories and read above how the repo is [designed](#design).
 
-The development workflow goes as follow:
+An easy way to contribute to `mlcroissant` is using Croissant's configured [codespaces](https://docs.github.com/en/codespaces/overview).
+To start a codespace:
 
-- Read above how the repo is [designed](#design).
-- [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository: https://github.com/mlcommons/croissant.
-- Clone the newly forked repository:
-  ```bash
-  git clone git@github.com:<YOUR_GITHUB_LDAP>/croissant.git
-  ```
-- Create a new branch:
-  ```bash
-  cd croissant/
-  git checkout -b feature/my-awesome-new-feature
-  ```
-- Install the repository and dev tools:
-  ```bash
-  cd python/mlcroissant
-  pip install -e .[dev]
-  ```
-- Code the feature. We support [VS Code](https://code.visualstudio.com) with pre-set settings.
-- Push to GitHub:
-  ```bash
-  git add .
-  git push --set-upstream origin feature/my-awesome-new-feature
-  ```
-- Update your code until all tests are green:
-  - `pytest` runs unit tests.
-  - `pytype -j auto` runs pytype.
-- Open a pull request (PR) with the main branch of https://github.com/mlcommons/croissant, and ask for feedback!
+- On Croissant's main [repo page](https://github.com/mlcommons/croissant), click on the `<Code>` button and select the `Codespaces` tab. You can start a new codespace by clicking on the `+` sign on the left side of the tab. By default, the codespace will start on Croissant's `main` branch, unless you select otherwise from the branches drop-down menu on the left side.
+- While building the environment, your codespaces will install all `mlcroissant`'s required dependencies - so that you can start coding right away! Of course, you can [further personalize](https://docs.github.com/en/codespaces/customizing-your-codespace/personalizing-github-codespaces-for-your-account) your codespace.
+- To start contributing to Croissant:
+  - Create a new branch from the `Terminal` tab in the bottom panel of your codespace with `git checkout -b feature/my-awesome-new-feature`
+  - You can create new commits, and run most git commands from the `Source Control` tab in the left panel of your codespace. Alternatively, use the `Terminal` in the bottom panel of your codespace.
+  - Iterate on your code until all tests are green (you can run tests with `make pytest` or form the `Tests` tab in the left panel of your codespace).
+  - Open a pull request (PR) with the main branch of https://github.com/mlcommons/croissant, and ask for feedback!
+
+Alternatively, you can contribute to `mlcroissant` using the "classic" GitHub workflow:
+
 
 ## Debug
 
