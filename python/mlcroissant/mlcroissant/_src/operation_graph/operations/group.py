@@ -1,8 +1,7 @@
 """Group operation module."""
+from typing import Tuple
 
 import dataclasses
-
-import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
 
@@ -11,6 +10,6 @@ from mlcroissant._src.operation_graph.base_operation import Operation
 class GroupRecordSet(Operation):
     """Groups fields as a record set."""
 
-    def __call__(self, *fields: pd.Series):
+    def __call__(self, *fields: Tuple):
         """See class' docstring."""
         return {k: v for field in fields for k, v in field.items()}
