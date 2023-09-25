@@ -68,7 +68,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-addopts = --strict-markers
+addopts = "--strict-markers"
 markers = [
     "nonhermetic: Non-hermetic test cases (data from the internet)."
 ]
