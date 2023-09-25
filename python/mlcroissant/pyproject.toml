@@ -66,3 +66,8 @@ exclude = ["recipes*"]
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+markers = [
+    "nonhermetic: Non-hermetic test cases (data from the internet)."
+]
