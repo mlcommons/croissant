@@ -30,7 +30,7 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
-# Development deps (unittest, linting, formatting,...)
+# Development deps (linting, formatting,...)
 # Installed through `pip install -e .[dev]`
 dev = [
   "black",
