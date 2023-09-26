@@ -23,7 +23,7 @@ class FilterFiles(Operation):
         """See class' docstring."""
         includes = fnmatch.translate(self.node.includes)
         includes_re = re.compile(includes)
-        included_files: list[epath.Path] = []
+        included_files: list[Path] = []
         for dir_ in dirs:
             dir_ = os.fspath(dir_.filepath)
             for basepath, _, files in os.walk(dir_):
