@@ -1,10 +1,10 @@
 """Join operation module."""
 
-from typing import Union
-
 import dataclasses
 
 import pandas as pd
+
+from typing import Union
 
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
