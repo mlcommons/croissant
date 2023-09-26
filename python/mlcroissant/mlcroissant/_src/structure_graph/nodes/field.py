@@ -40,6 +40,8 @@ class ParentField:
 
     def to_json(self) -> Json:
         """Converts the `ParentField` to JSON."""
+        if self.references is None or self.source is None:
+            raise ValueError("`ParentField` is None and cannot be converted to JSON")
         return remove_empty_values(
             {
                 "references": self.references.to_json(),
