@@ -1,5 +1,7 @@
 """Join operation module."""
 
+from typing import Union
+
 import dataclasses
 
 import pandas as pd
@@ -15,7 +17,7 @@ class Join(Operation):
 
     node: RecordSet
 
-    def __call__(self, *args: pd.Series) -> pd.Series:
+    def __call__(self, *args: pd.Series) -> Union[pd.Series, None]:
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
