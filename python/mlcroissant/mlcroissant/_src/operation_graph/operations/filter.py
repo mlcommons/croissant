@@ -29,7 +29,7 @@ class FilterFiles(Operation):
             for basepath, _, files in os.walk(dir_):
                 for file in files:
                     filepath = epath.Path(basepath) / file
-                    fullpath = get_fullpath(filepath, dir_)
+                    fullpath = get_fullpath(filepath, epath.Path(dir_))
                     if includes_re.match(os.fspath(fullpath)):
                         included_files.append(
                             Path(
