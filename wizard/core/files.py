@@ -40,6 +40,14 @@ def download_file(url: str, file_path: epath.Path):
             tmpdir.copy(file_path)
 
 
+def get_dataframe(encoding_format: str, file_path: epath.Path) -> pd.DataFrame:
+    """Gets the df associated to the file."""
+    if encoding_format == FileTypes.CSV:
+        return pd.read_csv(file_path)
+    else:
+        raise NotImplementedError()
+
+
 def check_file(encoding_format: str, url: str) -> File:
     """Downloads locally and checks the file."""
     file_path = hash_file_path(url)
@@ -47,16 +55,12 @@ def check_file(encoding_format: str, url: str) -> File:
         download_file(url, file_path)
     with file_path.open("rb") as file:
         sha256 = hashlib.sha256(file.read()).hexdigest()
-    with file_path.open("rb") as file:
-        if encoding_format == FileTypes.CSV:
-            df = pd.read_csv(file).infer_objects()
-            return File(
-                name=url.split("/")[-1],
-                description="",
-                content_url=url,
-                encoding_format=encoding_format,
-                sha256=sha256,
-                df=df,
-            )
-        else:
-            raise NotImplementedError()
+    df = get_dataframe(encoding_format, file_path)
+    return File(
+        name=url.split("/")[-1],
+        description="",
+        content_url=url,
+        encoding_format=encoding_format,
+        sha256=sha256,
+        df=df.infer_objects(),
+    )
