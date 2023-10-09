@@ -2,7 +2,8 @@ from etils import epath
 import pandas as pd
 import pytest
 
-from .files import check_file
+from .files import file_from_url
+from .files import FileTypes
 
 
 def test_check_file_csv():
@@ -17,10 +18,10 @@ def test_check_file_csv():
         f.write("a,1\n")
         f.write("b,2\n")
         f.write("c,3\n")
-    file = check_file("text/csv", "https://my.url")
+    file = file_from_url(FileTypes.CSV, "https://my.url")
     pd.testing.assert_frame_equal(
         file.df, pd.DataFrame({"column1": ["a", "b", "c"], "column2": [1, 2, 3]})
     )
     # Fails with unknown encoding_format:
     with pytest.raises(NotImplementedError):
-        check_file("unknown", "https://my.url")
+        file_from_url("unknown", "https://my.url")
