@@ -1,6 +1,6 @@
-from state import RecordSets
+from st_state import RecordSets
+from st_views.st_utils import DF_HEIGHT
 import streamlit as st
-from views.st_utils import DF_HEIGHT
 
 DATA_TYPES = [
     "https://schema.org/Text",

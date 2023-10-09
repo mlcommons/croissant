@@ -1,9 +1,9 @@
-from state import CurrentStep
+from st_state import CurrentStep
+from st_views.st_side_buttons import set_form_step
+from st_views.steps.st_files import render_files
+from st_views.steps.st_metadata import render_metadata
+from st_views.steps.st_record_sets import render_record_sets
 import streamlit as st
-from views.st_side_buttons import set_form_step
-from views.steps.st_files import render_files
-from views.steps.st_metadata import render_metadata
-from views.steps.st_record_sets import render_record_sets
 
 
 def render_wizard():

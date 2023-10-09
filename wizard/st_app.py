@@ -1,11 +1,11 @@
-from state import CurrentStep
-from state import Files
-from state import Metadata
-from state import RecordSets
+from st_state import CurrentStep
+from st_state import Files
+from st_state import Metadata
+from st_state import RecordSets
+from st_views.st_croissant_file import render_croissant_file
+from st_views.st_side_buttons import render_side_buttons
+from st_views.st_wizard import render_wizard
 import streamlit as st
-from views.st_croissant_file import render_croissant_file
-from views.st_side_buttons import render_side_buttons
-from views.st_wizard import render_wizard
 
 if CurrentStep not in st.session_state:
     st.session_state[CurrentStep] = 1

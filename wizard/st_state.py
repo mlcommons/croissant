@@ -1,8 +1,9 @@
-"""In the future, this could be the serialization format between front and back."""
+"""Streamlit session state.
+
+In the future, this could be the serialization format between front and back.
+"""
 
 import dataclasses
-
-import pandas as pd
 
 
 class CurrentStep:

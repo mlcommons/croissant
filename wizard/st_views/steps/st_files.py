@@ -3,11 +3,11 @@ from core.files import check_file
 from core.files import File
 from core.files import FileTypes
 import pandas as pd
-from state import Files
-from state import RecordSets
+from st_state import Files
+from st_state import RecordSets
+from st_views.st_utils import DF_HEIGHT
+from st_views.st_utils import needed_field
 import streamlit as st
-from views.st_utils import DF_HEIGHT
-from views.st_utils import needed_field
 
 FILE_TYPES = [FileTypes.CSV]
 
