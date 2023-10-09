@@ -1,5 +1,6 @@
 from core.data_types import convert_dtype
 from core.files import check_file
+from core.files import FileTypes
 import pandas as pd
 from state import File
 from state import Files
@@ -8,7 +9,7 @@ import streamlit as st
 from views.st_utils import DF_HEIGHT
 from views.st_utils import needed_field
 
-FILE_TYPES = ["text/csv"]
+FILE_TYPES = [FileTypes.CSV]
 
 
 def render_files():
