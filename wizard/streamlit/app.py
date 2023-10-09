@@ -1,5 +1,4 @@
 from state import CurrentStep
-from state import File
 from state import Files
 from state import Metadata
 from state import RecordSets

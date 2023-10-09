@@ -1,3 +1,5 @@
+"""In the future, this could be the serialization format between front and back."""
+
 import dataclasses
 
 import pandas as pd
@@ -11,16 +13,6 @@ class Files:
     pass
 
 
-@dataclasses.dataclass
-class File:
-    name: str = ""
-    description: str | None = None
-    content_url: str = ""
-    encoding_format: str | None = None
-    sha256: str | None = None
-    df: pd.DataFrame | None = None
-
-
 class RecordSets:
     pass
 
@@ -31,8 +23,6 @@ class RecordSet:
 
 @dataclasses.dataclass
 class Metadata:
-    """In the future, this could be the serialization format between front and back."""
-
     name: str = ""
     description: str | None = None
     citation: str | None = None

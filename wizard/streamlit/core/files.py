@@ -1,10 +1,20 @@
+import dataclasses
 import hashlib
 import tempfile
 
 from etils import epath
 import pandas as pd
 import requests
-from state import File
+
+
+@dataclasses.dataclass
+class File:
+    name: str = ""
+    description: str | None = None
+    content_url: str = ""
+    encoding_format: str | None = None
+    sha256: str | None = None
+    df: pd.DataFrame | None = None
 
 
 class FileTypes:
