@@ -1,7 +1,8 @@
 from core.data_types import convert_dtype
-from core.files import check_file
 from core.files import File
-from core.files import FileTypes
+from core.files import file_from_upload
+from core.files import file_from_url
+from core.files import FILE_TYPES
 import pandas as pd
 from st_state import Files
 from st_state import RecordSets
@@ -9,16 +10,26 @@ from st_views.st_utils import DF_HEIGHT
 from st_views.st_utils import needed_field
 import streamlit as st
 
-FILE_TYPES = [FileTypes.CSV]
-
 
 def render_files():
+    is_local = st.toggle("Local files?")
     with st.form(key="manual_urls", clear_on_submit=True):
-        file_type = st.selectbox("Encoding format", options=FILE_TYPES)
-        url = st.text_input("Import from a URL")
+        url = None
+        uploaded_file = None
+        file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
+        if is_local:
+            uploaded_file = st.file_uploader("Import from a local file")
+        else:
+            url = st.text_input("Import from a URL")
         submitted = st.form_submit_button("Submit")
         if submitted:
-            file = check_file(file_type, url)
+            file_type = FILE_TYPES[file_type_name]
+            if url is not None:
+                file = file_from_url(file_type, url)
+            elif uploaded_file is not None:
+                file = file_from_upload(file_type, uploaded_file)
+            else:
+                raise ValueError("should have either `url` or `uploaded_file`.")
             st.session_state[Files].append(file)
             dtypes = file.df.dtypes
             fields = pd.DataFrame(
