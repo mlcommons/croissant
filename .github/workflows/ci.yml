@@ -179,3 +179,23 @@ jobs:
 
     - name: Generate JSON-LD files - PASS
       run: pip install .[image] && python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+
+  wizard-python-test:
+    name: Wizard Python Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./wizard
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: PyTest
+      run: pytest .
