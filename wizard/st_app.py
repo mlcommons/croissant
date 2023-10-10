@@ -2,7 +2,7 @@ from st_state import CurrentStep
 from st_state import Files
 from st_state import Metadata
 from st_state import RecordSets
-from st_views.st_croissant_file import render_croissant_file
+from st_views.st_jsonld import render_jsonld
 from st_views.st_side_buttons import render_side_buttons
 from st_views.st_wizard import render_wizard
 import streamlit as st
@@ -27,4 +27,4 @@ with col1:
 with col2:
     render_wizard()
 with col3:
-    render_croissant_file()
+    render_jsonld()
