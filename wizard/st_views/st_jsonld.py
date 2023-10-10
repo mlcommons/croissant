@@ -7,7 +7,7 @@ import streamlit as st
 import mlcroissant as mlc
 
 
-def render_croissant_file():
+def render_jsonld():
     if not st.session_state[Metadata] or not st.session_state[Files]:
         return st.code({}, language="json")
     try:

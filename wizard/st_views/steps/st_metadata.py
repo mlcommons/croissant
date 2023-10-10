@@ -51,6 +51,8 @@ def render_metadata():
         value=st.session_state[Metadata].citation,
         placeholder="@book{\n  title={Title}\n}",
     )
+    # We fully recreate the session state in order to force the re-rendering.
+    del st.session_state[Metadata]
     st.session_state[Metadata] = Metadata(
         name=name,
         description=description,

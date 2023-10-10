@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -57,7 +57,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -105,7 +105,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -138,7 +138,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -164,7 +164,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -187,7 +187,7 @@ jobs:
       run:
         working-directory: ./wizard
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -199,3 +199,38 @@ jobs:
 
     - name: PyTest
       run: pytest .
+
+  wizard-e2e-test:
+    name: Wizard End-to-End Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./wizard
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: Install mlcroissant
+      run: pip install .[dev]
+      working-directory: ./python/mlcroissant
+
+    - uses: cypress-io/github-action@v6
+      with:
+        start: streamlit run st_app.py
+        wait-on: 'http://localhost:8501'
+        working-directory: ./wizard
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+          name: cypress-screenshots
+          path: ./wizard/cypress/screenshots
+          retention-days: 1
