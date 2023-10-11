@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -45,6 +45,43 @@ jobs:
     - name: Docstrings are defined
       run: make flake8
 
+  notebook-test:
+    name: Notebook Tests / Python ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Tests currently fail for 3.8 and 3.9.
+        python-version: ['3.10', '3.11']
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install library
+      run: pip install .[dev]
+
+    - run: pip install ipython ipykernel nbconvert
+    
+    # Notebooks are in the recipes/ folder. 
+    - name: Run notebook
+      run: |
+        ipython kernel install --user --name croissant-notebook
+        for notebook in recipes/*ipynb
+          do
+            jupyter nbconvert \
+              --ExecutePreprocessor.timeout=600 \
+              --ExecutePreprocessor.kernel_name=croissant-notebook \
+              --to notebook \
+              --execute $notebook
+          done
+          
   python-format:
     name: Python format
     runs-on: ubuntu-latest
@@ -68,7 +105,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -101,7 +138,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -127,7 +164,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -142,3 +179,58 @@ jobs:
 
     - name: Generate JSON-LD files - PASS
       run: pip install .[image] && python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+
+  wizard-python-test:
+    name: Wizard Python Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./wizard
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: PyTest
+      run: pytest .
+
+  wizard-e2e-test:
+    name: Wizard End-to-End Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./wizard
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: Install mlcroissant
+      run: pip install .[dev]
+      working-directory: ./python/mlcroissant
+
+    - uses: cypress-io/github-action@v6
+      with:
+        start: streamlit run st_app.py
+        wait-on: 'http://localhost:8501'
+        working-directory: ./wizard
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+          name: cypress-screenshots
+          path: ./wizard/cypress/screenshots
+          retention-days: 1

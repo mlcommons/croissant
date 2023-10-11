@@ -41,7 +41,7 @@ class cached_class_property(classmethod):
         self._func = func
         self._cache = {}
 
-    def __get__(self, obj, objtype):
+    def __get__(self, obj, objtype=None):
         """Cached getter."""
         if objtype not in self._cache:
             self._cache[objtype] = self._func(objtype)

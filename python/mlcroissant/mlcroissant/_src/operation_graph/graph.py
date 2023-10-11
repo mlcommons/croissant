@@ -16,6 +16,7 @@ from mlcroissant._src.operation_graph.operations import FilterFiles
 from mlcroissant._src.operation_graph.operations import GroupRecordSet
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import Join
+from mlcroissant._src.operation_graph.operations import LocalDirectory
 from mlcroissant._src.operation_graph.operations import Read
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.extract import should_extract
@@ -122,7 +123,6 @@ def _add_operations_for_file_object(
     if not should_extract(node.encoding_format):
         read = Read(
             node=node,
-            url=node.content_url,
             folder=folder,
             fields=graph.successors(node),
         )
@@ -147,13 +147,40 @@ def _add_operations_for_git(
             operations.add_edge(operation, filter)
             read = Read(
                 node=successor,
-                url=node.content_url,
                 folder=folder,
                 fields=graph.successors(node),
             )
             operations.add_edge(filter, read)
             operation = read
     last_operation[node] = operation
+
+
+def _add_operations_for_local_file_sets(
+    graph: nx.MultiDiGraph,
+    operations: nx.DiGraph,
+    last_operation: LastOperation,
+    node: FileSet,
+    folder: epath.Path,
+):
+    """Adds all operations for a FileSet reading from local files."""
+    directory = LocalDirectory(
+        node=node,
+        folder=folder,
+    )
+    operations.add_node(directory)
+
+    filter_files = FilterFiles(node=node)
+    operations.add_node(filter_files)
+    operations.add_edge(directory, filter_files)
+
+    read = Read(
+        node=node,
+        folder=folder,
+        fields=graph.successors(node),
+    )
+    operations.add_node(read)
+    operations.add_edge(filter_files, read)
+    last_operation[node] = read
 
 
 @dataclasses.dataclass(frozen=True)
@@ -210,6 +237,11 @@ class OperationGraph:
                     )
                 else:
                     _add_operations_for_file_object(
+                        graph, operations, last_operation, node, folder
+                    )
+            elif isinstance(node, FileSet):
+                if not node.contained_in:
+                    _add_operations_for_local_file_sets(
                         graph, operations, last_operation, node, folder
                     )
 

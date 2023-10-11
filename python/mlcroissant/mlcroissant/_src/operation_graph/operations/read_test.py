@@ -18,7 +18,6 @@ def test_str_representation():
     operation = Read(
         node=empty_file_object,
         folder=epath.Path(),
-        url="http://mlcommons.org",
         fields=[],
     )
     assert str(operation) == "Read(file_object_name)"
@@ -27,16 +26,17 @@ def test_str_representation():
 def test_explicit_message_when_pyarrow_is_not_installed():
     with mock.patch.object(pd, "read_parquet", side_effect=ImportError):
         with tempfile.TemporaryDirectory() as folder:
-            url = "file.parquet"
+            content_url = "file.parquet"
             folder = epath.Path(folder)
             # Create filepath = `folder/file.parquet`.
-            filepath = folder / url
+            filepath = folder / content_url
             file = Path(filepath=filepath, fullpath=pathlib.PurePath())
             filepath.touch()
             read = Read(
-                node=create_test_file_object(encoding_format="application/x-parquet"),
+                node=create_test_file_object(
+                    encoding_format="application/x-parquet", content_url=content_url
+                ),
                 folder=folder,
-                url=url,
                 fields=[],
             )
             with pytest.raises(

@@ -1,0 +1,6 @@
+etils[epath]
+numpy
+pandas
+pytest
+requests
+streamlit
