@@ -72,17 +72,21 @@ def execute_operations_in_streaming(
             # At this stage `result` can be either a Path or a list of Paths.
             if not isinstance(result, list):
                 result = [result]
-            for file in result:
-                # Read files separately and keep executing all subsequent operations.
-                logging.info("Executing %s", operation)
-                read_file = operation(file)
-                yield from execute_operations_in_streaming(
-                    record_set=record_set,
-                    operations=operations,
-                    list_of_operations=list_of_operations[i + 1 :],
-                    result=[read_file],
-                )
-                return
+
+            def read_all_files():
+                for file in result:
+                    # Read files separately and keep executing subsequent operations.
+                    logging.info("Executing %s", operation)
+                    read_file = operation(file)
+                    yield from execute_operations_in_streaming(
+                        record_set=record_set,
+                        operations=operations,
+                        list_of_operations=list_of_operations[i + 1 :],
+                        result=[read_file],
+                    )
+
+            yield from read_all_files()
+            return
         else:
             logging.info("Executing %s", operation)
             if isinstance(operation, ReadField):

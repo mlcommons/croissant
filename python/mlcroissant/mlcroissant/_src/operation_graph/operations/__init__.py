@@ -7,6 +7,7 @@ from mlcroissant._src.operation_graph.operations.filter import FilterFiles
 from mlcroissant._src.operation_graph.operations.group import GroupRecordSet
 from mlcroissant._src.operation_graph.operations.init import InitOperation
 from mlcroissant._src.operation_graph.operations.join import Join
+from mlcroissant._src.operation_graph.operations.local_directory import LocalDirectory
 from mlcroissant._src.operation_graph.operations.read import Read
 
 __all__ = [
@@ -18,6 +19,7 @@ __all__ = [
     "GroupRecordSet",
     "InitOperation",
     "Join",
+    "LocalDirectory",
     "Read",
     "ReadField",
 ]
