@@ -23,7 +23,6 @@ class Read(Operation):
     """Reads from a CSV file and yield lines."""
 
     node: FileObject | FileSet
-    url: str
     folder: epath.Path
     fields: list[Field]
 
@@ -58,6 +57,12 @@ class Read(Operation):
                         " installed. Please, install `pip install"
                         " mlcroissant[parquet]`."
                     ) from e
+            elif encoding_format == "text/plain":
+                return pd.DataFrame(
+                    {
+                        FileProperty.content: [file.read()],
+                    }
+                )
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
@@ -69,11 +74,11 @@ class Read(Operation):
             files = [files]
         file_contents = []
         for file in files:
-            if not is_url(self.url):
+            if isinstance(self.node, FileObject) and not is_url(self.node.content_url):
                 # Read from the local path
                 assert file.filepath.exists(), (
-                    f'In node "{self.node.uid}", file "{self.url}" is either an invalid'
-                    " URL or an invalid path."
+                    f'In node "{self.node.uid}", file "{self.node.content_url}" is'
+                    " either an invalid URL or an invalid path."
                 )
             file_content = self._read_file_content(self.node.encoding_format, file)
             file_content[FileProperty.filepath] = file.filepath
