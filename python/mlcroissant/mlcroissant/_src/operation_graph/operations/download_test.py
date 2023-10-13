@@ -9,7 +9,7 @@ from mlcroissant._src.tests.nodes import empty_file_object
 
 
 def test_str_representation():
-    operation = Download(node=empty_file_object, url="http://mlcommons.org")
+    operation = Download(node=empty_file_object)
     assert str(operation) == "Download(file_object_name)"
 
 
