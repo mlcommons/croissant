@@ -18,10 +18,12 @@ def preview_metadata_():
 def preview_files_():
     if st.session_state[Files]:
         # todo
+        return
 
 def preview_record_sets_():
     if st.session_state[RecordSets]:
         # todo
+        return
 
 def render_preview():
     show_json = st.toggle("Show the full Croissant config")
