@@ -2,10 +2,13 @@ from st_state import CurrentStep
 from st_state import Files
 from st_state import Metadata
 from st_state import RecordSets
-from st_views.st_jsonld import render_jsonld
-from st_views.st_side_buttons import render_side_buttons
 from st_views.st_wizard import render_wizard
+from st_views.st_preview import render_preview
 import streamlit as st
+
+def package_dataset():
+    # todo
+    return
 
 if CurrentStep not in st.session_state:
     st.session_state[CurrentStep] = 1
@@ -21,10 +24,15 @@ if RecordSets not in st.session_state:
 
 st.set_page_config(page_title="Croissant Wizard", layout="wide")
 st.header("Croissant Wizard")
-col1, col2, col3 = st.columns([1, 3, 3], gap="medium")
-with col1:
-    render_side_buttons()
-with col2:
-    render_wizard()
-with col3:
-    render_jsonld()
+
+render_wizard()
+render_preview()
+
+# Render footer
+footer_cols = st.columns([7, 1])
+footer_cols[1].button(
+    "Package dataset",
+    on_click=package_dataset,
+    disabled=not st.session_state[Metadata] and not st.session_state[Files],
+    use_container_width=True,
+)
