@@ -136,6 +136,11 @@ class Node(abc.ABC):
             return None
         return self.parents[-1]
 
+    @property
+    def predecessors(self) -> list[Node]:
+        """Predecessors in the structure graph."""
+        return list(self.graph.predecessors(self))
+
     @abc.abstractmethod
     def to_json(self) -> Json:
         """Converts the node to JSON."""
