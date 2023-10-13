@@ -3,7 +3,7 @@ from st_state import Files
 from st_state import Metadata
 from st_state import RecordSets
 from st_views.st_wizard import render_wizard
-from st_views.st_preview import render_preview
+from st_views.st_visualizer import render_preview
 import streamlit as st
 
 def package_dataset():
