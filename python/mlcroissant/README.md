@@ -107,3 +107,31 @@ python scripts/validate.py --file ../../datasets/titanic/metadata.json --debug
 This will:
 1. print extra information, like the generated nodes;
 2. save the generated structure graph to a folder indicated in the logs.
+
+## Publishing wheels
+
+Publishing is done manually.
+We are in the process of setting up an automatic deployment with GitHub Actions.
+
+1. Bump the version in `croissant/python/mlcroissant/pyproject.toml`.
+1. Configure Twine locally ([full tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/)):
+```
+[distutils]
+  index-servers =
+    pypi
+    mlcroissant
+
+[pypi]
+username =
+password =
+
+[mlcroissant]
+repository = https://upload.pypi.org/legacy/
+username = __token__
+password = # generate the password on https://pypi.org/manage/account/token/
+```
+1. Build locally and push to PyPI:
+```bash
+python -m build
+python -m twine upload --repository mlcroissant dist/*
+```
