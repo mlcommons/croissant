@@ -5,10 +5,12 @@ from typing import Any
 
 from absl import logging
 import networkx as nx
+import pandas as pd
 
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations import GroupRecordSet
+from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -28,7 +30,7 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
     """Executes operation and yields results according to the graph of operations."""
     results: Json = {}
     for operation in nx.topological_sort(operations):
-        logging.debug('Executing "%s"', operation)
+        logging.info('Executing "%s"', operation)
         previous_results = [
             results[previous_operation]
             for previous_operation in operations.predecessors(operation)
@@ -41,12 +43,22 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
             # Note: this is a short-term solution. The long-term solution is to
             # re-compute the sub-graph of operations that is sufficient to compute
             # `self.record_set`.
+            built_record_set = build_record_set(operations, operation, previous_results)
             if operation.node.name != record_set:
-                continue
-            yield from build_record_set(operations, operation, previous_results)
-        else:
-            if isinstance(operation, ReadField) and not previous_results:
-                continue
+                built_record_set = list(built_record_set)
+                if built_record_set:
+                    results[operation] = pd.DataFrame(built_record_set)
+                    # Il faut que les ReadFields est le résultat de l'opération...
+                    # Is this really needed after all?
+                    for successor in operations.successors(operation):
+                        results[successor] = pd.DataFrame(built_record_set)
+            else:
+                yield from built_record_set
+        elif isinstance(operation, GroupRecordSetEnd):
+            if operation.node.name != record_set:
+                results[operation] = operation(*previous_results)
+        elif not isinstance(operation, ReadField):
+            # logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)
 
 
@@ -76,7 +88,7 @@ def execute_operations_in_streaming(
             def read_all_files():
                 for file in result:
                     # Read files separately and keep executing subsequent operations.
-                    logging.info("Executing %s", operation)
+                    # logging.info("Executing %s", operation)
                     read_file = operation(file)
                     yield from execute_operations_in_streaming(
                         record_set=record_set,
@@ -88,7 +100,7 @@ def execute_operations_in_streaming(
             yield from read_all_files()
             return
         else:
-            logging.info("Executing %s", operation)
+            # logging.info("Executing %s", operation)
             if isinstance(operation, ReadField):
                 continue
             result = operation(result)
@@ -107,5 +119,5 @@ def build_record_set(
         for read_field in operations.successors(operation):
             assert isinstance(read_field, ReadField)
             read_fields.append(read_field(line))
-        logging.info("Executing %s", operation)
+        # logging.info("Executing %s", operation)
         yield operation(*read_fields)

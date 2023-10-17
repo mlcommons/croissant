@@ -300,7 +300,7 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
         source_regex = re.compile(transform.regex)
         match = source_regex.match(value)
         if match is None:
-            logging.debug(f"Could not match {source_regex} in {value}")
+            logging.warning(f"Could not match {source_regex} in {value}")
             return value
         for group in match.groups():
             if group is not None:

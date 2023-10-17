@@ -94,6 +94,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
         ["pass-mini/metadata.json", "images", -1],
         ["recipes/file_object_in_csv.json", "csv", -1],
         ["recipes/read_from_directory.json", "read_from_directory_example", -1],
+        ["recipes/read_from_tar.json", "images_with_annotations", -1],
         ["simple-join/metadata.json", "publications_by_user", -1],
         ["simple-parquet/metadata.json", "persons", -1],
     ],

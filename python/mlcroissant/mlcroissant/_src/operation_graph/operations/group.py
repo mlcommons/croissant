@@ -14,3 +14,10 @@ class GroupRecordSet(Operation):
     def __call__(self, *fields: pd.Series):
         """See class' docstring."""
         return {k: v for field in fields for k, v in field.items()}
+
+
+class GroupRecordSetEnd(Operation):
+    def __call__(self, *args: pd.DataFrame) -> pd.DataFrame:
+        if not args:
+            raise ValueError("Empty RecordSet yielded 0 pd.DataFrame.")
+        return args[0]

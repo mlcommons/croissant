@@ -14,6 +14,7 @@ from mlcroissant._src.operation_graph.operations import Download
 from mlcroissant._src.operation_graph.operations import Extract
 from mlcroissant._src.operation_graph.operations import FilterFiles
 from mlcroissant._src.operation_graph.operations import GroupRecordSet
+from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import Join
 from mlcroissant._src.operation_graph.operations import LocalDirectory
@@ -69,7 +70,9 @@ def _add_operations_for_field_with_source(
     # Read/extract the field
     read_field = ReadField(node=node)
     operations.add_edge(group_record_set, read_field)
-    last_operation[node] = read_field
+    end_group_record_set = GroupRecordSetEnd(node=record_set)
+    operations.add_edge(read_field, end_group_record_set)
+    last_operation[node] = end_group_record_set
 
 
 def _add_operations_for_record_set_with_data(
@@ -100,14 +103,14 @@ def _add_operations_for_file_object(
     - `Concatenate` to merge several dataframes into one.
     - `Read` to read the file if it's a CSV.
     """
-    if node.contained_in:
-        # Chain the operation from the rpedecessor
-        operation = last_operation[node]
-    else:
-        # Download the file
-        operation = Download(node=node)
-        operations.add_node(operation)
     for successor in graph.successors(node):
+        if node.contained_in:
+            # Chain the operation from the rpedecessor
+            operation = last_operation[node]
+        else:
+            # Download the file
+            operation = Download(node=node)
+            operations.add_node(operation)
         # Extract the file if needed
         if (
             should_extract(node.encoding_format)
@@ -125,6 +128,7 @@ def _add_operations_for_file_object(
             concatenate = Concatenate(node=successor)
             operations.add_edge(operation, concatenate)
             operation = concatenate
+        last_operation[successor] = operation
     if not should_extract(node.encoding_format):
         read = Read(
             node=node,
@@ -218,7 +222,7 @@ class OperationGraph:
             predecessors = graph.predecessors(node)
             # Transfer operation from predecessor -> node.
             for predecessor in predecessors:
-                if predecessor in last_operation:
+                if predecessor in last_operation and node not in last_operation:
                     last_operation[node] = last_operation[predecessor]
             if isinstance(node, Field):
                 parent = node.parent
