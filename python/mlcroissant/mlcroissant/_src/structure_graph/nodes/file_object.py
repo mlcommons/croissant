@@ -26,7 +26,6 @@ class FileObject(Node):
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
     encoding_format: str | None = None
-    file_extension: str | None = None
     md5: str | None = None
     name: str = ""
     sha256: str | None = None
@@ -54,7 +53,6 @@ class FileObject(Node):
                 "contentUrl": self.content_url,
                 "containedIn": contained_in,
                 "encodingFormat": self.encoding_format,
-                "fileExtension": self.file_extension,
                 "md5": self.md5,
                 "sha256": self.sha256,
                 "source": self.source.to_json() if self.source else None,

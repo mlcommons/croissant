@@ -34,7 +34,6 @@
       "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/unsdsn/world-happiness",
       "contentSize": "36.809 KB",
       "md5": "bc1\u002B\u002BXNoIWW685QyDLewsg==",
-      "fileExtension": ".zip",
       "encodingFormat": "application/zip",
       "@type": "sc:FileObject",
       "name": "archive.zip",
