@@ -40,6 +40,7 @@ dev = [
   "mlcroissant[image]",
   "mlcroissant[parquet]",
   "pyflakes",
+  "pygraphviz",
   "pylint",
   "pytest",
   "pytype",
