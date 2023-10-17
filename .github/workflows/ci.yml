@@ -30,7 +30,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
 
     - name: PyTest
       run: make pytest
@@ -65,7 +65,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
 
     - run: pip install ipython ipykernel nbconvert
     
@@ -218,7 +218,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Install mlcroissant
-      run: pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
       working-directory: ./python/mlcroissant
 
     - uses: cypress-io/github-action@v6
