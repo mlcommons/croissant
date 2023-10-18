@@ -9,8 +9,8 @@ import pandas as pd
 
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.operation_graph.base_operation import Operation
-from mlcroissant._src.operation_graph.operations import GroupRecordSet
 from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -37,7 +37,7 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
             # Filter out results that yielded `None`.
             and results[previous_operation] is not None
         ]
-        if isinstance(operation, GroupRecordSet):
+        if isinstance(operation, GroupRecordSetStart):
             built_record_set = build_record_set(operations, operation, previous_results)
             if operation.node.name != record_set:
                 # The RecordSet will be used later in the graph by another RecordSet.
@@ -77,7 +77,7 @@ def execute_operations_in_streaming(
     we only download the needed files, yield element, then proceed to the next file.
     """
     for i, operation in enumerate(list_of_operations):
-        if isinstance(operation, GroupRecordSet):
+        if isinstance(operation, GroupRecordSetStart):
             if operation.node.name != record_set:
                 continue
             yield from build_record_set(operations, operation, result)
@@ -109,7 +109,7 @@ def execute_operations_in_streaming(
 
 
 def build_record_set(
-    operations: nx.MultiDiGraph, operation: GroupRecordSet, result: Any
+    operations: nx.MultiDiGraph, operation: GroupRecordSetStart, result: Any
 ):
     """Builds a RecordSet from all ReadField children in the operation graph."""
     assert (

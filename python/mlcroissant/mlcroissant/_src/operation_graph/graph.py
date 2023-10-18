@@ -13,8 +13,8 @@ from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations import Download
 from mlcroissant._src.operation_graph.operations import Extract
 from mlcroissant._src.operation_graph.operations import FilterFiles
-from mlcroissant._src.operation_graph.operations import GroupRecordSet
 from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import Join
 from mlcroissant._src.operation_graph.operations import LocalDirectory
@@ -43,7 +43,6 @@ def _find_record_set(node: Node) -> RecordSet:
 
 
 def _add_operations_for_field_with_source(
-    graph: nx.MultiDiGraph,
     operations: nx.DiGraph,
     last_operation: LastOperation,
     node: Field,
@@ -54,11 +53,11 @@ def _add_operations_for_field_with_source(
 
     - `Join` if the field comes from several sources.
     - `ReadField` to specify how the field is read.
-    - `GroupRecordSet` to structure the final dict that is sent back to the user.
+    - `GroupRecordSetStart` to structure the final dict that is sent back to the user.
     """
     # Attach the field to a record set
     record_set = _find_record_set(node)
-    group_record_set = GroupRecordSet(operations=operations, node=record_set)
+    group_record_set = GroupRecordSetStart(operations=operations, node=record_set)
     join = Join(operations=operations, node=record_set)
     operations.add_node(join)
     operations.add_edge(join, group_record_set)
@@ -234,7 +233,6 @@ class OperationGraph:
                 parent_has_data = isinstance(parent, RecordSet) and parent.data
                 if node.source and not node.sub_fields and not parent_has_data:
                     _add_operations_for_field_with_source(
-                        graph,
                         operations,
                         last_operation,
                         node,
