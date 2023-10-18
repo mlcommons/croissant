@@ -122,7 +122,7 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
 
 def get_basic_auth_from_env() -> tuple[str, str] | None:
     """Determines a Basic Auth tuple from the environment variables.
-    
+
     This method determines the username and password for the auth tuple from the
     `CROISSANT_BASIC_AUTH_USERNAME` and `CROISSANT_BASIC_AUTH_PASSWORD` env variables.
 
