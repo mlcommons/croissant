@@ -119,9 +119,12 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
             f" {_SUPPORTED_HOSTS}. Contact the Croissant team to support more hosts."
         )
 
+
 def get_basic_auth_from_env() -> tuple[str, str] | None:
-    """Determines a Basic Auth tuple from the environment variables, assuming that both
-    CROISSANT_BASIC_AUTH_USERNAME and CROISSANT_BASIC_AUTH_PASSWORD are defined.
+    """Determines a Basic Auth tuple from the environment variables.
+    
+    This method determines the username and password for the auth tuple from the
+    `CROISSANT_BASIC_AUTH_USERNAME` and `CROISSANT_BASIC_AUTH_PASSWORD` env variables.
 
     Returns:
         The Basic Auth tuple if the env variables are configured properly. Otherwise, it
@@ -130,6 +133,7 @@ def get_basic_auth_from_env() -> tuple[str, str] | None:
     username = os.environ.get(constants.CROISSANT_BASIC_AUTH_USERNAME)
     password = os.environ.get(constants.CROISSANT_BASIC_AUTH_PASSWORD)
     return None if username is None or password is None else (username, password)
+
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Download(Operation):
