@@ -12,12 +12,12 @@ from mlcroissant._src.tests.nodes import empty_record_set
 
 
 def test_execute_downloads():
-    operations = nx.MultiDiGraph()
+    operations = nx.DiGraph()
     node1 = create_test_file_object(name="node1")
     node2 = create_test_file_object(name="node2")
-    download1 = Download(node=node1)
-    download2 = Download(node=node2)
-    data = Data(node=empty_record_set)
+    download1 = Download(operations=operations, node=node1)
+    download2 = Download(operations=operations, node=node2)
+    data = Data(operations=operations, node=empty_record_set)
     operations.add_node(download1)
     operations.add_node(download2)
     operations.add_node(download2)

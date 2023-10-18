@@ -3,6 +3,8 @@
 import abc
 import dataclasses
 
+import networkx as nx
+
 from mlcroissant._src.structure_graph.base_node import Node
 
 
@@ -21,6 +23,7 @@ class Operation(abc.ABC):
             __call__).
     """
 
+    operations: nx.DiGraph
     node: Node
 
     @abc.abstractmethod

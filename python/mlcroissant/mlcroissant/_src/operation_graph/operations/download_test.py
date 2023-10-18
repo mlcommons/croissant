@@ -6,10 +6,11 @@ from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
 from mlcroissant._src.tests.nodes import empty_file_object
+from mlcroissant._src.tests.operations import operations
 
 
 def test_str_representation():
-    operation = Download(node=empty_file_object)
+    operation = Download(operations=operations(), node=empty_file_object)
     assert str(operation) == "Download(file_object_name)"
 
 

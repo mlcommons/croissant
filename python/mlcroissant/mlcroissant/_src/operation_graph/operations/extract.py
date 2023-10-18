@@ -42,7 +42,6 @@ class Extract(Operation):
     """Extracts tar/zip and yields filtered pd.DataFrame."""
 
     node: FileObject
-    target_node: FileSet
 
     def __call__(self, archive_file: Path) -> pd.DataFrame:
         """See class' docstring."""

@@ -58,8 +58,8 @@ def _add_operations_for_field_with_source(
     """
     # Attach the field to a record set
     record_set = _find_record_set(node)
-    group_record_set = GroupRecordSet(node=record_set)
-    join = Join(node=record_set)
+    group_record_set = GroupRecordSet(operations=operations, node=record_set)
+    join = Join(operations=operations, node=record_set)
     operations.add_node(join)
     operations.add_edge(join, group_record_set)
     for predecessor in node.predecessors:
@@ -68,14 +68,15 @@ def _add_operations_for_field_with_source(
         node.add_error("Wrong source for the node")
         return
     # Read/extract the field
-    read_field = ReadField(node=node)
+    read_field = ReadField(operations=operations, node=node)
     operations.add_edge(group_record_set, read_field)
-    end_group_record_set = GroupRecordSetEnd(node=record_set)
+    end_group_record_set = GroupRecordSetEnd(operations=operations, node=record_set)
     operations.add_edge(read_field, end_group_record_set)
     last_operation[node] = end_group_record_set
 
 
 def _add_operations_for_record_set_with_data(
+    operations: nx.DiGraph,
     last_operation: LastOperation,
     node: RecordSet,
 ):
@@ -83,7 +84,7 @@ def _add_operations_for_record_set_with_data(
 
     Those nodes return a DataFrame representing the lines in `data`.
     """
-    operation = Data(node=node)
+    operation = Data(operations=operations, node=node)
     last_operation[node] = operation
 
 
@@ -109,7 +110,7 @@ def _add_operations_for_file_object(
             operation = last_operation[node]
         else:
             # Download the file
-            operation = Download(node=node)
+            operation = Download(operations=operations, node=node)
             operations.add_node(operation)
         # Extract the file if needed
         if (
@@ -117,20 +118,21 @@ def _add_operations_for_file_object(
             and isinstance(successor, (FileObject, FileSet))
             and not should_extract(successor.encoding_format)
         ):
-            extract = Extract(node=node, target_node=successor)
+            extract = Extract(operations=operations, node=node)
             operations.add_edge(operation, extract)
             operation = extract
         if isinstance(successor, FileSet):
-            filter = FilterFiles(node=successor)
+            filter = FilterFiles(operations=operations, node=successor)
             operations.add_edge(extract, filter)
             last_operation[node] = filter
             operation = filter
-            concatenate = Concatenate(node=successor)
+            concatenate = Concatenate(operations=operations, node=successor)
             operations.add_edge(operation, concatenate)
             operation = concatenate
         last_operation[successor] = operation
     if not should_extract(node.encoding_format):
         read = Read(
+            operations=operations,
             node=node,
             folder=folder,
             fields=graph.successors(node),
@@ -148,13 +150,14 @@ def _add_operations_for_git(
     folder: epath.Path,
 ):
     """Adds all operations for a FileObject reading from a Git repository."""
-    operation = Download(node=node)
+    operation = Download(operations=operations, node=node)
     operations.add_node(operation)
     for successor in graph.successors(node):
         if isinstance(successor, FileSet):
-            filter = FilterFiles(node=successor)
+            filter = FilterFiles(operations=operations, node=successor)
             operations.add_edge(operation, filter)
             read = Read(
+                operations=operations,
                 node=successor,
                 folder=folder,
                 fields=graph.successors(node),
@@ -173,16 +176,18 @@ def _add_operations_for_local_file_sets(
 ):
     """Adds all operations for a FileSet reading from local files."""
     directory = LocalDirectory(
+        operations=operations,
         node=node,
         folder=folder,
     )
     operations.add_node(directory)
 
-    filter_files = FilterFiles(node=node)
+    filter_files = FilterFiles(operations=operations, node=node)
     operations.add_node(filter_files)
     operations.add_edge(directory, filter_files)
 
     read = Read(
+        operations=operations,
         node=node,
         folder=folder,
         fields=graph.successors(node),
@@ -236,6 +241,7 @@ class OperationGraph:
                     )
             elif isinstance(node, RecordSet) and node.data:
                 _add_operations_for_record_set_with_data(
+                    operations,
                     last_operation,
                     node,
                 )
@@ -256,7 +262,7 @@ class OperationGraph:
 
         # Attach all entry nodes to a single `start` node
         entry_operations = get_entry_nodes(operations)
-        init_operation = InitOperation(node=metadata)
+        init_operation = InitOperation(operations=operations, node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
         return OperationGraph(issues=issues, operations=operations)
