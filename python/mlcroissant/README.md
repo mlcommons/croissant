@@ -40,6 +40,14 @@ python scripts/load.py \
     --num_records 10
 ```
 
+### Loading a `distribution` via `git+https`
+
+If the `encodingFormat` of a `distribution` is `git+https`, please provide the username and password by setting the `CROISSANT_GIT_USERNAME` and `CROISSANT_GIT_PASSWORD` environment variables. These will be used to construct the authentication necessary to load the distribution.
+
+### Loading a `distribution` via HTTP with Basic Auth
+
+If the `contentUrl` of a `distribution` requires authentication via Basic Auth, please provide the username and password by setting the `CROISSANT_BASIC_AUTH_USERNAME` and `CROISSANT_BASIC_AUTH_PASSWORD` environment variables. These will be used to construct the authentication necessary to load the distribution.
+
 ## Programmatically build JSON-LD files
 
 You can programmatically build Croissant JSON-LD files using the Python API.
