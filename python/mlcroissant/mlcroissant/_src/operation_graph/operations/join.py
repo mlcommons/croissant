@@ -27,9 +27,9 @@ class Join(Operation):
             raise ValueError(f"Unsupported: Trying to join {len(args)} pd.DataFrames.")
         fields = self.node.fields
         # `joins` is the list of joins to execute (source1, df1) x (source2, df2).
-        joins: list[
-            tuple[tuple[Source, pd.DataFrame], tuple[Source, pd.DataFrame]] | None
-        ] = []
+        joins: list[tuple[tuple[Source, pd.DataFrame], tuple[Source, pd.DataFrame]]] = (
+            []
+        )
         for field in fields:
             left = field.source
             right = field.references
@@ -39,8 +39,9 @@ class Join(Operation):
                 continue
             left_index = predecessors.index(left.uid.split("/")[0])
             right_index = predecessors.index(right.uid.split("/")[0])
-            if left and right and (left, right) not in joins:
-                joins.append(((left, args[left_index]), (right, args[right_index])))
+            join = ((left, args[left_index]), (right, args[right_index]))
+            if join not in joins:
+                joins.append(join)
         for (left, df_left), (right, df_right) in joins:
             assert left is not None and left.uid is not None, (
                 f'Left reference for "{field.uid}" is None. It should be a valid'
