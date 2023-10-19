@@ -7,7 +7,6 @@ import tarfile
 import zipfile
 
 from etils import epath
-import pandas as pd
 
 from mlcroissant._src.core.constants import EXTRACT_PATH
 from mlcroissant._src.core.path import get_fullpath
