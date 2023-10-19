@@ -49,7 +49,6 @@ def test_download_git_lfs_file():
     git = deps.git
     with mock.patch.object(git, "Git", autospec=True) as git_mock:
         download_git_lfs_file(file)
-        git = deps.git
         git_mock.assert_called_once_with("/tmp/full/")
         git_mock.return_value.execute.assert_called_once_with(
             ["git", "lfs", "pull", "--include", "path.json"]
