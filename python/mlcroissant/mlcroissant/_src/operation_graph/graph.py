@@ -103,14 +103,17 @@ def _add_operations_for_file_object(
     - `Concatenate` to merge several dataframes into one.
     - `Read` to read the file if it's a CSV.
     """
+    if node.contained_in:
+        # Chain the operation from the predecessor
+        operation = last_operation[node]
+    else:
+        # Download the file
+        operation = Download(operations=operations, node=node)
+        operations.add_node(operation)
+    first_operation = operation
     for successor in graph.successors(node):
-        if node.contained_in:
-            # Chain the operation from the rpedecessor
-            operation = last_operation[node]
-        else:
-            # Download the file
-            operation = Download(operations=operations, node=node)
-            operations.add_node(operation)
+        # Reset `operation` to be the very first operation at each loop.
+        operation = first_operation
         # Extract the file if needed
         if (
             should_extract(node.encoding_format)
