@@ -16,7 +16,7 @@ class Join(Operation):
 
     node: RecordSet
 
-    def __call__(self, *args: pd.Series) -> pd.Series:
+    def __call__(self, *args: pd.Series) -> pd.Series | None:
         """See class' docstring."""
         if len(args) == 1:
             return args[0]

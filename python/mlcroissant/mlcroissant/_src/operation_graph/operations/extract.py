@@ -7,7 +7,6 @@ import tarfile
 import zipfile
 
 from etils import epath
-import pandas as pd
 
 from mlcroissant._src.core.constants import EXTRACT_PATH
 from mlcroissant._src.core.path import get_fullpath
@@ -38,11 +37,11 @@ def _extract_file(source: epath.Path, target: epath.Path) -> None:
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Extract(Operation):
-    """Extracts tar/zip and yields filtered pd.DataFrame."""
+    """Extracts tar/zip and yields the extract Path."""
 
     node: FileObject
 
-    def __call__(self, archive_file: Path) -> pd.DataFrame:
+    def __call__(self, archive_file: Path) -> Path:
         """See class' docstring."""
         url = self.node.content_url
         hashed_url = get_hash(url)
