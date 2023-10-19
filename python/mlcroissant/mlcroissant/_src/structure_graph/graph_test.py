@@ -4,7 +4,6 @@ import json
 import os
 
 from etils import epath
-import pytest
 from rdflib import term
 
 from mlcroissant._src.core.issues import Issues
