@@ -42,8 +42,8 @@ class ParentField:
         """Converts the `ParentField` to JSON."""
         return remove_empty_values(
             {
-                "references": self.references.to_json(),
-                "source": self.source.to_json(),
+                "references": self.references.to_json() if self.references else None,
+                "source": self.source.to_json() if self.source else None,
             }
         )
 
