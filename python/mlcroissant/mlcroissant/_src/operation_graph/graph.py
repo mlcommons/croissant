@@ -61,7 +61,7 @@ def _add_operations_for_field_with_source(
     join = Join(node=record_set)
     operations.add_node(join)
     operations.add_edge(join, group_record_set)
-    for predecessor in graph.predecessors(node):
+    for predecessor in node.predecessors:
         operations.add_edge(last_operation[predecessor], join)
     if not node.source:
         node.add_error("Wrong source for the node")
@@ -100,23 +100,28 @@ def _add_operations_for_file_object(
     - `Concatenate` to merge several dataframes into one.
     - `Read` to read the file if it's a CSV.
     """
-    # Download the file
-    operation = Download(node=node, url=node.content_url)
-    operations.add_node(operation)
+    if node.contained_in:
+        # Chain the operation from the rpedecessor
+        operation = last_operation[node]
+    else:
+        # Download the file
+        operation = Download(node=node)
+        operations.add_node(operation)
     for successor in graph.successors(node):
         # Extract the file if needed
         if (
             should_extract(node.encoding_format)
-            and isinstance(successor, FileSet)
+            and isinstance(successor, (FileObject, FileSet))
             and not should_extract(successor.encoding_format)
         ):
             extract = Extract(node=node, target_node=successor)
             operations.add_edge(operation, extract)
+            operation = extract
+        if isinstance(successor, FileSet):
             filter = FilterFiles(node=successor)
             operations.add_edge(extract, filter)
             last_operation[node] = filter
             operation = filter
-        if isinstance(successor, FileSet):
             concatenate = Concatenate(node=successor)
             operations.add_edge(operation, concatenate)
             operation = concatenate
@@ -139,7 +144,7 @@ def _add_operations_for_git(
     folder: epath.Path,
 ):
     """Adds all operations for a FileObject reading from a Git repository."""
-    operation = Download(node=node, url=node.content_url)
+    operation = Download(node=node)
     operations.add_node(operation)
     for successor in graph.successors(node):
         if isinstance(successor, FileSet):

@@ -97,9 +97,7 @@ class Field(Node):
             for data_type in self.data_types:
                 if data_type in EXPECTED_DATA_TYPES:
                     return EXPECTED_DATA_TYPES[data_type]
-        predecessor = next(
-            (p for p in self.graph.predecessors(self) if isinstance(p, Field)), None
-        )
+        predecessor = next((p for p in self.predecessors if isinstance(p, Field)), None)
         if predecessor is None:
             self.add_error(
                 f"The field does not specify any {constants.ML_COMMONS_DATA_TYPE},"

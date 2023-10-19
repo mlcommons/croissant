@@ -20,7 +20,7 @@ from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Read(Operation):
-    """Reads from a CSV file and yield lines."""
+    """Reads from a file and output a pd.DataFrame."""
 
     node: FileObject | FileSet
     folder: epath.Path
@@ -74,7 +74,17 @@ class Read(Operation):
             files = [files]
         file_contents = []
         for file in files:
-            if isinstance(self.node, FileObject) and not is_url(self.node.content_url):
+            # The FileObject is extracted from another FileObject/FileSet:
+            if isinstance(self.node, FileObject) and self.node.contained_in:
+                content_url = self.node.content_url
+                file = Path(
+                    filepath=file.filepath / content_url,
+                    fullpath=file.fullpath / content_url,
+                )
+            # The FileObject comes from disk:
+            elif isinstance(self.node, FileObject) and not is_url(
+                self.node.content_url
+            ):
                 # Read from the local path
                 assert file.filepath.exists(), (
                     f'In node "{self.node.uid}", file "{self.node.content_url}" is'
