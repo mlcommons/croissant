@@ -1,0 +1,98 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "hls_burn_scars",
+  "description": "This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models.\n",
+  "citation": "@software{HLS_Foundation_2023,\n    author = {Phillips, Christopher and Roy, Sujit and Ankur, Kumar and Ramachandran, Rahul},\n    doi    = {10.57967/hf/0956},\n    month  = aug,\n    title  = {{HLS Foundation Burnscars Dataset}},\n    url    = {https://huggingface.co/ibm-nasa-geospatial/hls_burn_scars},\n    year   = {2023}\n}\n",
+  "license": "cc-by-4.0",
+  "url": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "parquet-files",
+      "description": "Imagery are from V1.4 of HLS. A full description and access to HLS may be found at https://hls.gsfc.nasa.gov/ The data were from shapefiles maintained by the Monitoring Trends in Burn Severity (MTBS) group. The original data may be found at: https://mtbs.gov/",
+      "containedIn": "repo",
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "default",
+      "description": "The default set of records in the dataset.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image",
+          "description": "Each tiff file contains a 512x512 pixel tiff file. Scenes contain six bands, and masks have one band. For satellite scenes, each band has already been converted to reflectance.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "annotation",
+          "description": "Masks are a single band with values: 1 = Burn scar; 0 = Not burned; -1 = Missing data",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "annotation"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
