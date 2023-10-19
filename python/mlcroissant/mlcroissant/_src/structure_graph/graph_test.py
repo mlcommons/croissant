@@ -33,7 +33,7 @@ def jsonld_to_python_to_jsonld(path):
     assert not issues.errors
 
 
-def test_jsonld_to_python_to_jsonld(path):
+def test_jsonld_to_python_to_jsonld():
     dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
     )
