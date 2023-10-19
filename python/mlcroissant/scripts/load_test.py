@@ -3,7 +3,7 @@
 from etils import epath
 import pytest
 
-from .load import load
+from mlcroissant.scripts.load import load
 
 
 def test_should_raise_when_no_record_set():
