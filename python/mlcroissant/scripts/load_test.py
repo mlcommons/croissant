@@ -3,7 +3,7 @@
 from etils import epath
 import pytest
 
-from mlcroissant.scripts.load import load
+from mlcroissant.scripts import load as load_lib
 
 
 def test_should_raise_when_no_record_set():
@@ -17,4 +17,4 @@ def test_should_raise_when_no_record_set():
     with pytest.raises(
         ValueError, match="--record_set flag should have a value in `default`"
     ):
-        load(file=file, record_set=None)
+        load_lib.load(file=file, record_set=None)
