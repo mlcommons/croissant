@@ -3,7 +3,6 @@
 import json
 
 from etils import epath
-import pytest
 
 from mlcroissant._src.core.json_ld import compact_jsonld
 from mlcroissant._src.core.json_ld import expand_jsonld
