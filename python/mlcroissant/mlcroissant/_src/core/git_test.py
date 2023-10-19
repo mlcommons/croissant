@@ -46,6 +46,7 @@ def test_download_git_lfs_file():
         filepath=epath.Path("/tmp/full/path.json"),
         fullpath=pathlib.PurePath("path.json"),
     )
+    git = deps.git
     with mock.patch.object(git, "Git", autospec=True) as git_mock:
         download_git_lfs_file(file)
         git = deps.git
