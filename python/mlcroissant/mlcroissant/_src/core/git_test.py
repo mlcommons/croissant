@@ -5,10 +5,10 @@ import tempfile
 from unittest import mock
 
 from etils import epath
-import git
 
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 
 _GIT_LFS_CONTENT = lambda: """version https://git-lfs.github.com/spec/v1
@@ -48,6 +48,7 @@ def test_download_git_lfs_file():
     )
     with mock.patch.object(git, "Git", autospec=True) as git_mock:
         download_git_lfs_file(file)
+        git = deps.git
         git_mock.assert_called_once_with("/tmp/full/")
         git_mock.return_value.execute.assert_called_once_with(
             ["git", "lfs", "pull", "--include", "path.json"]
