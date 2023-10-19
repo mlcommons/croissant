@@ -8,6 +8,7 @@ import networkx as nx
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import Concatenate
 from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations import Download
@@ -43,7 +44,7 @@ def _find_record_set(node: Node) -> RecordSet:
 
 
 def _add_operations_for_field_with_source(
-    operations: nx.DiGraph,
+    operations: Operations,
     last_operation: LastOperation,
     node: Field,
 ):
@@ -55,27 +56,20 @@ def _add_operations_for_field_with_source(
     - `ReadField` to specify how the field is read.
     - `GroupRecordSetStart` to structure the final dict that is sent back to the user.
     """
-    # Attach the field to a record set
     record_set = _find_record_set(node)
-    group_record_set = GroupRecordSetStart(operations=operations, node=record_set)
-    join = Join(operations=operations, node=record_set)
-    operations.add_node(join)
-    operations.add_edge(join, group_record_set)
-    for predecessor in node.predecessors:
-        operations.add_edge(last_operation[predecessor], join)
-    if not node.source:
-        node.add_error("Wrong source for the node")
-        return
-    # Read/extract the field
-    read_field = ReadField(operations=operations, node=node)
-    operations.add_edge(group_record_set, read_field)
-    end_group_record_set = GroupRecordSetEnd(operations=operations, node=record_set)
-    operations.add_edge(read_field, end_group_record_set)
-    last_operation[node] = end_group_record_set
+
+    operation = (
+        operations.last_operations(node)
+        >> Join(operations=operations, node=record_set)
+        >> GroupRecordSetStart(operations=operations, node=record_set)
+        >> ReadField(operations=operations, node=node)
+        >> GroupRecordSetEnd(operations=operations, node=record_set)
+    )
+    last_operation[node] = operation
 
 
 def _add_operations_for_record_set_with_data(
-    operations: nx.DiGraph,
+    operations: Operations,
     last_operation: LastOperation,
     node: RecordSet,
 ):
@@ -88,8 +82,7 @@ def _add_operations_for_record_set_with_data(
 
 
 def _add_operations_for_file_object(
-    graph: nx.MultiDiGraph,
-    operations: nx.DiGraph,
+    operations: Operations,
     last_operation: LastOperation,
     node: FileObject,
     folder: epath.Path,
@@ -111,7 +104,7 @@ def _add_operations_for_file_object(
         operation = Download(operations=operations, node=node)
         operations.add_node(operation)
     first_operation = operation
-    for successor in graph.successors(node):
+    for successor in node.successors:
         # Reset `operation` to be the very first operation at each loop.
         operation = first_operation
         # Extract the file if needed
@@ -133,11 +126,12 @@ def _add_operations_for_file_object(
             operation = concatenate
         last_operation[successor] = operation
     if not should_extract(node.encoding_format):
+        fields = tuple([field for field in node.successors if isinstance(field, Field)])
         read = Read(
             operations=operations,
             node=node,
             folder=folder,
-            fields=graph.successors(node),
+            fields=fields,
         )
         operations.add_edge(operation, read)
         operation = read
@@ -145,8 +139,7 @@ def _add_operations_for_file_object(
 
 
 def _add_operations_for_git(
-    graph: nx.MultiDiGraph,
-    operations: nx.DiGraph,
+    operations: Operations,
     last_operation: LastOperation,
     node: FileObject,
     folder: epath.Path,
@@ -154,7 +147,7 @@ def _add_operations_for_git(
     """Adds all operations for a FileObject reading from a Git repository."""
     operation = Download(operations=operations, node=node)
     operations.add_node(operation)
-    for successor in graph.successors(node):
+    for successor in node.successors:
         if isinstance(successor, FileSet):
             filter = FilterFiles(operations=operations, node=successor)
             operations.add_edge(operation, filter)
@@ -162,7 +155,7 @@ def _add_operations_for_git(
                 operations=operations,
                 node=successor,
                 folder=folder,
-                fields=graph.successors(node),
+                fields=node.successors,
             )
             operations.add_edge(filter, read)
             operation = read
@@ -170,13 +163,13 @@ def _add_operations_for_git(
 
 
 def _add_operations_for_local_file_sets(
-    graph: nx.MultiDiGraph,
-    operations: nx.DiGraph,
+    operations: Operations,
     last_operation: LastOperation,
     node: FileSet,
     folder: epath.Path,
 ):
     """Adds all operations for a FileSet reading from local files."""
+    fields = tuple([field for field in node.successors if isinstance(field, Field)])
     directory = LocalDirectory(
         operations=operations,
         node=node,
@@ -192,7 +185,7 @@ def _add_operations_for_local_file_sets(
         operations=operations,
         node=node,
         folder=folder,
-        fields=graph.successors(node),
+        fields=fields,
     )
     operations.add_node(read)
     operations.add_edge(filter_files, read)
@@ -204,7 +197,7 @@ class OperationGraph:
     """Graph of dependent operations to execute to generate the dataset."""
 
     issues: Issues
-    operations: nx.DiGraph
+    operations: Operations
 
     @classmethod
     def from_nodes(
@@ -223,7 +216,7 @@ class OperationGraph:
         layers in a breadth-first search.
         """
         last_operation: LastOperation = {}
-        operations = nx.DiGraph()
+        operations = Operations()
         # Find all fields
         for node in nx.topological_sort(graph):
             predecessors = graph.predecessors(node)
@@ -248,17 +241,15 @@ class OperationGraph:
                 )
             elif isinstance(node, FileObject):
                 if node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
-                    _add_operations_for_git(
-                        graph, operations, last_operation, node, folder
-                    )
+                    _add_operations_for_git(operations, last_operation, node, folder)
                 else:
                     _add_operations_for_file_object(
-                        graph, operations, last_operation, node, folder
+                        operations, last_operation, node, folder
                     )
             elif isinstance(node, FileSet):
                 if not node.contained_in:
                     _add_operations_for_local_file_sets(
-                        graph, operations, last_operation, node, folder
+                        operations, last_operation, node, folder
                     )
 
         # Attach all entry nodes to a single `start` node
@@ -269,12 +260,10 @@ class OperationGraph:
         return OperationGraph(issues=issues, operations=operations)
 
     def check_graph(self):
-        """Checks the computation graph for issues."""
+        """Checks the operation graph for issues."""
         if not self.operations.is_directed():
             self.issues.add_error("Computation graph is not directed.")
-        selfloops = [
-            operation.uid for operation, _ in nx.selfloop_edges(self.operations)
-        ]
+        selfloops = [operation for operation, _ in nx.selfloop_edges(self.operations)]
         if selfloops:
             self.issues.add_error(
                 f"The following operations refered to themselves: {selfloops}"

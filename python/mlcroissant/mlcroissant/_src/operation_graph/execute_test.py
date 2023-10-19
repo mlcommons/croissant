@@ -2,8 +2,7 @@
 
 from unittest import mock
 
-import networkx as nx
-
+from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations.download import Download
@@ -12,7 +11,7 @@ from mlcroissant._src.tests.nodes import empty_record_set
 
 
 def test_execute_downloads():
-    operations = nx.DiGraph()
+    operations = Operations()
     node1 = create_test_file_object(name="node1")
     node2 = create_test_file_object(name="node2")
     download1 = Download(operations=operations, node=node1)

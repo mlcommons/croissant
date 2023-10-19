@@ -9,6 +9,7 @@ import pandas as pd
 
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
 from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import ReadField
@@ -16,7 +17,7 @@ from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
 
 
-def execute_downloads(operations: nx.MultiDiGraph):
+def execute_downloads(operations: Operations):
     """Executes all the downloads in the graph of operations."""
     downloads = [
         operation for operation in operations.nodes if isinstance(operation, Download)
@@ -26,7 +27,7 @@ def execute_downloads(operations: nx.MultiDiGraph):
             executor.submit(download)
 
 
-def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph):
+def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: Json = {}
     for operation in nx.topological_sort(operations):
@@ -66,7 +67,7 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
 
 def execute_operations_in_streaming(
     record_set: str,
-    operations: nx.DiGraph,
+    operations: Operations,
     list_of_operations: list[Operation],
     result: Any = None,
 ):
@@ -109,7 +110,7 @@ def execute_operations_in_streaming(
 
 
 def build_record_set(
-    operations: nx.MultiDiGraph, operation: GroupRecordSetStart, result: Any
+    operations: Operations, operation: GroupRecordSetStart, result: Any
 ):
     """Builds a RecordSet from all ReadField children in the operation graph."""
     assert (
