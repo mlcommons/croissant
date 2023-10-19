@@ -13,7 +13,8 @@ from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations import Download
 from mlcroissant._src.operation_graph.operations import Extract
 from mlcroissant._src.operation_graph.operations import FilterFiles
-from mlcroissant._src.operation_graph.operations import GroupRecordSet
+from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import Join
 from mlcroissant._src.operation_graph.operations import LocalDirectory
@@ -42,7 +43,6 @@ def _find_record_set(node: Node) -> RecordSet:
 
 
 def _add_operations_for_field_with_source(
-    graph: nx.MultiDiGraph,
     operations: nx.DiGraph,
     last_operation: LastOperation,
     node: Field,
@@ -53,12 +53,12 @@ def _add_operations_for_field_with_source(
 
     - `Join` if the field comes from several sources.
     - `ReadField` to specify how the field is read.
-    - `GroupRecordSet` to structure the final dict that is sent back to the user.
+    - `GroupRecordSetStart` to structure the final dict that is sent back to the user.
     """
     # Attach the field to a record set
     record_set = _find_record_set(node)
-    group_record_set = GroupRecordSet(node=record_set)
-    join = Join(node=record_set)
+    group_record_set = GroupRecordSetStart(operations=operations, node=record_set)
+    join = Join(operations=operations, node=record_set)
     operations.add_node(join)
     operations.add_edge(join, group_record_set)
     for predecessor in node.predecessors:
@@ -67,12 +67,15 @@ def _add_operations_for_field_with_source(
         node.add_error("Wrong source for the node")
         return
     # Read/extract the field
-    read_field = ReadField(node=node)
+    read_field = ReadField(operations=operations, node=node)
     operations.add_edge(group_record_set, read_field)
-    last_operation[node] = read_field
+    end_group_record_set = GroupRecordSetEnd(operations=operations, node=record_set)
+    operations.add_edge(read_field, end_group_record_set)
+    last_operation[node] = end_group_record_set
 
 
 def _add_operations_for_record_set_with_data(
+    operations: nx.DiGraph,
     last_operation: LastOperation,
     node: RecordSet,
 ):
@@ -80,7 +83,7 @@ def _add_operations_for_record_set_with_data(
 
     Those nodes return a DataFrame representing the lines in `data`.
     """
-    operation = Data(node=node)
+    operation = Data(operations=operations, node=node)
     last_operation[node] = operation
 
 
@@ -101,32 +104,37 @@ def _add_operations_for_file_object(
     - `Read` to read the file if it's a CSV.
     """
     if node.contained_in:
-        # Chain the operation from the rpedecessor
+        # Chain the operation from the predecessor
         operation = last_operation[node]
     else:
         # Download the file
-        operation = Download(node=node)
+        operation = Download(operations=operations, node=node)
         operations.add_node(operation)
+    first_operation = operation
     for successor in graph.successors(node):
+        # Reset `operation` to be the very first operation at each loop.
+        operation = first_operation
         # Extract the file if needed
         if (
             should_extract(node.encoding_format)
             and isinstance(successor, (FileObject, FileSet))
             and not should_extract(successor.encoding_format)
         ):
-            extract = Extract(node=node, target_node=successor)
+            extract = Extract(operations=operations, node=node)
             operations.add_edge(operation, extract)
             operation = extract
         if isinstance(successor, FileSet):
-            filter = FilterFiles(node=successor)
+            filter = FilterFiles(operations=operations, node=successor)
             operations.add_edge(extract, filter)
             last_operation[node] = filter
             operation = filter
-            concatenate = Concatenate(node=successor)
+            concatenate = Concatenate(operations=operations, node=successor)
             operations.add_edge(operation, concatenate)
             operation = concatenate
+        last_operation[successor] = operation
     if not should_extract(node.encoding_format):
         read = Read(
+            operations=operations,
             node=node,
             folder=folder,
             fields=graph.successors(node),
@@ -144,13 +152,14 @@ def _add_operations_for_git(
     folder: epath.Path,
 ):
     """Adds all operations for a FileObject reading from a Git repository."""
-    operation = Download(node=node)
+    operation = Download(operations=operations, node=node)
     operations.add_node(operation)
     for successor in graph.successors(node):
         if isinstance(successor, FileSet):
-            filter = FilterFiles(node=successor)
+            filter = FilterFiles(operations=operations, node=successor)
             operations.add_edge(operation, filter)
             read = Read(
+                operations=operations,
                 node=successor,
                 folder=folder,
                 fields=graph.successors(node),
@@ -169,16 +178,18 @@ def _add_operations_for_local_file_sets(
 ):
     """Adds all operations for a FileSet reading from local files."""
     directory = LocalDirectory(
+        operations=operations,
         node=node,
         folder=folder,
     )
     operations.add_node(directory)
 
-    filter_files = FilterFiles(node=node)
+    filter_files = FilterFiles(operations=operations, node=node)
     operations.add_node(filter_files)
     operations.add_edge(directory, filter_files)
 
     read = Read(
+        operations=operations,
         node=node,
         folder=folder,
         fields=graph.successors(node),
@@ -218,20 +229,20 @@ class OperationGraph:
             predecessors = graph.predecessors(node)
             # Transfer operation from predecessor -> node.
             for predecessor in predecessors:
-                if predecessor in last_operation:
+                if predecessor in last_operation and node not in last_operation:
                     last_operation[node] = last_operation[predecessor]
             if isinstance(node, Field):
                 parent = node.parent
                 parent_has_data = isinstance(parent, RecordSet) and parent.data
                 if node.source and not node.sub_fields and not parent_has_data:
                     _add_operations_for_field_with_source(
-                        graph,
                         operations,
                         last_operation,
                         node,
                     )
             elif isinstance(node, RecordSet) and node.data:
                 _add_operations_for_record_set_with_data(
+                    operations,
                     last_operation,
                     node,
                 )
@@ -252,7 +263,7 @@ class OperationGraph:
 
         # Attach all entry nodes to a single `start` node
         entry_operations = get_entry_nodes(operations)
-        init_operation = InitOperation(node=metadata)
+        init_operation = InitOperation(operations=operations, node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
         return OperationGraph(issues=issues, operations=operations)

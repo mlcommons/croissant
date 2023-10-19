@@ -7,11 +7,11 @@ from etils import epath
 from mlcroissant._src.core.path import get_fullpaths
 from mlcroissant._src.operation_graph.operations.extract import Extract
 from mlcroissant._src.tests.nodes import empty_file_object
-from mlcroissant._src.tests.nodes import empty_file_set
+from mlcroissant._src.tests.operations import operations
 
 
 def test_str_representation():
-    operation = Extract(node=empty_file_object, target_node=empty_file_set)
+    operation = Extract(operations=operations(), node=empty_file_object)
     assert str(operation) == "Extract(file_object_name)"
 
 

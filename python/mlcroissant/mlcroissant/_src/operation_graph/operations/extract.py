@@ -15,7 +15,6 @@ from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import get_hash
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 
 
 def should_extract(encoding_format: str) -> bool:
@@ -42,7 +41,6 @@ class Extract(Operation):
     """Extracts tar/zip and yields filtered pd.DataFrame."""
 
     node: FileObject
-    target_node: FileSet
 
     def __call__(self, archive_file: Path) -> pd.DataFrame:
         """See class' docstring."""

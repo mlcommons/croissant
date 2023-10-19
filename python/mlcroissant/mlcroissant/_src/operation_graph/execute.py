@@ -5,10 +5,12 @@ from typing import Any
 
 from absl import logging
 import networkx as nx
+import pandas as pd
 
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.operation_graph.base_operation import Operation
-from mlcroissant._src.operation_graph.operations import GroupRecordSet
+from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -28,7 +30,6 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
     """Executes operation and yields results according to the graph of operations."""
     results: Json = {}
     for operation in nx.topological_sort(operations):
-        logging.debug('Executing "%s"', operation)
         previous_results = [
             results[previous_operation]
             for previous_operation in operations.predecessors(operation)
@@ -36,17 +37,30 @@ def execute_operations_sequentially(record_set: str, operations: nx.MultiDiGraph
             # Filter out results that yielded `None`.
             and results[previous_operation] is not None
         ]
-        if isinstance(operation, GroupRecordSet):
+        if isinstance(operation, GroupRecordSetStart):
+            built_record_set = build_record_set(operations, operation, previous_results)
+            if operation.node.name != record_set:
+                # The RecordSet will be used later in the graph by another RecordSet.
+                # This could be multi-threaded to build the pd.DataFrame faster.
+                built_record_set = pd.DataFrame(list(built_record_set))
+                if not built_record_set.empty:
+                    results[operation] = built_record_set
+                    # Propagate the result to all `ReadField` children.
+                    for successor in operations.successors(operation):
+                        results[successor] = built_record_set
+            else:
+                # This is the target RecordSet, so we can yield records.
+                yield from built_record_set
+        elif isinstance(operation, GroupRecordSetEnd):
             # Only keep the record set whose name is `self.record_set`.
             # Note: this is a short-term solution. The long-term solution is to
             # re-compute the sub-graph of operations that is sufficient to compute
             # `self.record_set`.
             if operation.node.name != record_set:
-                continue
-            yield from build_record_set(operations, operation, previous_results)
-        else:
-            if isinstance(operation, ReadField) and not previous_results:
-                continue
+                logging.info("Executing %s", operation)
+                results[operation] = operation(*previous_results)
+        elif not isinstance(operation, ReadField):
+            logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)
 
 
@@ -63,7 +77,7 @@ def execute_operations_in_streaming(
     we only download the needed files, yield element, then proceed to the next file.
     """
     for i, operation in enumerate(list_of_operations):
-        if isinstance(operation, GroupRecordSet):
+        if isinstance(operation, GroupRecordSetStart):
             if operation.node.name != record_set:
                 continue
             yield from build_record_set(operations, operation, result)
@@ -95,7 +109,7 @@ def execute_operations_in_streaming(
 
 
 def build_record_set(
-    operations: nx.MultiDiGraph, operation: GroupRecordSet, result: Any
+    operations: nx.MultiDiGraph, operation: GroupRecordSetStart, result: Any
 ):
     """Builds a RecordSet from all ReadField children in the operation graph."""
     assert (

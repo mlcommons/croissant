@@ -14,7 +14,8 @@ from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
-from mlcroissant._src.operation_graph.operations import GroupRecordSet
+from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
@@ -102,7 +103,7 @@ class Records:
         can_stream_dataset = all(
             d == 1 or d == 2
             for operation, d in operations.degree()
-            if not isinstance(operation, GroupRecordSet)
+            if not isinstance(operation, (GroupRecordSetStart, GroupRecordSetEnd))
         )
         if can_stream_dataset:
             yield from execute_operations_in_streaming(

@@ -26,7 +26,12 @@ class ReadField(Operation):
         if pd.isna(value):
             return value
         elif data_type == constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
-            return deps.PIL_Image.open(io.BytesIO(value))
+            if isinstance(value, deps.PIL_Image.Image):
+                return value
+            elif isinstance(value, bytes):
+                return deps.PIL_Image.open(io.BytesIO(value))
+            else:
+                raise ValueError(f"Type {type(value)} is not accepted for an image.")
         elif data_type == pd.Timestamp:
             # The date format is the first format found in the field's source.
             format = next(
