@@ -24,7 +24,7 @@ class Read(Operation):
 
     node: FileObject | FileSet
     folder: epath.Path
-    fields: list[Field]
+    fields: tuple[Field, ...]
 
     def _read_file_content(self, encoding_format: str, file: Path) -> pd.DataFrame:
         """Extracts the `source` file to `target`."""

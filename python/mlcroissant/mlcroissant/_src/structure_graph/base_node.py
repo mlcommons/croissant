@@ -137,9 +137,18 @@ class Node(abc.ABC):
         return self.parents[-1]
 
     @property
-    def predecessors(self) -> list[Node]:
+    def predecessors(self) -> set[Node]:
         """Predecessors in the structure graph."""
-        return list(self.graph.predecessors(self))
+        return set(self.graph.predecessors(self))
+
+    @property
+    def successors(self) -> tuple[Node, ...]:
+        """Successors in the structure graph."""
+        if self not in self.graph:
+            return ()
+        # We use tuples in order to have a hashable data structure to be put in input of
+        # operations.
+        return tuple(self.graph.successors(self))
 
     @abc.abstractmethod
     def to_json(self) -> Json:

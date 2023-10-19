@@ -20,7 +20,7 @@ def test_str_representation():
         operations=operations(),
         node=empty_file_object,
         folder=epath.Path(),
-        fields=[],
+        fields=(),
     )
     assert str(operation) == "Read(file_object_name)"
 
@@ -40,7 +40,7 @@ def test_explicit_message_when_pyarrow_is_not_installed():
                     encoding_format="application/x-parquet", content_url=content_url
                 ),
                 folder=folder,
-                fields=[],
+                fields=(),
             )
             with pytest.raises(
                 ImportError, match=".*pip install mlcroissant\\[parquet\\].*"
