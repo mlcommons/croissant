@@ -45,7 +45,7 @@ def get_hash(url: str) -> str:
 def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
     url = node.content_url
-    if not is_url(url) and not node.contained_in:
+    if url and not is_url(url) and not node.contained_in:
         assert url.startswith("data/"), (
             f'Local file "{node.uid}" should point to a file within the data/'
             f' folder next to the JSON-LD Croissant file. But got: "{url}"'
@@ -176,7 +176,7 @@ class Download(Operation):
             repo.remote().fetch(f"{refs}:{branch_name}")
             repo.branches[branch_name].checkout()
 
-    def __call__(self, *args) -> epath.Path:
+    def __call__(self, *args) -> Path:
         """See class' docstring."""
         del args  # unused
         filepath = get_download_filepath(self.node)
