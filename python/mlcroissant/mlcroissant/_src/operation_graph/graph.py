@@ -7,7 +7,6 @@ import networkx as nx
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import Concatenate
 from mlcroissant._src.operation_graph.operations import Data
@@ -28,8 +27,6 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-
-LastOperation = dict[Node, Operation]
 
 
 def _find_record_set(node: Node) -> RecordSet:
@@ -179,15 +176,9 @@ class OperationGraph:
         2. Building the computation graph by exploring the structure graph layers by
         layers in a breadth-first search.
         """
-        last_operation: LastOperation = {}
         operations = Operations()
         # Find all fields
         for node in nx.topological_sort(graph):
-            predecessors = graph.predecessors(node)
-            # Transfer operation from predecessor -> node.
-            for predecessor in predecessors:
-                if predecessor in last_operation and node not in last_operation:
-                    last_operation[node] = last_operation[predecessor]
             if isinstance(node, Field):
                 parent = node.parent
                 parent_has_data = isinstance(parent, RecordSet) and parent.data
