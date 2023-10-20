@@ -30,7 +30,20 @@ def execute_downloads(operations: Operations):
 def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: Json = {}
+    # GroupRecordSetEnd linked to the `record_set`.
+    group_record_set = next(
+        (
+            operation
+            for operation in operations.nodes
+            if isinstance(operation, GroupRecordSetEnd)
+            and operation.node.name == record_set
+        )
+    )
+    ancestors = set(nx.ancestors(operations, group_record_set))
     for operation in nx.topological_sort(operations):
+        # If the operation is not a needed operation to compute `record_set`, skip it:
+        if operation not in ancestors:
+            continue
         previous_results = [
             results[previous_operation]
             for previous_operation in operations.predecessors(operation)
@@ -53,10 +66,6 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                 # This is the target RecordSet, so we can yield records.
                 yield from built_record_set
         elif isinstance(operation, GroupRecordSetEnd):
-            # Only keep the record set whose name is `self.record_set`.
-            # Note: this is a short-term solution. The long-term solution is to
-            # re-compute the sub-graph of operations that is sufficient to compute
-            # `self.record_set`.
             if operation.node.name != record_set:
                 logging.info("Executing %s", operation)
                 results[operation] = operation(*previous_results)

@@ -4,9 +4,16 @@ from unittest import mock
 
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
+from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
 from mlcroissant._src.operation_graph.operations import Data
+from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
+from mlcroissant._src.operation_graph.operations import InitOperation
+from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.tests.nodes import create_test_file_object
+from mlcroissant._src.tests.nodes import create_test_record_set
+from mlcroissant._src.tests.nodes import empty_field
 from mlcroissant._src.tests.nodes import empty_record_set
 
 
@@ -27,3 +34,28 @@ def test_execute_downloads():
         execute_downloads(operations)
         assert download_call.call_count == 2
         data_call.assert_not_called()
+
+
+def test_only_execute_needed_operations():
+    operations = Operations()
+    node = create_test_file_object()
+    record_set = create_test_record_set(name="my-record-set")
+    init = InitOperation(operations=operations, node=node)
+    (
+        init
+        >> Download(operations=operations, node=node)
+        >> GroupRecordSetStart(operations=operations, node=record_set)
+        >> ReadField(operations=operations, node=empty_field)
+        >> GroupRecordSetEnd(operations=operations, node=record_set)
+    )
+
+    # This operation is isolated in the operation graph and should not be executed:
+    init >> Data(operations=operations, node=record_set)
+
+    with mock.patch.object(Download, "__call__") as download_call, mock.patch.object(
+        Data, "__call__"
+    ) as data_call:
+        # Use list(iterator) to actually yield all operations and execute them.
+        list(execute_operations_sequentially("my-record-set", operations))
+        assert download_call.call_count == 1
+        assert data_call.call_count == 0
