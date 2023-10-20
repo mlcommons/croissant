@@ -5,7 +5,7 @@ import json
 from etils import epath
 import pytest
 
-from .from_huggingface_to_croissant import convert
+from mlcroissant.scripts.from_huggingface_to_croissant import convert
 
 
 @pytest.mark.parametrize(
