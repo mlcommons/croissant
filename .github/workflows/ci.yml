@@ -154,7 +154,7 @@ jobs:
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
-          python scripts/validate.py --file ${file}
+          python mlcroissant/scripts/validate.py --file ${file}
         done
 
   generation-test:
@@ -175,10 +175,10 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files - Titanic
-      run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
+      run: python mlcroissant/scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
 
     - name: Generate JSON-LD files - PASS
-      run: pip install .[image] && python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+      run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
 
   wizard-python-test:
     name: Wizard Python Test
