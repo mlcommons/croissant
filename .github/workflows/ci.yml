@@ -30,7 +30,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev git-lfs && pip install .[dev]
 
     - name: PyTest
       run: make pytest
