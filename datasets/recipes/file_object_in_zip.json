@@ -33,7 +33,7 @@
     "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
-  "name": "file_object_in_csv",
+  "name": "file_object_in_zip",
   "description": "Minimal example to read a FileObject contained in a zip.",
   "url": "https://mlcommons.org",
   "distribution": [
@@ -43,6 +43,14 @@
       "contentUrl": "data/zip_with_csv.zip",
       "encodingFormat": "application/zip",
       "sha256": "85c13a7e6940a8376f2448ed6078d4fa407ae33c7839e6d041a0e34413366792"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "other_csv_in_zip",
+      "description": "Do not remove! This is used in hermetic integration tests. There used to be a problem where several FileObjects could not be read from the same FileObject.",
+      "containedIn": "zip_with_csv",
+      "contentUrl": "csv_in_zip.csv",
+      "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
