@@ -19,7 +19,7 @@ def test_convert(croissant_dataset_name, hf_dataset_name):
     calls Hugging Face API.
     """
     metadata_file = (
-        epath.Path(__file__).parent.parent.parent.parent
+        epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / croissant_dataset_name
         / "metadata.json"
