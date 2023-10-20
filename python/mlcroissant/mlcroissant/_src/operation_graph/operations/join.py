@@ -27,7 +27,7 @@ class Join(Operation):
             raise ValueError(f"Unsupported: Trying to join {len(args)} pd.DataFrames.")
         fields = self.node.fields
         # `joins` is the list of joins to execute (source1, df1) x (source2, df2).
-        joins: list[tuple[tuple[Source, pd.DataFrame], tuple[Source, pd.DataFrame]]] = (
+        joins: list[tuple[tuple[Source, pd.Series], tuple[Source, pd.Series]]] = (
             []
         )
         for field in fields:
