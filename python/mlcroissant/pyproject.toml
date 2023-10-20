@@ -57,7 +57,7 @@ line-length = 88
 inputs = ["."]
 # PyLint is skipped for migrations as migrations are supposed to be launched on
 # fixed previous versions of the code.
-exclude = ["*/migrations/previous/*"]
+exclude = ["*/scripts/migrations/previous/*"]
 strict_none_binding = true
 use_enum_overlay = true
 use_fiddle_overlay = true

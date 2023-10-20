@@ -9,7 +9,7 @@ from .load import load
 def test_should_raise_when_no_record_set():
     dataset_name = "huggingface-mnist"
     file = (
-        epath.Path(__file__).parent.parent.parent.parent
+        epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / dataset_name
         / "metadata.json"
