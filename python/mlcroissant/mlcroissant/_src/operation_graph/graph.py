@@ -99,14 +99,16 @@ def _add_operations_for_file_object(
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
             )
-    if not should_extract(node.encoding_format):
-        fields = tuple([field for field in node.successors if isinstance(field, Field)])
-        operation >> Read(
-            operations=operations,
-            node=node,
-            folder=folder,
-            fields=fields,
-        )
+        if not should_extract(node.encoding_format):
+            fields = tuple(
+                [field for field in node.successors if isinstance(field, Field)]
+            )
+            operation >> Read(
+                operations=operations,
+                node=node,
+                folder=folder,
+                fields=fields,
+            )
 
 
 def _add_operations_for_git(
