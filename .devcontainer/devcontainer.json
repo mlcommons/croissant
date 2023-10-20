@@ -12,7 +12,7 @@
 	// "forwardPorts": [],
 
 	// Install the required dependencies.
-	"postCreateCommand": "pip3 install python/mlcroissant/.[dev]",
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
 
 	// Configure tool-specific properties.
 	"customizations": {
