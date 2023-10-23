@@ -71,3 +71,4 @@ class Join(Operation):
                 how="left",
                 suffixes=(None, "_right"),
             )
+        return None

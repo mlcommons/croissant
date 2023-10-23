@@ -5,6 +5,7 @@ from __future__ import annotations
 import dataclasses
 
 from etils import epath
+from typing import Any
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
@@ -22,8 +23,8 @@ class FileSet(Node):
 
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
-    encoding_format: str = ""
-    includes: str = ""
+    encoding_format: Any | str = ""
+    includes: Any | str = ""
     name: str = ""
 
     def __post_init__(self):
@@ -36,7 +37,7 @@ class FileSet(Node):
         if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
             contained_in = self.contained_in[0]
         else:
-            contained_in = self.contained_in
+            contained_in = self.contained_in  # type: ignore
         return remove_empty_values(
             {
                 "@type": "sc:FileSet",
