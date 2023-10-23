@@ -37,6 +37,9 @@ jobs:
 
     - name: PyLint
       run: make pylint
+    
+    - name: MyPy
+      run: make mypy
 
     # Pyflakes can see unused imports
     - name: PyFlakes
