@@ -94,7 +94,9 @@ def _add_operations_for_file_object(
             and successor.encoding_format
             and not should_extract(successor.encoding_format)
         ):
-            operation = operation >> Extract(operations=operations, node=node)  # type: ignore
+            operation = operation >> Extract(
+                operations=operations, node=node  # type: ignore
+            )
         if isinstance(successor, FileSet):
             operation = (
                 operation  # type: ignore

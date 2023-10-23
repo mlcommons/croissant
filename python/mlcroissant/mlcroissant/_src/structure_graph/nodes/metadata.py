@@ -140,7 +140,9 @@ class Metadata(Node):
             json_ = json.loads(json_)
         rdf = Rdf.from_json(json_)  # type: ignore
         metadata = expand_jsonld(json_)  # type: ignore
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)  # type: ignore
+        return cls.from_jsonld(  # type: ignore
+            issues=issues, folder=folder, metadata=metadata, rdf=rdf
+        )
 
     @classmethod
     def from_jsonld(  # type: ignore
@@ -164,11 +166,15 @@ class Metadata(Node):
             distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)  # type: ignore
+                    FileObject.from_jsonld(  # type: ignore
+                        issues, context, folder, rdf, set_or_object
+                    )
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(
-                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)  # type: ignore
+                    FileSet.from_jsonld(  # type: ignore
+                        issues, context, folder, rdf, set_or_object
+                    )
                 )
             else:
                 issues.add_error(
@@ -179,7 +185,9 @@ class Metadata(Node):
                 )
         record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)  # type: ignore
+            RecordSet.from_jsonld(
+                issues, context, folder, rdf, record_set  # type: ignore
+            )
             for record_set in record_sets
         ]
         return cls(
