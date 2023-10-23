@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Any
 
 from etils import epath
-from typing import Any
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
