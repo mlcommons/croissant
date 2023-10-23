@@ -26,7 +26,7 @@ class FilterFiles(Operation):
         included_files: list[Path] = []
         for dir_ in dirs:
             dir_ = os.fspath(dir_.filepath)
-            for basepath, _, files in os.walk(dir_):
+            for basepath, _, files in os.walk(dir_):  # type: ignore
                 for file in files:
                     filepath = epath.Path(basepath) / file
                     fullpath = get_fullpath(filepath, epath.Path(dir_))

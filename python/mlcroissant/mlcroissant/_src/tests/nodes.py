@@ -64,16 +64,16 @@ def create_test_node(cls: type[T], **kwargs) -> T:
     return cls(**_node_params(**kwargs))
 
 
-create_test_field: Callable[..., Field] = functools.partial(
+create_test_field: Callable[..., Field] = functools.partial(  # type: ignore
     create_test_node, Field, name="field_name"
 )
-create_test_file_object: Callable[..., FileObject] = functools.partial(
+create_test_file_object: Callable[..., FileObject] = functools.partial(  # type: ignore
     create_test_node, FileObject, name="file_object_name"
 )
-create_test_file_set: Callable[..., FileSet] = functools.partial(
+create_test_file_set: Callable[..., FileSet] = functools.partial(  # type: ignore
     create_test_node, FileSet, name="file_set_name"
 )
-create_test_record_set: Callable[..., RecordSet] = functools.partial(
+create_test_record_set: Callable[..., RecordSet] = functools.partial(  # type: ignore
     create_test_node, RecordSet, name="record_set_name"
 )
 
