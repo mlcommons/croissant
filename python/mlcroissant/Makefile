@@ -18,7 +18,7 @@ mypy:
 	mypy --config=./pyproject.toml mlcroissant/ --show-error-codes
 
 # Launch all tests as launched on GitHub actions.
-# - Check types (pytype).
+# - Check types (pytype, mypy).
 # - Check tests (pytest).
 # - Check linters (pylint, pyflakes, flake8).
 tests: pytype mypy pytest pylint pyflakes flake8
