@@ -73,10 +73,17 @@ module = [
   "absl",
   "datasets",
   "etils.*",
+  "jsonpath_rw",
   "networkx",
   "pandas",
 ]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "mlcroissant.scripts.migrations.previous.*"
+]
+ignore_errors = true
 
 [tool.isort]
 profile = "google"
