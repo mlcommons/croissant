@@ -44,14 +44,15 @@ class Extract(Operation):
     def __call__(self, archive_file: Path) -> Path:
         """See class' docstring."""
         url = self.node.content_url
-        hashed_url = get_hash(url)
-        extract_dir = EXTRACT_PATH / hashed_url
-        if not extract_dir.exists():
-            _extract_file(archive_file.filepath, extract_dir)
-        logging.info(
-            "Found directory where data is extracted: %s", os.fspath(extract_dir)
-        )
-        return Path(
-            filepath=extract_dir,
-            fullpath=get_fullpath(extract_dir, EXTRACT_PATH),
-        )
+        if url:
+            hashed_url = get_hash(url)
+            extract_dir = EXTRACT_PATH / hashed_url
+            if not extract_dir.exists():
+                _extract_file(archive_file.filepath, extract_dir)
+            logging.info(
+                "Found directory where data is extracted: %s", os.fspath(extract_dir)
+            )
+            return Path(
+                filepath=extract_dir,
+                fullpath=get_fullpath(extract_dir, EXTRACT_PATH),
+            )

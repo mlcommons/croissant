@@ -138,8 +138,8 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON."""
         if isinstance(json_, str):
             json_ = json.loads(json_)
-        rdf = Rdf.from_json(json_)
-        metadata = expand_jsonld(json_)
+        rdf = Rdf.from_json(json_)  # type: ignore
+        metadata = expand_jsonld(json_)  # type: ignore
         return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
 
     @classmethod
@@ -179,7 +179,7 @@ class Metadata(Node):
                 )
         record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
+            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)  # type: ignore
             for record_set in record_sets
         ]
         return cls(
@@ -192,6 +192,6 @@ class Metadata(Node):
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             record_sets=record_sets,
-            url=metadata.get(constants.SCHEMA_ORG_URL),
+            url=metadata.get(constants.SCHEMA_ORG_URL),  # type: ignore
             rdf=rdf,
         )

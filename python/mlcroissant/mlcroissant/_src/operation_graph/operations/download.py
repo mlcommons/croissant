@@ -59,6 +59,7 @@ def get_download_filepath(node: FileObject) -> epath.Path:
         )
         # No need to download local files
         return filepath
+    assert url, "Cannot get hashed URL for None."
     hashed_url = get_hash(url)
     constants.DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
     return constants.DOWNLOAD_PATH / f"croissant-{hashed_url}"
@@ -143,11 +144,10 @@ class Download(Operation):
 
     def _download_from_http(self, filepath: epath.Path):
         content_url = self.node.content_url
+        assert content_url, "Content URL is None."
         response = requests.get(
-            content_url,
-            stream=True,
-            timeout=10,
-            auth=get_basic_auth_from_env())
+            content_url, stream=True, timeout=10, auth=get_basic_auth_from_env()
+        )
         response.raise_for_status()
         total = int(response.headers.get("Content-Length", 0))
         with filepath.open("wb") as file, tqdm.tqdm(
@@ -167,6 +167,8 @@ class Download(Operation):
         # GIT_LFS_SKIP_SMUDGE allows to not download git-lfs files by default. Those
         # files may be big, so we want to download them just-in-time (see `Read`):
         os.environ["GIT_LFS_SKIP_SMUDGE"] = "1"
+
+        assert self.node.content_url, "Cannot extract git-related information for None."
         url, refs = extract_git_info(self.node.content_url)
         url = insert_credentials(url, username, password)
         repo = deps.git.Repo.clone_from(url, filepath)
