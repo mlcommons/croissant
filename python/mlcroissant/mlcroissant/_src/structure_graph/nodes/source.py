@@ -90,7 +90,7 @@ class Transform:
         """Creates a list of `Transform` from JSON-LD."""
         transforms = []
         if not isinstance(jsonld, list):
-            jsonld = [jsonld]
+            jsonld = [jsonld]  # type: ignore
         for transform in jsonld:
             keys = [
                 constants.ML_COMMONS_FORMAT,
@@ -167,10 +167,10 @@ class Source:
         """Converts the `Source` to JSON."""
         transforms = [transform.to_json() for transform in self.transforms]
         if len(transforms) == 1:
-            transforms = transforms[0]
+            transforms = transforms[0]  # type: ignore
         return remove_empty_values(
             {
-                self.node_type: self.uid,
+                self.node_type: self.uid,  # type: ignore
                 "extract": self.extract.to_json(),
                 "transform": transforms,
             }
@@ -243,7 +243,7 @@ class Source:
                     extract=extract,
                     transforms=transforms,
                     uid=uid,
-                    node_type=node_type,
+                    node_type=node_type,  # type: ignore
                 )
             except TypeError as exception:
                 issues.add_error(
@@ -272,7 +272,7 @@ class Source:
         """Retrieves the name of the field/column/query associated to the source."""
         if self.uid is None:
             # This case already rose an issue and should not happen at run time.
-            raise ""
+            raise ""  # type: ignore
         if self.extract.column:
             return self.extract.column
         elif self.extract.file_property:
