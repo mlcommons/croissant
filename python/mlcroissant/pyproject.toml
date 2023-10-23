@@ -55,7 +55,7 @@ parquet = ["pyarrow"]
 line-length = 88
 
 [tool.pytype]
-inputs = ["."]
+inputs = ["mlcroissant"]
 # PyLint is skipped for migrations as migrations are supposed to be launched on
 # fixed previous versions of the code.
 exclude = ["*/scripts/migrations/previous/*"]

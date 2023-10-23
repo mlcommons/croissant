@@ -12,7 +12,7 @@ pytest:
 	pytest .
 
 pytype:
-	pytype --jobs="$$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml mlcroissant
+	pytype --jobs="$$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml
 
 mypy:
 	mypy --config=./pyproject.toml mlcroissant/ --show-error-codes --allow-redefinition
