@@ -163,8 +163,8 @@ jobs:
             requests \
             tqdm
     
-    - name: Install library stubs for mypy checks.
-      run: mypy --install-types --non-interactive
+    # - name: Install library stubs for mypy checks.
+    #   run: mypy --install-types --non-interactive
 
     - name: MyPy
       run: make mypy
