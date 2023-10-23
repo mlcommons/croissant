@@ -140,10 +140,10 @@ class Metadata(Node):
             json_ = json.loads(json_)
         rdf = Rdf.from_json(json_)  # type: ignore
         metadata = expand_jsonld(json_)  # type: ignore
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
+        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)  # type: ignore
 
     @classmethod
-    def from_jsonld(
+    def from_jsonld(  # type: ignore
         cls,
         issues: Issues,
         folder: epath.Path | None,
@@ -164,11 +164,11 @@ class Metadata(Node):
             distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)
+                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)  # type: ignore
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(
-                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)
+                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)  # type: ignore
                 )
             else:
                 issues.add_error(
