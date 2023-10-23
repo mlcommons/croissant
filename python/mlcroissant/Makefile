@@ -21,4 +21,4 @@ mypy:
 # - Check types (pytype).
 # - Check tests (pytest).
 # - Check linters (pylint, pyflakes, flake8).
-tests: pytype pytest pylint pyflakes flake8
+tests: pytype mypy pytest pylint pyflakes flake8
