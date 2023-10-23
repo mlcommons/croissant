@@ -7,4 +7,4 @@ sudo apt-get install -y libgraphviz-dev
 pip3 install python/mlcroissant/.[dev]
 
 # Install library stubs for mypy checks.
-sudo mypy --install-types
+mypy --install-types

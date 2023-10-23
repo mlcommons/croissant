@@ -39,7 +39,7 @@ jobs:
       run: make pylint
     
     - name: MyPy
-      run: make mypy
+      run: mypy --install-types && make mypy
 
     # Pyflakes can see unused imports
     - name: PyFlakes
