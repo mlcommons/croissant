@@ -39,6 +39,7 @@ dev = [
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
+  "mypy",
   "pyflakes",
   "pygraphviz",
   "pylint",
@@ -61,6 +62,21 @@ exclude = ["*/scripts/migrations/previous/*"]
 strict_none_binding = true
 use_enum_overlay = true
 use_fiddle_overlay = true
+
+[tool.mypy]
+show_error_codes = true
+no_implicit_optional = true
+disable_error_code = "attr-defined"
+
+[[tool.mypy.overrides]]
+module = [
+  "absl",
+  "datasets",
+  "etils.*",
+  "networkx",
+  "pandas",
+]
+ignore_missing_imports = true
 
 [tool.isort]
 profile = "google"
