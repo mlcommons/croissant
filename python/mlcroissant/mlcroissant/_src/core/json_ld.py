@@ -156,7 +156,7 @@ def expand_jsonld(data: Json) -> Json:
     """
     context = get_context(data)
     graph = rdflib.Graph()
-    graph.parse(
+    graph.parse( # type: ignore
         data=data,
         format="json-ld",
     )
