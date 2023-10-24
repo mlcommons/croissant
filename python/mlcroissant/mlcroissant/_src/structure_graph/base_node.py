@@ -151,12 +151,12 @@ class Node(abc.ABC):
         return tuple(self.graph.successors(self))
 
     @abc.abstractmethod
-    def to_json(self) -> Json: # type: ignore
+    def to_json(self) -> Json:
         """Converts the node to JSON."""
         raise NotImplementedError()
 
     @abc.abstractclassmethod
-    def from_jsonld(self) -> Json:
+    def from_jsonld(self) -> Json:  # type: ignore
         """Creates a node from JSON-LD."""
         raise NotImplementedError()
 
