@@ -7,7 +7,6 @@ from absl import logging
 import networkx as nx
 import pandas as pd
 
-from mlcroissant._src.core.types import Json
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
@@ -29,7 +28,7 @@ def execute_downloads(operations: Operations):
 
 def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
-    results: Json = {}
+    results: dict[Operation, Any] = {}
     # GroupRecordSetEnd linked to the `record_set`.
     group_record_set = next(
         (
@@ -58,7 +57,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                 # This could be multi-threaded to build the pd.DataFrame faster.
                 built_record_set = pd.DataFrame(list(built_record_set))
                 if not built_record_set.empty:
-                    results[operation] = built_record_set  # type: ignore
+                    results[operation] = built_record_set
                     # Propagate the result to all `ReadField` children.
                     for successor in operations.successors(operation):
                         results[successor] = built_record_set
@@ -68,7 +67,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
         elif isinstance(operation, GroupRecordSetEnd):
             if operation.node.name != record_set:
                 logging.info("Executing %s", operation)
-                results[operation] = operation(*previous_results)  # type: ignore
+                results[operation] = operation(*previous_results)
         elif not isinstance(operation, ReadField):
             logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)

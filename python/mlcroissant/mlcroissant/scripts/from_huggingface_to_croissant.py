@@ -18,6 +18,7 @@ from absl import flags
 from absl import logging
 import datasets
 from etils import epath
+from rdflib import term
 
 import mlcroissant as mlc
 
@@ -69,7 +70,7 @@ def _standardize_output(output: str | None) -> epath.Path:
         return epath.Path(output).expanduser()
 
 
-def _get_data_type(feature: datasets.Features) -> str:
+def _get_data_type(feature: datasets.Features) -> term.URIRef:
     """Gets Croissant data type from Hugging Face data type."""
     feature_type = feature.dtype
     if feature_type == "string":

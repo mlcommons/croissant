@@ -78,7 +78,7 @@ class RecordSet(Node):
         )
 
     @classmethod
-    def from_jsonld(  # type: ignore
+    def from_jsonld(
         cls,
         issues: Issues,
         context: Context,

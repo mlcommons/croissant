@@ -86,11 +86,11 @@ class Transform:
         )
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, jsonld: Json) -> list[Transform]:
+    def from_jsonld(cls, issues: Issues, jsonld: Json | list[Json]) -> list[Transform]:
         """Creates a list of `Transform` from JSON-LD."""
         transforms: list[Transform] = []
         if not isinstance(jsonld, list):
-            jsonld = [jsonld]  # type: ignore
+            jsonld = [jsonld]
         for transform in jsonld:
             keys = [
                 constants.ML_COMMONS_FORMAT,
@@ -115,6 +115,9 @@ class Transform:
                 continue
             transforms.append(Transform(**kwargs))
         return transforms
+
+
+NodeType = Literal["distribution", "field"] | None
 
 
 @dataclasses.dataclass(eq=False)
@@ -161,18 +164,18 @@ class Source:
     extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: list[Transform] = dataclasses.field(default_factory=list)
     uid: str | None = None
-    node_type: Literal["distribution", "field"] | None = None
+    node_type: NodeType = None
 
     def to_json(self) -> Json:
         """Converts the `Source` to JSON."""
         transforms = [transform.to_json() for transform in self.transforms]
-        if len(transforms) == 1:
-            transforms = transforms[0]  # type: ignore
+        if self.node_type is None:
+            raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values(
             {
-                self.node_type: self.uid,  # type: ignore
+                self.node_type: self.uid,
                 "extract": self.extract.to_json(),
-                "transform": transforms,
+                "transform": transforms[0] if len(transforms) == 1 else transforms,
             }
         )
 
@@ -209,7 +212,7 @@ class Source:
                 field = jsonld.get(constants.ML_COMMONS_FIELD)
                 if distribution is not None and field is None:
                     uid = distribution
-                    node_type = "distribution"
+                    node_type: NodeType = "distribution"
                 elif distribution is None and field is not None:
                     uid = field
                     node_type = "field"
@@ -243,7 +246,7 @@ class Source:
                     extract=extract,
                     transforms=transforms,
                     uid=uid,
-                    node_type=node_type,  # type: ignore
+                    node_type=node_type,
                 )
             except TypeError as exception:
                 issues.add_error(
@@ -271,8 +274,10 @@ class Source:
     def get_field(self) -> str | FileProperty:
         """Retrieves the name of the field/column/query associated to the source."""
         if self.uid is None:
-            # This case already rose an issue and should not happen at run time.
-            raise ""  # type: ignore
+            raise ValueError(
+                "No UID! This case already rose an issue and should not happen at run"
+                " time."
+            )
         if self.extract.column:
             return self.extract.column
         elif self.extract.file_property:

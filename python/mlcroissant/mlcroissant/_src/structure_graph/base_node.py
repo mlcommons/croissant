@@ -153,12 +153,13 @@ class Node(abc.ABC):
     @abc.abstractmethod
     def to_json(self) -> Json:
         """Converts the node to JSON."""
-        raise NotImplementedError()
+        ...
 
-    @abc.abstractclassmethod  # type: ignore
-    def from_jsonld(self) -> Json:  # type: ignore
+    @classmethod
+    @abc.abstractmethod
+    def from_jsonld(cls, *args, **kwargs) -> Any:
         """Creates a node from JSON-LD."""
-        raise NotImplementedError()
+        ...
 
     def validate_name(self):
         """Validates the name (which are used as unique identifiers in Croissant)."""

@@ -1,6 +1,7 @@
 """data_types module."""
 
 import pandas as pd
+from rdflib import term
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
@@ -18,16 +19,10 @@ def check_expected_type(issues: Issues, jsonld: Json, expected_type: str):
         )
 
 
-EXPECTED_DATA_TYPES: dict[str, type] = {
-    constants.ML_COMMONS_DATA_TYPE_BOUNDING_BOX: (  # type: ignore
-        constants.ML_COMMONS_DATA_TYPE_BOUNDING_BOX
-    ),
+EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
     constants.SCHEMA_ORG_DATA_TYPE_BOOL: bool,
     constants.SCHEMA_ORG_DATA_TYPE_DATE: pd.Timestamp,
     constants.SCHEMA_ORG_DATA_TYPE_FLOAT: float,
-    constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT: (  # type: ignore
-        constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT
-    ),
     constants.SCHEMA_ORG_DATA_TYPE_INTEGER: int,
     constants.SCHEMA_ORG_DATA_TYPE_TEXT: str,
     constants.SCHEMA_ORG_DATA_TYPE_URL: str,

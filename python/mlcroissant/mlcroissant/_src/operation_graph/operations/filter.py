@@ -19,17 +19,19 @@ class FilterFiles(Operation):
 
     node: FileSet
 
-    def __call__(self, *dirs: Path) -> list[Path]:
+    def __call__(self, *paths: Path) -> list[Path]:
         """See class' docstring."""
+        if self.node.includes is None:
+            raise ValueError("cannot filter files without `includes`.")
         includes = fnmatch.translate(self.node.includes)
         includes_re = re.compile(includes)
         included_files: list[Path] = []
-        for dir_ in dirs:
-            dir_ = os.fspath(dir_.filepath)
-            for basepath, _, files in os.walk(dir_):  # type: ignore
+        for path in paths:
+            path = os.fspath(path.filepath)
+            for basepath, _, files in os.walk(path):  # type: ignore  # https://github.com/python/mypy/issues/11880
                 for file in files:
                     filepath = epath.Path(basepath) / file
-                    fullpath = get_fullpath(filepath, epath.Path(dir_))
+                    fullpath = get_fullpath(filepath, epath.Path(path))
                     if includes_re.match(os.fspath(fullpath)):
                         included_files.append(
                             Path(
