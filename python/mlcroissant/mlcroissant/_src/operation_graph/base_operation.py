@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import abc
 import dataclasses
+from typing import Iterable
 
 import networkx as nx
 
@@ -14,14 +15,15 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 class Operations(nx.DiGraph):
     """Overwrites nx.DiGraph to keep track of last operations."""
 
-    def __init__(self, *args, **kwargs):
-        """Overloads __init__ with the initialization of `self.__last_operations__`."""
-        super().__init__(*args, **kwargs)
-        self.__last_operations__: dict[Node, Operation] = {}
+    def last_operations(self, node: Node, only_leaf=False) -> list[Operation]:
+        """Retrieves the last operations for a node in the graph of operations.
 
-    def last_operations(self, node: Node) -> list[Operation]:
-        """Retrieves the last operations for a node in the graph of operations."""
-        operations = [operation for operation in self.nodes if self.is_leaf(operation)]
+        Args:
+            node: The node of the operations.
+            only_leaf: Whether to only pick leaves operations (only_leaf=True) or to
+                visit upstream operations (only_leaf=False).
+        """
+        leaves = [operation for operation in self.nodes if self.is_leaf(operation)]
 
         def is_ancestor(node1: Node, node2: Node) -> bool:
             # node1 is predecessor of node2 iff node2 is in the descendants of node1.
@@ -31,20 +33,49 @@ class Operations(nx.DiGraph):
                 return any(is_ancestor(field1, node2) for field1 in node1.fields)
             return node1 in ancestors
 
-        return [
-            operation for operation in operations if is_ancestor(operation.node, node)
-        ]
+        entry = self.entry_operations()[0]
+        operations: set[Operation] = set()
+        for leaf in leaves:
+            if is_ancestor(leaf.node, node):
+                operations.add(leaf)
+            elif not only_leaf:
+                # We explore upstream operations until we find the first operation that
+                # matches the node.
+                try:
+                    for operation in reversed(
+                        list(nx.shortest_path(self, entry, leaf))
+                    ):
+                        if is_ancestor(operation.node, node):
+                            operations.add(operation)
+                            break
+                except nx.exception.NetworkXNoPath:
+                    continue
+        return list(operations)
 
     def add_node(self, operation: Operation) -> None:
         """Overloads nx.add_node to keep track of the last operations."""
         super().add_node(operation)
-        self.__last_operations__[operation.node] = operation
-        for successor in operation.node.successors:
-            self.__last_operations__[successor] = operation
+
+    def add_edge(self, operation1: Operation, operation2: Operation) -> None:
+        """Overloads nx.add_node to keep track of the last operations."""
+        super().add_edge(operation1, operation2)
+
+    @property
+    def nodes(self) -> Iterable[Operation]:
+        """Overloads nx.nodes to return an interator of operations."""
+        return super().nodes()
 
     def is_leaf(self, operation: Operation | None) -> bool:
         """Tests whether an operation is a leaf in the graph."""
         return self.out_degree(operation) == 0
+
+    def entry_operations(self) -> list[Operation]:
+        """Lists all operations without a parent in the graph of operations."""
+        return [
+            operation
+            for operation, indegree in self.in_degree(self.nodes)
+            if indegree == 0 and isinstance(operation, Operation)
+        ]
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
