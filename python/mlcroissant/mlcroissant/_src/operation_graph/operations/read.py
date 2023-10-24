@@ -75,21 +75,28 @@ class Read(Operation):
         file_contents = []
         for file in files:
             # The FileObject is extracted from another FileObject/FileSet:
-            if isinstance(self.node, FileObject) and self.node.contained_in:
+            if (
+                isinstance(self.node, FileObject)
+                and self.node.content_url
+                and self.node.contained_in
+            ):
                 content_url = self.node.content_url
                 file = Path(
                     filepath=file.filepath / content_url,
                     fullpath=file.fullpath / content_url,
                 )
             # The FileObject comes from disk:
-            elif isinstance(self.node, FileObject) and not is_url(
-                self.node.content_url
+            elif (
+                isinstance(self.node, FileObject)
+                and self.node.content_url
+                and not is_url(self.node.content_url)
             ):
                 # Read from the local path
                 assert file.filepath.exists(), (
                     f'In node "{self.node.uid}", file "{self.node.content_url}" is'
                     " either an invalid URL or an invalid path."
                 )
+            assert self.node.encoding_format, "Encoding format is not specified."
             file_content = self._read_file_content(self.node.encoding_format, file)
             file_content[FileProperty.filepath] = file.filepath
             file_content[FileProperty.filename] = file.filename

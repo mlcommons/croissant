@@ -11,15 +11,19 @@ from mlcroissant._src.core.git import is_git_lfs_file
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 
-_GIT_LFS_CONTENT = lambda: """version https://git-lfs.github.com/spec/v1
+_GIT_LFS_CONTENT = (
+    lambda: """version https://git-lfs.github.com/spec/v1
 oid sha256:5e2785fcd9098567a49d6e62e328923d955b307b6dcd0492f6234e96e670772a
 size 309207547
 """
+)
 
-_NON_GIT_LFS_CONTENT = lambda: """name,age
+_NON_GIT_LFS_CONTENT = (
+    lambda: """name,age
 a,1
 b,2
 c,3"""
+)
 
 _NON_ASCII_CONTENT = lambda: (255).to_bytes(1, byteorder="big")
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Any
 
 from etils import epath
 
@@ -22,8 +23,8 @@ class FileSet(Node):
 
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
-    encoding_format: str = ""
-    includes: str = ""
+    encoding_format: Any | str = ""
+    includes: Any | str = ""
     name: str = ""
 
     def __post_init__(self):
@@ -36,7 +37,7 @@ class FileSet(Node):
         if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
             contained_in = self.contained_in[0]
         else:
-            contained_in = self.contained_in
+            contained_in = self.contained_in  # type: ignore
         return remove_empty_values(
             {
                 "@type": "sc:FileSet",
@@ -49,7 +50,7 @@ class FileSet(Node):
         )
 
     @classmethod
-    def from_jsonld(
+    def from_jsonld(  # type: ignore
         cls,
         issues: Issues,
         context: Context,

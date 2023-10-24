@@ -54,7 +54,7 @@ class Field(Node):
 
     description: str | None = None
     # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
-    data_types: str | list[str] | list[term.URIRef] = dataclasses.field(
+    data_types: str | list[str] | list[term.URIRef] = dataclasses.field(  # type: ignore
         default_factory=list
     )
     is_enumeration: bool | None = None
@@ -117,7 +117,7 @@ class Field(Node):
         """Converts the `Field` to JSON."""
         data_type = [self.rdf.shorten_value(data_type) for data_type in self.data_types]
         if len(data_type) == 1:
-            data_type = data_type[0]
+            data_type = data_type[0]  # type: ignore
         parent_field = self.parent_field.to_json() if self.parent_field else None
         return remove_empty_values(
             {
@@ -135,7 +135,7 @@ class Field(Node):
         )
 
     @classmethod
-    def from_jsonld(
+    def from_jsonld(  # type: ignore
         cls,
         issues: Issues,
         context: Context,

@@ -44,6 +44,7 @@ class Extract(Operation):
     def __call__(self, archive_file: Path) -> Path:
         """See class' docstring."""
         url = self.node.content_url
+        assert url, "Content of URL for this node is None"
         hashed_url = get_hash(url)
         extract_dir = EXTRACT_PATH / hashed_url
         if not extract_dir.exists():

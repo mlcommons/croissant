@@ -14,8 +14,11 @@ pytest:
 pytype:
 	pytype --jobs="$$(grep -c ^processor /proc/cpuinfo)" --config=./pyproject.toml
 
+mypy:
+	mypy --config=./pyproject.toml mlcroissant/ --show-error-codes --allow-redefinition
+
 # Launch all tests as launched on GitHub actions.
-# - Check types (pytype).
+# - Check types (pytype, mypy).
 # - Check tests (pytest).
 # - Check linters (pylint, pyflakes, flake8).
-tests: pytype pytest pylint pyflakes flake8
+tests: pytype mypy pytest pylint pyflakes flake8

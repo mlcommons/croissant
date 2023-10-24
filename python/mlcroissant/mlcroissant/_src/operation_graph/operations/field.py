@@ -44,7 +44,7 @@ class ReadField(Operation):
             )
             return pd.to_datetime(value, format=format)
         try:
-            return data_type(value)
+            return data_type(value)  # type: ignore
         except ValueError as exception:
             raise ValueError(
                 f'Expected type "{data_type}" for node "{self.node.uid}", but'

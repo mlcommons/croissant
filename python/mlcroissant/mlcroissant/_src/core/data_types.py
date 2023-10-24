@@ -19,13 +19,13 @@ def check_expected_type(issues: Issues, jsonld: Json, expected_type: str):
 
 
 EXPECTED_DATA_TYPES: dict[str, type] = {
-    constants.ML_COMMONS_DATA_TYPE_BOUNDING_BOX: (
+    constants.ML_COMMONS_DATA_TYPE_BOUNDING_BOX: (  # type: ignore
         constants.ML_COMMONS_DATA_TYPE_BOUNDING_BOX
     ),
     constants.SCHEMA_ORG_DATA_TYPE_BOOL: bool,
     constants.SCHEMA_ORG_DATA_TYPE_DATE: pd.Timestamp,
     constants.SCHEMA_ORG_DATA_TYPE_FLOAT: float,
-    constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT: (
+    constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT: (  # type: ignore
         constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT
     ),
     constants.SCHEMA_ORG_DATA_TYPE_INTEGER: int,

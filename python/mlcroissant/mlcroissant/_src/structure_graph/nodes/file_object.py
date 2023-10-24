@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Any
 
 from etils import epath
 
@@ -21,7 +22,7 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    content_url: str | None = None
+    content_url: str | Any | None = None
     content_size: str | None = None
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
@@ -43,7 +44,7 @@ class FileObject(Node):
         if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
             contained_in = self.contained_in[0]
         else:
-            contained_in = self.contained_in
+            contained_in = self.contained_in  # type: ignore
         return remove_empty_values(
             {
                 "@type": "sc:FileObject",
@@ -60,7 +61,7 @@ class FileObject(Node):
         )
 
     @classmethod
-    def from_jsonld(
+    def from_jsonld(  # type: ignore
         cls,
         issues: Issues,
         context: Context,

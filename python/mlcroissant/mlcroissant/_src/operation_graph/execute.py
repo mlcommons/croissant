@@ -58,7 +58,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                 # This could be multi-threaded to build the pd.DataFrame faster.
                 built_record_set = pd.DataFrame(list(built_record_set))
                 if not built_record_set.empty:
-                    results[operation] = built_record_set
+                    results[operation] = built_record_set  # type: ignore
                     # Propagate the result to all `ReadField` children.
                     for successor in operations.successors(operation):
                         results[successor] = built_record_set
@@ -68,7 +68,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
         elif isinstance(operation, GroupRecordSetEnd):
             if operation.node.name != record_set:
                 logging.info("Executing %s", operation)
-                results[operation] = operation(*previous_results)
+                results[operation] = operation(*previous_results)  # type: ignore
         elif not isinstance(operation, ReadField):
             logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)

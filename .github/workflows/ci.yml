@@ -37,7 +37,7 @@ jobs:
 
     - name: PyLint
       run: make pylint
-
+    
     # Pyflakes can see unused imports
     - name: PyFlakes
       run: make pyflakes
@@ -119,6 +119,7 @@ jobs:
           etils[epath] \
           GitPython \
           jsonpath_rw \
+          mypy \
           networkx \
           pandas \
           pyarrow \
@@ -130,6 +131,44 @@ jobs:
 
     - name: PyType
       run: make pytype
+  
+  mypy-test:
+    name: MyPy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies except mlcroissant itself
+      run: >
+          pip install absl-py \
+            datasets \
+            etils[epath] \
+            GitPython \
+            jsonpath_rw \
+            mypy \
+            networkx \
+            pandas \
+            pyarrow \
+            pytest \
+            pytype \
+            rdflib \
+            requests \
+            tqdm
+    
+    - name: Install library stubs for mypy checks.
+      run: python3 -m pip install types-requests types-tqdm
+
+    - name: MyPy
+      run: make mypy
+
 
   validation-test:
     name: Validation / JSON-LD Tests / Python 3.11

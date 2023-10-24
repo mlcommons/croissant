@@ -81,25 +81,29 @@ def _add_operations_for_file_object(
         operation = operations.last_operations(node)
     else:
         # Download the file
-        operation = Download(operations=operations, node=node)
+        operation = Download(operations=operations, node=node)  # type: ignore
     first_operation = operation
     for successor in node.successors:
         # Reset `operation` to be the very first operation at each loop.
         operation = first_operation
         # Extract the file if needed
         if (
-            should_extract(node.encoding_format)
+            node.encoding_format
+            and should_extract(node.encoding_format)
             and isinstance(successor, (FileObject, FileSet))
+            and successor.encoding_format
             and not should_extract(successor.encoding_format)
         ):
-            operation = operation >> Extract(operations=operations, node=node)
+            operation = operation >> Extract(
+                operations=operations, node=node  # type: ignore
+            )
         if isinstance(successor, FileSet):
             operation = (
-                operation
+                operation  # type: ignore
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
             )
-        if not should_extract(node.encoding_format):
+        if node.encoding_format and not should_extract(node.encoding_format):
             fields = tuple(
                 [field for field in node.successors if isinstance(field, Field)]
             )
@@ -127,7 +131,7 @@ def _add_operations_for_git(
                     operations=operations,
                     node=successor,
                     folder=folder,
-                    fields=node.successors,
+                    fields=node.successors,  # type: ignore
                 )
             )
 

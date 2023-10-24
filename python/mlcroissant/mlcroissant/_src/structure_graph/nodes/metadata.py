@@ -138,12 +138,14 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON."""
         if isinstance(json_, str):
             json_ = json.loads(json_)
-        rdf = Rdf.from_json(json_)
-        metadata = expand_jsonld(json_)
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
+        rdf = Rdf.from_json(json_)  # type: ignore
+        metadata = expand_jsonld(json_)  # type: ignore
+        return cls.from_jsonld(  # type: ignore
+            issues=issues, folder=folder, metadata=metadata, rdf=rdf
+        )
 
     @classmethod
-    def from_jsonld(
+    def from_jsonld(  # type: ignore
         cls,
         issues: Issues,
         folder: epath.Path | None,
@@ -164,11 +166,15 @@ class Metadata(Node):
             distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)
+                    FileObject.from_jsonld(  # type: ignore
+                        issues, context, folder, rdf, set_or_object
+                    )
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(
-                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)
+                    FileSet.from_jsonld(  # type: ignore
+                        issues, context, folder, rdf, set_or_object
+                    )
                 )
             else:
                 issues.add_error(
@@ -179,7 +185,9 @@ class Metadata(Node):
                 )
         record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
+            RecordSet.from_jsonld(
+                issues, context, folder, rdf, record_set  # type: ignore
+            )
             for record_set in record_sets
         ]
         return cls(
@@ -192,6 +200,6 @@ class Metadata(Node):
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             record_sets=record_sets,
-            url=metadata.get(constants.SCHEMA_ORG_URL),
+            url=metadata.get(constants.SCHEMA_ORG_URL),  # type: ignore
             rdf=rdf,
         )
