@@ -88,7 +88,7 @@ class Transform:
     @classmethod
     def from_jsonld(cls, issues: Issues, jsonld: Json) -> list[Transform]:
         """Creates a list of `Transform` from JSON-LD."""
-        transforms = []
+        transforms: list[Transform] = []
         if not isinstance(jsonld, list):
             jsonld = [jsonld]  # type: ignore
         for transform in jsonld:
