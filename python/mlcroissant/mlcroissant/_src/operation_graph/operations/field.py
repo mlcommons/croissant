@@ -43,8 +43,10 @@ class ReadField(Operation):
                 None,
             )
             return pd.to_datetime(value, format=format)
+        elif not isinstance(data_type, type):
+            raise ValueError(f"No special case for type {type(data_type)}.")
         try:
-            return data_type(value)  # type: ignore
+            return data_type(value)
         except ValueError as exception:
             raise ValueError(
                 f'Expected type "{data_type}" for node "{self.node.uid}", but'

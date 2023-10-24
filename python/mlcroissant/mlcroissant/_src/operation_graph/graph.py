@@ -81,7 +81,7 @@ def _add_operations_for_file_object(
         operation = operations.last_operations(node)
     else:
         # Download the file
-        operation = Download(operations=operations, node=node)  # type: ignore
+        operation = [Download(operations=operations, node=node)]
     first_operation = operation
     for successor in node.successors:
         # Reset `operation` to be the very first operation at each loop.
@@ -94,15 +94,13 @@ def _add_operations_for_file_object(
             and successor.encoding_format
             and not should_extract(successor.encoding_format)
         ):
-            operation = operation >> Extract(
-                operations=operations, node=node  # type: ignore
-            )
+            operation = [operation >> Extract(operations=operations, node=node)]
         if isinstance(successor, FileSet):
-            operation = (
-                operation  # type: ignore
+            operation = [
+                operation
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
-            )
+            ]
         if node.encoding_format and not should_extract(node.encoding_format):
             fields = tuple(
                 [field for field in node.successors if isinstance(field, Field)]
@@ -124,6 +122,9 @@ def _add_operations_for_git(
     operation = Download(operations=operations, node=node)
     for successor in node.successors:
         if isinstance(successor, FileSet):
+            fields = tuple(
+                field for field in node.successors if isinstance(field, Field)
+            )
             (
                 operation
                 >> FilterFiles(operations=operations, node=successor)
@@ -131,7 +132,7 @@ def _add_operations_for_git(
                     operations=operations,
                     node=successor,
                     folder=folder,
-                    fields=node.successors,  # type: ignore
+                    fields=fields,
                 )
             )
 
