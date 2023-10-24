@@ -155,7 +155,7 @@ class Node(abc.ABC):
         """Converts the node to JSON."""
         raise NotImplementedError()
 
-    @abc.abstractclassmethod
+    @abc.abstractclassmethod  # type: ignore
     def from_jsonld(self) -> Json:  # type: ignore
         """Creates a node from JSON-LD."""
         raise NotImplementedError()
