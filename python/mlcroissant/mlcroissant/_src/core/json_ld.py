@@ -156,8 +156,8 @@ def expand_jsonld(data: Json) -> Json:
     """
     context = get_context(data)
     graph = rdflib.Graph()
-    graph.parse( # type: ignore
-        data=data,
+    graph.parse(
+        data=data,  # type: ignore
         format="json-ld",
     )
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.
