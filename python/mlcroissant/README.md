@@ -34,7 +34,7 @@ The command:
 Similarly, you can generate a dataset by launching:
 
 ```bash
-python scripts/load.py \
+python mlcroissant/scripts/load.py \
     --file ../../datasets/titanic/metadata.json \
     --record_set passengers \
     --num_records 10

@@ -48,8 +48,8 @@ def test_static_analysis(folder):
 
 def load_records_and_test_equality(dataset_name, record_set_name, num_records):
     print(
-        "If this test fails, update JSONL with: `python scripts/load.py --file"
-        f" ../../datasets/{dataset_name} --record_set"
+        "If this test fails, update JSONL with: `python mlcroissant/scripts/load.py"
+        f" --file ../../datasets/{dataset_name} --record_set"
         f" {record_set_name} --update_output --num_records {num_records} --debug`"
     )
     config = (
@@ -77,7 +77,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
 # IF (NON)-HERMETIC TESTS FAIL, OR A NEW DATASET IS ADDED:
 # You can regenerate .pkl files by launching
 # ```bash
-# python scripts/load.py \
+# python mlcroissant/scripts/load.py \
 #   --file ../../datasets/{{dataset_name}}/metadata.json \
 #   --record_set {{record_set_name}} \
 #   --update_output \
