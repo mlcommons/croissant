@@ -8,7 +8,7 @@ import mlcroissant as mlc
 
 
 def render_jsonld():
-    if not st.session_state[Metadata] or not st.session_state[Files]:
+    if not st.session_state[Metadata]:
         return st.code({}, language="json")
     try:
         distribution = []
