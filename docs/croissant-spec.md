@@ -130,10 +130,9 @@ instead.
 
 *   [distribution](#fileset): The name of the referenced FileSet or FileObject source.
 *   [recordSet](#recordset): The name of the referenced RecordSet source.
-*   [dataExtraction](#dataextraction): The extraction method from the provided
-    source.
-*   [applyTransform](#applytransform): A transformation to apply on source data
-    on top of the extracted method as specified through `dataExtraction`, e.g., a
+*   [extract](#extract): The extraction method from the provided source.
+*   [transform](#transform): A transformation to apply on source data
+    on top of the extracted method as specified through `extract`, e.g., a
     regular expression or json query.
 
 For example, to extract information from a filename with respect to a regular
@@ -141,17 +140,17 @@ expression, write:
 
 ```json
 {
-  "applyTransform": {
-    "regex": "^(train|val|test)2014/.*\\.jpg$"
-  },
-  "dataExtraction": {
+  "distribution": "files",
+  "extract": {
     "fileProperty": "filename"
   },
-  "distribution": "files"
+  "transform": {
+    "regex": "^(train|val|test)2014/.*\\.jpg$"
+  }
 }
 ```
 
-### dataExtraction
+### extract
 
 The extraction method from the provided source. It can the name of a Field, or
 the property of a file (e.g., its name), etc.
@@ -161,7 +160,7 @@ the property of a file (e.g., its name), etc.
 **Properties**:
 
 *   [fileProperty](#fileproperty): The information to extract from the file.
-*   [csvColumn](#csvcolumn): The column of the source CSV.
+*   [column](#column): The column of the source CSV or dataframe.
 *   [jsonPath](#jsonpath): The JSON path if the source is a JSON.
 
 ### fileProperty
@@ -177,7 +176,7 @@ The information to extract from the file. It can be: `filename`, `fullpath`,
 
 **range**:	[sc:Text](https://schema.org/Text)
 
-### csvcolumn
+### column
 
 The column of the source CSV (e.g., `date`).
 
@@ -424,7 +423,7 @@ list, and each object within that list must define the RecordSet fields.
 **domain**: [RecordSet](#recordset)
 
 
-### applyTransform
+### transform
 
 A transformation to apply on source data. We aim to support a few simple
 transformations:
