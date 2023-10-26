@@ -6,6 +6,7 @@ import json
 from etils import epath
 import pandas as pd
 
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
 from mlcroissant._src.core.path import Path
@@ -32,11 +33,11 @@ class Read(Operation):
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file)
         with filepath.open("rb") as file:
-            if encoding_format == "text/csv":
+            if encoding_format == EncodingFormat.CSV:
                 return pd.read_csv(file)
-            elif encoding_format == "text/tsv":
+            elif encoding_format == EncodingFormat.TSV:
                 return pd.read_csv(file, sep="\t")
-            elif encoding_format == "application/json":
+            elif encoding_format == EncodingFormat.JSON:
                 json_content = json.load(file)
                 fields = list(self.fields)
                 has_parse_json = any(field.source.extract.json_path for field in fields)
@@ -48,9 +49,9 @@ class Read(Operation):
                         FileProperty.content: [json_content],
                     }
                 )
-            elif encoding_format == "application/jsonlines":
+            elif encoding_format == EncodingFormat.JSON_LINES:
                 return pd.read_json(file, lines=True)
-            elif encoding_format == "application/x-parquet":
+            elif encoding_format == EncodingFormat.PARQUET:
                 try:
                     return pd.read_parquet(file)
                 except ImportError as e:
@@ -59,7 +60,7 @@ class Read(Operation):
                         " installed. Please, install `pip install"
                         " mlcroissant[parquet]`."
                     ) from e
-            elif encoding_format == "text/plain":
+            elif encoding_format == EncodingFormat.TEXT:
                 return pd.DataFrame(
                     {
                         FileProperty.content: [file.read()],

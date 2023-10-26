@@ -8,6 +8,7 @@ from etils import epath
 from rdflib import term
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.issues import Context
@@ -100,8 +101,8 @@ class Field(Node):
                     return EXPECTED_DATA_TYPES[term.URIRef(data_type)]
                 # data_type is an ML semantic type:
                 elif data_type in [
-                    constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT,
-                    constants.ML_COMMONS_DATA_TYPE_BOUNDING_BOX,
+                    DataType.IMAGE_OBJECT,
+                    DataType.BOUNDING_BOX,
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on a predecessor:

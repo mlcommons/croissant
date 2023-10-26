@@ -8,7 +8,7 @@ from etils import epath
 import pandas as pd
 from rdflib import term
 
-from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -20,7 +20,7 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
     """Casts the value `value` to the desired target data type `data_type`."""
     if pd.isna(value):
         return value
-    elif data_type == constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
+    elif data_type == DataType.IMAGE_OBJECT:
         if isinstance(value, deps.PIL_Image.Image):
             return value
         elif isinstance(value, bytes):
