@@ -77,7 +77,7 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     return graph
 
 
-def get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
+def _get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
     """Retrieves the entry nodes (without predecessors) in a graph."""
     entry_nodes: list[Node] = []
     for node, indegree in graph.in_degree(graph.nodes()):
@@ -120,7 +120,7 @@ def _check_no_duplicate(metadata) -> dict[str, Node]:
 def _add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
     """Add `node` as the entry node of the graph by updating `graph` in place."""
     graph.add_node(node, parent=None)
-    entry_nodes = get_entry_nodes(graph)
+    entry_nodes = _get_entry_nodes(graph)
     for entry_node in entry_nodes:
         if isinstance(node, (FileObject, FileSet)):
             graph.add_edge(entry_node, node)

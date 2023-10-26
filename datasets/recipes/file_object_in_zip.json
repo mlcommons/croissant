@@ -46,24 +46,23 @@
     },
     {
       "@type": "sc:FileObject",
-      "name": "other_csv_in_zip",
-      "description": "Do not remove! This is used in hermetic integration tests. There used to be a problem where several FileObjects could not be read from the same FileObject.",
+      "name": "csv2_in_zip",
       "containedIn": "zip_with_csv",
-      "contentUrl": "csv_in_zip.csv",
+      "contentUrl": "csv2_in_zip.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
-      "name": "csv_in_zip",
+      "name": "csv1_in_zip",
       "containedIn": "zip_with_csv",
-      "contentUrl": "csv_in_zip.csv",
+      "contentUrl": "csv1_in_zip.csv",
       "encodingFormat": "text/csv"
     }
   ],
   "recordSet": [
     {
       "@type": "ml:RecordSet",
-      "name": "csv",
+      "name": "csv1",
       "description": "Records extracted from the CSV in the ZIP.",
       "field": [
         {
@@ -71,9 +70,27 @@
           "name": "property1",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "csv_in_zip",
+            "distribution": "csv1_in_zip",
             "extract": {
               "column": "property1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "csv2",
+      "description": "Records extracted from the CSV in the ZIP.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "property2",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "csv2_in_zip",
+            "extract": {
+              "column": "property2"
             }
           }
         }

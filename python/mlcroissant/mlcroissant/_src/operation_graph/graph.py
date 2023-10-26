@@ -22,7 +22,6 @@ from mlcroissant._src.operation_graph.operations import Read
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.extract import should_extract
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.graph import get_entry_nodes
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
@@ -54,7 +53,7 @@ def _add_operations_for_field_with_source(
     """
     record_set = _find_record_set(node)
     (
-        operations.last_operations(node)
+        operations.last_operations(node, only_leaf=True)
         >> Join(operations=operations, node=record_set)
         >> GroupRecordSetStart(operations=operations, node=record_set)
         >> ReadField(operations=operations, node=node)
@@ -78,7 +77,7 @@ def _add_operations_for_file_object(
     """
     if node.contained_in:
         # Chain the operation from the predecessor
-        operation = operations.last_operations(node)
+        operation = operations.last_operations(node, only_leaf=False)
     else:
         # Download the file
         operation = [Download(operations=operations, node=node)]
@@ -88,10 +87,8 @@ def _add_operations_for_file_object(
         operation = first_operation
         # Extract the file if needed
         if (
-            node.encoding_format
-            and should_extract(node.encoding_format)
+            should_extract(node.encoding_format)
             and isinstance(successor, (FileObject, FileSet))
-            and successor.encoding_format
             and not should_extract(successor.encoding_format)
         ):
             operation = [operation >> Extract(operations=operations, node=node)]
@@ -206,7 +203,7 @@ class OperationGraph:
                     _add_operations_for_local_file_sets(operations, node, folder)
 
         # Attach all entry nodes to a single `start` node
-        entry_operations = get_entry_nodes(operations)
+        entry_operations = operations.entry_operations()
         init_operation = InitOperation(operations=operations, node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
