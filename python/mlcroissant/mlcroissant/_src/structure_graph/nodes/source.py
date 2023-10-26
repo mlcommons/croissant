@@ -10,6 +10,7 @@ from typing import Any, Literal
 
 import jsonpath_rw
 from jsonpath_rw import lexer
+import pandas as pd
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
@@ -313,6 +314,8 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
     elif transform.json_path is not None:
         jsonpath_expression = jsonpath_rw.parse(transform.json_path)
         return next(match.value for match in jsonpath_expression.find(value))
+    elif transform.format is not None:
+        return pd.Timestamp(value).strftime(transform.format)
     return value
 
 
