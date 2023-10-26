@@ -2,6 +2,7 @@
 # Ignoring E203: This rule is in conflict when writing slices (`arr[i + 1 :]`).
 # Ignoring E501: This rule is better checked by pylint with regular expressions.
 # Ignoring W503: This rule goes against the PEP 8 recommended style.
+
 flake8:
 	flake8 . --ignore=E203,E501,W503
 
@@ -15,7 +16,9 @@ pytest:
 	pytest .
 
 pytype:
-	pytype --jobs="$$(grep -c ^processor /proc/cpuinfo)" \
+	pytype \
+		--jobs="$$(if [ -f /proc/cpuinfo ]; then grep -c ^processor /proc/cpuinfo; \
+		else sysctl -a machdep.cpu.thread_count | sed -e 's/.*: //'; fi)" \
 		--config=./pyproject.toml
 
 mypy:
