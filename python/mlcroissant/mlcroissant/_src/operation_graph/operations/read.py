@@ -34,6 +34,8 @@ class Read(Operation):
         with filepath.open("rb") as file:
             if encoding_format == "text/csv":
                 return pd.read_csv(file)
+            elif encoding_format == "text/tsv":
+                return pd.read_csv(file, sep="\t")
             elif encoding_format == "application/json":
                 json_content = json.load(file)
                 fields = list(self.fields)
