@@ -166,13 +166,14 @@ the property of a file (e.g., its name), etc.
 ### fileProperty
 
 The information to extract from the file. It can be: `filename`, `fullpath`,
-`content`.
+`content` or `lines`.
 
 *   `fullpath`: The full path to the file within the Croissant extraction
     or download folders. Example: `data/train/metadata.csv`.
 *   `filename`: The name of the file. In `data/train/metadata.csv`, the file
     name is `metadata.csv`.
 *   `content`: The byte content of the file.
+*   `lines`: The byte content of each line in the file.
 
 **range**:	[sc:Text](https://schema.org/Text)
 
