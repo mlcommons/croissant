@@ -1,5 +1,6 @@
 """source_test module."""
 
+import pandas as pd
 import pytest
 
 from mlcroissant._src.core import constants
@@ -204,6 +205,16 @@ def test_declaring_wrong_file_property():
             {"one": {"two": "expected_value"}, "three": "non_expected_value"},
             Source(transforms=[Transform(json_path="one.two")]),
             "expected_value",
+        ],
+        [
+            pd.Timestamp("2024-12-10 12:00:00"),
+            Source(transforms=[Transform(format="%Y-%m-%d")]),
+            "2024-12-10",
+        ],
+        [
+            "2024-12-10 12:00:00",
+            Source(transforms=[Transform(format="%Y-%m-%d")]),
+            "2024-12-10",
         ],
     ],
 )

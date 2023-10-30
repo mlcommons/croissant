@@ -24,6 +24,6 @@ EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
     constants.SCHEMA_ORG_DATA_TYPE_DATE: pd.Timestamp,
     constants.SCHEMA_ORG_DATA_TYPE_FLOAT: float,
     constants.SCHEMA_ORG_DATA_TYPE_INTEGER: int,
-    constants.SCHEMA_ORG_DATA_TYPE_TEXT: str,
-    constants.SCHEMA_ORG_DATA_TYPE_URL: str,
+    constants.SCHEMA_ORG_DATA_TYPE_TEXT: bytes,
+    constants.SCHEMA_ORG_DATA_TYPE_URL: bytes,
 }
