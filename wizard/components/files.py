@@ -4,10 +4,10 @@ from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 import pandas as pd
-from st_state import Files
-from st_state import RecordSets
-from st_views.st_utils import DF_HEIGHT
-from st_views.st_utils import needed_field
+from state import Files
+from state import RecordSets
+from utils import DF_HEIGHT
+from utils import needed_field
 import streamlit as st
 
 

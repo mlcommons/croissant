@@ -1,5 +1,5 @@
-from st_state import RecordSets
-from st_views.st_utils import DF_HEIGHT
+from state import RecordSets
+from utils import DF_HEIGHT
 import streamlit as st
 
 DATA_TYPES = [
