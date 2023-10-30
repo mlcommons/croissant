@@ -12,6 +12,7 @@ import requests
 import tqdm
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
@@ -183,7 +184,7 @@ class Download(Operation):
         del args  # unused
         filepath = get_download_filepath(self.node)
         if not filepath.exists():
-            if self.node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
+            if self.node.encoding_format == EncodingFormat.GIT:
                 self._download_from_git(filepath)
             else:
                 self._download_from_http(filepath)

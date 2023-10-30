@@ -74,15 +74,15 @@ def _get_data_type(feature: datasets.Features) -> term.URIRef:
     """Gets Croissant data type from Hugging Face data type."""
     feature_type = feature.dtype
     if feature_type == "string":
-        return mlc.constants.SCHEMA_ORG_DATA_TYPE_TEXT
+        return mlc.DataType.TEXT
     elif feature_type == "bool":
-        return mlc.constants.SCHEMA_ORG_DATA_TYPE_BOOL
+        return mlc.DataType.BOOL
     elif feature_type == "float":
-        return mlc.constants.SCHEMA_ORG_DATA_TYPE_FLOAT
+        return mlc.DataType.FLOAT
     elif feature_type in ["int32", "int64"]:
-        return mlc.constants.SCHEMA_ORG_DATA_TYPE_INTEGER
+        return mlc.DataType.INTEGER
     elif feature_type == "PIL.Image.Image":
-        return mlc.constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT
+        return mlc.DataType.IMAGE_OBJECT
     else:
         raise ValueError(f"Cannot convert the feature {feature} to Croissant.")
 
@@ -97,7 +97,7 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
         except ValueError as exception:
             logging.error(exception)
             continue
-        if data_type == mlc.constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
+        if data_type == mlc.DataType.IMAGE_OBJECT:
             transforms = [
                 mlc.nodes.Transform(json_path="bytes"),
             ]
@@ -144,7 +144,7 @@ def convert(dataset: str) -> dict[str, Any]:
             name=_REPO,
             description="The Hugging Face git repository.",
             content_url=dataset_url + "/tree/refs%2Fconvert%2Fparquet",
-            encoding_format="git+https",
+            encoding_format=mlc.EncodingFormat.GIT,
             sha256="https://github.com/mlcommons/croissant/issues/80",
         )
     ]
@@ -156,7 +156,7 @@ def convert(dataset: str) -> dict[str, Any]:
                 " https://huggingface.co/docs/datasets-server/parquet)."
             ),
             contained_in=[_REPO],
-            encoding_format="application/x-parquet",
+            encoding_format=mlc.EncodingFormat.PARQUET,
             # Without config (mnist), the file structure is: mnist/train/000.parquet
             # With config (c4), the file structure is: en/train/000.parquet
             includes="*/*/*.parquet",

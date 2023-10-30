@@ -4,7 +4,7 @@ from unittest import mock
 
 from rdflib import term
 
-from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.tests.nodes import create_test_field
@@ -27,14 +27,12 @@ def test_checks_are_performed():
 
 def test_data_type():
     # data_types can be a string:
-    assert create_test_field(
-        data_types=constants.SCHEMA_ORG_DATA_TYPE_BOOL
-    ).data_types == [constants.SCHEMA_ORG_DATA_TYPE_BOOL]
+    assert create_test_field(data_types=DataType.BOOL).data_types == [DataType.BOOL]
     # ...or a list of strings:
     assert create_test_field(
-        data_types=[constants.SCHEMA_ORG_DATA_TYPE_BOOL, "http://some-semantic-type"]
+        data_types=[DataType.BOOL, "http://some-semantic-type"]
     ).data_types == [
-        constants.SCHEMA_ORG_DATA_TYPE_BOOL,
+        DataType.BOOL,
         term.URIRef("http://some-semantic-type"),
     ]
 
@@ -42,7 +40,7 @@ def test_data_type():
     assert (
         create_test_field(
             data_types=[
-                constants.SCHEMA_ORG_DATA_TYPE_BOOL,
+                DataType.BOOL,
                 "http://some-semantic-type",
             ]
         ).data_type

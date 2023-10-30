@@ -8,6 +8,7 @@ import zipfile
 
 from etils import epath
 
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.constants import EXTRACT_PATH
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
@@ -19,7 +20,7 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 def should_extract(encoding_format: str | None) -> bool:
     """Whether the encoding format should be extracted (zip or tar)."""
     return (
-        encoding_format == "application/x-tar" or encoding_format == "application/zip"
+        encoding_format == EncodingFormat.TAR or encoding_format == EncodingFormat.ZIP
     )
 
 

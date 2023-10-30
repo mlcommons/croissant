@@ -5,7 +5,7 @@ import dataclasses
 from etils import epath
 import networkx as nx
 
-from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import Concatenate
@@ -194,7 +194,7 @@ class OperationGraph:
             elif isinstance(node, RecordSet) and node.data:
                 Data(operations=operations, node=node)
             elif isinstance(node, FileObject):
-                if node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
+                if node.encoding_format == EncodingFormat.GIT:
                     _add_operations_for_git(operations, node, folder)
                 else:
                     _add_operations_for_file_object(operations, node, folder)

@@ -7,7 +7,7 @@ import pandas as pd
 from PIL import Image
 import pytest
 
-from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.operation_graph.operations import field
 from mlcroissant._src.tests.nodes import empty_field
 from mlcroissant._src.tests.operations import operations
@@ -50,8 +50,6 @@ def test_cast_value_nan(value, data_type):
 
 @mock.patch.object(Image, "open", return_value="opened_image")
 def test_cast_value_image(open_mock):
-    expected = field._cast_value(
-        b"PNG...Some image...", constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT
-    )
+    expected = field._cast_value(b"PNG...Some image...", DataType.IMAGE_OBJECT)
     open_mock.assert_called_once()
     assert expected == "opened_image"
