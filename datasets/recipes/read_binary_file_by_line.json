@@ -30,34 +30,36 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
-    "transform": "ml:transform",
-    "wd": "https://www.wikidata.org/wiki/"
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
-  "name": "read_from_directory",
-  "description": "Minimal example showing how to read from local directories.",
-  "url": "https://github.com/mlcommons/croissant",
+  "name": "read_binary_file_by_line",
+  "description": "This is a recipe illustrating how to read files line by line.",
+  "url": "https://mlcommons.org",
   "distribution": [
     {
       "@type": "sc:FileSet",
-      "name": "files",
+      "name": "languages",
+      "description": "Binary files containing the expression \"hello\" translated in several languages.",
       "encodingFormat": "text/plain",
-      "includes": "data/file*.txt"
+      "includes": "data/read_binary_file_by_line/*.txt"
     }
   ],
   "recordSet": [
     {
       "@type": "ml:RecordSet",
-      "name": "read_from_directory_example",
+      "name": "hello",
+      "description": "\"Hello\" translated in several languages.",
       "field": [
         {
           "@type": "ml:Field",
-          "name": "id",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "files",
+            "distribution": "languages",
             "extract": {
-              "fileProperty": "content"
+              "fileProperty": "lines"
             }
           }
         }

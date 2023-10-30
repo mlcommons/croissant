@@ -27,6 +27,7 @@ class FileProperty(enum.Enum):
     filename = "__filename__"
     filepath = "__filepath__"
     fullpath = "__fullpath__"
+    lines = "__lines__"
 
 
 def is_file_property(file_property: str):
@@ -319,7 +320,7 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
     return value
 
 
-def apply_transforms_fn(value: str, source: Source | None = None) -> str:
+def apply_transforms_fn(value: Any, source: Source | None = None) -> Any:
     """Applies all transforms in `source` to `value`."""
     if source is None:
         return value

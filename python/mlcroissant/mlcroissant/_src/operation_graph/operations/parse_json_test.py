@@ -15,7 +15,7 @@ def test_parse_json():
     field2 = create_test_field(
         source=Source(extract=Extract(json_path="$.annotations[*].value"))
     )
-    fields = [field1, field2]
+    fields = (field1, field2)
     json = {
         "foo": "bar",
         "annotations": [

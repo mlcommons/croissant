@@ -39,7 +39,7 @@ class Read(Operation):
                 return pd.read_csv(file, sep="\t")
             elif encoding_format == EncodingFormat.JSON:
                 json_content = json.load(file)
-                fields = list(self.fields)
+                fields = self.fields
                 has_parse_json = any(field.source.extract.json_path for field in fields)
                 if has_parse_json:
                     return parse_json_content(json_content, fields)
@@ -61,6 +61,21 @@ class Read(Operation):
                         " mlcroissant[parquet]`."
                     ) from e
             elif encoding_format == EncodingFormat.TEXT:
+                fields = self.fields
+                # Note: This is an approximation. It could be that the same FileObject
+                # has to be read with `FileProperty.lines` for one ml:RecordSet and with
+                # `FileProperty.content` for another ml:RecordSet. The case hasn't
+                # appeared yet in the datasets, so we consider this a valid
+                # approximation for now.
+                should_read_line_by_line = any(
+                    field
+                    for field in fields
+                    if field.source.extract.file_property == FileProperty.lines
+                )
+                if should_read_line_by_line:
+                    return pd.read_csv(
+                        filepath, header=None, names=[FileProperty.lines]
+                    )
                 return pd.DataFrame(
                     {
                         FileProperty.content: [file.read()],

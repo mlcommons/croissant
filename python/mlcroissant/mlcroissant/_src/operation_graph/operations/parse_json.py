@@ -7,7 +7,7 @@ from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
-def parse_json_content(json: Json, fields: list[Field]) -> pd.DataFrame:
+def parse_json_content(json: Json, fields: tuple[Field, ...]) -> pd.DataFrame:
     """Parsed all JSONs defined in the fields of RecordSet and outputs a pd.DF."""
     series = {}
     for field in fields:
