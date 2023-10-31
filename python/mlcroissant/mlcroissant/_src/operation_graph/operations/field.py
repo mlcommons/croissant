@@ -48,19 +48,30 @@ def _to_bytes(value: Any) -> bytes:
         return bytes(value)
 
 
+def _extract_lines(name: str, path: epath.PathLike) -> pd.Series:
+    """Reads a file line-by-line and outputs a named pd.Series of the lines."""
+    path = epath.Path(path)
+    lines: list[bytes] = []
+    for line in path.open("rb").readlines():
+        if line.endswith(b"\n"):
+            lines.append(line[:-1])
+        else:
+            lines.append(line)
+    return pd.Series(lines, name=name)
+
+
 def _extract_value(df: pd.DataFrame, field: Field) -> Any:
     """Extracts the value according to the field rules."""
     source = field.source
     if source.extract.file_property == FileProperty.content:
         filepath = df[FileProperty.filepath]
-        with epath.Path(filepath).open("rb") as f:
-            return f.read()
+        return epath.Path(filepath).open("rb").read()
     elif source.extract.file_property == FileProperty.lines:
         if FileProperty.lines in df:
             return df[FileProperty.lines]
         else:
             filepath = df[FileProperty.filepath]
-            return pd.read_csv(filepath, header=None, names=[field.name])[field.name]
+            return _extract_lines(field.name, filepath)
     else:
         column_name = source.get_field()
         possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
