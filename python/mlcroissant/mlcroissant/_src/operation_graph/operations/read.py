@@ -1,6 +1,7 @@
 """Read operation module."""
 
 import dataclasses
+import enum
 import json
 
 from etils import epath
@@ -19,6 +20,50 @@ from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
 
+class ReadingMethod(enum.Enum):
+    """Reading method derived from the fields that consume the FileObject/FileSet."""
+
+    CONTENT = enum.auto()
+    JSON = enum.auto()
+    LINES = enum.auto()
+    NONE = enum.auto()
+
+
+def _reading_method(
+    node: FileObject | FileSet, fields: tuple[Field, ...]
+) -> ReadingMethod:
+    """Extracts the reading method from the fields.
+
+    If several reading methods are found, we raise an error for now. Indeed, it is
+    unlikely that the same FileObject/FileSet has to be read in different manners. Also,
+    an alternative solution is to define n FileObjects/FileSets when you have n
+    different reading methods.
+    """
+    reading_methods: set[ReadingMethod] = set()
+    for field in fields:
+        extract = field.source.extract
+        if extract.column:
+            reading_methods.add(ReadingMethod.CONTENT)
+        elif extract.file_property == FileProperty.lines:
+            reading_methods.add(ReadingMethod.LINES)
+        elif extract.file_property == FileProperty.content:
+            reading_methods.add(ReadingMethod.CONTENT)
+        elif extract.json_path:
+            reading_methods.add(ReadingMethod.JSON)
+    if len(reading_methods) == 0:
+        return ReadingMethod.NONE
+    if len(reading_methods) > 1:
+        raise ValueError(
+            f"Cannot read {node=}. The fields use several reading methods:"
+            f" {reading_methods}. Reading the same FileObject/FileSet using different"
+            " reading methods has yet to be implemented. Please, create an issue"
+            " (https://github.com/mlcommons/croissant/issues/new) if your dataset"
+            " requires this feature. Alternatively, you can use two different"
+            " FileObject/FileSet pointing to the same resource."
+        )
+    return next(iter(reading_methods))
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Read(Operation):
     """Reads from a file and output a pd.DataFrame."""
@@ -32,6 +77,7 @@ class Read(Operation):
         filepath = file.filepath
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file)
+        reading_method = _reading_method(self.node, self.fields)
         with filepath.open("rb") as file:
             if encoding_format == EncodingFormat.CSV:
                 return pd.read_csv(file)
@@ -39,16 +85,15 @@ class Read(Operation):
                 return pd.read_csv(file, sep="\t")
             elif encoding_format == EncodingFormat.JSON:
                 json_content = json.load(file)
-                fields = self.fields
-                has_parse_json = any(field.source.extract.json_path for field in fields)
-                if has_parse_json:
-                    return parse_json_content(json_content, fields)
-                # Raw files are returned as a one-line pd.DataFrame.
-                return pd.DataFrame(
-                    {
-                        FileProperty.content: [json_content],
-                    }
-                )
+                if reading_method == ReadingMethod.JSON:
+                    return parse_json_content(json_content, self.fields)
+                else:
+                    # Raw files are returned as a one-line pd.DataFrame.
+                    return pd.DataFrame(
+                        {
+                            FileProperty.content: [json_content],
+                        }
+                    )
             elif encoding_format == EncodingFormat.JSON_LINES:
                 return pd.read_json(file, lines=True)
             elif encoding_format == EncodingFormat.PARQUET:
@@ -61,26 +106,16 @@ class Read(Operation):
                         " mlcroissant[parquet]`."
                     ) from e
             elif encoding_format == EncodingFormat.TEXT:
-                fields = self.fields
-                # Note: This is an approximation. It could be that the same FileObject
-                # has to be read with `FileProperty.lines` for one ml:RecordSet and with
-                # `FileProperty.content` for another ml:RecordSet. The case hasn't
-                # appeared yet in the datasets, so we consider this a valid
-                # approximation for now.
-                should_read_line_by_line = any(
-                    field
-                    for field in fields
-                    if field.source.extract.file_property == FileProperty.lines
-                )
-                if should_read_line_by_line:
+                if reading_method == ReadingMethod.LINES:
                     return pd.read_csv(
                         filepath, header=None, names=[FileProperty.lines]
                     )
-                return pd.DataFrame(
-                    {
-                        FileProperty.content: [file.read()],
-                    }
-                )
+                else:
+                    return pd.DataFrame(
+                        {
+                            FileProperty.content: [file.read()],
+                        }
+                    )
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
