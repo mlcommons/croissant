@@ -12,18 +12,20 @@ import streamlit as st
 
 
 def render_files():
-    is_local = st.toggle("Local files?")
     with st.form(key="manual_urls", clear_on_submit=True):
         url = None
         uploaded_file = None
         file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
-        if is_local:
-            uploaded_file = st.file_uploader("Import from a local file")
-        else:
-            url = st.text_input("Import from a URL")
-        submitted = st.form_submit_button("Submit")
+        st.divider()
+        uploaded_file = st.file_uploader("Import from a local file")
+        st.text("Or")
+        url = st.text_input("Import from a URL")
+        st.divider()
+        submitted = st.form_submit_button("Add")
         if submitted:
             file_type = FILE_TYPES[file_type_name]
+            st.warning(url)
+            st.warning(uploaded_file)
             if url is not None:
                 file = file_from_url(file_type, url)
             elif uploaded_file is not None:
