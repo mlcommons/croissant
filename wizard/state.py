@@ -9,9 +9,6 @@ import mlcroissant as mlc
 
 
 def init_state():
-    # this doesn't work for now because you can't create a "blank" dataset.
-    #if mlc.Dataset not in st.session_state:
-    #    st.session_state[mlc.Dataset] = mlc.Dataset(file="")
 
     if CurrentStep not in st.session_state:
         st.session_state[CurrentStep] = "start"

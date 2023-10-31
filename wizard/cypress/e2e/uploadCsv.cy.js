@@ -6,6 +6,7 @@ describe('Wizard from local CSV', () => {
   it('should display the form: Metadata > Files', () => {
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
+    cy.get('button').contains('Create').click()
     cy.get('.stCodeBlock').contains('{}')
 
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset').blur()

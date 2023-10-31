@@ -17,14 +17,14 @@ def render_side_buttons():
         st.button(
             "Metadata",
             on_click=set_form_step,
-            args=["Jump", 1],
+            args=["Jump", "metadata"],
             type=button_type("metadata"),
             use_container_width=True,
         )
         st.button(
             "Files",
             on_click=set_form_step,
-            args=["Jump", 2],
+            args=["Jump", "files"],
             type=button_type("files"),
             use_container_width=True,
         )
