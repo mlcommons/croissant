@@ -59,7 +59,7 @@ def _reading_method(
             " reading methods has yet to be implemented. Please, create an issue"
             " (https://github.com/mlcommons/croissant/issues/new) if your dataset"
             " requires this feature. Alternatively, you can use two different"
-            " FileObject/FileSet pointing to the same resource."
+            " FileObjects/FileSets pointing to the same resource."
         )
     return next(iter(reading_methods))
 

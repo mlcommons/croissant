@@ -60,6 +60,12 @@ class ReadField(Operation):
             filepath = series[FileProperty.filepath]
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
+        elif source.extract.file_property == FileProperty.lines:
+            filepath = series[FileProperty.filepath]
+            with epath.Path(filepath).open("rb") as f:
+                for line in f.readlines():
+                    # yield from Read._read_file_content(self.node.encoding_format, filepath) ???
+                    yield line
         else:
             field = source.get_field()
             possible_fields = list(

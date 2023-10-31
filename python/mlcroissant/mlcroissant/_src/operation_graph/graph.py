@@ -108,6 +108,13 @@ def _add_operations_for_file_object(
                 folder=folder,
                 fields=fields,
             )
+        # elif isinstance(successor, (FileObject, FileSet)) and successor.encoding_format:
+        #     operation >> Read(
+        #         operations=operations,
+        #         node=successor,
+        #         folder=folder,
+        #         fields=fields,
+        #     )
 
 
 def _add_operations_for_git(

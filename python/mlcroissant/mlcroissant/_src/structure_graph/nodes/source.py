@@ -320,7 +320,7 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
     return value
 
 
-def apply_transforms_fn(value: Any, source: Source | None = None) -> Any:
+def apply_transforms_fn(value: Any | list[Any], source: Source | None = None) -> Any:
     """Applies all transforms in `source` to `value`."""
     if source is None:
         return value
