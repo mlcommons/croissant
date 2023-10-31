@@ -6,7 +6,6 @@ from typing import Any
 import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
-from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 

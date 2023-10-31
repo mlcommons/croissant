@@ -1,6 +1,7 @@
 """Field operation module."""
 
 import dataclasses
+import functools
 import io
 from typing import Any
 
@@ -47,42 +48,49 @@ def _to_bytes(value: Any) -> bytes:
         return bytes(value)
 
 
+def _extract_value(df: pd.DataFrame, field: Field) -> Any:
+    """Extracts the value according to the field rules."""
+    source = field.source
+    if source.extract.file_property == FileProperty.content:
+        filepath = df[FileProperty.filepath]
+        with epath.Path(filepath).open("rb") as f:
+            return f.read()
+    elif source.extract.file_property == FileProperty.lines:
+        if FileProperty.lines in df:
+            return df[FileProperty.lines]
+        else:
+            filepath = df[FileProperty.filepath]
+            return pd.read_csv(filepath, header=None, names=[field.name])[field.name]
+    else:
+        column_name = source.get_field()
+        possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
+        assert (
+            column_name in df
+        ), f'Field "{column_name}" does not exist. Possible fields: {possible_fields}'
+        return df[column_name]
+
+
+def _convert_to_series(value: Any, field: Field) -> pd.Series:
+    """Converts `value` to a pd.Series even if it has one line."""
+    if isinstance(value, pd.Series):
+        return value
+    else:
+        return pd.Series([value], name=field.name)
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class ReadField(Operation):
-    """Reads a field from a Pandas DataFrame and applies transformations."""
+    """Reads a field from a Pandas DataFrame and applies transformations.
+
+    ReadField.__call__() outputs a single-column pd.Series whose name is the field name.
+    """
 
     node: Field
 
-    def __call__(self, series: pd.Series) -> pd.Series:
+    def __call__(self, df: pd.DataFrame) -> pd.Series:
         """See class' docstring."""
-        source = self.node.source
-        if source.extract.file_property == FileProperty.content:
-            filepath = series[FileProperty.filepath]
-            with epath.Path(filepath).open("rb") as f:
-                value = f.read()
-        elif source.extract.file_property == FileProperty.lines:
-            if FileProperty.lines in series:
-                value = series[FileProperty.lines]
-            else:
-                filepath = series[FileProperty.filepath]
-                return pd.read_csv(filepath, header=None, names=[self.node.name])[
-                    self.node.name
-                ]
-        else:
-            field = source.get_field()
-            possible_fields = list(
-                series.axes if isinstance(series, pd.Series) else series.keys()
-            )
-            assert (
-                field in series
-            ), f'Field "{field}" does not exist. Possible fields: {possible_fields}'
-            value = series[field]
-        value = apply_transforms_fn(value, self.node.source)
-        try:
-            value = _cast_value(value, self.node.data_type)
-        except ValueError as exception:
-            raise ValueError(
-                f'Expected type "{self.node.data_type}" for node "{self.node.uid}", but'
-                f' got: "{type(value)}" with value "{value}"'
-            ) from exception
-        return pd.Series([value], name=self.node.name)
+        value = _extract_value(df, self.node)
+        series = _convert_to_series(value, self.node)
+        transforms = functools.partial(apply_transforms_fn, source=self.node.source)
+        cast = functools.partial(_cast_value, data_type=self.node.data_type)
+        return series.apply(transforms).apply(cast)
