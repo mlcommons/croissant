@@ -4,7 +4,7 @@ Start locally:
 
 ```bash
 pip install -r requirements.txt
-streamlit run st_app.py
+streamlit run app.py
 ```
 
 Launch the end-to-end tests locally (after you started the application):
