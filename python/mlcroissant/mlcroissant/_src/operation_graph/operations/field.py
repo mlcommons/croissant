@@ -53,13 +53,21 @@ class ReadField(Operation):
 
     node: Field
 
-    def __call__(self, series: pd.Series):
+    def __call__(self, series: pd.Series) -> pd.Series:
         """See class' docstring."""
         source = self.node.source
         if source.extract.file_property == FileProperty.content:
             filepath = series[FileProperty.filepath]
             with epath.Path(filepath).open("rb") as f:
                 value = f.read()
+        elif source.extract.file_property == FileProperty.lines:
+            if FileProperty.lines in series:
+                value = series[FileProperty.lines]
+            else:
+                filepath = series[FileProperty.filepath]
+                return pd.read_csv(filepath, header=None, names=[self.node.name])[
+                    self.node.name
+                ]
         else:
             field = source.get_field()
             possible_fields = list(
@@ -77,4 +85,4 @@ class ReadField(Operation):
                 f'Expected type "{self.node.data_type}" for node "{self.node.uid}", but'
                 f' got: "{type(value)}" with value "{value}"'
             ) from exception
-        return {self.node.name: value}
+        return pd.Series([value], name=self.node.name)

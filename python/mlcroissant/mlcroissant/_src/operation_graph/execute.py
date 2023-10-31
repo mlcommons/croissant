@@ -60,7 +60,12 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
             and results[previous_operation] is not None
         ]
         if isinstance(operation, GroupRecordSetStart):
-            built_record_set = build_record_set(operations, operation, previous_results)
+            assert len(previous_results) == 1, (
+                f'"{operation}" should have one and only one predecessor. Got:'
+                f" {len(previous_results)}."
+            )
+            result = previous_results[0]
+            built_record_set = build_record_set(operations, operation, result)
             if operation.node.name != record_set:
                 # The RecordSet will be used later in the graph by another RecordSet.
                 # This could be multi-threaded to build the pd.DataFrame faster.
@@ -111,12 +116,11 @@ def execute_operations_in_streaming(
                 for file in result:
                     # Read files separately and keep executing subsequent operations.
                     logging.info("Executing %s", operation)
-                    read_file = operation(file)
                     yield from execute_operations_in_streaming(
                         record_set=record_set,
                         operations=operations,
                         list_of_operations=list_of_operations[i + 1 :],
-                        result=[read_file],
+                        result=operation(file),
                     )
 
             yield from read_all_files()
@@ -129,17 +133,13 @@ def execute_operations_in_streaming(
 
 
 def build_record_set(
-    operations: Operations, operation: GroupRecordSetStart, result: Any
+    operations: Operations, operation: GroupRecordSetStart, result: pd.DataFrame
 ):
     """Builds a RecordSet from all ReadField children in the operation graph."""
-    assert (
-        len(result) == 1
-    ), f'"{operation}" should have one and only one predecessor. Got: {len(result)}.'
-    result = result[0]
     for _, line in result.iterrows():
         read_fields = []
         for read_field in operations.successors(operation):
             assert isinstance(read_field, ReadField)
             read_fields.append(read_field(line))
         logging.info("Executing %s", operation)
-        yield operation(*read_fields)
+        yield from operation(*read_fields)
