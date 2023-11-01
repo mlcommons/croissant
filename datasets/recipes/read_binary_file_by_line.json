@@ -78,6 +78,18 @@
               "fileProperty": "lines"
             }
           }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "lineNumber",
+          "description": "The number of the line in the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "languages_in_directory",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
         }
       ]
     },
@@ -95,6 +107,18 @@
             "distribution": "languages_in_zip",
             "extract": {
               "fileProperty": "lines"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "lineNumber",
+          "description": "The number of the line in the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "languages_in_zip",
+            "extract": {
+              "fileProperty": "lineNumbers"
             }
           }
         }
