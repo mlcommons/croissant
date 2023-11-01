@@ -77,6 +77,18 @@
       "field": [
         {
           "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "files-dev",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
@@ -84,18 +96,6 @@
             "distribution": "files-dev",
             "extract": {
               "fileProperty": "lines"
-            }
-          }
-        },
-        {
-          "@type": "ml:Field",
-          "name": "line_number",
-          "description": "The line number for extracted sentences.",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "files-dev",
-            "extract": {
-              "fileProperty": "lineNumbers"
             }
           }
         },
@@ -118,9 +118,42 @@
     },
     {
       "@type": "ml:RecordSet",
-      "name": "language_translations_metadata",
-      "description": "Metadata for translations to different languages.",
+      "name": "language_translations_with_metadata",
+      "description": "Data and metadata for translations to different languages.",
       "field": [
+        {
+          "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "language_translations_data/line_number"
+          },
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "language_translations_data/translation"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "language_translations_data/language"
+          }
+        },
         {
           "@type": "ml:Field",
           "name": "URL",
