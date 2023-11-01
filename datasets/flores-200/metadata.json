@@ -83,20 +83,22 @@
           "source": {
             "distribution": "files-dev",
             "extract": {
-              "fileProperty": "content"
-            },
-            "transform": {
-              "separator": "\n"
+              "fileProperty": "lines"
             }
           }
-        }
-      ]
-    },
-    {
-      "@type": "ml:RecordSet",
-      "name": "language_translations_metadata",
-      "description": "Metadata for translations to different languages.",
-      "field": [
+        },
+        {
+          "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "files-dev",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
         {
           "@type": "ml:Field",
           "name": "language",
@@ -111,7 +113,14 @@
               "regex": "(.*)\\.dev$"
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "language_translations_metadata",
+      "description": "Metadata for translations to different languages.",
+      "field": [
         {
           "@type": "ml:Field",
           "name": "URL",
