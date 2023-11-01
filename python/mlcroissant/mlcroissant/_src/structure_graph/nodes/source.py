@@ -19,15 +19,25 @@ from mlcroissant._src.core.types import Json
 
 
 class FileProperty(enum.Enum):
-    """Lists the intrinsic properties of a file that are accessible from Croissant."""
+    """Lists the intrinsic properties of a file that are accessible from Croissant.
 
-    # Note that at the moment there may be an overlap with existing columns if columns
-    # have one of the following names:
+    Notes:
+    - Plural indicates a one-to-many relationship (one row gives many rows), while
+      singular indicates a one-to-one relationship.
+    - We may use camelCase to be conformed with the names in the JSON-LD Croissant
+      standard.
+
+    Warning:
+    - At the moment there may be an overlap with existing columns if columns
+      have one of the following names.
+    """
+
     content = "__content__"
     filename = "__filename__"
     filepath = "__filepath__"
     fullpath = "__fullpath__"
     lines = "__lines__"
+    lineNumbers = "__line_numbers__"
 
 
 def is_file_property(file_property: str):

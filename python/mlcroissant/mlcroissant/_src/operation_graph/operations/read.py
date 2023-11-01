@@ -46,6 +46,8 @@ def _reading_method(
             reading_methods.add(ReadingMethod.CONTENT)
         elif extract.file_property == FileProperty.lines:
             reading_methods.add(ReadingMethod.LINES)
+        elif extract.file_property == FileProperty.lineNumbers:
+            reading_methods.add(ReadingMethod.LINES)
         elif extract.file_property == FileProperty.content:
             reading_methods.add(ReadingMethod.CONTENT)
         elif extract.json_path:
@@ -107,9 +109,10 @@ class Read(Operation):
                     ) from e
             elif encoding_format == EncodingFormat.TEXT:
                 if reading_method == ReadingMethod.LINES:
-                    return pd.read_csv(
-                        filepath, header=None, names=[FileProperty.lines]
-                    )
+                    df = pd.read_csv(filepath, header=None, names=[FileProperty.lines])
+                    # Append the line numbers.
+                    df[FileProperty.lineNumbers] = range(len(df))
+                    return df
                 else:
                     return pd.DataFrame(
                         {
