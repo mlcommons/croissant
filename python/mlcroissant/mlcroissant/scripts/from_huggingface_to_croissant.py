@@ -3,7 +3,7 @@
 Usage:
 
 ```
-python scripts/convert_from_huggingface.py --dataset mnist
+mlcroissant from_huggingface_to_croissant --dataset mnist
 ```
 """
 

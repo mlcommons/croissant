@@ -25,7 +25,7 @@ def test_convert(croissant_dataset_name, hf_dataset_name):
         / "metadata.json"
     )
     print(
-        "If this test fails, run: `python scripts/from_huggingface_to_croissant.py"
+        "If this test fails, run: `mlcroissant from_huggingface_to_croissant"
         f" --dataset {hf_dataset_name} --output {metadata_file}`"
     )
     with metadata_file.open("r") as expected_f:
