@@ -1,5 +1,6 @@
 """field_test module."""
 
+import tempfile
 from unittest import mock
 
 import numpy as np
@@ -53,3 +54,32 @@ def test_cast_value_image(open_mock):
     expected = field._cast_value(b"PNG...Some image...", DataType.IMAGE_OBJECT)
     open_mock.assert_called_once()
     assert expected == "opened_image"
+
+
+@pytest.mark.parametrize(
+    "separator",
+    [
+        b"\n",
+        b"\r",
+        b"\r\n",
+    ],
+)
+def test_extract_lines(separator):
+    with tempfile.TemporaryDirectory() as tempdir:
+        content = (
+            b"bon jour  "
+            + separator
+            + separator
+            + b" h\xc3\xa9llo "
+            + separator
+            + b"hallo "
+            + separator
+        )
+        path = tempdir + "/file.txt"
+        with open(path, "wb") as f:
+            f.write(content)
+        series = field._extract_lines("foo", path)
+        expected = pd.Series(
+            [b"bon jour  ", b"", b" h\xc3\xa9llo ", b"hallo "], name="foo"
+        )
+        pd.testing.assert_series_equal(series, expected)

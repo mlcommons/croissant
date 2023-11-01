@@ -5,7 +5,6 @@ import dataclasses
 
 from absl import logging
 from etils import epath
-import networkx as nx
 
 from mlcroissant._src.core.graphs import utils as graphs_utils
 from mlcroissant._src.core.issues import Issues
@@ -109,7 +108,6 @@ class Records:
             yield from execute_operations_in_streaming(
                 record_set=self.record_set,
                 operations=operations,
-                list_of_operations=list(nx.topological_sort(operations)),
             )
         else:
             yield from execute_operations_sequentially(
