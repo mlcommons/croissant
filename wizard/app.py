@@ -23,8 +23,6 @@ if st.session_state[CurrentStep] == "load":
 if st.session_state[CurrentStep] != "editor":
     raise Exception("invalid unhandled app state")
 
-render_side_buttons()
-
 
 col1, col2 = st.columns([1, 1], gap="medium")
 with col1:

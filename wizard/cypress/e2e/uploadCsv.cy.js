@@ -3,24 +3,23 @@
 import 'cypress-file-upload';
 
 describe('Wizard from local CSV', () => {
-  it('should display the form: Metadata > Files', () => {
-    cy.on('uncaught:exception', (err) => {
-      /* returning false here prevents Cypress from failing the test */
+  it('should display the form: Metadata, Files, & Record Sets', () => {
+    const resizeObserverLoopErrRe = /^ResizeObserver loop limit exceeded/
+
+    // consensus was that this exception didn't matter mostly, and was intermittent when running tests.
+    Cypress.on('uncaught:exception', err => {
       if (resizeObserverLoopErrRe.test(err.message)) {
-        return false;
+        return false
       }
-    });
+      throw new Error("'" + err.message + "'")
+    })
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
     cy.get('button').contains('Create').click()
-    cy.get('.stCodeBlock').contains('{}')
 
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset').blur()
     cy.get('input[aria-label="URL:red[*]"]').type('https://mydataset.com').blur()
-    cy.get('button').contains('Next').click()
-
-    // Add the local CSV file by drag and drop.
-    cy.get('[data-testid="stCheckbox"]').click()
+    cy.get('[data-testid="stMarkdownContainer"]').contains('Files').click()
     // Drag and drop mimicking: streamlit/e2e/specs/st_file_uploader.spec.js.
     cy.fixture('base.csv').then((fileContent) => {
       const file = {
@@ -36,7 +35,6 @@ describe('Wizard from local CSV', () => {
       })
     })
     cy.get('.uploadedFileData').contains('base.csv')
-    cy.get('[data-testid="stMarkdownContainer"]').contains('Submit').click()
-    cy.get('[data-testid="stJson"]').should('contain', '@context')
+    cy.get('button').contains('Add').click()
   })
 })

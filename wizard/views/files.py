@@ -24,9 +24,8 @@ def render_files():
         submitted = st.form_submit_button("Add")
         if submitted:
             file_type = FILE_TYPES[file_type_name]
-            st.warning(url)
-            st.warning(uploaded_file)
-            if url is not None:
+            # despite the api stating this, the default value for a text input is "" not None
+            if url is not None and url != "":
                 file = file_from_url(file_type, url)
             elif uploaded_file is not None:
                 file = file_from_upload(file_type, uploaded_file)
@@ -49,7 +48,7 @@ def render_files():
                 }
             )
     for key, file in enumerate(st.session_state[Files]):
-        with st.expander(f"{file.encoding_format} - {file.name}", expanded=True):
+        with st.container():
 
             def delete_line():
                 del st.session_state[Files][key]
