@@ -37,6 +37,7 @@ def get_error_msg(folder):
         "recordset_bad_type",
         "recordset_missing_context_for_datatype",
         "recordset_missing_property_name",
+        "recordset_wrong_join",
     ],
 )
 def test_static_analysis(folder):
