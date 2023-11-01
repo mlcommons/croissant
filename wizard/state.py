@@ -6,38 +6,46 @@ In the future, this could be the serialization format between front and back.
 import dataclasses
 import streamlit as st
 import mlcroissant as mlc
+from typing import List
 
 
 def init_state():
 
+    if Croissant not in st.session_state:
+        st.session_state[Croissant] = Croissant()
+
     if CurrentStep not in st.session_state:
         st.session_state[CurrentStep] = "start"
-
-    if Files not in st.session_state:
-        st.session_state[Files] = []
-
-    if Metadata not in st.session_state:
-        st.session_state[Metadata] = Metadata()
-
-    if RecordSets not in st.session_state:
-        st.session_state[RecordSets] = []
 
 
 class CurrentStep:
     pass
 
+@dataclasses.dataclass
+class Distribution:
+    name: str = ""
+    description: str = ""
+    contentSize: str = ""
+    contentUrl: str = ""
+    encodingFormat: str = ""
+    sha256: str = ""
+    
 
-class Files:
-    pass
-
-
-class RecordSets:
-    pass
-
-
+@dataclasses.dataclass
 class RecordSet:
     pass
 
+@dataclass.dataclass
+class Field:
+    name: str = ""
+    description: str = ""
+    dataType: str | str[] = ""
+    source: Source = Source()
+
+@dataclass.dataclass
+class Source:
+    distribution: Distribution = Distribution()
+    extract: 
 
 @dataclasses.dataclass
 class Metadata:
@@ -49,3 +57,12 @@ class Metadata:
 
     def __bool__(self):
         return self.name != "" and self.url != ""
+    
+@dataclasses.dataclass
+class Croissant:
+    Metadata: Metadata = Metadata()
+    Files: List[Distribution] = []
+    RecordSets: List[RecordSet] = []
+
+def WizardToCanonical(croi: Croissant):
+    pass
