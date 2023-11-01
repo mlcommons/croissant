@@ -55,6 +55,12 @@ def _extract_lines(name: str, path: epath.PathLike) -> pd.Series:
     return pd.Series(lines, name=name)
 
 
+def _extract_line_numbers(name: str, path: epath.PathLike) -> pd.Series:
+    """Reads a file line-by-line and outputs a named pd.Series of the lines."""
+    lines = _extract_lines(name, path)
+    return pd.Series(range(len(lines)), name=name)
+
+
 def _extract_value(df: pd.DataFrame, field: Field) -> Any:
     """Extracts the value according to the field rules."""
     source = field.source
@@ -67,6 +73,12 @@ def _extract_value(df: pd.DataFrame, field: Field) -> Any:
         else:
             filepath = df[FileProperty.filepath]
             return _extract_lines(field.name, filepath)
+    elif source.extract.file_property == FileProperty.lineNumbers:
+        if FileProperty.lineNumbers in df:
+            return df[FileProperty.lineNumbers]
+        else:
+            filepath = df[FileProperty.filepath]
+            return _extract_line_numbers(field.name, filepath)
     else:
         column_name = source.get_field()
         possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())

@@ -1,6 +1,6 @@
-{"translation": "hello"}
-{"translation": "bonjour"}
-{"translation": "你好"}
-{"translation": "hallo"}
-{"translation": "hola"}
-{"translation": "привет"}
+{"translation": "hello", "lineNumber": 0, "filename": "file1.txt"}
+{"translation": "bonjour", "lineNumber": 1, "filename": "file1.txt"}
+{"translation": "你好", "lineNumber": 2, "filename": "file1.txt"}
+{"translation": "hallo", "lineNumber": 0, "filename": "file2.txt"}
+{"translation": "hola", "lineNumber": 1, "filename": "file2.txt"}
+{"translation": "привет", "lineNumber": 2, "filename": "file2.txt"}

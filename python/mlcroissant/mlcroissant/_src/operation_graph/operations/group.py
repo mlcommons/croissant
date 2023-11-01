@@ -15,9 +15,16 @@ class GroupRecordSetStart(Operation):
 
     node: RecordSet
 
-    def __call__(self, *series: pd.Series):
+    def __call__(self, *all_series: pd.Series):
         """See class' docstring."""
-        df = pd.DataFrame({value.name: value for value in series})
+        length = max([len(series) for series in all_series])
+        index = pd.RangeIndex(length)
+        all_series = list(all_series)
+        for i, series in enumerate(all_series):
+            # Forward fill one-line series to pad it to the target length.
+            if len(series) == 1:
+                all_series[i] = series.reindex(index, copy=False, method="ffill")
+        df = pd.concat(all_series, axis=1, copy=False)
         for _, row in df.iterrows():
             result: dict[str, Any] = {}
             for column in df.columns:
