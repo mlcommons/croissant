@@ -51,12 +51,7 @@ def _to_bytes(value: Any) -> bytes:
 def _extract_lines(name: str, path: epath.PathLike) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
     path = epath.Path(path)
-    lines: list[bytes] = []
-    for line in path.open("rb").readlines():
-        if line.endswith(b"\n"):
-            lines.append(line[:-1])
-        else:
-            lines.append(line)
+    lines = path.open("rb").read().splitlines()
     return pd.Series(lines, name=name)
 
 
