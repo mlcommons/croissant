@@ -90,6 +90,18 @@
               "fileProperty": "lineNumbers"
             }
           }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "filename",
+          "description": "The name of the source file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "languages_in_directory",
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
         }
       ]
     },
@@ -119,6 +131,18 @@
             "distribution": "languages_in_zip",
             "extract": {
               "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "filename",
+          "description": "The name of the source file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "languages_in_zip",
+            "extract": {
+              "fileProperty": "filename"
             }
           }
         }
