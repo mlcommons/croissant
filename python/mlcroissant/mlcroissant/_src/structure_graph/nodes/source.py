@@ -328,3 +328,8 @@ def apply_transforms_fn(value: Any, source: Source | None = None) -> Any:
     for transform in transforms:
         value = _apply_transform_fn(value, transform)
     return value
+
+
+def get_parent_uid(uid: str) -> str:
+    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
+    return uid.split("/")[0]

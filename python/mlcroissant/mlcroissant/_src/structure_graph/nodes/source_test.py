@@ -8,6 +8,7 @@ from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 from mlcroissant._src.structure_graph.nodes.source import is_file_property
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
@@ -277,3 +278,9 @@ def test_check_source_for_invalid_json_path():
     errors = list(issues.errors)
     assert len(errors) == 1
     assert "Wrong JSONPath" in errors[0]
+
+
+def test_get_parent_uid():
+    assert get_parent_uid("foo") == "foo"
+    assert get_parent_uid("foo/bar") == "foo"
+    assert get_parent_uid("foo/bar/baz") == "foo"
