@@ -23,6 +23,8 @@ pytype:
 
 mypy:
 	mypy --config=./pyproject.toml mlcroissant/ \
+		--install-types \
+		--non-interactive \
 		--show-error-codes \
 		--allow-redefinition \
 		--no-namespace-packages \

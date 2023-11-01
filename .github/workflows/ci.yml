@@ -163,9 +163,6 @@ jobs:
             requests \
             tqdm
     
-    - name: Install library stubs for mypy checks.
-      run: python3 -m pip install types-requests types-tqdm
-
     - name: MyPy
       run: make mypy
 

@@ -76,6 +76,7 @@ module = [
   "jsonpath_rw",
   "networkx",
   "pandas",
+  "pillow",
 ]
 ignore_missing_imports = true
 

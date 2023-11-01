@@ -1,6 +1,5 @@
 """Test utils to handle records."""
 
-import base64
 import math
 import re
 from typing import Any
@@ -11,6 +10,8 @@ import pandas as pd
 def record_to_python(record: Any):
     """Converts a record to a fully Python-native object.
 
+    Warning: this function must be used for testing-purposes only!
+
     Records may contain non-serializable values (like `nan` or `pd.Timestamp` for
     example). This util converts records to Python-native objects:
     - bytes -> str
@@ -18,8 +19,7 @@ def record_to_python(record: Any):
     - pd.Timestamp -> pd.Timestamp.strftime
     """
     if isinstance(record, bytes):
-        encoded = base64.b64encode(record)
-        return encoded.decode()
+        return record.decode()
     elif isinstance(record, pd.Timestamp):
         return record.strftime("%Y-%m-%d %X")
     elif isinstance(record, float) and math.isnan(record):

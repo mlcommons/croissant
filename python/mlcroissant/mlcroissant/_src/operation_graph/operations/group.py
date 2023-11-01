@@ -1,6 +1,7 @@
 """Group operation module."""
 
 import dataclasses
+from typing import Any
 
 import pandas as pd
 
@@ -14,9 +15,14 @@ class GroupRecordSetStart(Operation):
 
     node: RecordSet
 
-    def __call__(self, *fields: pd.Series):
+    def __call__(self, *series: pd.Series):
         """See class' docstring."""
-        return {k: v for field in fields for k, v in field.items()}
+        df = pd.DataFrame({value.name: value for value in series})
+        for _, row in df.iterrows():
+            result: dict[str, Any] = {}
+            for column in df.columns:
+                result[column] = row[column]
+            yield result
 
 
 class GroupRecordSetEnd(Operation):

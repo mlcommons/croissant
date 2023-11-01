@@ -1,0 +1,104 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "read_binary_file_by_line",
+  "description": "This is a recipe illustrating how to read files line by line.",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileSet",
+      "name": "languages_in_directory",
+      "description": "Binary files containing the expression \"hello\" translated in several languages.",
+      "encodingFormat": "text/plain",
+      "includes": "data/read_binary_file_by_line/*.txt"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "zip",
+      "description": "Zip file containing the binary files with the translations.",
+      "encodingFormat": "application/zip",
+      "contentUrl": "data/read_binary_file_by_line/files.zip",
+      "sha256": "49c616fdf402d70a6bc02a1265f2ad410f06395dcec54b8cd8f376f7fdae636b"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "languages_in_zip",
+      "description": "Binary files containing the expression \"hello\" translated in several languages.",
+      "containedIn": "zip",
+      "encodingFormat": "text/plain",
+      "includes": "*.txt"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "translations_from_directory",
+      "description": "\"Hello\" translated in several languages [from a directory].",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "languages_in_directory",
+            "extract": {
+              "fileProperty": "lines"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "translations_from_zip",
+      "description": "\"Hello\" translated in several languages [from a zip].",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "languages_in_zip",
+            "extract": {
+              "fileProperty": "lines"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

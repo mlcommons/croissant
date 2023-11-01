@@ -10,6 +10,7 @@ from typing import Any, Literal
 
 import jsonpath_rw
 from jsonpath_rw import lexer
+import pandas as pd
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
@@ -26,6 +27,7 @@ class FileProperty(enum.Enum):
     filename = "__filename__"
     filepath = "__filepath__"
     fullpath = "__fullpath__"
+    lines = "__lines__"
 
 
 def is_file_property(file_property: str):
@@ -313,10 +315,12 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
     elif transform.json_path is not None:
         jsonpath_expression = jsonpath_rw.parse(transform.json_path)
         return next(match.value for match in jsonpath_expression.find(value))
+    elif transform.format is not None:
+        return pd.Timestamp(value).strftime(transform.format)
     return value
 
 
-def apply_transforms_fn(value: str, source: Source | None = None) -> str:
+def apply_transforms_fn(value: Any, source: Source | None = None) -> Any:
     """Applies all transforms in `source` to `value`."""
     if source is None:
         return value
@@ -324,3 +328,8 @@ def apply_transforms_fn(value: str, source: Source | None = None) -> str:
     for transform in transforms:
         value = _apply_transform_fn(value, transform)
     return value
+
+
+def get_parent_uid(uid: str) -> str:
+    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
+    return uid.split("/")[0]
