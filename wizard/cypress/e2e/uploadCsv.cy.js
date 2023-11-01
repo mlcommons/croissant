@@ -4,6 +4,12 @@ import 'cypress-file-upload';
 
 describe('Wizard from local CSV', () => {
   it('should display the form: Metadata > Files', () => {
+    cy.on('uncaught:exception', (err) => {
+      /* returning false here prevents Cypress from failing the test */
+      if (resizeObserverLoopErrRe.test(err.message)) {
+        return false;
+      }
+    });
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
     cy.get('button').contains('Create').click()
