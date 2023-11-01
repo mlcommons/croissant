@@ -46,8 +46,6 @@ def _reading_method(
             reading_methods.add(ReadingMethod.CONTENT)
         elif extract.file_property == FileProperty.lines:
             reading_methods.add(ReadingMethod.LINES)
-        elif extract.file_property == FileProperty.lineNumbers:
-            reading_methods.add(ReadingMethod.LINES)
         elif extract.file_property == FileProperty.content:
             reading_methods.add(ReadingMethod.CONTENT)
         elif extract.json_path:
@@ -64,6 +62,14 @@ def _reading_method(
             " FileObject/FileSet pointing to the same resource."
         )
     return next(iter(reading_methods))
+
+
+def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
+    """Checks whether at least one field requires listing the line numbers."""
+    for field in fields:
+        if field.source.extract.file_property == FileProperty.lineNumbers:
+            return True
+    return False
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -109,10 +115,9 @@ class Read(Operation):
                     ) from e
             elif encoding_format == EncodingFormat.TEXT:
                 if reading_method == ReadingMethod.LINES:
-                    df = pd.read_csv(filepath, header=None, names=[FileProperty.lines])
-                    # Append the line numbers.
-                    df[FileProperty.lineNumbers] = range(len(df))
-                    return df
+                    return pd.read_csv(
+                        filepath, header=None, names=[FileProperty.lines]
+                    )
                 else:
                     return pd.DataFrame(
                         {
@@ -154,6 +159,8 @@ class Read(Operation):
                 )
             assert self.node.encoding_format, "Encoding format is not specified."
             file_content = self._read_file_content(self.node.encoding_format, file)
+            if _should_append_line_numbers(self.fields):
+                file_content[FileProperty.lineNumbers] = range(len(file_content))
             file_content[FileProperty.filepath] = file.filepath
             file_content[FileProperty.filename] = file.filename
             file_content[FileProperty.fullpath] = file.fullpath
