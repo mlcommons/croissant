@@ -211,7 +211,7 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files - Titanic
-      run: python mlcroissant/scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
+      run: mlcroissant load --file ../../datasets/titanic/metadata.json --record_set passengers
 
     - name: Generate JSON-LD files - PASS
       run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
