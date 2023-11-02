@@ -8,6 +8,12 @@ import streamlit as st
 import mlcroissant as mlc
 
 
+def set_form_step(action, step=None):
+    """Maintains the user's location within the wizard."""
+    if action == "Jump" and step is not None:
+        st.session_state[CurrentStep] = step
+
+
 def init_state():
 
     if CurrentStep not in st.session_state:
