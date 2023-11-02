@@ -6,9 +6,9 @@ from core.files import FILE_TYPES
 import pandas as pd
 from state import Files
 from state import RecordSets
+import streamlit as st
 from utils import DF_HEIGHT
 from utils import needed_field
-import streamlit as st
 
 
 def render_files():
