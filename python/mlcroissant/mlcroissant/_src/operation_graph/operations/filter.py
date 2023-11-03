@@ -9,12 +9,12 @@ from etils import epath
 
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
-from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.operation_graph.base_operation import PathOperation
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class FilterFiles(Operation):
+class FilterFiles(PathOperation):
     """Filters files within a FileSet given a glob pattern."""
 
     node: FileSet

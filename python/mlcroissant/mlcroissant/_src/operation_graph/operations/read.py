@@ -11,7 +11,7 @@ from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
 from mlcroissant._src.core.path import Path
-from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.operation_graph.base_operation import PathOperation
 from mlcroissant._src.operation_graph.operations.download import is_url
 from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -73,7 +73,7 @@ def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class Read(Operation):
+class Read(PathOperation):
     """Reads from a file and output a pd.DataFrame."""
 
     node: FileObject | FileSet
@@ -129,12 +129,10 @@ class Read(Operation):
                     f"Unsupported encoding format for file: {encoding_format}"
                 )
 
-    def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
+    def __call__(self, *paths: Path) -> pd.DataFrame:
         """See class' docstring."""
-        if isinstance(files, Path):
-            files = [files]
         file_contents = []
-        for file in files:
+        for path in paths:
             # The FileObject is extracted from another FileObject/FileSet:
             if (
                 isinstance(self.node, FileObject)
@@ -142,9 +140,9 @@ class Read(Operation):
                 and self.node.contained_in
             ):
                 content_url = self.node.content_url
-                file = Path(
-                    filepath=file.filepath / content_url,
-                    fullpath=file.fullpath / content_url,
+                path = Path(
+                    filepath=path.filepath / content_url,
+                    fullpath=path.fullpath / content_url,
                 )
             # The FileObject comes from disk:
             elif (
@@ -153,16 +151,16 @@ class Read(Operation):
                 and not is_url(self.node.content_url)
             ):
                 # Read from the local path
-                assert file.filepath.exists(), (
+                assert path.filepath.exists(), (
                     f'In node "{self.node.uid}", file "{self.node.content_url}" is'
                     " either an invalid URL or an invalid path."
                 )
             assert self.node.encoding_format, "Encoding format is not specified."
-            file_content = self._read_file_content(self.node.encoding_format, file)
+            file_content = self._read_file_content(self.node.encoding_format, path)
             if _should_append_line_numbers(self.fields):
                 file_content[FileProperty.lineNumbers] = range(len(file_content))
-            file_content[FileProperty.filepath] = file.filepath
-            file_content[FileProperty.filename] = file.filename
-            file_content[FileProperty.fullpath] = file.fullpath
+            file_content[FileProperty.filepath] = path.filepath
+            file_content[FileProperty.filename] = path.filename
+            file_content[FileProperty.fullpath] = path.fullpath
             file_contents.append(file_content)
         return pd.concat(file_contents)

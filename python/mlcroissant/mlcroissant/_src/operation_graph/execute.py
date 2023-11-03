@@ -1,19 +1,20 @@
 """Module to execute operations."""
 
+import collections
 import concurrent.futures
+import dataclasses
 from typing import Any
 
 from absl import logging
 import networkx as nx
 import pandas as pd
 
+from mlcroissant._src.operation_graph.base_operation import DataFrameOperation
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
+from mlcroissant._src.operation_graph.base_operation import PathOperation
 from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
-from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
-from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
-from mlcroissant._src.operation_graph.operations.read import Read
 
 
 def execute_downloads(operations: Operations):
@@ -53,11 +54,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: dict[Operation, Any] = {}
     for operation in _order_relevant_operations(operations, record_set):
-        previous_results = [
-            results[previous_operation]
-            for previous_operation in operations.predecessors(operation)
-            if previous_operation in results
-        ]
+        previous_results = operation.previous_results(results)
         logging.info("Executing %s", operation)
         results[operation] = operation(*previous_results)
         if isinstance(operation, GroupRecordSetEnd):
@@ -70,11 +67,18 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                 yield from results[operation]
 
 
+@dataclasses.dataclass
+class _GeneratorManager:
+    """Implements a state manager to propagate that the iteration must stop."""
+
+    should_continue: bool = True
+
+
 def execute_operations_in_streaming(
     record_set: str,
     operations: Operations,
     list_of_operations: list[Operation] | None = None,
-    result: Any = None,
+    results: collections.defaultdict[Operation, Any] = collections.defaultdict(list),
 ):
     """Executes operation and streams results when reading files.
 
@@ -82,54 +86,45 @@ def execute_operations_in_streaming(
     order not to block on long operations. Instead of downloading the entire dataset,
     we only download the needed files, yield element, then proceed to the next file.
     """
+    manager = _GeneratorManager()
     if list_of_operations is None:
         list_of_operations = _order_relevant_operations(operations, record_set)
     for i, operation in enumerate(list_of_operations):
-        if isinstance(operation, GroupRecordSetStart):
-            if operation.node.name != record_set:
-                continue
-            yield from build_record_set(operations, operation, result)
-            return
-        elif isinstance(operation, Read):
-            # At this stage `result` can be either a Path or a list of Paths.
-            if not isinstance(result, list):
-                result = [result]
+        previous_results = operation.previous_results(results)
 
-            def read_all_files():
-                for file in result:
-                    # Read files separately and keep executing subsequent operations.
+        if isinstance(operation, GroupRecordSetEnd):
+            yield from operation(*previous_results)
+            return
+
+        def execute_operation_on_rows():
+            is_df_operation = isinstance(operation, DataFrameOperation)
+            is_file_operation = isinstance(operation, PathOperation)
+            if is_df_operation:
+                # Execute subsequent operations on each row of the dataframe.
+                rows = (
+                    pd.DataFrame(series, copy=False).T.reset_index()
+                    for _, series in next(previous_results).iterrows()
+                )
+            elif is_file_operation:
+                # Execute subsequent operations on each element of the list.
+                rows = previous_results
+            if is_df_operation or is_file_operation:
+                for row in rows:
                     logging.info("Executing %s", operation)
+                    result = operation(row)
+                    results[operation] = result
                     yield from execute_operations_in_streaming(
                         record_set=record_set,
                         operations=operations,
                         list_of_operations=list_of_operations[i + 1 :],
-                        result=operation(file),
+                        results=results,
                     )
+                    manager.should_continue = False
+            else:
+                logging.info("Executing %s", operation)
+                result = operation(*previous_results)
+                results[operation] = result
 
-            yield from read_all_files()
+        yield from execute_operation_on_rows()
+        if not manager.should_continue:
             return
-        else:
-            logging.info("Executing %s", operation)
-            if isinstance(operation, ReadField):
-                continue
-            result = operation(result)
-
-
-def build_record_set(
-    operations: Operations, operation: GroupRecordSetStart, result: pd.DataFrame
-):
-    """Builds a RecordSet from all ReadField children in the operation graph."""
-    descendants = (
-        operation
-        for operation in nx.descendants(operations, operation)
-        if isinstance(operation, GroupRecordSetEnd)
-    )
-    group_record_set_end = next(descendants)
-    for _, line in result.iterrows():
-        read_fields = []
-        for read_field in operations.successors(operation):
-            assert isinstance(read_field, ReadField)
-            df = pd.DataFrame(line, copy=False).T.reset_index()
-            read_fields.append(read_field(df))
-        logging.info("Executing %s", group_record_set_end)
-        yield from group_record_set_end(*read_fields)

@@ -76,7 +76,7 @@ def _extract_value(df: pd.DataFrame, field: Field) -> pd.Series:
     """Extracts the value according to the field rules."""
     source = field.source
     if source.extract.file_property == FileProperty.content:
-        return df[FileProperty.filepath].apply(_read_file)
+        return df[FileProperty.filepath].apply(_read_file).T[0]
     elif source.extract.file_property == FileProperty.lines:
         if FileProperty.lines in df:
             return df[FileProperty.lines]
@@ -92,10 +92,20 @@ def _extract_value(df: pd.DataFrame, field: Field) -> pd.Series:
     else:
         column_name = source.get_field()
         possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
-        assert (
-            column_name in df
-        ), f'Field "{column_name}" does not exist. Possible fields: {possible_fields}'
-        return df[column_name]
+        assert column_name in df, (
+            f'Column "{column_name}" does not exist. Inspect the ancestors of the field'
+            f" {field} to understand why. Possible fields: {possible_fields}"
+        )
+        result = df[column_name]
+        if isinstance(result, pd.Series):
+            return result
+        else:
+            # This will be a one-line series. We need this to avoid e.g. dictionaries
+            # to be converted to multi-line series:
+            # pd.Series({"index": 1, "value": "a"}) -> index    1
+            #                                          value    a
+            # instead of:                                  0    {"index": 1, ...}
+            return pd.Series(result, index=[0], copy=False)
 
 
 def _name_series(series: pd.Series, field: Field) -> pd.Series:

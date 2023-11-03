@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import abc
 import dataclasses
-from typing import Iterable
+from typing import Any, Iterable
 
 import networkx as nx
+import pandas as pd
 
+from mlcroissant._src.core.path import Path
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
@@ -117,3 +119,31 @@ class Operation(abc.ABC):
         for left_operation in left_operations:
             self.operations.add_edge(left_operation, right_operation)
         return right_operation
+
+    def previous_results(self, results: dict[Operation, Any]) -> Iterable[Any]:
+        """Generates all previous results for the `operation` from `results`."""
+        for previous_operation in self.operations.predecessors(self):
+            if previous_operation in results:
+                result = results[previous_operation]
+                if isinstance(result, list):
+                    yield from result
+                else:
+                    yield result
+
+
+class PathOperation(Operation):
+    """Operation on paths that takes into input `*paths`."""
+
+    @abc.abstractmethod
+    def __call__(self, *paths: Path) -> Path | list[Path] | pd.DataFrame:
+        """Abstract method to implement when an operation is called."""
+        raise NotImplementedError
+
+
+class DataFrameOperation(Operation):
+    """Operation on a pd.DataFrame that takes into input a DataFrame."""
+
+    @abc.abstractmethod
+    def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Abstract method to implement when an operation is called."""
+        raise NotImplementedError

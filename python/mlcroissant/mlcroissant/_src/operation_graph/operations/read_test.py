@@ -51,7 +51,7 @@ def test_explicit_message_when_pyarrow_is_not_installed():
             with pytest.raises(
                 ImportError, match=".*pip install mlcroissant\\[parquet\\].*"
             ):
-                read([file])
+                read(file)
 
 
 def test_reading_method():

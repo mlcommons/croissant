@@ -5,12 +5,13 @@ from typing import Any, Iterator
 
 import pandas as pd
 
+from mlcroissant._src.operation_graph.base_operation import DataFrameOperation
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class GroupRecordSetStart(Operation):
+class GroupRecordSetStart(DataFrameOperation):
     """Starts the record set.
 
     This operation only forwards the argument from previous operations. It is useful in
