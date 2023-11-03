@@ -1,7 +1,7 @@
 """Group operation module."""
 
 import dataclasses
-from typing import Any
+from typing import Any, Iterator
 
 import pandas as pd
 
@@ -36,7 +36,7 @@ class GroupRecordSetEnd(Operation):
                 return field.name
         return column_name
 
-    def __call__(self, *all_series: pd.DataFrame) -> pd.DataFrame:
+    def __call__(self, *all_series: pd.DataFrame) -> Iterator[pd.DataFrame]:
         """See class' docstring."""
         length = max([len(series) for series in all_series])
         index = pd.RangeIndex(length)
@@ -50,4 +50,4 @@ class GroupRecordSetEnd(Operation):
             result: dict[str, Any] = {}
             for column in df.columns:
                 result[column] = row[column]
-            yield result
+            yield pd.DataFrame(result)
