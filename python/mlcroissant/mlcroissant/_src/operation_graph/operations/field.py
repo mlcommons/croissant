@@ -112,7 +112,7 @@ class ReadField(Operation):
 
     node: Field
 
-    def __call__(self, df: pd.DataFrame) -> Any:
+    def __call__(self, df: pd.DataFrame) -> pd.Series:
         """See class' docstring."""
         value = _extract_value(df, self.node)
         transforms = functools.partial(apply_transforms_fn, source=self.node.source)
