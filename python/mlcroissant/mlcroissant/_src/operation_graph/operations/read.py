@@ -97,11 +97,9 @@ class Read(Operation):
                     return parse_json_content(json_content, self.fields)
                 else:
                     # Raw files are returned as a one-line pd.DataFrame.
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [json_content],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [json_content],
+                    })
             elif encoding_format == EncodingFormat.JSON_LINES:
                 return pd.read_json(file, lines=True)
             elif encoding_format == EncodingFormat.PARQUET:
@@ -119,22 +117,18 @@ class Read(Operation):
                         filepath, header=None, names=[FileProperty.lines]
                     )
                 else:
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [file.read()],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [file.read()],
+                    })
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
                 )
 
-    def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
+    def __call__(self, *paths: Path) -> pd.DataFrame:
         """See class' docstring."""
-        if isinstance(files, Path):
-            files = [files]
         file_contents = []
-        for file in files:
+        for path in paths:
             # The FileObject is extracted from another FileObject/FileSet:
             if (
                 isinstance(self.node, FileObject)
@@ -142,9 +136,9 @@ class Read(Operation):
                 and self.node.contained_in
             ):
                 content_url = self.node.content_url
-                file = Path(
-                    filepath=file.filepath / content_url,
-                    fullpath=file.fullpath / content_url,
+                path = Path(
+                    filepath=path.filepath / content_url,
+                    fullpath=path.fullpath / content_url,
                 )
             # The FileObject comes from disk:
             elif (
@@ -153,16 +147,16 @@ class Read(Operation):
                 and not is_url(self.node.content_url)
             ):
                 # Read from the local path
-                assert file.filepath.exists(), (
+                assert path.filepath.exists(), (
                     f'In node "{self.node.uid}", file "{self.node.content_url}" is'
                     " either an invalid URL or an invalid path."
                 )
             assert self.node.encoding_format, "Encoding format is not specified."
-            file_content = self._read_file_content(self.node.encoding_format, file)
+            file_content = self._read_file_content(self.node.encoding_format, path)
             if _should_append_line_numbers(self.fields):
                 file_content[FileProperty.lineNumbers] = range(len(file_content))
-            file_content[FileProperty.filepath] = file.filepath
-            file_content[FileProperty.filename] = file.filename
-            file_content[FileProperty.fullpath] = file.fullpath
+            file_content[FileProperty.filepath] = path.filepath
+            file_content[FileProperty.filename] = path.filename
+            file_content[FileProperty.fullpath] = path.fullpath
             file_contents.append(file_content)
         return pd.concat(file_contents)

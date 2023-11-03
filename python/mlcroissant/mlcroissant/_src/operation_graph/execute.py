@@ -1,6 +1,7 @@
 """Module to execute operations."""
 
 import concurrent.futures
+import dataclasses
 from typing import Any
 
 from absl import logging
@@ -10,9 +11,10 @@ import pandas as pd
 from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
+from mlcroissant._src.operation_graph.operations import FilterFiles
+from mlcroissant._src.operation_graph.operations import Read
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.download import Download
-from mlcroissant._src.operation_graph.operations.read import Read
 
 
 def execute_downloads(operations: Operations):
@@ -53,16 +55,12 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
     results: dict[Operation, Any] = {}
     for operation in _order_relevant_operations(operations, record_set):
         try:
-            previous_results = [
-                results[previous_operation]
-                for previous_operation in operations.predecessors(operation)
-                if previous_operation in results
-            ]
+            previous_results = operation.previous_results(results)
             logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)
             if isinstance(operation, ReadFields):
                 if operation.node.name != record_set:
-                    # The RecordSet will be used later in the graph by another RecordSet
+                    # The RecordSet will be used later in the graph by another RecordSet.
                     # This could be multi-threaded to build the pd.DataFrame faster.
                     results[operation] = pd.DataFrame(list(results[operation]))
                 else:
@@ -75,11 +73,18 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
             ) from e
 
 
+@dataclasses.dataclass
+class _GeneratorManager:
+    """Implements a state manager to propagate that the iteration must stop."""
+
+    should_continue: bool = True
+
+
 def execute_operations_in_streaming(
     record_set: str,
     operations: Operations,
     list_of_operations: list[Operation] | None = None,
-    result: Any = None,
+    results: dict[Operation, Any] = dict(),
 ):
     """Executes operation and streams results when reading files.
 
@@ -87,38 +92,39 @@ def execute_operations_in_streaming(
     order not to block on long operations. Instead of downloading the entire dataset,
     we only download the needed files, yield element, then proceed to the next file.
     """
+    manager = _GeneratorManager()
     if list_of_operations is None:
         list_of_operations = _order_relevant_operations(operations, record_set)
     for i, operation in enumerate(list_of_operations):
         try:
-            if isinstance(operation, ReadFields):
-                if operation.node.name != record_set:
-                    continue
-                yield from operation(result)
-                return
-            elif isinstance(operation, Read):
-                # At this stage `result` can be either a Path or a list of Paths.
-                if not isinstance(result, list):
-                    result = [result]
+            previous_results = operation.previous_results(results)
 
-                def read_all_files():
-                    for file in result:
-                        # Read files separately and keep executing subsequent operations
+            if isinstance(operation, ReadFields):
+                yield from operation(*previous_results)
+                return
+
+            def execute_operation_on_rows():
+                is_file_operation = isinstance(operation, (FilterFiles, Read))
+                if is_file_operation:
+                    for row in previous_results:
                         logging.info("Executing %s", operation)
+                        result = operation(row)
+                        results[operation] = result
                         yield from execute_operations_in_streaming(
                             record_set=record_set,
                             operations=operations,
                             list_of_operations=list_of_operations[i + 1 :],
-                            result=operation(file),
+                            results=results,
                         )
+                        manager.should_continue = False
+                else:
+                    logging.info("Executing %s", operation)
+                    result = operation(*previous_results)
+                    results[operation] = result
 
-                yield from read_all_files()
+            yield from execute_operation_on_rows()
+            if not manager.should_continue:
                 return
-            else:
-                logging.info("Executing %s", operation)
-                if isinstance(operation, ReadFields):
-                    continue
-                result = operation(result)
         except Exception as e:
             raise GenerationError(
                 "An error occured during the streaming generation of the dataset, more"
