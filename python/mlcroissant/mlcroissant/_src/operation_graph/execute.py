@@ -40,11 +40,12 @@ def _order_relevant_operations(
         )
     )
     ancestors = set(nx.ancestors(operations, group_record_set))
+    # Return GroupRecordSetEnd and all its ancestors
     return [
         operation
         for operation in nx.topological_sort(operations)
         # If the operation is not a needed operation to compute `record_set`, skip it:
-        if operation in ancestors
+        if operation in ancestors or operation == group_record_set
     ]
 
 
@@ -56,35 +57,17 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
             results[previous_operation]
             for previous_operation in operations.predecessors(operation)
             if previous_operation in results
-            # Filter out results that yielded `None`.
-            and results[previous_operation] is not None
         ]
-        if isinstance(operation, GroupRecordSetStart):
-            assert len(previous_results) == 1, (
-                f'"{operation}" should have one and only one predecessor. Got:'
-                f" {len(previous_results)}."
-            )
-            result = previous_results[0]
-            built_record_set = build_record_set(operations, operation, result)
+        logging.info("Executing %s", operation)
+        results[operation] = operation(*previous_results)
+        if isinstance(operation, GroupRecordSetEnd):
             if operation.node.name != record_set:
                 # The RecordSet will be used later in the graph by another RecordSet.
                 # This could be multi-threaded to build the pd.DataFrame faster.
-                built_record_set = pd.DataFrame(list(built_record_set))
-                if not built_record_set.empty:
-                    results[operation] = built_record_set
-                    # Propagate the result to all `ReadField` children.
-                    for successor in operations.successors(operation):
-                        results[successor] = built_record_set
+                results[operation] = pd.DataFrame(list(results[operation]))
             else:
                 # This is the target RecordSet, so we can yield records.
-                yield from built_record_set
-        elif isinstance(operation, GroupRecordSetEnd):
-            if operation.node.name != record_set:
-                logging.info("Executing %s", operation)
-                results[operation] = operation(*previous_results)
-        elif not isinstance(operation, ReadField):
-            logging.info("Executing %s", operation)
-            results[operation] = operation(*previous_results)
+                yield from results[operation]
 
 
 def execute_operations_in_streaming(
@@ -136,10 +119,17 @@ def build_record_set(
     operations: Operations, operation: GroupRecordSetStart, result: pd.DataFrame
 ):
     """Builds a RecordSet from all ReadField children in the operation graph."""
+    descendants = (
+        operation
+        for operation in nx.descendants(operations, operation)
+        if isinstance(operation, GroupRecordSetEnd)
+    )
+    group_record_set_end = next(descendants)
     for _, line in result.iterrows():
         read_fields = []
         for read_field in operations.successors(operation):
             assert isinstance(read_field, ReadField)
-            read_fields.append(read_field(line))
-        logging.info("Executing %s", operation)
-        yield from operation(*read_fields)
+            df = pd.DataFrame(line, copy=False).T.reset_index()
+            read_fields.append(read_field(df))
+        logging.info("Executing %s", group_record_set_end)
+        yield from group_record_set_end(*read_fields)
