@@ -117,4 +117,4 @@ class ReadField(Operation):
         value = _extract_value(df, self.node)
         transforms = functools.partial(apply_transforms_fn, source=self.node.source)
         cast = functools.partial(_cast_value, data_type=self.node.data_type)
-        return _name_series(series.apply(transforms).apply(cast), self.node)
+        return _name_series(value.apply(transforms).apply(cast), self.node)
