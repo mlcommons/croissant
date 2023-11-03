@@ -48,37 +48,47 @@ def _to_bytes(value: Any) -> bytes:
         return bytes(value)
 
 
-def _extract_lines(name: str, path: epath.PathLike) -> pd.Series:
+def _read_file(path: epath.PathLike) -> bytes:
+    """Reads a binary file."""
+    return epath.Path(path).open("rb").read()
+
+
+def _extract_lines(
+    path: epath.PathLike,
+    name: str,
+) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
     path = epath.Path(path)
     lines = path.open("rb").read().splitlines()
     return pd.Series(lines, name=name)
 
 
-def _extract_line_numbers(name: str, path: epath.PathLike) -> pd.Series:
+def _extract_line_numbers(
+    path: epath.PathLike,
+    name: str,
+) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
-    lines = _extract_lines(name, path)
+    lines = _extract_lines(path, name)
     return pd.Series(range(len(lines)), name=name)
 
 
-def _extract_value(df: pd.DataFrame, field: Field) -> Any:
+def _extract_value(df: pd.DataFrame, field: Field) -> pd.Series:
     """Extracts the value according to the field rules."""
     source = field.source
     if source.extract.file_property == FileProperty.content:
-        filepath = df[FileProperty.filepath]
-        return epath.Path(filepath).open("rb").read()
+        return df[FileProperty.filepath].apply(_read_file)
     elif source.extract.file_property == FileProperty.lines:
         if FileProperty.lines in df:
             return df[FileProperty.lines]
         else:
-            filepath = df[FileProperty.filepath]
-            return _extract_lines(field.name, filepath)
+            series = df[FileProperty.filepath]
+            return series.apply(_extract_lines, name=field.name).T[0]
     elif source.extract.file_property == FileProperty.lineNumbers:
         if FileProperty.lineNumbers in df:
             return df[FileProperty.lineNumbers]
         else:
-            filepath = df[FileProperty.filepath]
-            return _extract_line_numbers(field.name, filepath)
+            series = df[FileProperty.filepath]
+            return series.apply(_extract_line_numbers, name=field.name).T[0]
     else:
         column_name = source.get_field()
         possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
@@ -88,12 +98,9 @@ def _extract_value(df: pd.DataFrame, field: Field) -> Any:
         return df[column_name]
 
 
-def _convert_to_series(value: Any, field: Field) -> pd.Series:
-    """Converts `value` to a pd.Series even if it has one line."""
-    if isinstance(value, pd.Series):
-        return value
-    else:
-        return pd.Series([value], name=field.name)
+def _name_series(series: pd.Series, field: Field) -> pd.Series:
+    """Names the series without copying it."""
+    return pd.Series(series, name=field.name, copy=False)
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -108,7 +115,7 @@ class ReadField(Operation):
     def __call__(self, df: pd.DataFrame) -> pd.Series:
         """See class' docstring."""
         value = _extract_value(df, self.node)
-        series = _convert_to_series(value, self.node)
+        series = _name_series(value, self.node)
         transforms = functools.partial(apply_transforms_fn, source=self.node.source)
         cast = functools.partial(_cast_value, data_type=self.node.data_type)
         return series.apply(transforms).apply(cast)

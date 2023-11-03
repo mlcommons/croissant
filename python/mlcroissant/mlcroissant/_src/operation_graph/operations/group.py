@@ -11,11 +11,32 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class GroupRecordSetStart(Operation):
-    """Groups fields as a record set."""
+    """Starts the record set.
+
+    This operation only forwards the argument from previous operations. It is useful in
+    the graph of operations to mark a separation before ReadFields start.
+    """
 
     node: RecordSet
 
-    def __call__(self, *all_series: pd.Series):
+    def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
+        """See class' docstring."""
+        return df
+
+
+class GroupRecordSetEnd(Operation):
+    """Bundles all fields into a dictionary at the end."""
+
+    node: RecordSet
+
+    def _map_column_name(self, column_name: str) -> str:
+        """Maps the column name from the previous name to the field's name if needed."""
+        for field in self.node.fields:
+            if field.source.extract.column == column_name:
+                return field.name
+        return column_name
+
+    def __call__(self, *all_series: pd.DataFrame) -> pd.DataFrame:
         """See class' docstring."""
         length = max([len(series) for series in all_series])
         index = pd.RangeIndex(length)
@@ -30,15 +51,3 @@ class GroupRecordSetStart(Operation):
             for column in df.columns:
                 result[column] = row[column]
             yield result
-
-
-class GroupRecordSetEnd(Operation):
-    """Gathers all records at the end."""
-
-    node: RecordSet
-
-    def __call__(self, *args: pd.DataFrame) -> pd.DataFrame:
-        """See class' docstring."""
-        if not args:
-            raise ValueError("Empty RecordSet yielded 0 pd.DataFrame.")
-        return args[0]

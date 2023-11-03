@@ -78,7 +78,7 @@ def test_extract_lines(separator):
         path = tempdir + "/file.txt"
         with open(path, "wb") as f:
             f.write(content)
-        series = field._extract_lines("foo", path)
+        series = field._extract_lines(path, "foo")
         expected = pd.Series(
             [b"bon jour  ", b"", b" h\xc3\xa9llo ", b"hallo "], name="foo"
         )

@@ -51,7 +51,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
     print(
         "If this test fails, update JSONL with: `python mlcroissant/scripts/load.py"
         f" --file ../../datasets/{dataset_name} --record_set"
-        f" {record_set_name} --update_output --num_records {num_records} --debug`"
+        f" {record_set_name} --num_records {num_records} --debug --update_output`"
     )
     config = (
         epath.Path(__file__).parent.parent.parent.parent.parent
