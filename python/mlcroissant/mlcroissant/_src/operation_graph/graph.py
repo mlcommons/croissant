@@ -52,9 +52,12 @@ def _add_operations_for_field_with_source(
     - `GroupRecordSetStart` to structure the final dict that is sent back to the user.
     """
     record_set = _find_record_set(node)
+    operation = operations.last_operations(node, only_leaf=True)
+    has_join = any(field for field in record_set.fields if field.references.uid)
+    if has_join:
+        operation = [operation >> Join(operations=operations, node=record_set)]
     (
-        operations.last_operations(node, only_leaf=True)
-        >> Join(operations=operations, node=record_set)
+        operation
         >> GroupRecordSetStart(operations=operations, node=record_set)
         >> ReadField(operations=operations, node=node)
         >> GroupRecordSetEnd(operations=operations, node=record_set)
