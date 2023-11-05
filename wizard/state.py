@@ -4,7 +4,9 @@ In the future, this could be the serialization format between front and back.
 """
 
 import dataclasses
+
 import streamlit as st
+
 import mlcroissant as mlc
 
 
@@ -30,7 +32,9 @@ def init_state():
 
 
 class CurrentStep:
-    pass
+    start = "start"
+    load = "load"
+    editor = "editor"
 
 
 class Files:

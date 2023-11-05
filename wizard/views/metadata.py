@@ -1,7 +1,7 @@
-from state import Metadata
 from state import CurrentStep
-from utils import needed_field
+from state import Metadata
 import streamlit as st
+from utils import needed_field
 
 # List from https://www.kaggle.com/discussions/general/116302.
 licenses = [
@@ -23,8 +23,6 @@ licenses = [
 
 
 def render_metadata():
-    if st.session_state[CurrentStep] == "start":
-        "Start Entering Metadata about your files:"
     name = st.text_input(
         label=needed_field("Name"),
         value=st.session_state[Metadata].name,

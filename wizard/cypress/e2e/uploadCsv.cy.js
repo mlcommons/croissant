@@ -4,14 +4,6 @@ import 'cypress-file-upload';
 
 describe('Wizard from local CSV', () => {
   it('should display the form: Metadata, Files, & Record Sets', () => {
-    const resizeObserverLoopErrRe = /ResizeObserver loop limit exceeded/
-
-    // consensus was that this exception didn't matter mostly, and was intermittent when running tests.
-    Cypress.on('uncaught:exception', err => {
-      if (resizeObserverLoopErrRe.test(err.message)) {
-        return false
-      }
-    })
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
     cy.get('button').contains('Create').click()
@@ -37,14 +29,6 @@ describe('Wizard from local CSV', () => {
     cy.get('button').contains('Add').click()
   })
   it('should allow uploading existing croissant files', () => {
-    const resizeObserverLoopErrRe = /ResizeObserver loop limit exceeded/
-
-    // consensus was that this exception didn't matter mostly, and was intermittent when running tests.
-    Cypress.on('uncaught:exception', err => {
-      if (resizeObserverLoopErrRe.test(err.message)) {
-        return false
-      }
-    })
 
     cy.visit('http://localhost:8501')
     cy.get('button').contains('Load').click()

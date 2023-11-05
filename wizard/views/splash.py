@@ -1,5 +1,7 @@
+from state import CurrentStep
 import streamlit as st
 from state import set_form_step
+
 
 def render_splash():
     st.text("Welcome to the Croissant Wizard, would you like to load an existing croissant file, or create a new one?")
@@ -8,13 +10,13 @@ def render_splash():
         st.button(
             "Load",
             on_click=set_form_step,
-            args=["Jump", "load"],
+            args=["Jump", CurrentStep.load],
             type="primary",
         )
     with col2:
         st.button(
             "Create",
             on_click=set_form_step,
-            args=["Jump", "editor"],
+            args=["Jump", CurrentStep.editor],
             type="primary",
         )

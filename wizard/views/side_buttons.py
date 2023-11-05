@@ -11,21 +11,21 @@ def render_side_buttons():
         st.button(
             "Metadata",
             on_click=set_form_step,
-            args=["Jump", "metadata"],
+            args=["Jump", CurrentStep.editor],
             type=button_type("metadata"),
             use_container_width=True,
         )
         st.button(
             "Files",
             on_click=set_form_step,
-            args=["Jump", "files"],
+            args=["Jump", CurrentStep.editor],
             type=button_type("files"),
             use_container_width=True,
         )
         st.button(
             "RecordSets",
             on_click=set_form_step,
-            args=["Jump", 3],
+            args=["Jump", CurrentStep.editor],
             type=button_type("recordsets"),
             use_container_width=True,
         )
