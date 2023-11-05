@@ -24,5 +24,3 @@ elif st.session_state[CurrentStep] == CurrentStep.editor:
         render_wizard()
 else:
     st.warning("invalid unhandled app state")
-
-
