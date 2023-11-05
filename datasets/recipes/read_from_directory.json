@@ -42,7 +42,7 @@
       "@type": "sc:FileSet",
       "name": "files",
       "encodingFormat": "text/plain",
-      "includes": "data/*.txt"
+      "includes": "data/file*.txt"
     }
   ],
   "recordSet": [

@@ -1,6 +1,10 @@
 from state import CurrentStep
 import streamlit as st
+<<<<<<< HEAD
 from state import set_form_step
+=======
+from views.side_buttons import set_form_step
+>>>>>>> main
 
 
 def render_splash():

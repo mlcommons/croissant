@@ -50,6 +50,9 @@ git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
 
+[project.scripts]
+mlcroissant = "mlcroissant.scripts.cli:main"
+
 # Formatting configurations.
 [tool.black]
 line-length = 88
@@ -76,13 +79,12 @@ module = [
   "jsonpath_rw",
   "networkx",
   "pandas",
+  "pillow",
 ]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = [
-  "mlcroissant.scripts.migrations.previous.*"
-]
+module = ["mlcroissant.scripts.migrations.previous.*"]
 ignore_errors = true
 
 [tool.isort]
@@ -105,6 +107,4 @@ build-backend = "setuptools.build_meta"
 [tool.pytest.ini_options]
 # Pytest settings configurations.
 addopts = "--strict-markers"
-markers = [
-    "nonhermetic: Non-hermetic test cases (data from the internet)."
-]
+markers = ["nonhermetic: Non-hermetic test cases (data from the internet)."]

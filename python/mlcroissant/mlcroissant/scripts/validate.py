@@ -3,7 +3,7 @@
 Usage:
 
 ```
-python scripts/validate.py --file /path/to/file.json
+mlcroissant validate --file /path/to/file.json
 ```
 """
 

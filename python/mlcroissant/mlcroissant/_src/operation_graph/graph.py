@@ -5,7 +5,7 @@ import dataclasses
 from etils import epath
 import networkx as nx
 
-from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import Concatenate
@@ -52,9 +52,12 @@ def _add_operations_for_field_with_source(
     - `GroupRecordSetStart` to structure the final dict that is sent back to the user.
     """
     record_set = _find_record_set(node)
+    operation = operations.last_operations(node, only_leaf=True)
+    has_join = any(field for field in record_set.fields if field.references.uid)
+    if has_join:
+        operation = [operation >> Join(operations=operations, node=record_set)]
     (
-        operations.last_operations(node, only_leaf=True)
-        >> Join(operations=operations, node=record_set)
+        operation
         >> GroupRecordSetStart(operations=operations, node=record_set)
         >> ReadField(operations=operations, node=node)
         >> GroupRecordSetEnd(operations=operations, node=record_set)
@@ -194,7 +197,7 @@ class OperationGraph:
             elif isinstance(node, RecordSet) and node.data:
                 Data(operations=operations, node=node)
             elif isinstance(node, FileObject):
-                if node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
+                if node.encoding_format == EncodingFormat.GIT:
                     _add_operations_for_git(operations, node, folder)
                 else:
                     _add_operations_for_file_object(operations, node, folder)

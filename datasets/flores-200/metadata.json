@@ -1,0 +1,382 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "FLORES-200",
+  "description": "FLORES-200 is an evaluation benchmark for low-resource and multilingual machine translation",
+  "citation": [
+    "@article{nllb2022, author={NLLB Team, Marta R. Costa-juss\u00e0, James Cross, Onur \u00c7elebi, Maha Elbayad, Kenneth Heafield, Kevin Heffernan, Elahe Kalbassi,  Janice Lam, Daniel Licht, Jean Maillard, Anna Sun, Skyler Wang, Guillaume Wenzek, Al Youngblood, Bapi Akula, Loic Barrault, Gabriel Mejia Gonzalez, Prangthip Hansanti, John Hoffman, Semarley Jarrett, Kaushik Ram Sadagopan, Dirk Rowe, Shannon Spruit, Chau Tran, Pierre Andrews, Necip Fazil Ayan, Shruti Bhosale, Sergey Edunov, Angela Fan, Cynthia Gao, Vedanuj Goswami, Francisco Guzm\u00e1n, Philipp Koehn, Alexandre Mourachko, Christophe Ropers, Safiyyah Saleem, Holger Schwenk, Jeff Wang}, title={No Language Left Behind: Scaling Human-Centered Machine Translation}, year = {2022}}",
+    "@inproceedings{flores101, title={The FLORES-101  Evaluation Benchmark for Low-Resource and Multilingual Machine Translation}, author={Goyal, Naman and Gao, Cynthia and Chaudhary, Vishrav and Chen, Peng-Jen and Wenzek, Guillaume and Ju, Da and Krishnan, Sanjana and Ranzato, Marc'Aurelio and Guzm\\'{a}n, Francisco and Fan, Angela}, year={2021}}",
+    "@inproceedings{twoeval, title={Two New Evaluation Datasets for Low-Resource Machine Translation: Nepali-English and Sinhala-English}, author={Guzm\\'{a}n, Francisco and Chen, Peng-Jen and Ott, Myle and Pino, Juan and Lample, Guillaume and Koehn, Philipp and Chaudhary, Vishrav and Ranzato, Marc'Aurelio}, journal={arXiv preprint arXiv:1902.01382}, year={2019}}"
+  ],
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://github.com/facebookresearch/flores",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "tinyurl-repository",
+      "description": "Flores 200 is hosted on a webserver.",
+      "contentSize": "25585843 B",
+      "contentUrl": "https://tinyurl.com/flores200dataset",
+      "encodingFormat": "application/x-tar",
+      "sha256": "c764ffdeee4894b3002337c5b1e70ecf6f514c00"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "files-dev",
+      "description": "dev files are inside the tar.",
+      "containedIn": "tinyurl-repository",
+      "encodingFormat": "application/json",
+      "includes": "flores200_dataset/dev/*.dev"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "metadata-dev",
+      "description": "Contains labels for the records in each line in the dev files.",
+      "contentUrl": "flores200_dataset/metadata_dev.tsv",
+      "containedIn": "tinyurl-repository",
+      "encodingFormat": "text/tsv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "metadata-devtest",
+      "description": "Contains labels for the records in each line in the devtest files.",
+      "contentUrl": "flores200_dataset/metadata_devtest.tsv",
+      "containedIn": "tinyurl-repository",
+      "encodingFormat": "text/tsv"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "files-devtest",
+      "description": "devtest files are inside the tar.",
+      "containedIn": "tinyurl-repository",
+      "encodingFormat": "application/json",
+      "includes": "flores200_dataset/devtest/*.devtest"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "language_translations_train_data",
+      "description": "Training data for translations to different languages.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "files-dev",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "files-dev",
+            "extract": {
+              "fileProperty": "lines"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "files-dev",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "(.*)\\.dev$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "language_translations_train_data_with_metadata",
+      "description": "Training data and metadata for translations to different languages.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "language_translations_train_data/line_number"
+          },
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "language_translations_train_data/translation"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "language_translations_train_data/language"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "URL",
+          "description": "The URL of the English source of the sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "column": "URL"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "domain",
+          "description": "The domain of the English source of the sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "topic",
+          "description": "The topic of the sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "column": "topic"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "has_image",
+          "description": "Whether the source of the sentence has an image.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "column": "has_image"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "has_hyperlink",
+          "description": "Whether the sentence has a hyperlink.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-dev",
+            "extract": {
+              "column": "has_hyperlink"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "language_translations_test_data",
+      "description": "Testing data for translations to different languages.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "files-devtest",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "files-devtest",
+            "extract": {
+              "fileProperty": "lines"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "files-devtest",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "(.*)\\.devtest$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "language_translations_test_data_with_metadata",
+      "description": "Testing data and metadata for translations to different languages.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "line_number",
+          "description": "The line number for extracted sentences.",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "language_translations_test_data/line_number"
+          },
+          "source": {
+            "distribution": "metadata-devtest",
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "language_translations_test_data/translation"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "language_translations_test_data/language"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "URL",
+          "description": "The URL of the English source of the sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-devtest",
+            "extract": {
+              "column": "URL"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "domain",
+          "description": "The domain of the English source of the sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-devtest",
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "topic",
+          "description": "The topic of the sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-devtest",
+            "extract": {
+              "column": "topic"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "has_image",
+          "description": "Whether the source of the sentence has an image.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-devtest",
+            "extract": {
+              "column": "has_image"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "has_hyperlink",
+          "description": "Whether the sentence has a hyperlink.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata-devtest",
+            "extract": {
+              "column": "has_hyperlink"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
