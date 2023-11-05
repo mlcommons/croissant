@@ -1,6 +1,7 @@
-from st_state import Metadata
-from st_views.st_utils import needed_field
+from state import CurrentStep
+from state import Metadata
 import streamlit as st
+from utils import needed_field
 
 # List from https://www.kaggle.com/discussions/general/116302.
 licenses = [

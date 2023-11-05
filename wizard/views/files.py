@@ -4,27 +4,28 @@ from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 import pandas as pd
-from st_state import Files
-from st_state import RecordSets
-from st_views.st_utils import DF_HEIGHT
-from st_views.st_utils import needed_field
+from state import Files
+from state import RecordSets
 import streamlit as st
+from utils import DF_HEIGHT
+from utils import needed_field
 
 
 def render_files():
-    is_local = st.toggle("Local files?")
     with st.form(key="manual_urls", clear_on_submit=True):
         url = None
         uploaded_file = None
         file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
-        if is_local:
-            uploaded_file = st.file_uploader("Import from a local file")
-        else:
-            url = st.text_input("Import from a URL")
-        submitted = st.form_submit_button("Submit")
+        st.divider()
+        uploaded_file = st.file_uploader("Import from a local file")
+        st.text("Or")
+        url = st.text_input("Import from a URL")
+        st.divider()
+        submitted = st.form_submit_button("Add")
         if submitted:
             file_type = FILE_TYPES[file_type_name]
-            if url is not None:
+            # despite the api stating this, the default value for a text input is "" not None
+            if url is not None and url != "":
                 file = file_from_url(file_type, url)
             elif uploaded_file is not None:
                 file = file_from_upload(file_type, uploaded_file)
@@ -47,7 +48,7 @@ def render_files():
                 }
             )
     for key, file in enumerate(st.session_state[Files]):
-        with st.expander(f"{file.encoding_format} - {file.name}", expanded=True):
+        with st.container():
 
             def delete_line():
                 del st.session_state[Files][key]

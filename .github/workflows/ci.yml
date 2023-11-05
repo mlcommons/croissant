@@ -259,7 +259,7 @@ jobs:
 
     - uses: cypress-io/github-action@v6
       with:
-        start: streamlit run st_app.py
+        start: streamlit run app.py
         wait-on: 'http://localhost:8501'
         working-directory: ./wizard
 
