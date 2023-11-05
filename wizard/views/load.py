@@ -1,6 +1,8 @@
 import os
 import tempfile
 
+from state import CurrentStep
+from state import set_form_step
 import streamlit as st
 from utils import LOADED_CROISSANT
 
@@ -8,7 +10,7 @@ import mlcroissant as mlc
 
 
 def render_load():
-    col1, col2 = st.columns([1,2], gap="small")
+    col1, col2 = st.columns([1, 2], gap="small")
     with col1:
         file = st.file_uploader("Select a croissant file to load")
     if file is not None:
@@ -19,8 +21,8 @@ def render_load():
             with open(new_file_name, mode="wb+") as outfile:
                 outfile.write(content)
             dataset = mlc.Dataset(new_file_name)
-            
-
+            # don't worry for now how info gets into state
+            set_form_step("Jump", step=CurrentStep.overview)
         except mlc.ValidationError as e:
             st.warning(e)
             st.toast(body="Invalid Croissant File!", icon="🔥")

@@ -22,5 +22,11 @@ elif st.session_state[CurrentStep] == CurrentStep.editor:
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
         render_wizard()
+elif st.session_state[CurrentStep] == CurrentStep.overview:
+    col1, col2 = st.columns([1, 1], gap="medium")
+    with col1:
+        render_overview()
+    with col2:
+        render_errors()
 else:
     st.warning("invalid unhandled app state")

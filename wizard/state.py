@@ -29,6 +29,7 @@ class CurrentStep:
     start = "start"
     load = "load"
     editor = "editor"
+    overview = "overview"
 
 
 class Files:
@@ -53,3 +54,9 @@ class Metadata:
 
     def __bool__(self):
         return self.name != "" and self.url != ""
+
+
+def set_form_step(action, step=None):
+    """Maintains the user's location within the wizard."""
+    if action == "Jump" and step is not None:
+        st.session_state[CurrentStep] = step
