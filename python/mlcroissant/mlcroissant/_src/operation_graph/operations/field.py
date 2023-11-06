@@ -112,9 +112,11 @@ class ReadField(Operation):
 
     node: Field
 
-    def __call__(self, df: pd.DataFrame) -> Any:
+    def __call__(self, df: pd.DataFrame) -> pd.Series:
         """See class' docstring."""
         value = _extract_value(df, self.node)
+        series = _name_series(value, self.node)
         transforms = functools.partial(apply_transforms_fn, source=self.node.source)
         cast = functools.partial(_cast_value, data_type=self.node.data_type)
-        return _name_series(value.apply(transforms).apply(cast), self.node)
+        # PyType mistakenly infers the return type as `Any`.
+        return series.apply(transforms).apply(cast)  # pytype: disable=bad-return-type
