@@ -37,6 +37,7 @@ def download_git_lfs_file(file: Path):
     try:
         repo.execute(["git", "lfs", "pull", "--include", fullpath])
     except deps.git.exc.GitCommandError as ex:
-        if ("You called a Git command named 'lfs', which does not exist."
-                in ex.stderr):
-            raise RuntimeError("git lfs is not installed!") from ex
+        raise RuntimeError("Problem when launching `git lfs`. "
+                           "Possible problems: Have you installed git lfs "
+                           f"locally? Is '{fullpath}' a valid `git lfs` "
+                           "repository?") from ex
