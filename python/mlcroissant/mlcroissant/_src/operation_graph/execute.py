@@ -9,8 +9,6 @@ import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
-from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
-from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -30,17 +28,17 @@ def _order_relevant_operations(
     operations: Operations, record_set_name: str
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
-    # GroupRecordSetEnd linked to the `record_set_name`.
+    # ReadField linked to the `record_set_name`.
     group_record_set = next(
         (
             operation
             for operation in operations.nodes
-            if isinstance(operation, GroupRecordSetEnd)
+            if isinstance(operation, ReadField)
             and operation.node.name == record_set_name
         )
     )
     ancestors = set(nx.ancestors(operations, group_record_set))
-    # Return GroupRecordSetEnd and all its ancestors
+    # Return ReadField and all its ancestors
     return [
         operation
         for operation in nx.topological_sort(operations)
@@ -60,7 +58,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
         ]
         logging.info("Executing %s", operation)
         results[operation] = operation(*previous_results)
-        if isinstance(operation, GroupRecordSetEnd):
+        if isinstance(operation, ReadField):
             if operation.node.name != record_set:
                 # The RecordSet will be used later in the graph by another RecordSet.
                 # This could be multi-threaded to build the pd.DataFrame faster.
@@ -85,10 +83,10 @@ def execute_operations_in_streaming(
     if list_of_operations is None:
         list_of_operations = _order_relevant_operations(operations, record_set)
     for i, operation in enumerate(list_of_operations):
-        if isinstance(operation, GroupRecordSetStart):
+        if isinstance(operation, ReadField):
             if operation.node.name != record_set:
                 continue
-            yield from build_record_set(operations, operation, result)
+            yield from operation(result)
             return
         elif isinstance(operation, Read):
             # At this stage `result` can be either a Path or a list of Paths.
@@ -113,23 +111,3 @@ def execute_operations_in_streaming(
             if isinstance(operation, ReadField):
                 continue
             result = operation(result)
-
-
-def build_record_set(
-    operations: Operations, operation: GroupRecordSetStart, result: pd.DataFrame
-):
-    """Builds a RecordSet from all ReadField children in the operation graph."""
-    descendants = (
-        operation
-        for operation in nx.descendants(operations, operation)
-        if isinstance(operation, GroupRecordSetEnd)
-    )
-    group_record_set_end = next(descendants)
-    for _, line in result.iterrows():
-        read_fields = []
-        for read_field in operations.successors(operation):
-            assert isinstance(read_field, ReadField)
-            df = pd.DataFrame(line, copy=False).T.reset_index()
-            read_fields.append(read_field(df))
-        logging.info("Executing %s", group_record_set_end)
-        yield from group_record_set_end(*read_fields)

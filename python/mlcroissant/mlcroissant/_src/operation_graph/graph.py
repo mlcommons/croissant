@@ -13,7 +13,6 @@ from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations import Download
 from mlcroissant._src.operation_graph.operations import Extract
 from mlcroissant._src.operation_graph.operations import FilterFiles
-from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
 from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import Join
@@ -59,8 +58,7 @@ def _add_operations_for_field_with_source(
     (
         operation
         >> GroupRecordSetStart(operations=operations, node=record_set)
-        >> ReadField(operations=operations, node=node)
-        >> GroupRecordSetEnd(operations=operations, node=record_set)
+        >> ReadField(operations=operations, node=record_set)
     )
 
 
@@ -188,6 +186,10 @@ class OperationGraph:
         for node in nx.topological_sort(graph):
             if isinstance(node, Field):
                 parent = node.parent
+                # TODO(https://github.com/mlcommons/croissant/issues/310): Change the
+                # condition if isinstance(node, RecordSet). We don't need to iterate on
+                # fields anymore as all fields are computed at the RecordSet level with
+                # ReadFields.
                 parent_has_data = isinstance(parent, RecordSet) and parent.data
                 if node.source and not node.sub_fields and not parent_has_data:
                     _add_operations_for_field_with_source(

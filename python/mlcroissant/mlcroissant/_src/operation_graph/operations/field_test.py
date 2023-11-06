@@ -10,13 +10,14 @@ import pytest
 
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.operation_graph.operations import field
-from mlcroissant._src.tests.nodes import empty_field
+from mlcroissant._src.structure_graph.nodes.source import FileProperty
+from mlcroissant._src.tests.nodes import empty_record_set
 from mlcroissant._src.tests.operations import operations
 
 
 def test_str_representation():
-    operation = field.ReadField(operations=operations(), node=empty_field)
-    assert str(operation) == "ReadField(field_name)"
+    operation = field.ReadField(operations=operations(), node=empty_record_set)
+    assert str(operation) == "ReadField(record_set_name)"
 
 
 @pytest.mark.parametrize(
@@ -78,8 +79,16 @@ def test_extract_lines(separator):
         path = tempdir + "/file.txt"
         with open(path, "wb") as f:
             f.write(content)
-        series = field._extract_lines(path, "foo")
+        row = pd.Series({FileProperty.filepath: path})
+        series = field._extract_lines(row)
         expected = pd.Series(
-            [b"bon jour  ", b"", b" h\xc3\xa9llo ", b"hallo "], name="foo"
+            {
+                FileProperty.filepath: path,
+                FileProperty.lines: [b"bon jour  ", b"", b" h\xc3\xa9llo ", b"hallo "],
+                FileProperty.lineNumbers: [0, 1, 2, 3],
+            }
         )
         pd.testing.assert_series_equal(series, expected)
+
+
+# TODO: Add a test here.
