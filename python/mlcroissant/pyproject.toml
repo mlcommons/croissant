@@ -23,6 +23,7 @@ dependencies = [
   "jsonpath-rw",
   "networkx",
   "pandas",
+  "pandas-stubs",
   "rdflib",
   "requests",
   "tqdm",

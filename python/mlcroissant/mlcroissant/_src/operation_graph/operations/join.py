@@ -60,7 +60,8 @@ class Join(Operation):
                 f'Column "{right_key}" does not exist in node "{right.uid}".'
                 f" Existing columns: {df_right.columns}"
             )
-            df_left[left_key] = df_left[left_key].transform(
+            # Series can be indexed by left_key.
+            df_left[left_key] = df_left[left_key].transform(  # type: ignore[index]
                 apply_transforms_fn, source=left
             )
             return df_left.merge(

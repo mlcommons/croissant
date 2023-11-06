@@ -5,9 +5,30 @@ In the future, this could be the serialization format between front and back.
 
 import dataclasses
 
+import streamlit as st
+
+import mlcroissant as mlc
+
+
+def init_state():
+
+    if CurrentStep not in st.session_state:
+        st.session_state[CurrentStep] = "start"
+
+    if Files not in st.session_state:
+        st.session_state[Files] = []
+
+    if Metadata not in st.session_state:
+        st.session_state[Metadata] = Metadata()
+
+    if RecordSets not in st.session_state:
+        st.session_state[RecordSets] = []
+
 
 class CurrentStep:
-    pass
+    start = "start"
+    load = "load"
+    editor = "editor"
 
 
 class Files:

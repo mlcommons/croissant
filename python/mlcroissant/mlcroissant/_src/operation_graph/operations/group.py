@@ -36,7 +36,7 @@ class GroupRecordSetEnd(Operation):
                 return field.name
         return column_name
 
-    def __call__(self, *all_series: pd.DataFrame) -> Iterator[dict[str, Any]]:
+    def __call__(self, *all_series: pd.Series) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
         length = max([len(series) for series in all_series])
         index = pd.RangeIndex(length)
