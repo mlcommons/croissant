@@ -4,9 +4,11 @@ In the future, this could be the serialization format between front and back.
 """
 
 import dataclasses
-import streamlit as st
-import mlcroissant as mlc
 from typing import List
+
+import streamlit as st
+
+import mlcroissant as mlc
 
 
 def init_state():
@@ -23,29 +25,26 @@ class CurrentStep:
 
 @dataclasses.dataclass
 class Distribution:
-    name: str = ""
-    description: str = ""
-    contentSize: str = ""
-    contentUrl: str = ""
-    encodingFormat: str = ""
-    sha256: str = ""
+    name: str | None = None
+    description: str | None = None
+    content_size: str | None = None
+    content_url: str | None = None
+    encoding_format: str | None = None
+    sha256: str | None = None
     
 
 @dataclasses.dataclass
 class RecordSet:
-    pass
+    name: str = ""
+    description: str | None = None
+    is_enumeration: bool | None = None
+    key: str | list[str] | None = None
+    fields: list[Field] = []
 
 @dataclass.dataclass
 class Field:
-    name: str = ""
-    description: str = ""
-    dataType: str | str[] = ""
-    source: Source = Source()
-
-@dataclass.dataclass
-class Source:
-    distribution: Distribution = Distribution()
-    extract: 
+    name: str | None = None
+    description: str | None = None
 
 @dataclasses.dataclass
 class Metadata:
@@ -60,9 +59,52 @@ class Metadata:
     
 @dataclasses.dataclass
 class Croissant:
-    Metadata: Metadata = Metadata()
-    Files: List[Distribution] = []
-    RecordSets: List[RecordSet] = []
+    metadata: Metadata = Metadata()
+    distributions: list[Distribution] = []
+    record_sets: list[RecordSet] = []
 
-def WizardToCanonical(croi: Croissant):
-    pass
+def CanonicalToWizard(dataset: mlc.Dataset) -> Croissant:
+    canonical_metadata = dataset.metadata
+    metadata = Metadata(
+        name=canonical_metadata.name,
+        description=canonical_metadata.description,
+        citation=canonical_metadata.citation,
+        license=canonical_metadata.license,
+        url=canonical_metadata.url
+    )
+    distributions = []
+    for file in canonical_metadata.distribution:
+        if isinstance(file, mlc.FileObject):
+            distributions.append(Distribution(
+                name=file.name,
+                description=file.description,
+                content_size=file.content_size,
+                encoding_format=file.encoding_format,
+                sha256=file.sha256,
+            ))
+        else:
+            distributions.append(Distribution(
+                name=file.name,
+                description=file.description,
+                encoding_format=file.encoding_format,
+            ))
+    record_sets = []
+    for record_set in canonical_metadata.record_sets:
+        fields = []
+        for data_type in record_set.fields:
+            fields.append(Field(
+                name=data_type.name,
+                description=data_type.description
+            )) 
+        record_sets.append(RecordSet(
+            name=record_set.name,
+            description=record_set.description,
+            is_enumeration=record_set.is_enumeration,
+            key=record_set.key,
+            fields=fields
+        ))
+    return Croissant(
+        metadata=metadata,
+        distributions=distributions,
+        record_sets=record_sets
+    )
