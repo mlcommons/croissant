@@ -159,6 +159,7 @@ class Read(PathOperation):
             file_content = self._read_file_content(self.node.encoding_format, path)
             if _should_append_line_numbers(self.fields):
                 file_content[FileProperty.lineNumbers] = range(len(file_content))
+
             file_content[FileProperty.filepath] = path.filepath
             file_content[FileProperty.filename] = path.filename
             file_content[FileProperty.fullpath] = path.fullpath

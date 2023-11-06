@@ -59,8 +59,7 @@ def _add_operations_for_field_with_source(
     (
         operation
         >> GroupRecordSetStart(operations=operations, node=record_set)
-        >> ReadField(operations=operations, node=node)
-        >> GroupRecordSetEnd(operations=operations, node=record_set)
+        >> ReadField(operations=operations, node=record_set)
     )
 
 
@@ -188,6 +187,7 @@ class OperationGraph:
         for node in nx.topological_sort(graph):
             if isinstance(node, Field):
                 parent = node.parent
+                # Change the condition if isinstance(node, RecordSet)
                 parent_has_data = isinstance(parent, RecordSet) and parent.data
                 if node.source and not node.sub_fields and not parent_has_data:
                     _add_operations_for_field_with_source(

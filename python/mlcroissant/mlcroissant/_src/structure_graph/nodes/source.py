@@ -18,7 +18,7 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 
 
-class FileProperty(enum.Enum):
+class FileProperty(enum.IntEnum):
     """Lists the intrinsic properties of a file that are accessible from Croissant.
 
     Notes:
@@ -32,12 +32,12 @@ class FileProperty(enum.Enum):
       have one of the following names.
     """
 
-    content = "__content__"
-    filename = "__filename__"
-    filepath = "__filepath__"
-    fullpath = "__fullpath__"
-    lines = "__lines__"
-    lineNumbers = "__line_numbers__"
+    content = 1
+    filename = 2
+    filepath = 3
+    fullpath = 4
+    lines = 5
+    lineNumbers = 6
 
 
 def is_file_property(file_property: str):

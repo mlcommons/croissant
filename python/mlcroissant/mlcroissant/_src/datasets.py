@@ -102,6 +102,7 @@ class Records:
         can_stream_dataset = all(
             d == 1 or d == 2
             for operation, d in operations.degree()
+            # Replace with ReadField or remove altogether?
             if not isinstance(operation, (GroupRecordSetStart, GroupRecordSetEnd))
         )
         if can_stream_dataset:

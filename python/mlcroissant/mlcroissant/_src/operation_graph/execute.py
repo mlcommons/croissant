@@ -13,7 +13,7 @@ from mlcroissant._src.operation_graph.base_operation import DataFrameOperation
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.base_operation import PathOperation
-from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
+from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
 
 
@@ -31,17 +31,17 @@ def _order_relevant_operations(
     operations: Operations, record_set_name: str
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
-    # GroupRecordSetEnd linked to the `record_set_name`.
+    # ReadField linked to the `record_set_name`.
     group_record_set = next(
         (
             operation
             for operation in operations.nodes
-            if isinstance(operation, GroupRecordSetEnd)
+            if isinstance(operation, ReadField)
             and operation.node.name == record_set_name
         )
     )
     ancestors = set(nx.ancestors(operations, group_record_set))
-    # Return GroupRecordSetEnd and all its ancestors
+    # Return ReadField and all its ancestors
     return [
         operation
         for operation in nx.topological_sort(operations)
@@ -57,11 +57,12 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
         previous_results = operation.previous_results(results)
         logging.info("Executing %s", operation)
         results[operation] = operation(*previous_results)
-        if isinstance(operation, GroupRecordSetEnd):
+        if isinstance(operation, ReadField):
             if operation.node.name != record_set:
                 # The RecordSet will be used later in the graph by another RecordSet.
                 # This could be multi-threaded to build the pd.DataFrame faster.
                 results[operation] = pd.DataFrame(list(results[operation]))
+                print(">>>>", results[operation], operation)
             else:
                 # This is the target RecordSet, so we can yield records.
                 yield from results[operation]
@@ -92,7 +93,7 @@ def execute_operations_in_streaming(
     for i, operation in enumerate(list_of_operations):
         previous_results = operation.previous_results(results)
 
-        if isinstance(operation, GroupRecordSetEnd):
+        if isinstance(operation, ReadField):
             yield from operation(*previous_results)
             return
 

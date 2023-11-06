@@ -13,6 +13,7 @@ from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
@@ -48,69 +49,66 @@ def _to_bytes(value: Any) -> bytes:
         return bytes(value)
 
 
-def _read_file(path: epath.PathLike) -> bytes:
+def _read_file(row) -> bytes:
     """Reads a binary file."""
-    return epath.Path(path).open("rb").read()
+    path = row[FileProperty.filepath]
+    content = epath.Path(path).open("rb").read()
+    return pd.Series({**row, FileProperty.content: content})
 
 
 def _extract_lines(
-    path: epath.PathLike,
-    name: str,
+    row,
 ) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
-    path = epath.Path(path)
+    path = epath.Path(row[FileProperty.filepath])
     lines = path.open("rb").read().splitlines()
-    return pd.Series(lines, name=name)
+    return pd.Series(
+        {**row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))}
+    )
 
 
-def _extract_line_numbers(
-    path: epath.PathLike,
-    name: str,
-) -> pd.Series:
-    """Reads a file line-by-line and outputs a named pd.Series of the lines."""
-    lines = _extract_lines(path, name)
-    return pd.Series(range(len(lines)), name=name)
-
-
-def _extract_value(df: pd.DataFrame, field: Field) -> pd.Series:
+def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     """Extracts the value according to the field rules."""
     source = field.source
+    print(field, source)
+    column_name = source.get_field()
+    if column_name in df:
+        return df
     if source.extract.file_property == FileProperty.content:
-        return df[FileProperty.filepath].apply(_read_file).T[0]
+        return df.apply(_read_file, axis=1)
     elif source.extract.file_property == FileProperty.lines:
         if FileProperty.lines in df:
-            return df[FileProperty.lines]
+            return df
         else:
-            series = df[FileProperty.filepath]
-            return series.apply(_extract_lines, name=field.name).T[0]
+            df = df.apply(_extract_lines, axis=1)
+            return df.explode(
+                column=[FileProperty.lines, FileProperty.lineNumbers], ignore_index=True
+            )
     elif source.extract.file_property == FileProperty.lineNumbers:
         if FileProperty.lineNumbers in df:
-            return df[FileProperty.lineNumbers]
+            return df
         else:
-            series = df[FileProperty.filepath]
-            return series.apply(_extract_line_numbers, name=field.name).T[0]
-    else:
-        column_name = source.get_field()
-        possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
-        assert column_name in df, (
-            f'Column "{column_name}" does not exist. Inspect the ancestors of the field'
-            f" {field} to understand why. Possible fields: {possible_fields}"
-        )
-        result = df[column_name]
-        if isinstance(result, pd.Series):
-            return result
-        else:
-            # This will be a one-line series. We need this to avoid e.g. dictionaries
-            # to be converted to multi-line series:
-            # pd.Series({"index": 1, "value": "a"}) -> index    1
-            #                                          value    a
-            # instead of:                                  0    {"index": 1, ...}
-            return pd.Series(result, index=[0], copy=False)
-
-
-def _name_series(series: pd.Series, field: Field) -> pd.Series:
-    """Names the series without copying it."""
-    return pd.Series(series, name=field.name, copy=False)
+            df = df.apply(_extract_lines, axis=1)
+            return df.explode(
+                column=[FileProperty.lines, FileProperty.lineNumbers], ignore_index=True
+            )
+    # else:
+    #     assert False, "should not go here"
+    #     possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
+    #     assert column_name in df, (
+    #         f'Column "{column_name}" does not exist. Inspect the ancestors of the field'
+    #         f" {field} to understand why. Possible fields: {possible_fields}"
+    #     )
+    #     result = df[column_name]
+    #     if isinstance(result, pd.Series):
+    #         return result
+    #     else:
+    #         # This will be a one-line series. We need this to avoid e.g. dictionaries
+    #         # to be converted to multi-line series:
+    #         # pd.Series({"index": 1, "value": "a"}) -> index    1
+    #         #                                          value    a
+    #         # instead of:                                  0    {"index": 1, ...}
+    #         return pd.Series(result, index=[0], copy=False)
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -120,13 +118,28 @@ class ReadField(Operation):
     ReadField.__call__() outputs a single-column pd.Series whose name is the field name.
     """
 
-    node: Field
+    node: RecordSet
 
     def __call__(self, df: pd.DataFrame) -> pd.Series:
         """See class' docstring."""
-        value = _extract_value(df, self.node)
-        series = _name_series(value, self.node)
-        transforms = functools.partial(apply_transforms_fn, source=self.node.source)
-        cast = functools.partial(_cast_value, data_type=self.node.data_type)
-        # PyType mistakenly infers the return type as `Any`.
-        return series.apply(transforms).apply(cast)  # pytype: disable=bad-return-type
+        # TROUVER COMMENT ITERER SUR TOUS LES FIELDS... I.E. SUB FIELDS
+        fields: list[Field] = []
+        for field in self.node.fields:
+            if field.sub_fields:
+                for sub_field in field.sub_fields:
+                    fields.append(sub_field)
+            else:
+                fields.append(field)
+        for field in fields:
+            if not field.sub_fields:
+                df = _extract_value(df, field)
+        for _, row in df.iterrows():
+            result: dict[str, Any] = {}
+            for field in fields:
+                source = field.source
+                column = source.get_field()
+                value = row[column]
+                value = apply_transforms_fn(value, source=source)
+                value = _cast_value(value, field.data_type)
+                result[field.name] = value
+            yield result
