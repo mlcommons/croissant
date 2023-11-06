@@ -34,4 +34,10 @@ def download_git_lfs_file(file: Path):
     logging.info(
         "Downloading git-lfs file: %s in working dir: %s", fullpath, working_dir
     )
-    repo.execute(["git", "lfs", "pull", "--include", fullpath])
+    try:
+        repo.execute(["git", "lfs", "pull", "--include", fullpath])
+    except deps.git.exc.GitCommandError as ex:
+        raise RuntimeError("Problem when launching `git lfs`. "
+                           "Possible problems: Have you installed git lfs "
+                           f"locally? Is '{fullpath}' a valid `git lfs` "
+                           "repository?") from ex
