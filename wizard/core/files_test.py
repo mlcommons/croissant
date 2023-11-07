@@ -1,8 +1,9 @@
 from etils import epath
-from files import file_from_url
-from files import FileTypes
 import pandas as pd
 import pytest
+
+from .files import file_from_url
+from .files import FileTypes
 
 
 def test_check_file_csv():

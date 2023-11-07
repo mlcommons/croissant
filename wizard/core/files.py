@@ -6,7 +6,8 @@ import tempfile
 from etils import epath
 import pandas as pd
 import requests
-from state import FileObject
+
+from ..state import FileObject
 
 
 @dataclasses.dataclass
