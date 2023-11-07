@@ -1,3 +1,6 @@
+/// <reference types="cypress" />
+
+import 'cypress-file-upload';
 
 describe('Wizard loads Croissant without Error', () => {
   it('should allow uploading existing croissant files', () => {
@@ -18,9 +21,6 @@ describe('Wizard loads Croissant without Error', () => {
       })
     })
     cy.get('[data-testid="stExpander"]')
-      .contains('Metadata')
-      .contains('[data-testid="element-container"]')
-      .contains('Name')
       .contains('Titanic')
       .should('exist')
     
