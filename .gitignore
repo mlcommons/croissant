@@ -25,7 +25,7 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-cypress/screenshots/
+wizard/cypress/screenshots/
 
 MANIFEST
 
