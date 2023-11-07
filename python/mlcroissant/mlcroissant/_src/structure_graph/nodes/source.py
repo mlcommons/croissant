@@ -285,8 +285,8 @@ class Source:
             return False
         return hash(self) == hash(other)
 
-    def get_field(self) -> str | FileProperty:
-        """Retrieves the name of the field/column/query associated to the source."""
+    def get_column(self) -> str | FileProperty:
+        """Retrieves the name of the column associated to the source."""
         if self.uid is None:
             raise ValueError(
                 "No UID! This case already rose an issue and should not happen at run"

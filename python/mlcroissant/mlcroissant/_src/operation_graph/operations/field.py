@@ -67,7 +67,7 @@ def _extract_lines(row: pd.Series) -> pd.Series:
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     """Extracts the value according to the field rules."""
     source = field.source
-    column_name = source.get_field()
+    column_name = source.get_column()
     if column_name in df:
         return df
     elif source.extract.file_property == FileProperty.content:
@@ -110,7 +110,7 @@ class ReadFields(Operation):
             result: dict[str, Any] = {}
             for field in fields:
                 source = field.source
-                column = source.get_field()
+                column = source.get_column()
                 assert column in df, (
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"

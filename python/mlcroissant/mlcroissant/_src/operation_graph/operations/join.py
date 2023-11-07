@@ -50,23 +50,23 @@ class Join(Operation):
                 f'Right reference for "{field.uid}" is None. It should be a valid'
                 " reference."
             )
-            left_key = left.get_field()
-            right_key = right.get_field()
-            assert left_key in df_left.columns, (
-                f'Column "{left_key}" does not exist in node "{left.uid}".'
+            left_column = left.get_column()
+            right_column = right.get_column()
+            assert left_column in df_left.columns, (
+                f'Column "{left_column}" does not exist in node "{left.uid}".'
                 f" Existing columns: {df_left.columns}"
             )
-            assert right_key in df_right.columns, (
-                f'Column "{right_key}" does not exist in node "{right.uid}".'
+            assert right_column in df_right.columns, (
+                f'Column "{right_column}" does not exist in node "{right.uid}".'
                 f" Existing columns: {df_right.columns}"
             )
-            df_left[left_key] = df_left[left_key].transform(
+            df_left[left_column] = df_left[left_column].transform(
                 apply_transforms_fn, source=left
             )
             return df_left.merge(
                 df_right,
-                left_on=left_key,
-                right_on=right_key,
+                left_on=left_column,
+                right_on=right_column,
                 how="left",
                 suffixes=(None, "_right"),
             )
