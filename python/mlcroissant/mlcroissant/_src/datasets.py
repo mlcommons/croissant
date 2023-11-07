@@ -1,4 +1,5 @@
 """datasets module."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -13,8 +14,6 @@ from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
-from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
-from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
@@ -99,11 +98,7 @@ class Records:
         # that all operations lie on a single straight line, i.e. have an
         # in-degree of 0 or 1. That means that the operation graph is a single line
         # (without external joins for example).
-        can_stream_dataset = all(
-            d == 1 or d == 2
-            for operation, d in operations.degree()
-            if not isinstance(operation, (GroupRecordSetStart, GroupRecordSetEnd))
-        )
+        can_stream_dataset = all(d == 1 or d == 2 for _, d in operations.degree())
         if can_stream_dataset:
             yield from execute_operations_in_streaming(
                 record_set=self.record_set,

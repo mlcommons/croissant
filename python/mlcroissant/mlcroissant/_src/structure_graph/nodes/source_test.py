@@ -224,7 +224,7 @@ def test_apply_transforms_fn(value, source, expected_value):
 
 
 @pytest.mark.parametrize(
-    ["source", "expected_field"],
+    ["source", "expected_column"],
     [
         [
             Source(uid="my-csv", extract=Extract(column="my-csv-column")),
@@ -250,8 +250,8 @@ def test_apply_transforms_fn(value, source, expected_value):
         ],
     ],
 )
-def test_get_field(source: Source, expected_field: str):
-    assert source.get_field() == expected_field
+def test_get_field(source: Source, expected_column: str):
+    assert source.get_column() == expected_column
 
 
 def test_is_file_property():

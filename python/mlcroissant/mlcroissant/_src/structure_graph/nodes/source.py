@@ -18,7 +18,7 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 
 
-class FileProperty(enum.Enum):
+class FileProperty(enum.IntEnum):
     """Lists the intrinsic properties of a file that are accessible from Croissant.
 
     Notes:
@@ -26,18 +26,20 @@ class FileProperty(enum.Enum):
       singular indicates a one-to-one relationship.
     - We may use camelCase to be conformed with the names in the JSON-LD Croissant
       standard.
+    - We use enum.IntEnum (rather than enum.Enum) in order for FileProperty to be usable
+      as column names in pd.DataFrames.
 
     Warning:
     - At the moment there may be an overlap with existing columns if columns
       have one of the following names.
     """
 
-    content = "__content__"
-    filename = "__filename__"
-    filepath = "__filepath__"
-    fullpath = "__fullpath__"
-    lines = "__lines__"
-    lineNumbers = "__line_numbers__"
+    content = 1
+    filename = 2
+    filepath = 3
+    fullpath = 4
+    lines = 5
+    lineNumbers = 6
 
 
 def is_file_property(file_property: str):
@@ -283,8 +285,8 @@ class Source:
             return False
         return hash(self) == hash(other)
 
-    def get_field(self) -> str | FileProperty:
-        """Retrieves the name of the field/column/query associated to the source."""
+    def get_column(self) -> str | FileProperty:
+        """Retrieves the name of the column associated to the source."""
         if self.uid is None:
             raise ValueError(
                 "No UID! This case already rose an issue and should not happen at run"
