@@ -16,8 +16,7 @@ def render_record_sets():
         st.markdown("Please add files first.")
     else:
         for record_set in st.session_state[Metadata].record_sets:
-            record_set_conv = pd.DataFrame(record_set.fields)
-            record_set_conv.drop(columns=["data_type"])
+            record_set_conv = pd.DataFrame(record_set.__dict__)
             with st.container():
 
                 st.data_editor(
