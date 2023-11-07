@@ -3,10 +3,11 @@ import hashlib
 import io
 import tempfile
 
-from core.state import FileObject
 from etils import epath
 import pandas as pd
 import requests
+
+from .state import FileObject
 
 
 @dataclasses.dataclass

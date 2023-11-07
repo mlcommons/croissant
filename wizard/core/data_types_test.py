@@ -1,8 +1,9 @@
 """Tests for data_types."""
 
-from data_types import convert_dtype
 import numpy as np
 import pytest
+
+from .data_types import convert_dtype
 
 
 def test_convert_dtype():
