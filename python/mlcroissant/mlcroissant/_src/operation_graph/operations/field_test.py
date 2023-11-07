@@ -9,8 +9,17 @@ from PIL import Image
 import pytest
 
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import field
+from mlcroissant._src.operation_graph.operations import ReadFields
+from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.metadata import Metadata
+from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+from mlcroissant._src.structure_graph.nodes.source import Source
+from mlcroissant._src.structure_graph.nodes.source import Transform
 from mlcroissant._src.tests.nodes import empty_record_set
 from mlcroissant._src.tests.operations import operations
 
@@ -67,6 +76,7 @@ def test_cast_value_image(open_mock):
 )
 def test_extract_lines(separator):
     with tempfile.TemporaryDirectory() as tempdir:
+        # Create the underlying file.
         content = (
             b"bon jour  "
             + separator
@@ -79,16 +89,60 @@ def test_extract_lines(separator):
         path = tempdir + "/file.txt"
         with open(path, "wb") as f:
             f.write(content)
-        row = pd.Series({FileProperty.filepath: path})
-        series = field._extract_lines(row)
-        expected = pd.Series(
-            {
-                FileProperty.filepath: path,
-                FileProperty.lines: [b"bon jour  ", b"", b" h\xc3\xa9llo ", b"hallo "],
-                FileProperty.lineNumbers: [0, 1, 2, 3],
-            }
+
+        # Create all needed nodes.
+        distribution = [
+            FileObject(
+                name="file",
+                content_url=path,
+                sha256="None",
+                encoding_format="text/plain",
+            )
+        ]
+        fields = []
+        fields.append(
+            Field(
+                name="line",
+                data_types=[DataType.TEXT],
+                source=Source(
+                    uid="file", extract=Extract(file_property=FileProperty.lines)
+                ),
+            )
         )
-        pd.testing.assert_series_equal(series, expected)
-
-
-# TODO: Add a test here.
+        fields.append(
+            Field(
+                name="line_number",
+                data_types=[DataType.INTEGER],
+                source=Source(
+                    uid="file", extract=Extract(file_property=FileProperty.lineNumbers)
+                ),
+            )
+        )
+        fields.append(
+            Field(
+                name="filename",
+                data_types=[DataType.TEXT],
+                source=Source(
+                    uid="file",
+                    extract=Extract(file_property=FileProperty.filepath),
+                    transforms=[Transform(regex=".*\\/(\\w*)\\.txt")],
+                ),
+            )
+        )
+        record_sets = [RecordSet(name="main", fields=fields)]
+        Metadata(
+            name="metadata",
+            url="url.com",
+            distribution=distribution,
+            record_sets=record_sets,
+        )
+        read_field = ReadFields(operations=Operations(), node=record_sets[0])
+        df = pd.DataFrame({FileProperty.filepath: [path]})
+        expected = [
+            {"line_number": 0, "line": b"bon jour  ", "filename": b"file"},
+            {"line_number": 1, "line": b"", "filename": b"file"},
+            {"line_number": 2, "line": b" h\xc3\xa9llo ", "filename": b"file"},
+            {"line_number": 3, "line": b"hallo ", "filename": b"file"},
+        ]
+        result = list(read_field(df))
+        assert result == expected
