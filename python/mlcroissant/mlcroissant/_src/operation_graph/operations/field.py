@@ -5,10 +5,12 @@ import io
 from typing import Any, Iterator
 
 from etils import epath
+import numpy as np
 import pandas as pd
 from rdflib import term
 
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.ml import bounding_box
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -19,7 +21,8 @@ from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
 def _cast_value(value: Any, data_type: type | term.URIRef | None):
     """Casts the value `value` to the desired target data type `data_type`."""
-    if pd.isna(value):
+    is_na = not isinstance(value, (list, np.ndarray)) and pd.isna(value)
+    if is_na:
         return value
     elif data_type == DataType.IMAGE_OBJECT:
         if isinstance(value, deps.PIL_Image.Image):
@@ -28,6 +31,8 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
             return deps.PIL_Image.open(io.BytesIO(value))
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
+    elif data_type == DataType.BOUNDING_BOX:
+        return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
     elif data_type == bytes and not isinstance(value, bytes):
@@ -116,7 +121,7 @@ class ReadFields(Operation):
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
                 value = row[column]
-                value = apply_transforms_fn(value, source=source)
+                value = apply_transforms_fn(value, field=field)
                 value = _cast_value(value, field.data_type)
                 result[field.name] = value
             yield result

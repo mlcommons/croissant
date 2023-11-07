@@ -5,6 +5,7 @@ import dataclasses
 import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
@@ -27,8 +28,10 @@ class Join(Operation):
         if len(predecessors) != len(args):
             raise ValueError(f"Unsupported: Trying to join {len(args)} pd.DataFrames.")
         fields = self.node.fields
-        # `joins` is the list of joins to execute (source1, df1) x (source2, df2).
-        joins: list[tuple[tuple[Source, pd.Series], tuple[Source, pd.Series]]] = []
+        # `joins` is the list of joins: field x (source1, df1) x (source2, df2)
+        joins: list[
+            tuple[Field, tuple[Source, pd.Series], tuple[Source, pd.Series]]
+        ] = []
         for field in fields:
             left = field.source
             right = field.references
@@ -38,10 +41,10 @@ class Join(Operation):
                 continue
             left_index = predecessors.index(get_parent_uid(left.uid))
             right_index = predecessors.index(get_parent_uid(right.uid))
-            join = ((left, args[left_index]), (right, args[right_index]))
+            join = (field, (left, args[left_index]), (right, args[right_index]))
             if join not in joins:
                 joins.append(join)
-        for (left, df_left), (right, df_right) in joins:
+        for field, (left, df_left), (right, df_right) in joins:
             assert left is not None and left.uid is not None, (
                 f'Left reference for "{field.uid}" is None. It should be a valid'
                 " reference."
@@ -61,7 +64,7 @@ class Join(Operation):
                 f" Existing columns: {df_right.columns}"
             )
             df_left[left_column] = df_left[left_column].transform(
-                apply_transforms_fn, source=left
+                apply_transforms_fn, field=field
             )
             return df_left.merge(
                 df_right,
