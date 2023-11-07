@@ -4,3 +4,4 @@ pandas
 pytest
 requests
 streamlit
+mlcroissant
