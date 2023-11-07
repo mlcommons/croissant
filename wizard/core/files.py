@@ -6,7 +6,7 @@ import tempfile
 from etils import epath
 import pandas as pd
 import requests
-from state import Distribution
+from state import FileObject
 
 
 @dataclasses.dataclass
@@ -90,7 +90,7 @@ def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.Data
         raise NotImplementedError()
 
 
-def file_from_url(file_type: FileType, url: str) -> Distribution:
+def file_from_url(file_type: FileType, url: str) -> FileObject:
     """Downloads locally and extracts the file information."""
     file_path = hash_file_path(url)
     if not file_path.exists():
@@ -98,7 +98,7 @@ def file_from_url(file_type: FileType, url: str) -> Distribution:
     with file_path.open("rb") as file:
         sha256 = _sha256(file.read())
     df = get_dataframe(file_type, file_path)
-    return Distribution(
+    return FileObject(
         name=url.split("/")[-1],
         description="",
         content_url=url,
@@ -108,11 +108,11 @@ def file_from_url(file_type: FileType, url: str) -> Distribution:
     )
 
 
-def file_from_upload(file_type: FileType, file: io.BytesIO) -> Distribution:
+def file_from_upload(file_type: FileType, file: io.BytesIO) -> FileObject:
     """Uploads locally and extracts the file information."""
     sha256 = _sha256(file.getvalue())
     df = get_dataframe(file_type, file)
-    return Distribution(
+    return FileObject(
         name=file.name,
         description="",
         content_url=f"data/{file.name}",

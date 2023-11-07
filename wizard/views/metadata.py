@@ -1,4 +1,3 @@
-from state import Croissant
 from state import Metadata
 import streamlit as st
 from utils import needed_field
@@ -23,7 +22,7 @@ licenses = [
 
 
 def render_metadata():
-    metadata = st.session_state[Croissant].metadata
+    metadata = st.session_state[Metadata]
     name = st.text_input(
         label=needed_field("Name"),
         value=metadata.name,
@@ -54,10 +53,10 @@ def render_metadata():
         placeholder="@book{\n  title={Title}\n}",
     )
     # We fully recreate the session state in order to force the re-rendering.
-    st.session_state[Croissant].update_metadata(Metadata(
+    st.session_state[Metadata].update_metadata(
         name=name,
         description=description,
         license=license,
         url=url,
         citation=citation
-    ))
+    )

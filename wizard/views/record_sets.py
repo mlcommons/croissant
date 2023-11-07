@@ -1,6 +1,5 @@
 import pandas as pd
-from state import Croissant
-from state import RecordSet
+from state import Metadata
 import streamlit as st
 from utils import DF_HEIGHT
 
@@ -13,10 +12,10 @@ DATA_TYPES = [
 
 
 def render_record_sets():
-    if len(st.session_state[Croissant].record_sets) == 0:
+    if len(st.session_state[Metadata].record_sets) == 0:
         st.markdown("Please add files first.")
     else:
-        for record_set in st.session_state[Croissant].record_sets:
+        for record_set in st.session_state[Metadata].record_sets:
             record_set_conv = pd.DataFrame(record_set.fields)
             record_set_conv.drop(columns=["data_type"])
             with st.container():

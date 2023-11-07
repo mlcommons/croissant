@@ -2,9 +2,8 @@ import os
 from pathlib import Path
 import tempfile
 
-from state import CanonicalToWizard
-from state import Croissant
 from state import CurrentStep
+from state import Metadata
 from state import set_form_step
 import streamlit as st
 
@@ -23,7 +22,7 @@ def render_load():
             with open(newfile_name, mode="wb+") as outfile:
                 outfile.write(file_cont)
             dataset = mlc.Dataset(newfile_name)
-            st.session_state[Croissant] = CanonicalToWizard(dataset)
+            st.session_state[Metadata] = Metadata.from_canonical(dataset)
             set_form_step("Jump", CurrentStep.editor)
             st.rerun()
         except mlc.ValidationError as e:

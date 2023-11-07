@@ -1,15 +1,15 @@
 import pandas as pd
-from state import Croissant
+from state import Metadata
 import streamlit as st
 
 import mlcroissant as mlc
 
 
 def render_jsonld():
-    if not st.session_state[Croissant]:
+    if not st.session_state[Metadata]:
         return st.code({}, language="json")
     try:
-        croissant = st.session_state[Croissant]
+        croissant = st.session_state[Metadata]
         distribution = []
         for file in croissant.distributions:
             distribution.append(
