@@ -117,6 +117,20 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
             f" {_SUPPORTED_HOSTS}. Contact the Croissant team to support more hosts."
         )
 
+def _get_hash_type(node):
+    result=None
+    if (node.md5 is not None) and (node.sha256 is not None):
+        logging.info("self.node has md5 and sha256 key")
+        result =  "md5 and sha256"
+    elif node.md5 is not None:
+        logging.info("self.node has md5 key")
+        result = "md5"
+    elif node.sha256 is not None:
+        logging.info("self.node has sha256 key")
+        result = "sha256"
+    else:
+        pass
+    return result
 
 @dataclasses.dataclass(frozen=True, repr=False)
 class Download(Operation):
@@ -128,6 +142,17 @@ class Download(Operation):
     def _download_from_http(self, filepath: epath.Path):
         response = requests.get(self.url, stream=True, timeout=10)
         total = int(response.headers.get("Content-Length", 0))
+
+        hash_type = _get_hash_type(self.node)
+
+        if hash_type == "sha256":
+            hash_eng = hashlib.sha256()
+        elif hash_type == "md5":
+            hash_eng = hashlib.md5()
+        else:
+            pass
+            #TODO: What to do if both hash values are given
+
         with filepath.open("wb") as file, tqdm.tqdm(
             desc=f"Downloading {self.url}...",
             total=total,
@@ -137,8 +162,16 @@ class Download(Operation):
         ) as bar:
             for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
                 size = file.write(data)
+                hash_eng.update(data)
                 bar.update(size)
 
+        downloaded_file_hash = hash_eng.hexdigest()
+
+        if downloaded_file_hash != getattr(self.node,hash_type):
+            logging.info("Hash of downloaded file is not identical with reference in metadata.json")
+            os.remove(filepath)
+            raise ValueError('Hash of downloaded file is not identical with reference in metadata.json')
+            
     def _download_from_git(self, filepath: epath.Path):
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
         password = os.environ.get(constants.CROISSANT_GIT_PASSWORD)
