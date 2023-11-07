@@ -21,7 +21,6 @@ class Join(Operation):
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
-        print(args)
         predecessors: list[str] = [
             operation.node.uid for operation in self.operations.predecessors(self)
         ]

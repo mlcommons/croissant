@@ -9,7 +9,7 @@ import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
-from mlcroissant._src.operation_graph.operations import ReadField
+from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
 
@@ -28,12 +28,12 @@ def _order_relevant_operations(
     operations: Operations, record_set_name: str
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
-    # ReadField linked to the `record_set_name`.
+    # ReadFields linked to the `record_set_name`.
     group_record_set = next(
         (
             operation
             for operation in operations.nodes
-            if isinstance(operation, ReadField)
+            if isinstance(operation, ReadFields)
             and operation.node.name == record_set_name
         )
     )
@@ -58,7 +58,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
         ]
         logging.info("Executing %s", operation)
         results[operation] = operation(*previous_results)
-        if isinstance(operation, ReadField):
+        if isinstance(operation, ReadFields):
             if operation.node.name != record_set:
                 # The RecordSet will be used later in the graph by another RecordSet.
                 # This could be multi-threaded to build the pd.DataFrame faster.
@@ -83,7 +83,7 @@ def execute_operations_in_streaming(
     if list_of_operations is None:
         list_of_operations = _order_relevant_operations(operations, record_set)
     for i, operation in enumerate(list_of_operations):
-        if isinstance(operation, ReadField):
+        if isinstance(operation, ReadFields):
             if operation.node.name != record_set:
                 continue
             yield from operation(result)
@@ -108,6 +108,6 @@ def execute_operations_in_streaming(
             return
         else:
             logging.info("Executing %s", operation)
-            if isinstance(operation, ReadField):
+            if isinstance(operation, ReadFields):
                 continue
             result = operation(result)

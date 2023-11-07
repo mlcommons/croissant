@@ -16,8 +16,8 @@ from mlcroissant._src.tests.operations import operations
 
 
 def test_str_representation():
-    operation = field.ReadField(operations=operations(), node=empty_record_set)
-    assert str(operation) == "ReadField(record_set_name)"
+    operation = field.ReadFields(operations=operations(), node=empty_record_set)
+    assert str(operation) == "ReadFields(record_set_name)"
 
 
 @pytest.mark.parametrize(

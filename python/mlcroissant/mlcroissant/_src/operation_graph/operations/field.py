@@ -92,10 +92,10 @@ def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadField(Operation):
+class ReadFields(Operation):
     """Reads fields in a RecordSet from a Pandas DataFrame and applies transformations.
 
-    ReadField.__call__() yields dict-shaped records with the proper transformations,
+    ReadFields.__call__() yields dict-shaped records with the proper transformations,
     types and name.
     """
 

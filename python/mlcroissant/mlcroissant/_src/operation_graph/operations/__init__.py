@@ -2,7 +2,7 @@ from mlcroissant._src.operation_graph.operations.concatenate import Concatenate
 from mlcroissant._src.operation_graph.operations.data import Data
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.extract import Extract
-from mlcroissant._src.operation_graph.operations.field import ReadField
+from mlcroissant._src.operation_graph.operations.field import ReadFields
 from mlcroissant._src.operation_graph.operations.filter import FilterFiles
 from mlcroissant._src.operation_graph.operations.init import InitOperation
 from mlcroissant._src.operation_graph.operations.join import Join
@@ -19,5 +19,5 @@ __all__ = [
     "Join",
     "LocalDirectory",
     "Read",
-    "ReadField",
+    "ReadFields",
 ]
