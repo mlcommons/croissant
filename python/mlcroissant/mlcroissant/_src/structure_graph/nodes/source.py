@@ -26,6 +26,8 @@ class FileProperty(enum.IntEnum):
       singular indicates a one-to-one relationship.
     - We may use camelCase to be conformed with the names in the JSON-LD Croissant
       standard.
+    - We use enum.IntEnum (rather than enum.Enum) in order for FileProperty to be usable
+      as column names in pd.DataFrames.
 
     Warning:
     - At the moment there may be an overlap with existing columns if columns
