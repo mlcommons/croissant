@@ -37,6 +37,7 @@ def get_error_msg(folder):
         "recordset_bad_type",
         "recordset_missing_context_for_datatype",
         "recordset_missing_property_name",
+        "recordset_wrong_join",
     ],
 )
 def test_static_analysis(folder):
@@ -48,9 +49,9 @@ def test_static_analysis(folder):
 
 def load_records_and_test_equality(dataset_name, record_set_name, num_records):
     print(
-        "If this test fails, update JSONL with: `python mlcroissant/scripts/load.py"
+        "If this test fails, update JSONL with: `mlcroissant load"
         f" --file ../../datasets/{dataset_name} --record_set"
-        f" {record_set_name} --update_output --num_records {num_records} --debug`"
+        f" {record_set_name} --num_records {num_records} --debug --update_output`"
     )
     config = (
         epath.Path(__file__).parent.parent.parent.parent.parent
@@ -77,7 +78,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
 # IF (NON)-HERMETIC TESTS FAIL, OR A NEW DATASET IS ADDED:
 # You can regenerate .pkl files by launching
 # ```bash
-# python mlcroissant/scripts/load.py \
+# mlcroissant load \
 #   --file ../../datasets/{{dataset_name}}/metadata.json \
 #   --record_set {{record_set_name}} \
 #   --update_output \
@@ -94,6 +95,8 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
         ["pass-mini/metadata.json", "images", -1],
         ["recipes/file_object_in_zip.json", "csv1", -1],
         ["recipes/file_object_in_zip.json", "csv2", -1],
+        ["recipes/read_binary_file_by_line.json", "translations_from_directory", -1],
+        ["recipes/read_binary_file_by_line.json", "translations_from_zip", -1],
         ["recipes/read_from_directory.json", "read_from_directory_example", -1],
         ["recipes/read_from_tar.json", "images_with_annotations", -1],
         ["simple-join/metadata.json", "publications_by_user", -1],
@@ -109,6 +112,10 @@ def test_hermetic_loading(dataset_name, record_set_name, num_records):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
+        ["flores-200/metadata.json",
+         "language_translations_train_data_with_metadata", 10],
+        ["flores-200/metadata.json",
+         "language_translations_test_data_with_metadata", 10],
         ["gpt-3/metadata.json", "default", 10],
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],

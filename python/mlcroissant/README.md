@@ -72,6 +72,12 @@ All tests can be run from the Makefile:
 make tests
 ```
 
+Note that `git lfs` should be installed to successfully pass all tests:
+
+```bash
+git lfs install
+```
+
 ## Design
 
 The most important modules in the library are:

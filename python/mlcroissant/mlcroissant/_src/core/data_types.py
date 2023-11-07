@@ -4,6 +4,7 @@ import pandas as pd
 from rdflib import term
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 
@@ -20,10 +21,10 @@ def check_expected_type(issues: Issues, jsonld: Json, expected_type: str):
 
 
 EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
-    constants.SCHEMA_ORG_DATA_TYPE_BOOL: bool,
-    constants.SCHEMA_ORG_DATA_TYPE_DATE: pd.Timestamp,
-    constants.SCHEMA_ORG_DATA_TYPE_FLOAT: float,
-    constants.SCHEMA_ORG_DATA_TYPE_INTEGER: int,
-    constants.SCHEMA_ORG_DATA_TYPE_TEXT: str,
-    constants.SCHEMA_ORG_DATA_TYPE_URL: str,
+    DataType.BOOL: bool,
+    DataType.DATE: pd.Timestamp,
+    DataType.FLOAT: float,
+    DataType.INTEGER: int,
+    DataType.TEXT: bytes,
+    DataType.URL: bytes,
 }

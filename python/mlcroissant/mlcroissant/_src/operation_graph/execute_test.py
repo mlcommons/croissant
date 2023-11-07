@@ -2,6 +2,8 @@
 
 from unittest import mock
 
+import pandas as pd
+
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
@@ -54,8 +56,11 @@ def test_only_execute_needed_operations():
 
     with mock.patch.object(Download, "__call__") as download_call, mock.patch.object(
         Data, "__call__"
-    ) as data_call:
+    ) as data_call, mock.patch.object(
+        ReadField, "__call__", return_value=pd.Series([])
+    ) as read_field_mock:
         # Use list(iterator) to actually yield all operations and execute them.
         list(execute_operations_sequentially("my-record-set", operations))
         assert download_call.call_count == 1
+        assert read_field_mock.call_count == 1
         assert data_call.call_count == 0

@@ -1,6 +1,5 @@
 import pandas as pd
 from state import Croissant
-from state import Metadata
 import streamlit as st
 
 import mlcroissant as mlc

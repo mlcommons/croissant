@@ -1,3 +1,4 @@
+from state import CurrentStep
 from state import set_form_step
 import streamlit as st
 
@@ -9,13 +10,13 @@ def render_splash():
         st.button(
             "Load",
             on_click=set_form_step,
-            args=["Jump", "load"],
+            args=["Jump", CurrentStep.load],
             type="primary",
         )
     with col2:
         st.button(
             "Create",
             on_click=set_form_step,
-            args=["Jump", "editor"],
+            args=["Jump", CurrentStep.editor],
             type="primary",
         )

@@ -4,7 +4,6 @@ In the future, this could be the serialization format between front and back.
 """
 
 import dataclasses
-from typing import List
 
 import streamlit as st
 
@@ -24,7 +23,10 @@ def init_state():
 
 
 class CurrentStep:
-    pass
+    start = "start"
+    load = "load"
+    editor = "editor"
+
 
 @dataclasses.dataclass
 class Distribution:

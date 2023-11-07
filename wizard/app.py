@@ -1,11 +1,11 @@
-from state import init_state
 from state import CurrentStep
-from views.jsonld import render_jsonld
-from views.side_buttons import render_side_buttons
-from views.wizard import render_wizard
-from views.load import render_load
-from views.splash import render_splash
+from state import init_state
 import streamlit as st
+from views.jsonld import render_jsonld
+from views.load import render_load
+from views.side_buttons import render_side_buttons
+from views.splash import render_splash
+from views.wizard import render_wizard
 
 init_state()
 
@@ -14,19 +14,13 @@ st.header("Croissant Wizard")
 
 
 
-if st.session_state[CurrentStep] == "start":
+if st.session_state[CurrentStep] == CurrentStep.start:
     render_splash()
-    st.stop()
-if st.session_state[CurrentStep] == "load":
+elif st.session_state[CurrentStep] == CurrentStep.load:
     render_load()
-    st.stop()
-if st.session_state[CurrentStep] != "editor":
-    raise Exception("invalid unhandled app state")
-
-
-col1, col2 = st.columns([1, 1], gap="medium")
-with col1:
-    render_wizard()
-with col2:
-    pass
-    #render_errors()
+elif st.session_state[CurrentStep] == CurrentStep.editor:
+    col1, col2 = st.columns([1, 1], gap="medium")
+    with col1:
+        render_wizard()
+else:
+    st.warning("invalid unhandled app state")

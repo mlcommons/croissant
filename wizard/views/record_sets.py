@@ -22,7 +22,7 @@ def render_record_sets():
             with st.container():
 
                 st.data_editor(
-                    pd.DataFrame(record_set.fields),
+                    record_set_conv,
                     height=DF_HEIGHT,
                     use_container_width=True,
                     column_config={

@@ -4,6 +4,7 @@ import tempfile
 
 from state import CanonicalToWizard
 from state import Croissant
+from state import CurrentStep
 from state import set_form_step
 import streamlit as st
 
@@ -23,7 +24,7 @@ def render_load():
                 outfile.write(file_cont)
             dataset = mlc.Dataset(newfile_name)
             st.session_state[Croissant] = CanonicalToWizard(dataset)
-            set_form_step("Jump", "editor")
+            set_form_step("Jump", CurrentStep.editor)
             st.rerun()
         except mlc.ValidationError as e:
             st.warning(e)

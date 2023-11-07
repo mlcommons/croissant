@@ -8,6 +8,8 @@ import pytest
 from mlcroissant.scripts.from_huggingface_to_croissant import convert
 
 
+# Hugging Face's code emits warning concerning NumPy versions.
+@pytest.mark.filterwarnings("ignore:A NumPy version")
 @pytest.mark.parametrize(
     ["croissant_dataset_name", "hf_dataset_name"],
     [["huggingface-mnist", "mnist"], ["huggingface-c4", "c4"]],
@@ -25,7 +27,7 @@ def test_convert(croissant_dataset_name, hf_dataset_name):
         / "metadata.json"
     )
     print(
-        "If this test fails, run: `python scripts/from_huggingface_to_croissant.py"
+        "If this test fails, run: `mlcroissant from_huggingface_to_croissant"
         f" --dataset {hf_dataset_name} --output {metadata_file}`"
     )
     with metadata_file.open("r") as expected_f:
