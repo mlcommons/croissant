@@ -1,8 +1,14 @@
-import streamlit as st
-import mlcroissant as mlc
-import tempfile
-from pathlib import Path
 import os
+from pathlib import Path
+import tempfile
+
+from state import CanonicalToWizard
+from state import Croissant
+from state import set_form_step
+import streamlit as st
+
+import mlcroissant as mlc
+
 
 def render_load():
     col1, col2 = st.columns([1,2], gap="small")
@@ -16,7 +22,9 @@ def render_load():
             with open(newfile_name, mode="wb+") as outfile:
                 outfile.write(file_cont)
             dataset = mlc.Dataset(newfile_name)
-
+            st.session_state[Croissant] = CanonicalToWizard(dataset)
+            set_form_step("Jump", "editor")
+            st.rerun()
         except mlc.ValidationError as e:
             st.warning(e)
             st.toast(body="Invalid Croissant File!", icon="🔥")

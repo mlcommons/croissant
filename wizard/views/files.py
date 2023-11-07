@@ -1,14 +1,13 @@
 from core.data_types import convert_dtype
-from core.files import File
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 import pandas as pd
-from state import Files
-from state import RecordSets
+from state import Croissant
+from state import Distribution
+import streamlit as st
 from utils import DF_HEIGHT
 from utils import needed_field
-import streamlit as st
 
 
 def render_files():
@@ -31,7 +30,7 @@ def render_files():
                 file = file_from_upload(file_type, uploaded_file)
             else:
                 raise ValueError("should have either `url` or `uploaded_file`.")
-            st.session_state[Files].append(file)
+            st.session_state[Croissant].add_distribution(file)
             dtypes = file.df.dtypes
             fields = pd.DataFrame(
                 {
@@ -40,42 +39,47 @@ def render_files():
                     "description": "",
                 }
             )
-            st.session_state[RecordSets].append(
+            st.session_state[Croissant].add_record_set(
                 {
                     "fields": fields,
                     "name": file.name + "_record_set",
                     "description": "",
                 }
             )
-    for key, file in enumerate(st.session_state[Files]):
+    for key, file in enumerate(st.session_state[Croissant].distributions):
         with st.container():
 
             def delete_line():
-                del st.session_state[Files][key]
+                st.session_state[Croissant].remove_distribution(key)
 
             name = st.text_input(
                 needed_field("Name"),
                 value=file.name,
+                key=f'{key}_name'
             )
             description = st.text_area(
                 "Description",
+                value=file.description,
                 placeholder="Provide a clear description of the file.",
+                key=f'{key}_description'
             )
             sha256 = st.text_input(
                 needed_field("SHA256"),
                 value=file.sha256,
                 disabled=True,
+                key=f'{key}_sha256'
             )
             encoding_format = st.text_input(
                 needed_field("Encoding format"),
                 value=file.encoding_format,
                 disabled=True,
+                key=f'{key}_encoding'
             )
             st.markdown("First rows of data:")
             st.dataframe(file.df, height=DF_HEIGHT)
             _, col = st.columns([5, 1])
-            col.button("Remove", key=url, on_click=delete_line, type="primary")
-            file = File(
+            col.button("Remove", key=f'{key}_url', on_click=delete_line, type="primary")
+            file = Distribution(
                 name=name,
                 description=description,
                 content_url=file.content_url,
@@ -83,4 +87,4 @@ def render_files():
                 sha256=sha256,
                 df=file.df,
             )
-            st.session_state[Files][key] = file
+            st.session_state[Croissant].update_distribution(key, file)

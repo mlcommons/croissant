@@ -1,6 +1,8 @@
-from state import RecordSets
-from utils import DF_HEIGHT
+import pandas as pd
+from state import Croissant
+from state import RecordSet
 import streamlit as st
+from utils import DF_HEIGHT
 
 DATA_TYPES = [
     "https://schema.org/Text",
@@ -11,31 +13,29 @@ DATA_TYPES = [
 
 
 def render_record_sets():
-    if not st.session_state[RecordSets]:
-        st.markdown("Provide files before.")
+    if len(st.session_state[Croissant].record_sets) == 0:
+        st.markdown("Please add files first.")
     else:
-        record_set = st.session_state[RecordSets][0]
-        st.markdown("Found 1 CSV with the following types:")
-        st.data_editor(
-            record_set["fields"],
-            height=DF_HEIGHT,
-            use_container_width=True,
-            column_config={
-                "name": st.column_config.TextColumn(
-                    "name",
-                    help="Name of the field",
-                    required=True,
-                ),
-                "description": st.column_config.TextColumn(
-                    "description",
-                    help="Description of the field",
-                    required=False,
-                ),
-                "data_type": st.column_config.SelectboxColumn(
-                    "data_type",
-                    help="The Croissant type",
-                    options=DATA_TYPES,
-                    required=True,
-                ),
-            },
-        )
+        for record_set in st.session_state[Croissant].record_sets:
+            record_set_conv = pd.DataFrame(record_set.fields)
+            record_set_conv.drop(columns=["data_type"])
+            with st.container():
+
+                st.data_editor(
+                    pd.DataFrame(record_set.fields),
+                    height=DF_HEIGHT,
+                    use_container_width=True,
+                    column_config={
+                        "name": st.column_config.TextColumn(
+                            "name",
+                            help="Name of the field",
+                            required=True,
+                        ),
+                        "description": st.column_config.TextColumn(
+                            "description",
+                            help="Description of the field",
+                            required=False,
+                        ),
+                    },
+                )
+

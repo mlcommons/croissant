@@ -1,3 +1,4 @@
+from state import Croissant
 from state import CurrentStep
 from state import Metadata
 import streamlit as st
@@ -23,18 +24,19 @@ licenses = [
 
 
 def render_metadata():
+    metadata = st.session_state[Croissant].metadata
     name = st.text_input(
         label=needed_field("Name"),
-        value=st.session_state[Metadata].name,
+        value=metadata.name,
         placeholder="Dataset",
     )
     description = st.text_area(
         label="Description",
-        value=st.session_state[Metadata].description,
+        value=metadata.description,
         placeholder="Provide a clear description of the dataset.",
     )
     try:
-        index = licenses.index(st.session_state[Metadata].license)
+        index = licenses.index(metadata.license)
     except ValueError:
         index = None
     license = st.selectbox(
@@ -44,20 +46,19 @@ def render_metadata():
     )
     url = st.text_input(
         label=needed_field("URL"),
-        value=st.session_state[Metadata].url,
+        value=metadata.url,
         placeholder="URL to the dataset.",
     )
     citation = st.text_area(
         label="Citation",
-        value=st.session_state[Metadata].citation,
+        value=metadata.citation,
         placeholder="@book{\n  title={Title}\n}",
     )
     # We fully recreate the session state in order to force the re-rendering.
-    del st.session_state[Metadata]
-    st.session_state[Metadata] = Metadata(
+    st.session_state[Croissant].update_metadata(Metadata(
         name=name,
         description=description,
-        citation=citation,
         license=license,
         url=url,
-    )
+        citation=citation
+    ))
