@@ -70,24 +70,13 @@ def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     column_name = source.get_field()
     if column_name in df:
         return df
-    if source.extract.file_property == FileProperty.content:
+    elif source.extract.file_property == FileProperty.content:
         return df.apply(_read_file, axis=1)
-    elif source.extract.file_property == FileProperty.lines:
-        if FileProperty.lines in df:
-            return df
-        else:
-            df = df.apply(_extract_lines, axis=1)
-            return df.explode(
-                column=[FileProperty.lines, FileProperty.lineNumbers], ignore_index=True
-            )
-    elif source.extract.file_property == FileProperty.lineNumbers:
-        if FileProperty.lineNumbers in df:
-            return df
-        else:
-            df = df.apply(_extract_lines, axis=1)
-            return df.explode(
-                column=[FileProperty.lines, FileProperty.lineNumbers], ignore_index=True
-            )
+    elif source.extract.file_property in [FileProperty.lines, FileProperty.lineNumbers]:
+        df = df.apply(_extract_lines, axis=1)
+        return df.explode(
+            column=[FileProperty.lines, FileProperty.lineNumbers], ignore_index=True
+        )
     return df
 
 
