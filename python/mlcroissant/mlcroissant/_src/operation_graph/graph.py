@@ -13,7 +13,6 @@ from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations import Download
 from mlcroissant._src.operation_graph.operations import Extract
 from mlcroissant._src.operation_graph.operations import FilterFiles
-from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import Join
 from mlcroissant._src.operation_graph.operations import LocalDirectory
@@ -48,18 +47,13 @@ def _add_operations_for_field_with_source(
 
     - `Join` if the field comes from several sources.
     - `ReadField` to specify how the field is read.
-    - `GroupRecordSetStart` to structure the final dict that is sent back to the user.
     """
     record_set = _find_record_set(node)
     operation = operations.last_operations(node, only_leaf=True)
     has_join = any(field for field in record_set.fields if field.references.uid)
     if has_join:
         operation = [operation >> Join(operations=operations, node=record_set)]
-    (
-        operation
-        >> GroupRecordSetStart(operations=operations, node=record_set)
-        >> ReadField(operations=operations, node=record_set)
-    )
+    (operation >> ReadField(operations=operations, node=record_set))
 
 
 def _add_operations_for_file_object(

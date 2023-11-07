@@ -4,8 +4,6 @@ from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.extract import Extract
 from mlcroissant._src.operation_graph.operations.field import ReadField
 from mlcroissant._src.operation_graph.operations.filter import FilterFiles
-from mlcroissant._src.operation_graph.operations.group import GroupRecordSetEnd
-from mlcroissant._src.operation_graph.operations.group import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations.init import InitOperation
 from mlcroissant._src.operation_graph.operations.join import Join
 from mlcroissant._src.operation_graph.operations.local_directory import LocalDirectory
@@ -17,8 +15,6 @@ __all__ = [
     "Download",
     "Extract",
     "FilterFiles",
-    "GroupRecordSetStart",
-    "GroupRecordSetEnd",
     "InitOperation",
     "Join",
     "LocalDirectory",

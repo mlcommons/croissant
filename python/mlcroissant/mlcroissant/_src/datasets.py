@@ -1,4 +1,5 @@
 """datasets module."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -13,8 +14,6 @@ from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
-from mlcroissant._src.operation_graph.operations import GroupRecordSetEnd
-from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 

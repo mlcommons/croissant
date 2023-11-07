@@ -8,7 +8,6 @@ from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
 from mlcroissant._src.operation_graph.operations import Data
-from mlcroissant._src.operation_graph.operations import GroupRecordSetStart
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import ReadField
 from mlcroissant._src.operation_graph.operations.download import Download
@@ -44,7 +43,6 @@ def test_only_execute_needed_operations():
     (
         init
         >> Download(operations=operations, node=node)
-        >> GroupRecordSetStart(operations=operations, node=record_set)
         >> ReadField(operations=operations, node=record_set)
     )
 
