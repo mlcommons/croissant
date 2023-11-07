@@ -1,5 +1,5 @@
-from state import CurrentStep
-from state import init_state
+from core.state import CurrentStep
+from core.state import init_state
 import streamlit as st
 from views.jsonld import render_jsonld
 from views.load import render_load

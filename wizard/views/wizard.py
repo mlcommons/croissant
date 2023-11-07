@@ -1,4 +1,4 @@
-from state import CurrentStep
+from core.state import CurrentStep
 import streamlit as st
 from views.files import render_files
 from views.metadata import render_metadata

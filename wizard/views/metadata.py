@@ -1,4 +1,4 @@
-from state import Metadata
+from core.state import Metadata
 import streamlit as st
 from utils import needed_field
 

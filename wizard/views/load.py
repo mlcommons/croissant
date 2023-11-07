@@ -2,9 +2,9 @@ import os
 from pathlib import Path
 import tempfile
 
-from state import CurrentStep
-from state import Metadata
-from state import set_form_step
+from core.state import CurrentStep
+from core.state import Metadata
+from core.state import set_form_step
 import streamlit as st
 
 import mlcroissant as mlc

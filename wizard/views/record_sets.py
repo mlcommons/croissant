@@ -1,5 +1,5 @@
+from core.state import Metadata
 import pandas as pd
-from state import Metadata
 import streamlit as st
 from utils import DF_HEIGHT
 

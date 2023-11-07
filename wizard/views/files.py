@@ -2,9 +2,9 @@ from core.data_types import convert_dtype
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
+from core.state import FileObject
+from core.state import Metadata
 import pandas as pd
-from state import FileObject
-from state import Metadata
 import streamlit as st
 from utils import DF_HEIGHT
 from utils import needed_field
