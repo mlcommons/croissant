@@ -8,6 +8,8 @@ import pytest
 from mlcroissant.scripts.from_huggingface_to_croissant import convert
 
 
+# Hugging Face's code emits warning concerning NumPy versions.
+@pytest.mark.filterwarnings("ignore:A NumPy version")
 @pytest.mark.parametrize(
     ["croissant_dataset_name", "hf_dataset_name"],
     [["huggingface-mnist", "mnist"], ["huggingface-c4", "c4"]],
