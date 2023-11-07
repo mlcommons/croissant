@@ -11,7 +11,7 @@ def render_jsonld():
     try:
         croissant = st.session_state[Metadata]
         distribution = []
-        for file in croissant.distributions:
+        for file in croissant.distribution:
             distribution.append(
                 mlc.nodes.FileObject(
                     name=file.name,

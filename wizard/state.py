@@ -77,7 +77,7 @@ class Metadata:
     citation: str | None = None
     license: str | None = ""
     url: str = ""
-    distributions: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
+    distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
 
     def __bool__(self):
@@ -90,11 +90,11 @@ class Metadata:
         self.license = license
         self.url = url
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
-        self.distributions.append(distribution)
+        self.distribution.append(distribution)
     def update_distribution(self, key: int, distribution: FileSet | FileObject) -> None:
-        self.distributions[key] = distribution
+        self.distribution[key] = distribution
     def remove_distribution(self, key: int) -> None:
-        del self.distributions[key]
+        del self.distribution[key]
     def add_record_set(self, record_set: RecordSet) -> None:
         self.record_sets.append(record_set)
     def update_record_set(self, key: int, record_set: RecordSet) -> None:
@@ -105,10 +105,10 @@ class Metadata:
     @classmethod
     def from_canonical(cls: Type[T], dataset: mlc.Dataset) -> T:
         canonical_metadata = dataset.metadata
-        distributions = []
+        distribution = []
         for file in canonical_metadata.distribution:
             if isinstance(file, mlc.nodes.FileObject):
-                distributions.append(FileObject(
+                distribution.append(FileObject(
                     name=file.name,
                     description=file.description,
                     content_size=file.content_size,
@@ -116,7 +116,7 @@ class Metadata:
                     sha256=file.sha256,
                 ))
             else:
-                distributions.append(FileSet(
+                distribution.append(FileSet(
                     name=file.name,
                     description=file.description,
                     encoding_format=file.encoding_format,
@@ -143,7 +143,7 @@ class Metadata:
             citation=canonical_metadata.citation,
             license=canonical_metadata.license,
             url=canonical_metadata.url,
-            distributions=distributions,
+            distribution=distribution,
             record_sets=record_sets,
         )
 

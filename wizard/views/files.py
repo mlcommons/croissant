@@ -46,7 +46,7 @@ def render_files():
                     "description": "",
                 }
             )
-    for key, file in enumerate(st.session_state[Metadata].distributions):
+    for key, file in enumerate(st.session_state[Metadata].distribution):
         with st.container():
 
             def delete_line():
