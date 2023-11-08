@@ -14,10 +14,8 @@ from jsonpath_rw import lexer
 import pandas as pd
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
-from mlcroissant._src.core.ml import bounding_box
 from mlcroissant._src.core.types import Json
 
 if typing.TYPE_CHECKING:

@@ -19,7 +19,7 @@ def test_checks_are_performed():
         Node, "assert_has_mandatory_properties"
     ) as mandatory_mock, mock.patch.object(
         Node, "assert_has_optional_properties"
-    ) as optional_mock, mock.patch.object(
+    ), mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock, mock.patch.object(
         Node, "assert_has_exclusive_properties"
