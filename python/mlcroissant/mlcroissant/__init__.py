@@ -2,6 +2,7 @@
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core import data_types
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.datasets import Dataset
 from mlcroissant._src.datasets import Records
@@ -18,6 +19,7 @@ __all__ = [
     "constants",
     "Dataset",
     "DataType",
+    "data_types",
     "EncodingFormat",
     "Extract",
     "Field",
