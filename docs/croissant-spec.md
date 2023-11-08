@@ -342,7 +342,7 @@ types inform about the semantic being used, possibly semantics with ML meaning.
 | [**`sc:Text`**](https://schema.org/Text) | Describes a string. |
 | [**`sc:URL`**](https://schema.org/ImageObject) | Describes a URL. |
 | [**`sc:ImageObject`**](https://schema.org/ImageObject) | Describes a field containing the content of an image (pixels). |
-| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box. |
+| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box (4-number array). |
 | [**`sc:name`**](https://schema.org/name) | Describes a field with a human-readable string. |
 | [**`wd:Q3985153`**](https://www.wikidata.org/wiki/Q3985153) <br/>(**Training, validation and test sets**) | Describes a field used to divide data into multiple sets according to intended usage with regards to models [training](https://mlcommons.org/definitions/training_split), [validation](https://mlcommons.org/definitions/validation_split), [testing](https://mlcommons.org/definitions/test_split), and possibly others. <br/>While any value is acceptable here, it is recommended to associate the usual splits listed above with the linked semantic URL.
 

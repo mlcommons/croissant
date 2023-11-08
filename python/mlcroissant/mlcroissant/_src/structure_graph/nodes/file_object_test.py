@@ -19,23 +19,25 @@ def test_checks_are_performed():
         Node, "assert_has_mandatory_properties"
     ) as mandatory_mock, mock.patch.object(
         Node, "assert_has_optional_properties"
-    ) as optional_mock, mock.patch.object(
+    ), mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock, mock.patch.object(
         Node, "assert_has_exclusive_properties"
     ) as exclusive_mock:
         create_test_node(FileObject)
-        mandatory_mock.assert_called_once_with("content_url", "encoding_format", "name")
-        optional_mock.assert_not_called()
+        mandatory_mock.assert_has_calls(
+            [mock.call("encoding_format", "name"), mock.call("content_url")]
+        )
         exclusive_mock.assert_called_once_with(["md5", "sha256"])
         validate_name_mock.assert_called_once()
+
 
 @pytest.mark.parametrize(
     ["encoding"],
     [
         ["text/csv"],
         ["text/tsv"],
-    ]
+    ],
 )
 def test_from_jsonld(encoding):
     issues = Issues()

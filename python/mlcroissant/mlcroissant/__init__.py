@@ -1,4 +1,5 @@
 """Defines the public interface to the `mlcroissant` package."""
+
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.constants import EncodingFormat
@@ -11,6 +12,7 @@ from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import Extract
+from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
 
@@ -22,6 +24,7 @@ __all__ = [
     "Extract",
     "Field",
     "FileObject",
+    "FileProperty",
     "FileSet",
     "Metadata",
     "Records",

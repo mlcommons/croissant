@@ -109,7 +109,7 @@ class Field(Node):
         predecessor = next((p for p in self.predecessors if isinstance(p, Field)), None)
         if predecessor is None:
             self.add_error(
-                f"The field does not specify any {constants.ML_COMMONS_DATA_TYPE},"
+                f"The field does not specify a valid {constants.ML_COMMONS_DATA_TYPE},"
                 f" neither does any of its predecessor. Got: {self.data_types}"
             )
             return None

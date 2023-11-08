@@ -6,6 +6,7 @@ import dataclasses
 import enum
 import logging
 import re
+import typing
 from typing import Any, Literal
 
 import jsonpath_rw
@@ -16,6 +17,9 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+
+if typing.TYPE_CHECKING:
+    from mlcroissant._src.structure_graph.nodes.field import Field
 
 
 class FileProperty(enum.IntEnum):
@@ -52,7 +56,13 @@ def is_file_property(file_property: str):
 
 @dataclasses.dataclass(frozen=True)
 class Extract:
-    """Container for possible ways of extracting the data."""
+    """Container for possible ways of extracting the data.
+
+    Args:
+        column: The column in a columnar format (e.g., CSV).
+        file_property: The property of a file to extract.
+        json_path: The JSON path if the source is a JSON.
+    """
 
     column: str | None = None
     file_property: FileProperty | None = None
@@ -74,7 +84,8 @@ class Transform:
     """Container for transformation.
 
     Args:
-        format: The format for a date, e.g. "%Y-%m-%d %H:%M:%S.%f".
+        format: The format for a date (e.g. "%Y-%m-%d %H:%M:%S.%f") or for a bounding
+            box (e.g., "XYXY").
         regex: A regex pattern with a capturing group to extract information in a
             string.
         replace: A replace pattern, e.g. "pattern_to_remove/pattern_to_add".
@@ -313,7 +324,7 @@ class Source:
                 )
 
 
-def _apply_transform_fn(value: Any, transform: Transform) -> str:
+def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
@@ -328,17 +339,21 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
         jsonpath_expression = jsonpath_rw.parse(transform.json_path)
         return next(match.value for match in jsonpath_expression.find(value))
     elif transform.format is not None:
-        return pd.Timestamp(value).strftime(transform.format)
+        if field.data_type is pd.Timestamp:
+            return pd.Timestamp(value).strftime(transform.format)
+        else:
+            raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
     return value
 
 
-def apply_transforms_fn(value: Any, source: Source | None = None) -> Any:
+def apply_transforms_fn(value: Any, field: Field) -> Any:
     """Applies all transforms in `source` to `value`."""
+    source = field.source
     if source is None:
         return value
     transforms = source.transforms
     for transform in transforms:
-        value = _apply_transform_fn(value, transform)
+        value = _apply_transform_fn(value, transform, field)
     return value
 
 
