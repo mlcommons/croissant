@@ -90,6 +90,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
+        ["coco2014-mini/metadata.json", "bounding_boxes", -1],
         ["coco2014-mini/metadata.json", "captions", -1],
         ["coco2014-mini/metadata.json", "images", -1],
         ["pass-mini/metadata.json", "images", -1],
