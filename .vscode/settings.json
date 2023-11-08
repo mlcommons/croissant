@@ -26,7 +26,7 @@
     "black-formatter.args": [
         "--line-length",
         "88",
-        "--preview",
+        "--preview"
     ],
     "isort.args": [
         "--profile",

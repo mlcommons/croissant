@@ -37,16 +37,14 @@ class FileSet(Node):
             contained_in: str | list[str] = self.contained_in[0]
         else:
             contained_in = self.contained_in
-        return remove_empty_values(
-            {
-                "@type": "sc:FileSet",
-                "name": self.name,
-                "description": self.description,
-                "containedIn": contained_in,
-                "encodingFormat": self.encoding_format,
-                "includes": self.includes,
-            }
-        )
+        return remove_empty_values({
+            "@type": "sc:FileSet",
+            "name": self.name,
+            "description": self.description,
+            "containedIn": contained_in,
+            "encodingFormat": self.encoding_format,
+            "includes": self.includes,
+        })
 
     @classmethod
     def from_jsonld(

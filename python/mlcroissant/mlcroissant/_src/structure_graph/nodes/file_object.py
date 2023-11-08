@@ -45,20 +45,18 @@ class FileObject(Node):
             contained_in: str | list[str] = self.contained_in[0]
         else:
             contained_in = self.contained_in
-        return remove_empty_values(
-            {
-                "@type": "sc:FileObject",
-                "name": self.name,
-                "description": self.description,
-                "contentSize": self.content_size,
-                "contentUrl": self.content_url,
-                "containedIn": contained_in,
-                "encodingFormat": self.encoding_format,
-                "md5": self.md5,
-                "sha256": self.sha256,
-                "source": self.source.to_json() if self.source else None,
-            }
-        )
+        return remove_empty_values({
+            "@type": "sc:FileObject",
+            "name": self.name,
+            "description": self.description,
+            "contentSize": self.content_size,
+            "contentUrl": self.content_url,
+            "containedIn": contained_in,
+            "encodingFormat": self.encoding_format,
+            "md5": self.md5,
+            "sha256": self.sha256,
+            "source": self.source.to_json() if self.source else None,
+        })
 
     @classmethod
     def from_jsonld(

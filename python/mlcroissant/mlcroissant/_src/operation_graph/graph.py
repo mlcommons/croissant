@@ -94,9 +94,9 @@ def _add_operations_for_file_object(
                 >> Concatenate(operations=operations, node=successor)
             ]
         if node.encoding_format and not should_extract(node.encoding_format):
-            fields = tuple(
-                [field for field in node.successors if isinstance(field, Field)]
-            )
+            fields = tuple([
+                field for field in node.successors if isinstance(field, Field)
+            ])
             operation >> Read(
                 operations=operations,
                 node=node,
