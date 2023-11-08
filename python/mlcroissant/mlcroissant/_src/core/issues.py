@@ -7,6 +7,10 @@ class ValidationError(Exception):
     """Error during the validation of the format."""
 
 
+class GenerationError(Exception):
+    """Error during the generation of the dataset."""
+
+
 @dataclasses.dataclass
 class Context:
     """Context to identify an issue.
