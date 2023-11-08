@@ -34,8 +34,9 @@ class FileObject(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
+        self.assert_has_mandatory_properties("encoding_format", "name")
         if not self.contained_in:
+            self.assert_has_mandatory_properties("content_url")
             self.assert_has_exclusive_properties(["md5", "sha256"])
 
     def to_json(self) -> Json:

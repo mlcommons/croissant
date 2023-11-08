@@ -1,25 +1,28 @@
 """Field operation module."""
 
 import dataclasses
-import functools
 import io
-from typing import Any
+from typing import Any, Iterator
 
 from etils import epath
+import numpy as np
 import pandas as pd
 from rdflib import term
 
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.ml import bounding_box
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
 
 def _cast_value(value: Any, data_type: type | term.URIRef | None):
     """Casts the value `value` to the desired target data type `data_type`."""
-    if pd.isna(value):
+    is_na = not isinstance(value, (list, np.ndarray)) and pd.isna(value)
+    if is_na:
         return value
     elif data_type == DataType.IMAGE_OBJECT:
         if isinstance(value, deps.PIL_Image.Image):
@@ -28,6 +31,8 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
             return deps.PIL_Image.open(io.BytesIO(value))
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
+    elif data_type == DataType.BOUNDING_BOX:
+        return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
     elif data_type == bytes and not isinstance(value, bytes):
@@ -48,75 +53,75 @@ def _to_bytes(value: Any) -> bytes:
         return bytes(value)
 
 
-def _read_file(path: epath.PathLike) -> bytes:
+def _read_file(row: pd.Series) -> pd.Series:
     """Reads a binary file."""
-    return epath.Path(path).open("rb").read()
+    path = row[FileProperty.filepath]
+    content = epath.Path(path).open("rb").read()
+    return pd.Series({**row, FileProperty.content: content})
 
 
-def _extract_lines(
-    path: epath.PathLike,
-    name: str,
-) -> pd.Series:
+def _extract_lines(row: pd.Series) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
-    path = epath.Path(path)
+    path = epath.Path(row[FileProperty.filepath])
     lines = path.open("rb").read().splitlines()
-    return pd.Series(lines, name=name)
+    return pd.Series(
+        {**row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))}
+    )
 
 
-def _extract_line_numbers(
-    path: epath.PathLike,
-    name: str,
-) -> pd.Series:
-    """Reads a file line-by-line and outputs a named pd.Series of the lines."""
-    lines = _extract_lines(path, name)
-    return pd.Series(range(len(lines)), name=name)
-
-
-def _extract_value(df: pd.DataFrame, field: Field) -> pd.Series:
+def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     """Extracts the value according to the field rules."""
     source = field.source
-    if source.extract.file_property == FileProperty.content:
-        return df[FileProperty.filepath].apply(_read_file)
-    elif source.extract.file_property == FileProperty.lines:
-        if FileProperty.lines in df:
-            return df[FileProperty.lines]
-        else:
-            series = df[FileProperty.filepath]
-            return series.apply(_extract_lines, name=field.name).T[0]
-    elif source.extract.file_property == FileProperty.lineNumbers:
-        if FileProperty.lineNumbers in df:
-            return df[FileProperty.lineNumbers]
-        else:
-            series = df[FileProperty.filepath]
-            return series.apply(_extract_line_numbers, name=field.name).T[0]
-    else:
-        column_name = source.get_field()
-        possible_fields = list(df.axes if isinstance(df, pd.Series) else df.keys())
-        assert (
-            column_name in df
-        ), f'Field "{column_name}" does not exist. Possible fields: {possible_fields}'
-        return df[column_name]
-
-
-def _name_series(series: pd.Series, field: Field) -> pd.Series:
-    """Names the series without copying it."""
-    return pd.Series(series, name=field.name, copy=False)
+    column_name = source.get_column()
+    if column_name in df:
+        return df
+    elif source.extract.file_property == FileProperty.content:
+        return df.apply(_read_file, axis=1)
+    elif source.extract.file_property in [FileProperty.lines, FileProperty.lineNumbers]:
+        df = df.apply(_extract_lines, axis=1)
+        return df.explode(
+            column=[FileProperty.lines, FileProperty.lineNumbers], ignore_index=True
+        )
+    return df
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
-class ReadField(Operation):
-    """Reads a field from a Pandas DataFrame and applies transformations.
+class ReadFields(Operation):
+    """Reads fields in a RecordSet from a Pandas DataFrame and applies transformations.
 
-    ReadField.__call__() outputs a single-column pd.Series whose name is the field name.
+    ReadFields.__call__() yields dict-shaped records with the proper transformations,
+    types and name.
     """
 
-    node: Field
+    node: RecordSet
 
-    def __call__(self, df: pd.DataFrame) -> pd.Series:
+    def _fields(self) -> list[Field]:
+        """Extracts all fields (i.e., direct fields without subFields and subFields)."""
+        fields: list[Field] = []
+        for field in self.node.fields:
+            if field.sub_fields:
+                for sub_field in field.sub_fields:
+                    fields.append(sub_field)
+            else:
+                fields.append(field)
+        return fields
+
+    def __call__(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
-        value = _extract_value(df, self.node)
-        series = _name_series(value, self.node)
-        transforms = functools.partial(apply_transforms_fn, source=self.node.source)
-        cast = functools.partial(_cast_value, data_type=self.node.data_type)
-        # PyType mistakenly infers the return type as `Any`.
-        return series.apply(transforms).apply(cast)  # pytype: disable=bad-return-type
+        fields = self._fields()
+        for field in fields:
+            df = _extract_value(df, field)
+        for _, row in df.iterrows():
+            result: dict[str, Any] = {}
+            for field in fields:
+                source = field.source
+                column = source.get_column()
+                assert column in df, (
+                    f'Column "{column}" does not exist. Inspect the ancestors of the'
+                    f" field {field} to understand why. Possible fields: {df.columns}"
+                )
+                value = row[column]
+                value = apply_transforms_fn(value, field=field)
+                value = _cast_value(value, field.data_type)
+                result[field.name] = value
+            yield result
