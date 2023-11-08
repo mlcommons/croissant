@@ -27,7 +27,6 @@
         "--line-length",
         "88",
         "--preview",
-        "--experimental-string-processing"
     ],
     "isort.args": [
         "--profile",

@@ -20,7 +20,7 @@ jobs:
         python-version: '3.11'
     - uses: psf/black@stable
       with:
-        options: --check --line-length 88 --preview --experimental-string-processing
+        options: --check --line-length 88 --preview
         src: './wizard'
     - uses: isort/isort-action@master
       with:
