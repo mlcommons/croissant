@@ -87,10 +87,10 @@ def _get_data_type(feature: datasets.Features) -> term.URIRef:
         raise ValueError(f"Cannot convert the feature {feature} to Croissant.")
 
 
-def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
+def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.Field]:
     """Lists fields from Hugging Face features."""
     features = builder.info.features
-    fields: list[mlc.nodes.Field] = []
+    fields: list[mlc.Field] = []
     for name, feature in features.items():
         try:
             data_type = _get_data_type(feature)
@@ -99,19 +99,19 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
             continue
         if data_type == mlc.DataType.IMAGE_OBJECT:
             transforms = [
-                mlc.nodes.Transform(json_path="bytes"),
+                mlc.Transform(json_path="bytes"),
             ]
         else:
             transforms = []
         fields.append(
-            mlc.nodes.Field(
+            mlc.Field(
                 name=name,
                 description="Column from Hugging Face parquet file.",
                 data_types=data_type,
-                source=mlc.nodes.Source(
+                source=mlc.Source(
                     uid=_PARQUET_FILES,
                     node_type="distribution",
-                    extract=mlc.nodes.Extract(column=name),
+                    extract=mlc.Extract(column=name),
                     transforms=transforms,
                 ),
             )
@@ -121,13 +121,13 @@ def _get_fields(builder: datasets.DatasetBuilder) -> list[mlc.nodes.Field]:
 
 def _get_record_sets(
     builders: list[datasets.DatasetBuilder],
-) -> list[mlc.nodes.RecordSet]:
-    record_sets: list[mlc.nodes.RecordSet] = []
+) -> list[mlc.RecordSet]:
+    record_sets: list[mlc.RecordSet] = []
     for builder in builders:
         name = builder.config.name if len(builders) > 1 else "default"
         fields = _get_fields(builder)
         record_sets.append(
-            mlc.nodes.RecordSet(
+            mlc.RecordSet(
                 name=name,
                 description=f"The {name} set of records in the dataset.",
                 fields=fields,
@@ -140,7 +140,7 @@ def convert(dataset: str) -> dict[str, Any]:
     """Converts from Hugging Face to Croissant JSON-LD."""
     dataset_url, builders = _standardize_dataset(dataset)
     file_objects = [
-        mlc.nodes.FileObject(
+        mlc.FileObject(
             name=_REPO,
             description="The Hugging Face git repository.",
             content_url=dataset_url + "/tree/refs%2Fconvert%2Fparquet",
@@ -149,7 +149,7 @@ def convert(dataset: str) -> dict[str, Any]:
         )
     ]
     file_sets = [
-        mlc.nodes.FileSet(
+        mlc.FileSet(
             name=_PARQUET_FILES,
             description=(
                 "The underlying Parquet files as converted by Hugging Face (see:"
@@ -163,7 +163,7 @@ def convert(dataset: str) -> dict[str, Any]:
         )
     ]
     record_sets = _get_record_sets(builders)
-    metadata = mlc.nodes.Metadata(
+    metadata = mlc.Metadata(
         name=builders[0].name,
         citation=builders[0].info.citation,
         license=builders[0].info.license,
