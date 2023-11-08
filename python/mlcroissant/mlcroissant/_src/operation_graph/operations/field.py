@@ -7,6 +7,8 @@ from typing import Any
 from etils import epath
 import pandas as pd
 
+import librosa
+
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
@@ -27,6 +29,8 @@ class ReadField(Operation):
             return value
         elif data_type == constants.SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT:
             return deps.PIL_Image.open(io.BytesIO(value))
+        elif data_type == constants.SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT:
+            return librosa.load(io.BytesIO(value))
         elif data_type == pd.Timestamp:
             # The date format is the first format found in the field's source.
             format = next(

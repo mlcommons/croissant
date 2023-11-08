@@ -46,6 +46,7 @@ SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
 SCHEMA_ORG_CONTENT_SIZE = namespace.SDO.contentSize
 SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
 SCHEMA_ORG_DATASET = namespace.SDO.Dataset
+SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT = namespace.SDO.AudioObject
 SCHEMA_ORG_DATA_TYPE_BOOL = namespace.SDO.Boolean
 SCHEMA_ORG_DATA_TYPE_DATE = namespace.SDO.Date
 SCHEMA_ORG_DATA_TYPE_FLOAT = namespace.SDO.Float
