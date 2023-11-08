@@ -80,14 +80,14 @@ def get_migration_fn(migration: str | None):
 
 def migrate_dataset(json_ld):
     """Migrates a regular Croissant file using mlcroissant Python API."""
-    metadata = mlc.nodes.Metadata.from_json(issues=Issues(), json_=json_ld, folder=None)
+    metadata = mlc.Metadata.from_json(issues=Issues(), json_=json_ld, folder=None)
     return metadata.to_json()
 
 
 def migrate_test_dataset(dataset: epath.Path, json_ld):
     """Migrates a test Croissant files.
 
-    Cannot use mlc.nodes.Metadata as test Croissant files may contain errors.
+    Cannot use mlc.Metadata as test Croissant files may contain errors.
     """
     json_ld = compact_jsonld(expand_jsonld(json_ld))
     # Special cases for test datasets without @context
