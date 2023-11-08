@@ -7,6 +7,7 @@ from absl import logging
 import networkx as nx
 import pandas as pd
 
+from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import ReadFields
@@ -51,21 +52,27 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: dict[Operation, Any] = {}
     for operation in _order_relevant_operations(operations, record_set):
-        previous_results = [
-            results[previous_operation]
-            for previous_operation in operations.predecessors(operation)
-            if previous_operation in results
-        ]
-        logging.info("Executing %s", operation)
-        results[operation] = operation(*previous_results)
-        if isinstance(operation, ReadFields):
-            if operation.node.name != record_set:
-                # The RecordSet will be used later in the graph by another RecordSet.
-                # This could be multi-threaded to build the pd.DataFrame faster.
-                results[operation] = pd.DataFrame(list(results[operation]))
-            else:
-                # This is the target RecordSet, so we can yield records.
-                yield from results[operation]
+        try:
+            previous_results = [
+                results[previous_operation]
+                for previous_operation in operations.predecessors(operation)
+                if previous_operation in results
+            ]
+            logging.info("Executing %s", operation)
+            results[operation] = operation(*previous_results)
+            if isinstance(operation, ReadFields):
+                if operation.node.name != record_set:
+                    # The RecordSet will be used later in the graph by another RecordSet
+                    # This could be multi-threaded to build the pd.DataFrame faster.
+                    results[operation] = pd.DataFrame(list(results[operation]))
+                else:
+                    # This is the target RecordSet, so we can yield records.
+                    yield from results[operation]
+        except Exception as e:
+            raise GenerationError(
+                "An error occured during the sequential generation of the dataset, more"
+                f" specifically during the operation {operation}"
+            ) from e
 
 
 def execute_operations_in_streaming(
@@ -83,31 +90,37 @@ def execute_operations_in_streaming(
     if list_of_operations is None:
         list_of_operations = _order_relevant_operations(operations, record_set)
     for i, operation in enumerate(list_of_operations):
-        if isinstance(operation, ReadFields):
-            if operation.node.name != record_set:
-                continue
-            yield from operation(result)
-            return
-        elif isinstance(operation, Read):
-            # At this stage `result` can be either a Path or a list of Paths.
-            if not isinstance(result, list):
-                result = [result]
-
-            def read_all_files():
-                for file in result:
-                    # Read files separately and keep executing subsequent operations.
-                    logging.info("Executing %s", operation)
-                    yield from execute_operations_in_streaming(
-                        record_set=record_set,
-                        operations=operations,
-                        list_of_operations=list_of_operations[i + 1 :],
-                        result=operation(file),
-                    )
-
-            yield from read_all_files()
-            return
-        else:
-            logging.info("Executing %s", operation)
+        try:
             if isinstance(operation, ReadFields):
-                continue
-            result = operation(result)
+                if operation.node.name != record_set:
+                    continue
+                yield from operation(result)
+                return
+            elif isinstance(operation, Read):
+                # At this stage `result` can be either a Path or a list of Paths.
+                if not isinstance(result, list):
+                    result = [result]
+
+                def read_all_files():
+                    for file in result:
+                        # Read files separately and keep executing subsequent operations
+                        logging.info("Executing %s", operation)
+                        yield from execute_operations_in_streaming(
+                            record_set=record_set,
+                            operations=operations,
+                            list_of_operations=list_of_operations[i + 1 :],
+                            result=operation(file),
+                        )
+
+                yield from read_all_files()
+                return
+            else:
+                logging.info("Executing %s", operation)
+                if isinstance(operation, ReadFields):
+                    continue
+                result = operation(result)
+        except Exception as e:
+            raise GenerationError(
+                "An error occured during the streaming generation of the dataset, more"
+                f" specifically during the operation {operation}"
+            ) from e

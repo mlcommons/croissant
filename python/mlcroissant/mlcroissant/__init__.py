@@ -1,7 +1,9 @@
 """Defines the public interface to the `mlcroissant` package."""
+
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.datasets import Dataset
 from mlcroissant._src.datasets import Records
@@ -23,6 +25,7 @@ __all__ = [
     "Field",
     "FileObject",
     "FileSet",
+    "GenerationError",
     "Metadata",
     "Records",
     "RecordSet",
