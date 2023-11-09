@@ -1,6 +1,6 @@
 from core.state import CurrentStep
-from core.state import set_form_step
 import streamlit as st
+from utils import set_form_step
 
 
 def render_splash():

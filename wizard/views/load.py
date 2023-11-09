@@ -1,11 +1,11 @@
 import os
-from pathlib import Path
 import tempfile
 
 from core.state import CurrentStep
 from core.state import Metadata
-from core.state import set_form_step
+from etils import epath
 import streamlit as st
+from utils import set_form_step
 
 import mlcroissant as mlc
 
@@ -17,7 +17,7 @@ def render_load():
     if file is not None:
         try:
             file_cont = file.read()
-            newfile_name = Path.home() / ".cache" / "croissant" / "loaded_croissant"
+            newfile_name = epath.Path("~").expanduser() / ".cache" / "croissant" / "loaded_croissant"
             os.makedirs(os.path.dirname(newfile_name), exist_ok=True)
             with open(newfile_name, mode="wb+") as outfile:
                 outfile.write(file_cont)

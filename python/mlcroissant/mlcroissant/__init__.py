@@ -34,5 +34,4 @@ __all__ = [
     "Source",
     "Transform",
     "ValidationError",
-    "FileObject",
 ]

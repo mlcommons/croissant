@@ -2,8 +2,10 @@ from core.data_types import convert_dtype
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
+from core.state import Field
 from core.state import FileObject
 from core.state import Metadata
+from core.state import RecordSet
 import pandas as pd
 import streamlit as st
 from utils import DF_HEIGHT
@@ -31,21 +33,13 @@ def render_files():
             else:
                 raise ValueError("should have either `url` or `uploaded_file`.")
             st.session_state[Metadata].add_distribution(file)
-            dtypes = file.df.dtypes
-            fields = pd.DataFrame(
-                {
-                    "name": dtypes.index,
-                    "data_type": [convert_dtype(v) for v in dtypes.values],
-                    "description": "",
-                }
-            )
-            st.session_state[Metadata].add_record_set(
-                {
-                    "fields": fields,
-                    "name": file.name + "_record_set",
-                    "description": "",
-                }
-            )
+            # pandas has no idea how to display this (or how not to, to avoid errors, commenting out for now)
+            # fields = [Field(name=k, data_type=convert_dtype(v)) for k,v in file.df.dtypes.items()],
+            st.session_state[Metadata].add_record_set(RecordSet(
+                fields=[],
+                name=file.name + "_record_set",
+                description="",
+            ))
     for key, file in enumerate(st.session_state[Metadata].distribution):
         with st.container():
 

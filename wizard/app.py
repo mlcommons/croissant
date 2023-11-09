@@ -1,23 +1,12 @@
 from core.state import CurrentStep
 from core.state import Metadata
 import streamlit as st
+from utils import init_state
 from views.load import render_load
 from views.splash import render_splash
 from views.wizard import render_wizard
 
 import mlcroissant as mlc
-
-
-def init_state():
-
-    if Metadata not in st.session_state:
-        st.session_state[Metadata] = Metadata()
-
-    if mlc.Dataset not in st.session_state:
-        st.session_state[mlc.Dataset] = None
-
-    if CurrentStep not in st.session_state:
-        st.session_state[CurrentStep] = "start"
 
 init_state()
 

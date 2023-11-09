@@ -3,17 +3,14 @@
 In the future, this could be the serialization format between front and back.
 """
 
+from __future__ import annotations
+
 import dataclasses
 from typing import Type, TypeVar
-
-import streamlit as st
 
 import mlcroissant as mlc
 
 T = TypeVar('T', bound='Parent')
-
-
-
 
 class CurrentStep:
     """hold all major state variables for the application"""
@@ -94,7 +91,7 @@ class Metadata:
         del self.record_sets[key]
 
     @classmethod
-    def from_canonical(cls: Type[T], dataset: mlc.Dataset) -> T:
+    def from_canonical(cls, dataset: mlc.Dataset) -> Metadata:
         canonical_metadata = dataset.metadata
         distribution = []
         for file in canonical_metadata.distribution:
@@ -137,8 +134,3 @@ class Metadata:
             distribution=distribution,
             record_sets=record_sets,
         )
-
-def set_form_step(action, step=None):
-    """Maintains the user's location within the wizard."""
-    if action == "Jump" and step is not None:
-        st.session_state[CurrentStep] = step

@@ -1,7 +1,7 @@
 etils[epath]
 numpy
+mlcroissant
 pandas
 pytest
 requests
 streamlit
-mlcroissant
