@@ -1,2 +1,2 @@
-{"image_filename": "COCO_train2014_000000467840.jpg", "image_content": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "train"}
-{"image_filename": "COCO_train2014_000000533055.jpg", "image_content": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "train"}
+{"image_filename": "COCO_train2014_000000467840.jpg", "image_id": 467840, "image_content": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "train"}
+{"image_filename": "COCO_train2014_000000533055.jpg", "image_id": 533055, "image_content": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "train"}

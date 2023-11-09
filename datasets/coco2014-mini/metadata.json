@@ -128,6 +128,21 @@
         },
         {
           "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^COCO_(?:train|val|test)2014_(\\d+)\\.jpg$"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
@@ -247,6 +262,9 @@
           "name": "image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
+          "references": {
+            "field": "images/image_id"
+          },
           "source": {
             "distribution": "bbox_annotations-files",
             "extract": {
@@ -256,8 +274,29 @@
         },
         {
           "@type": "ml:Field",
+          "name": "image_content",
+          "source": {
+            "field": "images/image_content"
+          }
+        },
+        {
+          "@type": "ml:Field",
           "name": "bbox",
           "description": "The bounding box on the image.",
+          "additionalProperty": [
+            {
+              "@type": "sc:PropertyValue",
+              "name": "annotationOfField",
+              "description": "This shows which field is annotated.",
+              "value": "image_content"
+            },
+            {
+              "@type": "sc:PropertyValue",
+              "name": "format",
+              "description": "The format of the bounding box following Keras format (https://keras.io/api/keras_cv/bounding_box/formats/).",
+              "value": "XYXY"
+            }
+          ],
           "dataType": "ml:BoundingBox",
           "source": {
             "distribution": "bbox_annotations-files",
