@@ -95,7 +95,7 @@ class Metadata:
         canonical_metadata = dataset.metadata
         distribution = []
         for file in canonical_metadata.distribution:
-            if isinstance(file, mlc.nodes.FileObject):
+            if isinstance(file, mlc.FileObject):
                 distribution.append(FileObject(
                     name=file.name,
                     description=file.description,
