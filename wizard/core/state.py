@@ -8,6 +8,8 @@ from __future__ import annotations
 import dataclasses
 from typing import Type, TypeVar
 
+import pandas as pd
+
 import mlcroissant as mlc
 
 T = TypeVar('T', bound='Parent')
@@ -39,12 +41,21 @@ class FileSet:
     includes: str | None = ""
     name: str = ""
 
+
+@dataclasses.dataclass
+class Source:
+    """Source analogue for editor"""
+    extract: 
+
 @dataclasses.dataclass
 class Field:
     """Field analogue for editor"""
     name: str | None = None
     description: str | None = None
     data_type: str | None = None
+    source: Source = dataclasses.field(default_factory=Source)
+
+
 
 @dataclasses.dataclass
 class RecordSet:
@@ -90,17 +101,57 @@ class Metadata:
     def remove_record_set(self, key: int) -> None:
         del self.record_sets[key]
 
+    def to_canonical(self) -> mlc.Metadata:
+        distribution = []
+        for file in self.distribution:
+            distribution.append(
+                mlc.nodes.FileObject(
+                    name=file.name,
+                    description=file.description,
+                    content_url=file.content_url,
+                    encoding_format=file.encoding_format,
+                    sha256=file.sha256,
+                )
+            )
+        record_sets = []
+        for record_set in self.record_sets:
+            fields = []
+            for field in record_set.fields:
+                fields.append(
+                    mlc.nodes.Field(
+                        name=field.name,
+                        description=field.description,
+                        data_types=field.data_type,
+                    )
+                )
+            record_sets.append(
+                mlc.nodes.RecordSet(
+                    name=record_set.name,
+                    description=record_set.description,
+                    fields=fields,
+                )
+            )
+        return mlc.nodes.Metadata(
+            name=self.name,
+            citation=self.citation,
+            license=self.license,
+            description=self.description,
+            url=self.url,
+            distribution=distribution,
+            record_sets=record_sets,
+        )
+
     @classmethod
-    def from_canonical(cls, dataset: mlc.Dataset) -> Metadata:
-        canonical_metadata = dataset.metadata
+    def from_canonical(cls, canonical_metadata: mlc.nodes.Metadata) -> Metadata:
         distribution = []
         for file in canonical_metadata.distribution:
-            if isinstance(file, mlc.FileObject):
+            if isinstance(file, mlc.nodes.FileObject):
                 distribution.append(FileObject(
                     name=file.name,
                     description=file.description,
                     content_size=file.content_size,
                     encoding_format=file.encoding_format,
+                    content_url=file.content_url,
                     sha256=file.sha256,
                 ))
             else:
