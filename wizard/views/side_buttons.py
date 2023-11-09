@@ -1,11 +1,6 @@
-from state import CurrentStep
+from core.state import CurrentStep
 import streamlit as st
-
-
-def set_form_step(action, step=None):
-    """Maintains the user's location within the wizard."""
-    if action == "Jump" and step is not None:
-        st.session_state[CurrentStep] = step
+from utils import set_form_step
 
 
 def render_side_buttons():

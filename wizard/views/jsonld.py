@@ -1,7 +1,5 @@
+from core.state import Metadata
 import pandas as pd
-from state import Files
-from state import Metadata
-from state import RecordSets
 import streamlit as st
 
 import mlcroissant as mlc
@@ -11,8 +9,9 @@ def render_jsonld():
     if not st.session_state[Metadata]:
         return st.code({}, language="json")
     try:
+        croissant = st.session_state[Metadata]
         distribution = []
-        for file in st.session_state[Files]:
+        for file in croissant.distribution:
             distribution.append(
                 mlc.nodes.FileObject(
                     name=file.name,
@@ -23,7 +22,7 @@ def render_jsonld():
                 )
             )
         record_sets = []
-        for record_set in st.session_state[RecordSets]:
+        for record_set in croissant.record_sets:
             fields = []
             for _, field in record_set.get("fields", pd.DataFrame()).iterrows():
                 fields.append(
@@ -45,13 +44,13 @@ def render_jsonld():
                     fields=fields,
                 )
             )
-        if st.session_state[Metadata]:
+        if croissant.metadata:
             metadata = mlc.nodes.Metadata(
-                name=st.session_state[Metadata].name,
-                citation=st.session_state[Metadata].citation,
-                license=st.session_state[Metadata].license,
-                description=st.session_state[Metadata].description,
-                url=st.session_state[Metadata].url,
+                name=croissant.metadata.name,
+                citation=croissant.metadata.citation,
+                license=croissant.metadata.license,
+                description=croissant.metadata.description,
+                url=croissant.metadata.url,
                 distribution=distribution,
                 record_sets=record_sets,
             )

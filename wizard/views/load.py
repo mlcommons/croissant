@@ -1,8 +1,11 @@
 import os
 import tempfile
 
+from core.state import CurrentStep
+from core.state import Metadata
+from etils import epath
 import streamlit as st
-from utils import LOADED_CROISSANT
+from utils import set_form_step
 
 import mlcroissant as mlc
 
@@ -13,14 +16,15 @@ def render_load():
         file = st.file_uploader("Select a croissant file to load")
     if file is not None:
         try:
-            content = file.read()
-            new_file_name = LOADED_CROISSANT / "current_loaded_croissant.json"
-            os.makedirs(os.path.dirname(LOADED_CROISSANT), exist_ok=True)
-            with open(new_file_name, mode="wb+") as outfile:
-                outfile.write(content)
-            dataset = mlc.Dataset(new_file_name)
-            
-
+            file_cont = file.read()
+            newfile_name = epath.Path("~").expanduser() / ".cache" / "croissant" / "loaded_croissant"
+            os.makedirs(os.path.dirname(newfile_name), exist_ok=True)
+            with open(newfile_name, mode="wb+") as outfile:
+                outfile.write(file_cont)
+            dataset = mlc.Dataset(newfile_name)
+            st.session_state[Metadata] = Metadata.from_canonical(dataset)
+            set_form_step("Jump", CurrentStep.editor)
+            st.rerun()
         except mlc.ValidationError as e:
             st.warning(e)
             st.toast(body="Invalid Croissant File!", icon="🔥")

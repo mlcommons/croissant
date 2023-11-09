@@ -1,11 +1,12 @@
-from state import CurrentStep
-from state import init_state
+from core.state import CurrentStep
+from core.state import Metadata
 import streamlit as st
-from views.jsonld import render_jsonld
+from utils import init_state
 from views.load import render_load
-from views.side_buttons import render_side_buttons
 from views.splash import render_splash
 from views.wizard import render_wizard
+
+import mlcroissant as mlc
 
 init_state()
 
@@ -24,3 +25,4 @@ elif st.session_state[CurrentStep] == CurrentStep.editor:
         render_wizard()
 else:
     st.warning("invalid unhandled app state")
+
