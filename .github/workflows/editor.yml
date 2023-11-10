@@ -1,0 +1,29 @@
+name: Continuous Integration - Editor (CI)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+
+jobs:
+  python-format:
+    name: Python format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - uses: psf/black@stable
+      with:
+        options: --check --line-length 88 --preview
+        src: './wizard'
+    - uses: isort/isort-action@master
+      with:
+        sort-paths: './wizard'
+        configuration: --profile google --line-length 88 --use-parentheses --project mlcroissant --project components --project core --project views --project state --project utils --multi-line 3 --thirdparty datasets
+        requirements-files: 'wizard/requirements.txt'

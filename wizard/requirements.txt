@@ -1,6 +1,6 @@
 etils[epath]
-numpy
 mlcroissant
+numpy
 pandas
 pytest
 requests

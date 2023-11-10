@@ -1,7 +1,7 @@
-from core.state import Metadata
 import pandas as pd
 import streamlit as st
 
+from core.state import Metadata
 import mlcroissant as mlc
 
 

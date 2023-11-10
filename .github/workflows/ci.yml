@@ -1,4 +1,4 @@
-name: Continuous Integration (CI)
+name: Continuous Integration - mlcroissant (CI)
 
 on:
   push:
@@ -92,7 +92,7 @@ jobs:
         python-version: '3.11'
     - uses: psf/black@stable
       with:
-        options: --line-length 88 --preview --experimental-string-processing
+        options: --check --line-length 88 --preview
         src: './python/mlcroissant'
     - uses: isort/isort-action@master
       with:

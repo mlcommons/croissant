@@ -68,17 +68,15 @@ class RecordSet(Node):
 
     def to_json(self) -> Json:
         """Converts the `RecordSet` to JSON."""
-        return remove_empty_values(
-            {
-                "@type": "ml:RecordSet",
-                "name": self.name,
-                "description": self.description,
-                "isEnumeration": self.is_enumeration,
-                "key": self.key,
-                "field": [field.to_json() for field in self.fields],
-                "data": self.data,
-            }
-        )
+        return remove_empty_values({
+            "@type": "ml:RecordSet",
+            "name": self.name,
+            "description": self.description,
+            "isEnumeration": self.is_enumeration,
+            "key": self.key,
+            "field": [field.to_json() for field in self.fields],
+            "data": self.data,
+        })
 
     @classmethod
     def from_jsonld(
