@@ -20,9 +20,9 @@ describe('Wizard loads Croissant without Error', () => {
         events: ["dragenter", "drop"],
       })
     })
-    cy.get('[data-testid="stExpander"]')
-      .contains('Titanic')
-      .should('exist')
+
+    cy.get('[data-testid="stMarkdownContainer"]').contains('Metadata').click()
+    cy.get('input[aria-label="Name:red[*]"]').should('have.value', 'Titanic')
     
     cy.get('[data-testid="stException"]').should('not.exist')
   })
