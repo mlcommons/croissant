@@ -20,6 +20,19 @@ source ~/py3/bin/activate
 python -m pip install ".[dev]"
 ```
 
+The command can fail, for example, due to missing dependencies, e.g.:
+
+```bash
+Failed to build pygraphviz
+ERROR: Could not build wheels for pygraphviz, which is required to install pyproject.toml-based projects
+```
+
+This can be fixed by running
+
+```bash
+sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
+```
+
 ## Verify/load a Croissant dataset
 
 ```bash
