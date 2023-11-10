@@ -6,11 +6,8 @@ In the future, this could be the serialization format between front and back.
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar
 
 import mlcroissant as mlc
-
-T = TypeVar("T", bound="Parent")
 
 
 class CurrentStep:
