@@ -1,19 +1,55 @@
 import pandas as pd
 import streamlit as st
 
+from components.tree import render_tree
 from core.data_types import convert_dtype
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 from core.state import Field
 from core.state import FileObject
+from core.state import FileSet
 from core.state import Metadata
 from core.state import RecordSet
 from utils import DF_HEIGHT
 from utils import needed_field
 
+Resource = FileObject | FileSet
+
 
 def render_files():
+    col1, col2 = st.columns([1, 1], gap="medium")
+    with col1:
+        files = st.session_state[Metadata].distribution
+        resource_name = _render_left_panel(files)
+    with col2:
+        if resource_name:
+            _render_right_panel(resource_name)
+
+
+def _render_left_panel(files: list[Resource]) -> Resource | None:
+    """Renders the left panel: the list of all resources."""
+    filename_to_file: dict[str, list[Resource]] = {}
+    nodes = []
+    for file in files:
+        name = file.name
+        filename_to_file[name] = file
+        type = "FileObject" if isinstance(file, FileObject) else "FileSet"
+        if file.contained_in:
+            parent = file.contained_in
+        else:
+            parent = None
+        nodes.append({"name": name, "type": type, "parent": parent})
+    _render_upload_form()
+    name = render_tree(nodes)
+    if not name:
+        return None
+    file = filename_to_file[name]
+    return file
+
+
+def _render_upload_form():
+    """Renders the form to upload from local or upload from URL."""
     with st.form(key="manual_urls", clear_on_submit=True):
         url = None
         uploaded_file = None
@@ -43,8 +79,12 @@ def render_files():
                     description="",
                 )
             )
+
+
+def _render_right_panel(selected_file: Resource):
+    """Renders the left panel: the detail of the selected resource."""
     for key, file in enumerate(st.session_state[Metadata].distribution):
-        with st.container():
+        if file == selected_file:
 
             def delete_line():
                 st.session_state[Metadata].remove_distribution(key)
