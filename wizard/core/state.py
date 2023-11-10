@@ -41,21 +41,13 @@ class FileSet:
     includes: str | None = ""
     name: str = ""
 
-
-@dataclasses.dataclass
-class Source:
-    """Source analogue for editor"""
-    extract: 
-
 @dataclasses.dataclass
 class Field:
     """Field analogue for editor"""
     name: str | None = None
     description: str | None = None
     data_type: str | None = None
-    source: Source = dataclasses.field(default_factory=Source)
-
-
+    source: mlc.nodes.Source | None = None
 
 @dataclasses.dataclass
 class RecordSet:
@@ -122,6 +114,7 @@ class Metadata:
                         name=field.name,
                         description=field.description,
                         data_types=field.data_type,
+                        source=field.source,
                     )
                 )
             record_sets.append(
@@ -167,7 +160,8 @@ class Metadata:
                 fields.append(Field(
                     name=field.name,
                     description=field.description,
-                    data_type=field.data_types
+                    data_type=field.data_types,
+                    source=field.source
                 )) 
             record_sets.append(RecordSet(
                 name=record_set.name,
