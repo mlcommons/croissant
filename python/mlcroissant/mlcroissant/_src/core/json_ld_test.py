@@ -50,5 +50,4 @@ def test_make_context():
         "subField": "ml:subField",
         "transform": "ml:transform",
         "foo": "bar",
-        "wd": "https://www.wikidata.org/wiki/",
     }
