@@ -32,6 +32,7 @@ class FileObject:
     encoding_format: str | None = None
     sha256: str | None = None
     df: str | None = None
+    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
@@ -43,6 +44,7 @@ class FileSet:
     encoding_format: str | None = ""
     includes: str | None = ""
     name: str = ""
+    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
@@ -52,8 +54,9 @@ class Field:
     name: str | None = None
     description: str | None = None
     data_types: str | list[str] | None = None
-    source: mlc.nodes.Source | None = None
-    references: mlc.nodes.Source | None = None
+    source: mlc.Source | None = None
+    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
+    references: mlc.Source | None = None
 
 
 @dataclasses.dataclass
@@ -65,6 +68,7 @@ class RecordSet:
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
+    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
@@ -78,6 +82,7 @@ class Metadata:
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
+    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
     def __bool__(self):
         return self.name != "" and self.url != ""
@@ -124,6 +129,7 @@ class Metadata:
                     content_url=file.content_url,
                     encoding_format=file.encoding_format,
                     content_size=file.content_size,
+                    rdf=file.rdf,
                     sha256=file.sha256,
                 )
             )
@@ -137,6 +143,7 @@ class Metadata:
                         description=field.description,
                         data_types=field.data_types,
                         source=field.source,
+                        rdf=field.rdf,
                         references=field.references,
                     )
                 )
@@ -147,6 +154,7 @@ class Metadata:
                     key=record_set.key,
                     is_enumeration=record_set.is_enumeration,
                     fields=fields,
+                    rdf=record_set.rdf,
                 )
             )
         return mlc.Metadata(
@@ -156,11 +164,12 @@ class Metadata:
             description=self.description,
             url=self.url,
             distribution=distribution,
+            rdf=self.rdf,
             record_sets=record_sets,
         )
 
     @classmethod
-    def from_canonical(cls, canonical_metadata: mlc.nodes.Metadata) -> Metadata:
+    def from_canonical(cls, canonical_metadata: mlc.Metadata) -> Metadata:
         distribution = []
         for file in canonical_metadata.distribution:
             if isinstance(file, mlc.FileObject):
@@ -172,6 +181,7 @@ class Metadata:
                         content_size=file.content_size,
                         encoding_format=file.encoding_format,
                         content_url=file.content_url,
+                        rdf=file.rdf,
                         sha256=file.sha256,
                     )
                 )
@@ -182,6 +192,7 @@ class Metadata:
                         contained_in=file.contained_in,
                         description=file.description,
                         encoding_format=file.encoding_format,
+                        rdf=file.rdf,
                     )
                 )
         record_sets = []
@@ -194,6 +205,7 @@ class Metadata:
                         description=field.description,
                         data_types=field.data_types,
                         source=field.source,
+                        rdf=field.rdf,
                         references=field.references,
                     )
                 )
@@ -204,6 +216,7 @@ class Metadata:
                     is_enumeration=record_set.is_enumeration,
                     key=record_set.key,
                     fields=fields,
+                    rdf=record_set.rdf,
                 )
             )
         return cls(
@@ -213,5 +226,6 @@ class Metadata:
             license=canonical_metadata.license,
             url=canonical_metadata.url,
             distribution=distribution,
+            rdf=canonical_metadata.rdf,
             record_sets=record_sets,
         )
