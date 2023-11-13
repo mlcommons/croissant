@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import dataclasses
 
+import pandas as pd
+
 import mlcroissant as mlc
 
 
@@ -48,7 +50,9 @@ class Field:
 
     name: str | None = None
     description: str | None = None
-    data_type: str | None = None
+    data_types: str | list[str] | None = None
+    source: mlc.nodes.Source | None = None
+    references: mlc.nodes.Source | None = None
 
 
 @dataclasses.dataclass
@@ -109,9 +113,53 @@ class Metadata:
     def remove_record_set(self, key: int) -> None:
         del self.record_sets[key]
 
+    def to_canonical(self) -> mlc.Metadata:
+        distribution = []
+        for file in self.distribution:
+            distribution.append(
+                mlc.FileObject(
+                    name=file.name,
+                    description=file.description,
+                    content_url=file.content_url,
+                    encoding_format=file.encoding_format,
+                    content_size=file.content_size,
+                    sha256=file.sha256,
+                )
+            )
+        record_sets = []
+        for record_set in self.record_sets:
+            fields = []
+            for field in record_set.fields:
+                fields.append(
+                    mlc.Field(
+                        name=field.name,
+                        description=field.description,
+                        data_types=field.data_types,
+                        source=field.source,
+                        references=field.references,
+                    )
+                )
+            record_sets.append(
+                mlc.RecordSet(
+                    name=record_set.name,
+                    description=record_set.description,
+                    key=record_set.key,
+                    is_enumeration=record_set.is_enumeration,
+                    fields=fields,
+                )
+            )
+        return mlc.Metadata(
+            name=self.name,
+            citation=self.citation,
+            license=self.license,
+            description=self.description,
+            url=self.url,
+            distribution=distribution,
+            record_sets=record_sets,
+        )
+
     @classmethod
-    def from_canonical(cls, dataset: mlc.Dataset) -> Metadata:
-        canonical_metadata = dataset.metadata
+    def from_canonical(cls, canonical_metadata: mlc.nodes.Metadata) -> Metadata:
         distribution = []
         for file in canonical_metadata.distribution:
             if isinstance(file, mlc.FileObject):
@@ -121,6 +169,7 @@ class Metadata:
                         description=file.description,
                         content_size=file.content_size,
                         encoding_format=file.encoding_format,
+                        content_url=file.content_url,
                         sha256=file.sha256,
                     )
                 )
@@ -140,7 +189,9 @@ class Metadata:
                     Field(
                         name=field.name,
                         description=field.description,
-                        data_type=field.data_types,
+                        data_types=field.data_types,
+                        source=field.source,
+                        references=field.references,
                     )
                 )
             record_sets.append(

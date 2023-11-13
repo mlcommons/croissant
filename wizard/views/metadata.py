@@ -7,6 +7,7 @@ from utils import needed_field
 licenses = [
     "Other",
     "Public Domain",
+    "Public",
     "CC-0",
     "PDDL",
     "CC-BY",

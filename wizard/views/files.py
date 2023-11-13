@@ -78,6 +78,7 @@ def render_files():
                 name=name,
                 description=description,
                 content_url=file.content_url,
+                content_size=file.content_size,
                 encoding_format=encoding_format,
                 sha256=sha256,
                 df=file.df,
