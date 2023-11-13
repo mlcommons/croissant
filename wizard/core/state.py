@@ -116,7 +116,7 @@ class Metadata:
         distribution = []
         for file in self.distribution:
             distribution.append(
-                mlc.nodes.FileObject(
+                mlc.FileObject(
                     name=file.name,
                     description=file.description,
                     content_url=file.content_url,
@@ -130,7 +130,7 @@ class Metadata:
             fields = []
             for field in record_set.fields:
                 fields.append(
-                    mlc.nodes.Field(
+                    mlc.Field(
                         name=field.name,
                         description=field.description,
                         data_types=field.data_types,
@@ -138,7 +138,7 @@ class Metadata:
                     )
                 )
             record_sets.append(
-                mlc.nodes.RecordSet(
+                mlc.RecordSet(
                     name=record_set.name,
                     description=record_set.description,
                     key=record_set.key,
@@ -146,7 +146,7 @@ class Metadata:
                     fields=fields,
                 )
             )
-        return mlc.nodes.Metadata(
+        return mlc.Metadata(
             name=self.name,
             citation=self.citation,
             license=self.license,
