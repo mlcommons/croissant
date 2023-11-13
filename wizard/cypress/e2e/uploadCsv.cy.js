@@ -31,5 +31,7 @@ describe('Wizard from local CSV', () => {
     })
     cy.get('.uploadedFileData').contains('base.csv')
     cy.get('button').contains('Add').click()
+    // The file is uploaded, so we see its hash:
+    cy.contains('c2896706e40a3dc4ee012dfe69c9a43ab592fc8c625b83760d1bb1042160a01c')
   })
 })

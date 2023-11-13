@@ -3,6 +3,7 @@ import streamlit as st
 
 from core.state import CurrentStep
 from core.state import Metadata
+from core.state import SelectedResource
 import mlcroissant as mlc
 
 EDITOR_CACHE = mlc.constants.CROISSANT_CACHE / "editor"
@@ -29,6 +30,9 @@ def init_state():
 
     if CurrentStep not in st.session_state:
         st.session_state[CurrentStep] = CurrentStep.start
+
+    if SelectedResource not in st.session_state:
+        st.session_state[SelectedResource] = None
 
     # Uncomment those lines if you work locally in order to avoid clicks at each reload.
     # And comment all previous lines in `init_state`.

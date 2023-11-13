@@ -7,6 +7,7 @@ from etils import epath
 import pandas as pd
 import requests
 
+from .names import find_unique_name
 from .state import FileObject
 
 
@@ -91,16 +92,16 @@ def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.Data
         raise NotImplementedError()
 
 
-def file_from_url(file_type: FileType, url: str) -> FileObject:
+def file_from_url(file_type: FileType, url: str, names: set[str]) -> FileObject:
     """Downloads locally and extracts the file information."""
     file_path = hash_file_path(url)
     if not file_path.exists():
         download_file(url, file_path)
     with file_path.open("rb") as file:
         sha256 = _sha256(file.read())
-    df = get_dataframe(file_type, file_path)
+    df = get_dataframe(file_type, file_path).infer_objects()
     return FileObject(
-        name=url.split("/")[-1],
+        name=find_unique_name(names, url.split("/")[-1]),
         description="",
         content_url=url,
         encoding_format=file_type.encoding_format,
@@ -109,12 +110,14 @@ def file_from_url(file_type: FileType, url: str) -> FileObject:
     )
 
 
-def file_from_upload(file_type: FileType, file: io.BytesIO) -> FileObject:
+def file_from_upload(
+    file_type: FileType, file: io.BytesIO, names: set[str]
+) -> FileObject:
     """Uploads locally and extracts the file information."""
     sha256 = _sha256(file.getvalue())
-    df = get_dataframe(file_type, file)
+    df = get_dataframe(file_type, file).infer_objects()
     return FileObject(
-        name=file.name,
+        name=find_unique_name(names, file.name),
         description="",
         content_url=f"data/{file.name}",
         encoding_format=file_type.encoding_format,

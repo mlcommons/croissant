@@ -20,6 +20,10 @@ class CurrentStep:
     editor = "editor"
 
 
+class SelectedResource:
+    pass
+
+
 @dataclasses.dataclass
 class FileObject:
     """FileObject analogue for editor"""
@@ -31,7 +35,7 @@ class FileObject:
     content_url: str | None = None
     encoding_format: str | None = None
     sha256: str | None = None
-    df: str | None = None
+    df: pd.DataFrame | None = None
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
