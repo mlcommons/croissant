@@ -20,6 +20,10 @@ class CurrentStep:
     editor = "editor"
 
 
+class SelectedResource:
+    pass
+
+
 @dataclasses.dataclass
 class FileObject:
     """FileObject analogue for editor"""
@@ -31,7 +35,7 @@ class FileObject:
     content_url: str | None = None
     encoding_format: str | None = None
     sha256: str | None = None
-    df: str | None = None
+    df: pd.DataFrame | None = None
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
@@ -122,17 +126,29 @@ class Metadata:
     def to_canonical(self) -> mlc.Metadata:
         distribution = []
         for file in self.distribution:
-            distribution.append(
-                mlc.FileObject(
-                    name=file.name,
-                    description=file.description,
-                    content_url=file.content_url,
-                    encoding_format=file.encoding_format,
-                    content_size=file.content_size,
-                    rdf=file.rdf,
-                    sha256=file.sha256,
+            if isinstance(file, FileObject):
+                distribution.append(
+                    mlc.FileObject(
+                        name=file.name,
+                        description=file.description,
+                        contained_in=file.contained_in,
+                        content_url=file.content_url,
+                        encoding_format=file.encoding_format,
+                        content_size=file.content_size,
+                        rdf=file.rdf,
+                        sha256=file.sha256,
+                    )
                 )
-            )
+            elif isinstance(file, FileSet):
+                distribution.append(
+                    mlc.FileSet(
+                        name=file.name,
+                        description=file.description,
+                        contained_in=file.contained_in,
+                        encoding_format=file.encoding_format,
+                        rdf=file.rdf,
+                    )
+                )
         record_sets = []
         for record_set in self.record_sets:
             fields = []

@@ -104,6 +104,7 @@ const StyledTreeItem = React.forwardRef(function StyledTreeItem(
         >
           <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography
+            data-testid="tree-element"
             variant="body2"
             sx={{
               whiteSpace: "nowrap",
@@ -130,7 +131,7 @@ const StyledTreeItem = React.forwardRef(function StyledTreeItem(
 type Node = {
   name: string
   type: string
-  parent: string
+  parents: string[]
 }
 
 type TreeNodes = { [key: string]: TreeNode }
@@ -172,23 +173,29 @@ const TreeViewWithNodes = ({ nodes }: { nodes: Node[] }) => {
     treeNodes[node.name] = { ...node, children: [] }
   })
   nodes.forEach((node) => {
-    if (node.parent && node.parent in treeNodes) {
-      treeNodes[node.parent].children.push(node.name)
-    }
+    node.parents.forEach((parent) => {
+      if (parent in treeNodes) {
+        treeNodes[parent].children.push(node.name)
+      }
+    })
   })
 
   return (
     <TreeView
-      aria-label="gmail"
-      defaultExpanded={["3"]}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
-      sx={{ height: 264, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}
+      expanded={Object.keys(treeNodes)}
+      sx={{
+        flexGrow: 1,
+        padding: 1,
+        border: "1px solid rgba(23, 29, 48, 0.2)",
+        borderRadius: "0.5rem",
+      }}
     >
       {Object.values(treeNodes).map((treeNode) => {
         return (
-          !treeNode.parent && (
+          treeNode.parents.length === 0 && (
             <TreeNodeComponent treeNode={treeNode} treeNodes={treeNodes} />
           )
         )

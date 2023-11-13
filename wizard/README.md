@@ -41,29 +41,53 @@ import streamlit as st
 from components.tree import render_tree
 
 nodes = [
-    {"name": "data/splits.csv", "type": "FileObject", "parent": ""},
-    {"name": "data/cities.csv", "type": "FileObject", "parent": ""},
-    {"name": "github-repository", "type": "FileSet", "parent": ""},
+    {"name": "data/splits.csv", "type": "FileObject", "parents": []},
+    {"name": "data/cities.csv", "type": "FileObject", "parents": []},
+    {"name": "github-repository", "type": "FileSet", "parents": []},
     {
         "name": (
             "this-is-a-file-with-a-very-very-very-very-very-very-very-very-long-name"
         ),
         "type": "FileObject",
-        "parent": "github-repository",
+        "parents": ["github-repository"],
     },
     {
         "name": "this-is-another-file-with-a-very-very-very-very-very-very-very-very-long-name",
         "type": "FileObject",
-        "parent": (
+        "parents": [
             "this-is-a-file-with-a-very-very-very-very-very-very-very-very-long-name"
-        ),
+        ],
     },
-    {"name": "huggingface-repository", "type": "FileSet", "parent": ""},
-    {"name": "file_*.parquet", "type": "FileSet", "parent": "huggingface-repository"},
+    {"name": "huggingface-repository", "type": "FileSet", "parents": []},
+    {
+        "name": "file_*.parquet",
+        "type": "FileSet",
+        "parents": ["huggingface-repository"],
+    },
     {
         "name": "annotations.json",
         "type": "FileObject",
-        "parent": "huggingface-repository",
+        "parents": ["huggingface-repository"],
+    },
+    {
+        "name": "PASS1.tar",
+        "type": "FileObject",
+        "parents": [],
+    },
+    {
+        "name": "PASS2.tar",
+        "type": "FileObject",
+        "parents": [],
+    },
+    {
+        "name": "PASS3.tar",
+        "type": "FileObject",
+        "parents": [],
+    },
+    {
+        "name": "images",
+        "type": "FileSet",
+        "parents": ["PASS1.tar", "PASS2.tar", "PASS3.tar"],
     },
 ]
 node = render_tree(nodes)
@@ -73,9 +97,11 @@ st.write(node)
 ### Build the component
 
 - Build the JavaScript locally.
+
 ```
 cd components/tree/frontend/
 npm run build
 ```
+
 - Don't forget to toggle `_RELEASE = True` back to `_RELEASE = False`.
 - Commit your changes.
