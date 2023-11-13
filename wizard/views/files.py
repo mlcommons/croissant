@@ -59,8 +59,6 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
 def _render_upload_form():
     """Renders the form to upload from local or upload from URL."""
     with st.form(key="manual_urls", clear_on_submit=True):
-        url = None
-        uploaded_file = None
         file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
 
         col1, col2 = st.columns(2)
@@ -87,12 +85,13 @@ def _render_upload_form():
                     description="",
                 )
             )
+            st.rerun()
 
 
 def _render_right_panel(selected_file: Resource):
     """Renders the right panel: the detail of the selected resource."""
     for key, file in enumerate(st.session_state[Metadata].distribution):
-        if file == selected_file:
+        if file.name == selected_file.name:
 
             def delete_line():
                 st.session_state[Metadata].remove_distribution(key)

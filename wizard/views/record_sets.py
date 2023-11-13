@@ -23,6 +23,7 @@ def render_record_sets():
                     record_set_conv,
                     height=DF_HEIGHT,
                     use_container_width=True,
+                    key=f"record_set_{record_set.name}",
                     column_config={
                         "name": st.column_config.TextColumn(
                             "name",
