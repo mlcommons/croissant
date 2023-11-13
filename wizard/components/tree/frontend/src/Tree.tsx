@@ -182,13 +182,16 @@ const TreeViewWithNodes = ({ nodes }: { nodes: Node[] }) => {
 
   return (
     <TreeView
-      aria-label="gmail"
-      defaultExpanded={["3"]}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
       expanded={Object.keys(treeNodes)}
-      sx={{ flexGrow: 1, maxWidth: 400, padding: 1 }}
+      sx={{
+        flexGrow: 1,
+        padding: 1,
+        border: "1px solid rgba(23, 29, 48, 0.2)",
+        borderRadius: "0.5rem",
+      }}
     >
       {Object.values(treeNodes).map((treeNode) => {
         return (
