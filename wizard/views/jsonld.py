@@ -13,7 +13,7 @@ def render_jsonld():
         distribution = []
         for file in croissant.distribution:
             distribution.append(
-                mlc.nodes.FileObject(
+                mlc.FileObject(
                     name=file.name,
                     description=file.description,
                     content_url=file.content_url,
@@ -26,26 +26,26 @@ def render_jsonld():
             fields = []
             for _, field in record_set.get("fields", pd.DataFrame()).iterrows():
                 fields.append(
-                    mlc.nodes.Field(
+                    mlc.Field(
                         name=field["name"],
                         description=field["description"],
                         data_types=field["data_type"],
-                        source=mlc.nodes.Source(
+                        source=mlc.Source(
                             uid=file.name,
                             node_type="distribution",
-                            extract=mlc.nodes.Extract(column=field["name"]),
+                            extract=mlc.Extract(column=field["name"]),
                         ),
                     )
                 )
             record_sets.append(
-                mlc.nodes.RecordSet(
+                mlc.RecordSet(
                     name=record_set["name"],
                     description=record_set["description"],
                     fields=fields,
                 )
             )
         if croissant.metadata:
-            metadata = mlc.nodes.Metadata(
+            metadata = mlc.Metadata(
                 name=croissant.metadata.name,
                 citation=croissant.metadata.citation,
                 license=croissant.metadata.license,

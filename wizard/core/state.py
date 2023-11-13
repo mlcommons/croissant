@@ -52,8 +52,8 @@ class Field:
     name: str | None = None
     description: str | None = None
     data_types: str | list[str] | None = None
-    source: mlc.nodes.Source | None = None
-    references: mlc.nodes.Source | None = None
+    source: mlc.Source | None = None
+    references: mlc.Source | None = None
 
 
 @dataclasses.dataclass
@@ -78,6 +78,7 @@ class Metadata:
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
+    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
     def __bool__(self):
         return self.name != "" and self.url != ""
@@ -156,11 +157,12 @@ class Metadata:
             description=self.description,
             url=self.url,
             distribution=distribution,
+            rdf=self.rdf,
             record_sets=record_sets,
         )
 
     @classmethod
-    def from_canonical(cls, canonical_metadata: mlc.nodes.Metadata) -> Metadata:
+    def from_canonical(cls, canonical_metadata: mlc.Metadata) -> Metadata:
         distribution = []
         for file in canonical_metadata.distribution:
             if isinstance(file, mlc.FileObject):
@@ -213,5 +215,6 @@ class Metadata:
             license=canonical_metadata.license,
             url=canonical_metadata.url,
             distribution=distribution,
+            rdf=canonical_metadata.rdf,
             record_sets=record_sets,
         )

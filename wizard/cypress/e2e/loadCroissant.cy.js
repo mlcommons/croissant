@@ -55,7 +55,7 @@ describe('Wizard loads Croissant without Error', () => {
       cy.readFile(path.join(downloadsFolder, "croissant.json"))
       .then((downloadedFile) => {
         downloadedFile = JSON.stringify(downloadedFile)
-        return downloadedFile.replaceAll("https://www.wikidata.org/wiki/", "wd:").replace("ml:transform\"", "ml:transform\",\"wd\":\"https://www.wikidata.org/wiki/\"")
+        return downloadedFile
       })
       .should('deep.equal', JSON.stringify(fileContent))
     })
