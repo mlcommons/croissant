@@ -1,4 +1,5 @@
 """Defines the public interface to the `mlcroissant.nodes` package."""
+
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet

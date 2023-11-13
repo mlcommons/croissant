@@ -1,11 +1,16 @@
-from core.state import CurrentStep
 import streamlit as st
+
+from core.state import CurrentStep
 from utils import set_form_step
+from views.side_buttons import set_form_step
 
 
 def render_splash():
-    st.text("Welcome to the Croissant Wizard, would you like to load an existing croissant file, or create a new one?")
-    col1, col2, col3 = st.columns([1,1,8], gap="small")
+    st.text(
+        "Welcome to the Croissant Wizard, would you like to load an existing croissant"
+        " file, or create a new one?"
+    )
+    col1, col2, col3 = st.columns([1, 1, 8], gap="small")
     with col1:
         st.button(
             "Load",

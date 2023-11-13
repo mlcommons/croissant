@@ -1,5 +1,6 @@
-from core.state import Metadata
 import streamlit as st
+
+from core.state import Metadata
 from utils import needed_field
 
 # List from https://www.kaggle.com/discussions/general/116302.
@@ -55,9 +56,5 @@ def render_metadata():
     )
     # We fully recreate the session state in order to force the re-rendering.
     st.session_state[Metadata].update_metadata(
-        name=name,
-        description=description,
-        license=license,
-        url=url,
-        citation=citation
+        name=name, description=description, license=license, url=url, citation=citation
     )

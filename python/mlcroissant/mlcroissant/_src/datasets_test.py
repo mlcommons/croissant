@@ -113,10 +113,16 @@ def test_hermetic_loading(dataset_name, record_set_name, num_records):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
-        ["flores-200/metadata.json",
-         "language_translations_train_data_with_metadata", 10],
-        ["flores-200/metadata.json",
-         "language_translations_test_data_with_metadata", 10],
+        [
+            "flores-200/metadata.json",
+            "language_translations_train_data_with_metadata",
+            10,
+        ],
+        [
+            "flores-200/metadata.json",
+            "language_translations_test_data_with_metadata",
+            10,
+        ],
         ["gpt-3/metadata.json", "default", 10],
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],

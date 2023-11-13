@@ -70,13 +70,11 @@ class Extract:
 
     def to_json(self) -> Json:
         """Converts the `Extract` to JSON."""
-        return remove_empty_values(
-            {
-                "column": self.column,
-                "fileProperty": self.file_property.name if self.file_property else None,
-                "jsonPath": self.json_path,
-            }
-        )
+        return remove_empty_values({
+            "column": self.column,
+            "fileProperty": self.file_property.name if self.file_property else None,
+            "jsonPath": self.json_path,
+        })
 
 
 @dataclasses.dataclass(frozen=True)
@@ -100,15 +98,13 @@ class Transform:
 
     def to_json(self) -> Json:
         """Converts the `Transform` to JSON."""
-        return remove_empty_values(
-            {
-                "format": self.format,
-                "jsonPath": self.json_path,
-                "regex": self.regex,
-                "replace": self.replace,
-                "separator": self.separator,
-            }
-        )
+        return remove_empty_values({
+            "format": self.format,
+            "jsonPath": self.json_path,
+            "regex": self.regex,
+            "replace": self.replace,
+            "separator": self.separator,
+        })
 
     @classmethod
     def from_jsonld(cls, issues: Issues, jsonld: Json | list[Json]) -> list[Transform]:
@@ -196,13 +192,11 @@ class Source:
         transforms = [transform.to_json() for transform in self.transforms]
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
-        return remove_empty_values(
-            {
-                self.node_type: self.uid,
-                "extract": self.extract.to_json(),
-                "transform": transforms[0] if len(transforms) == 1 else transforms,
-            }
-        )
+        return remove_empty_values({
+            self.node_type: self.uid,
+            "extract": self.extract.to_json(),
+            "transform": transforms[0] if len(transforms) == 1 else transforms,
+        })
 
     @classmethod
     def from_jsonld(cls, issues: Issues, jsonld: Any) -> Source:

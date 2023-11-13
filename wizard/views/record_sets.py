@@ -1,6 +1,7 @@
-from core.state import Metadata
 import pandas as pd
 import streamlit as st
+
+from core.state import Metadata
 from utils import DF_HEIGHT
 
 DATA_TYPES = [

@@ -14,13 +14,11 @@ class Commands:
     VALIDATE = "validate"
 
 
-choices = set(
-    [
-        Commands.FROM_HUGGINGFACE_TO_CROISSANT,
-        Commands.LOAD,
-        Commands.VALIDATE,
-    ]
-)
+choices = set([
+    Commands.FROM_HUGGINGFACE_TO_CROISSANT,
+    Commands.LOAD,
+    Commands.VALIDATE,
+])
 
 
 def main():

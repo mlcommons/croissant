@@ -103,29 +103,25 @@ def test_source_parses_list(json_ld, expected_source):
     [
         [
             "this is not a list",
-            set(
-                [
-                    'Transform "this is not a list" should be a dict with the keys'
-                    " http://mlcommons.org/schema/format,"
-                    " http://mlcommons.org/schema/jsonPath,"
-                    " http://mlcommons.org/schema/regex,"
-                    " http://mlcommons.org/schema/replace,"
-                    " http://mlcommons.org/schema/separator"
-                ]
-            ),
+            set([
+                'Transform "this is not a list" should be a dict with the keys'
+                " http://mlcommons.org/schema/format,"
+                " http://mlcommons.org/schema/jsonPath,"
+                " http://mlcommons.org/schema/regex,"
+                " http://mlcommons.org/schema/replace,"
+                " http://mlcommons.org/schema/separator"
+            ]),
         ],
         [
             [{"not": "the right keys"}],
-            set(
-                [
-                    "Transform \"{'not': 'the right keys'}\" should be a dict with at"
-                    " least one key in http://mlcommons.org/schema/format,"
-                    " http://mlcommons.org/schema/jsonPath,"
-                    " http://mlcommons.org/schema/regex,"
-                    " http://mlcommons.org/schema/replace,"
-                    " http://mlcommons.org/schema/separator"
-                ]
-            ),
+            set([
+                "Transform \"{'not': 'the right keys'}\" should be a dict with at"
+                " least one key in http://mlcommons.org/schema/format,"
+                " http://mlcommons.org/schema/jsonPath,"
+                " http://mlcommons.org/schema/regex,"
+                " http://mlcommons.org/schema/replace,"
+                " http://mlcommons.org/schema/separator"
+            ]),
         ],
     ],
 )
