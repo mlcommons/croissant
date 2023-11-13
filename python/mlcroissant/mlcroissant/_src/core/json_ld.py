@@ -58,7 +58,6 @@ BASE_CONTEXT = {
     "source": "ml:source",
     "subField": "ml:subField",
     "transform": "ml:transform",
-    "wd": "https://www.wikidata.org/wiki/",
 }
 
 

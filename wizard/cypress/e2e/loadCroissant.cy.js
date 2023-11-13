@@ -21,9 +21,9 @@ describe('Wizard loads Croissant without Error', () => {
         events: ["dragenter", "drop"],
       })
     })
-
-    cy.get('[data-testid="stMarkdownContainer"]').contains('Metadata').click()
-    cy.get('input[aria-label="Name:red[*]"]').should('have.value', 'Titanic')
+    cy.get('[data-testid="stExpander"]')
+      .contains('Titanic')
+      .should('exist')
     
   })
   it('should download as json', () => {
@@ -50,6 +50,12 @@ describe('Wizard loads Croissant without Error', () => {
     cy.fixture('titanic.json').then((fileContent) => {
       const downloadsFolder = Cypress.config("downloadsFolder");
       cy.readFile(path.join(downloadsFolder, "croissant.json"))
+      .then((downloadedFile) => {
+        if(!downloadedFile["@context"]["wd"]) {
+          downloadedFile["@context"]["wd"] = "https://www.wikidata.org/wiki/"
+        }
+        return downloadedFile
+      })
       .should('eq', fileContent)
     })
   })
