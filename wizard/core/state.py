@@ -26,6 +26,7 @@ class FileObject:
 
     name: str | None = None
     description: str | None = None
+    contained_in: list[str] | None = dataclasses.field(default_factory=list)
     content_size: str | None = None
     content_url: str | None = None
     encoding_format: str | None = None
@@ -166,6 +167,7 @@ class Metadata:
                 distribution.append(
                     FileObject(
                         name=file.name,
+                        contained_in=file.contained_in,
                         description=file.description,
                         content_size=file.content_size,
                         encoding_format=file.encoding_format,
@@ -177,6 +179,7 @@ class Metadata:
                 distribution.append(
                     FileSet(
                         name=file.name,
+                        contained_in=file.contained_in,
                         description=file.description,
                         encoding_format=file.encoding_format,
                     )

@@ -20,8 +20,6 @@ if st.session_state[CurrentStep] == CurrentStep.start:
 elif st.session_state[CurrentStep] == CurrentStep.load:
     render_load()
 elif st.session_state[CurrentStep] == CurrentStep.editor:
-    col1, col2 = st.columns([1, 1], gap="medium")
-    with col1:
-        render_wizard()
+    render_wizard()
 else:
     st.warning("invalid unhandled app state")
