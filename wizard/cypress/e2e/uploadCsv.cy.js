@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 
 import 'cypress-file-upload';
+import 'cypress-iframe';
+
 
 describe('Wizard from local CSV', () => {
   it('should display the form: Overview, Metadata, Resources, & Record Sets', () => {
@@ -31,7 +33,17 @@ describe('Wizard from local CSV', () => {
     })
     cy.get('.uploadedFileData').contains('base.csv')
     cy.get('button').contains('Add').click()
-    // The file is uploaded, so we see its hash:
-    cy.contains('c2896706e40a3dc4ee012dfe69c9a43ab592fc8c625b83760d1bb1042160a01c')
+    // The file is uploaded, so we can click on it to see the details.
+    // Waiting a few seconds to wait for the resource to download.
+    cy.wait(2000)
+    cy.enter('[title="components.tree.tree_component"]').then(getBody => {
+      getBody().find('li').should('be.visible').click()
+    })
+    // For example, we see the first rows:
+    cy.contains('First rows of data:')
+
+    // On the record set page, we see the record set.
+    cy.get('[data-testid="stMarkdownContainer"]').contains('Record sets').click()
+    cy.contains('base.csv_record_set')
   })
 })

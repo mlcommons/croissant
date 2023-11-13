@@ -36,10 +36,13 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
         filename_to_file[name] = file
         type = "FileObject" if isinstance(file, FileObject) else "FileSet"
         if file.contained_in:
-            parent = file.contained_in
+            if isinstance(file.contained_in, list):
+                parents = file.contained_in
+            else:
+                parents = [file.contained_in]
         else:
-            parent = None
-        nodes.append({"name": name, "type": type, "parent": parent})
+            parents = []
+        nodes.append({"name": name, "type": type, "parents": parents})
 
     name = None
     with st.container():
