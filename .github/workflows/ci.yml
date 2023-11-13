@@ -233,6 +233,10 @@ jobs:
     - name: Install library
       run: pip install -r requirements.txt
 
+    - name: Install mlcroissant
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+      working-directory: ./python/mlcroissant
+
     - name: PyTest
       run: pytest .
 
