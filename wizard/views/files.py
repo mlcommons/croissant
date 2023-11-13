@@ -40,8 +40,16 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
         else:
             parent = None
         nodes.append({"name": name, "type": type, "parent": parent})
-    _render_upload_form()
-    name = render_tree(nodes)
+
+    name = None
+    with st.container():
+        st.subheader("Uploaded resources")
+        name = render_tree(nodes)
+
+    with st.container():
+        st.subheader("Upload more files")
+        _render_upload_form()
+
     if not name:
         return None
     file = filename_to_file[name]
@@ -54,11 +62,11 @@ def _render_upload_form():
         url = None
         uploaded_file = None
         file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
-        st.divider()
-        uploaded_file = st.file_uploader("Import from a local file")
-        st.text("Or")
-        url = st.text_input("Import from a URL")
-        st.divider()
+
+        col1, col2 = st.columns(2)
+        uploaded_file = col1.file_uploader("Import from a local file")
+        url = col2.text_input("Import from a URL")
+
         submitted = st.form_submit_button("Add")
         if submitted:
             file_type = FILE_TYPES[file_type_name]
@@ -82,7 +90,7 @@ def _render_upload_form():
 
 
 def _render_right_panel(selected_file: Resource):
-    """Renders the left panel: the detail of the selected resource."""
+    """Renders the right panel: the detail of the selected resource."""
     for key, file in enumerate(st.session_state[Metadata].distribution):
         if file == selected_file:
 
