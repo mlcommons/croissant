@@ -21,9 +21,12 @@ describe('Wizard loads Croissant without Error', () => {
         events: ["dragenter", "drop"],
       })
     })
-    cy.get('[data-testid="stExpander"]')
-      .contains('Titanic')
-      .should('exist')
+    cy.get('button').contains('Metadata').click()
+
+    cy
+    .get("[data-testid='element-container']")
+    .contains('Titanic')
+    .should('exist')
     
   })
   it('should download as json', () => {
@@ -53,11 +56,6 @@ describe('Wizard loads Croissant without Error', () => {
       .then((downloadedFile) => {
         downloadedFile = JSON.stringify(downloadedFile)
         return downloadedFile.replaceAll("https://www.wikidata.org/wiki/", "wd:").replace("ml:transform\"", "ml:transform\",\"wd\":\"https://www.wikidata.org/wiki/\"")
-        /*if(!downloadedFile["@context"]["wd"]) {
-          downloadedFile["@context"]["wd"] = "https://www.wikidata.org/wiki/"
-        }
-        return JSON.stringify(downloadedFile)
-        */
       })
       .should('deep.equal', JSON.stringify(fileContent))
     })
