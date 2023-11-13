@@ -46,7 +46,7 @@ class Field:
     """Field analogue for editor"""
     name: str | None = None
     description: str | None = None
-    data_type: str | None = None
+    data_types: str | list[str] | None = None
     source: mlc.nodes.Source | None = None
 
 @dataclasses.dataclass
@@ -102,6 +102,7 @@ class Metadata:
                     description=file.description,
                     content_url=file.content_url,
                     encoding_format=file.encoding_format,
+                    content_size=file.content_size,
                     sha256=file.sha256,
                 )
             )
@@ -113,7 +114,7 @@ class Metadata:
                     mlc.nodes.Field(
                         name=field.name,
                         description=field.description,
-                        data_types=field.data_type,
+                        data_types=field.data_types,
                         source=field.source,
                     )
                 )
@@ -121,6 +122,8 @@ class Metadata:
                 mlc.nodes.RecordSet(
                     name=record_set.name,
                     description=record_set.description,
+                    key=record_set.key,
+                    is_enumeration=record_set.is_enumeration,
                     fields=fields,
                 )
             )
@@ -160,7 +163,7 @@ class Metadata:
                 fields.append(Field(
                     name=field.name,
                     description=field.description,
-                    data_type=field.data_types,
+                    data_types=field.data_types,
                     source=field.source
                 )) 
             record_sets.append(RecordSet(

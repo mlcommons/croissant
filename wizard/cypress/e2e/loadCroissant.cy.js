@@ -47,7 +47,10 @@ describe('Wizard loads Croissant without Error', () => {
     cy.get('[data-testid="stException"]').should('not.exist')
 
     cy.get('button').contains('Save').click()
-    const downloadsFolder = Cypress.config("downloadsFolder");
-    cy.readFile(path.join(downloadsFolder, "croissant.json")).should("exist");
+    cy.fixture('titanic.json').then((fileContent) => {
+      const downloadsFolder = Cypress.config("downloadsFolder");
+      cy.readFile(path.join(downloadsFolder, "croissant.json"))
+      .should('eq', fileContent)
+    })
   })
 })
