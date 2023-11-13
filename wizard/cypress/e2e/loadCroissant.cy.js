@@ -51,12 +51,15 @@ describe('Wizard loads Croissant without Error', () => {
       const downloadsFolder = Cypress.config("downloadsFolder");
       cy.readFile(path.join(downloadsFolder, "croissant.json"))
       .then((downloadedFile) => {
-        if(!downloadedFile["@context"]["wd"]) {
+        downloadedFile = JSON.stringify(downloadedFile)
+        return downloadedFile.replaceAll("https://www.wikidata.org/wiki/", "wd:").replace("ml:transform\"", "ml:transform\",\"wd\":\"https://www.wikidata.org/wiki/\"")
+        /*if(!downloadedFile["@context"]["wd"]) {
           downloadedFile["@context"]["wd"] = "https://www.wikidata.org/wiki/"
         }
-        return downloadedFile
+        return JSON.stringify(downloadedFile)
+        */
       })
-      .should('eq', fileContent)
+      .should('deep.equal', JSON.stringify(fileContent))
     })
   })
 })

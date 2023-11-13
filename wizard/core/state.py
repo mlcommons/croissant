@@ -52,6 +52,7 @@ class Field:
     description: str | None = None
     data_types: str | list[str] | None = None
     source: mlc.nodes.Source | None = None
+    references: mlc.nodes.Source | None = None
 
 
 @dataclasses.dataclass
@@ -135,6 +136,7 @@ class Metadata:
                         description=field.description,
                         data_types=field.data_types,
                         source=field.source,
+                        references=field.references,
                     )
                 )
             record_sets.append(
@@ -189,6 +191,7 @@ class Metadata:
                         description=field.description,
                         data_types=field.data_types,
                         source=field.source,
+                        references=field.references,
                     )
                 )
             record_sets.append(
