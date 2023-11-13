@@ -187,7 +187,7 @@ class Metadata:
                     Field(
                         name=field.name,
                         description=field.description,
-                        data_type=field.data_types,
+                        data_types=field.data_types,
                         source=field.source,
                     )
                 )
