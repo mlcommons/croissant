@@ -48,7 +48,11 @@ def _find_left_or_right(source: mlc.Source) -> LeftOrRight:
     elif source.extract.column:
         return (uid, source.extract.column)
     else:
-        raise NotImplementedError(f"{source=} could not be parsed by the editor.")
+        raise NotImplementedError(
+            f"{source=} could not be parsed by the editor. Please contact us on GitHub"
+            " by creating a new issue:"
+            " https://github.com/mlcommons/croissant/issues/new"
+        )
 
 
 def _find_joins(fields: list[Field]) -> list[Join]:
