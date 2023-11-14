@@ -6,6 +6,7 @@ from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 from core.record_sets import infer_record_sets
+from core.state import AddManually
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
@@ -26,8 +27,7 @@ def render_files():
         resource = _render_left_panel(files)
         st.session_state[SelectedResource] = resource
     with col2:
-        if st.session_state.get(SelectedResource):
-            _render_right_panel(st.session_state[SelectedResource])
+        _render_right_panel()
 
 
 def _render_left_panel(files: list[Resource]) -> Resource | None:
@@ -47,6 +47,10 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
             parents = []
         nodes.append({"name": name, "type": type, "parents": parents})
 
+    def add_manually():
+        # Only set the state, render_files() will show the form.
+        st.session_state[AddManually] = True
+
     name = None
     with st.container():
         st.subheader("Uploaded resources")
@@ -54,6 +58,7 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
             name = render_tree(nodes, key="-".join([node["name"] for node in nodes]))
         else:
             st.write("No resource yet.")
+        st.button("Add manually", on_click=add_manually)
 
     with st.container():
         st.subheader("Upload more files")
@@ -96,11 +101,20 @@ def _render_upload_form():
                 st.session_state[Metadata].add_record_set(record_set)
             st.session_state[SelectedResource] = file.name
 
-        st.form_submit_button("Add", on_click=handle_on_click)
+        st.form_submit_button("Upload", on_click=handle_on_click)
 
 
-def _render_right_panel(selected_file: Resource):
-    """Renders the right panel: the detail of the selected resource."""
+def _render_right_panel():
+    """Renders the right panel: either a form to create a resource or details
+    of the selected resource."""
+    if st.session_state.get(AddManually):
+        _render_add_manually_form()
+    elif st.session_state.get(SelectedResource):
+        _render_resource_details(st.session_state[SelectedResource])
+
+
+def _render_resource_details(selected_file: Resource):
+    """Renders the details of the selected resource."""
     file: FileObject | FileSet
     for key, file in enumerate(st.session_state[Metadata].distribution):
         if file.name == selected_file.name:
@@ -146,3 +160,37 @@ def _render_right_panel(selected_file: Resource):
                 df=file.df,
             )
             st.session_state[Metadata].update_distribution(key, file)
+
+
+def _render_add_manually_form():
+    """Renders the form to add a resource manually."""
+    st.session_state[AddManually] = None
+    with st.form(key="manual_upload_form", clear_on_submit=True):
+        file_type_name = st.selectbox("Type", options=[FileObject, FileSet])
+
+        file = FileObject()
+
+        name = st.text_input(needed_field("Name"), value=file.name, key="manual_name")
+        description = st.text_area(
+            "Description",
+            value=file.description,
+            placeholder="Provide a clear description of the file.",
+            key="manual_description",
+        )
+        sha256 = st.text_input(
+            needed_field("SHA256"),
+            value=file.sha256,
+            disabled=True,
+            key="manual_sha256",
+        )
+        parent = st.text_input(
+            needed_field("Parent"),
+            value=file.encoding_format,
+            key="manual_parent",
+        )
+
+        def handle_on_click():
+            # todo: add created resource.
+            pass
+
+        st.form_submit_button("Add", on_click=handle_on_click)

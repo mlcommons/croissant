@@ -23,6 +23,10 @@ class SelectedResource:
     pass
 
 
+class AddManually:
+    pass
+
+
 @dataclasses.dataclass
 class FileObject:
     """FileObject analogue for editor"""
