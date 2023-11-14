@@ -263,11 +263,13 @@ def render_record_sets():
                         FieldDataFrame.SOURCE_EXTRACT,
                         help="The extraction methods to apply",
                         required=False,
+                        disabled=True,
                     ),
                     FieldDataFrame.SOURCE_TRANSFORM: st.column_config.TextColumn(
                         FieldDataFrame.SOURCE_TRANSFORM,
                         help="The transformations to apply once it's extracted",
                         required=False,
+                        disabled=True,
                     ),
                     FieldDataFrame.REFERENCE_UID: st.column_config.SelectboxColumn(
                         FieldDataFrame.REFERENCE_UID,
@@ -280,6 +282,7 @@ def render_record_sets():
                         help="The extraction methods to apply",
                         options=possible_sources,
                         required=False,
+                        disabled=True,
                     ),
                 },
                 on_change=handle_fields_change,
