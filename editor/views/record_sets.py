@@ -47,6 +47,10 @@ def _find_left_or_right(source: mlc.Source) -> LeftOrRight:
         return (parts[0], parts[1])
     elif source.extract.column:
         return (uid, source.extract.column)
+    elif source.extract.json_path:
+        return (uid, source.extract.json_path)
+    elif source.extract.file_property:
+        return (uid, source.extract.file_property)
     else:
         raise NotImplementedError(
             f"{source=} could not be parsed by the editor. Please contact us on GitHub"
@@ -200,7 +204,11 @@ def render_record_sets():
                 for field in record_set.fields
             ]
             source_transforms = [
-                field.source.transforms.__dict__ if field.source.transforms else None
+                (
+                    [transform.__dict__ for transform in field.source.transforms]
+                    if field.source.transforms
+                    else None
+                )
                 for field in record_set.fields
             ]
             reference_uids = [
