@@ -197,7 +197,10 @@ def render_record_sets():
             descriptions = [field.description for field in record_set.fields]
             # TODO(https://github.com/mlcommons/croissant/issues/350): Allow to display
             # several data types, not only the first.
-            data_types = [field.data_types[0] for field in record_set.fields]
+            data_types = [
+                field.data_types[0] if field.data_types else None
+                for field in record_set.fields
+            ]
             source_uids = [field.source.uid for field in record_set.fields]
             source_extracts = [
                 field.source.extract.__dict__ if field.source.extract else None
