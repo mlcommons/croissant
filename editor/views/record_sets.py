@@ -69,7 +69,8 @@ def render_record_sets():
         return
     record_set: RecordSet
     for key, record_set in enumerate(st.session_state[Metadata].record_sets):
-        with st.expander(f"**{record_set.name}**", expanded=True):
+        title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
+        with st.expander(title, expanded=False):
             col1, col2 = st.columns([1, 3])
             name = col1.text_input(
                 needed_field("Name"),
