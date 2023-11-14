@@ -24,7 +24,7 @@ def infer_record_sets(file: FileObject | FileSet, names: set[str]) -> list[Recor
         )
         field = Field(
             name=column,
-            data_types=convert_dtype(value),
+            data_types=[convert_dtype(value)],
             source=source,
             references=mlc.Source(),
         )
