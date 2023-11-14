@@ -2,16 +2,18 @@ from typing import Any
 
 import numpy as np
 
+import mlcroissant as mlc
+
 
 def convert_dtype(dtype: Any):
     """Converts from NumPy/Pandas to Croissant data types."""
     if dtype == np.int64:
-        return "https://schema.org/Integer"
+        return mlc.DataType.INTEGER
     elif dtype == np.float64:
-        return "https://schema.org/Float"
+        return mlc.DataType.FLOAT
     elif dtype == np.bool_:
-        return "https://schema.org/Boolean"
+        return mlc.DataType.BOOL
     elif dtype == np.str_ or dtype == object:
-        return "https://schema.org/Text"
+        return mlc.DataType.TEXT
     else:
         raise NotImplementedError(dtype)
