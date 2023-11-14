@@ -15,13 +15,16 @@ from utils import needed_field
 
 Resource = FileObject | FileSet
 
+_DISTANT_URL_KEY = "import_from_url"
+_LOCAL_FILE_KEY = "import_from_local_file"
+
 
 def render_files():
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
         files = st.session_state[Metadata].distribution
-        resource_name = _render_left_panel(files)
-        st.session_state[SelectedResource] = resource_name
+        resource = _render_left_panel(files)
+        st.session_state[SelectedResource] = resource
     with col2:
         if st.session_state.get(SelectedResource):
             _render_right_panel(st.session_state[SelectedResource])
@@ -47,7 +50,10 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
     name = None
     with st.container():
         st.subheader("Uploaded resources")
-        name = render_tree(nodes)
+        if nodes:
+            name = render_tree(nodes, key="-".join([node["name"] for node in nodes]))
+        else:
+            st.write("No resource yet.")
 
     with st.container():
         st.subheader("Upload more files")
@@ -61,34 +67,36 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
 
 def _render_upload_form():
     """Renders the form to upload from local or upload from URL."""
-    with st.form(key="manual_urls", clear_on_submit=True):
+    with st.form(key="upload_form", clear_on_submit=True):
         file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
 
         col1, col2 = st.columns(2)
-        uploaded_file = col1.file_uploader("Import from a local file")
-        url = col2.text_input("Import from a URL")
+        col1.file_uploader("Import from a local file", key=_LOCAL_FILE_KEY)
+        col2.text_input("Import from a URL", key=_DISTANT_URL_KEY)
 
-        submitted = st.form_submit_button("Add")
-        if submitted:
+        def handle_on_click():
+            url = st.session_state[_DISTANT_URL_KEY]
+            uploaded_file = st.session_state[_LOCAL_FILE_KEY]
             file_type = FILE_TYPES[file_type_name]
-            # despite the api stating this, the default value for a text input is "" not None
             nodes = (
                 st.session_state[Metadata].distribution
                 + st.session_state[Metadata].record_sets
             )
             names = set([node.name for node in nodes])
-            if url is not None and url != "":
+            if url:
                 file = file_from_url(file_type, url, names)
-            elif uploaded_file is not None:
+            elif uploaded_file:
                 file = file_from_upload(file_type, uploaded_file, names)
             else:
-                raise ValueError("should have either `url` or `uploaded_file`.")
+                st.toast("Please, import either a local file or a URL.", icon="❌")
+                return
             st.session_state[Metadata].add_distribution(file)
             record_sets = infer_record_sets(file, names)
             for record_set in record_sets:
                 st.session_state[Metadata].add_record_set(record_set)
             st.session_state[SelectedResource] = file.name
-            st.rerun()
+
+        st.form_submit_button("Add", on_click=handle_on_click)
 
 
 def _render_right_panel(selected_file: Resource):
