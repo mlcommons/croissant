@@ -7,12 +7,12 @@ from utils import init_state
 from views.jsonld import render_jsonld
 from views.load import render_load
 from views.splash import render_splash
-from views.wizard import render_wizard
+from views.wizard import render_editor
 
 init_state()
 
-st.set_page_config(page_title="Croissant Wizard", layout="wide")
-st.header("Croissant Wizard")
+st.set_page_config(page_title="Croissant Editor", layout="wide")
+st.header("Croissant Editor")
 
 
 if st.session_state[CurrentStep] == CurrentStep.start:
@@ -20,6 +20,6 @@ if st.session_state[CurrentStep] == CurrentStep.start:
 elif st.session_state[CurrentStep] == CurrentStep.load:
     render_load()
 elif st.session_state[CurrentStep] == CurrentStep.editor:
-    render_wizard()
+    render_editor()
 else:
     st.warning("invalid unhandled app state")

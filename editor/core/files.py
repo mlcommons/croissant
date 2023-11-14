@@ -61,7 +61,7 @@ def hash_file_path(url: str) -> epath.Path:
     """Reproducibly produces the file path."""
     tempdir = epath.Path(tempfile.gettempdir())
     hash = _sha256(url.encode())
-    return tempdir / f"croissant-wizard-{hash}"
+    return tempdir / f"croissant-editor-{hash}"
 
 
 def download_file(url: str, file_path: epath.Path):

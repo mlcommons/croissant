@@ -4,7 +4,7 @@ import 'cypress-file-upload';
 import 'cypress-iframe';
 
 
-describe('Wizard from local CSV', () => {
+describe('Editor loads a local CSV as a resource', () => {
   it('should display the form: Overview, Metadata, Resources, & Record Sets', () => {
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')

@@ -1,4 +1,4 @@
-# Croissant Wizard
+# Croissant Editor
 
 Start locally:
 

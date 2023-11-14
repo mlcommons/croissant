@@ -9,7 +9,7 @@ from .files import FileTypes
 def test_check_file_csv():
     csv = epath.Path(
         # This is the hash path for "https://my.url".
-        "/tmp/croissant-wizard-f76b4732c82d83daf858fae2cc0e590d352a4bceb781351243a03daab11f76bc"
+        "/tmp/croissant-editor-f76b4732c82d83daf858fae2cc0e590d352a4bceb781351243a03daab11f76bc"
     )
     if csv.exists():
         csv.unlink()

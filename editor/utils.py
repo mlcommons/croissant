@@ -15,7 +15,7 @@ def needed_field(text: str) -> str:
 
 
 def set_form_step(action, step=None):
-    """Maintains the user's location within the wizard."""
+    """Maintains the user's location within the editor."""
     if action == "Jump" and step is not None:
         st.session_state[CurrentStep] = step
 

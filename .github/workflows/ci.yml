@@ -216,12 +216,12 @@ jobs:
     - name: Generate JSON-LD files - PASS
       run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
 
-  wizard-python-test:
-    name: Wizard Python Test
+  editor-python-test:
+    name: Editor Python Test
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./wizard
+        working-directory: ./editor
     steps:
     - uses: actions/checkout@v4
 
@@ -240,12 +240,12 @@ jobs:
     - name: PyTest
       run: pytest .
 
-  wizard-e2e-test:
-    name: Wizard End-to-End Tests
+  editor-e2e-test:
+    name: Editor End-to-End Tests
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./wizard
+        working-directory: ./editor
     steps:
     - uses: actions/checkout@v4
 
@@ -265,12 +265,12 @@ jobs:
       with:
         start: streamlit run app.py
         wait-on: 'http://localhost:8501'
-        working-directory: ./wizard
+        working-directory: ./editor
 
     - name: Upload screenshots
       uses: actions/upload-artifact@v3
       if: failure()
       with:
           name: cypress-screenshots
-          path: ./wizard/cypress/screenshots
+          path: ./editor/cypress/screenshots
           retention-days: 1
