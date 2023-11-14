@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from core.state import Field
 from core.state import Metadata
 from core.state import RecordSet
 import mlcroissant as mlc
@@ -14,6 +15,44 @@ DATA_TYPES = [
     mlc.DataType.INTEGER,
     mlc.DataType.BOOL,
 ]
+
+
+def _data_editor_key(record_set_name: str) -> str:
+    return f"{record_set_name}-dataframe"
+
+
+def handle_fields_change(record_set_key: int, record_set: RecordSet):
+    data_editor_key = _data_editor_key(record_set.name)
+    result = st.session_state[data_editor_key]
+    # `result` has the following structure:
+    # {'edited_rows': {1: {}}, 'added_rows': [], 'deleted_rows': []}
+    fields = record_set.fields
+    for field_key in result["edited_rows"]:
+        field = fields[field_key]
+        new_fields = result["edited_rows"][field_key]
+        for new_field, new_value in new_fields.items():
+            if new_field == FieldDataFrame.NAME:
+                field.name = new_value
+            elif new_field == FieldDataFrame.DESCRIPTION:
+                field.description = new_value
+            elif new_field == FieldDataFrame.DATA_TYPE:
+                field.data_types = new_value
+        st.session_state[Metadata].update_field(record_set_key, field_key, field)
+    for added_row in result["added_rows"]:
+        field = Field(
+            name=added_row[FieldDataFrame.NAME],
+            description=added_row[FieldDataFrame.DESCRIPTION],
+            data_types=[added_row[FieldDataFrame.DATA_TYPE]],
+            source=mlc.Source(
+                uid="foo",
+                node_type="distribution",
+                extract=mlc.Extract(column=""),
+            ),
+            references=mlc.Source(),
+        )
+        st.session_state[Metadata].add_field(record_set_key, field)
+    for field_key in result["deleted_rows"]:
+        st.session_state[Metadata].remove_field(record_set_key, field_key)
 
 
 class FieldDataFrame:
@@ -60,6 +99,8 @@ def render_record_sets():
                 st.session_state[Metadata].update_record_set(key, record_set)
             names = [str(field.name) for field in record_set.fields]
             descriptions = [str(field.description) for field in record_set.fields]
+            # TODO(https://github.com/mlcommons/croissant/issues/350): Allow to display
+            # several data types, not only the first.
             data_types = [str(field.data_types[0]) for field in record_set.fields]
             fields = pd.DataFrame(
                 {
@@ -69,10 +110,13 @@ def render_record_sets():
                 },
                 dtype=np.str_,
             )
+            data_editor_key = _data_editor_key(record_set.name)
             st.data_editor(
                 fields,
                 height=DF_HEIGHT,
                 use_container_width=True,
+                num_rows="dynamic",
+                key=data_editor_key,
                 column_config={
                     FieldDataFrame.NAME: st.column_config.TextColumn(
                         FieldDataFrame.NAME,
@@ -91,4 +135,6 @@ def render_record_sets():
                         required=True,
                     ),
                 },
+                on_change=handle_fields_change,
+                args=(key, record_set),
             )
