@@ -4,8 +4,6 @@ from core.state import CurrentStep
 from core.state import Metadata
 import mlcroissant as mlc
 from utils import init_state
-from views.jsonld import render_jsonld
-from views.load import render_load
 from views.splash import render_splash
 from views.wizard import render_editor
 
@@ -15,10 +13,8 @@ st.set_page_config(page_title="Croissant Editor", layout="wide")
 st.header("Croissant Editor")
 
 
-if st.session_state[CurrentStep] == CurrentStep.start:
+if st.session_state[CurrentStep] == CurrentStep.splash:
     render_splash()
-elif st.session_state[CurrentStep] == CurrentStep.load:
-    render_load()
 elif st.session_state[CurrentStep] == CurrentStep.editor:
     render_editor()
 else:

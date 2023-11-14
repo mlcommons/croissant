@@ -7,14 +7,11 @@ import streamlit as st
 from core.state import CurrentStep
 from core.state import Metadata
 import mlcroissant as mlc
-from utils import LOADED_CROISSANT
 from utils import set_form_step
 
 
 def render_load():
-    col1, col2 = st.columns([1, 2], gap="small")
-    with col1:
-        file = st.file_uploader("Select a croissant file to load")
+    file = st.file_uploader("Select a JSON-LD", type="json")
     if file is not None:
         try:
             file_cont = file.read()

@@ -29,7 +29,7 @@ def init_state():
         st.session_state[mlc.Dataset] = None
 
     if CurrentStep not in st.session_state:
-        st.session_state[CurrentStep] = CurrentStep.start
+        st.session_state[CurrentStep] = CurrentStep.splash
 
     if SelectedResource not in st.session_state:
         st.session_state[SelectedResource] = None

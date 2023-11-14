@@ -6,7 +6,6 @@ import * as path from 'path';
 describe('Editor loads Croissant without Error', () => {
   it('should allow uploading existing croissant files', () => {
     cy.visit('http://localhost:8501')
-    cy.get('button').contains('Load').click()
 
     cy.fixture('titanic.json').then((fileContent) => {
       const file = {
@@ -31,7 +30,6 @@ describe('Editor loads Croissant without Error', () => {
   })
   it('should download as json', () => {
     cy.visit('http://localhost:8501')
-    cy.get('button').contains('Load').click()
 
     cy.fixture('titanic.json').then((fileContent) => {
       const file = {

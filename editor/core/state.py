@@ -13,10 +13,9 @@ import mlcroissant as mlc
 
 
 class CurrentStep:
-    """hold all major state variables for the application"""
+    """Holds all major state variables for the application."""
 
-    start = "start"
-    load = "load"
+    splash = "splash"
     editor = "editor"
 
 
