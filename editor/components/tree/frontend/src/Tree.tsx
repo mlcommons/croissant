@@ -188,6 +188,7 @@ const TreeViewWithNodes = ({ nodes }: { nodes: Node[] }) => {
       expanded={Object.keys(treeNodes)}
       sx={{
         flexGrow: 1,
+        margin: -1,
         padding: 1,
         border: "1px solid rgba(23, 29, 48, 0.2)",
         borderRadius: "0.5rem",
