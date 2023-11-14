@@ -44,7 +44,7 @@ describe('Editor loads a local CSV as a resource', () => {
 
     // On the record set page, we see the record set.
     cy.get('[data-testid="stMarkdownContainer"]').contains('Record sets').click()
-    cy.contains('base.csv_record_set')
+    cy.contains('base.csv_record_set (2 fields)').click()
     // We also see the fields with the proper types.
     cy.get('[data-testid="stDataFrameResizable"]').contains("column1")
     cy.get('[data-testid="stDataFrameResizable"]').contains("https://schema.org/Text")

@@ -238,7 +238,7 @@ jobs:
       working-directory: ./python/mlcroissant
 
     - name: PyTest
-      run: pytest .
+      run: make pytest
 
   editor-e2e-test:
     name: Editor End-to-End Tests

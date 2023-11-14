@@ -17,8 +17,49 @@ DATA_TYPES = [
 ]
 
 
+class SourceType:
+    DISTRIBUTION = "distribution"
+    FIELD = "field"
+
+
 def _data_editor_key(record_set_name: str) -> str:
     return f"{record_set_name}-dataframe"
+
+
+def _get_possible_sources(metadata: Metadata) -> list[str]:
+    possible_sources: list[str] = []
+    for resource in metadata.distribution:
+        possible_sources.append(resource.name)
+    for record_set in metadata.record_sets:
+        for field in record_set.fields:
+            possible_sources.append(f"{record_set.name}/{field.name}")
+    return possible_sources
+
+
+LeftOrRight = tuple[str, str]
+Join = tuple[LeftOrRight, LeftOrRight]
+
+
+def _find_left_or_right(source: mlc.Source) -> LeftOrRight:
+    uid = source.uid
+    if "/" in uid:
+        parts = uid.split("/")
+        return (parts[0], parts[1])
+    elif source.extract.column:
+        return (uid, source.extract.column)
+    else:
+        raise NotImplementedError(f"{source=} could not be parsed by the editor.")
+
+
+def _find_joins(fields: list[Field]) -> list[Join]:
+    """Finds the existing joins in the fields."""
+    joins: list[Join] = []
+    for field in fields:
+        if field.source and field.references:
+            left = _find_left_or_right(field.source)
+            right = _find_left_or_right(field.references)
+            joins.append((left, right))
+    return joins
 
 
 def handle_fields_change(record_set_key: int, record_set: RecordSet):
@@ -61,14 +102,22 @@ class FieldDataFrame:
     NAME = "Name"
     DESCRIPTION = "Description"
     DATA_TYPE = "Data type"
+    SOURCE_UID = "Source"
+    SOURCE_EXTRACT = "Source extract"
+    SOURCE_TRANSFORM = "Source transform"
+    REFERENCE_UID = "Reference"
+    REFERENCE_EXTRACT = "Reference extract"
 
 
 def render_record_sets():
-    if not st.session_state[Metadata].distribution:
+    distribution = st.session_state[Metadata].distribution
+    if not distribution:
         st.markdown("Please add resources first.")
         return
+    record_sets = st.session_state[Metadata].record_sets
+    possible_sources = _get_possible_sources(st.session_state[Metadata])
     record_set: RecordSet
-    for key, record_set in enumerate(st.session_state[Metadata].record_sets):
+    for key, record_set in enumerate(record_sets):
         title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
         with st.expander(title, expanded=False):
             col1, col2 = st.columns([1, 3])
@@ -89,6 +138,44 @@ def render_record_sets():
                 key=f"{record_set.name}-is-enumeration",
                 value=record_set.is_enumeration,
             )
+
+            joins = _find_joins(record_set.fields)
+            has_join = st.checkbox(
+                "Whether the RecordSet contains joins. To add a new join, add a"
+                f" field with a source in `{record_set.name}` and a reference to"
+                " another RecordSet or FileSet/FileObject.",
+                key=f"{record_set.name}-has-joins",
+                value=bool(joins),
+                disabled=True,
+            )
+            if has_join:
+                for left, right in joins:
+                    col1, col2, _, col4, col5 = st.columns([2, 2, 1, 2, 2])
+                    col1.text_input(
+                        "Left join",
+                        disabled=True,
+                        value=left[0],
+                        key=f"{record_set.name}-left-join-{left}",
+                    )
+                    col2.text_input(
+                        "Left key",
+                        disabled=True,
+                        value=left[1],
+                        key=f"{record_set.name}-left-key-{left}",
+                    )
+                    col4.text_input(
+                        "Right join",
+                        disabled=True,
+                        value=right[0],
+                        key=f"{record_set.name}-right-join-{right}",
+                    )
+                    col5.text_input(
+                        "Right key",
+                        disabled=True,
+                        value=right[1],
+                        key=f"{record_set.name}-right-key-{right}",
+                    )
+
             if (
                 name != record_set.name
                 or description != record_set.description
@@ -98,20 +185,47 @@ def render_record_sets():
                 record_set.description = description
                 record_set.is_enumeration = is_enumeration
                 st.session_state[Metadata].update_record_set(key, record_set)
-            names = [str(field.name) for field in record_set.fields]
-            descriptions = [str(field.description) for field in record_set.fields]
+            names = [field.name for field in record_set.fields]
+            descriptions = [field.description for field in record_set.fields]
             # TODO(https://github.com/mlcommons/croissant/issues/350): Allow to display
             # several data types, not only the first.
-            data_types = [str(field.data_types[0]) for field in record_set.fields]
+            data_types = [field.data_types[0] for field in record_set.fields]
+            source_uids = [field.source.uid for field in record_set.fields]
+            source_extracts = [
+                field.source.extract.__dict__ if field.source.extract else None
+                for field in record_set.fields
+            ]
+            source_transforms = [
+                field.source.transforms.__dict__ if field.source.transforms else None
+                for field in record_set.fields
+            ]
+            reference_uids = [
+                field.references.uid if field.references else None
+                for field in record_set.fields
+            ]
+            reference_extracts = [
+                (
+                    field.references.extract.__dict__
+                    if field.references and field.references.extract
+                    else None
+                )
+                for field in record_set.fields
+            ]
             fields = pd.DataFrame(
                 {
                     FieldDataFrame.NAME: names,
                     FieldDataFrame.DESCRIPTION: descriptions,
                     FieldDataFrame.DATA_TYPE: data_types,
+                    FieldDataFrame.SOURCE_UID: source_uids,
+                    FieldDataFrame.SOURCE_EXTRACT: source_extracts,
+                    FieldDataFrame.SOURCE_TRANSFORM: source_transforms,
+                    FieldDataFrame.REFERENCE_UID: reference_uids,
+                    FieldDataFrame.REFERENCE_EXTRACT: reference_extracts,
                 },
                 dtype=np.str_,
             )
             data_editor_key = _data_editor_key(record_set.name)
+            st.markdown(needed_field("Fields"))
             st.data_editor(
                 fields,
                 height=DF_HEIGHT,
@@ -134,6 +248,34 @@ def render_record_sets():
                         help="The Croissant type",
                         options=DATA_TYPES,
                         required=True,
+                    ),
+                    FieldDataFrame.SOURCE_UID: st.column_config.SelectboxColumn(
+                        FieldDataFrame.SOURCE_UID,
+                        help="Source",
+                        options=possible_sources,
+                        required=True,
+                    ),
+                    FieldDataFrame.SOURCE_EXTRACT: st.column_config.TextColumn(
+                        FieldDataFrame.SOURCE_EXTRACT,
+                        help="The extraction methods to apply",
+                        required=False,
+                    ),
+                    FieldDataFrame.SOURCE_TRANSFORM: st.column_config.TextColumn(
+                        FieldDataFrame.SOURCE_TRANSFORM,
+                        help="The transformations to apply once it's extracted",
+                        required=False,
+                    ),
+                    FieldDataFrame.REFERENCE_UID: st.column_config.SelectboxColumn(
+                        FieldDataFrame.REFERENCE_UID,
+                        help="Reference",
+                        options=possible_sources,
+                        required=False,
+                    ),
+                    FieldDataFrame.REFERENCE_EXTRACT: st.column_config.SelectboxColumn(
+                        FieldDataFrame.REFERENCE_EXTRACT,
+                        help="The extraction methods to apply",
+                        options=possible_sources,
+                        required=False,
                     ),
                 },
                 on_change=handle_fields_change,
