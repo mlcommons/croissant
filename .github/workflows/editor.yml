@@ -21,9 +21,9 @@ jobs:
     - uses: psf/black@stable
       with:
         options: --check --line-length 88 --preview
-        src: './wizard'
+        src: './editor'
     - uses: isort/isort-action@master
       with:
-        sort-paths: './wizard'
+        sort-paths: './editor'
         configuration: --profile google --line-length 88 --use-parentheses --project mlcroissant --project components --project core --project views --project state --project utils --multi-line 3 --thirdparty datasets
-        requirements-files: 'wizard/requirements.txt'
+        requirements-files: 'editor/requirements.txt'
