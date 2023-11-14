@@ -3,7 +3,7 @@
 import 'cypress-file-upload';
 import * as path from 'path';
 
-describe('Wizard loads Croissant without Error', () => {
+describe('Editor loads Croissant without Error', () => {
   it('should allow uploading existing croissant files', () => {
     cy.visit('http://localhost:8501')
     cy.get('button').contains('Load').click()

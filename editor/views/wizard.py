@@ -29,7 +29,7 @@ RESOURCES = "Resources"
 RECORD_SETS = "Record sets"
 
 
-def render_wizard():
+def render_editor():
     tab1, tab2, tab3, tab4 = st.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
 
     with tab1:

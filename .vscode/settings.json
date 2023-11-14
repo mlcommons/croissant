@@ -40,7 +40,7 @@
         // For python/mlcroissant/
         "--project",
         "mlcroissant",
-        // For wizard/
+        // For editor/
         "--project",
         "components",
         "--project",
