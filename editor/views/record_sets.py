@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -28,34 +29,46 @@ def render_record_sets():
         st.markdown("Please add resources first.")
         return
     record_set: RecordSet
-    for record_set in st.session_state[Metadata].record_sets:
+    for key, record_set in enumerate(st.session_state[Metadata].record_sets):
         with st.expander(f"**{record_set.name}**", expanded=True):
             col1, col2 = st.columns([1, 3])
-            col1.text_input(
+            name = col1.text_input(
                 needed_field("Name"),
                 placeholder="Name without special character.",
                 key=f"{record_set.name}-name",
                 value=record_set.name,
             )
-            col2.text_input(
+            description = col2.text_input(
                 "Description",
                 placeholder="Provide a clear description of the RecordSet.",
                 key=f"{record_set.name}-description",
                 value=record_set.description,
             )
-            st.checkbox(
+            is_enumeration = st.checkbox(
                 "Whether the RecordSet is an enumeration",
                 key=f"{record_set.name}-is-enumeration",
                 value=record_set.is_enumeration,
             )
-            names = [field.name for field in record_set.fields]
-            descriptions = [field.description for field in record_set.fields]
-            data_types = [field.data_types[0] for field in record_set.fields]
-            fields = pd.DataFrame({
-                FieldDataFrame.NAME: names,
-                FieldDataFrame.DESCRIPTION: descriptions,
-                FieldDataFrame.DATA_TYPE: data_types,
-            })
+            if (
+                name != record_set.name
+                or description != record_set.description
+                or is_enumeration != record_set.is_enumeration
+            ):
+                record_set.name = name
+                record_set.description = description
+                record_set.is_enumeration = is_enumeration
+                st.session_state[Metadata].update_record_set(key, record_set)
+            names = [str(field.name) for field in record_set.fields]
+            descriptions = [str(field.description) for field in record_set.fields]
+            data_types = [str(field.data_types[0]) for field in record_set.fields]
+            fields = pd.DataFrame(
+                {
+                    FieldDataFrame.NAME: names,
+                    FieldDataFrame.DESCRIPTION: descriptions,
+                    FieldDataFrame.DATA_TYPE: data_types,
+                },
+                dtype=np.str_,
+            )
             st.data_editor(
                 fields,
                 height=DF_HEIGHT,
