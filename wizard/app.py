@@ -12,7 +12,7 @@ from views.wizard import render_wizard
 init_state()
 
 st.set_page_config(page_title="Croissant Wizard", layout="wide")
-st.header("Croissant Wizard")
+st.title("Croissant Wizard")
 
 
 if st.session_state[CurrentStep] == CurrentStep.start:
