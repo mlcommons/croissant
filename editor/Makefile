@@ -20,3 +20,6 @@ isort:
 	.
 
 format: black isort
+
+pytest:
+	PYTHONPATH=. pytest

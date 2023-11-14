@@ -101,6 +101,7 @@ def _render_upload_form():
 
 def _render_right_panel(selected_file: Resource):
     """Renders the right panel: the detail of the selected resource."""
+    file: FileObject | FileSet
     for key, file in enumerate(st.session_state[Metadata].distribution):
         if file.name == selected_file.name:
 
