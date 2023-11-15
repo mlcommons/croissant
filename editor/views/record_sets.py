@@ -5,6 +5,7 @@ import streamlit as st
 from core.state import Field
 from core.state import Metadata
 from core.state import RecordSet
+from core.state import SelectedRecordSet
 import mlcroissant as mlc
 from utils import DF_HEIGHT
 from utils import needed_field
@@ -14,12 +15,67 @@ DATA_TYPES = [
     mlc.DataType.FLOAT,
     mlc.DataType.INTEGER,
     mlc.DataType.BOOL,
+    mlc.DataType.URL,
 ]
 
 
 class SourceType:
     DISTRIBUTION = "distribution"
     FIELD = "field"
+
+
+class ExtractType:
+    COLUMN = "Column"
+    JSON_PATH = "JSON path"
+    FILE_CONTENT = "File content"
+    FILE_NAME = "File name"
+    FILE_PATH = "File path"
+    FILE_FULLPATH = "Full path"
+    FILE_LINES = "Lines in file"
+    FILE_LINE_NUMBERS = "Line numbers in file"
+
+
+EXTRACT_TYPES = [
+    ExtractType.COLUMN,
+    ExtractType.JSON_PATH,
+    ExtractType.FILE_CONTENT,
+    ExtractType.FILE_NAME,
+    ExtractType.FILE_PATH,
+    ExtractType.FILE_FULLPATH,
+    ExtractType.FILE_LINES,
+    ExtractType.FILE_LINE_NUMBERS,
+]
+
+
+class TransformType:
+    FORMAT = "Apply format"
+    JSON_PATH = "Apply JSON path"
+    REGEX = "Apply regular expression"
+    REPLACE = "Replace"
+    SEPARATOR = "Separator"
+
+
+TRANSFORM_TYPES = [
+    TransformType.FORMAT,
+    TransformType.JSON_PATH,
+    TransformType.REGEX,
+    TransformType.REPLACE,
+    TransformType.SEPARATOR,
+]
+
+
+def _handle_close_fields():
+    st.session_state[SelectedRecordSet] = None
+
+
+def _handle_on_click_field(
+    record_set_key: int,
+    record_set: RecordSet,
+):
+    st.session_state[SelectedRecordSet] = SelectedRecordSet(
+        record_set_key=record_set_key,
+        record_set=record_set,
+    )
 
 
 def _data_editor_key(record_set_name: str) -> str:
@@ -34,6 +90,64 @@ def _get_possible_sources(metadata: Metadata) -> list[str]:
         for field in record_set.fields:
             possible_sources.append(f"{record_set.name}/{field.name}")
     return possible_sources
+
+
+def _get_extract(source: mlc.Source) -> str:
+    if source.extract.column:
+        return ExtractType.COLUMN
+    elif source.extract.file_property:
+        file_property = source.extract.file_property
+        if file_property == mlc.FileProperty.content:
+            return ExtractType.FILE_CONTENT
+        elif file_property == mlc.FileProperty.filename:
+            return ExtractType.FILE_NAME
+        elif file_property == mlc.FileProperty.filepath:
+            return ExtractType.FILE_PATH
+        elif file_property == mlc.FileProperty.fullpath:
+            return ExtractType.FILE_FULLPATH
+        elif file_property == mlc.FileProperty.lines:
+            return ExtractType.FILE_LINES
+        elif file_property == mlc.FileProperty.lineNumbers:
+            return ExtractType.FILE_LINE_NUMBERS
+        else:
+            raise ValueError(f"impossible value for mlc.FileProperty: {file_property}")
+    elif source.extract.json_path:
+        return ExtractType.JSON_PATH
+    raise ValueError(f"impossible value for mlc.Source: {source}")
+
+
+def _get_extract_index(source: mlc.Source) -> int | None:
+    extract = _get_extract(source)
+    if extract in EXTRACT_TYPES:
+        return EXTRACT_TYPES.index(extract)
+    return None
+
+
+def _get_transforms(source: mlc.Source) -> list[str]:
+    transforms = source.transforms
+    return [_get_transform(transform) for transform in transforms]
+
+
+def _get_transform(transform: mlc.Transform) -> str | None:
+    if transform.format:
+        return TransformType.FORMAT
+    elif transform.json_path:
+        return TransformType.JSON_PATH
+    elif transform.regex:
+        return TransformType.REGEX
+    elif transform.replace:
+        return TransformType.REPLACE
+    elif transform.separator:
+        return TransformType.SEPARATOR
+    raise ValueError(f"impossible value for mlc.Transform: {transform}")
+
+
+def _get_transforms_indices(source: mlc.Source) -> list[int]:
+    transforms = _get_transforms(source)
+    return [
+        TRANSFORM_TYPES.index(transform) if transform in TRANSFORM_TYPES else None
+        for transform in transforms
+    ]
 
 
 LeftOrRight = tuple[str, str]
@@ -118,6 +232,15 @@ class FieldDataFrame:
 
 
 def render_record_sets():
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        _render_left_panel()
+    with col2:
+        _render_right_panel()
+
+
+def _render_left_panel():
+    """Left panel: visualization of all RecordSets as expandable forms."""
     distribution = st.session_state[Metadata].distribution
     if not distribution:
         st.markdown("Please add resources first.")
@@ -299,3 +422,122 @@ def render_record_sets():
                 on_change=handle_fields_change,
                 args=(key, record_set),
             )
+
+            st.button(
+                "Edit fields",
+                key=f"{record_set.name}-show-fields",
+                on_click=_handle_on_click_field,
+                args=(key, record_set),
+            )
+
+
+def _render_right_panel():
+    """Right panel: visualization of the clicked Field."""
+    metadata: Metadata = st.session_state.get(Metadata)
+    selected: SelectedRecordSet = st.session_state.get(SelectedRecordSet)
+    if not selected:
+        return
+    record_set = selected.record_set
+    with st.expander("**Fields**", expanded=True):
+        for _, field in enumerate(record_set.fields):
+            col1, col2, col3 = st.columns([1, 1, 1])
+            col1.text_input(
+                needed_field("Name"),
+                placeholder="Name without special character.",
+                key=f"{record_set.name}-{field.name}-name",
+                value=field.name,
+            )
+            col2.text_input(
+                "Description",
+                placeholder="Provide a clear description of the RecordSet.",
+                key=f"{record_set.name}-{field.name}-description",
+                value=field.description,
+            )
+            if field.data_types:
+                data_type_index = DATA_TYPES.index(field.data_types[0])
+            else:
+                data_type_index = 0
+            col3.selectbox(
+                needed_field("Data type"),
+                index=data_type_index,
+                options=DATA_TYPES,
+                key=f"{record_set.name}-{field.name}-datatypes",
+            )
+            possible_sources = _get_possible_sources(metadata)
+            _render_source(record_set, field, possible_sources)
+            # _render_source(
+            #     "Reference", field.references, record_set, field, possible_sources
+            # )
+
+            st.divider()
+
+        st.button(
+            "Close",
+            key=f"{record_set.name}-close-fields",
+            on_click=_handle_close_fields,
+        )
+
+
+def _render_source(
+    record_set: RecordSet,
+    field: Field,
+    possible_sources: list[str],
+):
+    source = field.source
+    key = f"source-{record_set.name}-{field.name}"
+    col1, col2, col3 = st.columns([1, 1, 1])
+    index = (
+        possible_sources.index(source.uid) if source.uid in possible_sources else None
+    )
+    col1.selectbox(
+        needed_field("Source"),
+        index=index,
+        options=[s for s in possible_sources if not s.startswith(record_set.name)],
+        key=f"{key}-source",
+    )
+    extract = col2.selectbox(
+        needed_field("Extract"),
+        index=_get_extract_index(source),
+        key=f"{key}-extract",
+        options=EXTRACT_TYPES,
+    )
+    if extract == ExtractType.COLUMN:
+        col3.text_input(
+            needed_field("Column name"),
+            value=source.extract.column,
+            key=f"{key}-columnname",
+        )
+    if extract == ExtractType.JSON_PATH:
+        col3.text_input(
+            needed_field("JSON path"),
+            value=source.extract.json_path,
+            key=f"{key}-jsonpath",
+        )
+    _, col2, col3 = st.columns([1, 1, 1])
+
+    # Transforms
+    indices = _get_transforms_indices(field.source)
+    if source.transforms:
+        for index, transform in zip(indices, source.transforms):
+            transform = col2.selectbox(
+                "Transform",
+                index=index,
+                key=f"{key}-{index}-transform",
+                options=TRANSFORM_TYPES,
+            )
+            if transform == TransformType.FORMAT:
+                col3.text_input(
+                    needed_field("Format"),
+                    value=transform.format,
+                    key=f"{key}-{index}-transform-format",
+                )
+
+    def _handle_add_transform():
+        # TODO(marcenacp): move this above and handle add_transform.
+        pass
+
+    col2.button(
+        "Add transform on data",
+        key=f"{key}-close-fields",
+        on_click=_handle_add_transform,
+    )
