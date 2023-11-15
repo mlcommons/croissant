@@ -184,7 +184,7 @@ def _find_joins(fields: list[Field]) -> list[Join]:
     return joins
 
 
-def handle_fields_change(record_set_key: int, record_set: RecordSet):
+def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     data_editor_key = _data_editor_key(record_set.name)
     result = st.session_state[data_editor_key]
     # `result` has the following structure:
@@ -324,41 +324,11 @@ def _render_left_panel():
                 field.data_types[0] if field.data_types else None
                 for field in record_set.fields
             ]
-            source_uids = [field.source.uid for field in record_set.fields]
-            source_extracts = [
-                field.source.extract.__dict__ if field.source.extract else None
-                for field in record_set.fields
-            ]
-            source_transforms = [
-                (
-                    [transform.__dict__ for transform in field.source.transforms]
-                    if field.source.transforms
-                    else None
-                )
-                for field in record_set.fields
-            ]
-            reference_uids = [
-                field.references.uid if field.references else None
-                for field in record_set.fields
-            ]
-            reference_extracts = [
-                (
-                    field.references.extract.__dict__
-                    if field.references and field.references.extract
-                    else None
-                )
-                for field in record_set.fields
-            ]
             fields = pd.DataFrame(
                 {
                     FieldDataFrame.NAME: names,
                     FieldDataFrame.DESCRIPTION: descriptions,
                     FieldDataFrame.DATA_TYPE: data_types,
-                    FieldDataFrame.SOURCE_UID: source_uids,
-                    FieldDataFrame.SOURCE_EXTRACT: source_extracts,
-                    FieldDataFrame.SOURCE_TRANSFORM: source_transforms,
-                    FieldDataFrame.REFERENCE_UID: reference_uids,
-                    FieldDataFrame.REFERENCE_EXTRACT: reference_extracts,
                 },
                 dtype=np.str_,
             )
@@ -366,7 +336,6 @@ def _render_left_panel():
             st.markdown(needed_field("Fields"))
             st.data_editor(
                 fields,
-                height=DF_HEIGHT,
                 use_container_width=True,
                 num_rows="dynamic",
                 key=data_editor_key,
@@ -387,44 +356,13 @@ def _render_left_panel():
                         options=DATA_TYPES,
                         required=True,
                     ),
-                    FieldDataFrame.SOURCE_UID: st.column_config.SelectboxColumn(
-                        FieldDataFrame.SOURCE_UID,
-                        help="Source",
-                        options=possible_sources,
-                        required=True,
-                    ),
-                    FieldDataFrame.SOURCE_EXTRACT: st.column_config.TextColumn(
-                        FieldDataFrame.SOURCE_EXTRACT,
-                        help="The extraction methods to apply",
-                        required=False,
-                        disabled=True,
-                    ),
-                    FieldDataFrame.SOURCE_TRANSFORM: st.column_config.TextColumn(
-                        FieldDataFrame.SOURCE_TRANSFORM,
-                        help="The transformations to apply once it's extracted",
-                        required=False,
-                        disabled=True,
-                    ),
-                    FieldDataFrame.REFERENCE_UID: st.column_config.SelectboxColumn(
-                        FieldDataFrame.REFERENCE_UID,
-                        help="Reference",
-                        options=possible_sources,
-                        required=False,
-                    ),
-                    FieldDataFrame.REFERENCE_EXTRACT: st.column_config.SelectboxColumn(
-                        FieldDataFrame.REFERENCE_EXTRACT,
-                        help="The extraction methods to apply",
-                        options=possible_sources,
-                        required=False,
-                        disabled=True,
-                    ),
                 },
-                on_change=handle_fields_change,
+                on_change=_handle_fields_change,
                 args=(key, record_set),
             )
 
             st.button(
-                "Edit fields",
+                "Edit fields details",
                 key=f"{record_set.name}-show-fields",
                 on_click=_handle_on_click_field,
                 args=(key, record_set),
@@ -465,15 +403,14 @@ def _render_right_panel():
             )
             possible_sources = _get_possible_sources(metadata)
             _render_source(record_set, field, possible_sources)
-            # _render_source(
-            #     "Reference", field.references, record_set, field, possible_sources
-            # )
+            _render_references(record_set, field, possible_sources)
 
             st.divider()
 
         st.button(
             "Close",
             key=f"{record_set.name}-close-fields",
+            type="primary",
             on_click=_handle_close_fields,
         )
 
@@ -495,27 +432,28 @@ def _render_source(
         options=[s for s in possible_sources if not s.startswith(record_set.name)],
         key=f"{key}-source",
     )
-    extract = col2.selectbox(
-        needed_field("Extract"),
-        index=_get_extract_index(source),
-        key=f"{key}-extract",
-        options=EXTRACT_TYPES,
-    )
-    if extract == ExtractType.COLUMN:
-        col3.text_input(
-            needed_field("Column name"),
-            value=source.extract.column,
-            key=f"{key}-columnname",
+    if source.node_type == "distribution":
+        extract = col2.selectbox(
+            needed_field("Extract"),
+            index=_get_extract_index(source),
+            key=f"{key}-extract",
+            options=EXTRACT_TYPES,
         )
-    if extract == ExtractType.JSON_PATH:
-        col3.text_input(
-            needed_field("JSON path"),
-            value=source.extract.json_path,
-            key=f"{key}-jsonpath",
-        )
-    _, col2, col3 = st.columns([1, 1, 1])
+        if extract == ExtractType.COLUMN:
+            col3.text_input(
+                needed_field("Column name"),
+                value=source.extract.column,
+                key=f"{key}-columnname",
+            )
+        if extract == ExtractType.JSON_PATH:
+            col3.text_input(
+                needed_field("JSON path"),
+                value=source.extract.json_path,
+                key=f"{key}-jsonpath",
+            )
 
     # Transforms
+    _, col2, col3 = st.columns([1, 1, 1])
     indices = _get_transforms_indices(field.source)
     if source.transforms:
         for index, transform in zip(indices, source.transforms):
@@ -541,3 +479,56 @@ def _render_source(
         key=f"{key}-close-fields",
         on_click=_handle_add_transform,
     )
+
+
+def _render_references(
+    record_set: RecordSet,
+    field: Field,
+    possible_sources: list[str],
+):
+    key = f"source-{record_set.name}-{field.name}"
+
+    def _handle_add_reference():
+        # TODO(marcenacp): move this above and handle add_transform.
+        pass
+
+    references = field.references
+    if references:
+        col1, col2, col3 = st.columns([1, 1, 1])
+        index = (
+            possible_sources.index(references.uid)
+            if references.uid in possible_sources
+            else None
+        )
+        col1.selectbox(
+            needed_field("Reference"),
+            index=index,
+            options=[s for s in possible_sources if not s.startswith(record_set.name)],
+            key=f"{key}-reference",
+        )
+        if references.node_type == "distribution":
+            extract = col2.selectbox(
+                needed_field("Extract the reference"),
+                index=_get_extract_index(references),
+                key=f"{key}-extract-references",
+                options=EXTRACT_TYPES,
+            )
+            if extract == ExtractType.COLUMN:
+                col3.text_input(
+                    needed_field("Column name"),
+                    value=references.extract.column,
+                    key=f"{key}-columnname",
+                )
+            if extract == ExtractType.JSON_PATH:
+                col3.text_input(
+                    needed_field("JSON path"),
+                    value=references.extract.json_path,
+                    key=f"{key}-jsonpath",
+                )
+    else:
+        _, col2 = st.columns([1, 2])
+        col2.button(
+            "Add a join with another column/field",
+            key=f"{key}-add-reference",
+            on_click=_handle_add_reference,
+        )
