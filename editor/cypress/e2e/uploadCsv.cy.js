@@ -32,7 +32,7 @@ describe('Editor loads a local CSV as a resource', () => {
       })
     })
     cy.get('.uploadedFileData').contains('base.csv')
-    cy.get('button').contains('Add').click()
+    cy.get('button').contains('Upload').click()
     // The file is uploaded, so we can click on it to see the details.
     // Waiting a few seconds to wait for the resource to download.
     cy.wait(2000)
