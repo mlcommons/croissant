@@ -3,5 +3,6 @@ mlcroissant
 numpy
 pandas
 pytest
+rdflib
 requests
 streamlit

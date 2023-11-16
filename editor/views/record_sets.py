@@ -3,6 +3,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from rdflib import term
 import streamlit as st
 
 from core.state import Field
@@ -202,9 +203,9 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
         st.session_state[Metadata].update_field(record_set_key, field_key, field)
     for added_row in result["added_rows"]:
         field = Field(
-            name=added_row[FieldDataFrame.NAME],
-            description=added_row[FieldDataFrame.DESCRIPTION],
-            data_types=[added_row[FieldDataFrame.DATA_TYPE]],
+            name=added_row.get(FieldDataFrame.NAME),
+            description=added_row.get(FieldDataFrame.DESCRIPTION),
+            data_types=[added_row.get(FieldDataFrame.DATA_TYPE)],
             source=mlc.Source(
                 uid="foo",
                 node_type="distribution",
@@ -510,9 +511,15 @@ def _render_right_panel():
                 args=(Change.DESCRIPTION, record_set_key, field_key, field, key),
             )
             if field.data_types:
-                data_type_index = DATA_TYPES.index(field.data_types[0])
+                data_type = field.data_types[0]
+                if isinstance(data_type, str):
+                    data_type = term.URIRef(data_type)
+                if data_type in DATA_TYPES:
+                    data_type_index = DATA_TYPES.index(data_type)
+                else:
+                    data_type_index = None
             else:
-                data_type_index = 0
+                data_type_index = None
             key = f"{record_set.name}-{field.name}-datatypes"
             col3.selectbox(
                 needed_field("Data type"),
