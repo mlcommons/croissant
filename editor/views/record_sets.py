@@ -1,3 +1,6 @@
+import enum
+from typing import Literal
+
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -92,7 +95,7 @@ def _get_possible_sources(metadata: Metadata) -> list[str]:
     return possible_sources
 
 
-def _get_extract(source: mlc.Source) -> str:
+def _get_extract(source: mlc.Source) -> str | None:
     if source.extract.column:
         return ExtractType.COLUMN
     elif source.extract.file_property:
@@ -110,10 +113,10 @@ def _get_extract(source: mlc.Source) -> str:
         elif file_property == mlc.FileProperty.lineNumbers:
             return ExtractType.FILE_LINE_NUMBERS
         else:
-            raise ValueError(f"impossible value for mlc.FileProperty: {file_property}")
+            return None
     elif source.extract.json_path:
         return ExtractType.JSON_PATH
-    raise ValueError(f"impossible value for mlc.Source: {source}")
+    return None
 
 
 def _get_extract_index(source: mlc.Source) -> int | None:
@@ -139,7 +142,7 @@ def _get_transform(transform: mlc.Transform) -> str | None:
         return TransformType.REPLACE
     elif transform.separator:
         return TransformType.SEPARATOR
-    raise ValueError(f"impossible value for mlc.Transform: {transform}")
+    return None
 
 
 def _get_transforms_indices(source: mlc.Source) -> list[int]:
@@ -246,7 +249,6 @@ def _render_left_panel():
         st.markdown("Please add resources first.")
         return
     record_sets = st.session_state[Metadata].record_sets
-    possible_sources = _get_possible_sources(st.session_state[Metadata])
     record_set: RecordSet
     for key, record_set in enumerate(record_sets):
         title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
@@ -332,6 +334,8 @@ def _render_left_panel():
                 },
                 dtype=np.str_,
             )
+            if record_set.fields:
+                st.json(record_set.fields[0].__dict__)
             data_editor_key = _data_editor_key(record_set.name)
             st.markdown(needed_field("Fields"))
             st.data_editor(
@@ -369,6 +373,94 @@ def _render_left_panel():
             )
 
 
+class Change(enum.Enum):
+    NAME = "NAME"
+    DESCRIPTION = "DESCRIPTION"
+    DATA_TYPE = "DATA_TYPE"
+    SOURCE = "SOURCE"
+    SOURCE_EXTRACT = "SOURCE_EXTRACT"
+    SOURCE_EXTRACT_COLUMN = "SOURCE_EXTRACT_COLUMN"
+    SOURCE_EXTRACT_JSON_PATH = "SOURCE_EXTRACT_JSON_PATH"
+    TRANSFORM = "TRANSFORM"
+    TRANSFORM_FORMAT = "TRANSFORM_FORMAT"
+
+
+def _handle_field_change(
+    change: Change,
+    record_set_key: int,
+    field_key: int,
+    field: Field,
+    key: str,
+    **kwargs,
+):
+    value = st.session_state[key]
+    if change == Change.NAME:
+        field.name = value
+    elif change == Change.DESCRIPTION:
+        field.description = value
+    elif change == Change.DATA_TYPE:
+        field.data_types = [value]
+    elif change == Change.SOURCE:
+        node_type = "field" if "/" in value else "distribution"
+        source = mlc.Source(uid=value, node_type=node_type)
+        field.source = source
+    elif change == Change.SOURCE_EXTRACT:
+        if not field.source:
+            source = mlc.Source(extract=mlc.Extract())
+        else:
+            source = field.source
+        if value == ExtractType.COLUMN:
+            source.extract = mlc.Extract(column="TO_BE_FILLED")
+        elif value == ExtractType.FILE_CONTENT:
+            source.extract = mlc.Extract(file_property=mlc.FileProperty.content)
+        elif value == ExtractType.FILE_NAME:
+            source.extract = mlc.Extract(file_property=mlc.FileProperty.filename)
+        elif value == ExtractType.FILE_PATH:
+            source.extract = mlc.Extract(file_property=mlc.FileProperty.filepath)
+        elif value == ExtractType.FILE_FULLPATH:
+            source.extract = mlc.Extract(file_property=mlc.FileProperty.fullpath)
+        elif value == ExtractType.FILE_LINES:
+            source.extract = mlc.Extract(file_property=mlc.FileProperty.lines)
+        elif value == ExtractType.FILE_LINE_NUMBERS:
+            source.extract = mlc.Extract(file_property=mlc.FileProperty.lineNumbers)
+        elif value == ExtractType.JSON_PATH:
+            source.extract = mlc.Extract(json_path="TO_BE_FILLED")
+        field.source = source
+    elif change == Change.SOURCE_EXTRACT_COLUMN:
+        if not field.source:
+            field.source = mlc.Source(extract=mlc.Extract())
+        field.source.extract = mlc.Extract(column=value)
+    elif change == Change.SOURCE_EXTRACT_JSON_PATH:
+        if not field.source:
+            field.source = mlc.Source(extract=mlc.Extract())
+        field.source.extract = mlc.Extract(json_path=value)
+    elif change == Change.TRANSFORM:
+        number = kwargs.get("number")
+        if number is not None and number < len(field.source.transforms):
+            field.source.transforms[number] = mlc.Transform()
+    elif change == TransformType.FORMAT:
+        number = kwargs.get("number")
+        if number is not None and number < len(field.source.transforms):
+            field.source.transforms[number] = mlc.Transform(format=value)
+    elif change == TransformType.JSON_PATH:
+        number = kwargs.get("number")
+        if number is not None and number < len(field.source.transforms):
+            field.source.transforms[number] = mlc.Transform(json_path=value)
+    elif change == TransformType.REGEX:
+        number = kwargs.get("number")
+        if number is not None and number < len(field.source.transforms):
+            field.source.transforms[number] = mlc.Transform(regex=value)
+    elif change == TransformType.REPLACE:
+        number = kwargs.get("number")
+        if number is not None and number < len(field.source.transforms):
+            field.source.transforms[number] = mlc.Transform(replace=value)
+    elif change == TransformType.SEPARATOR:
+        number = kwargs.get("number")
+        if number is not None and number < len(field.source.transforms):
+            field.source.transforms[number] = mlc.Transform(separator=value)
+    st.session_state[Metadata].update_field(record_set_key, field_key, field)
+
+
 def _render_right_panel():
     """Right panel: visualization of the clicked Field."""
     metadata: Metadata = st.session_state.get(Metadata)
@@ -376,33 +468,46 @@ def _render_right_panel():
     if not selected:
         return
     record_set = selected.record_set
+    record_set_key = selected.record_set_key
     with st.expander("**Fields**", expanded=True):
-        for _, field in enumerate(record_set.fields):
+        for field_key, field in enumerate(record_set.fields):
             col1, col2, col3 = st.columns([1, 1, 1])
+
+            key = f"{record_set.name}-{field.name}-name"
             col1.text_input(
                 needed_field("Name"),
                 placeholder="Name without special character.",
-                key=f"{record_set.name}-{field.name}-name",
+                key=key,
                 value=field.name,
+                on_change=_handle_field_change,
+                args=(Change.NAME, record_set_key, field_key, field, key),
             )
+            key = f"{record_set.name}-{field.name}-description"
             col2.text_input(
                 "Description",
                 placeholder="Provide a clear description of the RecordSet.",
-                key=f"{record_set.name}-{field.name}-description",
+                key=key,
+                on_change=_handle_field_change,
                 value=field.description,
+                args=(Change.DESCRIPTION, record_set_key, field_key, field, key),
             )
             if field.data_types:
                 data_type_index = DATA_TYPES.index(field.data_types[0])
             else:
                 data_type_index = 0
+            key = f"{record_set.name}-{field.name}-datatypes"
             col3.selectbox(
                 needed_field("Data type"),
                 index=data_type_index,
                 options=DATA_TYPES,
-                key=f"{record_set.name}-{field.name}-datatypes",
+                key=key,
+                on_change=_handle_field_change,
+                args=(Change.DATA_TYPE, record_set_key, field_key, field, key),
             )
             possible_sources = _get_possible_sources(metadata)
-            _render_source(record_set, field, possible_sources)
+            _render_source(
+                record_set_key, record_set, field, field_key, possible_sources
+            )
             _render_references(record_set, field, possible_sources)
 
             st.divider()
@@ -416,68 +521,158 @@ def _render_right_panel():
 
 
 def _render_source(
+    record_set_key: int,
     record_set: RecordSet,
     field: Field,
+    field_key: int,
     possible_sources: list[str],
 ):
     source = field.source
-    key = f"source-{record_set.name}-{field.name}"
+    postfix = f"source-{record_set.name}-{field.name}"
     col1, col2, col3 = st.columns([1, 1, 1])
     index = (
         possible_sources.index(source.uid) if source.uid in possible_sources else None
     )
+    key = f"{postfix}-source"
     col1.selectbox(
         needed_field("Source"),
         index=index,
         options=[s for s in possible_sources if not s.startswith(record_set.name)],
-        key=f"{key}-source",
+        key=key,
+        on_change=_handle_field_change,
+        args=(Change.SOURCE, record_set_key, field_key, field, key),
     )
     if source.node_type == "distribution":
         extract = col2.selectbox(
             needed_field("Extract"),
             index=_get_extract_index(source),
-            key=f"{key}-extract",
+            key=f"{postfix}-extract",
             options=EXTRACT_TYPES,
+            on_change=_handle_field_change,
+            args=(Change.SOURCE_EXTRACT, record_set_key, field_key, field, key),
         )
         if extract == ExtractType.COLUMN:
+            key = f"{postfix}-columnname"
             col3.text_input(
                 needed_field("Column name"),
                 value=source.extract.column,
-                key=f"{key}-columnname",
+                key=key,
+                on_change=_handle_field_change,
+                args=(
+                    Change.SOURCE_EXTRACT_COLUMN,
+                    record_set_key,
+                    field_key,
+                    field,
+                    key,
+                ),
             )
         if extract == ExtractType.JSON_PATH:
+            key = f"{postfix}-jsonpath"
             col3.text_input(
                 needed_field("JSON path"),
                 value=source.extract.json_path,
-                key=f"{key}-jsonpath",
+                key=key,
+                on_change=_handle_field_change,
+                args=(
+                    Change.SOURCE_EXTRACT_JSON_PATH,
+                    record_set_key,
+                    field_key,
+                    field,
+                    key,
+                ),
             )
 
     # Transforms
-    _, col2, col3 = st.columns([1, 1, 1])
     indices = _get_transforms_indices(field.source)
     if source.transforms:
-        for index, transform in zip(indices, source.transforms):
-            transform = col2.selectbox(
+        for number, (index, transform) in enumerate(zip(indices, source.transforms)):
+            _, col2, col3, col4 = st.columns([4.5, 4, 4, 1])
+            key = f"{postfix}-{number}-transform"
+            selected = col2.selectbox(
                 "Transform",
                 index=index,
-                key=f"{key}-{index}-transform",
+                key=key,
                 options=TRANSFORM_TYPES,
+                on_change=_handle_field_change,
+                args=(Change.TRANSFORM, record_set_key, field_key, field, key),
+                kwargs={"number": number},
             )
-            if transform == TransformType.FORMAT:
+            if selected == TransformType.FORMAT:
+                key = f"{postfix}-{number}-transform-format"
                 col3.text_input(
                     needed_field("Format"),
                     value=transform.format,
-                    key=f"{key}-{index}-transform-format",
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(selected, record_set_key, field_key, field, key),
+                    kwargs={"number": number, "type": "format"},
+                )
+            elif selected == TransformType.JSON_PATH:
+                key = f"{postfix}-{number}-jsonpath"
+                col3.text_input(
+                    needed_field("JSON path"),
+                    value=transform.json_path,
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(selected, record_set_key, field_key, field, key),
+                    kwargs={"number": number, "type": "format"},
+                )
+            elif selected == TransformType.REGEX:
+                key = f"{postfix}-{number}-regex"
+                col3.text_input(
+                    needed_field("Regular expression"),
+                    value=transform.regex,
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(selected, record_set_key, field_key, field, key),
+                    kwargs={"number": number, "type": "format"},
+                )
+            elif selected == TransformType.REPLACE:
+                key = f"{postfix}-{number}-replace"
+                col3.text_input(
+                    needed_field("Replace pattern"),
+                    value=transform.replace,
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(selected, record_set_key, field_key, field, key),
+                    kwargs={"number": number, "type": "format"},
+                )
+            elif selected == TransformType.SEPARATOR:
+                key = f"{postfix}-{number}-separator"
+                col3.text_input(
+                    needed_field("Separator"),
+                    value=transform.separator,
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(selected, record_set_key, field_key, field, key),
+                    kwargs={"number": number, "type": "format"},
                 )
 
-    def _handle_add_transform():
-        # TODO(marcenacp): move this above and handle add_transform.
-        pass
+            def _handle_remove_transform(record_set_key, field_key, field, number):
+                del field.source.transforms[number]
+                st.session_state[Metadata].update_field(
+                    record_set_key, field_key, field
+                )
 
-    col2.button(
+            col4.button(
+                "✖️",
+                key=f"{postfix}-{number}-remove-transform",
+                on_click=_handle_remove_transform,
+                args=(record_set_key, field_key, field, number),
+            )
+
+    def _handle_add_transform(record_set_key, field_key, field):
+        if not field.source:
+            field.source = mlc.Source(transforms=[])
+        field.source.transforms.append(mlc.Transform())
+        st.session_state[Metadata].update_field(record_set_key, field_key, field)
+
+    col1, _, _ = st.columns([1, 1, 1])
+    col1.button(
         "Add transform on data",
-        key=f"{key}-close-fields",
+        key=f"{postfix}-close-fields",
         on_click=_handle_add_transform,
+        args=(record_set_key, field_key, field),
     )
 
 
@@ -526,8 +721,7 @@ def _render_references(
                     key=f"{key}-jsonpath",
                 )
     else:
-        _, col2 = st.columns([1, 2])
-        col2.button(
+        st.button(
             "Add a join with another column/field",
             key=f"{key}-add-reference",
             on_click=_handle_add_reference,
