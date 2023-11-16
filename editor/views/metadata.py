@@ -25,16 +25,6 @@ licenses = [
 
 def render_metadata():
     metadata = st.session_state[Metadata]
-    name = st.text_input(
-        label=needed_field("Name"),
-        value=metadata.name,
-        placeholder="Dataset",
-    )
-    description = st.text_area(
-        label="Description",
-        value=metadata.description,
-        placeholder="Provide a clear description of the dataset.",
-    )
     try:
         index = licenses.index(metadata.license)
     except ValueError:
