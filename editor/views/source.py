@@ -121,6 +121,12 @@ def _get_transforms_indices(source: mlc.Source) -> list[int]:
     ]
 
 
+def _handle_remove_reference(record_set_key, field_key, field):
+    """Removes the reference from a field."""
+    field.references = None
+    st.session_state[Metadata].update_field(record_set_key, field_key, field)
+
+
 class ChangeEvent(enum.Enum):
     """Event that triggers a field change."""
 
@@ -405,7 +411,7 @@ def render_references(
     has_clicked_button = st.session_state.get(button_key)
     references = field.references
     if references or has_clicked_button:
-        col1, col2, col3 = st.columns([1, 1, 1])
+        col1, col2, col3, col4 = st.columns([4.5, 4, 4, 1])
         index = (
             possible_sources.index(references.uid)
             if references.uid in possible_sources
@@ -413,7 +419,7 @@ def render_references(
         )
         key = f"{key}-reference"
         col1.selectbox(
-            needed_field("Reference"),
+            "Reference",
             index=index,
             options=[s for s in possible_sources if not s.startswith(record_set.name)],
             key=key,
@@ -466,6 +472,12 @@ def render_references(
                         key,
                     ),
                 )
+        col4.button(
+            "✖️",
+            key=f"{key}-remove-reference",
+            on_click=_handle_remove_reference,
+            args=(record_set_key, field_key, field),
+        )
     elif not has_clicked_button:
         st.button(
             "Add a join with another column/field",
