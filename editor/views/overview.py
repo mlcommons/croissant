@@ -20,3 +20,10 @@ def render_overview():
     )
     st.subheader(f"{len(metadata.distribution)} Resources")
     st.subheader(f"{len(metadata.record_sets)} Record Sets")
+    st.session_state[Metadata].update_metadata(
+        name=name,
+        description=description,
+        license=metadata.license,
+        url=metadata.url,
+        citation=metadata.citation,
+    )
