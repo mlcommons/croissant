@@ -1,0 +1,409 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "COCO",
+  "description": "COCO is a large-scale object detection, segmentation, and captioning dataset.  WARNING: `metadata.json` is incomplete and does not fully define the COCO2014 dataset. It lacks `recordSet` definitions that would enable automatic loading of all the annotations.",
+  "citation": "@article{DBLP:journals/corr/LinMBHPRDZ14,\n  author    = {Tsung{-}Yi Lin and\n               Michael Maire and\n               Serge J. Belongie and\n               Lubomir D. Bourdev and\n               Ross B. Girshick and\n               James Hays and\n               Pietro Perona and\n               Deva Ramanan and\n               Piotr Doll{'{a}}r and\n               C. Lawrence Zitnick},\n  title     = {Microsoft {COCO:} Common Objects in Context},\n  journal   = {CoRR},\n  volume    = {abs/1405.0312},\n  year      = {2014},\n  url       = {http://arxiv.org/abs/1405.0312},\n  archivePrefix = {arXiv},\n  eprint    = {1405.0312},\n  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}",
+  "license": [
+    "Creative Commons Attribution 4.0 License",
+    "https://www.flickr.com/creativecommons/"
+  ],
+  "url": "https://cocodataset.org/",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "train2014.zip",
+      "contentSize": "13510573713 B",
+      "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "val2014.zip",
+      "contentSize": "6645013297 B",
+      "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "test2014.zip",
+      "contentSize": "6660437059 B",
+      "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "image-files",
+      "containedIn": [
+        "train2014.zip",
+        "val2014.zip",
+        "test2014.zip"
+      ],
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "annotations_trainval2014.zip",
+      "contentSize": "252872794 B",
+      "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "caption_annotations-files",
+      "containedIn": "annotations_trainval2014.zip",
+      "encodingFormat": "application/json",
+      "includes": "annotations/captions_(val|train)2014.json"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "person_keypoints_annotations",
+      "containedIn": "annotations_trainval2014.zip",
+      "encodingFormat": "application/json",
+      "includes": "annotations/person_keypoints_(val|train)2014.json"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "instancesperson_keypoints_annotations",
+      "containedIn": "annotations_trainval2014.zip",
+      "encodingFormat": "application/json",
+      "includes": "annotations/instances_(val|train)2014.json"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "image_info_test2014.zip",
+      "contentSize": "763464 B",
+      "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "imageinfo",
+      "containedIn": "image_info_test2014.zip",
+      "encodingFormat": "application/json",
+      "includes": "annotations/image_info_test.json"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "split_enums",
+      "description": "Maps split names to semantic values.",
+      "key": "name",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "One of: train, val, test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "sc:URL",
+            "wd:Q3985153"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "name": "train",
+          "url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "name": "val",
+          "url": "https://mlcommons.org/definitions/validation_split"
+        },
+        {
+          "name": "test",
+          "url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "key": "image_id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^COCO_[train|val|test]2014_(\\d+)\\.jpg$"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_filename",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": [
+            "sc:Text",
+            "wd:Q3985153"
+          ],
+          "references": {
+            "field": "split_enums/name"
+          },
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(train|val|test)2014/.*\\.jpg$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "captions",
+      "key": "id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the caption",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "column": "image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "caption",
+          "description": "The caption",
+          "dataType": [
+            "sc:Text",
+            "wd:Q18585177"
+          ],
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "column": "caption"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": [
+            "sc:Text",
+            "wd:Q3985153"
+          ],
+          "references": {
+            "field": "split_enums/name"
+          },
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": ".*_(val|train)2014\\.json$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "categories",
+      "isEnumeration": true,
+      "key": "id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the category",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "The name of the category.",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "supercategory",
+          "description": "The name of the supercategory.",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "isEnumeration": true,
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "supercategory"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "annotations",
+      "key": "id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the annotation.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "category_id",
+          "description": "The ID of the category.",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "categories/id"
+          },
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "category_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "images/image_id"
+          },
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "bbox",
+          "description": "The bounding box around annotated object[s].",
+          "dataType": "ml:BoundingBox",
+          "source": {
+            "distribution": "instancesperson_keypoints_annotations",
+            "extract": {
+              "column": "bbox"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
