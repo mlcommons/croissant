@@ -1,5 +1,5 @@
 import enum
-from typing import Literal
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -169,21 +169,17 @@ def _find_left_or_right(source: mlc.Source) -> LeftOrRight:
     elif source.extract.file_property:
         return (uid, source.extract.file_property)
     else:
-        raise NotImplementedError(
-            f"{source=} could not be parsed by the editor. Please contact us on GitHub"
-            " by creating a new issue:"
-            " https://github.com/mlcommons/croissant/issues/new"
-        )
+        return (uid, None)
 
 
-def _find_joins(fields: list[Field]) -> list[Join]:
+def _find_joins(fields: list[Field]) -> set[Join]:
     """Finds the existing joins in the fields."""
-    joins: list[Join] = []
+    joins: set[Join] = set()
     for field in fields:
         if field.source and field.references:
             left = _find_left_or_right(field.source)
             right = _find_left_or_right(field.references)
-            joins.append((left, right))
+            joins.add((left, right))
     return joins
 
 
@@ -202,7 +198,7 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
             elif new_field == FieldDataFrame.DESCRIPTION:
                 field.description = new_value
             elif new_field == FieldDataFrame.DATA_TYPE:
-                field.data_types = new_value
+                field.data_types = [new_value]
         st.session_state[Metadata].update_field(record_set_key, field_key, field)
     for added_row in result["added_rows"]:
         field = Field(
@@ -334,8 +330,6 @@ def _render_left_panel():
                 },
                 dtype=np.str_,
             )
-            if record_set.fields:
-                st.json(record_set.fields[0].__dict__)
             data_editor_key = _data_editor_key(record_set.name)
             st.markdown(needed_field("Fields"))
             st.data_editor(
@@ -383,6 +377,32 @@ class Change(enum.Enum):
     SOURCE_EXTRACT_JSON_PATH = "SOURCE_EXTRACT_JSON_PATH"
     TRANSFORM = "TRANSFORM"
     TRANSFORM_FORMAT = "TRANSFORM_FORMAT"
+    REFERENCE = "REFERENCE"
+    REFERENCE_EXTRACT = "REFERENCE_EXTRACT"
+    REFERENCE_EXTRACT_COLUMN = "REFERENCE_EXTRACT_COLUMN"
+    REFERENCE_EXTRACT_JSON_PATH = "REFERENCE_EXTRACT_JSON_PATH"
+
+
+def _get_source(source: mlc.Source | None, value: Any) -> mlc.Source:
+    if not source:
+        source = mlc.Source(extract=mlc.Extract())
+    if value == ExtractType.COLUMN:
+        source.extract = mlc.Extract(column="")
+    elif value == ExtractType.FILE_CONTENT:
+        source.extract = mlc.Extract(file_property=mlc.FileProperty.content)
+    elif value == ExtractType.FILE_NAME:
+        source.extract = mlc.Extract(file_property=mlc.FileProperty.filename)
+    elif value == ExtractType.FILE_PATH:
+        source.extract = mlc.Extract(file_property=mlc.FileProperty.filepath)
+    elif value == ExtractType.FILE_FULLPATH:
+        source.extract = mlc.Extract(file_property=mlc.FileProperty.fullpath)
+    elif value == ExtractType.FILE_LINES:
+        source.extract = mlc.Extract(file_property=mlc.FileProperty.lines)
+    elif value == ExtractType.FILE_LINE_NUMBERS:
+        source.extract = mlc.Extract(file_property=mlc.FileProperty.lineNumbers)
+    elif value == ExtractType.JSON_PATH:
+        source.extract = mlc.Extract(json_path="")
+    return source
 
 
 def _handle_field_change(
@@ -405,26 +425,8 @@ def _handle_field_change(
         source = mlc.Source(uid=value, node_type=node_type)
         field.source = source
     elif change == Change.SOURCE_EXTRACT:
-        if not field.source:
-            source = mlc.Source(extract=mlc.Extract())
-        else:
-            source = field.source
-        if value == ExtractType.COLUMN:
-            source.extract = mlc.Extract(column="TO_BE_FILLED")
-        elif value == ExtractType.FILE_CONTENT:
-            source.extract = mlc.Extract(file_property=mlc.FileProperty.content)
-        elif value == ExtractType.FILE_NAME:
-            source.extract = mlc.Extract(file_property=mlc.FileProperty.filename)
-        elif value == ExtractType.FILE_PATH:
-            source.extract = mlc.Extract(file_property=mlc.FileProperty.filepath)
-        elif value == ExtractType.FILE_FULLPATH:
-            source.extract = mlc.Extract(file_property=mlc.FileProperty.fullpath)
-        elif value == ExtractType.FILE_LINES:
-            source.extract = mlc.Extract(file_property=mlc.FileProperty.lines)
-        elif value == ExtractType.FILE_LINE_NUMBERS:
-            source.extract = mlc.Extract(file_property=mlc.FileProperty.lineNumbers)
-        elif value == ExtractType.JSON_PATH:
-            source.extract = mlc.Extract(json_path="TO_BE_FILLED")
+        source = field.source
+        source = _get_source(source, value)
         field.source = source
     elif change == Change.SOURCE_EXTRACT_COLUMN:
         if not field.source:
@@ -458,6 +460,22 @@ def _handle_field_change(
         number = kwargs.get("number")
         if number is not None and number < len(field.source.transforms):
             field.source.transforms[number] = mlc.Transform(separator=value)
+    elif change == Change.REFERENCE:
+        node_type = "field" if "/" in value else "distribution"
+        source = mlc.Source(uid=value, node_type=node_type)
+        field.references = source
+    elif change == Change.REFERENCE_EXTRACT:
+        source = field.references
+        source = _get_source(source, value)
+        field.references = source
+    elif change == Change.REFERENCE_EXTRACT_COLUMN:
+        if not field.references:
+            field.references = mlc.Source(extract=mlc.Extract())
+        field.references.extract = mlc.Extract(column=value)
+    elif change == Change.REFERENCE_EXTRACT_JSON_PATH:
+        if not field.references:
+            field.references = mlc.Source(extract=mlc.Extract())
+        field.references.extract = mlc.Extract(json_path=value)
     st.session_state[Metadata].update_field(record_set_key, field_key, field)
 
 
@@ -508,7 +526,9 @@ def _render_right_panel():
             _render_source(
                 record_set_key, record_set, field, field_key, possible_sources
             )
-            _render_references(record_set, field, possible_sources)
+            _render_references(
+                record_set_key, record_set, field, field_key, possible_sources
+            )
 
             st.divider()
 
@@ -677,52 +697,74 @@ def _render_source(
 
 
 def _render_references(
+    record_set_key: int,
     record_set: RecordSet,
     field: Field,
+    field_key: int,
     possible_sources: list[str],
 ):
-    key = f"source-{record_set.name}-{field.name}"
-
-    def _handle_add_reference():
-        # TODO(marcenacp): move this above and handle add_transform.
-        pass
-
+    key = f"references-{record_set.name}-{field.name}"
+    button_key = f"{key}-add-reference"
+    has_clicked_button = st.session_state.get(button_key)
     references = field.references
-    if references:
+    if references or has_clicked_button:
         col1, col2, col3 = st.columns([1, 1, 1])
         index = (
             possible_sources.index(references.uid)
             if references.uid in possible_sources
             else None
         )
+        key = f"{key}-reference"
         col1.selectbox(
             needed_field("Reference"),
             index=index,
             options=[s for s in possible_sources if not s.startswith(record_set.name)],
-            key=f"{key}-reference",
+            key=key,
+            on_change=_handle_field_change,
+            args=(Change.REFERENCE, record_set_key, field_key, field, key),
         )
         if references.node_type == "distribution":
+            key = f"{key}-extract-references"
             extract = col2.selectbox(
                 needed_field("Extract the reference"),
                 index=_get_extract_index(references),
-                key=f"{key}-extract-references",
+                key=key,
                 options=EXTRACT_TYPES,
+                on_change=_handle_field_change,
+                args=(Change.REFERENCE_EXTRACT, record_set_key, field_key, field, key),
             )
             if extract == ExtractType.COLUMN:
+                key = f"{key}-columnname"
                 col3.text_input(
                     needed_field("Column name"),
                     value=references.extract.column,
-                    key=f"{key}-columnname",
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(
+                        Change.REFERENCE_EXTRACT_COLUMN,
+                        record_set_key,
+                        field_key,
+                        field,
+                        key,
+                    ),
                 )
             if extract == ExtractType.JSON_PATH:
+                key = f"{key}-jsonpath"
                 col3.text_input(
                     needed_field("JSON path"),
                     value=references.extract.json_path,
-                    key=f"{key}-jsonpath",
+                    key=key,
+                    on_change=_handle_field_change,
+                    args=(
+                        Change.REFERENCE_EXTRACT_JSON_PATH,
+                        record_set_key,
+                        field_key,
+                        field,
+                        key,
+                    ),
                 )
-    else:
+    elif not has_clicked_button:
         st.button(
             "Add a join with another column/field",
-            key=f"{key}-add-reference",
-            on_click=_handle_add_reference,
+            key=button_key,
         )
