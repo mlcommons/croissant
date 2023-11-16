@@ -25,16 +25,6 @@ licenses = [
 
 def render_metadata():
     metadata = st.session_state[Metadata]
-    name = st.text_input(
-        label=needed_field("Name"),
-        value=metadata.name,
-        placeholder="Dataset",
-    )
-    description = st.text_area(
-        label="Description",
-        value=metadata.description,
-        placeholder="Provide a clear description of the dataset.",
-    )
     try:
         index = licenses.index(metadata.license)
     except ValueError:
@@ -55,6 +45,10 @@ def render_metadata():
         placeholder="@book{\n  title={Title}\n}",
     )
     # We fully recreate the session state in order to force the re-rendering.
-    st.session_state[Metadata].update_metadata(
-        name=name, description=description, license=license, url=url, citation=citation
+    metadata.update_metadata(
+        name=metadata.name,
+        description=metadata.description,
+        license=license,
+        url=url,
+        citation=citation,
     )

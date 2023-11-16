@@ -1,4 +1,6 @@
 DF_HEIGHT = 150
+import os
+
 import streamlit as st
 
 from core.state import CurrentStep
@@ -18,6 +20,10 @@ def set_form_step(action, step=None):
     """Maintains the user's location within the editor."""
     if action == "Jump" and step is not None:
         st.session_state[CurrentStep] = step
+
+
+def log_to_stdout(message: str) -> None:
+    os.write(1, bytes(message, "utf-8"))
 
 
 def init_state():

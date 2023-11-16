@@ -123,6 +123,7 @@ class Metadata:
         del self.record_sets[key]
 
     def to_canonical(self) -> mlc.Metadata:
+        issues = mlc.Issues()
         distribution = []
         for file in self.distribution:
             if isinstance(file, FileObject):
