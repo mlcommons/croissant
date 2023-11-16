@@ -8,7 +8,7 @@ describe('Editor loads a local CSV as a resource', () => {
   it('should display the form: Overview, Metadata, Resources, & Record Sets', () => {
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
-    cy.get('button').contains('Create').click()
+    cy.get('button', {timeout: 10000}).contains('Create', {timeout: 10000}).click()
 
     cy.get('[data-testid="stMarkdownContainer"]')
       .contains('Metadata')
@@ -32,7 +32,7 @@ describe('Editor loads a local CSV as a resource', () => {
       })
     })
     cy.get('.uploadedFileData').contains('base.csv')
-    cy.get('button').contains('Add').click()
+    cy.get('button').contains('Upload').click()
     // The file is uploaded, so we can click on it to see the details.
     // Waiting a few seconds to wait for the resource to download.
     cy.wait(2000)
@@ -43,12 +43,17 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.contains('First rows of data:')
 
     // On the record set page, we see the record set.
-    cy.get('[data-testid="stMarkdownContainer"]').contains('Record sets').click()
-    cy.contains('base.csv_record_set')
+    cy.get('[data-testid="stMarkdownContainer"]').contains('RecordSets').click()
+    cy.contains('base.csv_record_set (2 fields)').click()
     // We also see the fields with the proper types.
     cy.get('[data-testid="stDataFrameResizable"]').contains("column1")
     cy.get('[data-testid="stDataFrameResizable"]').contains("https://schema.org/Text")
     cy.get('[data-testid="stDataFrameResizable"]').contains("column2")
     cy.get('[data-testid="stDataFrameResizable"]').contains("https://schema.org/Integer")
+
+    // I can edit the details of the fields.
+    cy.contains('Edit fields details').click()
+    cy.get('input[aria-label="Description"]').last().type('This is a nice custom description!{enter}')
+    cy.get('[data-testid="glide-cell-2-1"]').contains("This is a nice custom description!")
   })
 })
