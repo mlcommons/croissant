@@ -104,6 +104,63 @@ class Metadata:
     def __bool__(self):
         return self.name != "" and self.url != ""
 
+    def rename_distribution(self, old_name: str, new_name: str):
+        """Renames a resource by changing all the references to this resource."""
+        # Update other resources:
+        for i, resource in enumerate(self.distribution):
+            contained_in = resource.contained_in
+            if contained_in and old_name in contained_in:
+                self.distribution[i].contained_in = [
+                    new_name if name == old_name else name for name in contained_in
+                ]
+        # Updating source/references works just as with RecordSets.
+        self.rename_record_set(old_name, new_name)
+
+    def rename_record_set(self, old_name: str, new_name: str):
+        """Renames a RecordSet by changing all the references to this RecordSet."""
+        for i, record_set in enumerate(self.record_sets):
+            for j, field in enumerate(record_set.fields):
+                # Update source
+                source = field.source
+                if source and source.uid and source.uid.startswith(old_name):
+                    new_uid = source.uid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.uid = new_uid
+                # Update references
+                references = field.references
+                if (
+                    references
+                    and references.uid
+                    and references.uid.startswith(old_name)
+                ):
+                    new_uid = references.uid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.uid = new_uid
+
+    def rename_field(self, old_name: str, new_name: str):
+        """Renames a field by changing all the references to this field."""
+        for i, record_set in enumerate(self.record_sets):
+            for j, field in enumerate(record_set.fields):
+                # Update source
+                source = field.source
+                # The difference with RecordSet is the `.endswith` here:
+                if (
+                    source
+                    and source.uid
+                    and "/" in source.uid
+                    and source.uid.endswith(old_name)
+                ):
+                    new_uid = source.uid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.uid = new_uid
+                # Update references
+                references = field.references
+                if (
+                    references
+                    and references.uid
+                    and "/" in references.uid
+                    and references.uid.endswith(old_name)
+                ):
+                    new_uid = references.uid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.uid = new_uid
+
     def update_metadata(
         self,
         description: str,
@@ -122,6 +179,10 @@ class Metadata:
         self.distribution.append(distribution)
 
     def update_distribution(self, key: int, distribution: FileSet | FileObject) -> None:
+        old_name = self.distribution[key].name
+        new_name = distribution.name
+        if old_name != new_name:
+            self.rename_distribution(old_name=old_name, new_name=new_name)
         self.distribution[key] = distribution
 
     def remove_distribution(self, key: int) -> None:
@@ -131,6 +192,10 @@ class Metadata:
         self.record_sets.append(record_set)
 
     def update_record_set(self, key: int, record_set: RecordSet) -> None:
+        old_name = self.record_sets[key].name
+        new_name = record_set.name
+        if old_name != new_name:
+            self.rename_record_set(old_name=old_name, new_name=new_name)
         self.record_sets[key] = record_set
 
     def remove_record_set(self, key: int) -> None:
@@ -152,6 +217,10 @@ class Metadata:
         record_set = self._find_record_set(record_set_key)
         if field_key >= len(record_set.fields):
             raise ValueError(f"Wrong index when updating field: {field_key}")
+        old_name = record_set.fields[field_key].name
+        new_name = field.name
+        if old_name != new_name:
+            self.rename_field(old_name=old_name, new_name=new_name)
         record_set.fields[field_key] = field
         self.update_record_set(record_set_key, record_set)
 
