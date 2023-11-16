@@ -4,7 +4,6 @@ import streamlit as st
 
 from core.state import Metadata
 import mlcroissant as mlc
-from utils import log_to_stdout
 from utils import needed_field
 
 

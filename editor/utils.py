@@ -5,6 +5,7 @@ import streamlit as st
 
 from core.state import CurrentStep
 from core.state import Metadata
+from core.state import SelectedRecordSet
 from core.state import SelectedResource
 import mlcroissant as mlc
 
@@ -26,27 +27,31 @@ def log_to_stdout(message: str) -> None:
     os.write(1, bytes(message, "utf-8"))
 
 
-def init_state():
+def init_state(force=False):
+    """Initializes the session state. `force=True` to force re-initializing it."""
 
-    if Metadata not in st.session_state:
+    if Metadata not in st.session_state or force:
         st.session_state[Metadata] = Metadata()
 
-    if mlc.Dataset not in st.session_state:
+    if mlc.Dataset not in st.session_state or force:
         st.session_state[mlc.Dataset] = None
 
-    if CurrentStep not in st.session_state:
+    if CurrentStep not in st.session_state or force:
         st.session_state[CurrentStep] = CurrentStep.splash
 
-    if SelectedResource not in st.session_state:
+    if SelectedResource not in st.session_state or force:
         st.session_state[SelectedResource] = None
+
+    if SelectedResource not in st.session_state or force:
+        st.session_state[SelectedRecordSet] = None
 
     # Uncomment those lines if you work locally in order to avoid clicks at each reload.
     # And comment all previous lines in `init_state`.
-    # if mlc.Dataset not in st.session_state:
+    # if mlc.Dataset not in st.session_state or force:
     #     st.session_state[mlc.Dataset] = mlc.Dataset("../datasets/titanic/metadata.json")
-    # if Metadata not in st.session_state:
+    # if Metadata not in st.session_state or force:
     #     st.session_state[Metadata] = Metadata.from_canonical(
     #         st.session_state[mlc.Dataset].metadata
     #     )
-    # if CurrentStep not in st.session_state:
+    # if CurrentStep not in st.session_state or force:
     #     st.session_state[CurrentStep] = CurrentStep.editor

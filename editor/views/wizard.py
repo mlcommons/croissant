@@ -26,7 +26,7 @@ def render_download_button():
 OVERVIEW = "Overview"
 METADATA = "Metadata"
 RESOURCES = "Resources"
-RECORD_SETS = "Record sets"
+RECORD_SETS = "RecordSets"
 
 
 def render_editor():

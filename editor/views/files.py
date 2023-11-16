@@ -6,6 +6,7 @@ from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 from core.record_sets import infer_record_sets
+from core.state import AddManually
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
@@ -20,17 +21,20 @@ _LOCAL_FILE_KEY = "import_from_local_file"
 
 
 def render_files():
-    col1, col2 = st.columns([1, 1], gap="medium")
+    col1, col2, col3 = st.columns([1, 1, 1], gap="small")
     with col1:
-        files = st.session_state[Metadata].distribution
-        resource = _render_left_panel(files)
-        st.session_state[SelectedResource] = resource
+        st.subheader("Upload more resources")
+        _render_upload_panel()
     with col2:
-        if st.session_state.get(SelectedResource):
-            _render_right_panel(st.session_state[SelectedResource])
+        st.subheader("Uploaded resources")
+        files = st.session_state[Metadata].distribution
+        resource = _render_resources_panel(files)
+        st.session_state[SelectedResource] = resource
+    with col3:
+        _render_right_panel()
 
 
-def _render_left_panel(files: list[Resource]) -> Resource | None:
+def _render_resources_panel(files: list[Resource]) -> Resource | None:
     """Renders the left panel: the list of all resources."""
     filename_to_file: dict[str, list[Resource]] = {}
     nodes = []
@@ -48,16 +52,10 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
         nodes.append({"name": name, "type": type, "parents": parents})
 
     name = None
-    with st.container():
-        st.subheader("Uploaded resources")
-        if nodes:
-            name = render_tree(nodes, key="-".join([node["name"] for node in nodes]))
-        else:
-            st.write("No resource yet.")
-
-    with st.container():
-        st.subheader("Upload more files")
-        _render_upload_form()
+    if nodes:
+        name = render_tree(nodes, key="-".join([node["name"] for node in nodes]))
+    else:
+        st.write("No resource yet.")
 
     if not name:
         return None
@@ -65,14 +63,45 @@ def _render_left_panel(files: list[Resource]) -> Resource | None:
     return file
 
 
-def _render_upload_form():
+def _render_upload_panel():
     """Renders the form to upload from local or upload from URL."""
     with st.form(key="upload_form", clear_on_submit=True):
         file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
+        tab1, tab2, tab3 = st.tabs([
+            "Import from a local file", "Import from a URL", "Add manually"
+        ])
 
-        col1, col2 = st.columns(2)
-        col1.file_uploader("Import from a local file", key=_LOCAL_FILE_KEY)
-        col2.text_input("Import from a URL", key=_DISTANT_URL_KEY)
+        with tab1:
+            st.file_uploader("Select a file", key=_LOCAL_FILE_KEY)
+
+        with tab2:
+            st.text_input("URL:", key=_DISTANT_URL_KEY)
+
+        with tab3:
+            resource_type = st.selectbox("Type", options=["FileObject", "FileSet"])
+
+            file = FileObject() if resource_type == "FileObject" else FileSet()
+
+            name = st.text_input(
+                needed_field("File name"), value=file.name, key="manual_name"
+            )
+            description = st.text_area(
+                "File description",
+                value=file.description,
+                placeholder="Provide a clear description of the file.",
+                key="manual_description",
+            )
+            sha256 = st.text_input(
+                needed_field("SHA256"),
+                value=file.sha256,
+                disabled=True,
+                key="manual_sha256",
+            )
+            parent = st.text_input(
+                needed_field("Parent"),
+                value=file.encoding_format,
+                key="manual_parent",
+            )
 
         def handle_on_click():
             url = st.session_state[_DISTANT_URL_KEY]
@@ -87,6 +116,7 @@ def _render_upload_form():
                 file = file_from_url(file_type, url, names)
             elif uploaded_file:
                 file = file_from_upload(file_type, uploaded_file, names)
+            # todo: handle manually created resource.
             else:
                 st.toast("Please, import either a local file or a URL.", icon="❌")
                 return
@@ -96,11 +126,19 @@ def _render_upload_form():
                 st.session_state[Metadata].add_record_set(record_set)
             st.session_state[SelectedResource] = file.name
 
-        st.form_submit_button("Add", on_click=handle_on_click)
+        st.form_submit_button("Upload", on_click=handle_on_click)
 
 
-def _render_right_panel(selected_file: Resource):
-    """Renders the right panel: the detail of the selected resource."""
+def _render_right_panel():
+    """Renders the right panel: either a form to create a resource or details
+    of the selected resource."""
+    if st.session_state.get(SelectedResource):
+        _render_resource_details(st.session_state[SelectedResource])
+
+
+def _render_resource_details(selected_file: Resource):
+    """Renders the details of the selected resource."""
+    file: FileObject | FileSet
     for key, file in enumerate(st.session_state[Metadata].distribution):
         if file.name == selected_file.name:
 
