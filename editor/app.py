@@ -10,7 +10,7 @@ init_state()
 
 def _back_to_menu():
     """Sends the user back to the menu."""
-    st.session_state[CurrentStep] = CurrentStep.splash
+    init_state(force=True)
 
 
 st.set_page_config(page_title="Croissant Editor", page_icon="🥐", layout="wide")

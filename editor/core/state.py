@@ -20,11 +20,21 @@ class CurrentStep:
 
 
 class SelectedResource:
+    """The selected FileSet or FileObject on the `Resources` page."""
+
     pass
 
 
 class AddManually:
     pass
+
+
+@dataclasses.dataclass
+class SelectedRecordSet:
+    """The selected RecordSet on the `RecordSets` page."""
+
+    record_set_key: int
+    record_set: RecordSet
 
 
 @dataclasses.dataclass
