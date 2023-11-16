@@ -46,5 +46,9 @@ def render_metadata():
     )
     # We fully recreate the session state in order to force the re-rendering.
     st.session_state[Metadata].update_metadata(
-        name=name, description=description, license=license, url=url, citation=citation
+        name=metadata.name,
+        description=metadata.description,
+        license=license,
+        url=url,
+        citation=citation,
     )
