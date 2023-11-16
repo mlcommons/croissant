@@ -36,9 +36,10 @@ def render_overview():
             st.header("Croissant File Validation")
             try:
                 issues = metadata.to_canonical().issues
-                if issues.errors or issues.warnings:
+                if issues.errors:
                     st.subheader("Errors:")
                     st.text(issues.errors)
+                if issues.warnings:
                     st.subheader("Warnings:")
                     st.text(issues.warnings)
                 else:
