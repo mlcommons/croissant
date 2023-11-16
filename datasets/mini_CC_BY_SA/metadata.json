@@ -1,0 +1,91 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "CC_BY_SA",
+  "description": "This is the unsupervised peoples speech dataset.",
+  "citation": "None",
+  "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+  "url": "None",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "0-0-rainy-day-dub-september-5th-2006",
+      "contentSize": " B",
+      "contentUrl": "/CC_BY_SA/0-0-rainy-day-dub-september-5th-2006.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "0-hz-immersion-into-wallbient",
+      "contentSize": " B",
+      "contentUrl": "/CC_BY_SA/0-hz-immersion-into-wallbient.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "audio-files",
+      "containedIn": [
+        "0-0-rainy-day-dub-september-5th-2006",
+        "0-hz-immersion-into-wallbient"
+      ],
+      "encodingFormat": "audio/mpeg",
+      "includes": "*.mp3"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "records",
+      "key": "audio",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "audio",
+          "description": "These are the records.",
+          "dataType": "wd:Q42591",
+          "source": {
+            "distribution": "audio-files",
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
