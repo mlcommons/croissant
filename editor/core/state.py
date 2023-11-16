@@ -163,7 +163,6 @@ class Metadata:
         self.update_record_set(record_set_key, record_set)
 
     def to_canonical(self) -> mlc.Metadata:
-        issues = mlc.Issues()
         distribution = []
         for file in self.distribution:
             if isinstance(file, FileObject):
