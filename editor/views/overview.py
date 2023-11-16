@@ -32,16 +32,17 @@ def render_overview():
             citation=metadata.citation,
         )
     with col2:
-        st.header("Croissant File Validation")
-        try:
-            issues = metadata.to_canonical().issues
-            if issues.errors or issues.warnings:
+        if metadata.name != None and metadata.name != "":
+            st.header("Croissant File Validation")
+            try:
+                issues = metadata.to_canonical().issues
+                if issues.errors or issues.warnings:
+                    st.subheader("Errors:")
+                    st.text(issues.errors)
+                    st.subheader("Warnings:")
+                    st.text(issues.warnings)
+                else:
+                    st.text("No validation issues detected!")
+            except mlc.ValidationError as exception:
                 st.subheader("Errors:")
-                st.text(issues.errors)
-                st.subheader("Warnings:")
-                st.text(issues.warnings)
-            else:
-                st.text("No validation issues detected!")
-        except mlc.ValidationError as exception:
-            st.subheader("Errors:")
-            st.text(exception)
+                st.text(exception)
