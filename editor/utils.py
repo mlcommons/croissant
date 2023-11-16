@@ -23,10 +23,6 @@ def set_form_step(action, step=None):
         st.session_state[CurrentStep] = step
 
 
-def log_to_stdout(message: str) -> None:
-    os.write(1, bytes(message, "utf-8"))
-
-
 def init_state(force=False):
     """Initializes the session state. `force=True` to force re-initializing it."""
 
