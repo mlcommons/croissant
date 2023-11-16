@@ -127,6 +127,7 @@ def test_hermetic_loading(dataset_name, record_set_name, num_records):
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
+        ["mini_CC_BY_SA/metadata.json", "records", -1] # Switch the number to 10 if nessacary
     ],
 )
 def test_nonhermetic_loading(dataset_name, record_set_name, num_records):
