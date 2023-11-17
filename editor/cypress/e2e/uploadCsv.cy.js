@@ -10,7 +10,6 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.visit('http://localhost:8501')
     cy.get('button', {timeout: 10000}).contains('Create', {timeout: 10000}).click()
 
-
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset').blur()
     cy.get('[data-testid="stMarkdownContainer"]')
     .contains('Metadata')
