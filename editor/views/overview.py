@@ -42,7 +42,7 @@ def render_overview():
                 if issues.warnings:
                     st.subheader("Warnings:")
                     st.text(issues.warnings)
-                else:
+                if not issues.errors and not issues.warnings:
                     st.text("No validation issues detected!")
             except mlc.ValidationError as exception:
                 st.subheader("Errors:")
