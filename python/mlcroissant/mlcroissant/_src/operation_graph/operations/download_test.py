@@ -10,13 +10,14 @@ from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
 from mlcroissant._src.operation_graph.operations.download import _get_hash_obj
-from mlcroissant._src.tests.nodes import empty_file_object, create_test_file_set, create_test_node
-from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.tests.nodes import empty_file_object
+from mlcroissant._src.tests.operations import operations
+
 
 
 def test_str_representation():
-    operation = Download(node=empty_file_object, url="http://mlcommons.org")
+    operation = Download(operations=operations(), node=empty_file_object)
     assert str(operation) == "Download(file_object_name)"
 
 
