@@ -123,7 +123,7 @@ def _get_transforms_indices(source: mlc.Source) -> list[int]:
 
 def _handle_remove_reference(record_set_key, field_key, field):
     """Removes the reference from a field."""
-    field.references = None
+    field.references = mlc.Source()
     st.session_state[Metadata].update_field(record_set_key, field_key, field)
 
 
