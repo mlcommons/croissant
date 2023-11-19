@@ -1,5 +1,4 @@
 DF_HEIGHT = 150
-import os
 
 import streamlit as st
 
