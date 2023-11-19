@@ -10,6 +10,7 @@ from .state import Metadata
 
 METADATA_DIRECTORY: str = epath.Path("~").expanduser() / ".cache" / "croissant"
 METADATA_FILE: str = METADATA_DIRECTORY / "previously_loaded"
+MAX_PREVIOUS_PROJECTS: int = 10
 
 # super simple, second tuple is for some metadata around when this file was originally created/loaded
 projects: list[tuple[Metadata, int]] = []
@@ -49,7 +50,7 @@ def loaded_project(index: int) -> None:
 def add_new_project(metadata: Metadata) -> None:
     projects.insert(0, (metadata, time.time()))
     # check to see if we have more than 10 previous projects, remove older ones
-    if len(projects) > 10:
+    if len(projects) > MAX_PREVIOUS_PROJECTS:
         projects.pop()
     # save projects list back to the overall metadata file
     save_projects()
