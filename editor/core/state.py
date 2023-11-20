@@ -25,10 +25,6 @@ class SelectedResource:
     pass
 
 
-class AddManually:
-    pass
-
-
 @dataclasses.dataclass
 class SelectedRecordSet:
     """The selected RecordSet on the `RecordSets` page."""

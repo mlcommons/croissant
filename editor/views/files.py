@@ -6,7 +6,6 @@ from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_TYPES
 from core.record_sets import infer_record_sets
-from core.state import AddManually
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
