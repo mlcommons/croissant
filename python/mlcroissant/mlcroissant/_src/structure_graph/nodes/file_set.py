@@ -22,8 +22,8 @@ class FileSet(Node):
 
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
-    encoding_format: str = ""
-    includes: str = ""
+    encoding_format: str | None = ""
+    includes: str | None = ""
     name: str = ""
 
     def __post_init__(self):
@@ -34,19 +34,17 @@ class FileSet(Node):
     def to_json(self) -> Json:
         """Converts the `FileSet` to JSON."""
         if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
-            contained_in = self.contained_in[0]
+            contained_in: str | list[str] = self.contained_in[0]
         else:
             contained_in = self.contained_in
-        return remove_empty_values(
-            {
-                "@type": "sc:FileSet",
-                "name": self.name,
-                "description": self.description,
-                "containedIn": contained_in,
-                "encodingFormat": self.encoding_format,
-                "includes": self.includes,
-            }
-        )
+        return remove_empty_values({
+            "@type": "sc:FileSet",
+            "name": self.name,
+            "description": self.description,
+            "containedIn": contained_in,
+            "encodingFormat": self.encoding_format,
+            "includes": self.includes,
+        })
 
     @classmethod
     def from_jsonld(

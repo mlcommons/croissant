@@ -1,4 +1,4 @@
-name: Continuous Integration (CI)
+name: Continuous Integration - mlcroissant (CI)
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -30,7 +30,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev git-lfs && pip install .[dev]
 
     - name: PyTest
       run: make pytest
@@ -45,6 +45,43 @@ jobs:
     - name: Docstrings are defined
       run: make flake8
 
+  notebook-test:
+    name: Notebook Tests / Python ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Tests currently fail for 3.8 and 3.9.
+        python-version: ['3.10', '3.11']
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install library
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+
+    - run: pip install ipython ipykernel nbconvert
+    
+    # Notebooks are in the recipes/ folder. 
+    - name: Run notebook
+      run: |
+        ipython kernel install --user --name croissant-notebook
+        for notebook in recipes/*ipynb
+          do
+            jupyter nbconvert \
+              --ExecutePreprocessor.timeout=600 \
+              --ExecutePreprocessor.kernel_name=croissant-notebook \
+              --to notebook \
+              --execute $notebook
+          done
+          
   python-format:
     name: Python format
     runs-on: ubuntu-latest
@@ -55,7 +92,7 @@ jobs:
         python-version: '3.11'
     - uses: psf/black@stable
       with:
-        options: --line-length 88 --preview --experimental-string-processing
+        options: --check --line-length 88 --preview
         src: './python/mlcroissant'
     - uses: isort/isort-action@master
       with:
@@ -68,7 +105,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -82,6 +119,7 @@ jobs:
           etils[epath] \
           GitPython \
           jsonpath_rw \
+          mypy \
           networkx \
           pandas \
           pyarrow \
@@ -93,6 +131,41 @@ jobs:
 
     - name: PyType
       run: make pytype
+  
+  mypy-test:
+    name: MyPy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies except mlcroissant itself
+      run: >
+          pip install absl-py \
+            datasets \
+            etils[epath] \
+            GitPython \
+            jsonpath_rw \
+            mypy \
+            networkx \
+            pandas \
+            pyarrow \
+            pytest \
+            pytype \
+            rdflib \
+            requests \
+            tqdm
+    
+    - name: MyPy
+      run: make mypy
+
 
   validation-test:
     name: Validation / JSON-LD Tests / Python 3.11
@@ -101,7 +174,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -117,7 +190,7 @@ jobs:
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
-          python scripts/validate.py --file ${file}
+          python mlcroissant/scripts/validate.py --file ${file}
         done
 
   generation-test:
@@ -127,7 +200,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -138,7 +211,66 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files - Titanic
-      run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
+      run: mlcroissant load --file ../../datasets/titanic/metadata.json --record_set passengers
 
     - name: Generate JSON-LD files - PASS
-      run: pip install .[image] && python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+      run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+
+  editor-python-test:
+    name: Editor Python Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./editor
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: Install mlcroissant
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+      working-directory: ./python/mlcroissant
+
+    - name: PyTest
+      run: make pytest
+
+  editor-e2e-test:
+    name: Editor End-to-End Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./editor
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: Install mlcroissant
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+      working-directory: ./python/mlcroissant
+
+    - uses: cypress-io/github-action@v6
+      with:
+        start: streamlit run app.py
+        wait-on: 'http://localhost:8501'
+        working-directory: ./editor
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+          name: cypress-screenshots
+          path: ./editor/cypress/screenshots
+          retention-days: 1

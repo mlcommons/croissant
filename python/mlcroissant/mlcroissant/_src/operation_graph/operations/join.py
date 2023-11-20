@@ -5,8 +5,11 @@ import dataclasses
 import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
+from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
+from mlcroissant._src.structure_graph.nodes.source import Source
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -15,53 +18,59 @@ class Join(Operation):
 
     node: RecordSet
 
-    def __call__(self, *args: pd.Series) -> pd.Series:
+    def __call__(self, *args: pd.Series) -> pd.Series | None:
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
-        elif len(args) == 2:
-            fields = self.node.fields
-            joins = set()
-            for field in fields:
-                left = field.source
-                right = field.references
-                if left and right and (left, right) not in joins:
-                    joins.add((left, right))
-            for left, right in joins:
-                assert left is not None and left.uid is not None, (
-                    f'Left reference for "{field.uid}" is None. It should be a valid'
-                    " reference."
-                )
-                assert right is not None and right.uid is not None, (
-                    f'Right reference for "{field.uid}" is None. It should be a valid'
-                    " reference."
-                )
-                left_key = left.get_field()
-                right_key = right.get_field()
-                # A priori, we cannot know which one is left and which one is right,
-                # because topological sort is not reproducible in some case.
-                df_left, df_right = args
-                if left_key not in df_left.columns or right_key not in df_right.columns:
-                    df_left, df_right = df_right, df_left
-                assert left_key in df_left.columns, (
-                    f'Column "{left_key}" does not exist in node "{left.uid}".'
-                    f" Existing columns: {df_left.columns}"
-                )
-                assert right_key in df_right.columns, (
-                    f'Column "{right_key}" does not exist in node "{right.uid}".'
-                    f" Existing columns: {df_right.columns}"
-                )
-                df_left[left_key] = df_left[left_key].transform(
-                    apply_transforms_fn, source=left
-                )
-                return df_left.merge(
-                    df_right,
-                    left_on=left_key,
-                    right_on=right_key,
-                    how="left",
-                    suffixes=(None, "_right"),
-                )
-        else:
-            raise NotImplementedError(
-                f"Unsupported: Trying to join {len(args)} pd.DataFrames."
+        predecessors: list[str] = [
+            operation.node.uid for operation in self.operations.predecessors(self)
+        ]
+        if len(predecessors) != len(args):
+            raise ValueError(f"Unsupported: Trying to join {len(args)} pd.DataFrames.")
+        fields = self.node.fields
+        # `joins` is the list of joins: field x (source1, df1) x (source2, df2)
+        joins: list[
+            tuple[Field, tuple[Source, pd.Series], tuple[Source, pd.Series]]
+        ] = []
+        for field in fields:
+            left = field.source
+            right = field.references
+            if left is None or right is None:
+                continue
+            if left.uid is None or right.uid is None:
+                continue
+            left_index = predecessors.index(get_parent_uid(left.uid))
+            right_index = predecessors.index(get_parent_uid(right.uid))
+            join = (field, (left, args[left_index]), (right, args[right_index]))
+            if join not in joins:
+                joins.append(join)
+        for field, (left, df_left), (right, df_right) in joins:
+            assert left is not None and left.uid is not None, (
+                f'Left reference for "{field.uid}" is None. It should be a valid'
+                " reference."
             )
+            assert right is not None and right.uid is not None, (
+                f'Right reference for "{field.uid}" is None. It should be a valid'
+                " reference."
+            )
+            left_column = left.get_column()
+            right_column = right.get_column()
+            assert left_column in df_left.columns, (
+                f'Column "{left_column}" does not exist in node "{left.uid}".'
+                f" Existing columns: {df_left.columns}"
+            )
+            assert right_column in df_right.columns, (
+                f'Column "{right_column}" does not exist in node "{right.uid}".'
+                f" Existing columns: {df_right.columns}"
+            )
+            df_left[left_column] = df_left[left_column].transform(
+                apply_transforms_fn, field=field
+            )
+            return df_left.merge(
+                df_right,
+                left_on=left_column,
+                right_on=right_column,
+                how="left",
+                suffixes=(None, "_right"),
+            )
+        return None

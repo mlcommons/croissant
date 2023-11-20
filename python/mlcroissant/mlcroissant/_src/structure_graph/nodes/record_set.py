@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+import itertools
 import json
 
 from etils import epath
@@ -16,6 +17,7 @@ from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
+from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -36,6 +38,7 @@ class RecordSet(Node):
         self.validate_name()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("description")
+        self.check_joins_in_fields(self.fields)
         if self.data is not None:
             data = self.data
             if not isinstance(data, list):
@@ -65,17 +68,15 @@ class RecordSet(Node):
 
     def to_json(self) -> Json:
         """Converts the `RecordSet` to JSON."""
-        return remove_empty_values(
-            {
-                "@type": "ml:RecordSet",
-                "name": self.name,
-                "description": self.description,
-                "isEnumeration": self.is_enumeration,
-                "key": self.key,
-                "field": [field.to_json() for field in self.fields],
-                "data": self.data,
-            }
-        )
+        return remove_empty_values({
+            "@type": "ml:RecordSet",
+            "name": self.name,
+            "description": self.description,
+            "isEnumeration": self.is_enumeration,
+            "key": self.key,
+            "field": [field.to_json() for field in self.fields],
+            "data": self.data,
+        })
 
     @classmethod
     def from_jsonld(
@@ -123,3 +124,28 @@ class RecordSet(Node):
             name=record_set_name,
             rdf=rdf,
         )
+
+    def check_joins_in_fields(self, fields: list[Field]):
+        """Checks that all joins are declared when they are consumed."""
+        joins: set[tuple[str, str]] = set()
+        sources: set[str] = set()
+        for field in fields:
+            source_uid = field.source.uid
+            references_uid = field.references.uid
+            if source_uid:
+                # source_uid is used as a source.
+                sources.add(get_parent_uid(source_uid))
+            if source_uid and references_uid:
+                # A join happens because the user specified `source` and `references`.
+                joins.add((get_parent_uid(source_uid), get_parent_uid(references_uid)))
+                joins.add((get_parent_uid(references_uid), get_parent_uid(source_uid)))
+        for combination in itertools.combinations(sources, 2):
+            if combination not in joins:
+                # Sort for reproducibility.
+                ordered_combination = tuple(sorted(combination))
+                self.add_error(
+                    f"You try to use the sources with names {ordered_combination} as"
+                    " sources, but you didn't declare a join between them. Use"
+                    " `ml:references` to declare a join. Please, refer to the"
+                    " documentation for more information."
+                )

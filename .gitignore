@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -25,6 +24,8 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+editor/cypress/screenshots/
+
 MANIFEST
 
 # PyInstaller
@@ -130,3 +131,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# NPM
+node_modules/

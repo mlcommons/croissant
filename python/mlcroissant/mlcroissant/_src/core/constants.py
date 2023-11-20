@@ -46,13 +46,6 @@ SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
 SCHEMA_ORG_CONTENT_SIZE = namespace.SDO.contentSize
 SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
 SCHEMA_ORG_DATASET = namespace.SDO.Dataset
-SCHEMA_ORG_DATA_TYPE_BOOL = namespace.SDO.Boolean
-SCHEMA_ORG_DATA_TYPE_DATE = namespace.SDO.Date
-SCHEMA_ORG_DATA_TYPE_FLOAT = namespace.SDO.Float
-SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT = namespace.SDO.ImageObject
-SCHEMA_ORG_DATA_TYPE_INTEGER = namespace.SDO.Integer
-SCHEMA_ORG_DATA_TYPE_TEXT = namespace.SDO.Text
-SCHEMA_ORG_DATA_TYPE_URL = namespace.SDO.URL
 SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
 SCHEMA_ORG_EMAIL = namespace.SDO.email
@@ -107,6 +100,35 @@ DOWNLOAD_PATH = CROISSANT_CACHE / "download"
 EXTRACT_PATH = CROISSANT_CACHE / "extract"
 CROISSANT_GIT_USERNAME = "CROISSANT_GIT_USERNAME"
 CROISSANT_GIT_PASSWORD = "CROISSANT_GIT_PASSWORD"
+CROISSANT_BASIC_AUTH_USERNAME = "CROISSANT_BASIC_AUTH_USERNAME"
+CROISSANT_BASIC_AUTH_PASSWORD = "CROISSANT_BASIC_AUTH_PASSWORD"
 
-# Encoding formats
-GIT_HTTPS_ENCODING_FORMAT = "git+https"
+
+class EncodingFormat:
+    """Supported MIME Types in Croissant.
+
+    We inherit the wrong naming `encodingFormat` from https://schema.org/encodingFormat.
+    """
+
+    CSV = "text/csv"
+    GIT = "git+https"
+    JSON = "application/json"
+    JSON_LINES = "application/jsonlines"
+    PARQUET = "application/x-parquet"
+    TEXT = "text/plain"
+    TSV = "text/tsv"
+    TAR = "application/x-tar"
+    ZIP = "application/zip"
+
+
+class DataType:
+    """Data types supported by Croissant."""
+
+    BOOL = namespace.SDO.Boolean
+    BOUNDING_BOX = ML_COMMONS.BoundingBox
+    DATE = namespace.SDO.Date
+    FLOAT = namespace.SDO.Float
+    IMAGE_OBJECT = namespace.SDO.ImageObject
+    INTEGER = namespace.SDO.Integer
+    TEXT = namespace.SDO.Text
+    URL = namespace.SDO.URL

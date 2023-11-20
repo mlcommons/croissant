@@ -23,7 +23,7 @@ def pretty_print_graph(graph: nx.Graph, simplify=False):
         graph = simple_graph
     agraph = nx.nx_agraph.to_agraph(graph)
     agraph.layout(prog="dot")
-    temporary_file = f"/tmp/graph_{time.time()}.png"
+    temporary_file = f"/tmp/graph_{time.time()}.svg"
     agraph.draw(temporary_file, args="-Gnodesep=0.01 -Gfont_size=1", prog="dot")
     print(f"Generated a graph and saved it in: {temporary_file}")
 

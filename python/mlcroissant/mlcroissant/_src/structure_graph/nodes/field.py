@@ -8,6 +8,7 @@ from etils import epath
 from rdflib import term
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.issues import Context
@@ -40,12 +41,10 @@ class ParentField:
 
     def to_json(self) -> Json:
         """Converts the `ParentField` to JSON."""
-        return remove_empty_values(
-            {
-                "references": self.references.to_json(),
-                "source": self.source.to_json(),
-            }
-        )
+        return remove_empty_values({
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
+        })
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -54,7 +53,7 @@ class Field(Node):
 
     description: str | None = None
     # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
-    data_types: str | list[str] | list[term.URIRef] = dataclasses.field(
+    data_types: term.URIRef | list[term.URIRef] = dataclasses.field(  # type: ignore  # https://github.com/python/mypy/issues/11923
         default_factory=list
     )
     is_enumeration: bool | None = None
@@ -95,14 +94,20 @@ class Field(Node):
             return None
         if self.data_types is not None:
             for data_type in self.data_types:
+                # data_type can be matched to a Python type:
                 if data_type in EXPECTED_DATA_TYPES:
-                    return EXPECTED_DATA_TYPES[data_type]
-        predecessor = next(
-            (p for p in self.graph.predecessors(self) if isinstance(p, Field)), None
-        )
+                    return EXPECTED_DATA_TYPES[term.URIRef(data_type)]
+                # data_type is an ML semantic type:
+                elif data_type in [
+                    DataType.IMAGE_OBJECT,
+                    DataType.BOUNDING_BOX,
+                ]:
+                    return term.URIRef(data_type)
+        # The data_type has to be found on a predecessor:
+        predecessor = next((p for p in self.predecessors if isinstance(p, Field)), None)
         if predecessor is None:
             self.add_error(
-                f"The field does not specify any {constants.ML_COMMONS_DATA_TYPE},"
+                f"The field does not specify a valid {constants.ML_COMMONS_DATA_TYPE},"
                 f" neither does any of its predecessor. Got: {self.data_types}"
             )
             return None
@@ -117,24 +122,22 @@ class Field(Node):
 
     def to_json(self) -> Json:
         """Converts the `Field` to JSON."""
-        data_type = [self.rdf.shorten_value(data_type) for data_type in self.data_types]
-        if len(data_type) == 1:
-            data_type = data_type[0]
+        data_types = [
+            self.rdf.shorten_value(data_type) for data_type in self.data_types
+        ]
         parent_field = self.parent_field.to_json() if self.parent_field else None
-        return remove_empty_values(
-            {
-                "@type": "ml:Field",
-                "name": self.name,
-                "description": self.description,
-                "dataType": data_type,
-                "isEnumeration": self.is_enumeration,
-                "parentField": parent_field,
-                "repeated": self.repeated,
-                "references": self.references.to_json() if self.references else None,
-                "source": self.source.to_json() if self.source else None,
-                "subField": [sub_field.to_json() for sub_field in self.sub_fields],
-            }
-        )
+        return remove_empty_values({
+            "@type": "ml:Field",
+            "name": self.name,
+            "description": self.description,
+            "dataType": data_types[0] if len(data_types) == 1 else data_types,
+            "isEnumeration": self.is_enumeration,
+            "parentField": parent_field,
+            "repeated": self.repeated,
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
+            "subField": [sub_field.to_json() for sub_field in self.sub_fields],
+        })
 
     @classmethod
     def from_jsonld(

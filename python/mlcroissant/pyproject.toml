@@ -1,7 +1,9 @@
 [project]
+# Project metadata. Available keys are documented at:
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
@@ -12,12 +14,16 @@ authors = [
   { name = "Pierre Ruyssen" },
   { name = "Prabhant Singh" },
 ]
+
+# pip dependencies of the project
+# Installed locally with `pip install -e .`
 dependencies = [
   "absl-py",
   "etils[epath]",
   "jsonpath-rw",
   "networkx",
   "pandas",
+  "pandas-stubs",
   "rdflib",
   "requests",
   "tqdm",
@@ -25,6 +31,8 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
+# Development deps (linting, formatting,...)
+# Installed through `pip install -e .[dev]`
 dev = [
   "black",
   "datasets",
@@ -32,7 +40,9 @@ dev = [
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
+  "mypy",
   "pyflakes",
+  "pygraphviz",
   "pylint",
   "pytest",
   "pytype",
@@ -41,14 +51,42 @@ git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
 
+[project.scripts]
+mlcroissant = "mlcroissant.scripts.cli:main"
+
+# Formatting configurations.
 [tool.black]
 line-length = 88
 
 [tool.pytype]
-inputs = ["."]
+inputs = ["mlcroissant"]
 # PyLint is skipped for migrations as migrations are supposed to be launched on
 # fixed previous versions of the code.
-exclude = ["*/migrations/previous/*"]
+exclude = ["*/scripts/migrations/previous/*"]
+strict_none_binding = true
+use_enum_overlay = true
+use_fiddle_overlay = true
+
+[tool.mypy]
+show_error_codes = true
+no_implicit_optional = true
+disable_error_code = "attr-defined"
+
+[[tool.mypy.overrides]]
+module = [
+  "absl",
+  "datasets",
+  "etils.*",
+  "jsonpath_rw",
+  "networkx",
+  "pandas",
+  "pillow",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["mlcroissant.scripts.migrations.previous.*"]
+ignore_errors = true
 
 [tool.isort]
 profile = "google"
@@ -66,3 +104,8 @@ exclude = ["recipes*"]
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+# Pytest settings configurations.
+addopts = "--strict-markers"
+markers = ["nonhermetic: Non-hermetic test cases (data from the internet)."]

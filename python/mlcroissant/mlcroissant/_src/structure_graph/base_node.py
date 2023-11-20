@@ -136,15 +136,30 @@ class Node(abc.ABC):
             return None
         return self.parents[-1]
 
+    @property
+    def predecessors(self) -> set[Node]:
+        """Predecessors in the structure graph."""
+        return set(self.graph.predecessors(self))
+
+    @property
+    def successors(self) -> tuple[Node, ...]:
+        """Successors in the structure graph."""
+        if self not in self.graph:
+            return ()
+        # We use tuples in order to have a hashable data structure to be put in input of
+        # operations.
+        return tuple(self.graph.successors(self))
+
     @abc.abstractmethod
     def to_json(self) -> Json:
         """Converts the node to JSON."""
-        raise NotImplementedError()
+        ...
 
-    @abc.abstractclassmethod
-    def from_jsonld(self) -> Json:
+    @classmethod
+    @abc.abstractmethod
+    def from_jsonld(cls, *args, **kwargs) -> Any:
         """Creates a node from JSON-LD."""
-        raise NotImplementedError()
+        ...
 
     def validate_name(self):
         """Validates the name (which are used as unique identifiers in Croissant)."""

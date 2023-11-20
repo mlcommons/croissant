@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import dataclasses
-import json
 
 from etils import epath
 
@@ -33,7 +32,7 @@ class Metadata(Node):
     description: str | None = None
     license: str | None = None
     name: str = ""
-    url: str = ""
+    url: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
 
@@ -65,19 +64,17 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        return remove_empty_values(
-            {
-                "@context": self.rdf.context,
-                "@type": "sc:Dataset",
-                "name": self.name,
-                "description": self.description,
-                "citation": self.citation,
-                "license": self.license,
-                "url": self.url,
-                "distribution": [f.to_json() for f in self.distribution],
-                "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            }
-        )
+        return remove_empty_values({
+            "@context": self.rdf.context,
+            "@type": "sc:Dataset",
+            "name": self.name,
+            "description": self.description,
+            "citation": self.citation,
+            "license": self.license,
+            "url": self.url,
+            "distribution": [f.to_json() for f in self.distribution],
+            "recordSet": [record_set.to_json() for record_set in self.record_sets],
+        })
 
     @property
     def file_objects(self) -> list[FileObject]:
@@ -133,11 +130,9 @@ class Metadata(Node):
 
     @classmethod
     def from_json(
-        cls, issues: Issues, json_: str | Json, folder: epath.Path | None
+        cls, issues: Issues, json_: Json, folder: epath.Path | None
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
-        if isinstance(json_, str):
-            json_ = json.loads(json_)
         rdf = Rdf.from_json(json_)
         metadata = expand_jsonld(json_)
         return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
@@ -155,7 +150,6 @@ class Metadata(Node):
             rdf = Rdf()
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
-        record_sets: list[RecordSet] = []
         file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
         context = Context(dataset_name=dataset_name)
@@ -177,11 +171,11 @@ class Metadata(Node):
                     f' "{constants.SCHEMA_ORG_FILE_SET}". Got'
                     f" {distribution_type} instead."
                 )
-        record_sets = metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         record_sets = [
             RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
-            for record_set in record_sets
+            for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         ]
+        url = metadata.get(constants.SCHEMA_ORG_URL)
         return cls(
             issues=issues,
             context=context,
@@ -192,6 +186,6 @@ class Metadata(Node):
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             record_sets=record_sets,
-            url=metadata.get(constants.SCHEMA_ORG_URL),
+            url=url,
             rdf=rdf,
         )

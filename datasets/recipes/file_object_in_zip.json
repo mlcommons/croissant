@@ -1,0 +1,100 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "file_object_in_zip",
+  "description": "Minimal example to read a FileObject contained in a zip.",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "zip_with_csv",
+      "contentUrl": "data/zip_with_csv.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "85c13a7e6940a8376f2448ed6078d4fa407ae33c7839e6d041a0e34413366792"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "csv2_in_zip",
+      "containedIn": "zip_with_csv",
+      "contentUrl": "csv2_in_zip.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "csv1_in_zip",
+      "containedIn": "zip_with_csv",
+      "contentUrl": "csv1_in_zip.csv",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "csv1",
+      "description": "Records extracted from the CSV in the ZIP.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "property1",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "csv1_in_zip",
+            "extract": {
+              "column": "property1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "csv2",
+      "description": "Records extracted from the CSV in the ZIP.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "property2",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "csv2_in_zip",
+            "extract": {
+              "column": "property2"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

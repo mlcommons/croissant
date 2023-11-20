@@ -1,0 +1,8 @@
+etils[epath]
+mlcroissant
+numpy
+pandas
+pytest
+rdflib
+requests
+streamlit

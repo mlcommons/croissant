@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "cypress:open": "cypress open --e2e --browser electron",
+    "cypress:run": "cypress run --e2e --spec \"cypress/e2e/*.cy.js\""
+  },
+  "devDependencies": {
+    "cypress": "^13.3.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-iframe": "^1.0.1",
+    "path": "^0.12.7"
+  }
+}

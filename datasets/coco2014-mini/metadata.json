@@ -62,6 +62,13 @@
       "contentUrl": "data/captions_train2014.json",
       "encodingFormat": "application/json",
       "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "bbox_annotations-files",
+      "contentUrl": "data/instances_train2014.json",
+      "encodingFormat": "application/json",
+      "sha256": "sha256"
     }
   ],
   "recordSet": [
@@ -214,6 +221,60 @@
             },
             "transform": {
               "regex": ".*_(val|train)2014\\.json$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "bounding_boxes",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the annotation.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "bbox",
+          "description": "The bounding box on the image.",
+          "dataType": "ml:BoundingBox",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].bbox"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "area",
+          "description": "The area of the bounding box.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].area"
             }
           }
         }

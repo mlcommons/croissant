@@ -6,26 +6,44 @@ import dataclasses
 import enum
 import logging
 import re
+import typing
 from typing import Any, Literal
 
 import jsonpath_rw
 from jsonpath_rw import lexer
+import pandas as pd
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 
+if typing.TYPE_CHECKING:
+    from mlcroissant._src.structure_graph.nodes.field import Field
 
-class FileProperty(enum.Enum):
-    """Lists the intrinsic properties of a file that are accessible from Croissant."""
 
-    # Note that at the moment there may be an overlap with existing columns if columns
-    # have one of the following names:
-    content = "__content__"
-    filename = "__filename__"
-    filepath = "__filepath__"
-    fullpath = "__fullpath__"
+class FileProperty(enum.IntEnum):
+    """Lists the intrinsic properties of a file that are accessible from Croissant.
+
+    Notes:
+    - Plural indicates a one-to-many relationship (one row gives many rows), while
+      singular indicates a one-to-one relationship.
+    - We may use camelCase to be conformed with the names in the JSON-LD Croissant
+      standard.
+    - We use enum.IntEnum (rather than enum.Enum) in order for FileProperty to be usable
+      as column names in pd.DataFrames.
+
+    Warning:
+    - At the moment there may be an overlap with existing columns if columns
+      have one of the following names.
+    """
+
+    content = 1
+    filename = 2
+    filepath = 3
+    fullpath = 4
+    lines = 5
+    lineNumbers = 6
 
 
 def is_file_property(file_property: str):
@@ -38,7 +56,13 @@ def is_file_property(file_property: str):
 
 @dataclasses.dataclass(frozen=True)
 class Extract:
-    """Container for possible ways of extracting the data."""
+    """Container for possible ways of extracting the data.
+
+    Args:
+        column: The column in a columnar format (e.g., CSV).
+        file_property: The property of a file to extract.
+        json_path: The JSON path if the source is a JSON.
+    """
 
     column: str | None = None
     file_property: FileProperty | None = None
@@ -46,13 +70,11 @@ class Extract:
 
     def to_json(self) -> Json:
         """Converts the `Extract` to JSON."""
-        return remove_empty_values(
-            {
-                "column": self.column,
-                "fileProperty": self.file_property.name if self.file_property else None,
-                "jsonPath": self.json_path,
-            }
-        )
+        return remove_empty_values({
+            "column": self.column,
+            "fileProperty": self.file_property.name if self.file_property else None,
+            "jsonPath": self.json_path,
+        })
 
 
 @dataclasses.dataclass(frozen=True)
@@ -60,7 +82,8 @@ class Transform:
     """Container for transformation.
 
     Args:
-        format: The format for a date, e.g. "%Y-%m-%d %H:%M:%S.%f".
+        format: The format for a date (e.g. "%Y-%m-%d %H:%M:%S.%f") or for a bounding
+            box (e.g., "XYXY").
         regex: A regex pattern with a capturing group to extract information in a
             string.
         replace: A replace pattern, e.g. "pattern_to_remove/pattern_to_add".
@@ -75,20 +98,18 @@ class Transform:
 
     def to_json(self) -> Json:
         """Converts the `Transform` to JSON."""
-        return remove_empty_values(
-            {
-                "format": self.format,
-                "jsonPath": self.json_path,
-                "regex": self.regex,
-                "replace": self.replace,
-                "separator": self.separator,
-            }
-        )
+        return remove_empty_values({
+            "format": self.format,
+            "jsonPath": self.json_path,
+            "regex": self.regex,
+            "replace": self.replace,
+            "separator": self.separator,
+        })
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, jsonld: Json) -> list[Transform]:
+    def from_jsonld(cls, issues: Issues, jsonld: Json | list[Json]) -> list[Transform]:
         """Creates a list of `Transform` from JSON-LD."""
-        transforms = []
+        transforms: list[Transform] = []
         if not isinstance(jsonld, list):
             jsonld = [jsonld]
         for transform in jsonld:
@@ -115,6 +136,9 @@ class Transform:
                 continue
             transforms.append(Transform(**kwargs))
         return transforms
+
+
+NodeType = Literal["distribution", "field"] | None
 
 
 @dataclasses.dataclass(eq=False)
@@ -161,20 +185,18 @@ class Source:
     extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: list[Transform] = dataclasses.field(default_factory=list)
     uid: str | None = None
-    node_type: Literal["distribution", "field"] | None = None
+    node_type: NodeType = None
 
     def to_json(self) -> Json:
         """Converts the `Source` to JSON."""
         transforms = [transform.to_json() for transform in self.transforms]
-        if len(transforms) == 1:
-            transforms = transforms[0]
-        return remove_empty_values(
-            {
-                self.node_type: self.uid,
-                "extract": self.extract.to_json(),
-                "transform": transforms,
-            }
-        )
+        if self.node_type is None:
+            raise ValueError("node_type should be `distribution` or `field`. Got: None")
+        return remove_empty_values({
+            self.node_type: self.uid,
+            "extract": self.extract.to_json(),
+            "transform": transforms[0] if len(transforms) == 1 else transforms,
+        })
 
     @classmethod
     def from_jsonld(cls, issues: Issues, jsonld: Any) -> Source:
@@ -209,7 +231,7 @@ class Source:
                 field = jsonld.get(constants.ML_COMMONS_FIELD)
                 if distribution is not None and field is None:
                     uid = distribution
-                    node_type = "distribution"
+                    node_type: NodeType = "distribution"
                 elif distribution is None and field is not None:
                     uid = field
                     node_type = "field"
@@ -268,11 +290,13 @@ class Source:
             return False
         return hash(self) == hash(other)
 
-    def get_field(self) -> str | FileProperty:
-        """Retrieves the name of the field/column/query associated to the source."""
+    def get_column(self) -> str | FileProperty:
+        """Retrieves the name of the column associated to the source."""
         if self.uid is None:
-            # This case already rose an issue and should not happen at run time.
-            raise ""
+            raise ValueError(
+                "No UID! This case already rose an issue and should not happen at run"
+                " time."
+            )
         if self.extract.column:
             return self.extract.column
         elif self.extract.file_property:
@@ -294,13 +318,13 @@ class Source:
                 )
 
 
-def _apply_transform_fn(value: Any, transform: Transform) -> str:
+def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
         match = source_regex.match(value)
         if match is None:
-            logging.debug(f"Could not match {source_regex} in {value}")
+            logging.warning(f"Could not match {source_regex} in {value}")
             return value
         for group in match.groups():
             if group is not None:
@@ -308,14 +332,25 @@ def _apply_transform_fn(value: Any, transform: Transform) -> str:
     elif transform.json_path is not None:
         jsonpath_expression = jsonpath_rw.parse(transform.json_path)
         return next(match.value for match in jsonpath_expression.find(value))
+    elif transform.format is not None:
+        if field.data_type is pd.Timestamp:
+            return pd.Timestamp(value).strftime(transform.format)
+        else:
+            raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
     return value
 
 
-def apply_transforms_fn(value: str, source: Source | None = None) -> str:
+def apply_transforms_fn(value: Any, field: Field) -> Any:
     """Applies all transforms in `source` to `value`."""
+    source = field.source
     if source is None:
         return value
     transforms = source.transforms
     for transform in transforms:
-        value = _apply_transform_fn(value, transform)
+        value = _apply_transform_fn(value, transform, field)
     return value
+
+
+def get_parent_uid(uid: str) -> str:
+    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
+    return uid.split("/")[0]

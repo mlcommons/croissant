@@ -34,30 +34,29 @@ class FileObject(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
+        self.assert_has_mandatory_properties("encoding_format", "name")
         if not self.contained_in:
+            self.assert_has_mandatory_properties("content_url")
             self.assert_has_exclusive_properties(["md5", "sha256"])
 
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
         if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
-            contained_in = self.contained_in[0]
+            contained_in: str | list[str] = self.contained_in[0]
         else:
             contained_in = self.contained_in
-        return remove_empty_values(
-            {
-                "@type": "sc:FileObject",
-                "name": self.name,
-                "description": self.description,
-                "contentSize": self.content_size,
-                "contentUrl": self.content_url,
-                "containedIn": contained_in,
-                "encodingFormat": self.encoding_format,
-                "md5": self.md5,
-                "sha256": self.sha256,
-                "source": self.source.to_json() if self.source else None,
-            }
-        )
+        return remove_empty_values({
+            "@type": "sc:FileObject",
+            "name": self.name,
+            "description": self.description,
+            "contentSize": self.content_size,
+            "contentUrl": self.content_url,
+            "containedIn": contained_in,
+            "encodingFormat": self.encoding_format,
+            "md5": self.md5,
+            "sha256": self.sha256,
+            "source": self.source.to_json() if self.source else None,
+        })
 
     @classmethod
     def from_jsonld(

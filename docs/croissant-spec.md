@@ -130,10 +130,9 @@ instead.
 
 *   [distribution](#fileset): The name of the referenced FileSet or FileObject source.
 *   [recordSet](#recordset): The name of the referenced RecordSet source.
-*   [dataExtraction](#dataextraction): The extraction method from the provided
-    source.
-*   [applyTransform](#applytransform): A transformation to apply on source data
-    on top of the extracted method as specified through `dataExtraction`, e.g., a
+*   [extract](#extract): The extraction method from the provided source.
+*   [transform](#transform): A transformation to apply on source data
+    on top of the extracted method as specified through `extract`, e.g., a
     regular expression or json query.
 
 For example, to extract information from a filename with respect to a regular
@@ -141,17 +140,17 @@ expression, write:
 
 ```json
 {
-  "applyTransform": {
-    "regex": "^(train|val|test)2014/.*\\.jpg$"
-  },
-  "dataExtraction": {
+  "distribution": "files",
+  "extract": {
     "fileProperty": "filename"
   },
-  "distribution": "files"
+  "transform": {
+    "regex": "^(train|val|test)2014/.*\\.jpg$"
+  }
 }
 ```
 
-### dataExtraction
+### extract
 
 The extraction method from the provided source. It can the name of a Field, or
 the property of a file (e.g., its name), etc.
@@ -161,23 +160,25 @@ the property of a file (e.g., its name), etc.
 **Properties**:
 
 *   [fileProperty](#fileproperty): The information to extract from the file.
-*   [csvColumn](#csvcolumn): The column of the source CSV.
+*   [column](#column): The column of the source CSV or dataframe.
 *   [jsonPath](#jsonpath): The JSON path if the source is a JSON.
 
 ### fileProperty
 
 The information to extract from the file. It can be: `filename`, `fullpath`,
-`content`.
+`content`, `lines` or `lineNumbers`.
 
 *   `fullpath`: The full path to the file within the Croissant extraction
     or download folders. Example: `data/train/metadata.csv`.
 *   `filename`: The name of the file. In `data/train/metadata.csv`, the file
     name is `metadata.csv`.
 *   `content`: The byte content of the file.
+*   `lines`: The byte content of each line in the file.
+*   `lineNumbers`: The number of each line in the file (starting from 0).
 
 **range**:	[sc:Text](https://schema.org/Text)
 
-### csvcolumn
+### column
 
 The column of the source CSV (e.g., `date`).
 
@@ -341,7 +342,7 @@ types inform about the semantic being used, possibly semantics with ML meaning.
 | [**`sc:Text`**](https://schema.org/Text) | Describes a string. |
 | [**`sc:URL`**](https://schema.org/ImageObject) | Describes a URL. |
 | [**`sc:ImageObject`**](https://schema.org/ImageObject) | Describes a field containing the content of an image (pixels). |
-| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box. |
+| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box (4-number array). |
 | [**`sc:name`**](https://schema.org/name) | Describes a field with a human-readable string. |
 | [**`wd:Q3985153`**](https://www.wikidata.org/wiki/Q3985153) <br/>(**Training, validation and test sets**) | Describes a field used to divide data into multiple sets according to intended usage with regards to models [training](https://mlcommons.org/definitions/training_split), [validation](https://mlcommons.org/definitions/validation_split), [testing](https://mlcommons.org/definitions/test_split), and possibly others. <br/>While any value is acceptable here, it is recommended to associate the usual splits listed above with the linked semantic URL.
 
@@ -424,7 +425,7 @@ list, and each object within that list must define the RecordSet fields.
 **domain**: [RecordSet](#recordset)
 
 
-### applyTransform
+### transform
 
 A transformation to apply on source data. We aim to support a few simple
 transformations:

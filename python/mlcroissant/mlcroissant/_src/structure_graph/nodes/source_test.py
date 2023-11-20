@@ -1,12 +1,16 @@
 """source_test module."""
 
+import pandas as pd
 import pytest
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 from mlcroissant._src.structure_graph.nodes.source import is_file_property
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
@@ -99,29 +103,25 @@ def test_source_parses_list(json_ld, expected_source):
     [
         [
             "this is not a list",
-            set(
-                [
-                    'Transform "this is not a list" should be a dict with the keys'
-                    " http://mlcommons.org/schema/format,"
-                    " http://mlcommons.org/schema/jsonPath,"
-                    " http://mlcommons.org/schema/regex,"
-                    " http://mlcommons.org/schema/replace,"
-                    " http://mlcommons.org/schema/separator"
-                ]
-            ),
+            set([
+                'Transform "this is not a list" should be a dict with the keys'
+                " http://mlcommons.org/schema/format,"
+                " http://mlcommons.org/schema/jsonPath,"
+                " http://mlcommons.org/schema/regex,"
+                " http://mlcommons.org/schema/replace,"
+                " http://mlcommons.org/schema/separator"
+            ]),
         ],
         [
             [{"not": "the right keys"}],
-            set(
-                [
-                    "Transform \"{'not': 'the right keys'}\" should be a dict with at"
-                    " least one key in http://mlcommons.org/schema/format,"
-                    " http://mlcommons.org/schema/jsonPath,"
-                    " http://mlcommons.org/schema/regex,"
-                    " http://mlcommons.org/schema/replace,"
-                    " http://mlcommons.org/schema/separator"
-                ]
-            ),
+            set([
+                "Transform \"{'not': 'the right keys'}\" should be a dict with at"
+                " least one key in http://mlcommons.org/schema/format,"
+                " http://mlcommons.org/schema/jsonPath,"
+                " http://mlcommons.org/schema/regex,"
+                " http://mlcommons.org/schema/replace,"
+                " http://mlcommons.org/schema/separator"
+            ]),
         ],
     ],
 )
@@ -184,35 +184,49 @@ def test_declaring_wrong_file_property():
 
 
 @pytest.mark.parametrize(
-    ["value", "source", "expected_value"],
+    ["value", "source", "data_type", "expected_value"],
     [
-        # No source
-        ["this is a value", None, "this is a value"],
         # Capturing group
         [
             "train1234",
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
             "train",
         ],
         # Non working capturing group
         [
             "foo1234",
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
             "foo1234",
         ],
         [
             {"one": {"two": "expected_value"}, "three": "non_expected_value"},
             Source(transforms=[Transform(json_path="one.two")]),
+            DataType.TEXT,
             "expected_value",
+        ],
+        [
+            pd.Timestamp("2024-12-10 12:00:00"),
+            Source(transforms=[Transform(format="%Y-%m-%d")]),
+            DataType.DATE,
+            "2024-12-10",
+        ],
+        [
+            "2024-12-10 12:00:00",
+            Source(transforms=[Transform(format="%Y-%m-%d")]),
+            DataType.DATE,
+            "2024-12-10",
         ],
     ],
 )
-def test_apply_transforms_fn(value, source, expected_value):
-    assert apply_transforms_fn(value, source) == expected_value
+def test_apply_transforms_fn(value, source, data_type, expected_value):
+    field = Field(name="test", data_types=data_type, source=source)
+    assert apply_transforms_fn(value, field) == expected_value
 
 
 @pytest.mark.parametrize(
-    ["source", "expected_field"],
+    ["source", "expected_column"],
     [
         [
             Source(uid="my-csv", extract=Extract(column="my-csv-column")),
@@ -238,8 +252,8 @@ def test_apply_transforms_fn(value, source, expected_value):
         ],
     ],
 )
-def test_get_field(source: Source, expected_field: str):
-    assert source.get_field() == expected_field
+def test_get_field(source: Source, expected_column: str):
+    assert source.get_column() == expected_column
 
 
 def test_is_file_property():
@@ -266,3 +280,9 @@ def test_check_source_for_invalid_json_path():
     errors = list(issues.errors)
     assert len(errors) == 1
     assert "Wrong JSONPath" in errors[0]
+
+
+def test_get_parent_uid():
+    assert get_parent_uid("foo") == "foo"
+    assert get_parent_uid("foo/bar") == "foo"
+    assert get_parent_uid("foo/bar/baz") == "foo"

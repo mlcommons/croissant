@@ -3,6 +3,7 @@
 from unittest import mock
 
 from etils import epath
+import pytest
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Context
@@ -18,19 +19,27 @@ def test_checks_are_performed():
         Node, "assert_has_mandatory_properties"
     ) as mandatory_mock, mock.patch.object(
         Node, "assert_has_optional_properties"
-    ) as optional_mock, mock.patch.object(
+    ), mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock, mock.patch.object(
         Node, "assert_has_exclusive_properties"
     ) as exclusive_mock:
         create_test_node(FileObject)
-        mandatory_mock.assert_called_once_with("content_url", "encoding_format", "name")
-        optional_mock.assert_not_called()
+        mandatory_mock.assert_has_calls([
+            mock.call("encoding_format", "name"), mock.call("content_url")
+        ])
         exclusive_mock.assert_called_once_with(["md5", "sha256"])
         validate_name_mock.assert_called_once()
 
 
-def test_from_jsonld():
+@pytest.mark.parametrize(
+    ["encoding"],
+    [
+        ["text/csv"],
+        ["text/tsv"],
+    ],
+)
+def test_from_jsonld(encoding):
     issues = Issues()
     context = Context()
     folder = epath.Path("/foo/bar")
@@ -40,7 +49,7 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_CONTENT_URL: "https://mlcommons.org",
-        constants.SCHEMA_ORG_ENCODING_FORMAT: "text/csv",
+        constants.SCHEMA_ORG_ENCODING_FORMAT: encoding,
         constants.SCHEMA_ORG_SHA256: (
             "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
         ),
@@ -52,7 +61,7 @@ def test_from_jsonld():
         name="foo",
         description="bar",
         content_url="https://mlcommons.org",
-        encoding_format="text/csv",
+        encoding_format=encoding,
         sha256="48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354",
     )
     assert not issues.errors

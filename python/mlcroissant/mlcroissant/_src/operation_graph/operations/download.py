@@ -12,11 +12,11 @@ import requests
 import tqdm
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
-from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 
 _DOWNLOAD_CHUNK_SIZE = 1024
@@ -43,13 +43,16 @@ def get_hash(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()
 
 
-def get_download_filepath(node: Node, url: str) -> epath.Path:
+def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
-    if not is_url(url):
+    url = node.content_url
+    if url and not is_url(url) and not node.contained_in:
         assert url.startswith("data/"), (
-            'Local file "{self.node.uid}" should point to a file within the data/'
-            ' folder next to the JSON-LD Croissant file. But got: "{self.url}"'
+            f'Local file "{node.uid}" should point to a file within the data/'
+            f' folder next to the JSON-LD Croissant file. But got: "{url}"'
         )
+        if node.folder is None:
+            raise ValueError(f"Could not find node folder={node.folder}")
         filepath = node.folder / url
         assert filepath.exists(), (
             f'In node "{node.uid}", file "{url}" is either an invalid URL'
@@ -57,6 +60,7 @@ def get_download_filepath(node: Node, url: str) -> epath.Path:
         )
         # No need to download local files
         return filepath
+    assert url, "Cannot get hashed URL for None."
     hashed_url = get_hash(url)
     constants.DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
     return constants.DOWNLOAD_PATH / f"croissant-{hashed_url}"
@@ -125,21 +129,40 @@ def _get_hash_obj(file_object: FileObject):
     else:
         raise ValueError("md5 and sha256 are not specified.")
 
+def get_basic_auth_from_env() -> tuple[str, str] | None:
+    """Determines a Basic Auth tuple from the environment variables.
+
+    This method determines the username and password for the auth tuple from the
+    `CROISSANT_BASIC_AUTH_USERNAME` and `CROISSANT_BASIC_AUTH_PASSWORD` env variables.
+
+    Returns:
+        The Basic Auth tuple if the env variables are configured properly. Otherwise, it
+        returns None.
+    """
+    username = os.environ.get(constants.CROISSANT_BASIC_AUTH_USERNAME)
+    password = os.environ.get(constants.CROISSANT_BASIC_AUTH_PASSWORD)
+    return None if username is None or password is None else (username, password)
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Download(Operation):
     """Downloads from a URL to the disk."""
 
     node: FileObject
-    url: str
 
     def _download_from_http(self, filepath: epath.Path):
-        response = requests.get(self.url, stream=True, timeout=10)
+        content_url = self.node.content_url
+        assert content_url, "Content URL is None."
+        response = requests.get(
+            content_url, stream=True, timeout=10, auth=get_basic_auth_from_env()
+        )
+        response.raise_for_status()
         total = int(response.headers.get("Content-Length", 0))
 
         hash = _get_hash_obj(self.node)
 
         with filepath.open("wb") as file, tqdm.tqdm(
-            desc=f"Downloading {self.url}...",
+            desc=f"Downloading {content_url}...",
             total=total,
             unit="iB",
             unit_scale=True,
@@ -163,6 +186,8 @@ class Download(Operation):
         # GIT_LFS_SKIP_SMUDGE allows to not download git-lfs files by default. Those
         # files may be big, so we want to download them just-in-time (see `Read`):
         os.environ["GIT_LFS_SKIP_SMUDGE"] = "1"
+
+        assert self.node.content_url, "Cannot extract git-related information for None."
         url, refs = extract_git_info(self.node.content_url)
         url = insert_credentials(url, username, password)
         repo = deps.git.Repo.clone_from(url, filepath)
@@ -172,16 +197,18 @@ class Download(Operation):
             repo.remote().fetch(f"{refs}:{branch_name}")
             repo.branches[branch_name].checkout()
 
-    def __call__(self, *args) -> epath.Path:
+    def __call__(self, *args) -> Path:
         """See class' docstring."""
         del args  # unused
-        filepath = get_download_filepath(self.node, self.url)
+        filepath = get_download_filepath(self.node)
         if not filepath.exists():
-            if self.node.encoding_format == constants.GIT_HTTPS_ENCODING_FORMAT:
+            if self.node.encoding_format == EncodingFormat.GIT:
                 self._download_from_git(filepath)
             else:
                 self._download_from_http(filepath)
-        logging.info("File %s is downloaded to %s", self.url, os.fspath(filepath))
+        logging.info(
+            "File %s is downloaded to %s", self.node.content_url, os.fspath(filepath)
+        )
         return Path(
             filepath=filepath,
             fullpath=get_fullpath(filepath, constants.DOWNLOAD_PATH),
