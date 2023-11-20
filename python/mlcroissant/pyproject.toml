@@ -43,6 +43,7 @@ dev = [
   "pylint",
   "pytest",
   "pytype",
+  "librosa"
 ]
 git = ["GitPython"]
 image = ["Pillow"]
