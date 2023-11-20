@@ -77,7 +77,7 @@
           "@type": "ml:Field",
           "name": "audio",
           "description": "These are the records.",
-          "dataType": "wd:Q42591",
+          "dataType": "sc:AudioObject",
           "source": {
             "distribution": "audio-files",
             "extract": {
