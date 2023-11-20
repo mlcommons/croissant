@@ -13,7 +13,7 @@ from absl import app
 from absl import flags
 from absl import logging
 
-sys.path.append(sys.path[0] + "/..")
+# sys.path.append(sys.path[0] + "/..")
 
 import mlcroissant as mlc
 
