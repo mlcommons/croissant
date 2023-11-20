@@ -35,6 +35,7 @@ readme = "README.md"
 # Installed through `pip install -e .[dev]`
 dev = [
   "black",
+  "black[jupyter]",
   "datasets",
   "flake8-docstrings",
   "mlcroissant[git]",
