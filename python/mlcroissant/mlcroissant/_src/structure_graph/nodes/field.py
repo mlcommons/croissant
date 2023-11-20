@@ -101,6 +101,7 @@ class Field(Node):
                 elif data_type in [
                     DataType.IMAGE_OBJECT,
                     DataType.BOUNDING_BOX,
+                    DataType.AUDIO_OBJECT
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on a predecessor:

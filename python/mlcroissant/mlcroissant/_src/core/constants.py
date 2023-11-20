@@ -132,6 +132,7 @@ class EncodingFormat:
 class DataType:
     """Data types supported by Croissant."""
 
+    AUDIO_OBJECT = namespace.SDO.AudioObject
     BOOL = namespace.SDO.Boolean
     BOUNDING_BOX = ML_COMMONS.BoundingBox
     DATE = namespace.SDO.Date
