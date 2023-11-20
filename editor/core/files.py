@@ -9,6 +9,11 @@ import requests
 
 from .names import find_unique_name
 from .state import FileObject
+from .state import FileSet
+
+FILE_OBJECT = "File object"
+FILE_SET = "File set"
+RESOURCE_TYPES = [FILE_OBJECT, FILE_SET]
 
 
 @dataclasses.dataclass
@@ -124,3 +129,26 @@ def file_from_upload(
         sha256=sha256,
         df=df,
     )
+
+
+def file_from_form(
+    file_type: FileType, type: str, name, description, sha256: str, names: set[str]
+) -> FileObject | FileSet:
+    """Creates a file based on manually added fields."""
+    if type == FILE_OBJECT:
+        return FileObject(
+            name=find_unique_name(names, name),
+            description=description,
+            content_url="",
+            encoding_format=file_type.encoding_format,
+            sha256=sha256,
+            df=None,
+        )
+    elif type == FILE_SET:
+        return FileSet(
+            name=find_unique_name(names, name),
+            description=description,
+            encoding_format=file_type.encoding_format,
+        )
+    else:
+        raise ValueError("type has to be one of FILE_OBJECT, FILE_SET")

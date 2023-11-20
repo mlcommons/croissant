@@ -2,9 +2,13 @@ import pandas as pd
 import streamlit as st
 
 from components.tree import render_tree
+from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
+from core.files import FILE_OBJECT
+from core.files import FILE_SET
 from core.files import FILE_TYPES
+from core.files import RESOURCE_TYPES
 from core.record_sets import infer_record_sets
 from core.state import FileObject
 from core.state import FileSet
@@ -17,6 +21,10 @@ Resource = FileObject | FileSet
 
 _DISTANT_URL_KEY = "import_from_url"
 _LOCAL_FILE_KEY = "import_from_local_file"
+_MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
+_MANUAL_NAME_KEY = "manual_object_name"
+_MANUAL_DESCRIPTION_KEY = "manual_object_description"
+_MANUAL_SHA256_KEY = "manual_object_sha256"
 
 
 def render_files():
@@ -77,28 +85,24 @@ def _render_upload_panel():
             st.text_input("URL:", key=_DISTANT_URL_KEY)
 
         with tab3:
-            resource_type = st.selectbox("Type", options=["FileObject", "FileSet"])
-
-            file = FileObject() if resource_type == "FileObject" else FileSet()
-
-            name = st.text_input(
-                needed_field("File name"), value=file.name, key="manual_name"
+            resource_type = st.selectbox(
+                "Type", options=RESOURCE_TYPES, key=_MANUAL_RESOURCE_TYPE_KEY
             )
-            description = st.text_area(
+            st.text_input(
+                needed_field("File name"),
+                key=_MANUAL_NAME_KEY,
+            )
+            st.text_area(
                 "File description",
-                value=file.description,
                 placeholder="Provide a clear description of the file.",
-                key="manual_description",
+                key=_MANUAL_DESCRIPTION_KEY,
             )
-            sha256 = st.text_input(
-                needed_field("SHA256"),
-                value=file.sha256,
-                disabled=True,
-                key="manual_sha256",
+            st.text_input(
+                "SHA256",
+                key=_MANUAL_SHA256_KEY,
             )
-            parent = st.text_input(
-                needed_field("Parent"),
-                value=file.encoding_format,
+            st.text_input(
+                "Parent",
                 key="manual_parent",
             )
 
@@ -115,10 +119,31 @@ def _render_upload_panel():
                 file = file_from_url(file_type, url, names)
             elif uploaded_file:
                 file = file_from_upload(file_type, uploaded_file, names)
-            # todo: handle manually created resource.
             else:
-                st.toast("Please, import either a local file or a URL.", icon="❌")
-                return
+                resource_type = st.session_state[_MANUAL_RESOURCE_TYPE_KEY]
+                needs_sha256 = resource_type == FILE_OBJECT
+
+                name = st.session_state[_MANUAL_NAME_KEY]
+                description = st.session_state[_MANUAL_DESCRIPTION_KEY]
+                sha256 = st.session_state[_MANUAL_SHA256_KEY] if needs_sha256 else None
+                errorMessage = (
+                    "Please import either a local file, provide a download URL or fill"
+                    " in all required fields: name"
+                )
+                if needs_sha256:
+                    errorMessage += " and SHA256"
+
+                if not name or (needs_sha256 and not sha256):
+                    # Some required fields are empty.
+                    st.toast(
+                        errorMessage,
+                        icon="❌",
+                    )
+                    return
+                file = file_from_form(
+                    file_type, resource_type, name, description, sha256, names
+                )
+
             st.session_state[Metadata].add_distribution(file)
             record_sets = infer_record_sets(file, names)
             for record_set in record_sets:
