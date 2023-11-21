@@ -166,44 +166,72 @@ def _render_resource_details(selected_file: Resource):
     for key, file in enumerate(st.session_state[Metadata].distribution):
         if file.name == selected_file.name:
 
+            if isinstance(file, FileObject):
+                _render_file_object(key, file)
+            else:
+                _render_file_set(key, file)
+
             def delete_line():
                 st.session_state[Metadata].remove_distribution(key)
 
-            name = st.text_input(
-                needed_field("Name"), value=file.name, key=f"{key}_name"
-            )
-            description = st.text_area(
-                "Description",
-                value=file.description,
-                placeholder="Provide a clear description of the file.",
-                key=f"{key}_description",
-            )
-            sha256 = st.text_input(
-                needed_field("SHA256"),
-                value=file.sha256,
-                disabled=True,
-                key=f"{key}_sha256",
-            )
-            encoding_format = st.text_input(
-                needed_field("Encoding format"),
-                value=file.encoding_format,
-                disabled=True,
-                key=f"{key}_encoding",
-            )
-            st.markdown("First rows of data:")
-            if file.df is not None:
-                st.dataframe(file.df, height=DF_HEIGHT)
-            else:
-                st.text("No rendering possible.")
             _, col = st.columns([5, 1])
             col.button("Remove", key=f"{key}_url", on_click=delete_line, type="primary")
-            file = FileObject(
-                name=name,
-                description=description,
-                content_url=file.content_url,
-                content_size=file.content_size,
-                encoding_format=encoding_format,
-                sha256=sha256,
-                df=file.df,
-            )
-            st.session_state[Metadata].update_distribution(key, file)
+
+
+def _render_file_object(key: int, file: FileObject):
+    name = st.text_input(needed_field("Name"), value=file.name, key=f"{key}_name")
+    description = st.text_area(
+        "Description",
+        value=file.description,
+        placeholder="Provide a clear description of the file.",
+        key=f"{key}_description",
+    )
+    sha256 = st.text_input(
+        needed_field("SHA256"),
+        value=file.sha256,
+        disabled=True,
+        key=f"{key}_sha256",
+    )
+    encoding_format = st.text_input(
+        needed_field("Encoding format"),
+        value=file.encoding_format,
+        disabled=True,
+        key=f"{key}_encoding",
+    )
+    st.markdown("First rows of data:")
+    if file.df is not None:
+        st.dataframe(file.df, height=DF_HEIGHT)
+    else:
+        st.text("No rendering possible.")
+    file = FileObject(
+        name=name,
+        description=description,
+        content_url=file.content_url,
+        content_size=file.content_size,
+        encoding_format=encoding_format,
+        sha256=sha256,
+        df=file.df,
+    )
+    st.session_state[Metadata].update_distribution(key, file)
+
+
+def _render_file_set(key: int, file: FileSet):
+    name = st.text_input(needed_field("Name"), value=file.name, key=f"{key}_name")
+    description = st.text_area(
+        "Description",
+        value=file.description,
+        placeholder="Provide a clear description of the file.",
+        key=f"{key}_description",
+    )
+    encoding_format = st.text_input(
+        needed_field("Encoding format"),
+        value=file.encoding_format,
+        disabled=True,
+        key=f"{key}_encoding",
+    )
+    file = FileSet(
+        description=description,
+        encoding_format=encoding_format,
+        name=name,
+    )
+    st.session_state[Metadata].update_distribution(key, file)
