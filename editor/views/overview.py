@@ -38,12 +38,14 @@ def render_overview():
                 issues = metadata.to_canonical().issues
                 if issues.errors:
                     st.subheader("Errors:")
-                    st.text(issues.errors)
+                    for error in issues.errors:
+                        st.write(error)
                 if issues.warnings:
                     st.subheader("Warnings:")
-                    st.text(issues.warnings)
-                else:
-                    st.text("No validation issues detected!")
+                    for warning in issues.warnings:
+                        st.write(warning)
+                if not issues.errors and not issues.warnings:
+                    st.write("No validation issues detected!")
             except mlc.ValidationError as exception:
                 st.subheader("Errors:")
-                st.text(exception)
+                st.write(str(exception))
