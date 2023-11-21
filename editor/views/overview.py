@@ -16,6 +16,11 @@ def render_overview():
             value=metadata.name,
             placeholder="Dataset",
         )
+        url = st.text_input(
+            label=needed_field("URL"),
+            value=metadata.url,
+            placeholder="URL to the dataset.",
+        )
         description = st.text_area(
             label="Description",
             value=metadata.description,
@@ -28,22 +33,24 @@ def render_overview():
             name=name,
             description=description,
             license=metadata.license,
-            url=metadata.url,
+            url=url,
             citation=metadata.citation,
         )
     with col2:
-        if metadata.name != None and metadata.name != "":
+        if metadata.name and metadata.url:
             st.header("Croissant File Validation")
             try:
                 issues = metadata.to_canonical().issues
                 if issues.errors:
                     st.subheader("Errors:")
-                    st.text(issues.errors)
+                    for error in issues.errors:
+                        st.write(error)
                 if issues.warnings:
                     st.subheader("Warnings:")
-                    st.text(issues.warnings)
-                else:
-                    st.text("No validation issues detected!")
+                    for warning in issues.warnings:
+                        st.write(warning)
+                if not issues.errors and not issues.warnings:
+                    st.write("No validation issues detected!")
             except mlc.ValidationError as exception:
                 st.subheader("Errors:")
-                st.text(exception)
+                st.write(str(exception))

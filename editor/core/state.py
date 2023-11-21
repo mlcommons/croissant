@@ -6,10 +6,22 @@ In the future, this could be the serialization format between front and back.
 from __future__ import annotations
 
 import dataclasses
+from typing import Any
 
 import pandas as pd
 
 import mlcroissant as mlc
+
+
+def create_class(mlc_class: type, instance: Any, **kwargs) -> Any:
+    """Creates the mlcroissant class `mlc_class` from the editor `instance`."""
+    fields = dataclasses.fields(mlc_class)
+    params: dict[str, Any] = {}
+    for field in fields:
+        name = field.name
+        if hasattr(instance, name) and name not in kwargs:
+            params[name] = getattr(instance, name)
+    return mlc_class(**params, **kwargs)
 
 
 class CurrentStep:
@@ -77,6 +89,7 @@ class RecordSet:
     """Record Set analogue for editor"""
 
     name: str = ""
+    data: Any = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
@@ -231,60 +244,19 @@ class Metadata:
         distribution = []
         for file in self.distribution:
             if isinstance(file, FileObject):
-                distribution.append(
-                    mlc.FileObject(
-                        name=file.name,
-                        description=file.description,
-                        contained_in=file.contained_in,
-                        content_url=file.content_url,
-                        encoding_format=file.encoding_format,
-                        content_size=file.content_size,
-                        rdf=file.rdf,
-                        sha256=file.sha256,
-                    )
-                )
+                distribution.append(create_class(mlc.FileObject, file))
             elif isinstance(file, FileSet):
-                distribution.append(
-                    mlc.FileSet(
-                        name=file.name,
-                        description=file.description,
-                        contained_in=file.contained_in,
-                        encoding_format=file.encoding_format,
-                        rdf=file.rdf,
-                    )
-                )
+                distribution.append(create_class(mlc.FileSet, file))
         record_sets = []
         for record_set in self.record_sets:
             fields = []
             for field in record_set.fields:
-                fields.append(
-                    mlc.Field(
-                        name=field.name,
-                        description=field.description,
-                        data_types=field.data_types,
-                        source=field.source,
-                        rdf=field.rdf,
-                        references=field.references,
-                    )
-                )
-            record_sets.append(
-                mlc.RecordSet(
-                    name=record_set.name,
-                    description=record_set.description,
-                    key=record_set.key,
-                    is_enumeration=record_set.is_enumeration,
-                    fields=fields,
-                    rdf=record_set.rdf,
-                )
-            )
-        return mlc.Metadata(
-            name=self.name,
-            citation=self.citation,
-            license=self.license,
-            description=self.description,
-            url=self.url,
+                fields.append(create_class(mlc.Field, field))
+            record_sets.append(create_class(mlc.RecordSet, record_set, fields=fields))
+        return create_class(
+            mlc.Metadata,
+            self,
             distribution=distribution,
-            rdf=self.rdf,
             record_sets=record_sets,
         )
 
@@ -293,59 +265,24 @@ class Metadata:
         distribution = []
         for file in canonical_metadata.distribution:
             if isinstance(file, mlc.FileObject):
-                distribution.append(
-                    FileObject(
-                        name=file.name,
-                        contained_in=file.contained_in,
-                        description=file.description,
-                        content_size=file.content_size,
-                        encoding_format=file.encoding_format,
-                        content_url=file.content_url,
-                        rdf=file.rdf,
-                        sha256=file.sha256,
-                    )
-                )
+                distribution.append(create_class(FileObject, file))
             else:
-                distribution.append(
-                    FileSet(
-                        name=file.name,
-                        contained_in=file.contained_in,
-                        description=file.description,
-                        encoding_format=file.encoding_format,
-                        rdf=file.rdf,
-                    )
-                )
+                distribution.append(create_class(FileSet, file))
         record_sets = []
         for record_set in canonical_metadata.record_sets:
             fields = []
             for field in record_set.fields:
-                fields.append(
-                    Field(
-                        name=field.name,
-                        description=field.description,
-                        data_types=field.data_types,
-                        source=field.source,
-                        rdf=field.rdf,
-                        references=field.references,
-                    )
-                )
+                fields.append(create_class(Field, field))
             record_sets.append(
-                RecordSet(
-                    name=record_set.name,
-                    description=record_set.description,
-                    is_enumeration=record_set.is_enumeration,
-                    key=record_set.key,
+                create_class(
+                    RecordSet,
+                    record_set,
                     fields=fields,
-                    rdf=record_set.rdf,
                 )
             )
-        return cls(
-            name=canonical_metadata.name,
-            description=canonical_metadata.description,
-            citation=canonical_metadata.citation,
-            license=canonical_metadata.license,
-            url=canonical_metadata.url,
+        return create_class(
+            cls,
+            canonical_metadata,
             distribution=distribution,
-            rdf=canonical_metadata.rdf,
             record_sets=record_sets,
         )

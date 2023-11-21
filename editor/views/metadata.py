@@ -34,11 +34,6 @@ def render_metadata():
         options=licenses,
         index=index,
     )
-    url = st.text_input(
-        label=needed_field("URL"),
-        value=metadata.url,
-        placeholder="URL to the dataset.",
-    )
     citation = st.text_area(
         label="Citation",
         value=metadata.citation,
@@ -49,6 +44,6 @@ def render_metadata():
         name=metadata.name,
         description=metadata.description,
         license=license,
-        url=url,
+        url=metadata.url,
         citation=citation,
     )

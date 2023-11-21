@@ -37,8 +37,8 @@ def _handle_on_click_field(
     )
 
 
-def _data_editor_key(record_set_name: str) -> str:
-    return f"{record_set_name}-dataframe"
+def _data_editor_key(record_set_key: int, record_set: RecordSet) -> str:
+    return f"{record_set_key}-{record_set.name}-dataframe"
 
 
 def _get_possible_sources(metadata: Metadata) -> list[str]:
@@ -82,7 +82,7 @@ def _find_joins(fields: list[Field]) -> set[Join]:
 
 
 def _handle_fields_change(record_set_key: int, record_set: RecordSet):
-    data_editor_key = _data_editor_key(record_set.name)
+    data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
     # `result` has the following structure:
     # {'edited_rows': {1: {}}, 'added_rows': [], 'deleted_rows': []}
@@ -146,23 +146,24 @@ def _render_left_panel():
     record_set: RecordSet
     for key, record_set in enumerate(record_sets):
         title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
+        prefix = f"{record_set.name}-{key}"
         with st.expander(title, expanded=False):
             col1, col2 = st.columns([1, 3])
             name = col1.text_input(
                 needed_field("Name"),
                 placeholder="Name without special character.",
-                key=f"{record_set.name}-name",
+                key=f"{prefix}-name",
                 value=record_set.name,
             )
             description = col2.text_input(
                 "Description",
                 placeholder="Provide a clear description of the RecordSet.",
-                key=f"{record_set.name}-description",
+                key=f"{prefix}-description",
                 value=record_set.description,
             )
             is_enumeration = st.checkbox(
                 "Whether the RecordSet is an enumeration",
-                key=f"{record_set.name}-is-enumeration",
+                key=f"{prefix}-is-enumeration",
                 value=record_set.is_enumeration,
             )
 
@@ -171,7 +172,7 @@ def _render_left_panel():
                 "Whether the RecordSet contains joins. To add a new join, add a"
                 f" field with a source in `{record_set.name}` and a reference to"
                 " another RecordSet or FileSet/FileObject.",
-                key=f"{record_set.name}-has-joins",
+                key=f"{prefix}-has-joins",
                 value=bool(joins),
                 disabled=True,
             )
@@ -182,25 +183,25 @@ def _render_left_panel():
                         "Left join",
                         disabled=True,
                         value=left[0],
-                        key=f"{record_set.name}-left-join-{left}",
+                        key=f"{prefix}-left-join-{left}",
                     )
                     col2.text_input(
                         "Left key",
                         disabled=True,
                         value=left[1],
-                        key=f"{record_set.name}-left-key-{left}",
+                        key=f"{prefix}-left-key-{left}",
                     )
                     col4.text_input(
                         "Right join",
                         disabled=True,
                         value=right[0],
-                        key=f"{record_set.name}-right-join-{right}",
+                        key=f"{prefix}-right-join-{right}",
                     )
                     col5.text_input(
                         "Right key",
                         disabled=True,
                         value=right[1],
-                        key=f"{record_set.name}-right-key-{right}",
+                        key=f"{prefix}-right-key-{right}",
                     )
 
             if (
@@ -228,7 +229,7 @@ def _render_left_panel():
                 },
                 dtype=np.str_,
             )
-            data_editor_key = _data_editor_key(record_set.name)
+            data_editor_key = _data_editor_key(key, record_set)
             st.markdown(needed_field("Fields"))
             st.data_editor(
                 fields,
@@ -259,7 +260,7 @@ def _render_left_panel():
 
             st.button(
                 "Edit fields details",
-                key=f"{record_set.name}-show-fields",
+                key=f"{prefix}-show-fields",
                 on_click=_handle_on_click_field,
                 args=(key, record_set),
             )
@@ -275,9 +276,10 @@ def _render_right_panel():
     record_set_key = selected.record_set_key
     with st.expander("**Fields**", expanded=True):
         for field_key, field in enumerate(record_set.fields):
+            prefix = f"{record_set}-{record_set_key}-{field.name}-{field_key}"
             col1, col2, col3 = st.columns([1, 1, 1])
 
-            key = f"{record_set.name}-{field.name}-name"
+            key = f"{prefix}-name"
             col1.text_input(
                 needed_field("Name"),
                 placeholder="Name without special character.",
@@ -286,7 +288,7 @@ def _render_right_panel():
                 on_change=handle_field_change,
                 args=(ChangeEvent.NAME, record_set_key, field_key, field, key),
             )
-            key = f"{record_set.name}-{field.name}-description"
+            key = f"{prefix}-description"
             col2.text_input(
                 "Description",
                 placeholder="Provide a clear description of the RecordSet.",
@@ -305,7 +307,7 @@ def _render_right_panel():
                     data_type_index = None
             else:
                 data_type_index = None
-            key = f"{record_set.name}-{field.name}-datatypes"
+            key = f"{prefix}-datatypes"
             col3.selectbox(
                 needed_field("Data type"),
                 index=data_type_index,
@@ -326,7 +328,7 @@ def _render_right_panel():
 
         st.button(
             "Close",
-            key=f"{record_set.name}-close-fields",
+            key=f"{record_set.name}-{record_set_key}-close-fields",
             type="primary",
             on_click=_handle_close_fields,
         )
