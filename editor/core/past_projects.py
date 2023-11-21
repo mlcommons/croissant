@@ -31,13 +31,11 @@ def load_past_projects() -> list[Metadata]:
             try:
                 filename = PREVIOUS_METADATA_DIRECTORY / item / "metadata"
                 with open(filename, "rb+") as file:
-                    projects.append(
-                        [
-                            pickle.loads(file.read()),
-                            float(item),
-                            os.path.getmtime(filename),
-                        ]
-                    )
+                    projects.append([
+                        pickle.loads(file.read()),
+                        float(item),
+                        os.path.getmtime(filename),
+                    ])
             except:
                 # wasn't a directory or was malformed, either way, skip it
                 pass
