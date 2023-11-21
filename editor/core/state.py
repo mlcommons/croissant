@@ -89,6 +89,7 @@ class RecordSet:
     """Record Set analogue for editor"""
 
     name: str = ""
+    data: Any = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
