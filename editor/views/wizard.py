@@ -2,7 +2,7 @@ import json
 
 import streamlit as st
 
-from core.past_projects import save_projects
+from core.past_projects import save_current_project
 from core.state import Metadata
 import mlcroissant as mlc
 from views.files import render_files
@@ -45,4 +45,4 @@ def render_editor():
         # callback responses to changes in st.session_state
         render_overview()
     render_download_button()
-    save_projects()
+    save_current_project()
