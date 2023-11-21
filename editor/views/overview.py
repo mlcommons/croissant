@@ -16,6 +16,11 @@ def render_overview():
             value=metadata.name,
             placeholder="Dataset",
         )
+        url = st.text_input(
+            label=needed_field("URL"),
+            value=metadata.url,
+            placeholder="URL to the dataset.",
+        )
         description = st.text_area(
             label="Description",
             value=metadata.description,
@@ -28,11 +33,11 @@ def render_overview():
             name=name,
             description=description,
             license=metadata.license,
-            url=metadata.url,
+            url=url,
             citation=metadata.citation,
         )
     with col2:
-        if metadata.name != None and metadata.name != "":
+        if metadata.name and metadata.url:
             st.header("Croissant File Validation")
             try:
                 issues = metadata.to_canonical().issues
