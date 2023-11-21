@@ -14,13 +14,13 @@ from views.record_sets import render_record_sets
 def render_download_button():
     try:
         st.download_button(
-            "Save",
+            "Export",
             file_name="croissant.json",
             type="primary",
             data=json.dumps(st.session_state[Metadata].to_canonical().to_json()),
         )
     except mlc.ValidationError as exception:
-        st.download_button("Save", disabled=True, data="")
+        st.download_button("Export", disabled=True, data="")
 
 
 OVERVIEW = "Overview"
