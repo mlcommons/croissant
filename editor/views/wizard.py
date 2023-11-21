@@ -2,7 +2,7 @@ import json
 
 import streamlit as st
 
-from core.state import CurrentStep
+from core.past_projects import save_current_project
 from core.state import Metadata
 import mlcroissant as mlc
 from views.files import render_files
@@ -14,13 +14,13 @@ from views.record_sets import render_record_sets
 def render_download_button():
     try:
         st.download_button(
-            "Save",
+            "Export",
             file_name="croissant.json",
             type="primary",
             data=json.dumps(st.session_state[Metadata].to_canonical().to_json()),
         )
     except mlc.ValidationError as exception:
-        st.download_button("Save", disabled=True, data="")
+        st.download_button("Export", disabled=True, data="")
 
 
 OVERVIEW = "Overview"
@@ -45,3 +45,4 @@ def render_editor():
         # callback responses to changes in st.session_state
         render_overview()
     render_download_button()
+    save_current_project()
