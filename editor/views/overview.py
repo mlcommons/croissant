@@ -44,19 +44,19 @@ def render_overview():
     with col2:
         user_started_editing = metadata.record_sets or metadata.distribution
         if user_started_editing:
-            st.header("Croissant File Validation")
+            st.subheader("Croissant File Validation")
             try:
                 issues = metadata.to_canonical().issues
                 if issues.errors:
-                    st.subheader("Errors:")
+                    st.markdown("##### Errors:")
                     for error in issues.errors:
                         st.write(error)
                 if issues.warnings:
-                    st.subheader("Warnings:")
+                    st.markdown("##### Warnings:")
                     for warning in issues.warnings:
                         st.write(warning)
                 if not issues.errors and not issues.warnings:
                     st.write("No validation issues detected!")
             except mlc.ValidationError as exception:
-                st.subheader("Errors:")
+                st.markdown("##### Errors:")
                 st.write(str(exception))
