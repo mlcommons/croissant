@@ -3,12 +3,11 @@
 import hashlib
 
 import pytest
-from mlcroissant._src.operation_graph.operations.download import (
-    Download,
-    _get_hash_algorithm,
-    extract_git_info,
-    insert_credentials,
-)
+
+from mlcroissant._src.operation_graph.operations.download import _get_hash_algorithm
+from mlcroissant._src.operation_graph.operations.download import Download
+from mlcroissant._src.operation_graph.operations.download import extract_git_info
+from mlcroissant._src.operation_graph.operations.download import insert_credentials
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
