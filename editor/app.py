@@ -17,6 +17,7 @@ st.set_page_config(page_title="Croissant Editor", page_icon="🥐", layout="wide
 col1, col2 = st.columns([10, 1])
 col1.header("Croissant Editor")
 if st.session_state[CurrentStep] != CurrentStep.splash:
+    col2.write("\n")  # Vertical box to shift the button menu
     col2.button("Menu", on_click=_back_to_menu)
 
 
