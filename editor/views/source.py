@@ -121,10 +121,9 @@ def _get_transforms_indices(source: mlc.Source) -> list[int]:
     ]
 
 
-def _handle_remove_reference(record_set_key, field_key, field):
+def _handle_remove_reference(field):
     """Removes the reference from a field."""
     field.references = mlc.Source()
-    st.session_state[Metadata].update_field(record_set_key, field_key, field)
 
 
 class ChangeEvent(enum.Enum):
@@ -238,7 +237,6 @@ def handle_field_change(
         if not field.references:
             field.references = mlc.Source(extract=mlc.Extract())
         field.references.extract = mlc.Extract(json_path=value)
-    st.session_state[Metadata].update_field(record_set_key, field_key, field)
 
 
 def render_source(
@@ -250,12 +248,12 @@ def render_source(
 ):
     """Renders the form for the source."""
     source = field.source
-    postfix = f"source-{record_set.name}-{field.name}"
+    prefix = f"source-{record_set.name}-{field.name}"
     col1, col2, col3 = st.columns([1, 1, 1])
     index = (
         possible_sources.index(source.uid) if source.uid in possible_sources else None
     )
-    key = f"{postfix}-source"
+    key = f"{prefix}-source"
     col1.selectbox(
         needed_field("Source"),
         index=index,
@@ -268,13 +266,13 @@ def render_source(
         extract = col2.selectbox(
             needed_field("Extract"),
             index=_get_extract_index(source),
-            key=f"{postfix}-extract",
+            key=f"{prefix}-extract",
             options=EXTRACT_TYPES,
             on_change=handle_field_change,
             args=(ChangeEvent.SOURCE_EXTRACT, record_set_key, field_key, field, key),
         )
         if extract == ExtractType.COLUMN:
-            key = f"{postfix}-columnname"
+            key = f"{prefix}-columnname"
             col3.text_input(
                 needed_field("Column name"),
                 value=source.extract.column,
@@ -289,7 +287,7 @@ def render_source(
                 ),
             )
         if extract == ExtractType.JSON_PATH:
-            key = f"{postfix}-jsonpath"
+            key = f"{prefix}-jsonpath"
             col3.text_input(
                 needed_field("JSON path"),
                 value=source.extract.json_path,
@@ -309,7 +307,7 @@ def render_source(
     if source.transforms:
         for number, (index, transform) in enumerate(zip(indices, source.transforms)):
             _, col2, col3, col4 = st.columns([4.5, 4, 4, 1])
-            key = f"{postfix}-{number}-transform"
+            key = f"{prefix}-{number}-transform"
             selected = col2.selectbox(
                 "Transform",
                 index=index,
@@ -320,7 +318,7 @@ def render_source(
                 kwargs={"number": number},
             )
             if selected == TransformType.FORMAT:
-                key = f"{postfix}-{number}-transform-format"
+                key = f"{prefix}-{number}-transform-format"
                 col3.text_input(
                     needed_field("Format"),
                     value=transform.format,
@@ -330,7 +328,7 @@ def render_source(
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.JSON_PATH:
-                key = f"{postfix}-{number}-jsonpath"
+                key = f"{prefix}-{number}-jsonpath"
                 col3.text_input(
                     needed_field("JSON path"),
                     value=transform.json_path,
@@ -340,7 +338,7 @@ def render_source(
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.REGEX:
-                key = f"{postfix}-{number}-regex"
+                key = f"{prefix}-{number}-regex"
                 col3.text_input(
                     needed_field("Regular expression"),
                     value=transform.regex,
@@ -350,7 +348,7 @@ def render_source(
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.REPLACE:
-                key = f"{postfix}-{number}-replace"
+                key = f"{prefix}-{number}-replace"
                 col3.text_input(
                     needed_field("Replace pattern"),
                     value=transform.replace,
@@ -360,7 +358,7 @@ def render_source(
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.SEPARATOR:
-                key = f"{postfix}-{number}-separator"
+                key = f"{prefix}-{number}-separator"
                 col3.text_input(
                     needed_field("Separator"),
                     value=transform.separator,
@@ -370,31 +368,27 @@ def render_source(
                     kwargs={"number": number, "type": "format"},
                 )
 
-            def _handle_remove_transform(record_set_key, field_key, field, number):
+            def _handle_remove_transform(field, number):
                 del field.source.transforms[number]
-                st.session_state[Metadata].update_field(
-                    record_set_key, field_key, field
-                )
 
             col4.button(
                 "✖️",
-                key=f"{postfix}-{number}-remove-transform",
+                key=f"{prefix}-{number}-remove-transform",
                 on_click=_handle_remove_transform,
-                args=(record_set_key, field_key, field, number),
+                args=(field, number),
             )
 
-    def _handle_add_transform(record_set_key, field_key, field):
+    def _handle_add_transform(field):
         if not field.source:
             field.source = mlc.Source(transforms=[])
         field.source.transforms.append(mlc.Transform())
-        st.session_state[Metadata].update_field(record_set_key, field_key, field)
 
     col1, _, _ = st.columns([1, 1, 1])
     col1.button(
         "Add transform on data",
-        key=f"{postfix}-close-fields",
+        key=f"{prefix}-close-fields",
         on_click=_handle_add_transform,
-        args=(record_set_key, field_key, field),
+        args=(field,),
     )
 
 
@@ -476,7 +470,7 @@ def render_references(
             "✖️",
             key=f"{key}-remove-reference",
             on_click=_handle_remove_reference,
-            args=(record_set_key, field_key, field),
+            args=(field,),
         )
     elif not has_clicked_button:
         st.button(

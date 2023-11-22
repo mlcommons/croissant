@@ -85,7 +85,9 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
     # `result` has the following structure:
+    # ```
     # {'edited_rows': {1: {}}, 'added_rows': [], 'deleted_rows': []}
+    # ```
     fields = record_set.fields
     for field_key in result["edited_rows"]:
         field = fields[field_key]
@@ -97,7 +99,6 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
                 field.description = new_value
             elif new_field == FieldDataFrame.DATA_TYPE:
                 field.data_types = [new_value]
-        st.session_state[Metadata].update_field(record_set_key, field_key, field)
     for added_row in result["added_rows"]:
         field = Field(
             name=added_row.get(FieldDataFrame.NAME),
@@ -146,7 +147,7 @@ def _render_left_panel():
     record_set: RecordSet
     for key, record_set in enumerate(record_sets):
         title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
-        prefix = f"{record_set.name}-{key}"
+        prefix = f"record-set-{key}"
         with st.expander(title, expanded=False):
             col1, col2 = st.columns([1, 3])
             name = col1.text_input(
@@ -230,7 +231,10 @@ def _render_left_panel():
                 dtype=np.str_,
             )
             data_editor_key = _data_editor_key(key, record_set)
-            st.markdown(needed_field("Fields"))
+            st.markdown(
+                f"{needed_field('Fields')} (add/delete fields by directly editing the"
+                " table)"
+            )
             st.data_editor(
                 fields,
                 use_container_width=True,
@@ -276,7 +280,7 @@ def _render_right_panel():
     record_set_key = selected.record_set_key
     with st.expander("**Fields**", expanded=True):
         for field_key, field in enumerate(record_set.fields):
-            prefix = f"{record_set}-{record_set_key}-{field.name}-{field_key}"
+            prefix = f"{record_set_key}-{field.name}-{field_key}"
             col1, col2, col3 = st.columns([1, 1, 1])
 
             key = f"{prefix}-name"
