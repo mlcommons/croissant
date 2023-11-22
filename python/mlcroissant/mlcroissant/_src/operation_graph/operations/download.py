@@ -121,6 +121,7 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
             f" {_SUPPORTED_HOSTS}. Contact the Croissant team to support more hosts."
         )
 
+
 def _get_hash_algorithm(file_object: FileObject):
     if file_object.md5:
         return hashlib.md5()
@@ -128,6 +129,7 @@ def _get_hash_algorithm(file_object: FileObject):
         return hashlib.sha256()
     else:
         raise ValueError("md5 and sha256 are not specified.")
+
 
 def get_basic_auth_from_env() -> tuple[str, str] | None:
     """Determines a Basic Auth tuple from the environment variables.
@@ -179,7 +181,8 @@ class Download(Operation):
             logging.info("Hash of downloaded file is not identical with reference in metadata.json")
             os.remove(filepath)
             raise ValueError('Hash of downloaded file is not identical with reference in metadata.json')
-            
+         
+
     def _download_from_git(self, filepath: epath.Path):
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
         password = os.environ.get(constants.CROISSANT_GIT_PASSWORD)
