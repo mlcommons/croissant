@@ -1,7 +1,7 @@
 import streamlit as st
 
 from core.state import CurrentStep
-from utils import set_form_step
+from utils import jump_to
 
 
 def render_side_buttons():
@@ -13,22 +13,22 @@ def render_side_buttons():
 
         st.button(
             "Metadata",
-            on_click=set_form_step,
-            args=["Jump", CurrentStep.editor],
+            on_click=jump_to,
+            args=[CurrentStep.editor],
             type=button_type("metadata"),
             use_container_width=True,
         )
         st.button(
             "Files",
-            on_click=set_form_step,
-            args=["Jump", CurrentStep.editor],
+            on_click=jump_to,
+            args=[CurrentStep.editor],
             type=button_type("files"),
             use_container_width=True,
         )
         st.button(
             "RecordSets",
-            on_click=set_form_step,
-            args=["Jump", CurrentStep.editor],
+            on_click=jump_to,
+            args=[CurrentStep.editor],
             type=button_type("recordsets"),
             use_container_width=True,
         )

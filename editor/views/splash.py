@@ -1,12 +1,12 @@
 import streamlit as st
 
-from core.past_projects import add_new_project
+from core.state import CurrentProject
 from core.state import CurrentStep
 from core.state import Metadata
-from utils import set_form_step
+from utils import jump_to
 from views.load import render_load
 from views.previous_files import render_previous_files
-from views.side_buttons import set_form_step
+from views.side_buttons import jump_to
 
 
 def render_splash():
@@ -17,10 +17,9 @@ def render_splash():
         with st.expander("**Create from scratch**", expanded=True):
 
             def create_new_croissant():
-                new_meta = Metadata()
-                st.session_state[Metadata] = new_meta
-                add_new_project(new_meta)
-                set_form_step("Jump", CurrentStep.editor)
+                st.session_state[Metadata] = Metadata()
+                st.session_state[CurrentProject] = CurrentProject.create_new()
+                jump_to(CurrentStep.editor)
 
             st.button(
                 "Create",

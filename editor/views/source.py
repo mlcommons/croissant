@@ -10,7 +10,6 @@ from events.fields import FieldEvent
 from events.fields import handle_field_change
 from events.fields import TransformType
 import mlcroissant as mlc
-from utils import DF_HEIGHT
 from utils import needed_field
 
 

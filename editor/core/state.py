@@ -6,11 +6,14 @@ In the future, this could be the serialization format between front and back.
 from __future__ import annotations
 
 import dataclasses
-import enum
+import datetime
 from typing import Any
 
+from etils import epath
 import pandas as pd
 
+from core.constants import PAST_PROJECTS_PATH
+from core.constants import PROJECT_FOLDER_PATTERN
 import mlcroissant as mlc
 
 
@@ -30,6 +33,18 @@ class CurrentStep:
 
     splash = "splash"
     editor = "editor"
+
+
+@dataclasses.dataclass
+class CurrentProject:
+    """The selected project."""
+
+    path: epath.Path
+
+    @classmethod
+    def create_new(cls) -> CurrentProject:
+        timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
+        return CurrentProject(path=PAST_PROJECTS_PATH / timestamp)
 
 
 class SelectedResource:
