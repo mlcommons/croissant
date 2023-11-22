@@ -1,12 +1,7 @@
 """download_test module."""
 
 import pytest
-from unittest.mock import patch
-
-from typing import TypeVar
 import hashlib
-import requests
-import tempfile
 
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
