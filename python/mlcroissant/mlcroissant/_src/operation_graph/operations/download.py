@@ -7,15 +7,13 @@ import os
 import time
 import urllib.parse
 
-from etils import epath
 import requests
 import tqdm
-
+from etils import epath
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.optional import deps
-from mlcroissant._src.core.path import get_fullpath
-from mlcroissant._src.core.path import Path
+from mlcroissant._src.core.path import Path, get_fullpath
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 
