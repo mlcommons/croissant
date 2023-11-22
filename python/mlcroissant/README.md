@@ -159,6 +159,7 @@ password = # generate the password on https://pypi.org/manage/account/token/
 ```
 1. Build locally and push to PyPI:
 ```bash
+rm -rf dist/
 python -m build
 python -m twine upload --repository mlcroissant dist/*
 ```
