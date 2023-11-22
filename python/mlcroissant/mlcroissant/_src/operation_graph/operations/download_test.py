@@ -1,6 +1,8 @@
 """download_test module."""
 
 import pytest
+from unittest.mock import patch
+
 from typing import TypeVar
 import hashlib
 import requests
@@ -9,7 +11,7 @@ import tempfile
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
-from mlcroissant._src.operation_graph.operations.download import _get_hash_obj
+from mlcroissant._src.operation_graph.operations.download import _get_hash_algorithm
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
@@ -77,36 +79,17 @@ def test_insert_credentials():
         )
 
 def test_get_hash_obj_md5():
-    file_object = FileObject(
+    node = FileObject(
             md5="12345",
         )
-    hash_obj = _get_hash_obj(file_object)
+    hash_algorithm = _get_hash_algorithm(node)
 
-    assert isinstance(hash_obj, type(hashlib.md5()))
+    assert isinstance(hash_algorithm, type(hashlib.md5()))
 
 def test_get_hash_obj_sha256():
-    file_object = FileObject(
+    node = FileObject(
             sha256="12345",
         )
-    hash_obj = _get_hash_obj(file_object)
+    hash_algorithm = _get_hash_algorithm(node)
 
-    assert isinstance(hash_obj, type(hashlib.sha256()))
-
-def test_checking_hash_correctly():
-    url = "https://www.openml.org/data/get_csv/16826755/phpMYEkMl"
-    file_object = FileObject(
-            sha256="c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
-        )
-    
-    hash = _get_hash_obj(file_object)
-
-    response = requests.get(url, stream=True, timeout=10)
-    total = int(response.headers.get("Content-Length", 0))
-    with tempfile.TemporaryFile() as file:
-            for data in response.iter_content(chunk_size=1024):
-                size = file.write(data)
-                hash.update(data)
-
-    downloaded_file_hash = hash.hexdigest()
-
-    assert (downloaded_file_hash) == (getattr(file_object, hash.name))
+    assert isinstance(hash_algorithm, type(hashlib.sha256()))

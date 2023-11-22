@@ -121,7 +121,7 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
             f" {_SUPPORTED_HOSTS}. Contact the Croissant team to support more hosts."
         )
 
-def _get_hash_obj(file_object: FileObject):
+def _get_hash_algorithm(file_object: FileObject):
     if file_object.md5:
         return hashlib.md5()
     elif file_object.sha256:
@@ -159,7 +159,7 @@ class Download(Operation):
         response.raise_for_status()
         total = int(response.headers.get("Content-Length", 0))
 
-        hash = _get_hash_obj(self.node)
+        hash = _get_hash_algorithm(self.node)
 
         with filepath.open("wb") as file, tqdm.tqdm(
             desc=f"Downloading {content_url}...",
