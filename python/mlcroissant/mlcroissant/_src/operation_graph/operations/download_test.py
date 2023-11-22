@@ -73,18 +73,20 @@ def test_insert_credentials():
             password="my/password",
         )
 
+
 def test_get_hash_obj_md5():
     node = FileObject(
-            md5="12345",
-        )
+        md5="12345",
+    )
     hash_algorithm = _get_hash_algorithm(node)
 
     assert isinstance(hash_algorithm, type(hashlib.md5()))
 
+
 def test_get_hash_obj_sha256():
     node = FileObject(
-            sha256="12345",
-        )
+        sha256="12345",
+    )
     hash_algorithm = _get_hash_algorithm(node)
 
     assert isinstance(hash_algorithm, type(hashlib.sha256()))
