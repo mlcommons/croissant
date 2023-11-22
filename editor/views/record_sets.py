@@ -7,9 +7,11 @@ from core.state import Field
 from core.state import Metadata
 from core.state import RecordSet
 from core.state import SelectedRecordSet
+from events.record_sets import handle_record_set_change
+from events.record_sets import RecordSetEvent
 import mlcroissant as mlc
 from utils import needed_field
-from views.source import ChangeEvent
+from views.source import FieldEvent
 from views.source import handle_field_change
 from views.source import render_references
 from views.source import render_source
@@ -145,27 +147,36 @@ def _render_left_panel():
         return
     record_sets = st.session_state[Metadata].record_sets
     record_set: RecordSet
-    for key, record_set in enumerate(record_sets):
+    for record_set_key, record_set in enumerate(record_sets):
         title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
-        prefix = f"record-set-{key}"
+        prefix = f"record-set-{record_set_key}"
         with st.expander(title, expanded=False):
             col1, col2 = st.columns([1, 3])
-            name = col1.text_input(
+            key = f"{prefix}-name"
+            col1.text_input(
                 needed_field("Name"),
                 placeholder="Name without special character.",
-                key=f"{prefix}-name",
+                key=key,
                 value=record_set.name,
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.NAME, record_set, key),
             )
-            description = col2.text_input(
+            key = f"{prefix}-description"
+            col2.text_input(
                 "Description",
                 placeholder="Provide a clear description of the RecordSet.",
-                key=f"{prefix}-description",
+                key=key,
                 value=record_set.description,
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.DESCRIPTION, record_set, key),
             )
-            is_enumeration = st.checkbox(
+            key = f"{prefix}-is-enumeration"
+            st.checkbox(
                 "Whether the RecordSet is an enumeration",
-                key=f"{prefix}-is-enumeration",
+                key=key,
                 value=record_set.is_enumeration,
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.IS_ENUMERATION, record_set, key),
             )
 
             joins = _find_joins(record_set.fields)
@@ -204,15 +215,6 @@ def _render_left_panel():
                         value=right[1],
                         key=f"{prefix}-right-key-{right}",
                     )
-
-            if (
-                name != record_set.name
-                or description != record_set.description
-                or is_enumeration != record_set.is_enumeration
-            ):
-                record_set.name = name
-                record_set.description = description
-                record_set.is_enumeration = is_enumeration
             names = [field.name for field in record_set.fields]
             descriptions = [field.description for field in record_set.fields]
             # TODO(https://github.com/mlcommons/croissant/issues/350): Allow to display
@@ -229,7 +231,7 @@ def _render_left_panel():
                 },
                 dtype=np.str_,
             )
-            data_editor_key = _data_editor_key(key, record_set)
+            data_editor_key = _data_editor_key(record_set_key, record_set)
             st.markdown(
                 f"{needed_field('Fields')} (add/delete fields by directly editing the"
                 " table)"
@@ -258,14 +260,14 @@ def _render_left_panel():
                     ),
                 },
                 on_change=_handle_fields_change,
-                args=(key, record_set),
+                args=(record_set_key, record_set),
             )
 
             st.button(
                 "Edit fields details",
                 key=f"{prefix}-show-fields",
                 on_click=_handle_on_click_field,
-                args=(key, record_set),
+                args=(record_set_key, record_set),
             )
 
 
@@ -289,7 +291,7 @@ def _render_right_panel():
                 key=key,
                 value=field.name,
                 on_change=handle_field_change,
-                args=(ChangeEvent.NAME, field, key),
+                args=(FieldEvent.NAME, field, key),
             )
             key = f"{prefix}-description"
             col2.text_input(
@@ -298,7 +300,7 @@ def _render_right_panel():
                 key=key,
                 on_change=handle_field_change,
                 value=field.description,
-                args=(ChangeEvent.DESCRIPTION, field, key),
+                args=(FieldEvent.DESCRIPTION, field, key),
             )
             if field.data_types:
                 data_type = field.data_types[0]
@@ -317,7 +319,7 @@ def _render_right_panel():
                 options=DATA_TYPES,
                 key=key,
                 on_change=handle_field_change,
-                args=(ChangeEvent.DATA_TYPE, field, key),
+                args=(FieldEvent.DATA_TYPE, field, key),
             )
             possible_sources = _get_possible_sources(metadata)
             render_source(

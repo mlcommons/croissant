@@ -15,6 +15,8 @@ from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
 from core.state import SelectedResource
+from events.resources import handle_resource_change
+from events.resources import ResourceEvent
 from utils import DF_HEIGHT
 from utils import needed_field
 
@@ -26,34 +28,6 @@ _MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
 _MANUAL_NAME_KEY = "manual_object_name"
 _MANUAL_DESCRIPTION_KEY = "manual_object_description"
 _MANUAL_SHA256_KEY = "manual_object_sha256"
-
-Resource = FileObject | FileSet
-
-
-class ResourceEvent(enum.Enum):
-    """Event that triggers a resource change."""
-
-    NAME = "NAME"
-    DESCRIPTION = "DESCRIPTION"
-    ENCODING_FORMAT = "ENCODING_FORMAT"
-    SHA256 = "SHA256"
-    CONTENT_SIZE = "CONTENT_SIZE"
-    CONTENT_URL = "CONTENT_URL"
-
-
-def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
-    if event == ResourceEvent.NAME:
-        resource.name = st.session_state[key]
-    elif event == ResourceEvent.DESCRIPTION:
-        resource.description = st.session_state[key]
-    elif event == ResourceEvent.ENCODING_FORMAT:
-        resource.license = st.session_state[key]
-    elif event == ResourceEvent.SHA256:
-        resource.citation = st.session_state[key]
-    elif event == ResourceEvent.CONTENT_SIZE:
-        resource.url = st.session_state[key]
-    elif event == ResourceEvent.CONTENT_URL:
-        resource.url = st.session_state[key]
 
 
 def render_files():

@@ -12,6 +12,7 @@ isort:
 		--project mlcroissant \
 		--project components \
 		--project core \
+		--project events \
 		--project views \
 		--project state \
 		--project utils \
