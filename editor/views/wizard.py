@@ -17,7 +17,7 @@ def render_export_button(col):
     try:
         col.download_button(
             "Export",
-            file_name=f"croissant-{metadata.name}.json",
+            file_name=f"croissant-{metadata.name.lower()}.json",
             type="primary",
             data=json.dumps(metadata.to_canonical().to_json()),
             help="Export the Croissant JSON-LD",
