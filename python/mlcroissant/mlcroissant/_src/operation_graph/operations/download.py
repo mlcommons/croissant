@@ -178,10 +178,11 @@ class Download(Operation):
         downloaded_file_hash = hash.hexdigest()
 
         if downloaded_file_hash != getattr(self.node, hash.name):
-            logging.info("Hash of downloaded file is not identical with reference in metadata.json")
+            logging.info("Hash of downloaded file is not identical with"
+                         " reference in metadata.json")
             os.remove(filepath)
-            raise ValueError('Hash of downloaded file is not identical with reference in metadata.json')
-         
+            raise ValueError("Hash of downloaded file is not identical with"
+                             " reference in metadata.json")
 
     def _download_from_git(self, filepath: epath.Path):
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
