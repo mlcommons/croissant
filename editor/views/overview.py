@@ -8,7 +8,7 @@ from views.metadata import MetadataEvent
 
 
 def render_overview():
-    metadata = st.session_state[Metadata]
+    metadata: Metadata = st.session_state[Metadata]
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
         key = "metadata-name"
@@ -42,7 +42,8 @@ def render_overview():
         st.subheader(f"{len(metadata.distribution)} Files")
         st.subheader(f"{len(metadata.record_sets)} Record Sets")
     with col2:
-        if metadata.name and metadata.url:
+        user_started_editing = metadata.record_sets or metadata.distribution
+        if user_started_editing:
             st.header("Croissant File Validation")
             try:
                 issues = metadata.to_canonical().issues
