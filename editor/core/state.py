@@ -6,6 +6,7 @@ In the future, this could be the serialization format between front and back.
 from __future__ import annotations
 
 import dataclasses
+import enum
 from typing import Any
 
 import pandas as pd
@@ -170,42 +171,14 @@ class Metadata:
                     new_uid = references.uid.replace(old_name, new_name, 1)
                     self.record_sets[i].fields[j].references.uid = new_uid
 
-    def update_metadata(
-        self,
-        description: str,
-        citation: str,
-        license: license,
-        url: str = "",
-        name: str = "",
-    ) -> None:
-        self.name = name
-        self.description = description
-        self.citation = citation
-        self.license = license
-        self.url = url
-
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
         self.distribution.append(distribution)
-
-    def update_distribution(self, key: int, distribution: FileSet | FileObject) -> None:
-        old_name = self.distribution[key].name
-        new_name = distribution.name
-        if old_name != new_name:
-            self.rename_distribution(old_name=old_name, new_name=new_name)
-        self.distribution[key] = distribution
 
     def remove_distribution(self, key: int) -> None:
         del self.distribution[key]
 
     def add_record_set(self, record_set: RecordSet) -> None:
         self.record_sets.append(record_set)
-
-    def update_record_set(self, key: int, record_set: RecordSet) -> None:
-        old_name = self.record_sets[key].name
-        new_name = record_set.name
-        if old_name != new_name:
-            self.rename_record_set(old_name=old_name, new_name=new_name)
-        self.record_sets[key] = record_set
 
     def remove_record_set(self, key: int) -> None:
         del self.record_sets[key]
@@ -218,27 +191,12 @@ class Metadata:
     def add_field(self, record_set_key: int, field: Field) -> None:
         record_set = self._find_record_set(record_set_key)
         record_set.fields.append(field)
-        self.update_record_set(record_set_key, record_set)
-
-    def update_field(
-        self, record_set_key: int, field_key: int, field: RecordSet
-    ) -> None:
-        record_set = self._find_record_set(record_set_key)
-        if field_key >= len(record_set.fields):
-            raise ValueError(f"Wrong index when updating field: {field_key}")
-        old_name = record_set.fields[field_key].name
-        new_name = field.name
-        if old_name != new_name:
-            self.rename_field(old_name=old_name, new_name=new_name)
-        record_set.fields[field_key] = field
-        self.update_record_set(record_set_key, record_set)
 
     def remove_field(self, record_set_key: int, field_key: int) -> None:
         record_set = self._find_record_set(record_set_key)
         if field_key >= len(record_set.fields):
             raise ValueError(f"Wrong index when removing field: {field_key}")
         del record_set.fields[field_key]
-        self.update_record_set(record_set_key, record_set)
 
     def to_canonical(self) -> mlc.Metadata:
         distribution = []

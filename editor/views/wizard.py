@@ -32,17 +32,13 @@ RECORD_SETS = "RecordSets"
 def render_editor():
     tab1, tab2, tab3, tab4 = st.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
 
+    with tab1:
+        render_overview()
     with tab2:
         render_metadata()
     with tab3:
         render_files()
     with tab4:
         render_record_sets()
-    with tab1:
-        # this happens last so that all other state changes happen first,
-        # before validation, but still appears as the first tab
-        # this is pretty much a limitation of streamlit as it doesn't allow
-        # callback responses to changes in st.session_state
-        render_overview()
     render_download_button()
     save_current_project()
