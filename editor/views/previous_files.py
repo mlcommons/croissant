@@ -1,30 +1,52 @@
 import datetime
 
+from etils import epath
 import streamlit as st
 
-from core.past_projects import load_past_projects
-from core.past_projects import loaded_project
+from core.constants import PROJECT_FOLDER_PATTERN
+from core.past_projects import load_past_projects_paths
+from core.past_projects import open_project
+from core.state import CurrentProject
 from core.state import CurrentStep
 from core.state import Metadata
-from utils import set_form_step
+from utils import jump_to
+
+
+def _load_croissant(metadata: Metadata, path: epath.Path) -> None:
+    st.session_state[Metadata] = metadata
+    st.session_state[CurrentProject] = CurrentProject(path)
+    jump_to(CurrentStep.editor)
+
+
+def _remove_croissant(path: epath.Path) -> None:
+    path.rmtree(missing_ok=True)
 
 
 def render_previous_files():
-    past_projects = load_past_projects()
-    if not past_projects:
-        st.text("No past Projects to load!")
+    paths = load_past_projects_paths()
+    if not paths:
+        st.write("No past project to load. Create one on the left!")
     else:
-
-        def load_croissant(index: int, metadata: Metadata) -> None:
-            st.session_state[Metadata] = metadata
-            set_form_step("Jump", CurrentStep.editor)
-            loaded_project(index)
-
-        for index, project in enumerate(past_projects):
-            st.button(
-                f"{project[0].name} - "
-                f"{datetime.datetime.fromtimestamp(project[1]).strftime('%Y-%m-%d %H:%M:%S')}",
-                key=project[0].name + "_" + str(index),
-                on_click=load_croissant,
-                args=[index, project[0]],
-            )
+        for index, path in enumerate(paths):
+            try:
+                col1, col2 = st.columns([10, 1])
+                metadata = open_project(path)
+                timestamp = datetime.datetime.strptime(
+                    path.name, PROJECT_FOLDER_PATTERN
+                ).strftime("%Y/%m/%d %H:%M")
+                label = f"{metadata.name or 'Unnamed dataset'} - {timestamp}"
+                col1.button(
+                    label,
+                    key=f"splash-{index}-load",
+                    on_click=_load_croissant,
+                    args=(metadata, path),
+                )
+                col2.button(
+                    "✖️",
+                    help="Warning: this will delete the project.",
+                    key=f"splash-{index}-remove",
+                    on_click=_remove_croissant,
+                    args=(path,),
+                )
+            except:
+                pass

@@ -3,11 +3,11 @@ import os
 from etils import epath
 import streamlit as st
 
-from core.past_projects import add_new_project
+from core.past_projects import save_current_project
 from core.state import CurrentStep
 from core.state import Metadata
 import mlcroissant as mlc
-from utils import set_form_step
+from utils import jump_to
 
 
 def render_load():
@@ -26,8 +26,8 @@ def render_load():
                 outfile.write(file_cont)
             dataset = mlc.Dataset(newfile_name)
             st.session_state[Metadata] = Metadata.from_canonical(dataset.metadata)
-            set_form_step("Jump", CurrentStep.editor)
-            add_new_project(st.session_state[Metadata])
+            jump_to(CurrentStep.editor)
+            save_current_project()
             st.rerun()
         except mlc.ValidationError as e:
             st.warning(e)

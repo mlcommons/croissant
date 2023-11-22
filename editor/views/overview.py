@@ -8,7 +8,7 @@ from views.metadata import MetadataEvent
 
 
 def render_overview():
-    metadata = st.session_state[Metadata]
+    metadata: Metadata = st.session_state[Metadata]
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
         key = "metadata-name"
@@ -42,20 +42,21 @@ def render_overview():
         st.subheader(f"{len(metadata.distribution)} Files")
         st.subheader(f"{len(metadata.record_sets)} Record Sets")
     with col2:
-        if metadata.name and metadata.url:
-            st.header("Croissant File Validation")
+        user_started_editing = metadata.record_sets or metadata.distribution
+        if user_started_editing:
+            st.subheader("Croissant File Validation")
             try:
                 issues = metadata.to_canonical().issues
                 if issues.errors:
-                    st.subheader("Errors:")
+                    st.markdown("##### Errors:")
                     for error in issues.errors:
                         st.write(error)
                 if issues.warnings:
-                    st.subheader("Warnings:")
+                    st.markdown("##### Warnings:")
                     for warning in issues.warnings:
                         st.write(warning)
                 if not issues.errors and not issues.warnings:
                     st.write("No validation issues detected!")
             except mlc.ValidationError as exception:
-                st.subheader("Errors:")
+                st.markdown("##### Errors:")
                 st.write(str(exception))

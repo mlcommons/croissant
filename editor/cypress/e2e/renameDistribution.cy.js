@@ -26,7 +26,7 @@ describe('Renaming of FileObjects/FileSets/RecordSets/Fields.', () => {
       // Click on genders.csv
       getBody().contains('genders.csv').click()
     })
-    cy.get('input[aria-label="Name:red[*]"][value="genders.csv"]').should('be.visible').type('{selectall}{backspace}the-new-name{enter}')
+    cy.get('input[aria-label="Name:red[*]"][value="genders.csv"]').type('{selectall}{backspace}the-new-name{enter}')
 
     cy.get('button').contains('RecordSets').click()
     cy.contains('genders').click()

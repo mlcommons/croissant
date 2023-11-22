@@ -1,6 +1,7 @@
 import json
 
 import streamlit as st
+import streamlit_nested_layout  # Do not remove this allows nesting columns.
 
 from core.past_projects import save_current_project
 from core.state import Metadata
@@ -11,16 +12,18 @@ from views.overview import render_overview
 from views.record_sets import render_record_sets
 
 
-def render_download_button():
+def render_export_button(col):
+    metadata: Metadata = st.session_state[Metadata]
     try:
-        st.download_button(
+        col.download_button(
             "Export",
-            file_name="croissant.json",
+            file_name=f"croissant-{metadata.name.lower()}.json",
             type="primary",
-            data=json.dumps(st.session_state[Metadata].to_canonical().to_json()),
+            data=json.dumps(metadata.to_canonical().to_json()),
+            help="Export the Croissant JSON-LD",
         )
     except mlc.ValidationError as exception:
-        st.download_button("Export", disabled=True, data="")
+        col.download_button("Export", disabled=True, data="", help=str(exception))
 
 
 OVERVIEW = "Overview"
@@ -30,7 +33,9 @@ RECORD_SETS = "RecordSets"
 
 
 def render_editor():
-    tab1, tab2, tab3, tab4 = st.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
+    col1, col2 = st.columns([10, 1])
+    render_export_button(col2)
+    tab1, tab2, tab3, tab4 = col1.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
 
     with tab1:
         render_overview()
@@ -40,5 +45,4 @@ def render_editor():
         render_files()
     with tab4:
         render_record_sets()
-    render_download_button()
     save_current_project()

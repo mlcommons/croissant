@@ -1,24 +1,20 @@
-DF_HEIGHT = 150
-
 import streamlit as st
 
+from core.state import CurrentProject
 from core.state import CurrentStep
 from core.state import Metadata
 from core.state import SelectedRecordSet
 from core.state import SelectedResource
 import mlcroissant as mlc
 
-EDITOR_CACHE = mlc.constants.CROISSANT_CACHE / "editor"
-LOADED_CROISSANT = EDITOR_CACHE / "loaded_croissant"
-
 
 def needed_field(text: str) -> str:
     return f"{text}:red[*]"
 
 
-def set_form_step(action, step=None):
+def jump_to(step: str):
     """Maintains the user's location within the editor."""
-    if action == "Jump" and step is not None:
+    if step is not None:
         st.session_state[CurrentStep] = step
 
 
@@ -40,6 +36,9 @@ def init_state(force=False):
     if SelectedResource not in st.session_state or force:
         st.session_state[SelectedRecordSet] = None
 
+    if CurrentProject not in st.session_state or force:
+        st.session_state[CurrentProject] = CurrentProject.create_new()
+
     # Uncomment those lines if you work locally in order to avoid clicks at each reload.
     # And comment all previous lines in `init_state`.
     # if mlc.Dataset not in st.session_state or force:
@@ -50,3 +49,5 @@ def init_state(force=False):
     #     )
     # if CurrentStep not in st.session_state or force:
     #     st.session_state[CurrentStep] = CurrentStep.editor
+    # if CurrentProject not in st.session_state or force:
+    #     st.session_state[CurrentProject] = CurrentProject.create_new()

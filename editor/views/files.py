@@ -3,6 +3,7 @@ import enum
 import streamlit as st
 
 from components.tree import render_tree
+from core.constants import DF_HEIGHT
 from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
@@ -17,7 +18,6 @@ from core.state import Metadata
 from core.state import SelectedResource
 from events.resources import handle_resource_change
 from events.resources import ResourceEvent
-from utils import DF_HEIGHT
 from utils import needed_field
 
 Resource = FileObject | FileSet

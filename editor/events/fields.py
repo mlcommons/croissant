@@ -83,7 +83,7 @@ def handle_field_change(
         new_name = value
         if old_name != new_name:
             metadata: Metadata = st.session_state[Metadata]
-            metadata.rename_metadata(old_name=old_name, new_name=new_name)
+            metadata.rename_field(old_name=old_name, new_name=new_name)
         field.name = value
     elif change == FieldEvent.DESCRIPTION:
         field.description = value
