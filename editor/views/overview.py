@@ -1,41 +1,46 @@
-import os
-
 import streamlit as st
 
 from core.state import Metadata
 import mlcroissant as mlc
 from utils import needed_field
+from views.metadata import handle_metadata_change
+from views.metadata import MetadataEvent
 
 
 def render_overview():
     metadata = st.session_state[Metadata]
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
-        name = st.text_input(
+        key = "metadata-name"
+        st.text_input(
             label=needed_field("Name"),
+            key=key,
             value=metadata.name,
             placeholder="Dataset",
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.NAME, metadata, key),
         )
-        url = st.text_input(
+        key = "metadata-url"
+        st.text_input(
             label=needed_field("URL"),
+            key=key,
             value=metadata.url,
             placeholder="URL to the dataset.",
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.URL, metadata, key),
         )
-        description = st.text_area(
+        key = "metadata-description"
+        st.text_area(
             label="Description",
+            key=key,
             value=metadata.description,
             placeholder="Provide a clear description of the dataset.",
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.DESCRIPTION, metadata, key),
         )
 
         st.subheader(f"{len(metadata.distribution)} Files")
         st.subheader(f"{len(metadata.record_sets)} Record Sets")
-        metadata.update_metadata(
-            name=name,
-            description=description,
-            license=metadata.license,
-            url=url,
-            citation=metadata.citation,
-        )
     with col2:
         if metadata.name and metadata.url:
             st.header("Croissant File Validation")

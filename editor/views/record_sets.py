@@ -213,7 +213,6 @@ def _render_left_panel():
                 record_set.name = name
                 record_set.description = description
                 record_set.is_enumeration = is_enumeration
-                st.session_state[Metadata].update_record_set(key, record_set)
             names = [field.name for field in record_set.fields]
             descriptions = [field.description for field in record_set.fields]
             # TODO(https://github.com/mlcommons/croissant/issues/350): Allow to display
@@ -290,7 +289,7 @@ def _render_right_panel():
                 key=key,
                 value=field.name,
                 on_change=handle_field_change,
-                args=(ChangeEvent.NAME, record_set_key, field_key, field, key),
+                args=(ChangeEvent.NAME, field, key),
             )
             key = f"{prefix}-description"
             col2.text_input(
@@ -299,7 +298,7 @@ def _render_right_panel():
                 key=key,
                 on_change=handle_field_change,
                 value=field.description,
-                args=(ChangeEvent.DESCRIPTION, record_set_key, field_key, field, key),
+                args=(ChangeEvent.DESCRIPTION, field, key),
             )
             if field.data_types:
                 data_type = field.data_types[0]
@@ -318,7 +317,7 @@ def _render_right_panel():
                 options=DATA_TYPES,
                 key=key,
                 on_change=handle_field_change,
-                args=(ChangeEvent.DATA_TYPE, record_set_key, field_key, field, key),
+                args=(ChangeEvent.DATA_TYPE, field, key),
             )
             possible_sources = _get_possible_sources(metadata)
             render_source(

@@ -1,4 +1,5 @@
-import pandas as pd
+import enum
+
 import streamlit as st
 
 from components.tree import render_tree
@@ -25,6 +26,34 @@ _MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
 _MANUAL_NAME_KEY = "manual_object_name"
 _MANUAL_DESCRIPTION_KEY = "manual_object_description"
 _MANUAL_SHA256_KEY = "manual_object_sha256"
+
+Resource = FileObject | FileSet
+
+
+class ResourceEvent(enum.Enum):
+    """Event that triggers a resource change."""
+
+    NAME = "NAME"
+    DESCRIPTION = "DESCRIPTION"
+    ENCODING_FORMAT = "ENCODING_FORMAT"
+    SHA256 = "SHA256"
+    CONTENT_SIZE = "CONTENT_SIZE"
+    CONTENT_URL = "CONTENT_URL"
+
+
+def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
+    if event == ResourceEvent.NAME:
+        resource.name = st.session_state[key]
+    elif event == ResourceEvent.DESCRIPTION:
+        resource.description = st.session_state[key]
+    elif event == ResourceEvent.ENCODING_FORMAT:
+        resource.license = st.session_state[key]
+    elif event == ResourceEvent.SHA256:
+        resource.citation = st.session_state[key]
+    elif event == ResourceEvent.CONTENT_SIZE:
+        resource.url = st.session_state[key]
+    elif event == ResourceEvent.CONTENT_URL:
+        resource.url = st.session_state[key]
 
 
 def render_files():
@@ -178,60 +207,73 @@ def _render_resource_details(selected_file: Resource):
             col.button("Remove", key=f"{key}_url", on_click=delete_line, type="primary")
 
 
-def _render_file_object(key: int, file: FileObject):
-    name = st.text_input(needed_field("Name"), value=file.name, key=f"{key}_name")
-    description = st.text_area(
+def _render_file_object(prefix: int, file: FileObject):
+    key = f"{prefix}_name"
+    st.text_input(
+        needed_field("Name"),
+        value=file.name,
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.NAME, file, key),
+    )
+    key = f"{prefix}_description"
+    st.text_area(
         "Description",
         value=file.description,
         placeholder="Provide a clear description of the file.",
-        key=f"{key}_description",
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.DESCRIPTION, file, key),
     )
-    sha256 = st.text_input(
+    key = f"{prefix}_sha256"
+    st.text_input(
         needed_field("SHA256"),
         value=file.sha256,
         disabled=True,
-        key=f"{key}_sha256",
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.SHA256, file, key),
     )
-    encoding_format = st.text_input(
+    key = f"{prefix}_encoding"
+    st.text_input(
         needed_field("Encoding format"),
         value=file.encoding_format,
         disabled=True,
-        key=f"{key}_encoding",
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.ENCODING_FORMAT, file, key),
     )
     st.markdown("First rows of data:")
     if file.df is not None:
         st.dataframe(file.df, height=DF_HEIGHT)
     else:
         st.text("No rendering possible.")
-    file = FileObject(
-        name=name,
-        description=description,
-        content_url=file.content_url,
-        content_size=file.content_size,
-        encoding_format=encoding_format,
-        sha256=sha256,
-        df=file.df,
+
+
+def _render_file_set(prefix: int, file: FileSet):
+    key = f"{prefix}_name"
+    st.text_input(
+        needed_field("Name"),
+        value=file.name,
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.NAME, file, key),
     )
-    st.session_state[Metadata].update_distribution(key, file)
-
-
-def _render_file_set(key: int, file: FileSet):
-    name = st.text_input(needed_field("Name"), value=file.name, key=f"{key}_name")
-    description = st.text_area(
+    key = f"{prefix}_description"
+    st.text_area(
         "Description",
         value=file.description,
         placeholder="Provide a clear description of the file.",
-        key=f"{key}_description",
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.DESCRIPTION, file, key),
     )
-    encoding_format = st.text_input(
+    key = f"{prefix}_encoding"
+    st.text_input(
         needed_field("Encoding format"),
         value=file.encoding_format,
         disabled=True,
-        key=f"{key}_encoding",
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.ENCODING_FORMAT, file, key),
     )
-    file = FileSet(
-        description=description,
-        encoding_format=encoding_format,
-        name=name,
-    )
-    st.session_state[Metadata].update_distribution(key, file)

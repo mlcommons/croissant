@@ -218,7 +218,6 @@ class Metadata:
     def add_field(self, record_set_key: int, field: Field) -> None:
         record_set = self._find_record_set(record_set_key)
         record_set.fields.append(field)
-        self.update_record_set(record_set_key, record_set)
 
     def update_field(
         self, record_set_key: int, field_key: int, field: RecordSet
@@ -231,14 +230,12 @@ class Metadata:
         if old_name != new_name:
             self.rename_field(old_name=old_name, new_name=new_name)
         record_set.fields[field_key] = field
-        self.update_record_set(record_set_key, record_set)
 
     def remove_field(self, record_set_key: int, field_key: int) -> None:
         record_set = self._find_record_set(record_set_key)
         if field_key >= len(record_set.fields):
             raise ValueError(f"Wrong index when removing field: {field_key}")
         del record_set.fields[field_key]
-        self.update_record_set(record_set_key, record_set)
 
     def to_canonical(self) -> mlc.Metadata:
         distribution = []

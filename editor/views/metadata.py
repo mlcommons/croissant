@@ -1,3 +1,5 @@
+import enum
+
 import streamlit as st
 
 from core.state import Metadata
@@ -23,27 +25,50 @@ licenses = [
 ]
 
 
+class MetadataEvent(enum.Enum):
+    """Event that triggers a metadata change."""
+
+    NAME = "NAME"
+    DESCRIPTION = "DESCRIPTION"
+    URL = "URL"
+    LICENSE = "LICENSE"
+    CITATION = "CITATION"
+
+
+def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
+    if event == MetadataEvent.NAME:
+        metadata.name = st.session_state[key]
+    elif event == MetadataEvent.DESCRIPTION:
+        metadata.description = st.session_state[key]
+    elif event == MetadataEvent.LICENSE:
+        metadata.license = st.session_state[key]
+    elif event == MetadataEvent.CITATION:
+        metadata.citation = st.session_state[key]
+    elif event == MetadataEvent.URL:
+        metadata.url = st.session_state[key]
+
+
 def render_metadata():
     metadata = st.session_state[Metadata]
     try:
         index = licenses.index(metadata.license)
     except ValueError:
         index = None
-    license = st.selectbox(
+    key = "metadata-license"
+    st.selectbox(
         label="License",
+        key=key,
         options=licenses,
         index=index,
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.LICENSE, metadata, key),
     )
-    citation = st.text_area(
+    key = "metadata-citation"
+    st.text_area(
         label="Citation",
+        key=key,
         value=metadata.citation,
         placeholder="@book{\n  title={Title}\n}",
-    )
-    # We fully recreate the session state in order to force the re-rendering.
-    metadata.update_metadata(
-        name=metadata.name,
-        description=metadata.description,
-        license=license,
-        url=metadata.url,
-        citation=citation,
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.CITATION, metadata, key),
     )

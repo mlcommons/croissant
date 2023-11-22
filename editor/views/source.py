@@ -168,8 +168,6 @@ def _get_source(source: mlc.Source | None, value: Any) -> mlc.Source:
 
 def handle_field_change(
     change: ChangeEvent,
-    record_set_key: int,
-    field_key: int,
     field: Field,
     key: str,
     **kwargs,
@@ -260,7 +258,7 @@ def render_source(
         options=[s for s in possible_sources if not s.startswith(record_set.name)],
         key=key,
         on_change=handle_field_change,
-        args=(ChangeEvent.SOURCE, record_set_key, field_key, field, key),
+        args=(ChangeEvent.SOURCE, field, key),
     )
     if source.node_type == "distribution":
         extract = col2.selectbox(
@@ -269,7 +267,7 @@ def render_source(
             key=f"{prefix}-extract",
             options=EXTRACT_TYPES,
             on_change=handle_field_change,
-            args=(ChangeEvent.SOURCE_EXTRACT, record_set_key, field_key, field, key),
+            args=(ChangeEvent.SOURCE_EXTRACT, field, key),
         )
         if extract == ExtractType.COLUMN:
             key = f"{prefix}-columnname"
@@ -278,13 +276,7 @@ def render_source(
                 value=source.extract.column,
                 key=key,
                 on_change=handle_field_change,
-                args=(
-                    ChangeEvent.SOURCE_EXTRACT_COLUMN,
-                    record_set_key,
-                    field_key,
-                    field,
-                    key,
-                ),
+                args=(ChangeEvent.SOURCE_EXTRACT_COLUMN, field, key),
             )
         if extract == ExtractType.JSON_PATH:
             key = f"{prefix}-jsonpath"
@@ -293,13 +285,7 @@ def render_source(
                 value=source.extract.json_path,
                 key=key,
                 on_change=handle_field_change,
-                args=(
-                    ChangeEvent.SOURCE_EXTRACT_JSON_PATH,
-                    record_set_key,
-                    field_key,
-                    field,
-                    key,
-                ),
+                args=(ChangeEvent.SOURCE_EXTRACT_JSON_PATH, field, key),
             )
 
     # Transforms
@@ -314,7 +300,7 @@ def render_source(
                 key=key,
                 options=TRANSFORM_TYPES,
                 on_change=handle_field_change,
-                args=(ChangeEvent.TRANSFORM, record_set_key, field_key, field, key),
+                args=(ChangeEvent.TRANSFORM, field, key),
                 kwargs={"number": number},
             )
             if selected == TransformType.FORMAT:
@@ -324,7 +310,7 @@ def render_source(
                     value=transform.format,
                     key=key,
                     on_change=handle_field_change,
-                    args=(selected, record_set_key, field_key, field, key),
+                    args=(selected, field, key),
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.JSON_PATH:
@@ -334,7 +320,7 @@ def render_source(
                     value=transform.json_path,
                     key=key,
                     on_change=handle_field_change,
-                    args=(selected, record_set_key, field_key, field, key),
+                    args=(selected, field, key),
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.REGEX:
@@ -344,7 +330,7 @@ def render_source(
                     value=transform.regex,
                     key=key,
                     on_change=handle_field_change,
-                    args=(selected, record_set_key, field_key, field, key),
+                    args=(selected, field, key),
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.REPLACE:
@@ -354,7 +340,7 @@ def render_source(
                     value=transform.replace,
                     key=key,
                     on_change=handle_field_change,
-                    args=(selected, record_set_key, field_key, field, key),
+                    args=(selected, field, key),
                     kwargs={"number": number, "type": "format"},
                 )
             elif selected == TransformType.SEPARATOR:
@@ -364,7 +350,7 @@ def render_source(
                     value=transform.separator,
                     key=key,
                     on_change=handle_field_change,
-                    args=(selected, record_set_key, field_key, field, key),
+                    args=(selected, field, key),
                     kwargs={"number": number, "type": "format"},
                 )
 
@@ -418,7 +404,7 @@ def render_references(
             options=[s for s in possible_sources if not s.startswith(record_set.name)],
             key=key,
             on_change=handle_field_change,
-            args=(ChangeEvent.REFERENCE, record_set_key, field_key, field, key),
+            args=(ChangeEvent.REFERENCE, field, key),
         )
         if references.node_type == "distribution":
             key = f"{key}-extract-references"
@@ -428,13 +414,7 @@ def render_references(
                 key=key,
                 options=EXTRACT_TYPES,
                 on_change=handle_field_change,
-                args=(
-                    ChangeEvent.REFERENCE_EXTRACT,
-                    record_set_key,
-                    field_key,
-                    field,
-                    key,
-                ),
+                args=(ChangeEvent.REFERENCE_EXTRACT, field, key),
             )
             if extract == ExtractType.COLUMN:
                 key = f"{key}-columnname"
@@ -443,13 +423,7 @@ def render_references(
                     value=references.extract.column,
                     key=key,
                     on_change=handle_field_change,
-                    args=(
-                        ChangeEvent.REFERENCE_EXTRACT_COLUMN,
-                        record_set_key,
-                        field_key,
-                        field,
-                        key,
-                    ),
+                    args=(ChangeEvent.REFERENCE_EXTRACT_COLUMN, field, key),
                 )
             if extract == ExtractType.JSON_PATH:
                 key = f"{key}-jsonpath"
@@ -458,13 +432,7 @@ def render_references(
                     value=references.extract.json_path,
                     key=key,
                     on_change=handle_field_change,
-                    args=(
-                        ChangeEvent.REFERENCE_EXTRACT_JSON_PATH,
-                        record_set_key,
-                        field_key,
-                        field,
-                        key,
-                    ),
+                    args=(ChangeEvent.REFERENCE_EXTRACT_JSON_PATH, field, key),
                 )
         col4.button(
             "✖️",
