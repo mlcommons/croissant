@@ -1,5 +1,6 @@
 import streamlit as st
 
+from core.constants import OAUTH_CLIENT_ID
 from core.state import CurrentProject
 from core.state import CurrentStep
 from core.state import Metadata
@@ -10,6 +11,12 @@ from views.side_buttons import jump_to
 
 
 def render_splash():
+    if OAUTH_CLIENT_ID:
+        st.write(
+            "**Disclaimer**: Do not put sensitive information or datasets here. If you"
+            " want to host your own version locally, build the app from [the GitHub"
+            " repository](https://github.com/mlcommons/croissant/tree/main/editor)."
+        )
     col1, col2 = st.columns([1, 1], gap="large")
     with col1:
         with st.expander("**Load an existing Croissant JSON-LD file**", expanded=True):

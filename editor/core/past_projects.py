@@ -23,7 +23,10 @@ def _pickle_file(path: epath.Path) -> epath.Path:
 
 def save_current_project():
     metadata = st.session_state[Metadata]
-    project = st.session_state[CurrentProject]
+    project = st.session_state.get(CurrentProject)
+    if not project:
+        project = CurrentProject.create_new()
+        st.session_state[CurrentProject] = project
     project.path.mkdir(parents=True, exist_ok=True)
     with _pickle_file(project.path).open("wb") as file:
         try:

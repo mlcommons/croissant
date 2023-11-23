@@ -7,3 +7,8 @@ rsync -aP --exclude="README.md" --exclude="*node_modules*" --exclude="*__pycache
 cd ${HF_REPO}
 echo "Now push with: 'cd $HF_REPO && git add && git commit && git push'."
 echo "Warning: if it fails, you may need to follow https://huggingface.co/docs/hub/security-git-ssh#generating-a-new-ssh-keypair"
+echo "On Hugging Face Spaces, you might have to set the following environment variables:"
+echo "- REDIRECT_URI"
+echo "- OAUTH_STATE"
+echo "- OAUTH_CLIENT_ID"
+echo "- OAUTH_CLIENT_SECRET"

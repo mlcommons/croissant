@@ -19,7 +19,7 @@ def PAST_PROJECTS_PATH(user) -> epath.Path:
     if OAUTH_CLIENT_ID:
         if user is None:
             raise Exception("Please, authenticate before using the application.")
-        return base / user.email
+        return base / user.username
     # Else look up at the root:
     else:
         return base

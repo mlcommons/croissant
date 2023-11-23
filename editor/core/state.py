@@ -20,6 +20,7 @@ from core.constants import OAUTH_CLIENT_ID
 from core.constants import OAUTH_CLIENT_SECRET
 from core.constants import PAST_PROJECTS_PATH
 from core.constants import PROJECT_FOLDER_PATTERN
+from core.constants import REDIRECT_URI
 import mlcroissant as mlc
 
 
@@ -39,11 +40,11 @@ class User:
     """The connected user."""
 
     access_token: str
-    email: str
     id_token: str
+    username: str
 
     @classmethod
-    def connect(cls, code: str, redirect_uri: str):
+    def connect(cls, code: str):
         credentials = base64.b64encode(
             f"{OAUTH_CLIENT_ID}:{OAUTH_CLIENT_SECRET}".encode()
         ).decode()
@@ -54,7 +55,7 @@ class User:
             "client_id": OAUTH_CLIENT_ID,
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": redirect_uri,
+            "redirect_uri": REDIRECT_URI,
         }
         url = "https://huggingface.co/oauth/token"
         response = requests.post(url, data=data, headers=headers)
@@ -63,12 +64,13 @@ class User:
             access_token = response.get("access_token")
             id_token = response.get("id_token")
             if access_token and id_token:
-                sha256 = hashlib.sha256()
                 # Warning: this is temporary while being able to retrieve the username.
-                email = sha256.update(access_token.encode()).digest().hexdigest()
-                return User(access_token=access_token, email=email, id_token=id_token)
+                username = hashlib.sha256(access_token.encode()).hexdigest()
+                return User(
+                    access_token=access_token, username=username, id_token=id_token
+                )
         raise Exception(
-            "Could not connect to Hugging Face. Please, refresh the page"
+            f"Could not connect to Hugging Face. Please, go to {REDIRECT_URI}."
             f" ({response=})."
         )
 
