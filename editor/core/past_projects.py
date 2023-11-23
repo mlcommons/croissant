@@ -1,19 +1,20 @@
-import os
+import logging
 import pickle
-import shutil
-import time
 
 from etils import epath
 import streamlit as st
 
 from core.constants import PAST_PROJECTS_PATH
 from core.state import CurrentProject
+from core.state import get_cached_user
 from core.state import Metadata
 
 
 def load_past_projects_paths() -> list[epath.Path]:
-    PAST_PROJECTS_PATH.mkdir(parents=True, exist_ok=True)
-    return sorted(list(PAST_PROJECTS_PATH.iterdir()), reverse=True)
+    user = get_cached_user()
+    past_projects_path = PAST_PROJECTS_PATH(user)
+    past_projects_path.mkdir(parents=True, exist_ok=True)
+    return sorted(list(past_projects_path.iterdir()), reverse=True)
 
 
 def _pickle_file(path: epath.Path) -> epath.Path:
@@ -22,10 +23,16 @@ def _pickle_file(path: epath.Path) -> epath.Path:
 
 def save_current_project():
     metadata = st.session_state[Metadata]
-    project = st.session_state[CurrentProject]
+    project = st.session_state.get(CurrentProject)
+    if not project:
+        project = CurrentProject.create_new()
+        st.session_state[CurrentProject] = project
     project.path.mkdir(parents=True, exist_ok=True)
     with _pickle_file(project.path).open("wb") as file:
-        pickle.dump(metadata, file)
+        try:
+            pickle.dump(metadata, file)
+        except pickle.PicklingError:
+            logging.error("Could not pickle metadata.")
 
 
 def open_project(path: epath.Path) -> Metadata:
