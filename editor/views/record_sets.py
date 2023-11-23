@@ -83,6 +83,11 @@ def _find_joins(fields: list[Field]) -> set[Join]:
     return joins
 
 
+def _handle_create_record_set():
+    metadata: Metadata = st.session_state[Metadata]
+    metadata.add_record_set(RecordSet(name="", description=""))
+
+
 def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
@@ -148,7 +153,7 @@ def _render_left_panel():
     record_sets = st.session_state[Metadata].record_sets
     record_set: RecordSet
     for record_set_key, record_set in enumerate(record_sets):
-        title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
+        title = f"**{record_set.name or '-'}** ({len(record_set.fields)} fields)"
         prefix = f"record-set-{record_set_key}"
         with st.expander(title, expanded=False):
             col1, col2 = st.columns([1, 3])
@@ -269,6 +274,12 @@ def _render_left_panel():
                 on_click=_handle_on_click_field,
                 args=(record_set_key, record_set),
             )
+    st.button(
+        "Create a new RecordSet",
+        key=f"create-new-record-set",
+        type="primary",
+        on_click=_handle_create_record_set,
+    )
 
 
 def _render_right_panel():
