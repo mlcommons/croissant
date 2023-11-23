@@ -92,7 +92,7 @@ class CurrentProject:
     def create_new(cls) -> CurrentProject:
         timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
         user = st.session_state.get(User)
-        if user is None:
+        if user is None and OAUTH_CLIENT_ID:
             return None
         else:
             path = PAST_PROJECTS_PATH(user)

@@ -1,9 +1,13 @@
+import logging
+
+import requests
 import streamlit as st
 
 from core.constants import OAUTH_CLIENT_ID
 from core.state import CurrentProject
 from core.state import CurrentStep
 from core.state import Metadata
+import mlcroissant as mlc
 from utils import jump_to
 from views.load import render_load
 from views.previous_files import render_previous_files
@@ -31,6 +35,29 @@ def render_splash():
             st.button(
                 "Create",
                 on_click=create_new_croissant,
+                type="primary",
+            )
+        with st.expander("**Try out an example!**", expanded=True):
+
+            def create_example():
+                url = "https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/titanic/metadata.json"
+                try:
+                    json = requests.get(url).json()
+                    metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
+                    st.session_state[Metadata] = Metadata.from_canonical(metadata)
+                    st.session_state[CurrentProject] = CurrentProject.create_new()
+                    jump_to(CurrentStep.editor)
+                except Exception as exception:
+                    logging.error(exception)
+                    st.write(
+                        "Sorry, it seems that the example is broken... Can you please"
+                        " [open an issue on"
+                        " GitHub](https://github.com/mlcommons/croissant/issues/new)?"
+                    )
+
+            st.button(
+                "Titanic dataset",
+                on_click=create_example,
                 type="primary",
             )
     with col2:
