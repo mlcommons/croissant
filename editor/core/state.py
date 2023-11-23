@@ -5,13 +5,19 @@ In the future, this could be the serialization format between front and back.
 
 from __future__ import annotations
 
+import base64
 import dataclasses
 import datetime
+import hashlib
 from typing import Any
 
 from etils import epath
 import pandas as pd
+import requests
+import streamlit as st
 
+from core.constants import OAUTH_CLIENT_ID
+from core.constants import OAUTH_CLIENT_SECRET
 from core.constants import PAST_PROJECTS_PATH
 from core.constants import PROJECT_FOLDER_PATTERN
 import mlcroissant as mlc
@@ -26,6 +32,45 @@ def create_class(mlc_class: type, instance: Any, **kwargs) -> Any:
         if hasattr(instance, name) and name not in kwargs:
             params[name] = getattr(instance, name)
     return mlc_class(**params, **kwargs)
+
+
+@dataclasses.dataclass
+class User:
+    """The connected user."""
+
+    access_token: str
+    email: str
+    id_token: str
+
+    @classmethod
+    def connect(cls, code: str, redirect_uri: str):
+        credentials = base64.b64encode(
+            f"{OAUTH_CLIENT_ID}:{OAUTH_CLIENT_SECRET}".encode()
+        ).decode()
+        headers = {
+            "Authorization": f"Basic {credentials}",
+        }
+        data = {
+            "client_id": OAUTH_CLIENT_ID,
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": redirect_uri,
+        }
+        url = "https://huggingface.co/oauth/token"
+        response = requests.post(url, data=data, headers=headers)
+        if response.status_code == 200:
+            response = response.json()
+            access_token = response.get("access_token")
+            id_token = response.get("id_token")
+            if access_token and id_token:
+                sha256 = hashlib.sha256()
+                # Warning: this is temporary while being able to retrieve the username.
+                email = sha256.update(access_token.encode()).digest().hexdigest()
+                return User(access_token=access_token, email=email, id_token=id_token)
+        raise Exception(
+            "Could not connect to Hugging Face. Please, refresh the page"
+            f" ({response=})."
+        )
 
 
 class CurrentStep:
@@ -44,7 +89,12 @@ class CurrentProject:
     @classmethod
     def create_new(cls) -> CurrentProject:
         timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
-        return CurrentProject(path=PAST_PROJECTS_PATH / timestamp)
+        user = st.session_state.get(User)
+        if user is None:
+            return None
+        else:
+            path = PAST_PROJECTS_PATH(user)
+            return CurrentProject(path=path / timestamp)
 
 
 class SelectedResource:

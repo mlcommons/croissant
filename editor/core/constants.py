@@ -1,10 +1,30 @@
+import os
+
 from etils import epath
 
 import mlcroissant as mlc
 
-EDITOR_CACHE: epath.Path = mlc.constants.CROISSANT_CACHE / "editor"
-PAST_PROJECTS_PATH: epath.Path = EDITOR_CACHE / "projects"
-PROJECT_FOLDER_PATTERN = "%Y%m%d%H%M%S%f"
+# Authentication to Hugging Face:
+REDIRECT_URI = os.getenv("REDIRECT_URI", "http://localhost:8501")
+OAUTH_STATE = os.getenv("OAUTH_STATE")
+OAUTH_CLIENT_ID = os.getenv("OAUTH_CLIENT_ID")
+OAUTH_CLIENT_SECRET = os.getenv("OAUTH_CLIENT_SECRET")
 
+EDITOR_CACHE: epath.Path = mlc.constants.CROISSANT_CACHE / "editor"
+
+
+def PAST_PROJECTS_PATH(user) -> epath.Path:
+    base = EDITOR_CACHE / "projects"
+    # If there is authentication, look up in the user's path:
+    if OAUTH_CLIENT_ID:
+        if user is None:
+            raise Exception("Please, authenticate before using the application.")
+        return base / user.email
+    # Else look up at the root:
+    else:
+        return base
+
+
+PROJECT_FOLDER_PATTERN = "%Y%m%d%H%M%S%f"
 
 DF_HEIGHT = 150

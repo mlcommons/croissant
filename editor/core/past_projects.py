@@ -7,11 +7,14 @@ import streamlit as st
 from core.constants import PAST_PROJECTS_PATH
 from core.state import CurrentProject
 from core.state import Metadata
+from core.state import User
 
 
 def load_past_projects_paths() -> list[epath.Path]:
-    PAST_PROJECTS_PATH.mkdir(parents=True, exist_ok=True)
-    return sorted(list(PAST_PROJECTS_PATH.iterdir()), reverse=True)
+    user = st.session_state.get(User)
+    past_projects_path = PAST_PROJECTS_PATH(user)
+    past_projects_path.mkdir(parents=True, exist_ok=True)
+    return sorted(list(past_projects_path.iterdir()), reverse=True)
 
 
 def _pickle_file(path: epath.Path) -> epath.Path:

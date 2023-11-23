@@ -1,6 +1,12 @@
+import urllib.parse
+
 import streamlit as st
 
+from core.constants import OAUTH_CLIENT_ID
+from core.constants import OAUTH_STATE
+from core.constants import REDIRECT_URI
 from core.state import CurrentStep
+from core.state import User
 from utils import init_state
 from views.splash import render_splash
 from views.wizard import render_editor
@@ -8,14 +14,33 @@ from views.wizard import render_editor
 init_state()
 
 
+st.set_page_config(page_title="Croissant Editor", page_icon="🥐", layout="wide")
+col1, col2 = st.columns([10, 1])
+col1.header("Croissant Editor")
+
+if OAUTH_CLIENT_ID:
+    query_params = st.experimental_get_query_params()
+    state = query_params.get("state")
+    if state and state[0] == OAUTH_STATE:
+        code = query_params.get("code")
+        if not code:
+            st.stop()
+        st.session_state[User] = User.connect(code, REDIRECT_URI)
+    else:
+        redirect_uri = urllib.parse.quote(REDIRECT_URI, safe="")
+        client_id = urllib.parse.quote(OAUTH_CLIENT_ID, safe="")
+        state = urllib.parse.quote(OAUTH_STATE, safe="")
+        scope = urllib.parse.quote("openid profile", safe="")
+        url = f"https://huggingface.co/oauth/authorize?response_type=code&redirect_uri={redirect_uri}&scope={scope}&client_id={client_id}&state={state}"
+        st.link_button("🤗 Login with Hugging Face", url)
+        st.stop()
+
+
 def _back_to_menu():
     """Sends the user back to the menu."""
     init_state(force=True)
 
 
-st.set_page_config(page_title="Croissant Editor", page_icon="🥐", layout="wide")
-col1, col2 = st.columns([10, 1])
-col1.header("Croissant Editor")
 if st.session_state[CurrentStep] != CurrentStep.splash:
     col2.write("\n")  # Vertical box to shift the button menu
     col2.button("Menu", on_click=_back_to_menu)
