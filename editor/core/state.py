@@ -64,11 +64,18 @@ class User:
             access_token = response.get("access_token")
             id_token = response.get("id_token")
             if access_token and id_token:
-                # Warning: this is temporary while being able to retrieve the username.
-                username = hashlib.sha256(access_token.encode()).hexdigest()
-                return User(
-                    access_token=access_token, username=username, id_token=id_token
-                )
+                url = "https://huggingface.co/oauth/userinfo"
+                headers = {"Authorization": f"Bearer {access_token}"}
+                response = requests.get(url, headers=headers)
+                if response.status_code == 200:
+                    response = response.json()
+                    username = response.get("preferred_username")
+                    if username:
+                        return User(
+                            access_token=access_token,
+                            username=username,
+                            id_token=id_token,
+                        )
         raise Exception(
             f"Could not connect to Hugging Face. Please, go to {REDIRECT_URI}."
             f" ({response=})."

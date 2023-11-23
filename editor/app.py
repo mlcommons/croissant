@@ -25,8 +25,12 @@ if OAUTH_CLIENT_ID and not st.session_state.get(User):
         code = query_params.get("code")
         if not code:
             st.stop()
-        st.session_state[User] = User.connect(code)
-        st.experimental_set_query_params()
+        try:
+            st.session_state[User] = User.connect(code)
+        except:
+            raise
+        finally:
+            st.experimental_set_query_params()
     else:
         redirect_uri = urllib.parse.quote(REDIRECT_URI, safe="")
         client_id = urllib.parse.quote(OAUTH_CLIENT_ID, safe="")
