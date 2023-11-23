@@ -1,7 +1,5 @@
-import os
+import logging
 import pickle
-import shutil
-import time
 
 from etils import epath
 import streamlit as st
@@ -25,7 +23,10 @@ def save_current_project():
     project = st.session_state[CurrentProject]
     project.path.mkdir(parents=True, exist_ok=True)
     with _pickle_file(project.path).open("wb") as file:
-        pickle.dump(metadata, file)
+        try:
+            pickle.dump(metadata, file)
+        except pickle.PicklingError:
+            logging.error("Could not pickle metadata.")
 
 
 def open_project(path: epath.Path) -> Metadata:
