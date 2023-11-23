@@ -1,8 +1,0 @@
-[flake8]
-max-line-length = 100
-show-source = True
-extend-ignore = W503
-select = B,C,E,F,T,W
-exclude =
-    venv
-    data
