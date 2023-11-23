@@ -8,7 +8,6 @@ from __future__ import annotations
 import base64
 import dataclasses
 import datetime
-import hashlib
 from typing import Any
 
 from etils import epath
@@ -82,6 +81,12 @@ class User:
         )
 
 
+@st.cache_data(ttl=datetime.timedelta(hours=1))
+def get_cached_user():
+    """Caches user in session_state."""
+    return st.session_state.get(User)
+
+
 class CurrentStep:
     """Holds all major state variables for the application."""
 
@@ -96,9 +101,9 @@ class CurrentProject:
     path: epath.Path
 
     @classmethod
-    def create_new(cls) -> CurrentProject:
+    def create_new(cls) -> CurrentProject | None:
         timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
-        user = st.session_state.get(User)
+        user = get_cached_user()
         if user is None and OAUTH_CLIENT_ID:
             return None
         else:
