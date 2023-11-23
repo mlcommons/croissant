@@ -31,7 +31,7 @@ flags.DEFINE_string(
 flags.DEFINE_string(
     "output",
     None,
-    "Dataset name or URL on huggingface.co/datasets.",
+    "Path to the output croissant file.",
 )
 
 flags.mark_flag_as_required("dataset")
