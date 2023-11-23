@@ -16,9 +16,10 @@ from views.side_buttons import jump_to
 
 def render_splash():
     if OAUTH_CLIENT_ID:
-        st.write(
-            "**Disclaimer**: Do not put sensitive information or datasets here. If you"
-            " want to host your own version locally, build the app from [the GitHub"
+        st.info(
+            "**Disclaimer**: Do not put sensitive information or datasets here. The"
+            " storage on Hugging Face Spaces is ephemeral. If you want to host your own"
+            " version locally, build the app from [the GitHub"
             " repository](https://github.com/mlcommons/croissant/tree/main/editor)."
         )
     col1, col2 = st.columns([1, 1], gap="large")
