@@ -113,11 +113,8 @@ def _render_upload_panel():
             url = st.session_state[_DISTANT_URL_KEY]
             uploaded_file = st.session_state[_LOCAL_FILE_KEY]
             file_type = FILE_TYPES[file_type_name]
-            nodes = (
-                st.session_state[Metadata].distribution
-                + st.session_state[Metadata].record_sets
-            )
-            names = set([node.name for node in nodes])
+            metadata: Metadata = st.session_state[Metadata]
+            names = metadata.names()
             if url:
                 file = file_from_url(file_type, url, names)
             elif uploaded_file:

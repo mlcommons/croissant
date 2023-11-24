@@ -85,7 +85,7 @@ def _find_joins(fields: list[Field]) -> set[Join]:
 
 def _handle_create_record_set():
     metadata: Metadata = st.session_state[Metadata]
-    metadata.add_record_set(RecordSet(name="", description=""))
+    metadata.add_record_set(RecordSet(name="new-record-set", description=""))
 
 
 def _handle_fields_change(record_set_key: int, record_set: RecordSet):
@@ -243,7 +243,8 @@ def _render_left_panel():
             )
             st.data_editor(
                 fields,
-                use_container_width=True,
+                # There is a bug with `st.data_editor` when the df is empty.
+                use_container_width=not fields.empty,
                 num_rows="dynamic",
                 key=data_editor_key,
                 column_config={

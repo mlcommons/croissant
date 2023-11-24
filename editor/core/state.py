@@ -20,6 +20,7 @@ from core.constants import OAUTH_CLIENT_SECRET
 from core.constants import PAST_PROJECTS_PATH
 from core.constants import PROJECT_FOLDER_PATTERN
 from core.constants import REDIRECT_URI
+from core.names import find_unique_name
 import mlcroissant as mlc
 
 
@@ -257,6 +258,8 @@ class Metadata:
         del self.distribution[key]
 
     def add_record_set(self, record_set: RecordSet) -> None:
+        name = find_unique_name(self.names(), record_set.name)
+        record_set.name = name
         self.record_sets.append(record_set)
 
     def remove_record_set(self, key: int) -> None:
@@ -323,3 +326,7 @@ class Metadata:
             distribution=distribution,
             record_sets=record_sets,
         )
+
+    def names(self) -> set[str]:
+        nodes = self.distribution + self.record_sets
+        return set([node.name for node in nodes])
