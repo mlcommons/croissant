@@ -50,9 +50,9 @@ Although being straightforward, this approach of defining an enumeration has sev
 For the above reasons, it is recommended to use a `RecordSet` to define an
 enumeration unless:
 
-1. the data format used by to store the `RecordSet` natively supports the
+1. the data format used to store the `RecordSet` natively supports the
   concept of enumerations, which should make it fast to list all possible
-  enumerations.\
+  values.\
   or
 2. the `RecordSet` in which the enumeration is defined is known to be small.
   This is the case in the example above, as the parent `RecordSet` is being

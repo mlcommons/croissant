@@ -19,7 +19,6 @@ The main components of the `Croissant` format are:
 - **ML semantics**: ML-specific information about the dataset: splits, labels,
   snapshots, etc.
 
-
 We use the `sc` prefix to refer to the `http://schema.org` namespace.
 
 ## Classes
@@ -30,13 +29,12 @@ The `Croissant` vocabulary defines the following classes:
 
 A digital file that could represent a
 [sc:DigitalDocument](https://schema.org/DigitalDocument),
-[sc:MediaObject](https://schema.org/MediaObject) or some other type of file. 
+[sc:MediaObject](https://schema.org/MediaObject) or some other type of file.
 
 `FileObject` is a general purpose class that should ideally be included in the
 `schema.org` vocabulary.
 
-**subclassOf**:	[sc:CreativeWork](https://schema.org/CreativeWork)
-
+**subclassOf**: [sc:CreativeWork](https://schema.org/CreativeWork)
 
 **Properties**:
 
@@ -178,7 +176,7 @@ taken (e.g., this can be used to to combine files from multiple archives).
 
 A glob pattern over content Urls or filenames that specifies files to include in
 a `FileSet`. If multiple values are provided, then their union is taken, i.e.,
-any file matched by any of the include patterns is included. 
+any file matched by any of the include patterns is included.
 
 The range of the property is text, assuming a default globbing syntax. A more
 structured type can be introduced if we want to support multiple globbing
@@ -275,29 +273,29 @@ types inform about the semantic being used, possibly semantics with ML meaning.
 
 [🔗](#known-supported-data-types) Known supported data types:
 
-| `dataType` | Usage |
-| -------- | ----- |
-| [**`sc:Boolean`**](https://schema.org/Boolean) | Describes a boolean. |
-| [**`sc:Date`**](https://schema.org/Date) | Describes a date. |
-| [**`sc:Float`**](https://schema.org/Float) | Describes a float. |
-| [**`sc:Integer`**](https://schema.org/Integer) | Describes an integer. |
-| [**`sc:Text`**](https://schema.org/Text) | Describes a string. |
-| [**`sc:URL`**](https://schema.org/ImageObject) | Describes a URL. |
-| [**`sc:ImageObject`**](https://schema.org/ImageObject) | Describes a field containing the content of an image (pixels). |
-| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box. |
-| [**`sc:name`**](https://schema.org/name) | Describes a field which can be used as a human-friendly label. |
-| [**`mlc:split`**](https://mlcommons.org/definitions/split) | Describes a field used to divide data into multiple sets according to intended usage with regards to models [training](https://mlcommons.org/definitions/training_split), [validation](https://mlcommons.org/definitions/validation_split), [testing](https://mlcommons.org/definitions/test_split), and possibly others. <br/>While any value is acceptable here, it is recommended to associate the usual splits listed above with the linked semantic URL.
+| `dataType`                                                      | Usage                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**`sc:Boolean`**](https://schema.org/Boolean)                  | Describes a boolean.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [**`sc:Date`**](https://schema.org/Date)                        | Describes a date.                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [**`sc:Float`**](https://schema.org/Float)                      | Describes a float.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [**`sc:Integer`**](https://schema.org/Integer)                  | Describes an integer.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| [**`sc:Text`**](https://schema.org/Text)                        | Describes a string.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [**`sc:URL`**](https://schema.org/ImageObject)                  | Describes a URL.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| [**`sc:ImageObject`**](https://schema.org/ImageObject)          | Describes a field containing the content of an image (pixels).                                                                                                                                                                                                                                                                                                                                                                                                |
+| [**`ml:BoundingBox`**](http://mlcommons.org/schema/BoundingBox) | Describes a bounding box.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [**`sc:name`**](https://schema.org/name)                        | Describes a field which can be used as a human-friendly label.                                                                                                                                                                                                                                                                                                                                                                                                |
+| [**`ml:split`**](https://mlcommons.org/definitions/split)       | Describes a field used to divide data into multiple sets according to intended usage with regards to models [training](https://mlcommons.org/definitions/training_split), [validation](https://mlcommons.org/definitions/validation_split), [testing](https://mlcommons.org/definitions/test_split), and possibly others. <br/>While any value is acceptable here, it is recommended to associate the usual splits listed above with the linked semantic URL. |
 
 Extension mechanism
 
 The Croissant format supports more data types, which can be used by tools consuming the data. For example:
 
- `dataType` | Usage |
-| -------- | ----- |
-| [**`wd:Q48277`**](https://www.wikidata.org/wiki/Q48277) <br/>(**gender**) | Describes a field which values are indicative of a person gender. This can be used by Ethical AI tools to flag possible gender bias in the data. Values for this field can be associated with specific gender URLs (eg: [**`wd:Q6581097`**](https://www.wikidata.org/wiki/Q6581097), [**`wd:Q6581072`**](https://www.wikidata.org/wiki/Q6581072), etc.) |
+ | `dataType`                                                                | Usage                                                                                                                                                                                                                                                                                                                                                                   |
+ | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | [**`wd:Q48277`**](https://www.wikidata.org/wiki/Q48277) <br/>(**gender**) | Describes a field which values are indicative of a person gender. This can be used by Ethical AI tools to flag possible gender bias in the data. Values for this field can be associated with specific gender URLs (eg: [**`wd:Q6581097`** (male)](https://www.wikidata.org/wiki/Q6581097), [**`wd:Q6581072`** (female)](https://www.wikidata.org/wiki/Q6581072), etc.) |
 
 
-In the following example, `color_sample` is a field containing an image, but with no associated semantic meaning. 
+In the following example, `color_sample` is a field containing an image, but with no associated semantic meaning.
 
 ```json
 {
@@ -328,7 +326,7 @@ values of this field to be URLs referring to cities (eg:
 
 A reference to another `field` of another `RecordSet`, with foreign key
 semantics. If a `RecordSet` contains multiple references to fields of the same
-target RecordSet, these are assumed to constitute a composite foreign key. 
+target RecordSet, these are assumed to constitute a composite foreign key.
 
 **range**: [Reference](#reference) (to a [Field](#field), or
 [RecordSet](#recordset))
@@ -343,8 +341,7 @@ referenced (e.g., a `FileObject`, `RecordSet` or `Field`).
 
 **range**: [Reference](#reference)
 
-**domain**:	[DataSource](#datasource)
-
+**domain**: [DataSource](#datasource)
 
 ### record
 
@@ -378,24 +375,22 @@ switching to use `sc:PropertyValue` to keep the json-ld valid.
 
 **domain**: [RecordSet](#recordset)
 
-
 ### applyTransform
 
 A transformation to apply on source data. We aim to support a few simple
 transformations:
 
-*   **delimiter**: split a string into an array using the supplied character
-*   **regex**: A regular expression to parse the data. TODO: Mechanism to specify if
-    it applies to the entire file or to individual lines.
-*   **json-query**: A json query to evaluate on the (json) data source.
+- **delimiter**: split a string into an array using the supplied character
+- **regex**: A regular expression to parse the data. TODO: Mechanism to specify if
+             it applies to the entire file or to individual lines.
+- **json-query**: A json query to evaluate on the (json) data source.
 
 We can either define a custom type that has properties for each of these
 mechanisms, or use `sc:PropertyValue` as an escape hatch.
 
 **range**: [PropertyValue](https://schema.org/PropertyValue) TODO: Define a dedicated class.
 
-**domain**:	[DataSource](#datasource)
-
+**domain**: [DataSource](#datasource)
 
 ### format
 
@@ -408,8 +403,7 @@ right format for a given target data type.
 
 **range**: [sc:Text](https://schema.org/Text)
 
-**domain**:	[DataSource](#datasource)
-
+**domain**: [DataSource](#datasource)
 
 ## Open issues/questions
 

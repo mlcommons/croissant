@@ -12,7 +12,7 @@ referred to as classes.
 **Note**
 Classes and labels, although sometimes used indistinctively, do not share the
 exact same definition. Be sure to check the
-[`ml:label` definition](/definitions/label). A class is the possible value a
+[`ml:label` definition]((/docs/definitions/label)). A class is the possible value a
 `ml:label` may take, but a `ml:label` is not necessarily a class.
 
 See the [howto define labels documentation](/howto/labels) to
