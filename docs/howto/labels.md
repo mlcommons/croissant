@@ -8,7 +8,7 @@ This documentation page covers the following topics:
 
 - Defining a [`ml:label`](/definitions/label), including a [class](/definitions/class).
 - Defining a label following the general definition "a kind of tag to
-  idendify an object" or identifying tag.
+  identify an object" or identifying tag.
 
 ## Defining a `ml:label`
 
@@ -38,7 +38,7 @@ In the above example, the `air_temperature_c` field is declared as being a
 `ml:label`, on top of being a number. This means that the dataset has
 originally been collected to train models that could predict the air
 temperature in ºC, given other parameters. Note that this does not prevent
-someone from using that same dataset for other purposes as predicting air
+anyone from using that same dataset for other purposes than predicting air
 temperature: the `ml:label` `dataType` is indicative only.
 
 ### Defining a class
@@ -111,6 +111,6 @@ https://github.com/mlcommons/croissant/blob/0f8a1b408a6d225bf777a7dbddc47133d0eb
 
 ### Scope of the name and url
 
-A `sc:name` or a `sc:URL` describes the parent entity, whether that's a record
+A `sc:name` or a `sc:URL` describes the containing entity, whether that's a record
 (the label is a "root-level" `Field`), or a `Field`, if the field is defined as
  a subfield.
