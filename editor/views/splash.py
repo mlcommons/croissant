@@ -40,8 +40,8 @@ def render_splash():
             )
         with st.expander("**Try out an example!**", expanded=True):
 
-            def create_example():
-                url = "https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/titanic/metadata.json"
+            def create_example(dataset: str):
+                url = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/{dataset.lower()}/metadata.json"
                 try:
                     json = requests.get(url).json()
                     metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
@@ -50,16 +50,29 @@ def render_splash():
                     jump_to(CurrentStep.editor)
                 except Exception as exception:
                     logging.error(exception)
-                    st.write(
+                    st.error(
                         "Sorry, it seems that the example is broken... Can you please"
                         " [open an issue on"
                         " GitHub](https://github.com/mlcommons/croissant/issues/new)?"
                     )
 
+            dataset = st.selectbox(
+                label="Dataset",
+                options=[
+                    "Titanic",
+                    "FLORES-200",
+                    "GPT-3",
+                    "COCO2014",
+                    "PASS",
+                    "MovieLens",
+                    "Bigcode-The-Stack",
+                ],
+            )
             st.button(
-                "Titanic dataset",
+                f"{dataset} dataset",
                 on_click=create_example,
                 type="primary",
+                args=(dataset,),
             )
     with col2:
         with st.expander("**Past projects**", expanded=True):
