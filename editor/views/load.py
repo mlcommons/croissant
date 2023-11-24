@@ -28,7 +28,6 @@ def render_load():
             st.session_state[Metadata] = Metadata.from_canonical(dataset.metadata)
             jump_to(CurrentStep.editor)
             save_current_project()
-            st.rerun()
         except mlc.ValidationError as e:
             st.warning(e)
             st.toast(body="Invalid Croissant File!", icon="🔥")
