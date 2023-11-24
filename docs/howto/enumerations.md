@@ -4,7 +4,7 @@ Enumerations are **finite** sets of values, which may be **named** and may
 have an associated **semantic meaning**.
 
 **Note**
-While enumerations may be used to define [classes](/definitions/classes) or [labels](/definitions/labels), they don't mecessarily share the same meaning, check the definitions.
+While enumerations may be used to define [classes](/definitions/classes) or [labels](/definitions/labels), they don't necessarily share the same meaning, check the definitions.
 
 Although often being of `dataType` [`sc:Text`](http://schema.org/Text), enumerations can also be of other `dataType`s (e.g. `sc:Integer`).
 
