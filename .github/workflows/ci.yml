@@ -82,6 +82,7 @@ jobs:
                 --ExecutePreprocessor.kernel_name=croissant-notebook \
                 --to notebook \
                 --execute $notebook
+            fi
           done
           
   python-format:
