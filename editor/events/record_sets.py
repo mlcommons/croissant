@@ -2,6 +2,7 @@ import enum
 
 import streamlit as st
 
+from core.query_params import expand_record_set
 from core.state import Metadata
 from core.state import RecordSet
 
@@ -27,3 +28,4 @@ def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: 
         record_set.description = value
     elif event == RecordSetEvent.IS_ENUMERATION:
         record_set.is_enumeration = value
+    expand_record_set(record_set=record_set)

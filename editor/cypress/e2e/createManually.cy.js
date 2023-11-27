@@ -8,15 +8,17 @@ describe('Create a resource manually', () => {
   it('should allow adding a FileObject resource', () => {
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
-    cy.get('button', {timeout: 10000}).contains('Create', {timeout: 10000}).click()
+    cy.get('button').contains('Create').click()
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset').blur()
-    cy.get('[data-testid="stMarkdownContainer"]')
-    .contains('Metadata')
-    .click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Metadata').click()
+    })
     cy.get('input[aria-label="URL:red[*]"]').type('https://mydataset.com', {force: true})
     
     // Create a resource manually.
-    cy.get('[data-testid="stMarkdownContainer"]').contains('Resources').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Resources').click()
+    })
     cy.get('[data-testid="stMarkdownContainer"]').contains('Add manually').click()
 
     cy.get('input[aria-label="File name:red[*]"]').type('test.csv').blur()

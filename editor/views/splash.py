@@ -4,14 +4,13 @@ import requests
 import streamlit as st
 
 from core.constants import OAUTH_CLIENT_ID
+from core.past_projects import save_current_project
+from core.query_params import set_project
 from core.state import CurrentProject
-from core.state import CurrentStep
 from core.state import Metadata
 import mlcroissant as mlc
-from utils import jump_to
 from views.load import render_load
 from views.previous_files import render_previous_files
-from views.side_buttons import jump_to
 
 
 def render_splash():
@@ -30,8 +29,7 @@ def render_splash():
 
             def create_new_croissant():
                 st.session_state[Metadata] = Metadata()
-                st.session_state[CurrentProject] = CurrentProject.create_new()
-                jump_to(CurrentStep.editor)
+                save_current_project()
 
             st.button(
                 "Create",
@@ -40,26 +38,38 @@ def render_splash():
             )
         with st.expander("**Try out an example!**", expanded=True):
 
-            def create_example():
-                url = "https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/titanic/metadata.json"
+            def create_example(dataset: str):
+                url = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/{dataset.lower()}/metadata.json"
                 try:
                     json = requests.get(url).json()
                     metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
                     st.session_state[Metadata] = Metadata.from_canonical(metadata)
-                    st.session_state[CurrentProject] = CurrentProject.create_new()
-                    jump_to(CurrentStep.editor)
+                    save_current_project()
                 except Exception as exception:
                     logging.error(exception)
-                    st.write(
+                    st.error(
                         "Sorry, it seems that the example is broken... Can you please"
                         " [open an issue on"
                         " GitHub](https://github.com/mlcommons/croissant/issues/new)?"
                     )
 
+            dataset = st.selectbox(
+                label="Dataset",
+                options=[
+                    "Titanic",
+                    "FLORES-200",
+                    "GPT-3",
+                    "COCO2014",
+                    "PASS",
+                    "MovieLens",
+                    "Bigcode-The-Stack",
+                ],
+            )
             st.button(
-                "Titanic dataset",
+                f"{dataset} dataset",
                 on_click=create_example,
                 type="primary",
+                args=(dataset,),
             )
     with col2:
         with st.expander("**Past projects**", expanded=True):

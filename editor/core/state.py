@@ -20,6 +20,8 @@ from core.constants import OAUTH_CLIENT_SECRET
 from core.constants import PAST_PROJECTS_PATH
 from core.constants import PROJECT_FOLDER_PATTERN
 from core.constants import REDIRECT_URI
+from core.constants import TABS
+from core.names import find_unique_name
 import mlcroissant as mlc
 
 
@@ -87,13 +89,6 @@ def get_cached_user():
     return st.session_state.get(User)
 
 
-class CurrentStep:
-    """Holds all major state variables for the application."""
-
-    splash = "splash"
-    editor = "editor"
-
-
 @dataclasses.dataclass
 class CurrentProject:
     """The selected project."""
@@ -103,6 +98,10 @@ class CurrentProject:
     @classmethod
     def create_new(cls) -> CurrentProject | None:
         timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
+        return cls.from_timestamp(timestamp)
+
+    @classmethod
+    def from_timestamp(cls, timestamp: str) -> CurrentProject | None:
         user = get_cached_user()
         if user is None and OAUTH_CLIENT_ID:
             return None
@@ -257,6 +256,8 @@ class Metadata:
         del self.distribution[key]
 
     def add_record_set(self, record_set: RecordSet) -> None:
+        name = find_unique_name(self.names(), record_set.name)
+        record_set.name = name
         self.record_sets.append(record_set)
 
     def remove_record_set(self, key: int) -> None:
@@ -323,3 +324,22 @@ class Metadata:
             distribution=distribution,
             record_sets=record_sets,
         )
+
+    def names(self) -> set[str]:
+        nodes = self.distribution + self.record_sets
+        return set([node.name for node in nodes])
+
+
+class OpenTab:
+    pass
+
+
+def get_tab():
+    return st.session_state.get(OpenTab, 0)
+
+
+def set_tab(tab: str):
+    if tab not in TABS:
+        return
+    index = TABS.index(tab)
+    st.session_state[OpenTab] = index

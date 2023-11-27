@@ -1,8 +1,12 @@
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from rdflib import term
 import streamlit as st
 
+from core.query_params import expand_record_set
+from core.query_params import is_record_set_expanded
 from core.state import Field
 from core.state import Metadata
 from core.state import RecordSet
@@ -83,7 +87,15 @@ def _find_joins(fields: list[Field]) -> set[Join]:
     return joins
 
 
-def _handle_fields_change(record_set_key: int, record_set: RecordSet):
+def _handle_create_record_set():
+    metadata: Metadata = st.session_state[Metadata]
+    metadata.add_record_set(RecordSet(name="new-record-set", description=""))
+
+
+def _handle_fields_change(
+    record_set_key: int, record_set: RecordSet, params: dict[str, Any]
+):
+    expand_record_set(record_set=record_set)
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
     # `result` has the following structure:
@@ -148,9 +160,9 @@ def _render_left_panel():
     record_sets = st.session_state[Metadata].record_sets
     record_set: RecordSet
     for record_set_key, record_set in enumerate(record_sets):
-        title = f"**{record_set.name}** ({len(record_set.fields)} fields)"
+        title = f"**{record_set.name or '-'}** ({len(record_set.fields)} fields)"
         prefix = f"record-set-{record_set_key}"
-        with st.expander(title, expanded=False):
+        with st.expander(title, expanded=is_record_set_expanded(record_set)):
             col1, col2 = st.columns([1, 3])
             key = f"{prefix}-name"
             col1.text_input(
@@ -195,25 +207,25 @@ def _render_left_panel():
                         "Left join",
                         disabled=True,
                         value=left[0],
-                        key=f"{prefix}-left-join-{left}",
+                        key=f"{prefix}-left-join-{left[0]}-{left[1]}",
                     )
                     col2.text_input(
                         "Left key",
                         disabled=True,
                         value=left[1],
-                        key=f"{prefix}-left-key-{left}",
+                        key=f"{prefix}-left-key-{left[0]}-{left[1]}",
                     )
                     col4.text_input(
                         "Right join",
                         disabled=True,
                         value=right[0],
-                        key=f"{prefix}-right-join-{right}",
+                        key=f"{prefix}-right-join-{right[0]}-{right[1]}",
                     )
                     col5.text_input(
                         "Right key",
                         disabled=True,
                         value=right[1],
-                        key=f"{prefix}-right-key-{right}",
+                        key=f"{prefix}-right-key-{right[0]}-{right[1]}",
                     )
             names = [field.name for field in record_set.fields]
             descriptions = [field.description for field in record_set.fields]
@@ -238,7 +250,8 @@ def _render_left_panel():
             )
             st.data_editor(
                 fields,
-                use_container_width=True,
+                # There is a bug with `st.data_editor` when the df is empty.
+                use_container_width=not fields.empty,
                 num_rows="dynamic",
                 key=data_editor_key,
                 column_config={
@@ -269,6 +282,12 @@ def _render_left_panel():
                 on_click=_handle_on_click_field,
                 args=(record_set_key, record_set),
             )
+    st.button(
+        "Create a new RecordSet",
+        key=f"create-new-record-set",
+        type="primary",
+        on_click=_handle_create_record_set,
+    )
 
 
 def _render_right_panel():
