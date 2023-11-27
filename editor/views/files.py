@@ -28,6 +28,7 @@ _MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
 _MANUAL_NAME_KEY = "manual_object_name"
 _MANUAL_DESCRIPTION_KEY = "manual_object_description"
 _MANUAL_SHA256_KEY = "manual_object_sha256"
+_MANUAL_PARENT_KEY = "manual_object_parents"
 
 
 def render_files():
@@ -104,9 +105,13 @@ def _render_upload_panel():
                 "SHA256",
                 key=_MANUAL_SHA256_KEY,
             )
-            st.text_input(
+            parent_options = [
+                file.name for file in st.session_state[Metadata].distribution
+            ]
+            st.multiselect(
                 "Parent",
-                key="manual_parent",
+                options=parent_options,
+                key=_MANUAL_PARENT_KEY,
             )
 
         def handle_on_click():
@@ -129,6 +134,7 @@ def _render_upload_panel():
                 name = st.session_state[_MANUAL_NAME_KEY]
                 description = st.session_state[_MANUAL_DESCRIPTION_KEY]
                 sha256 = st.session_state[_MANUAL_SHA256_KEY] if needs_sha256 else None
+                parents = st.session_state[_MANUAL_PARENT_KEY]
                 errorMessage = (
                     "Please import either a local file, provide a download URL or fill"
                     " in all required fields: name"
@@ -144,7 +150,7 @@ def _render_upload_panel():
                     )
                     return
                 file = file_from_form(
-                    file_type, resource_type, name, description, sha256, names
+                    file_type, resource_type, name, description, sha256, parents, names
                 )
 
             st.session_state[Metadata].add_distribution(file)
