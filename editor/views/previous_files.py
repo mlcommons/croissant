@@ -6,16 +6,16 @@ import streamlit as st
 from core.constants import PROJECT_FOLDER_PATTERN
 from core.past_projects import load_past_projects_paths
 from core.past_projects import open_project
+from core.query_params import set_project
 from core.state import CurrentProject
-from core.state import CurrentStep
 from core.state import Metadata
-from utils import jump_to
 
 
 def _load_croissant(metadata: Metadata, path: epath.Path) -> None:
     st.session_state[Metadata] = metadata
-    st.session_state[CurrentProject] = CurrentProject(path)
-    jump_to(CurrentStep.editor)
+    project = CurrentProject(path)
+    st.session_state[CurrentProject] = project
+    set_project(project)
 
 
 def _remove_croissant(path: epath.Path) -> None:

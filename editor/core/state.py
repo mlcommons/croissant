@@ -88,13 +88,6 @@ def get_cached_user():
     return st.session_state.get(User)
 
 
-class CurrentStep:
-    """Holds all major state variables for the application."""
-
-    splash = "splash"
-    editor = "editor"
-
-
 @dataclasses.dataclass
 class CurrentProject:
     """The selected project."""
@@ -104,6 +97,10 @@ class CurrentProject:
     @classmethod
     def create_new(cls) -> CurrentProject | None:
         timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
+        return cls.from_timestamp(timestamp)
+
+    @classmethod
+    def from_timestamp(cls, timestamp: str) -> CurrentProject | None:
         user = get_cached_user()
         if user is None and OAUTH_CLIENT_ID:
             return None

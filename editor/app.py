@@ -5,8 +5,11 @@ import streamlit as st
 from core.constants import OAUTH_CLIENT_ID
 from core.constants import OAUTH_STATE
 from core.constants import REDIRECT_URI
-from core.state import CurrentStep
+from core.past_projects import open_project
+from core.query_params import get_project_timestamp
+from core.state import CurrentProject
 from core.state import get_cached_user
+from core.state import Metadata
 from core.state import User
 from utils import init_state
 from views.splash import render_splash
@@ -48,28 +51,28 @@ if OAUTH_CLIENT_ID and not user:
 
 def _back_to_menu():
     """Sends the user back to the menu."""
-    init_state(force=True)
     st.experimental_set_query_params()
+    init_state(force=True)
 
 
 def _logout():
     """Logs the user out."""
     st.cache_data.clear()
+    _back_to_menu()
 
 
 if OAUTH_CLIENT_ID:
     col2.write("\n")  # Vertical box to shift the lgout menu
     col2.button("Log out", on_click=_logout)
 
+timestamp = get_project_timestamp()
 
-if st.session_state[CurrentStep] != CurrentStep.splash:
+if timestamp:
     col3.write("\n")  # Vertical box to shift the button menu
     col3.button("Menu", on_click=_back_to_menu)
 
 
-if st.session_state[CurrentStep] == CurrentStep.splash:
-    render_splash()
-elif st.session_state[CurrentStep] == CurrentStep.editor:
+if st.session_state.get(CurrentProject):
     render_editor()
 else:
-    st.warning("invalid unhandled app state")
+    render_splash()

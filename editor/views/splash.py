@@ -4,14 +4,12 @@ import requests
 import streamlit as st
 
 from core.constants import OAUTH_CLIENT_ID
+from core.query_params import set_project
 from core.state import CurrentProject
-from core.state import CurrentStep
 from core.state import Metadata
 import mlcroissant as mlc
-from utils import jump_to
 from views.load import render_load
 from views.previous_files import render_previous_files
-from views.side_buttons import jump_to
 
 
 def render_splash():
@@ -30,8 +28,9 @@ def render_splash():
 
             def create_new_croissant():
                 st.session_state[Metadata] = Metadata()
-                st.session_state[CurrentProject] = CurrentProject.create_new()
-                jump_to(CurrentStep.editor)
+                project = CurrentProject.create_new()
+                st.session_state[CurrentProject] = project
+                set_project(project)
 
             st.button(
                 "Create",
@@ -46,8 +45,9 @@ def render_splash():
                     json = requests.get(url).json()
                     metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
                     st.session_state[Metadata] = Metadata.from_canonical(metadata)
-                    st.session_state[CurrentProject] = CurrentProject.create_new()
-                    jump_to(CurrentStep.editor)
+                    project = CurrentProject.create_new()
+                    st.session_state[CurrentProject] = project
+                    set_project(project)
                 except Exception as exception:
                     logging.error(exception)
                     st.error(

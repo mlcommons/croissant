@@ -4,12 +4,14 @@ from typing import Any
 
 import streamlit as st
 
+from core.state import CurrentProject
 from core.state import RecordSet
 
 
 class QueryParams:
     """Possible URL query params."""
 
+    OPEN_PROJECT = "project"
     OPEN_RECORD_SET = "recordSet"
     OPEN_TAB = "tab"
 
@@ -40,7 +42,7 @@ def go_to_tab(tabs: list[str]):
             st.components.v1.html(js)
 
 
-def is_record_set_expanded(record_set: RecordSet):
+def is_record_set_expanded(record_set: RecordSet) -> bool:
     params = st.experimental_get_query_params()
     open_record_set_name = _get_query_param(params, QueryParams.OPEN_RECORD_SET)
     if open_record_set_name:
@@ -48,8 +50,20 @@ def is_record_set_expanded(record_set: RecordSet):
     return False
 
 
-def make_record_set_expanded(record_set: RecordSet):
+def expand_record_set(record_set: RecordSet) -> None:
     params = st.experimental_get_query_params()
     new_params = {k: v for k, v in params.items() if k != QueryParams.OPEN_RECORD_SET}
     new_params[QueryParams.OPEN_RECORD_SET] = record_set.name
+    st.experimental_set_query_params(**new_params)
+
+
+def get_project_timestamp() -> str | None:
+    params = st.experimental_get_query_params()
+    return _get_query_param(params, QueryParams.OPEN_PROJECT)
+
+
+def set_project(project: CurrentProject):
+    params = st.experimental_get_query_params()
+    new_params = {k: v for k, v in params.items() if k != QueryParams.OPEN_PROJECT}
+    new_params[QueryParams.OPEN_PROJECT] = project.path.name
     st.experimental_set_query_params(**new_params)

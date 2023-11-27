@@ -5,8 +5,8 @@ import pandas as pd
 from rdflib import term
 import streamlit as st
 
+from core.query_params import expand_record_set
 from core.query_params import is_record_set_expanded
-from core.query_params import make_record_set_expanded
 from core.state import Field
 from core.state import Metadata
 from core.state import RecordSet
@@ -95,7 +95,7 @@ def _handle_create_record_set():
 def _handle_fields_change(
     record_set_key: int, record_set: RecordSet, params: dict[str, Any]
 ):
-    make_record_set_expanded(record_set=record_set)
+    expand_record_set(record_set=record_set)
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
     # `result` has the following structure:

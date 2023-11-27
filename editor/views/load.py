@@ -5,10 +5,8 @@ import streamlit as st
 
 from core.constants import EDITOR_CACHE
 from core.past_projects import save_current_project
-from core.state import CurrentStep
 from core.state import Metadata
 import mlcroissant as mlc
-from utils import jump_to
 
 
 def _on_file_upload(key):
@@ -22,7 +20,6 @@ def _on_file_upload(key):
     try:
         dataset = mlc.Dataset(newfile_name)
         st.session_state[Metadata] = Metadata.from_canonical(dataset.metadata)
-        jump_to(CurrentStep.editor)
         save_current_project()
     except mlc.ValidationError as e:
         st.warning(e)

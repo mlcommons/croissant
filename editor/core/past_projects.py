@@ -5,6 +5,7 @@ from etils import epath
 import streamlit as st
 
 from core.constants import PAST_PROJECTS_PATH
+from core.query_params import set_project
 from core.state import CurrentProject
 from core.state import get_cached_user
 from core.state import Metadata
@@ -28,6 +29,7 @@ def save_current_project():
         project = CurrentProject.create_new()
         st.session_state[CurrentProject] = project
     project.path.mkdir(parents=True, exist_ok=True)
+    set_project(project)
     with _pickle_file(project.path).open("wb") as file:
         try:
             pickle.dump(metadata, file)
