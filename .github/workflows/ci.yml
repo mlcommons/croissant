@@ -75,11 +75,13 @@ jobs:
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
-            jupyter nbconvert \
-              --ExecutePreprocessor.timeout=600 \
-              --ExecutePreprocessor.kernel_name=croissant-notebook \
-              --to notebook \
-              --execute $notebook
+            if [[ "$notebook" != "recipes/tfds_croissant_builder.ipynb" ]]
+            then
+              jupyter nbconvert \
+                --ExecutePreprocessor.timeout=600 \
+                --ExecutePreprocessor.kernel_name=croissant-notebook \
+                --to notebook \
+                --execute $notebook
           done
           
   python-format:
