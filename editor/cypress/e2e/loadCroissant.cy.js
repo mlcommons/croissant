@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import 'cypress-file-upload';
+import 'cypress-iframe';
 import * as path from 'path';
 
 describe('Editor loads Croissant without Error', () => {
@@ -20,7 +21,9 @@ describe('Editor loads Croissant without Error', () => {
         events: ["dragenter", "drop"],
       })
     })
-    cy.get('button').contains('Metadata').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Metadata').click()
+    })
 
     cy
     .get("[data-testid='element-container']")
@@ -47,10 +50,10 @@ describe('Editor loads Croissant without Error', () => {
     
     cy.get('[data-testid="stException"]').should('not.exist')
 
-    cy.get('button').contains('Save').click()
+    cy.get('button').contains('Export').should('exist').should('be.visible').click({force: true})
     cy.fixture('titanic.json').then((fileContent) => {
       const downloadsFolder = Cypress.config("downloadsFolder");
-      cy.readFile(path.join(downloadsFolder, "croissant.json"))
+      cy.readFile(path.join(downloadsFolder, "croissant-titanic.json"))
       .then((downloadedFile) => {
         downloadedFile = JSON.stringify(downloadedFile)
         return downloadedFile

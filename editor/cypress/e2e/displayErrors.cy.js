@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import 'cypress-file-upload';
+import 'cypress-iframe';
 
 describe('load existing errored croissant', () => {
   it('should display errors', () => {
@@ -18,6 +19,20 @@ describe('load existing errored croissant', () => {
         subjectType: "drag-n-drop",
         events: ["dragenter", "drop"],
       })
+    })
+    cy.get('[data-testid="stMarkdownContainer"]').contains("Errors").should('not.exist')
+    // Empty the `name` field to create an error:
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('RecordSets').click()
+    })
+    cy.contains('split_enums (2 fields)').click()
+    cy.get('input[aria-label="Name:red[*]"][value="split_enums"]').should('be.visible').type('{selectall}{backspace}{enter}')
+    // TODO(marcenacp): Need to first click `RecordSets`, before being able to click `Overview`.
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('RecordSets').click({force: true})
+    })
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Overview').click({force: true})
     })
     cy.get('[data-testid="stMarkdownContainer"]').contains("Errors").should('exist')
   })

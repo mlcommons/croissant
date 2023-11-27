@@ -1,9 +1,18 @@
 import json
 
 import streamlit as st
+import streamlit_nested_layout  # Do not remove this allows nesting columns.
 
-from core.state import CurrentStep
+from components.tabs import render_tabs
+from core.constants import METADATA
+from core.constants import OVERVIEW
+from core.constants import RECORD_SETS
+from core.constants import RESOURCES
+from core.constants import TABS
+from core.past_projects import save_current_project
+from core.state import get_tab
 from core.state import Metadata
+from core.state import set_tab
 import mlcroissant as mlc
 from views.files import render_files
 from views.metadata import render_metadata
@@ -11,37 +20,34 @@ from views.overview import render_overview
 from views.record_sets import render_record_sets
 
 
-def render_download_button():
+def render_export_button(col):
+    metadata: Metadata = st.session_state[Metadata]
     try:
-        st.download_button(
-            "Save",
-            file_name="croissant.json",
+        col.download_button(
+            "Export",
+            file_name=f"croissant-{metadata.name.lower()}.json",
             type="primary",
-            data=json.dumps(st.session_state[Metadata].to_canonical().to_json()),
+            data=json.dumps(metadata.to_canonical().to_json()),
+            help="Export the Croissant JSON-LD",
         )
     except mlc.ValidationError as exception:
-        st.download_button("Save", disabled=True, data="")
-
-
-OVERVIEW = "Overview"
-METADATA = "Metadata"
-RESOURCES = "Resources"
-RECORD_SETS = "RecordSets"
+        col.download_button("Export", disabled=True, data="", help=str(exception))
 
 
 def render_editor():
-    tab1, tab2, tab3, tab4 = st.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
+    col1, col2 = st.columns([10, 1])
+    render_export_button(col2)
 
-    with tab2:
-        render_metadata()
-    with tab3:
-        render_files()
-    with tab4:
-        render_record_sets()
-    with tab1:
-        # this happens last so that all other state changes happen first,
-        # before validation, but still appears as the first tab
-        # this is pretty much a limitation of streamlit as it doesn't allow
-        # callback responses to changes in st.session_state
-        render_overview()
-    render_download_button()
+    with col1:
+        selected_tab = get_tab()
+        selected_tab = render_tabs(tabs=TABS, selected_tab=selected_tab, key="tabs")
+        if selected_tab == OVERVIEW or not selected_tab:
+            render_overview()
+        elif selected_tab == METADATA:
+            render_metadata()
+        elif selected_tab == RESOURCES:
+            render_files()
+        elif selected_tab == RECORD_SETS:
+            render_record_sets()
+        save_current_project()
+        set_tab(selected_tab)

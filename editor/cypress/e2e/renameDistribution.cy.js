@@ -21,14 +21,18 @@ describe('Renaming of FileObjects/FileSets/RecordSets/Fields.', () => {
         events: ["dragenter", "drop"],
       })
     })
-    cy.get('button').contains('Resources').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Resources').click()
+    })
     cy.enter('[title="components.tree.tree_component"]').then(getBody => {
       // Click on genders.csv
       getBody().contains('genders.csv').click()
     })
-    cy.get('input[aria-label="Name:red[*]"][value="genders.csv"]').should('be.visible').type('{selectall}{backspace}the-new-name{enter}')
+    cy.get('input[aria-label="Name:red[*]"][value="genders.csv"]').type('{selectall}{backspace}the-new-name{enter}')
 
-    cy.get('button').contains('RecordSets').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('RecordSets').click()
+    })
     cy.contains('genders').click()
     cy.contains('Edit fields details').click()
     cy.contains('the-new-name')

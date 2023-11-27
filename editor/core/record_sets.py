@@ -32,7 +32,6 @@ def infer_record_sets(file: FileObject | FileSet, names: set[str]) -> list[Recor
     return [
         RecordSet(
             fields=fields,
-            # TODO(marcenacp): The `name` should be unique.
             name=find_unique_name(names, file.name + "_record_set"),
             description="",
         )

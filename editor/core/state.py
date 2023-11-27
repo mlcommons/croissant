@@ -5,27 +5,114 @@ In the future, this could be the serialization format between front and back.
 
 from __future__ import annotations
 
+import base64
 import dataclasses
+import datetime
+from typing import Any
 
+from etils import epath
 import pandas as pd
+import requests
+import streamlit as st
 
+from core.constants import OAUTH_CLIENT_ID
+from core.constants import OAUTH_CLIENT_SECRET
+from core.constants import PAST_PROJECTS_PATH
+from core.constants import PROJECT_FOLDER_PATTERN
+from core.constants import REDIRECT_URI
+from core.constants import TABS
+from core.names import find_unique_name
 import mlcroissant as mlc
 
 
-class CurrentStep:
-    """Holds all major state variables for the application."""
+def create_class(mlc_class: type, instance: Any, **kwargs) -> Any:
+    """Creates the mlcroissant class `mlc_class` from the editor `instance`."""
+    fields = dataclasses.fields(mlc_class)
+    params: dict[str, Any] = {}
+    for field in fields:
+        name = field.name
+        if hasattr(instance, name) and name not in kwargs:
+            params[name] = getattr(instance, name)
+    return mlc_class(**params, **kwargs)
 
-    splash = "splash"
-    editor = "editor"
+
+@dataclasses.dataclass
+class User:
+    """The connected user."""
+
+    access_token: str
+    id_token: str
+    username: str
+
+    @classmethod
+    def connect(cls, code: str):
+        credentials = base64.b64encode(
+            f"{OAUTH_CLIENT_ID}:{OAUTH_CLIENT_SECRET}".encode()
+        ).decode()
+        headers = {
+            "Authorization": f"Basic {credentials}",
+        }
+        data = {
+            "client_id": OAUTH_CLIENT_ID,
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": REDIRECT_URI,
+        }
+        url = "https://huggingface.co/oauth/token"
+        response = requests.post(url, data=data, headers=headers)
+        if response.status_code == 200:
+            response = response.json()
+            access_token = response.get("access_token")
+            id_token = response.get("id_token")
+            if access_token and id_token:
+                url = "https://huggingface.co/oauth/userinfo"
+                headers = {"Authorization": f"Bearer {access_token}"}
+                response = requests.get(url, headers=headers)
+                if response.status_code == 200:
+                    response = response.json()
+                    username = response.get("preferred_username")
+                    if username:
+                        return User(
+                            access_token=access_token,
+                            username=username,
+                            id_token=id_token,
+                        )
+        raise Exception(
+            f"Could not connect to Hugging Face. Please, go to {REDIRECT_URI}."
+            f" ({response=})."
+        )
+
+
+@st.cache_data(ttl=datetime.timedelta(hours=1))
+def get_cached_user():
+    """Caches user in session_state."""
+    return st.session_state.get(User)
+
+
+@dataclasses.dataclass
+class CurrentProject:
+    """The selected project."""
+
+    path: epath.Path
+
+    @classmethod
+    def create_new(cls) -> CurrentProject | None:
+        timestamp = datetime.datetime.now().strftime(PROJECT_FOLDER_PATTERN)
+        return cls.from_timestamp(timestamp)
+
+    @classmethod
+    def from_timestamp(cls, timestamp: str) -> CurrentProject | None:
+        user = get_cached_user()
+        if user is None and OAUTH_CLIENT_ID:
+            return None
+        else:
+            path = PAST_PROJECTS_PATH(user)
+            return CurrentProject(path=path / timestamp)
 
 
 class SelectedResource:
     """The selected FileSet or FileObject on the `Resources` page."""
 
-    pass
-
-
-class AddManually:
     pass
 
 
@@ -81,6 +168,7 @@ class RecordSet:
     """Record Set analogue for editor"""
 
     name: str = ""
+    data: Any = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
@@ -161,42 +249,16 @@ class Metadata:
                     new_uid = references.uid.replace(old_name, new_name, 1)
                     self.record_sets[i].fields[j].references.uid = new_uid
 
-    def update_metadata(
-        self,
-        description: str,
-        citation: str,
-        license: license,
-        url: str = "",
-        name: str = "",
-    ) -> None:
-        self.name = name
-        self.description = description
-        self.citation = citation
-        self.license = license
-        self.url = url
-
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
         self.distribution.append(distribution)
-
-    def update_distribution(self, key: int, distribution: FileSet | FileObject) -> None:
-        old_name = self.distribution[key].name
-        new_name = distribution.name
-        if old_name != new_name:
-            self.rename_distribution(old_name=old_name, new_name=new_name)
-        self.distribution[key] = distribution
 
     def remove_distribution(self, key: int) -> None:
         del self.distribution[key]
 
     def add_record_set(self, record_set: RecordSet) -> None:
+        name = find_unique_name(self.names(), record_set.name)
+        record_set.name = name
         self.record_sets.append(record_set)
-
-    def update_record_set(self, key: int, record_set: RecordSet) -> None:
-        old_name = self.record_sets[key].name
-        new_name = record_set.name
-        if old_name != new_name:
-            self.rename_record_set(old_name=old_name, new_name=new_name)
-        self.record_sets[key] = record_set
 
     def remove_record_set(self, key: int) -> None:
         del self.record_sets[key]
@@ -209,86 +271,30 @@ class Metadata:
     def add_field(self, record_set_key: int, field: Field) -> None:
         record_set = self._find_record_set(record_set_key)
         record_set.fields.append(field)
-        self.update_record_set(record_set_key, record_set)
-
-    def update_field(
-        self, record_set_key: int, field_key: int, field: RecordSet
-    ) -> None:
-        record_set = self._find_record_set(record_set_key)
-        if field_key >= len(record_set.fields):
-            raise ValueError(f"Wrong index when updating field: {field_key}")
-        old_name = record_set.fields[field_key].name
-        new_name = field.name
-        if old_name != new_name:
-            self.rename_field(old_name=old_name, new_name=new_name)
-        record_set.fields[field_key] = field
-        self.update_record_set(record_set_key, record_set)
 
     def remove_field(self, record_set_key: int, field_key: int) -> None:
         record_set = self._find_record_set(record_set_key)
         if field_key >= len(record_set.fields):
             raise ValueError(f"Wrong index when removing field: {field_key}")
         del record_set.fields[field_key]
-        self.update_record_set(record_set_key, record_set)
 
     def to_canonical(self) -> mlc.Metadata:
         distribution = []
         for file in self.distribution:
             if isinstance(file, FileObject):
-                distribution.append(
-                    mlc.FileObject(
-                        name=file.name,
-                        description=file.description,
-                        contained_in=file.contained_in,
-                        content_url=file.content_url,
-                        encoding_format=file.encoding_format,
-                        content_size=file.content_size,
-                        rdf=file.rdf,
-                        sha256=file.sha256,
-                    )
-                )
+                distribution.append(create_class(mlc.FileObject, file))
             elif isinstance(file, FileSet):
-                distribution.append(
-                    mlc.FileSet(
-                        name=file.name,
-                        description=file.description,
-                        contained_in=file.contained_in,
-                        encoding_format=file.encoding_format,
-                        rdf=file.rdf,
-                    )
-                )
+                distribution.append(create_class(mlc.FileSet, file))
         record_sets = []
         for record_set in self.record_sets:
             fields = []
             for field in record_set.fields:
-                fields.append(
-                    mlc.Field(
-                        name=field.name,
-                        description=field.description,
-                        data_types=field.data_types,
-                        source=field.source,
-                        rdf=field.rdf,
-                        references=field.references,
-                    )
-                )
-            record_sets.append(
-                mlc.RecordSet(
-                    name=record_set.name,
-                    description=record_set.description,
-                    key=record_set.key,
-                    is_enumeration=record_set.is_enumeration,
-                    fields=fields,
-                    rdf=record_set.rdf,
-                )
-            )
-        return mlc.Metadata(
-            name=self.name,
-            citation=self.citation,
-            license=self.license,
-            description=self.description,
-            url=self.url,
+                fields.append(create_class(mlc.Field, field))
+            record_sets.append(create_class(mlc.RecordSet, record_set, fields=fields))
+        return create_class(
+            mlc.Metadata,
+            self,
             distribution=distribution,
-            rdf=self.rdf,
             record_sets=record_sets,
         )
 
@@ -297,59 +303,43 @@ class Metadata:
         distribution = []
         for file in canonical_metadata.distribution:
             if isinstance(file, mlc.FileObject):
-                distribution.append(
-                    FileObject(
-                        name=file.name,
-                        contained_in=file.contained_in,
-                        description=file.description,
-                        content_size=file.content_size,
-                        encoding_format=file.encoding_format,
-                        content_url=file.content_url,
-                        rdf=file.rdf,
-                        sha256=file.sha256,
-                    )
-                )
+                distribution.append(create_class(FileObject, file))
             else:
-                distribution.append(
-                    FileSet(
-                        name=file.name,
-                        contained_in=file.contained_in,
-                        description=file.description,
-                        encoding_format=file.encoding_format,
-                        rdf=file.rdf,
-                    )
-                )
+                distribution.append(create_class(FileSet, file))
         record_sets = []
         for record_set in canonical_metadata.record_sets:
             fields = []
             for field in record_set.fields:
-                fields.append(
-                    Field(
-                        name=field.name,
-                        description=field.description,
-                        data_types=field.data_types,
-                        source=field.source,
-                        rdf=field.rdf,
-                        references=field.references,
-                    )
-                )
+                fields.append(create_class(Field, field))
             record_sets.append(
-                RecordSet(
-                    name=record_set.name,
-                    description=record_set.description,
-                    is_enumeration=record_set.is_enumeration,
-                    key=record_set.key,
+                create_class(
+                    RecordSet,
+                    record_set,
                     fields=fields,
-                    rdf=record_set.rdf,
                 )
             )
-        return cls(
-            name=canonical_metadata.name,
-            description=canonical_metadata.description,
-            citation=canonical_metadata.citation,
-            license=canonical_metadata.license,
-            url=canonical_metadata.url,
+        return create_class(
+            cls,
+            canonical_metadata,
             distribution=distribution,
-            rdf=canonical_metadata.rdf,
             record_sets=record_sets,
         )
+
+    def names(self) -> set[str]:
+        nodes = self.distribution + self.record_sets
+        return set([node.name for node in nodes])
+
+
+class OpenTab:
+    pass
+
+
+def get_tab():
+    return st.session_state.get(OpenTab, 0)
+
+
+def set_tab(tab: str):
+    if tab not in TABS:
+        return
+    index = TABS.index(tab)
+    st.session_state[OpenTab] = index

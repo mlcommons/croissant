@@ -74,7 +74,7 @@ metadata.to_json()  # this returns the JSON-LD file.
 ```
 
 For a full working example, refer to
-[the script to convert Hugging Face datasets to Croissant files](./scripts/from_huggingface_to_croissant.py).
+[the script to convert Hugging Face datasets to Croissant files](./mlcroissant/scripts/from_huggingface_to_croissant.py).
 This script uses the Python API to programmatically build JSON-LD files.
 
 ## Run tests
@@ -159,6 +159,7 @@ password = # generate the password on https://pypi.org/manage/account/token/
 ```
 1. Build locally and push to PyPI:
 ```bash
+rm -rf dist/
 python -m build
 python -m twine upload --repository mlcroissant dist/*
 ```

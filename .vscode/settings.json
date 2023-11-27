@@ -46,6 +46,8 @@
         "--project",
         "core",
         "--project",
+        "events",
+        "--project",
         "views",
         "--project",
         "state",

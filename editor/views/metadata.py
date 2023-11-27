@@ -1,7 +1,10 @@
+import enum
+
 import streamlit as st
 
 from core.state import Metadata
-from utils import needed_field
+from events.metadata import handle_metadata_change
+from events.metadata import MetadataEvent
 
 # List from https://www.kaggle.com/discussions/general/116302.
 licenses = [
@@ -29,26 +32,21 @@ def render_metadata():
         index = licenses.index(metadata.license)
     except ValueError:
         index = None
-    license = st.selectbox(
+    key = "metadata-license"
+    st.selectbox(
         label="License",
+        key=key,
         options=licenses,
         index=index,
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.LICENSE, metadata, key),
     )
-    url = st.text_input(
-        label=needed_field("URL"),
-        value=metadata.url,
-        placeholder="URL to the dataset.",
-    )
-    citation = st.text_area(
+    key = "metadata-citation"
+    st.text_area(
         label="Citation",
+        key=key,
         value=metadata.citation,
         placeholder="@book{\n  title={Title}\n}",
-    )
-    # We fully recreate the session state in order to force the re-rendering.
-    metadata.update_metadata(
-        name=metadata.name,
-        description=metadata.description,
-        license=license,
-        url=url,
-        citation=citation,
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.CITATION, metadata, key),
     )
