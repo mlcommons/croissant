@@ -30,11 +30,11 @@ def save_current_project():
         st.session_state[CurrentProject] = project
     project.path.mkdir(parents=True, exist_ok=True)
     set_project(project)
-    with _pickle_file(project.path).open("wb") as file:
-        try:
-            pickle.dump(metadata, file)
-        except pickle.PicklingError:
-            logging.error("Could not pickle metadata.")
+    try:
+        pickled = pickle.dumps(metadata)
+        _pickle_file(project.path).write_bytes(pickled)
+    except pickle.PicklingError as e:
+        logging.error("Could not pickle metadata.", exc_info=True)
 
 
 def open_project(path: epath.Path) -> Metadata:

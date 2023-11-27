@@ -1,3 +1,5 @@
+from typing import Any
+
 import streamlit as st
 
 from core.state import Metadata
@@ -5,6 +7,13 @@ import mlcroissant as mlc
 from utils import needed_field
 from views.metadata import handle_metadata_change
 from views.metadata import MetadataEvent
+
+
+def _plural(array: list[Any]):
+    if array:
+        return "s"
+    else:
+        return ""
 
 
 def render_overview():
@@ -39,8 +48,12 @@ def render_overview():
             args=(MetadataEvent.DESCRIPTION, metadata, key),
         )
 
-        st.subheader(f"{len(metadata.distribution)} Files")
-        st.subheader(f"{len(metadata.record_sets)} Record Sets")
+        st.subheader(
+            f"{len(metadata.distribution)} File" + _plural(metadata.distribution)
+        )
+        st.subheader(
+            f"{len(metadata.record_sets)} Record Set" + _plural(metadata.distribution)
+        )
     with col2:
         user_started_editing = metadata.record_sets or metadata.distribution
         if user_started_editing:

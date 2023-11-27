@@ -20,6 +20,7 @@ from core.constants import OAUTH_CLIENT_SECRET
 from core.constants import PAST_PROJECTS_PATH
 from core.constants import PROJECT_FOLDER_PATTERN
 from core.constants import REDIRECT_URI
+from core.constants import TABS
 from core.names import find_unique_name
 import mlcroissant as mlc
 
@@ -327,3 +328,18 @@ class Metadata:
     def names(self) -> set[str]:
         nodes = self.distribution + self.record_sets
         return set([node.name for node in nodes])
+
+
+class OpenTab:
+    pass
+
+
+def get_tab():
+    return st.session_state.get(OpenTab, 0)
+
+
+def set_tab(tab: str):
+    if tab not in TABS:
+        return
+    index = TABS.index(tab)
+    st.session_state[OpenTab] = index

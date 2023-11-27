@@ -2,8 +2,6 @@ import enum
 
 import streamlit as st
 
-from core.constants import METADATA
-from core.query_params import set_tab
 from core.state import Metadata
 
 
@@ -18,7 +16,6 @@ class MetadataEvent(enum.Enum):
 
 
 def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
-    set_tab(METADATA)
     if event == MetadataEvent.NAME:
         metadata.name = st.session_state[key]
     elif event == MetadataEvent.DESCRIPTION:

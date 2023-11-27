@@ -4,7 +4,6 @@ from typing import Any
 
 import streamlit as st
 
-from core.constants import TABS
 from core.state import CurrentProject
 from core.state import RecordSet
 
@@ -14,7 +13,6 @@ class QueryParams:
 
     OPEN_PROJECT = "project"
     OPEN_RECORD_SET = "recordSet"
-    OPEN_TAB = "tab"
 
 
 def _get_query_param(params: dict[str, Any], name: str) -> str | None:
@@ -31,41 +29,6 @@ def _set_query_param(param: str, new_value: str) -> str | None:
     new_params = {k: v for k, v in params.items() if k != param}
     new_params[param] = new_value
     st.experimental_set_query_params(**new_params)
-
-
-def go_to_tab(tabs: list[str]):
-    params = st.experimental_get_query_params()
-    if QueryParams.OPEN_TAB in params:
-        try:
-            index = int(params[QueryParams.OPEN_TAB][0])
-            if 0 <= index and index < len(TABS):
-                tab = TABS[index]
-                # Click on the tab.
-                js = f"""
-                    <script>
-                    function contains(selector, text) {{
-                      const document = window.parent.document;
-                      const elements = document.querySelectorAll(selector);
-                      return Array.from(elements).filter(function(element) {{
-                        return RegExp(text).test(element.innerText);
-                      }});
-                    }}
-                    const tab = contains('button', '{tab}');
-                    if (tab.length) {{
-                        tab[0].click();
-                    }}
-                    </script>
-                """
-                st.components.v1.html(js)
-        except ValueError:
-            pass
-
-
-def set_tab(tab: str):
-    if tab not in TABS:
-        return
-    index = TABS.index(tab)
-    _set_query_param(QueryParams.OPEN_TAB, index)
 
 
 def is_record_set_expanded(record_set: RecordSet) -> bool:

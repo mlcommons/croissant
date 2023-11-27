@@ -3,8 +3,6 @@ from typing import Any
 
 import streamlit as st
 
-from core.constants import RECORD_SETS
-from core.query_params import set_tab
 from core.state import Field
 from core.state import Metadata
 import mlcroissant as mlc
@@ -79,7 +77,6 @@ def handle_field_change(
     key: str,
     **kwargs,
 ):
-    set_tab(RECORD_SETS)
     value = st.session_state[key]
     if change == FieldEvent.NAME:
         old_name = field.name

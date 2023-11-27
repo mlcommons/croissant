@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import 'cypress-file-upload';
+import 'cypress-iframe';
 import * as path from 'path';
 
 describe('Editor loads Croissant without Error', () => {
@@ -20,7 +21,9 @@ describe('Editor loads Croissant without Error', () => {
         events: ["dragenter", "drop"],
       })
     })
-    cy.get('button').contains('Metadata').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Metadata').click()
+    })
 
     cy
     .get("[data-testid='element-container']")

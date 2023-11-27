@@ -11,12 +11,14 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.get('button').contains('Create').click()
 
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset').blur()
-    cy.get('[data-testid="stMarkdownContainer"]')
-    .contains('Metadata')
-    .click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Metadata').click()
+    })
     cy.get('input[aria-label="URL:red[*]"]').type('https://mydataset.com', {force: true})
 
-    cy.get('[data-testid="stMarkdownContainer"]').contains('Resources').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Resources').click()
+    })
     // Drag and drop mimicking: streamlit/e2e/specs/st_file_uploader.spec.js.
     cy.fixture('base.csv').then((fileContent) => {
       const file = {
@@ -43,7 +45,9 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.contains('First rows of data:')
 
     // On the record set page, we see the record set.
-    cy.get('[data-testid="stMarkdownContainer"]').contains('RecordSets').click()
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('RecordSets').click()
+    })
     cy.contains('base.csv_record_set (2 fields)').click()
     // We also see the fields with the proper types.
     cy.get('[data-testid="stDataFrameResizable"]').contains("column1")
