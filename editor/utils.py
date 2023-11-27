@@ -4,6 +4,7 @@ from core.past_projects import open_project
 from core.query_params import get_project_timestamp
 from core.state import CurrentProject
 from core.state import Metadata
+from core.state import OpenTab
 from core.state import SelectedRecordSet
 from core.state import SelectedResource
 import mlcroissant as mlc
@@ -40,6 +41,9 @@ def init_state(force=False):
 
     if SelectedResource not in st.session_state or force:
         st.session_state[SelectedRecordSet] = None
+
+    if OpenTab not in st.session_state or force:
+        st.session_state[OpenTab] = None
 
     # Uncomment those lines if you work locally in order to avoid clicks at each reload.
     # And comment all previous lines in `init_state`.
