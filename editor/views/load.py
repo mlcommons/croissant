@@ -10,6 +10,7 @@ import mlcroissant as mlc
 
 
 def _on_file_upload(key):
+    """Triggers when a new file gets uploaded to load the Croissant metadata."""
     file = st.session_state[key]
     file_cont = file.read()
     # TODO(marcenacp): The Python library should support loading from an open file/dict.
