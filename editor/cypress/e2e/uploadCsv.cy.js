@@ -8,7 +8,7 @@ describe('Editor loads a local CSV as a resource', () => {
   it('should display the form: Overview, Metadata, Resources, & Record Sets', () => {
     // Streamlit starts on :8501.
     cy.visit('http://localhost:8501')
-    cy.get('button', {timeout: 10000}).contains('Create', {timeout: 10000}).click()
+    cy.get('button').contains('Create').click()
 
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset').blur()
     cy.get('[data-testid="stMarkdownContainer"]')
