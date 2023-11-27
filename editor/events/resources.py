@@ -2,6 +2,8 @@ import enum
 
 import streamlit as st
 
+from core.constants import RESOURCES
+from core.query_params import set_tab
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
@@ -21,6 +23,7 @@ class ResourceEvent(enum.Enum):
 
 
 def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
+    set_tab(RESOURCES)
     value = st.session_state[key]
     if event == ResourceEvent.NAME:
         old_name = resource.name

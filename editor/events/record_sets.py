@@ -2,7 +2,9 @@ import enum
 
 import streamlit as st
 
+from core.constants import RECORD_SETS
 from core.query_params import expand_record_set
+from core.query_params import set_tab
 from core.state import Metadata
 from core.state import RecordSet
 
@@ -16,6 +18,7 @@ class RecordSetEvent(enum.Enum):
 
 
 def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: str):
+    set_tab(RECORD_SETS)
     value = st.session_state[key]
     if event == RecordSetEvent.NAME:
         old_name = record_set.name

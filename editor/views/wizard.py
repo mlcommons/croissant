@@ -3,7 +3,12 @@ import json
 import streamlit as st
 import streamlit_nested_layout  # Do not remove this allows nesting columns.
 
+from core.constants import TABS
 from core.past_projects import save_current_project
+from core.query_params import get_project_timestamp
+from core.query_params import go_to_tab
+from core.query_params import QueryParams
+from core.query_params import set_tab
 from core.state import Metadata
 import mlcroissant as mlc
 from views.files import render_files
@@ -26,16 +31,10 @@ def render_export_button(col):
         col.download_button("Export", disabled=True, data="", help=str(exception))
 
 
-OVERVIEW = "Overview"
-METADATA = "Metadata"
-RESOURCES = "Resources"
-RECORD_SETS = "RecordSets"
-
-
 def render_editor():
     col1, col2 = st.columns([10, 1])
     render_export_button(col2)
-    tab1, tab2, tab3, tab4 = col1.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
+    tab1, tab2, tab3, tab4 = col1.tabs(TABS)
 
     with tab1:
         render_overview()
@@ -46,3 +45,4 @@ def render_editor():
     with tab4:
         render_record_sets()
     save_current_project()
+    go_to_tab(TABS)

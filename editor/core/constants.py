@@ -28,3 +28,10 @@ def PAST_PROJECTS_PATH(user) -> epath.Path:
 PROJECT_FOLDER_PATTERN = "%Y%m%d%H%M%S%f"
 
 DF_HEIGHT = 150
+
+# Tabs
+OVERVIEW = "Overview"
+METADATA = "Metadata"
+RESOURCES = "Resources"
+RECORD_SETS = "RecordSets"
+TABS = [OVERVIEW, METADATA, RESOURCES, RECORD_SETS]
