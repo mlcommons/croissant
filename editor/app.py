@@ -49,6 +49,7 @@ if OAUTH_CLIENT_ID and not user:
 def _back_to_menu():
     """Sends the user back to the menu."""
     init_state(force=True)
+    st.experimental_set_query_params()
 
 
 def _logout():

@@ -1,8 +1,12 @@
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from rdflib import term
 import streamlit as st
 
+from core.query_params import is_record_set_expanded
+from core.query_params import make_record_set_expanded
 from core.state import Field
 from core.state import Metadata
 from core.state import RecordSet
@@ -88,7 +92,10 @@ def _handle_create_record_set():
     metadata.add_record_set(RecordSet(name="new-record-set", description=""))
 
 
-def _handle_fields_change(record_set_key: int, record_set: RecordSet):
+def _handle_fields_change(
+    record_set_key: int, record_set: RecordSet, params: dict[str, Any]
+):
+    make_record_set_expanded(record_set=record_set)
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
     # `result` has the following structure:
@@ -155,7 +162,7 @@ def _render_left_panel():
     for record_set_key, record_set in enumerate(record_sets):
         title = f"**{record_set.name or '-'}** ({len(record_set.fields)} fields)"
         prefix = f"record-set-{record_set_key}"
-        with st.expander(title, expanded=False):
+        with st.expander(title, expanded=is_record_set_expanded(record_set)):
             col1, col2 = st.columns([1, 3])
             key = f"{prefix}-name"
             col1.text_input(
