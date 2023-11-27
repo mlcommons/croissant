@@ -5,10 +5,7 @@ import streamlit_nested_layout  # Do not remove this allows nesting columns.
 
 from core.constants import TABS
 from core.past_projects import save_current_project
-from core.query_params import get_project_timestamp
 from core.query_params import go_to_tab
-from core.query_params import QueryParams
-from core.query_params import set_tab
 from core.state import Metadata
 import mlcroissant as mlc
 from views.files import render_files
@@ -45,4 +42,3 @@ def render_editor():
     with tab4:
         render_record_sets()
     save_current_project()
-    go_to_tab(TABS)

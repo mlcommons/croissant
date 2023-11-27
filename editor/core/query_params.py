@@ -37,14 +37,23 @@ def go_to_tab(tabs: list[str]):
     params = st.experimental_get_query_params()
     if QueryParams.OPEN_TAB in params:
         try:
-            tab = int(params[QueryParams.OPEN_TAB][0])
-            if 0 <= tab and tab < len(tabs):
-                tab_id = f"tabs-bui3-tab-{tab}"
+            index = int(params[QueryParams.OPEN_TAB][0])
+            if 0 <= index and index < len(TABS):
+                tab = TABS[index]
                 # Click on the tab.
                 js = f"""
                     <script>
-                        const tab = window.parent.document.getElementById('{tab_id}');
-                        tab.click();
+                    function contains(selector, text) {{
+                      const document = window.parent.document;
+                      const elements = document.querySelectorAll(selector);
+                      return Array.from(elements).filter(function(element) {{
+                        return RegExp(text).test(element.innerText);
+                      }});
+                    }}
+                    const tab = contains('button', '{tab}');
+                    if (tab.length) {{
+                        tab[0].click();
+                    }}
                     </script>
                 """
                 st.components.v1.html(js)

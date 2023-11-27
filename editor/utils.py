@@ -19,7 +19,11 @@ def init_state(force=False):
     timestamp = get_project_timestamp()
     if timestamp and not force:
         project = CurrentProject.from_timestamp(timestamp)
-        if project and Metadata not in st.session_state:
+        if (
+            project
+            and CurrentProject not in st.session_state
+            and Metadata not in st.session_state
+        ):
             st.session_state[CurrentProject] = project
             st.session_state[Metadata] = open_project(project.path)
     else:

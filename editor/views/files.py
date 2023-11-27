@@ -1,16 +1,15 @@
-import enum
-
 import streamlit as st
 
 from components.tree import render_tree
 from core.constants import DF_HEIGHT
+from core.constants import RESOURCES
 from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_OBJECT
-from core.files import FILE_SET
 from core.files import FILE_TYPES
 from core.files import RESOURCE_TYPES
+from core.query_params import set_tab
 from core.record_sets import infer_record_sets
 from core.state import FileObject
 from core.state import FileSet
@@ -70,6 +69,7 @@ def _render_resources_panel(files: list[Resource]) -> Resource | None:
     if not name:
         return None
     file = filename_to_file[name]
+    set_tab(RESOURCES)
     return file
 
 

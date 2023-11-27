@@ -207,25 +207,25 @@ def _render_left_panel():
                         "Left join",
                         disabled=True,
                         value=left[0],
-                        key=f"{prefix}-left-join-{left}",
+                        key=f"{prefix}-left-join-{left[0]}-{left[1]}",
                     )
                     col2.text_input(
                         "Left key",
                         disabled=True,
                         value=left[1],
-                        key=f"{prefix}-left-key-{left}",
+                        key=f"{prefix}-left-key-{left[0]}-{left[1]}",
                     )
                     col4.text_input(
                         "Right join",
                         disabled=True,
                         value=right[0],
-                        key=f"{prefix}-right-join-{right}",
+                        key=f"{prefix}-right-join-{right[0]}-{right[1]}",
                     )
                     col5.text_input(
                         "Right key",
                         disabled=True,
                         value=right[1],
-                        key=f"{prefix}-right-key-{right}",
+                        key=f"{prefix}-right-key-{right[0]}-{right[1]}",
                     )
             names = [field.name for field in record_set.fields]
             descriptions = [field.description for field in record_set.fields]

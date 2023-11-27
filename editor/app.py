@@ -5,11 +5,9 @@ import streamlit as st
 from core.constants import OAUTH_CLIENT_ID
 from core.constants import OAUTH_STATE
 from core.constants import REDIRECT_URI
-from core.past_projects import open_project
 from core.query_params import get_project_timestamp
 from core.state import CurrentProject
 from core.state import get_cached_user
-from core.state import Metadata
 from core.state import User
 from utils import init_state
 from views.splash import render_splash

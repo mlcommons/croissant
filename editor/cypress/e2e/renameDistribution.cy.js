@@ -26,6 +26,12 @@ describe('Renaming of FileObjects/FileSets/RecordSets/Fields.', () => {
       // Click on genders.csv
       getBody().contains('genders.csv').click()
     })
+    // TODO(marcenacp): There is a bug where this action has to be performed twice.
+    cy.get('button').contains('Resources').click()
+    cy.enter('[title="components.tree.tree_component"]').then(getBody => {
+      // Click on genders.csv
+      getBody().contains('genders.csv').click()
+    })
     cy.get('input[aria-label="Name:red[*]"][value="genders.csv"]').type('{selectall}{backspace}the-new-name{enter}')
 
     cy.get('button').contains('RecordSets').click()
