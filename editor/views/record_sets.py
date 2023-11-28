@@ -248,8 +248,7 @@ def _render_left_panel():
             )
             st.data_editor(
                 fields,
-                # There is a bug with `st.data_editor` when the df is empty.
-                use_container_width=not fields.empty,
+                use_container_width=True,
                 num_rows="dynamic",
                 key=data_editor_key,
                 column_config={
