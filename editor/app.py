@@ -70,7 +70,9 @@ if timestamp:
     col3.button("Menu", on_click=_back_to_menu)
 
 
-if st.session_state.get(CurrentProject):
+should_display_editor = bool(st.session_state.get(CurrentProject))
+
+if should_display_editor:
     render_editor()
 else:
     render_splash()

@@ -27,10 +27,7 @@ describe('load existing errored croissant', () => {
     })
     cy.contains('split_enums (2 fields)').click()
     cy.get('input[aria-label="Name:red[*]"][value="split_enums"]').should('be.visible').type('{selectall}{backspace}{enter}')
-    // TODO(marcenacp): Need to first click `RecordSets`, before being able to click `Overview`.
-    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
-      getBody().contains('RecordSets').click({force: true})
-    })
+    cy.timeout(2000)
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
       getBody().contains('Overview').click({force: true})
     })

@@ -18,17 +18,14 @@ def init_state(force=False):
     """Initializes the session state. `force=True` to force re-initializing it."""
 
     timestamp = get_project_timestamp()
-    if timestamp and not force:
-        project = CurrentProject.from_timestamp(timestamp)
-        if (
-            project
-            and CurrentProject not in st.session_state
-            and Metadata not in st.session_state
-        ):
-            st.session_state[CurrentProject] = project
-            st.session_state[Metadata] = open_project(project.path)
-    else:
-        st.session_state[CurrentProject] = None
+    if CurrentProject not in st.session_state or force:
+        if timestamp:
+            project = CurrentProject.from_timestamp(timestamp)
+            if project:
+                st.session_state[CurrentProject] = project
+                st.session_state[Metadata] = open_project(project.path)
+        else:
+            st.session_state[CurrentProject] = None
 
     if Metadata not in st.session_state or force:
         st.session_state[Metadata] = Metadata()

@@ -20,34 +20,33 @@ from views.overview import render_overview
 from views.record_sets import render_record_sets
 
 
-def render_export_button(col):
+def _export_json() -> str | None:
     metadata: Metadata = st.session_state[Metadata]
     try:
-        col.download_button(
-            "Export",
-            file_name=f"croissant-{metadata.name.lower()}.json",
-            type="primary",
-            data=json.dumps(metadata.to_canonical().to_json()),
-            help="Export the Croissant JSON-LD",
-        )
+        return {
+            "name": f"croissant-{metadata.name.lower()}.json",
+            "content": json.dumps(metadata.to_canonical().to_json()),
+        }
     except mlc.ValidationError as exception:
-        col.download_button("Export", disabled=True, data="", help=str(exception))
+        return None
 
 
 def render_editor():
-    col1, col2 = st.columns([10, 1])
-    render_export_button(col2)
+    export_json = _export_json()
 
-    with col1:
-        selected_tab = get_tab()
-        selected_tab = render_tabs(tabs=TABS, selected_tab=selected_tab, key="tabs")
-        if selected_tab == OVERVIEW or not selected_tab:
-            render_overview()
-        elif selected_tab == METADATA:
-            render_metadata()
-        elif selected_tab == RESOURCES:
-            render_files()
-        elif selected_tab == RECORD_SETS:
-            render_record_sets()
-        save_current_project()
-        set_tab(selected_tab)
+    # Warning: the custom component cannot be nested in a st.columns or it is forced to
+    # re-render even if a `key` is set.
+    selected_tab = get_tab()
+    tab = render_tabs(
+        tabs=TABS, selected_tab=selected_tab, json=export_json, key="tabs"
+    )
+    if tab == OVERVIEW:
+        render_overview()
+    elif tab == METADATA:
+        render_metadata()
+    elif tab == RESOURCES:
+        render_files()
+    elif tab == RECORD_SETS:
+        render_record_sets()
+    save_current_project()
+    set_tab(tab)

@@ -92,9 +92,7 @@ def _handle_create_record_set():
     metadata.add_record_set(RecordSet(name="new-record-set", description=""))
 
 
-def _handle_fields_change(
-    record_set_key: int, record_set: RecordSet, params: dict[str, Any]
-):
+def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     expand_record_set(record_set=record_set)
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]

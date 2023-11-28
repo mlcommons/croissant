@@ -50,7 +50,9 @@ describe('Editor loads Croissant without Error', () => {
     
     cy.get('[data-testid="stException"]').should('not.exist')
 
-    cy.get('button').contains('Export').should('exist').should('be.visible').click({force: true})
+    cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
+      getBody().contains('Export').click()
+    })
     cy.fixture('titanic.json').then((fileContent) => {
       const downloadsFolder = Cypress.config("downloadsFolder");
       cy.readFile(path.join(downloadsFolder, "croissant-titanic.json"))
