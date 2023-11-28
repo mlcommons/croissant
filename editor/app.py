@@ -56,6 +56,8 @@ def _back_to_menu():
 def _logout():
     """Logs the user out."""
     st.cache_data.clear()
+    get_cached_user.clear()
+    st.session_state[User] = None
     _back_to_menu()
 
 
