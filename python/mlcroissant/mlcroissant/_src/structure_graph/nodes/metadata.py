@@ -22,6 +22,8 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.schema_org import Person
+from mlcroissant._src.structure_graph.nodes.schema_org import Thing
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -35,6 +37,17 @@ class Metadata(Node):
     url: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
+    issn: str | None
+    about: Thing | None
+    abstract: str | None
+    accessMode: str | None
+    accessModeSufficient: list[str | Thing] = dataclasses.field(default_factory=list)
+    accessibilityAPI: str | None
+    accessibilityControl: str | None
+    accessibilityFeature: str | None
+    accessibilityHazard: str | None
+    accessibilitySummary: str | None
+    accountablePerson: Person | None = dataclasses.field(default_factory=Person)
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -64,17 +77,19 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        return remove_empty_values({
-            "@context": self.rdf.context,
-            "@type": "sc:Dataset",
-            "name": self.name,
-            "description": self.description,
-            "citation": self.citation,
-            "license": self.license,
-            "url": self.url,
-            "distribution": [f.to_json() for f in self.distribution],
-            "recordSet": [record_set.to_json() for record_set in self.record_sets],
-        })
+        return remove_empty_values(
+            {
+                "@context": self.rdf.context,
+                "@type": "sc:Dataset",
+                "name": self.name,
+                "description": self.description,
+                "citation": self.citation,
+                "license": self.license,
+                "url": self.url,
+                "distribution": [f.to_json() for f in self.distribution],
+                "recordSet": [record_set.to_json() for record_set in self.record_sets],
+            }
+        )
 
     @property
     def file_objects(self) -> list[FileObject]:
