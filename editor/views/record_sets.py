@@ -1,4 +1,4 @@
-from typing import Any
+import textwrap
 
 import numpy as np
 import pandas as pd
@@ -27,6 +27,29 @@ DATA_TYPES = [
     mlc.DataType.BOOL,
     mlc.DataType.URL,
 ]
+
+
+def _generate_data(record_set: RecordSet) -> pd.DataFrame | None:
+    """Generates the first 3 records."""
+    metadata: Metadata = st.session_state[Metadata]
+    if not metadata:
+        raise ValueError(
+            "The dataset is still incomplete. Please, go to the overview to see errors."
+        )
+    croissant = metadata.to_canonical()
+    if croissant:
+        dataset = mlc.Dataset.from_metadata(croissant)
+        records = iter(dataset.records(record_set=record_set.name))
+        df = []
+        for i, record in records:
+            if i > 2:
+                break
+            # Decode bytes as str:
+            if isinstance(record, bytes):
+                record = record.decode("utf-8")
+            df.append(record)
+        return pd.DataFrame(df)
+    return None
 
 
 def _handle_close_fields():
@@ -116,23 +139,22 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
             name=added_row.get(FieldDataFrame.NAME),
             description=added_row.get(FieldDataFrame.DESCRIPTION),
             data_types=[added_row.get(FieldDataFrame.DATA_TYPE)],
-            source=mlc.Source(
-                uid="foo",
-                node_type="distribution",
-                extract=mlc.Extract(column=""),
-            ),
+            source=mlc.Source(),
             references=mlc.Source(),
         )
         st.session_state[Metadata].add_field(record_set_key, field)
     for field_key in result["deleted_rows"]:
         st.session_state[Metadata].remove_field(record_set_key, field_key)
+    # Reset the in-line data if it exists.
+    if record_set.data:
+        record_set.data = []
 
 
 class FieldDataFrame:
     """Names of the columns in the pd.DataFrame for `fields`."""
 
-    NAME = "Name"
-    DESCRIPTION = "Description"
+    NAME = "Field name"
+    DESCRIPTION = "Field description"
     DATA_TYPE = "Data type"
     SOURCE_UID = "Source"
     SOURCE_EXTRACT = "Source extract"
@@ -151,10 +173,6 @@ def render_record_sets():
 
 def _render_left_panel():
     """Left panel: visualization of all RecordSets as expandable forms."""
-    distribution = st.session_state[Metadata].distribution
-    if not distribution:
-        st.markdown("Please add resources first.")
-        return
     record_sets = st.session_state[Metadata].record_sets
     record_set: RecordSet
     for record_set_key, record_set in enumerate(record_sets):
@@ -188,12 +206,20 @@ def _render_left_panel():
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.IS_ENUMERATION, record_set, key),
             )
+            key = f"{prefix}-has-data"
+            st.checkbox(
+                "Whether the RecordSet has in-line data",
+                key=key,
+                value=bool(record_set.data),
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.HAS_DATA, record_set, key),
+            )
 
             joins = _find_joins(record_set.fields)
             has_join = st.checkbox(
-                "Whether the RecordSet contains joins. To add a new join, add a"
-                f" field with a source in `{record_set.name}` and a reference to"
-                " another RecordSet or FileSet/FileObject.",
+                "Whether the RecordSet contains joins. To add a new join, add a field"
+                " with a source in `RecordSet`/`FileSet`/`FileObject` and a reference"
+                " to another `RecordSet`/`FileSet`/`FileObject`.",
                 key=f"{prefix}-has-joins",
                 value=bool(joins),
                 disabled=True,
@@ -272,6 +298,27 @@ def _render_left_panel():
                 on_change=_handle_fields_change,
                 args=(record_set_key, record_set),
             )
+            try:
+                data = _generate_data(record_set)
+                if data is not None and not data.empty:
+                    st.markdown("Previsualize the data:")
+                    st.dataframe(
+                        data,
+                        use_container_width=True,
+                    )
+            except Exception as exception:
+                left, right = st.columns([1, 10])
+                left.button(
+                    "⚠️",
+                    key=f"idea-{prefix}",
+                    disabled=True,
+                    help=textwrap.dedent(f"""**Error**:
+```
+{str(exception)}
+```
+"""),
+                )
+                right.markdown("Cannot generate the data.")
 
             st.button(
                 "Edit fields details",
@@ -296,6 +343,30 @@ def _render_right_panel():
     record_set = selected.record_set
     record_set_key = selected.record_set_key
     with st.expander("**Fields**", expanded=True):
+        if isinstance(record_set.data, list):
+            st.markdown(
+                f"{needed_field('Data')}. This RecordSet is marked as having in-line"
+                " data. Please, list the data below:"
+            )
+            key = f"{record_set_key}-fields-data"
+            columns = [field.name for field in record_set.fields]
+            st.data_editor(
+                pd.DataFrame(record_set.data, columns=columns),
+                use_container_width=True,
+                num_rows="dynamic",
+                key=key,
+                column_config={
+                    field.name: st.column_config.TextColumn(
+                        field.name,
+                        help=field.description,
+                        required=True,
+                    )
+                    for field in record_set.fields
+                },
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.CHANGE_DATA, record_set, key),
+            )
+            return
         for field_key, field in enumerate(record_set.fields):
             prefix = f"{record_set_key}-{field.name}-{field_key}"
             col1, col2, col3 = st.columns([1, 1, 1])

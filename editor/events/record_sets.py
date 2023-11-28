@@ -13,6 +13,8 @@ class RecordSetEvent(enum.Enum):
     NAME = "NAME"
     DESCRIPTION = "DESCRIPTION"
     IS_ENUMERATION = "IS_ENUMERATION"
+    HAS_DATA = "HAS_DATA"
+    CHANGE_DATA = "CHANGE_DATA"
 
 
 def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: str):
@@ -28,4 +30,16 @@ def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: 
         record_set.description = value
     elif event == RecordSetEvent.IS_ENUMERATION:
         record_set.is_enumeration = value
+    elif event == RecordSetEvent.HAS_DATA:
+        if value:
+            record_set.data = []
+        else:
+            record_set.data = None
+    elif event == RecordSetEvent.CHANGE_DATA:
+        for index, new_value in value["edited_rows"].items():
+            record_set.data[index] = {**record_set.data[index], **new_value}
+        for row in value["added_rows"]:
+            record_set.data.append(row)
+        for row in value["deleted_rows"]:
+            del record_set.data[row]
     expand_record_set(record_set=record_set)

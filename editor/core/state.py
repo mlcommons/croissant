@@ -168,7 +168,7 @@ class RecordSet:
     """Record Set analogue for editor"""
 
     name: str = ""
-    data: Any = None
+    data: list[Any] | None = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
@@ -208,9 +208,14 @@ class Metadata:
         """Renames a RecordSet by changing all the references to this RecordSet."""
         for i, record_set in enumerate(self.record_sets):
             for j, field in enumerate(record_set.fields):
+                possible_uid = f"{old_name}/"
                 # Update source
                 source = field.source
-                if source and source.uid and source.uid.startswith(old_name):
+                if (
+                    source
+                    and source.uid
+                    and (source.uid.startswith(possible_uid) or source.uid == old_name)
+                ):
                     new_uid = source.uid.replace(old_name, new_name, 1)
                     self.record_sets[i].fields[j].source.uid = new_uid
                 # Update references
@@ -218,7 +223,10 @@ class Metadata:
                 if (
                     references
                     and references.uid
-                    and references.uid.startswith(old_name)
+                    and (
+                        references.uid.startswith(possible_uid)
+                        or references.uid == old_name
+                    )
                 ):
                     new_uid = references.uid.replace(old_name, new_name, 1)
                     self.record_sets[i].fields[j].references.uid = new_uid
