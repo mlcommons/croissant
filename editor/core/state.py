@@ -335,7 +335,11 @@ class OpenTab:
 
 
 def get_tab():
-    return st.session_state.get(OpenTab, 0)
+    tab = st.session_state.get(OpenTab)
+    if tab is None:
+        return 0
+    else:
+        return tab
 
 
 def set_tab(tab: str):

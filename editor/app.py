@@ -56,6 +56,8 @@ def _back_to_menu():
 def _logout():
     """Logs the user out."""
     st.cache_data.clear()
+    get_cached_user.clear()
+    st.session_state[User] = None
     _back_to_menu()
 
 
@@ -70,7 +72,9 @@ if timestamp:
     col3.button("Menu", on_click=_back_to_menu)
 
 
-if st.session_state.get(CurrentProject):
+should_display_editor = bool(st.session_state.get(CurrentProject))
+
+if should_display_editor:
     render_editor()
 else:
     render_splash()

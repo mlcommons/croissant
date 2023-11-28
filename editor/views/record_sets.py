@@ -92,9 +92,7 @@ def _handle_create_record_set():
     metadata.add_record_set(RecordSet(name="new-record-set", description=""))
 
 
-def _handle_fields_change(
-    record_set_key: int, record_set: RecordSet, params: dict[str, Any]
-):
+def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     expand_record_set(record_set=record_set)
     data_editor_key = _data_editor_key(record_set_key, record_set)
     result = st.session_state[data_editor_key]
@@ -250,8 +248,7 @@ def _render_left_panel():
             )
             st.data_editor(
                 fields,
-                # There is a bug with `st.data_editor` when the df is empty.
-                use_container_width=not fields.empty,
+                use_container_width=True,
                 num_rows="dynamic",
                 key=data_editor_key,
                 column_config={

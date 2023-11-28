@@ -26,6 +26,9 @@ def _get_query_param(params: dict[str, Any], name: str) -> str | None:
 
 def _set_query_param(param: str, new_value: str) -> str | None:
     params = st.experimental_get_query_params()
+    if params.get(param) == [new_value]:
+        # The value already exists in the query params.
+        return
     new_params = {k: v for k, v in params.items() if k != param}
     new_params[param] = new_value
     st.experimental_set_query_params(**new_params)
