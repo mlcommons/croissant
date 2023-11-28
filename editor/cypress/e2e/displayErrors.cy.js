@@ -27,7 +27,7 @@ describe('load existing errored croissant', () => {
     })
     cy.contains('split_enums (2 fields)').click()
     cy.get('input[aria-label="Name:red[*]"][value="split_enums"]').should('be.visible').type('{selectall}{backspace}{enter}')
-    cy.timeout(2000)
+    cy.wait(2000)
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
       getBody().contains('Overview').click({force: true})
     })
