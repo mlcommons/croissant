@@ -12,12 +12,9 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./core/ /app/core
-COPY ./components/ /app/components
-COPY ./views/ /app/views
-COPY ./* /app/*
+COPY ./ /app/
 
-RUN pip3 install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 
 EXPOSE 8501
 
