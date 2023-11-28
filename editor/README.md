@@ -3,8 +3,7 @@
 Start locally:
 
 ```bash
-pip install -r requirements.txt
-streamlit run app.py
+docker run -P -it $(docker build -q .)
 ```
 
 Launch the end-to-end tests locally (after you started the application):
