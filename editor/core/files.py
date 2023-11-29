@@ -11,8 +11,8 @@ from .names import find_unique_name
 from .state import FileObject
 from .state import FileSet
 
-FILE_OBJECT = "File object"
-FILE_SET = "File set"
+FILE_OBJECT = "FileObject"
+FILE_SET = "FileSet"
 RESOURCE_TYPES = [FILE_OBJECT, FILE_SET]
 
 

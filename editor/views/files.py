@@ -6,6 +6,7 @@ from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_OBJECT
+from core.files import FILE_SET
 from core.files import FILE_TYPES
 from core.files import RESOURCE_TYPES
 from core.record_sets import infer_record_sets
@@ -27,14 +28,18 @@ _MANUAL_DESCRIPTION_KEY = "manual_object_description"
 _MANUAL_SHA256_KEY = "manual_object_sha256"
 _MANUAL_PARENT_KEY = "manual_object_parents"
 
+_INFO = """Resources can be `FileObjects` (single files) or `FileSets` (sets of files 
+with the same MIME type). On this page, you can upload `FileObjects`, point to external
+resources on the web or manually create new resources."""
+
 
 def render_files():
     col1, col2, col3 = st.columns([1, 1, 1], gap="small")
     with col1:
-        st.subheader("Upload more resources")
+        st.markdown("##### Upload more resources")
         _render_upload_panel()
     with col2:
-        st.subheader("Uploaded resources")
+        st.markdown("##### Uploaded resources")
         files = st.session_state[Metadata].distribution
         resource = _render_resources_panel(files)
         st.session_state[SelectedResource] = resource
@@ -106,7 +111,7 @@ def _render_upload_panel():
                 file.name for file in st.session_state[Metadata].distribution
             ]
             st.multiselect(
-                "Parent",
+                "Parents",
                 options=parent_options,
                 key=_MANUAL_PARENT_KEY,
             )
@@ -161,27 +166,50 @@ def _render_right_panel():
     of the selected resource."""
     if st.session_state.get(SelectedResource):
         _render_resource_details(st.session_state[SelectedResource])
+    else:
+        st.info(_INFO, icon="💡")
 
 
 def _render_resource_details(selected_file: Resource):
     """Renders the details of the selected resource."""
     file: FileObject | FileSet
-    for key, file in enumerate(st.session_state[Metadata].distribution):
+    for i, file in enumerate(st.session_state[Metadata].distribution):
         if file.name == selected_file.name:
+            is_file_object = isinstance(file, FileObject)
+            index = (
+                RESOURCE_TYPES.index(FILE_OBJECT)
+                if is_file_object
+                else RESOURCE_TYPES.index(FILE_SET)
+            )
+            key = f"{i}-file-name"
+            st.selectbox("Type", index=index, options=RESOURCE_TYPES, key=key)
 
-            if isinstance(file, FileObject):
-                _render_file_object(key, file)
-            else:
-                _render_file_set(key, file)
+            _render_resource(i, file, is_file_object)
 
             def delete_line():
-                st.session_state[Metadata].remove_distribution(key)
+                st.session_state[Metadata].remove_distribution(i)
 
-            _, col = st.columns([5, 1])
-            col.button("Remove", key=f"{key}_url", on_click=delete_line, type="primary")
+            def close():
+                st.session_state[SelectedResource] = None
+
+            col1, col2 = st.columns([1, 1])
+            col1.button("Close", key=f"{i}_close", on_click=close, type="primary")
+            col2.button(
+                "Remove", key=f"{i}_remove", on_click=delete_line, type="secondary"
+            )
 
 
-def _render_file_object(prefix: int, file: FileObject):
+def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bool):
+    parent_options = [file.name for file in st.session_state[Metadata].distribution]
+    key = f"{prefix}_parents"
+    st.multiselect(
+        "Parents",
+        default=file.contained_in,
+        options=parent_options,
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.CONTAINED_IN, file, key),
+    )
     key = f"{prefix}_name"
     st.text_input(
         needed_field("Name"),
@@ -199,55 +227,54 @@ def _render_file_object(prefix: int, file: FileObject):
         on_change=handle_resource_change,
         args=(ResourceEvent.DESCRIPTION, file, key),
     )
-    key = f"{prefix}_sha256"
-    st.text_input(
-        needed_field("SHA256"),
-        value=file.sha256,
-        disabled=True,
-        key=key,
-        on_change=handle_resource_change,
-        args=(ResourceEvent.SHA256, file, key),
-    )
-    key = f"{prefix}_encoding"
-    st.text_input(
-        needed_field("Encoding format"),
-        value=file.encoding_format,
-        disabled=True,
-        key=key,
-        on_change=handle_resource_change,
-        args=(ResourceEvent.ENCODING_FORMAT, file, key),
-    )
-    st.markdown("First rows of data:")
-    if file.df is not None:
-        st.dataframe(file.df, height=DF_HEIGHT)
+    if is_file_object:
+        key = f"{prefix}_content_url"
+        st.text_input(
+            needed_field("Content URL"),
+            value=file.content_url,
+            key=key,
+            on_change=handle_resource_change,
+            args=(ResourceEvent.CONTENT_URL, file, key),
+        )
+        key = f"{prefix}_sha256"
+        st.text_input(
+            needed_field("SHA256"),
+            value=file.sha256,
+            key=key,
+            on_change=handle_resource_change,
+            args=(ResourceEvent.SHA256, file, key),
+        )
+        key = f"{prefix}_content_size"
+        st.text_input(
+            "Content size",
+            value=file.content_size,
+            key=key,
+            on_change=handle_resource_change,
+            args=(ResourceEvent.CONTENT_SIZE, file, key),
+        )
     else:
-        st.text("No rendering possible.")
-
-
-def _render_file_set(prefix: int, file: FileSet):
-    key = f"{prefix}_name"
-    st.text_input(
-        needed_field("Name"),
-        value=file.name,
-        key=key,
-        on_change=handle_resource_change,
-        args=(ResourceEvent.NAME, file, key),
-    )
-    key = f"{prefix}_description"
-    st.text_area(
-        "Description",
-        value=file.description,
-        placeholder="Provide a clear description of the file.",
-        key=key,
-        on_change=handle_resource_change,
-        args=(ResourceEvent.DESCRIPTION, file, key),
-    )
+        key = f"{prefix}_includes"
+        st.text_input(
+            needed_field("Glob pattern of files to include"),
+            value=file.includes,
+            key=key,
+            on_change=handle_resource_change,
+            args=(ResourceEvent.INCLUDES, file, key),
+        )
     key = f"{prefix}_encoding"
     st.text_input(
         needed_field("Encoding format"),
         value=file.encoding_format,
-        disabled=True,
         key=key,
         on_change=handle_resource_change,
         args=(ResourceEvent.ENCODING_FORMAT, file, key),
     )
+    if is_file_object:
+        st.markdown("First rows of data:")
+        is_url = file.content_url and file.content_url.startswith("http")
+        if file.df is not None:
+            st.dataframe(file.df, height=DF_HEIGHT)
+        elif is_url:
+            st.button("Trigger download")
+        else:
+            st.markdown("No rendering possible.")
