@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Any
 
 from absl import logging
 from etils import epath
@@ -45,7 +46,7 @@ class Dataset:
         debug: Whether to print debug hints. False by default.
     """
 
-    file: epath.PathLike
+    file: epath.PathLike | str | dict[str, Any] | None
     operations: OperationGraph = dataclasses.field(init=False)
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
@@ -53,7 +54,14 @@ class Dataset:
     def __post_init__(self):
         """Runs the static analysis of `file`."""
         issues = Issues()
-        self.metadata = Metadata.from_file(issues=issues, file=self.file)
+        if isinstance(self.file, dict):
+            self.metadata = Metadata.from_json(
+                issues=issues, json_=self.file, folder=None
+            )
+        elif self.file is not None:
+            self.metadata = Metadata.from_file(issues=issues, file=self.file)
+        else:
+            return
         # Draw the structure graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.metadata.graph, simplify=True)
@@ -61,6 +69,14 @@ class Dataset:
         # Draw the operations graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
+
+    @classmethod
+    def from_metadata(cls, metadata: Metadata) -> Dataset:
+        """Creates a new `Dataset` from a `Metadata`."""
+        dataset = Dataset(file=None)
+        dataset.metadata = metadata
+        dataset.operations = get_operations(metadata.issues, metadata)
+        return dataset
 
     def records(self, record_set: str) -> Records:
         """Accesses all records in `record_set` if it exists."""

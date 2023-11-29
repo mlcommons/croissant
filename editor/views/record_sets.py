@@ -1,4 +1,7 @@
-from typing import Any
+import multiprocessing
+import textwrap
+import time
+from typing import TypedDict
 
 import numpy as np
 import pandas as pd
@@ -27,6 +30,65 @@ DATA_TYPES = [
     mlc.DataType.BOOL,
     mlc.DataType.URL,
 ]
+
+_NUM_RECORDS = 3
+_TIMEOUT_SECONDS = 1
+
+
+class _Result(TypedDict):
+    df: pd.DataFrame | None
+    exception: Exception | None
+
+
+@st.cache_data(show_spinner="Generating the dataset...")
+def _generate_data_with_timeout(record_set: RecordSet) -> _Result:
+    """Generates the data and waits at most _TIMEOUT_SECONDS."""
+    with multiprocessing.Manager() as manager:
+        result: _Result = manager.dict(df=None, exception=None)
+        args = (record_set, result)
+        process = multiprocessing.Process(target=_generate_data, args=args)
+        process.start()
+        if not process.is_alive():
+            return _Result(**result)
+        time.sleep(_TIMEOUT_SECONDS)
+        if process.is_alive():
+            process.kill()
+            result["exception"] = TimeoutError(
+                "The generation took too long and was killed. Please, use the CLI as"
+                " described in"
+                " https://github.com/mlcommons/croissant/tree/main/python/mlcroissant#verifyload-a-croissant-dataset."
+            )
+        return _Result(**result)
+
+
+def _generate_data(record_set: RecordSet, result: _Result) -> pd.DataFrame | None:
+    """Generates the first _NUM_RECORDS records."""
+    try:
+        metadata: Metadata = st.session_state[Metadata]
+        if not metadata:
+            raise ValueError(
+                "The dataset is still incomplete. Please, go to the overview to see"
+                " errors."
+            )
+        croissant = metadata.to_canonical()
+        if croissant:
+            dataset = mlc.Dataset.from_metadata(croissant)
+            records = iter(dataset.records(record_set=record_set.name))
+            df = []
+            for i, record in enumerate(iter(records)):
+                if i >= _NUM_RECORDS:
+                    break
+                # Decode bytes as str:
+                for key, value in record.items():
+                    if isinstance(value, bytes):
+                        try:
+                            record[key] = value.decode("utf-8")
+                        except:
+                            pass
+                df.append(record)
+            result["df"] = pd.DataFrame(df)
+    except Exception as exception:
+        result["exception"] = exception
 
 
 def _handle_close_fields():
@@ -116,23 +178,22 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
             name=added_row.get(FieldDataFrame.NAME),
             description=added_row.get(FieldDataFrame.DESCRIPTION),
             data_types=[added_row.get(FieldDataFrame.DATA_TYPE)],
-            source=mlc.Source(
-                uid="foo",
-                node_type="distribution",
-                extract=mlc.Extract(column=""),
-            ),
+            source=mlc.Source(),
             references=mlc.Source(),
         )
         st.session_state[Metadata].add_field(record_set_key, field)
     for field_key in result["deleted_rows"]:
         st.session_state[Metadata].remove_field(record_set_key, field_key)
+    # Reset the in-line data if it exists.
+    if record_set.data:
+        record_set.data = []
 
 
 class FieldDataFrame:
     """Names of the columns in the pd.DataFrame for `fields`."""
 
-    NAME = "Name"
-    DESCRIPTION = "Description"
+    NAME = "Field name"
+    DESCRIPTION = "Field description"
     DATA_TYPE = "Data type"
     SOURCE_UID = "Source"
     SOURCE_EXTRACT = "Source extract"
@@ -144,17 +205,14 @@ class FieldDataFrame:
 def render_record_sets():
     col1, col2 = st.columns([1, 1])
     with col1:
-        _render_left_panel()
+        with st.spinner("Generating the dataset..."):
+            _render_left_panel()
     with col2:
         _render_right_panel()
 
 
 def _render_left_panel():
     """Left panel: visualization of all RecordSets as expandable forms."""
-    distribution = st.session_state[Metadata].distribution
-    if not distribution:
-        st.markdown("Please add resources first.")
-        return
     record_sets = st.session_state[Metadata].record_sets
     record_set: RecordSet
     for record_set_key, record_set in enumerate(record_sets):
@@ -188,12 +246,20 @@ def _render_left_panel():
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.IS_ENUMERATION, record_set, key),
             )
+            key = f"{prefix}-has-data"
+            st.checkbox(
+                "Whether the RecordSet has in-line data",
+                key=key,
+                value=bool(record_set.data),
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.HAS_DATA, record_set, key),
+            )
 
             joins = _find_joins(record_set.fields)
             has_join = st.checkbox(
-                "Whether the RecordSet contains joins. To add a new join, add a"
-                f" field with a source in `{record_set.name}` and a reference to"
-                " another RecordSet or FileSet/FileObject.",
+                "Whether the RecordSet contains joins. To add a new join, add a field"
+                " with a source in `RecordSet`/`FileSet`/`FileObject` and a reference"
+                " to another `RecordSet`/`FileSet`/`FileObject`.",
                 key=f"{prefix}-has-joins",
                 value=bool(joins),
                 disabled=True,
@@ -272,6 +338,26 @@ def _render_left_panel():
                 on_change=_handle_fields_change,
                 args=(record_set_key, record_set),
             )
+            result: _Result = _generate_data_with_timeout(record_set)
+            df, exception = result.get("df"), result.get("exception")
+            if exception is None and df is not None and not df.empty:
+                st.markdown("Previsualize the data:")
+                st.dataframe(df, use_container_width=True)
+            # The generation is not triggered if record_set has in-line `data`.
+            elif not record_set.data:
+                left, right = st.columns([1, 10])
+                if exception:
+                    left.button(
+                        "⚠️",
+                        key=f"idea-{prefix}",
+                        disabled=True,
+                        help=textwrap.dedent(f"""**Error**:
+```
+{exception}
+```
+"""),
+                    )
+                right.markdown("No preview is possible.")
 
             st.button(
                 "Edit fields details",
@@ -296,56 +382,80 @@ def _render_right_panel():
     record_set = selected.record_set
     record_set_key = selected.record_set_key
     with st.expander("**Fields**", expanded=True):
-        for field_key, field in enumerate(record_set.fields):
-            prefix = f"{record_set_key}-{field.name}-{field_key}"
-            col1, col2, col3 = st.columns([1, 1, 1])
+        if isinstance(record_set.data, list):
+            st.markdown(
+                f"{needed_field('Data')}. This RecordSet is marked as having in-line"
+                " data. Please, list the data below:"
+            )
+            key = f"{record_set_key}-fields-data"
+            columns = [field.name for field in record_set.fields]
+            st.data_editor(
+                pd.DataFrame(record_set.data, columns=columns),
+                use_container_width=True,
+                num_rows="dynamic",
+                key=key,
+                column_config={
+                    field.name: st.column_config.TextColumn(
+                        field.name,
+                        help=field.description,
+                        required=True,
+                    )
+                    for field in record_set.fields
+                },
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.CHANGE_DATA, record_set, key),
+            )
+        else:
+            for field_key, field in enumerate(record_set.fields):
+                prefix = f"{record_set_key}-{field.name}-{field_key}"
+                col1, col2, col3 = st.columns([1, 1, 1])
 
-            key = f"{prefix}-name"
-            col1.text_input(
-                needed_field("Name"),
-                placeholder="Name without special character.",
-                key=key,
-                value=field.name,
-                on_change=handle_field_change,
-                args=(FieldEvent.NAME, field, key),
-            )
-            key = f"{prefix}-description"
-            col2.text_input(
-                "Description",
-                placeholder="Provide a clear description of the RecordSet.",
-                key=key,
-                on_change=handle_field_change,
-                value=field.description,
-                args=(FieldEvent.DESCRIPTION, field, key),
-            )
-            if field.data_types:
-                data_type = field.data_types[0]
-                if isinstance(data_type, str):
-                    data_type = term.URIRef(data_type)
-                if data_type in DATA_TYPES:
-                    data_type_index = DATA_TYPES.index(data_type)
+                key = f"{prefix}-name"
+                col1.text_input(
+                    needed_field("Name"),
+                    placeholder="Name without special character.",
+                    key=key,
+                    value=field.name,
+                    on_change=handle_field_change,
+                    args=(FieldEvent.NAME, field, key),
+                )
+                key = f"{prefix}-description"
+                col2.text_input(
+                    "Description",
+                    placeholder="Provide a clear description of the RecordSet.",
+                    key=key,
+                    on_change=handle_field_change,
+                    value=field.description,
+                    args=(FieldEvent.DESCRIPTION, field, key),
+                )
+                if field.data_types:
+                    data_type = field.data_types[0]
+                    if isinstance(data_type, str):
+                        data_type = term.URIRef(data_type)
+                    if data_type in DATA_TYPES:
+                        data_type_index = DATA_TYPES.index(data_type)
+                    else:
+                        data_type_index = None
                 else:
                     data_type_index = None
-            else:
-                data_type_index = None
-            key = f"{prefix}-datatypes"
-            col3.selectbox(
-                needed_field("Data type"),
-                index=data_type_index,
-                options=DATA_TYPES,
-                key=key,
-                on_change=handle_field_change,
-                args=(FieldEvent.DATA_TYPE, field, key),
-            )
-            possible_sources = _get_possible_sources(metadata)
-            render_source(
-                record_set_key, record_set, field, field_key, possible_sources
-            )
-            render_references(
-                record_set_key, record_set, field, field_key, possible_sources
-            )
+                key = f"{prefix}-datatypes"
+                col3.selectbox(
+                    needed_field("Data type"),
+                    index=data_type_index,
+                    options=DATA_TYPES,
+                    key=key,
+                    on_change=handle_field_change,
+                    args=(FieldEvent.DATA_TYPE, field, key),
+                )
+                possible_sources = _get_possible_sources(metadata)
+                render_source(
+                    record_set_key, record_set, field, field_key, possible_sources
+                )
+                render_references(
+                    record_set_key, record_set, field, field_key, possible_sources
+                )
 
-            st.divider()
+                st.divider()
 
         st.button(
             "Close",
