@@ -55,7 +55,9 @@ class Dataset:
         """Runs the static analysis of `file`."""
         issues = Issues()
         if isinstance(self.file, dict):
-            self.metadata = Metadata.from_json(issues=issues, file=self.file)
+            self.metadata = Metadata.from_json(
+                issues=issues, json_=self.file, folder=None
+            )
         elif self.file is not None:
             self.metadata = Metadata.from_file(issues=issues, file=self.file)
         else:
