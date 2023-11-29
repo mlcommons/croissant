@@ -11,6 +11,21 @@ from views.metadata import MetadataEvent
 
 _NON_RELEVANT_METADATA = ["name", "distribution", "record_sets", "rdf"]
 
+_INFO_TEXT = """Croissant files are composed of three layers:
+
+- **Metadata** about the dataset covering Responsible AI, licensing and attributes of
+                [sc\:Dataset](https://schema.org/Dataset).
+- **Resources**: The contents of a dataset as the underlying files
+                ([`FileObject`](https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#fileobject))
+                and/or sets of files ([`FileSet`](https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#fileset)).
+- **RecordSets**: the sets of structured records obtained from one or more resources
+                (typically a file or set of files) and the structure of these records,
+                expressed as a set of fields (e.g., the columns of a table).
+
+The next three tabs will guide you through filling those layers. The errors if any will
+be displayed on this page. Once you are ready, you can download the dataset by clicking
+the export button in the upper right corner."""
+
 
 def render_overview():
     metadata: Metadata = st.session_state[Metadata]
@@ -78,20 +93,4 @@ def render_overview():
                 st.warning(warning, icon="⚠️")
             else:
                 st.success("No validation issues detected!", icon="✅")
-        st.info(
-            """Croissant files are composed of three layers:
-
-- **Metadata** about the dataset covering Responsible AI, licensing and attributes of
-                [sc\:Dataset](https://schema.org/Dataset).
-- **Resources**: The contents of a dataset as the underlying files
-                ([`FileObject`](https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#fileobject))
-                and/or sets of files ([`FileSet`](https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#fileset)).
-- **RecordSets**: the sets of structured records obtained from one or more resources
-                (typically a file or set of files) and the structure of these records,
-                expressed as a set of fields (e.g., the columns of a table).
-
-The next three tabs will guide you through filling those layers. The errors if any will
-be displayed on this page. Once you are ready, you can download the dataset by clicking
-the export button in the upper right corner.""",
-            icon="💡",
-        )
+        st.info(_INFO_TEXT, icon="💡")

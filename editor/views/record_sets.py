@@ -28,9 +28,11 @@ DATA_TYPES = [
     mlc.DataType.URL,
 ]
 
+_NUM_RECORDS = 3
+
 
 def _generate_data(record_set: RecordSet) -> pd.DataFrame | None:
-    """Generates the first 3 records."""
+    """Generates the first _NUM_RECORDS records."""
     metadata: Metadata = st.session_state[Metadata]
     if not metadata:
         raise ValueError(
@@ -42,7 +44,7 @@ def _generate_data(record_set: RecordSet) -> pd.DataFrame | None:
         records = iter(dataset.records(record_set=record_set.name))
         df = []
         for i, record in records:
-            if i > 2:
+            if i >= _NUM_RECORDS:
                 break
             # Decode bytes as str:
             if isinstance(record, bytes):
