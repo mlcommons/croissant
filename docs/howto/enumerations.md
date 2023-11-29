@@ -3,13 +3,13 @@
 Enumerations are **finite** sets of values, which may be **named** and may
 have an associated **semantic meaning**.
 
-**Note**
-While enumerations may be used to define [classes](/definitions/classes) or [labels](/definitions/labels), they don't necessarily share the same meaning, check the definitions.
+For example, the titanic dataset uses an enumeration to specify
+that the passengers gender field, of type `sc:Text`, can only take two values: `male` or `female`.
 
 Although often being of `dataType` [`sc:Text`](http://schema.org/Text), enumerations can also be of other `dataType`s (e.g. `sc:Integer`).
 
-For example, the titanic dataset uses an enumeration to specify
-that the passengers gender field, of type `sc:Text`, can only take two values: `male` or `female`.
+**Note**
+While enumerations may be used to define [classes](/definitions/classes) or [labels](/definitions/labels), they don't necessarily share the same meaning, check the definitions.
 
 ## Declaring enumerations
 
@@ -23,18 +23,27 @@ There are two ways to declare enumerations:
 
 ### `ml:Field` enumeration
 
-In the following example, extracted from the [coco2014 Croissant definition](https://github.com/mlcommons/croissant/blob/main/datasets/coco2014/metadata.json), the field `supercategory` is declared to be
+In the file named "instances_val2014.json" (fileset named
+"instancesperson_keypoints_annotations"), for example, [coco2014](
+https://github.com/mlcommons/croissant/blob/main/datasets/coco2014/metadata.json)
+describes 80 possible categories. Each category has an identifier, a name (e.g.: "person",
+"bicycle" or "car") and a supercategory (e.g. "person" or "vehicle"). The field
+`supercategory` is declared to be
 an enumeration using the `"ml:isEnumeration": true` property. This means that
 there is a finite number of `supercategory` values, and that it is expected
 that many rows will have the same value.
 
-https://github.com/mlcommons/croissant/blob/6c8eca2925191577a7101dcabd0a880aca03cae3/datasets/coco2014/metadata.json#L259-L271
+https://github.com/mlcommons/croissant/blob/6c8eca2925191577a7101dcabd0a880aca03cae3/datasets/coco2014/metadata.json#L329-L344
 
-The field is of `dataType` `sc:Text`, but also has the type `sc:name`. This
-means that `supercategory` is expected to be a text, and that this text is
-the name of the enumeration value   ` naming itself (the
-supercategory), makes sense to humans, and could therefore be used as it in
-UIs.
+The field is of `dataType` `sc:Text` (1), but also has the type `sc:name` (2). This
+means that `supercategory` is:
+
+ 1. expected to be of type text, and
+ 2. that this text ("person", "vehicle", etc) actually **names** the
+    `supercategory` in a way which makes sense to humans, an could
+    therefore be used as it in UIs. In the hypothetical case where
+    supercategories would have been defined using just an opaque ID
+    (e.g. "A", "B", "C", etc.), the `sc:name` type would not be present.
 
 Although being straightforward, this approach of defining an enumeration has several limitations:
 
