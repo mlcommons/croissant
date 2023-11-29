@@ -15,7 +15,9 @@ class ResourceEvent(enum.Enum):
     NAME = "NAME"
     DESCRIPTION = "DESCRIPTION"
     ENCODING_FORMAT = "ENCODING_FORMAT"
+    INCLUDES = "INCLUDES"
     SHA256 = "SHA256"
+    CONTAINED_IN = "CONTAINED_IN"
     CONTENT_SIZE = "CONTENT_SIZE"
     CONTENT_URL = "CONTENT_URL"
 
@@ -33,8 +35,12 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
         resource.description = value
     elif event == ResourceEvent.ENCODING_FORMAT:
         resource.encoding_format = value
+    elif event == ResourceEvent.INCLUDES:
+        resource.includes = value
     elif event == ResourceEvent.SHA256:
         resource.sha256 = value
+    elif event == ResourceEvent.CONTAINED_IN:
+        resource.contained_in = value
     elif event == ResourceEvent.CONTENT_SIZE:
         resource.content_size = value
     elif event == ResourceEvent.CONTENT_URL:
