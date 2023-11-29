@@ -46,8 +46,9 @@ describe('Editor loads a local CSV as a resource', () => {
 
     // On the record set page, we see the record set.
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
-      getBody().contains('RecordSets').click()
+      getBody().contains('Record Sets').click()
     })
+    cy.contains('Generating the dataset...').should('not.exist')
     cy.contains('base.csv_record_set (2 fields)').click()
     // We also see the fields with the proper types.
     cy.get('[data-testid="stDataFrameResizable"]').contains("column1")
@@ -56,6 +57,7 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.get('[data-testid="stDataFrameResizable"]').contains("https://schema.org/Integer")
 
     // I can edit the details of the fields.
+    cy.contains('Generating the dataset...').should('not.exist')
     cy.contains('Edit fields details').click()
     cy.get('input[aria-label="Description"]').last().type('This is a nice custom description!{enter}')
     cy.get('[data-testid="glide-cell-2-1"]').contains("This is a nice custom description!")
