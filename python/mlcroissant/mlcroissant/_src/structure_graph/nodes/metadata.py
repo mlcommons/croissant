@@ -33,6 +33,7 @@ class Metadata(Node):
     license: str | None = None
     name: str = ""
     url: str | None = ""
+    version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
 
@@ -55,7 +56,7 @@ class Metadata(Node):
         # Check properties.
         self.validate_name()
         self.assert_has_mandatory_properties("name", "url")
-        self.assert_has_optional_properties("citation", "license")
+        self.assert_has_optional_properties("citation", "license", "version")
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -72,6 +73,7 @@ class Metadata(Node):
             "citation": self.citation,
             "license": self.license,
             "url": self.url,
+            "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
         })
@@ -187,5 +189,6 @@ class Metadata(Node):
             name=dataset_name,
             record_sets=record_sets,
             url=url,
+            version=metadata.get(constants.SCHEMA_ORG_VERSION),
             rdf=rdf,
         )

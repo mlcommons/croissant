@@ -25,7 +25,7 @@ def test_checks_are_performed():
     ) as validate_name_mock:
         create_test_node(Metadata, name="field_name")
         mandatory_mock.assert_called_once_with("name", "url")
-        optional_mock.assert_called_once_with("citation", "license")
+        optional_mock.assert_called_once_with("citation", "license", "version")
         validate_name_mock.assert_called_once()
 
 
@@ -39,6 +39,7 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
+        constants.SCHEMA_ORG_VERSION: "1.0",
     }
     assert Metadata.from_jsonld(issues, folder, jsonld) == Metadata(
         issues=issues,
@@ -48,6 +49,7 @@ def test_from_jsonld():
         description="bar",
         license="License",
         url="https://mlcommons.org",
+        version="1.0",
     )
     assert not issues.errors
 

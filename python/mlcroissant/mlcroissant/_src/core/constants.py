@@ -54,6 +54,7 @@ SCHEMA_ORG_LICENSE = namespace.SDO.license
 SCHEMA_ORG_NAME = namespace.SDO.name
 SCHEMA_ORG_SHA256 = namespace.SDO.sha256
 SCHEMA_ORG_URL = namespace.SDO.url
+SCHEMA_ORG_VERSION = namespace.SDO.version
 
 # Schema.org URIs that do not exist yet in the standard.
 SCHEMA_ORG = rdflib.Namespace("https://schema.org/")
@@ -90,6 +91,7 @@ TO_CROISSANT = {
     SCHEMA_ORG_NAME: "name",
     SCHEMA_ORG_SHA256: "sha256",
     SCHEMA_ORG_URL: "url",
+    SCHEMA_ORG_VERSION: "version",
 }
 
 FROM_CROISSANT = {v: k for k, v in TO_CROISSANT.items()}
