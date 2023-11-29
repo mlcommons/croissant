@@ -35,6 +35,7 @@ def render_metadata():
     key = "metadata-license"
     st.selectbox(
         label="License",
+        help="More information on license names and meaning can be found [here](https://www.kaggle.com/discussions/general/116302).",
         key=key,
         options=licenses,
         index=index,
