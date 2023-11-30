@@ -22,7 +22,9 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.schema_org import Organization
 from mlcroissant._src.structure_graph.nodes.schema_org import Person
+from mlcroissant._src.structure_graph.nodes.schema_org import PropertyValue
 from mlcroissant._src.structure_graph.nodes.schema_org import Thing
 
 
@@ -30,24 +32,34 @@ from mlcroissant._src.structure_graph.nodes.schema_org import Thing
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
-    citation: str | None = None
+    # required
     description: str | None = None
     license: str | None = None
     name: str = ""
     url: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    issn: str | None
-    about: Thing | None
-    abstract: str | None
-    accessMode: str | None
-    accessModeSufficient: list[str | Thing] = dataclasses.field(default_factory=list)
-    accessibilityAPI: str | None
-    accessibilityControl: str | None
-    accessibilityFeature: str | None
-    accessibilityHazard: str | None
-    accessibilitySummary: str | None
-    accountablePerson: Person | None = dataclasses.field(default_factory=Person)
+    creator: list[Person | Organization] = dataclasses.field(default_factory=list)
+    date_published: str | None = None
+    # recommended
+    keywords: list[str] = dataclasses.field(default_factory=list)
+    publisher: list[Person | Organization] = dataclasses.field(default_factory=list)
+    version: str | float | None = None
+    date_created: str | None = None
+    date_modified: str | None = None
+    is_accessible_for_free: bool | None = None
+    same_as: str | None = None  # URL
+    # optional
+    alternate_name: list[str] = dataclasses.field(default_factory=list)
+    citation: list[str] = dataclasses.field(default_factory=list)
+    is_based_on: list[str] = dataclasses.field(default_factory=list)  # URL's
+    measurement_technique: str | None = None  # text / URL
+    measurement_method: str | None = None  # text / URL
+    variable_measured: str | None = None
+    is_part_of: str | None = None  # URL
+    maintainer: list[Organization | Person] = dataclasses.field(default_factory=list)
+    included_in_data_catalog: list[str] = dataclasses.field(default_factory=list)  # URL
+    issn: str | None = None
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -67,8 +79,24 @@ class Metadata(Node):
 
         # Check properties.
         self.validate_name()
-        self.assert_has_mandatory_properties("name", "url")
-        self.assert_has_optional_properties("citation", "license")
+        self.assert_has_mandatory_properties(
+            "name",
+            "url",
+            "distribution",
+            "creator",
+            "datePublished",
+            "description",
+            "license",
+        )
+        self.assert_has_optional_properties(
+            "keywords",
+            "publisher",
+            "version",
+            "dateCreated",
+            "dateModified",
+            "isAccessibleForFree",
+            "sameAs",
+        )
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -77,15 +105,34 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
+
         return remove_empty_values(
             {
                 "@context": self.rdf.context,
                 "@type": "sc:Dataset",
                 "name": self.name,
                 "description": self.description,
-                "citation": self.citation,
                 "license": self.license,
                 "url": self.url,
+                "creator": [p.to_json() for p in self.creator],
+                "datePublished": self.date_published,
+                "keywords": self.keywords,
+                "publisher": [p.to_json() for p in self.publisher],
+                "version": self.version,
+                "dateCreated": self.date_created,
+                "dateModified": self.date_modified,
+                "isAccessibleForFree": self.is_accessible_for_free,
+                "sameAs": self.same_as,
+                "alternateName": self.alternate_name,
+                "citation": self.citation,
+                "isBasedOn": self.is_based_on,
+                "measurementTechnique": self.measurement_technique,
+                "measurementMethod": self.measurement_method,
+                "variable_measured": self.variable_measured,
+                "isPartOf": self.is_part_of,
+                "maintainer": [p.to_json() for p in self.maintainer],
+                "includedInDataCatalog": self.included_in_data_catalog,
+                "issn": self.issn,
                 "distribution": [f.to_json() for f in self.distribution],
                 "recordSet": [record_set.to_json() for record_set in self.record_sets],
             }
