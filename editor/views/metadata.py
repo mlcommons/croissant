@@ -11,6 +11,7 @@ from events.metadata import MetadataEvent
 
 
 def render_metadata():
+    """Renders the `Metadata` view."""
     metadata = st.session_state[Metadata]
     index = find_license_index(metadata.license)
     key = "metadata-license"
