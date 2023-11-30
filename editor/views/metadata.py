@@ -3,40 +3,26 @@ import enum
 import streamlit as st
 
 from core.state import Metadata
+from events.metadata import find_license_index
 from events.metadata import handle_metadata_change
+from events.metadata import LICENSES
+from events.metadata import LICENSES_URL
 from events.metadata import MetadataEvent
-
-# List from https://www.kaggle.com/discussions/general/116302.
-licenses = [
-    "Other",
-    "Public Domain",
-    "Public",
-    "CC-0",
-    "PDDL",
-    "CC-BY",
-    "CDLA-Permissive-1.0",
-    "ODC-BY",
-    "CC-BY-SA",
-    "CDLA-Sharing-1.0",
-    "ODC-ODbL",
-    "CC BY-NC",
-    "CC BY-ND",
-    "CC BY-NC-SA",
-    "CC BY-NC-ND",
-]
 
 
 def render_metadata():
+    """Renders the `Metadata` view."""
     metadata = st.session_state[Metadata]
-    try:
-        index = licenses.index(metadata.license)
-    except ValueError:
-        index = None
+    index = find_license_index(metadata.license)
     key = "metadata-license"
     st.selectbox(
         label="License",
+        help=(
+            "More information on license names and meaning can be found"
+            f" [here]({LICENSES_URL})."
+        ),
         key=key,
-        options=licenses,
+        options=LICENSES.keys(),
         index=index,
         on_change=handle_metadata_change,
         args=(MetadataEvent.LICENSE, metadata, key),
