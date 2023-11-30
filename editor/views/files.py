@@ -182,7 +182,14 @@ def _render_resource_details(selected_file: Resource):
                 else RESOURCE_TYPES.index(FILE_SET)
             )
             key = f"{i}-file-name"
-            st.selectbox("Type", index=index, options=RESOURCE_TYPES, key=key)
+            st.selectbox(
+                "Type",
+                index=index,
+                options=RESOURCE_TYPES,
+                key=key,
+                on_change=handle_resource_change,
+                args=(ResourceEvent.TYPE, file, key),
+            )
 
             _render_resource(i, file, is_file_object)
 
@@ -200,7 +207,7 @@ def _render_resource_details(selected_file: Resource):
 
 
 def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bool):
-    parent_options = [file.name for file in st.session_state[Metadata].distribution]
+    parent_options = [f.name for f in st.session_state[Metadata].distribution]
     key = f"{prefix}_parents"
     st.multiselect(
         "Parents",
