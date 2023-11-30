@@ -91,30 +91,7 @@ def _render_upload_panel():
             st.text_input("URL:", key=_DISTANT_URL_KEY)
 
         with tab3:
-            resource_type = st.selectbox(
-                "Type", options=RESOURCE_TYPES, key=_MANUAL_RESOURCE_TYPE_KEY
-            )
-            st.text_input(
-                needed_field("File name"),
-                key=_MANUAL_NAME_KEY,
-            )
-            st.text_area(
-                "File description",
-                placeholder="Provide a clear description of the file.",
-                key=_MANUAL_DESCRIPTION_KEY,
-            )
-            st.text_input(
-                "SHA256",
-                key=_MANUAL_SHA256_KEY,
-            )
-            parent_options = [
-                file.name for file in st.session_state[Metadata].distribution
-            ]
-            st.multiselect(
-                "Parents",
-                options=parent_options,
-                key=_MANUAL_PARENT_KEY,
-            )
+            st.selectbox("Type", options=RESOURCE_TYPES, key=_MANUAL_RESOURCE_TYPE_KEY)
 
         def handle_on_click():
             url = st.session_state[_DISTANT_URL_KEY]
@@ -128,29 +105,7 @@ def _render_upload_panel():
                 file = file_from_upload(file_type, uploaded_file, names)
             else:
                 resource_type = st.session_state[_MANUAL_RESOURCE_TYPE_KEY]
-                needs_sha256 = resource_type == FILE_OBJECT
-
-                name = st.session_state[_MANUAL_NAME_KEY]
-                description = st.session_state[_MANUAL_DESCRIPTION_KEY]
-                sha256 = st.session_state[_MANUAL_SHA256_KEY] if needs_sha256 else None
-                parents = st.session_state[_MANUAL_PARENT_KEY]
-                errorMessage = (
-                    "Please import either a local file, provide a download URL or fill"
-                    " in all required fields: name"
-                )
-                if needs_sha256:
-                    errorMessage += " and SHA256"
-
-                if not name or (needs_sha256 and not sha256):
-                    # Some required fields are empty.
-                    st.toast(
-                        errorMessage,
-                        icon="❌",
-                    )
-                    return
-                file = file_from_form(
-                    file_type, resource_type, name, description, sha256, parents, names
-                )
+                file = file_from_form(resource_type, names)
 
             st.session_state[Metadata].add_distribution(file)
             record_sets = infer_record_sets(file, names)

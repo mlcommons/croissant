@@ -131,32 +131,11 @@ def file_from_upload(
     )
 
 
-def file_from_form(
-    file_type: FileType,
-    type: str,
-    name,
-    description,
-    sha256: str,
-    contained_in: list[str],
-    names: set[str],
-) -> FileObject | FileSet:
+def file_from_form(type: str, names: set[str]) -> FileObject | FileSet:
     """Creates a file based on manually added fields."""
     if type == FILE_OBJECT:
-        return FileObject(
-            name=find_unique_name(names, name),
-            description=description,
-            content_url="",
-            encoding_format=file_type.encoding_format,
-            sha256=sha256,
-            df=None,
-            contained_in=contained_in,
-        )
+        return FileObject(name=find_unique_name(names, "file_object"))
     elif type == FILE_SET:
-        return FileSet(
-            name=find_unique_name(names, name),
-            description=description,
-            encoding_format=file_type.encoding_format,
-            contained_in=contained_in,
-        )
+        return FileSet(name=find_unique_name(names, "file_set"))
     else:
         raise ValueError("type has to be one of FILE_OBJECT, FILE_SET")
