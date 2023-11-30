@@ -3,8 +3,9 @@
 Start locally:
 
 ```bash
-docker run -P -it $(docker build -q .)
+docker run -p 8501:8501 --volume=~/.cache/croissant:/root/.cache/croissant -it $(docker build -q .) 
 ```
+navigate to localhost:8501
 
 Launch the end-to-end tests locally (after you started the application):
 
