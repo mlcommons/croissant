@@ -8,6 +8,8 @@ import pandas as pd
 from rdflib import term
 import streamlit as st
 
+from core.data_types import MLC_DATA_TYPES
+from core.data_types import STR_DATA_TYPES
 from core.query_params import expand_record_set
 from core.query_params import is_record_set_expanded
 from core.state import Field
@@ -22,14 +24,6 @@ from views.source import FieldEvent
 from views.source import handle_field_change
 from views.source import render_references
 from views.source import render_source
-
-DATA_TYPES = [
-    mlc.DataType.TEXT,
-    mlc.DataType.FLOAT,
-    mlc.DataType.INTEGER,
-    mlc.DataType.BOOL,
-    mlc.DataType.URL,
-]
 
 _NUM_RECORDS = 3
 _TIMEOUT_SECONDS = 1
@@ -331,7 +325,7 @@ def _render_left_panel():
                     FieldDataFrame.DATA_TYPE: st.column_config.SelectboxColumn(
                         FieldDataFrame.DATA_TYPE,
                         help="The Croissant type",
-                        options=DATA_TYPES,
+                        options=STR_DATA_TYPES,
                         required=True,
                     ),
                 },
@@ -432,8 +426,8 @@ def _render_right_panel():
                     data_type = field.data_types[0]
                     if isinstance(data_type, str):
                         data_type = term.URIRef(data_type)
-                    if data_type in DATA_TYPES:
-                        data_type_index = DATA_TYPES.index(data_type)
+                    if data_type in MLC_DATA_TYPES:
+                        data_type_index = MLC_DATA_TYPES.index(data_type)
                     else:
                         data_type_index = None
                 else:
@@ -442,7 +436,7 @@ def _render_right_panel():
                 col3.selectbox(
                     needed_field("Data type"),
                     index=data_type_index,
-                    options=DATA_TYPES,
+                    options=STR_DATA_TYPES,
                     key=key,
                     on_change=handle_field_change,
                     args=(FieldEvent.DATA_TYPE, field, key),
