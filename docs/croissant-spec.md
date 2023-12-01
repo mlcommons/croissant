@@ -447,7 +447,7 @@ mechanisms, or use `sc:PropertyValue` as an escape hatch.
 
 A format used to parse the values coming from a `DataSource` e.g., for dates or numbers.
 
-For bounding boxed, one of `CENTER_XYWH`, `XYWH`, `XYXY` or `REL_XYXY`, as defined by https://keras.io/api/keras_cv/bounding_box/formats/.
+For bounding boxes, one of `CENTER_XYWH`, `XYWH`, `XYXY` or `REL_XYXY`, as defined by https://keras.io/api/keras_cv/bounding_box/formats/.
 
 TODO: Define the list of supported formats, and devise a mechanism to select the
 right format for a given target data type.
