@@ -1,3 +1,4 @@
+from etils import epath
 import streamlit as st
 
 from components.tree import render_tree
@@ -23,10 +24,6 @@ Resource = FileObject | FileSet
 _DISTANT_URL_KEY = "import_from_url"
 _LOCAL_FILE_KEY = "import_from_local_file"
 _MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
-_MANUAL_NAME_KEY = "manual_object_name"
-_MANUAL_DESCRIPTION_KEY = "manual_object_description"
-_MANUAL_SHA256_KEY = "manual_object_sha256"
-_MANUAL_PARENT_KEY = "manual_object_parents"
 
 _INFO = """Resources can be `FileObjects` (single files) or `FileSets` (sets of files 
 with the same MIME type). On this page, you can upload `FileObjects`, point to external
@@ -34,6 +31,22 @@ resources on the web or manually create new resources."""
 
 
 def render_files():
+    """Renders the views of the files: warnings and panels to display information."""
+    metadata: Metadata = st.session_state[Metadata]
+    warning = ""
+    for resource in metadata.distribution:
+        content_url = resource.content_url
+        if (
+            content_url
+            and not content_url.startswith("http")
+            and not epath.Path(content_url).exists()
+        ):
+            warning += (
+                f'⚠️ Resource "{resource.name}" is local (from `{content_url}`), but'
+                " doesn't exist on the disk. Fix this by either downloading\n\n"
+            )
+    if warning:
+        st.warning(warning.strip())
     col1, col2, col3 = st.columns([1, 1, 1], gap="small")
     with col1:
         st.markdown("##### Upload more resources")
