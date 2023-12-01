@@ -14,7 +14,7 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
       getBody().contains('Metadata').click()
     })
-    cy.get('input[aria-label="URL:red[*]"]').type('https://mydataset.com', {force: true})
+    cy.get('input[aria-label="URL"]').type('https://mydataset.com{enter}')
 
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
       getBody().contains('Resources').click()

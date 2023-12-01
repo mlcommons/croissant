@@ -1,5 +1,3 @@
-import enum
-
 import streamlit as st
 
 from core.state import Metadata
@@ -14,6 +12,15 @@ def render_metadata():
     """Renders the `Metadata` view."""
     metadata = st.session_state[Metadata]
     index = find_license_index(metadata.license)
+    key = "metadata-url"
+    st.text_input(
+        label="URL",
+        key=key,
+        value=metadata.url,
+        placeholder="URL to the dataset.",
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.URL, metadata, key),
+    )
     key = "metadata-license"
     st.selectbox(
         label="License",

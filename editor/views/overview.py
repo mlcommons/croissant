@@ -42,17 +42,6 @@ def render_overview():
         )
         if not name:
             st.stop()
-        key = "metadata-url"
-        url = st.text_input(
-            label=needed_field("URL"),
-            key=key,
-            value=metadata.url,
-            placeholder="URL to the dataset.",
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.URL, metadata, key),
-        )
-        if not url:
-            st.stop()
         key = "metadata-description"
         st.text_area(
             label="Description",
