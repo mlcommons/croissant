@@ -10,11 +10,11 @@ describe('Create a resource manually', () => {
     cy.visit('http://localhost:8501')
     cy.get('button').contains('Create').click()
     cy.get('input[aria-label="Name:red[*]"]').type('MyDataset{enter}')
-    cy.get('input[aria-label="URL:red[*]"]').type('https://mydataset.com{enter}', {force: true})
     cy.contains("Croissant files are composed of three layers:")
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
       getBody().contains('Metadata').click()
     })
+    cy.get('input[aria-label="URL"]').type('https://mydataset.com{enter}', {force: true})
     
     // Create a resource manually.
     cy.enter('[title="components.tabs.tabs_component"]').then(getBody => {
