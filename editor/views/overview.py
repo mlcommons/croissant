@@ -27,6 +27,21 @@ be displayed on this page. Once you are ready, you can download the dataset by c
 the export button in the upper right corner."""
 
 
+def _relevant_fields(class_or_instance: type):
+    if isinstance(class_or_instance, type):
+        return [
+            field.name
+            for field in dataclasses.fields(class_or_instance)
+            if field not in _NON_RELEVANT_METADATA
+        ]
+    else:
+        return [
+            field
+            for field, value in dataclasses.asdict(class_or_instance).items()
+            if value and field not in _NON_RELEVANT_METADATA
+        ]
+
+
 def render_overview():
     metadata: Metadata = st.session_state[Metadata]
     col1, col2 = st.columns([1, 1], gap="medium")
@@ -52,15 +67,25 @@ def render_overview():
             args=(MetadataEvent.DESCRIPTION, metadata, key),
         )
         st.divider()
-        left, middle, right = st.columns([1, 1, 1])
-        fields = [
-            field
-            for field, value in dataclasses.asdict(metadata).items()
-            if value and field not in _NON_RELEVANT_METADATA
-        ]
-        left.metric("Number of metadata", len(fields))
-        middle.metric("Number of resources", len(metadata.distribution))
-        right.metric("Number of RecordSets", len(metadata.record_sets))
+        col_a, col_b, col_c, col_d = st.columns([1, 1, 1, 1])
+        fields = len(_relevant_fields(metadata))
+        metadata_weight = len(_relevant_fields(Metadata))
+        completion = int(
+            # Formula for the completion:
+            # - Resources and RecordSets count as much as Metadata.
+            # - Metadata is the percentage of filled fields.
+            (
+                fields
+                + (metadata_weight if metadata.distribution else 0)
+                + (metadata_weight if metadata.record_sets else 0)
+            )
+            * 100
+            / (3 * metadata_weight)
+        )
+        col_a.metric("Completion", f"{completion}%")
+        col_b.metric("Number of metadata", fields)
+        col_c.metric("Number of resources", len(metadata.distribution))
+        col_d.metric("Number of RecordSets", len(metadata.record_sets))
     with col2:
         user_started_editing = metadata.record_sets or metadata.distribution
         if user_started_editing:
