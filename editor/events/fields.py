@@ -3,6 +3,7 @@ from typing import Any
 
 import streamlit as st
 
+from core.data_types import str_to_mlc_data_type
 from core.state import Field
 from core.state import Metadata
 import mlcroissant as mlc
@@ -88,7 +89,7 @@ def handle_field_change(
     elif change == FieldEvent.DESCRIPTION:
         field.description = value
     elif change == FieldEvent.DATA_TYPE:
-        field.data_types = [value]
+        field.data_types = [str_to_mlc_data_type(value)]
     elif change == FieldEvent.SOURCE:
         node_type = "field" if "/" in value else "distribution"
         source = mlc.Source(uid=value, node_type=node_type)
