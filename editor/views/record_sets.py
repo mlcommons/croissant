@@ -30,6 +30,8 @@ from views.source import render_source
 
 _NUM_RECORDS = 3
 _TIMEOUT_SECONDS = 1
+_INFO = """RecordSets describe sets of structured records obtained from resources or
+other RecordSets. You can think of RecordSets as tables with typed fields."""
 
 
 class _Result(TypedDict):
@@ -214,6 +216,7 @@ class FieldDataFrame:
 
 
 def render_record_sets():
+    st.info(_INFO, icon="💡")
     col1, col2 = st.columns([1, 1])
     with col1:
         with st.spinner("Generating the dataset..."):
