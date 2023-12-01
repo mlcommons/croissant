@@ -1,6 +1,7 @@
 import multiprocessing
 import textwrap
 import time
+import traceback
 from typing import TypedDict
 
 import numpy as np
@@ -9,7 +10,9 @@ from rdflib import term
 import streamlit as st
 
 from core.data_types import MLC_DATA_TYPES
+from core.data_types import mlc_to_str_data_type
 from core.data_types import STR_DATA_TYPES
+from core.data_types import str_to_mlc_data_type
 from core.query_params import expand_record_set
 from core.query_params import is_record_set_expanded
 from core.state import Field
@@ -34,7 +37,16 @@ class _Result(TypedDict):
     exception: Exception | None
 
 
-@st.cache_data(show_spinner="Generating the dataset...")
+@st.cache_data(
+    show_spinner="Generating the dataset...",
+    hash_funcs={
+        "mlcroissant.Metadata": hash,
+        "mlcroissant.Field": hash,
+        "mlcroissant.FileObject": hash,
+        "mlcroissant.FileSet": hash,
+        "mlcroissant.RecordSet": hash,
+    },
+)
 def _generate_data_with_timeout(record_set: RecordSet) -> _Result:
     """Generates the data and waits at most _TIMEOUT_SECONDS."""
     with multiprocessing.Manager() as manager:
@@ -59,7 +71,7 @@ def _generate_data(record_set: RecordSet, result: _Result) -> pd.DataFrame | Non
     """Generates the first _NUM_RECORDS records."""
     try:
         metadata: Metadata = st.session_state[Metadata]
-        if not metadata:
+        if metadata is None:
             raise ValueError(
                 "The dataset is still incomplete. Please, go to the overview to see"
                 " errors."
@@ -81,8 +93,8 @@ def _generate_data(record_set: RecordSet, result: _Result) -> pd.DataFrame | Non
                             pass
                 df.append(record)
             result["df"] = pd.DataFrame(df)
-    except Exception as exception:
-        result["exception"] = exception
+    except Exception:
+        result["exception"] = traceback.format_exc()
 
 
 def _handle_close_fields():
@@ -148,6 +160,10 @@ def _handle_create_record_set():
     metadata.add_record_set(RecordSet(name="new-record-set", description=""))
 
 
+def _handle_remove_record_set(record_set_key: int):
+    del st.session_state[Metadata].record_sets[record_set_key]
+
+
 def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     expand_record_set(record_set=record_set)
     data_editor_key = _data_editor_key(record_set_key, record_set)
@@ -166,12 +182,13 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
             elif new_field == FieldDataFrame.DESCRIPTION:
                 field.description = new_value
             elif new_field == FieldDataFrame.DATA_TYPE:
-                field.data_types = [new_value]
+                field.data_types = [str_to_mlc_data_type(new_value)]
     for added_row in result["added_rows"]:
+        data_type = str_to_mlc_data_type(added_row.get(FieldDataFrame.DATA_TYPE))
         field = Field(
             name=added_row.get(FieldDataFrame.NAME),
             description=added_row.get(FieldDataFrame.DESCRIPTION),
-            data_types=[added_row.get(FieldDataFrame.DATA_TYPE)],
+            data_types=[data_type],
             source=mlc.Source(),
             references=mlc.Source(),
         )
@@ -290,7 +307,7 @@ def _render_left_panel():
             # TODO(https://github.com/mlcommons/croissant/issues/350): Allow to display
             # several data types, not only the first.
             data_types = [
-                field.data_types[0] if field.data_types else None
+                mlc_to_str_data_type(field.data_types[0]) if field.data_types else None
                 for field in record_set.fields
             ]
             fields = pd.DataFrame(
@@ -358,6 +375,14 @@ def _render_left_panel():
                 key=f"{prefix}-show-fields",
                 on_click=_handle_on_click_field,
                 args=(record_set_key, record_set),
+            )
+            key = f"{prefix}-delete-record-set"
+            st.button(
+                "⚠️ Delete RecordSet",
+                type="primary",
+                key=key,
+                on_click=_handle_remove_record_set,
+                args=(record_set_key,),
             )
     st.button(
         "Create a new RecordSet",

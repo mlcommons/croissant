@@ -137,6 +137,7 @@ class FileObject:
     sha256: str | None = None
     df: pd.DataFrame | None = None
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
+    folder: epath.PathLike | None = None
 
 
 @dataclasses.dataclass

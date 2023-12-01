@@ -3,6 +3,7 @@ import streamlit as st
 
 from components.tree import render_tree
 from core.constants import DF_HEIGHT
+from core.constants import OAUTH_CLIENT_ID
 from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
@@ -10,7 +11,9 @@ from core.files import FILE_OBJECT
 from core.files import FILE_SET
 from core.files import FILE_TYPES
 from core.files import RESOURCE_TYPES
+from core.path import get_resource_path
 from core.record_sets import infer_record_sets
+from core.state import CurrentProject
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
@@ -32,21 +35,7 @@ resources on the web or manually create new resources."""
 
 def render_files():
     """Renders the views of the files: warnings and panels to display information."""
-    metadata: Metadata = st.session_state[Metadata]
-    warning = ""
-    for resource in metadata.distribution:
-        content_url = resource.content_url
-        if (
-            content_url
-            and not content_url.startswith("http")
-            and not epath.Path(content_url).exists()
-        ):
-            warning += (
-                f'⚠️ Resource "{resource.name}" is local (from `{content_url}`), but'
-                " doesn't exist on the disk. Fix this by either downloading\n\n"
-            )
-    if warning:
-        st.warning(warning.strip())
+    _render_warnings()
     col1, col2, col3 = st.columns([1, 1, 1], gap="small")
     with col1:
         st.markdown("##### Upload more resources")
@@ -58,6 +47,31 @@ def render_files():
         st.session_state[SelectedResource] = resource
     with col3:
         _render_right_panel()
+
+
+def _render_warnings():
+    """Renders warnings concerning local files."""
+    metadata: Metadata = st.session_state[Metadata]
+    warning = ""
+    for resource in metadata.distribution:
+        content_url = resource.content_url
+        if content_url and not content_url.startswith("http"):
+            path = get_resource_path(content_url)
+            if not path.exists():
+                if OAUTH_CLIENT_ID:
+                    warning += (
+                        f'⚠️ Resource "{resource.name}" points to a local file, but'
+                        " doesn't exist on the disk. Fix this by changing the content"
+                        " URL.\n\n"
+                    )
+                else:
+                    warning += (
+                        f'⚠️ Resource "{resource.name}" points to a local file, but'
+                        " doesn't exist on the disk. Fix this by either downloading"
+                        f" it to {path} or changing the content URL.\n\n"
+                    )
+    if warning:
+        st.warning(warning.strip())
 
 
 def _render_resources_panel(files: list[Resource]) -> Resource | None:
@@ -112,13 +126,15 @@ def _render_upload_panel():
             file_type = FILE_TYPES[file_type_name]
             metadata: Metadata = st.session_state[Metadata]
             names = metadata.names()
+            project: CurrentProject = st.session_state[CurrentProject]
+            folder = project.path
             if url:
-                file = file_from_url(file_type, url, names)
+                file = file_from_url(file_type, url, names, folder)
             elif uploaded_file:
-                file = file_from_upload(file_type, uploaded_file, names)
+                file = file_from_upload(file_type, uploaded_file, names, folder)
             else:
                 resource_type = st.session_state[_MANUAL_RESOURCE_TYPE_KEY]
-                file = file_from_form(resource_type, names)
+                file = file_from_form(resource_type, names, folder)
 
             st.session_state[Metadata].add_distribution(file)
             record_sets = infer_record_sets(file, names)
@@ -170,7 +186,7 @@ def _render_resource_details(selected_file: Resource):
             col1, col2 = st.columns([1, 1])
             col1.button("Close", key=f"{i}_close", on_click=close, type="primary")
             col2.button(
-                "Remove", key=f"{i}_remove", on_click=delete_line, type="secondary"
+                "⚠️ Remove", key=f"{i}_remove", on_click=delete_line, type="secondary"
             )
 
 

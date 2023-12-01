@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 
 from .names import find_unique_name
+from .path import get_resource_path
 from .state import FileObject
 from .state import FileSet
 
@@ -97,7 +98,9 @@ def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.Data
         raise NotImplementedError()
 
 
-def file_from_url(file_type: FileType, url: str, names: set[str]) -> FileObject:
+def file_from_url(
+    file_type: FileType, url: str, names: set[str], folder: epath.Path
+) -> FileObject:
     """Downloads locally and extracts the file information."""
     file_path = hash_file_path(url)
     if not file_path.exists():
@@ -112,30 +115,38 @@ def file_from_url(file_type: FileType, url: str, names: set[str]) -> FileObject:
         encoding_format=file_type.encoding_format,
         sha256=sha256,
         df=df,
+        folder=folder,
     )
 
 
 def file_from_upload(
-    file_type: FileType, file: io.BytesIO, names: set[str]
+    file_type: FileType, file: io.BytesIO, names: set[str], folder: epath.Path
 ) -> FileObject:
     """Uploads locally and extracts the file information."""
-    sha256 = _sha256(file.getvalue())
+    value = file.getvalue()
+    content_url = f"data/{file.name}"
+    sha256 = _sha256(value)
+    with get_resource_path(content_url).open("wb") as f:
+        f.write(value)
     df = get_dataframe(file_type, file).infer_objects()
     return FileObject(
         name=find_unique_name(names, file.name),
         description="",
-        content_url=f"data/{file.name}",
+        content_url=content_url,
         encoding_format=file_type.encoding_format,
         sha256=sha256,
         df=df,
+        folder=folder,
     )
 
 
-def file_from_form(type: str, names: set[str]) -> FileObject | FileSet:
+def file_from_form(
+    type: str, names: set[str], folder: epath.Path
+) -> FileObject | FileSet:
     """Creates a file based on manually added fields."""
     if type == FILE_OBJECT:
-        return FileObject(name=find_unique_name(names, "file_object"))
+        return FileObject(name=find_unique_name(names, "file_object"), folder=folder)
     elif type == FILE_SET:
-        return FileSet(name=find_unique_name(names, "file_set"))
+        return FileSet(name=find_unique_name(names, "file_set"), folder=folder)
     else:
         raise ValueError("type has to be one of FILE_OBJECT, FILE_SET")

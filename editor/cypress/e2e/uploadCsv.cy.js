@@ -52,9 +52,9 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.contains('base.csv_record_set (2 fields)').click()
     // We also see the fields with the proper types.
     cy.get('[data-testid="stDataFrameResizable"]').contains("column1")
-    cy.get('[data-testid="stDataFrameResizable"]').contains("https://schema.org/Text")
+    cy.get('[data-testid="stDataFrameResizable"]').contains("Text")
     cy.get('[data-testid="stDataFrameResizable"]').contains("column2")
-    cy.get('[data-testid="stDataFrameResizable"]').contains("https://schema.org/Integer")
+    cy.get('[data-testid="stDataFrameResizable"]').contains("Integer")
 
     // I can edit the details of the fields.
     cy.contains('Generating the dataset...').should('not.exist')
