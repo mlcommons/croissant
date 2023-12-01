@@ -4,6 +4,7 @@ import streamlit as st
 from components.tree import render_tree
 from core.constants import DF_HEIGHT
 from core.constants import OAUTH_CLIENT_ID
+from core.files import code_to_index
 from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
@@ -253,9 +254,10 @@ def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bo
             args=(ResourceEvent.INCLUDES, file, key),
         )
     key = f"{prefix}_encoding"
-    st.text_input(
+    st.selectbox(
         needed_field("Encoding format"),
-        value=file.encoding_format,
+        index=code_to_index(file.encoding_format),
+        options=FILE_TYPES.keys(),
         key=key,
         on_change=handle_resource_change,
         args=(ResourceEvent.ENCODING_FORMAT, file, key),

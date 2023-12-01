@@ -4,6 +4,7 @@ import enum
 import streamlit as st
 
 from core.files import FILE_OBJECT
+from core.files import name_to_code
 from core.path import get_resource_path
 from core.state import FileObject
 from core.state import FileSet
@@ -38,7 +39,7 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
     elif event == ResourceEvent.DESCRIPTION:
         resource.description = value
     elif event == ResourceEvent.ENCODING_FORMAT:
-        resource.encoding_format = value
+        resource.encoding_format = name_to_code(value)
     elif event == ResourceEvent.INCLUDES:
         resource.includes = value
     elif event == ResourceEvent.SHA256:

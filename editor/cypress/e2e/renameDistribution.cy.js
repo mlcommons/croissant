@@ -34,7 +34,7 @@ describe('Renaming of FileObjects/FileSets/RecordSets/Fields.', () => {
       getBody().contains('Record Sets').click()
     })
     cy.contains('genders').click()
-    cy.contains('Edit fields details').click()
+    cy.contains('Edit fields details').click({force: true})
     cy.contains('the-new-name')
   })
 })

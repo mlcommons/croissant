@@ -31,6 +31,8 @@ class FileTypes:
         encoding_format="application/vnd.ms-excel",
         extensions=["xls", "xlsx", "xlsm"],
     )
+    GZIP = FileType(name="GZIP", encoding_format="application/gzip", extensions=["gz"])
+    JPEG = FileType(name="JPEG", encoding_format="image/jpeg", extensions=["json"])
     JSON = FileType(
         name="JSON", encoding_format="application/json", extensions=["json"]
     )
@@ -44,18 +46,58 @@ class FileTypes:
         encoding_format="application/vnd.apache.parquet",
         extensions=["parquet"],
     )
+    TAR = FileType(
+        name="Archive (TAR)",
+        encoding_format="application/x-tar",
+        extensions=["tar"],
+    )
+    TXT = FileType(
+        name="Text",
+        encoding_format="plain/text",
+        extensions=["txt"],
+    )
+    ZIP = FileType(
+        name="ZIP",
+        encoding_format="application/zip",
+        extensions=["zip"],
+    )
+
+
+def _full_name(file_type: FileType):
+    return f"{file_type.name} ({file_type.encoding_format})"
 
 
 FILE_TYPES: dict[str, FileType] = {
-    file_type.name: file_type
+    _full_name(file_type): file_type
     for file_type in [
         FileTypes.CSV,
         FileTypes.EXCEL,
+        FileTypes.GZIP,
+        FileTypes.JPEG,
         FileTypes.JSON,
         FileTypes.JSONL,
         FileTypes.PARQUET,
+        FileTypes.TAR,
+        FileTypes.TXT,
+        FileTypes.ZIP,
     ]
 }
+
+
+def name_to_code(file_type_name: str) -> str | None:
+    """Maps names to the encoding format: Text => plain/text."""
+    for name, file_type in FILE_TYPES.items():
+        if file_type_name == name:
+            return file_type.encoding_format
+    return None
+
+
+def code_to_index(encoding_format: str) -> int | None:
+    """Maps the encoding format to its index in the list of keys: plain/text => 12."""
+    for i, file_type in enumerate(FILE_TYPES.values()):
+        if file_type.encoding_format == encoding_format:
+            return i
+    return None
 
 
 def _sha256(content: bytes):
