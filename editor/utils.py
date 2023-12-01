@@ -41,14 +41,3 @@ def init_state(force=False):
 
     if OpenTab not in st.session_state or force:
         st.session_state[OpenTab] = None
-
-    # Uncomment those lines if you work locally in order to avoid clicks at each reload.
-    # And comment all previous lines in `init_state`.
-    # if mlc.Dataset not in st.session_state or force:
-    #     st.session_state[mlc.Dataset] = mlc.Dataset("../datasets/titanic/metadata.json")
-    # if Metadata not in st.session_state or force:
-    #     st.session_state[Metadata] = Metadata.from_canonical(
-    #         st.session_state[mlc.Dataset].metadata
-    #     )
-    # if CurrentProject not in st.session_state or force:
-    #     st.session_state[CurrentProject] = CurrentProject.create_new()
