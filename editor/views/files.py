@@ -11,7 +11,9 @@ from core.files import file_from_url
 from core.files import FILE_OBJECT
 from core.files import FILE_SET
 from core.files import FILE_TYPES
+from core.files import is_url
 from core.files import RESOURCE_TYPES
+from core.files import trigger_download
 from core.path import get_resource_path
 from core.record_sets import infer_record_sets
 from core.state import CurrentProject
@@ -55,19 +57,21 @@ def _render_warnings():
     metadata: Metadata = st.session_state[Metadata]
     warning = ""
     for resource in metadata.distribution:
+        if not isinstance(resource, FileObject):
+            continue
         content_url = resource.content_url
         if content_url and not content_url.startswith("http"):
             path = get_resource_path(content_url)
             if not path.exists():
                 if OAUTH_CLIENT_ID:
                     warning += (
-                        f'⚠️ Resource "{resource.name}" points to a local file, but'
+                        f'⚠️ Resource "{resource.name}" points to a local file that'
                         " doesn't exist on the disk. Fix this by changing the content"
                         " URL.\n\n"
                     )
                 else:
                     warning += (
-                        f'⚠️ Resource "{resource.name}" points to a local file, but'
+                        f'⚠️ Resource "{resource.name}" points to a local file that'
                         " doesn't exist on the disk. Fix this by either downloading"
                         f" it to {path} or changing the content URL.\n\n"
                     )
@@ -107,7 +111,6 @@ def _render_resources_panel(files: list[Resource]) -> Resource | None:
 def _render_upload_panel():
     """Renders the form to upload from local or upload from URL."""
     with st.form(key="upload_form", clear_on_submit=True):
-        file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
         tab1, tab2, tab3 = st.tabs([
             "Import from a local file", "Import from a URL", "Add manually"
         ])
@@ -124,15 +127,14 @@ def _render_upload_panel():
         def handle_on_click():
             url = st.session_state[_DISTANT_URL_KEY]
             uploaded_file = st.session_state[_LOCAL_FILE_KEY]
-            file_type = FILE_TYPES[file_type_name]
             metadata: Metadata = st.session_state[Metadata]
             names = metadata.names()
             project: CurrentProject = st.session_state[CurrentProject]
             folder = project.path
             if url:
-                file = file_from_url(file_type, url, names, folder)
+                file = file_from_url(url, names, folder)
             elif uploaded_file:
-                file = file_from_upload(file_type, uploaded_file, names, folder)
+                file = file_from_upload(uploaded_file, names, folder)
             else:
                 resource_type = st.session_state[_MANUAL_RESOURCE_TYPE_KEY]
                 file = file_from_form(resource_type, names, folder)
@@ -191,7 +193,7 @@ def _render_resource_details(selected_file: Resource):
             )
 
 
-def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bool):
+def _render_resource(prefix: int, file: Resource, is_file_object: bool):
     parent_options = [f.name for f in st.session_state[Metadata].distribution]
     key = f"{prefix}_parents"
     st.multiselect(
@@ -264,10 +266,7 @@ def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bo
     )
     if is_file_object:
         st.markdown("First rows of data:")
-        is_url = file.content_url and file.content_url.startswith("http")
         if file.df is not None:
             st.dataframe(file.df, height=DF_HEIGHT)
-        elif is_url:
-            st.button("Trigger download")
         else:
-            st.markdown("No rendering possible.")
+            st.button("Trigger download", on_click=trigger_download, args=(file,))

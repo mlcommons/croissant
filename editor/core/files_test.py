@@ -1,12 +1,17 @@
+from unittest import mock
+
 from etils import epath
 import pandas as pd
 import pytest
 
-from .files import file_from_url
-from .files import FileTypes
+from core import files as files_module
+
+FileTypes = files_module.FileTypes
 
 
-def test_check_file_csv():
+@mock.patch.object(files_module, "guess_file_type", return_value=FileTypes.CSV)
+def test_check_file_csv(guess_file_type):
+    del guess_file_type
     csv = epath.Path(
         # This is the hash path for "https://my.url".
         "/tmp/croissant-editor-f76b4732c82d83daf858fae2cc0e590d352a4bceb781351243a03daab11f76bc"
@@ -18,10 +23,14 @@ def test_check_file_csv():
         f.write("a,1\n")
         f.write("b,2\n")
         f.write("c,3\n")
-    file = file_from_url(FileTypes.CSV, "https://my.url", set(), epath.Path())
+    file = files_module.file_from_url("https://my.url", set(), epath.Path())
     pd.testing.assert_frame_equal(
         file.df, pd.DataFrame({"column1": ["a", "b", "c"], "column2": [1, 2, 3]})
     )
-    # Fails with unknown encoding_format:
+
+
+@mock.patch.object(files_module, "guess_file_type", return_value="unknown")
+def test_check_file_unknown(guess_file_type):
+    del guess_file_type
     with pytest.raises(NotImplementedError):
-        file_from_url("unknown", "https://my.url", set(), epath.Path())
+        files_module.file_from_url("https://my.url", set(), epath.Path())

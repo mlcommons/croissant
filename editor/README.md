@@ -18,6 +18,8 @@ npm run cypress:run  # Runs e2e tests in background
 
 You can debug the tests in Github Actions because failed screenshots are uploaded as artifacts.
 
+You may need to install [`libmagic`](https://pypi.org/project/python-magic).
+
 # Create a custom component
 
 Custom components are in `components/`.

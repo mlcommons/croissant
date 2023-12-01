@@ -4,6 +4,7 @@ import io
 import tempfile
 
 from etils import epath
+import magic
 import pandas as pd
 import requests
 
@@ -83,6 +84,10 @@ FILE_TYPES: dict[str, FileType] = {
     ]
 }
 
+ENCODING_FORMATS: dict[str, FileType] = {
+    file_type.encoding_format: file_type for file_type in FILE_TYPES.values()
+}
+
 
 def name_to_code(file_type_name: str) -> str | None:
     """Maps names to the encoding format: Text => plain/text."""
@@ -127,29 +132,34 @@ def download_file(url: str, file_path: epath.Path):
 def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.DataFrame:
     """Gets the df associated to the file."""
     if file_type == FileTypes.CSV:
-        return pd.read_csv(file)
+        df = pd.read_csv(file)
     elif file_type == FileTypes.EXCEL:
-        return pd.read_excel(file)
+        df = pd.read_excel(file)
     elif file_type == FileTypes.JSON:
-        return pd.read_json(file)
+        df = pd.read_json(file)
     elif file_type == FileTypes.JSONL:
-        return pd.read_json(file, lines=True)
+        df = pd.read_json(file, lines=True)
     elif file_type == FileTypes.PARQUET:
-        return pd.read_parquet(file)
+        df = pd.read_parquet(file)
     else:
         raise NotImplementedError()
+    return df.infer_objects()
 
 
-def file_from_url(
-    file_type: FileType, url: str, names: set[str], folder: epath.Path
-) -> FileObject:
+def guess_file_type(path: epath.Path) -> FileType | None:
+    mime = magic.from_file(path, mime=True)
+    return ENCODING_FORMATS.get(mime)
+
+
+def file_from_url(url: str, names: set[str], folder: epath.Path) -> FileObject:
     """Downloads locally and extracts the file information."""
     file_path = hash_file_path(url)
     if not file_path.exists():
         download_file(url, file_path)
     with file_path.open("rb") as file:
         sha256 = _sha256(file.read())
-    df = get_dataframe(file_type, file_path).infer_objects()
+    file_type = guess_file_type(file_path)
+    df = get_dataframe(file_type, file_path)
     return FileObject(
         name=find_unique_name(names, url.split("/")[-1]),
         description="",
@@ -162,15 +172,17 @@ def file_from_url(
 
 
 def file_from_upload(
-    file_type: FileType, file: io.BytesIO, names: set[str], folder: epath.Path
+    file: io.BytesIO, names: set[str], folder: epath.Path
 ) -> FileObject:
     """Uploads locally and extracts the file information."""
     value = file.getvalue()
     content_url = f"data/{file.name}"
     sha256 = _sha256(value)
-    with get_resource_path(content_url).open("wb") as f:
+    file_path = get_resource_path(content_url)
+    with file_path.open("wb") as f:
         f.write(value)
-    df = get_dataframe(file_type, file).infer_objects()
+    file_type = guess_file_type(file_path)
+    df = get_dataframe(file_type, file)
     return FileObject(
         name=find_unique_name(names, file.name),
         description="",
@@ -192,3 +204,19 @@ def file_from_form(
         return FileSet(name=find_unique_name(names, "file_set"), folder=folder)
     else:
         raise ValueError("type has to be one of FILE_OBJECT, FILE_SET")
+
+
+def is_url(file: FileObject) -> bool:
+    return file.content_url and file.content_url.startswith("http")
+
+
+def trigger_download(file: FileObject):
+    if is_url(file):
+        file_path = hash_file_path(file.content_url)
+        if not file_path.exists():
+            download_file(file.content_url, file_path)
+    else:
+        file_path = get_resource_path(file.content_url)
+    file_type = guess_file_type(file_path)
+    df = get_dataframe(file_type, file_path)
+    file.df = df
