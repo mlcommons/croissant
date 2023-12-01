@@ -4,6 +4,8 @@ import enum
 import streamlit as st
 
 from core.files import FILE_OBJECT
+from core.files import name_to_code
+from core.path import get_resource_path
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
@@ -37,7 +39,7 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
     elif event == ResourceEvent.DESCRIPTION:
         resource.description = value
     elif event == ResourceEvent.ENCODING_FORMAT:
-        resource.encoding_format = value
+        resource.encoding_format = name_to_code(value)
     elif event == ResourceEvent.INCLUDES:
         resource.includes = value
     elif event == ResourceEvent.SHA256:
@@ -47,6 +49,11 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
     elif event == ResourceEvent.CONTENT_SIZE:
         resource.content_size = value
     elif event == ResourceEvent.CONTENT_URL:
+        if resource.content_url and value:
+            old_path = get_resource_path(resource.content_url)
+            new_path = get_resource_path(value)
+            if old_path.exists() and not new_path.exists():
+                old_path.rename(new_path)
         resource.content_url = value
     elif event == ResourceEvent.TYPE:
         metadata: Metadata = st.session_state[Metadata]

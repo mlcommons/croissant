@@ -5,12 +5,23 @@ import streamlit as st
 
 from core.constants import OAUTH_CLIENT_ID
 from core.past_projects import save_current_project
+from core.path import get_resource_path
 from core.query_params import set_project
 from core.state import CurrentProject
 from core.state import Metadata
 import mlcroissant as mlc
 from views.load import render_load
 from views.previous_files import render_previous_files
+
+_DATASETS = {
+    "Titanic": ["data/embarkation_ports.csv", "data/genders.csv"],
+    "FLORES-200": [],
+    "GPT-3": [],
+    "COCO2014": [],
+    "PASS": [],
+    "MovieLens": [],
+    "Bigcode-The-Stack": [],
+}
 
 
 def render_splash():
@@ -39,12 +50,19 @@ def render_splash():
         with st.expander("**Try out an example!**", expanded=True):
 
             def create_example(dataset: str):
-                url = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/{dataset.lower()}/metadata.json"
+                base = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/{dataset.lower()}"
+                url = f"{base}/metadata.json"
                 try:
                     json = requests.get(url).json()
                     metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
                     st.session_state[Metadata] = Metadata.from_canonical(metadata)
                     save_current_project()
+                    # Write supplementary files.
+                    files = _DATASETS.get(dataset, [])
+                    for file in files:
+                        path = get_resource_path(file)
+                        json = requests.get(f"{base}/{file}")
+                        path.write_bytes(json.content)
                 except Exception as exception:
                     logging.error(exception)
                     st.error(
@@ -55,15 +73,7 @@ def render_splash():
 
             dataset = st.selectbox(
                 label="Dataset",
-                options=[
-                    "Titanic",
-                    "FLORES-200",
-                    "GPT-3",
-                    "COCO2014",
-                    "PASS",
-                    "MovieLens",
-                    "Bigcode-The-Stack",
-                ],
+                options=_DATASETS.keys(),
             )
             st.button(
                 f"{dataset} dataset",

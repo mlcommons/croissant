@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     git \
     python3-pip \
+    libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ./ /app/

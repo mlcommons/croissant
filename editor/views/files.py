@@ -1,15 +1,22 @@
+from etils import epath
 import streamlit as st
 
 from components.tree import render_tree
 from core.constants import DF_HEIGHT
+from core.constants import OAUTH_CLIENT_ID
+from core.files import code_to_index
 from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
 from core.files import FILE_OBJECT
 from core.files import FILE_SET
 from core.files import FILE_TYPES
+from core.files import is_url
 from core.files import RESOURCE_TYPES
+from core.files import trigger_download
+from core.path import get_resource_path
 from core.record_sets import infer_record_sets
+from core.state import CurrentProject
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
@@ -23,10 +30,6 @@ Resource = FileObject | FileSet
 _DISTANT_URL_KEY = "import_from_url"
 _LOCAL_FILE_KEY = "import_from_local_file"
 _MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
-_MANUAL_NAME_KEY = "manual_object_name"
-_MANUAL_DESCRIPTION_KEY = "manual_object_description"
-_MANUAL_SHA256_KEY = "manual_object_sha256"
-_MANUAL_PARENT_KEY = "manual_object_parents"
 
 _INFO = """Resources can be `FileObjects` (single files) or `FileSets` (sets of files 
 with the same MIME type). On this page, you can upload `FileObjects`, point to external
@@ -34,6 +37,8 @@ resources on the web or manually create new resources."""
 
 
 def render_files():
+    """Renders the views of the files: warnings and panels to display information."""
+    _render_warnings()
     col1, col2, col3 = st.columns([1, 1, 1], gap="small")
     with col1:
         st.markdown("##### Upload more resources")
@@ -45,6 +50,33 @@ def render_files():
         st.session_state[SelectedResource] = resource
     with col3:
         _render_right_panel()
+
+
+def _render_warnings():
+    """Renders warnings concerning local files."""
+    metadata: Metadata = st.session_state[Metadata]
+    warning = ""
+    for resource in metadata.distribution:
+        if not isinstance(resource, FileObject):
+            continue
+        content_url = resource.content_url
+        if content_url and not content_url.startswith("http"):
+            path = get_resource_path(content_url)
+            if not path.exists():
+                if OAUTH_CLIENT_ID:
+                    warning += (
+                        f'⚠️ Resource "{resource.name}" points to a local file that'
+                        " doesn't exist on the disk. Fix this by changing the content"
+                        " URL.\n\n"
+                    )
+                else:
+                    warning += (
+                        f'⚠️ Resource "{resource.name}" points to a local file that'
+                        " doesn't exist on the disk. Fix this by either downloading"
+                        f" it to {path} or changing the content URL.\n\n"
+                    )
+    if warning:
+        st.warning(warning.strip())
 
 
 def _render_resources_panel(files: list[Resource]) -> Resource | None:
@@ -79,7 +111,6 @@ def _render_resources_panel(files: list[Resource]) -> Resource | None:
 def _render_upload_panel():
     """Renders the form to upload from local or upload from URL."""
     with st.form(key="upload_form", clear_on_submit=True):
-        file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
         tab1, tab2, tab3 = st.tabs([
             "Import from a local file", "Import from a URL", "Add manually"
         ])
@@ -96,16 +127,17 @@ def _render_upload_panel():
         def handle_on_click():
             url = st.session_state[_DISTANT_URL_KEY]
             uploaded_file = st.session_state[_LOCAL_FILE_KEY]
-            file_type = FILE_TYPES[file_type_name]
             metadata: Metadata = st.session_state[Metadata]
             names = metadata.names()
+            project: CurrentProject = st.session_state[CurrentProject]
+            folder = project.path
             if url:
-                file = file_from_url(file_type, url, names)
+                file = file_from_url(url, names, folder)
             elif uploaded_file:
-                file = file_from_upload(file_type, uploaded_file, names)
+                file = file_from_upload(uploaded_file, names, folder)
             else:
                 resource_type = st.session_state[_MANUAL_RESOURCE_TYPE_KEY]
-                file = file_from_form(resource_type, names)
+                file = file_from_form(resource_type, names, folder)
 
             st.session_state[Metadata].add_distribution(file)
             record_sets = infer_record_sets(file, names)
@@ -157,11 +189,11 @@ def _render_resource_details(selected_file: Resource):
             col1, col2 = st.columns([1, 1])
             col1.button("Close", key=f"{i}_close", on_click=close, type="primary")
             col2.button(
-                "Remove", key=f"{i}_remove", on_click=delete_line, type="secondary"
+                "⚠️ Remove", key=f"{i}_remove", on_click=delete_line, type="secondary"
             )
 
 
-def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bool):
+def _render_resource(prefix: int, file: Resource, is_file_object: bool):
     parent_options = [f.name for f in st.session_state[Metadata].distribution]
     key = f"{prefix}_parents"
     st.multiselect(
@@ -224,19 +256,17 @@ def _render_resource(prefix: int, file: FileObject | FileSet, is_file_object: bo
             args=(ResourceEvent.INCLUDES, file, key),
         )
     key = f"{prefix}_encoding"
-    st.text_input(
+    st.selectbox(
         needed_field("Encoding format"),
-        value=file.encoding_format,
+        index=code_to_index(file.encoding_format),
+        options=FILE_TYPES.keys(),
         key=key,
         on_change=handle_resource_change,
         args=(ResourceEvent.ENCODING_FORMAT, file, key),
     )
     if is_file_object:
         st.markdown("First rows of data:")
-        is_url = file.content_url and file.content_url.startswith("http")
         if file.df is not None:
             st.dataframe(file.df, height=DF_HEIGHT)
-        elif is_url:
-            st.button("Trigger download")
         else:
-            st.markdown("No rendering possible.")
+            st.button("Trigger download", on_click=trigger_download, args=(file,))
