@@ -364,7 +364,7 @@ def _render_left_panel():
                     left.button(
                         "⚠️",
                         key=f"idea-{prefix}",
-                        disabled=True,
+                        on_click=lambda: _generate_data_with_timeout.clear(),
                         help=textwrap.dedent(f"""**Error**:
 ```
 {exception}

@@ -118,11 +118,14 @@ def render_source(
     index = (
         possible_sources.index(source.uid) if source.uid in possible_sources else None
     )
+    options = [s for s in possible_sources if not s.startswith(record_set.name)]
+    if index and (index < 0 or index >= len(options)):
+        index = None
     key = f"{prefix}-source"
     col1.selectbox(
         needed_field("Source"),
         index=index,
-        options=[s for s in possible_sources if not s.startswith(record_set.name)],
+        options=options,
         key=key,
         on_change=handle_field_change,
         args=(FieldEvent.SOURCE, field, key),
@@ -264,11 +267,14 @@ def render_references(
             if references.uid in possible_sources
             else None
         )
+        options = [s for s in possible_sources if not s.startswith(record_set.name)]
+        if index and (index < 0 or index >= len(options)):
+            index = None
         key = f"{key}-reference"
         col1.selectbox(
             "Reference",
             index=index,
-            options=[s for s in possible_sources if not s.startswith(record_set.name)],
+            options=options,
             key=key,
             on_change=handle_field_change,
             args=(FieldEvent.REFERENCE, field, key),
