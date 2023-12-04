@@ -9,6 +9,7 @@ import pandas as pd
 from rdflib import term
 import streamlit as st
 
+from components.safe_button import button_with_confirmation
 from core.data_types import MLC_DATA_TYPES
 from core.data_types import mlc_to_str_data_type
 from core.data_types import STR_DATA_TYPES
@@ -380,9 +381,8 @@ def _render_left_panel():
                 args=(record_set_key, record_set),
             )
             key = f"{prefix}-delete-record-set"
-            st.button(
-                "⚠️ Delete RecordSet",
-                type="primary",
+            button_with_confirmation(
+                "Delete RecordSet",
                 key=key,
                 on_click=_handle_remove_record_set,
                 args=(record_set_key,),
