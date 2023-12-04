@@ -96,10 +96,6 @@ def render_overview():
                     warning += "**Errors**\n"
                     for error in issues.errors:
                         warning += f"{error}\n"
-                if issues.warnings:
-                    warning += "**Warnings**\n"
-                    for warning in issues.warnings:
-                        warning += f"{warning}\n"
             except mlc.ValidationError as exception:
                 warning += "**Errors**\n"
                 warning += f"{str(exception)}\n"
