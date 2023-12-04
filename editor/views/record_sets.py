@@ -254,7 +254,7 @@ def _render_left_panel():
             )
             key = f"{prefix}-is-enumeration"
             st.checkbox(
-                "Whether the RecordSet is an enumeration",
+                "The RecordSet is an enumeration",
                 key=key,
                 value=record_set.is_enumeration,
                 on_change=handle_record_set_change,
@@ -262,7 +262,7 @@ def _render_left_panel():
             )
             key = f"{prefix}-has-data"
             st.checkbox(
-                "Whether the RecordSet has in-line data",
+                "The RecordSet has in-line data",
                 key=key,
                 value=bool(record_set.data),
                 on_change=handle_record_set_change,
@@ -271,7 +271,7 @@ def _render_left_panel():
 
             joins = _find_joins(record_set.fields)
             has_join = st.checkbox(
-                "Whether the RecordSet contains joins. To add a new join, add a field"
+                "The RecordSet contains joins. To add a new join, add a field"
                 " with a source in `RecordSet`/`FileSet`/`FileObject` and a reference"
                 " to another `RecordSet`/`FileSet`/`FileObject`.",
                 key=f"{prefix}-has-joins",
