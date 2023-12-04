@@ -83,7 +83,7 @@ def render_overview():
             / (3 * metadata_weight)
         )
         col_a.metric("Completion", f"{completion}%")
-        col_b.metric("Number of metadata", fields)
+        col_b.metric("Number of metadata fields", fields)
         col_c.metric("Number of resources", len(metadata.distribution))
         col_d.metric("Number of RecordSets", len(metadata.record_sets))
     with col2:
@@ -96,10 +96,6 @@ def render_overview():
                     warning += "**Errors**\n"
                     for error in issues.errors:
                         warning += f"{error}\n"
-                if issues.warnings:
-                    warning += "**Warnings**\n"
-                    for warning in issues.warnings:
-                        warning += f"{warning}\n"
             except mlc.ValidationError as exception:
                 warning += "**Errors**\n"
                 warning += f"{str(exception)}\n"

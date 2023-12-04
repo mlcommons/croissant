@@ -10,6 +10,7 @@ import Tab from "@mui/material/Tab"
 import Box from "@mui/material/Box"
 import { ThemeProvider, createTheme } from "@mui/material"
 import { orange } from "@mui/material/colors"
+import Tooltip from "@mui/material/Tooltip"
 
 const theme = createTheme({
   palette: {
@@ -55,18 +56,38 @@ function BasicTabs({
           </Tabs>
         </Box>
       </Box>
-      <Button
-        disabled={!json}
-        variant="outlined"
-        href={
+      <Tooltip
+        title={
           json
-            ? `data:text/json;charset=utf-8,${encodeURIComponent(json.content)}`
-            : ""
+            ? "Download the Croissant JSON-LD file."
+            : "Go to the overview to understand why the Croissant JSON-LD file cannot be generated."
         }
-        download={json ? json.name : ""}
+        placement="left"
       >
-        Export
-      </Button>
+        <span>
+          <Button
+            disabled={!json}
+            disableElevation
+            variant="contained"
+            href={
+              json
+                ? `data:text/json;charset=utf-8,${encodeURIComponent(
+                    json.content
+                  )}`
+                : ""
+            }
+            download={json ? json.name : ""}
+            sx={{
+              color: "white",
+              padding: "6px 20px",
+              textAlign: "center",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Download 🥐 file
+          </Button>
+        </span>
+      </Tooltip>
     </div>
   )
 }

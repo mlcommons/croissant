@@ -1,6 +1,6 @@
-from etils import epath
 import streamlit as st
 
+from components.safe_button import button_with_confirmation
 from components.tree import render_tree
 from core.constants import DF_HEIGHT
 from core.constants import OAUTH_CLIENT_ID
@@ -188,9 +188,10 @@ def _render_resource_details(selected_file: Resource):
 
             col1, col2 = st.columns([1, 1])
             col1.button("Close", key=f"{i}_close", on_click=close, type="primary")
-            col2.button(
-                "⚠️ Remove", key=f"{i}_remove", on_click=delete_line, type="secondary"
-            )
+            with col2:
+                button_with_confirmation(
+                    "Remove", key=f"{i}_remove", on_click=delete_line
+                )
 
 
 def _render_resource(prefix: int, file: Resource, is_file_object: bool):
@@ -269,4 +270,9 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
         if file.df is not None:
             st.dataframe(file.df, height=DF_HEIGHT)
         else:
-            st.button("Trigger download", on_click=trigger_download, args=(file,))
+            st.button(
+                "Trigger download",
+                disabled=bool(file.content_url),
+                on_click=trigger_download,
+                args=(file,),
+            )

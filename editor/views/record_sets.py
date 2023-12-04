@@ -9,6 +9,7 @@ import pandas as pd
 from rdflib import term
 import streamlit as st
 
+from components.safe_button import button_with_confirmation
 from core.data_types import MLC_DATA_TYPES
 from core.data_types import mlc_to_str_data_type
 from core.data_types import STR_DATA_TYPES
@@ -254,7 +255,7 @@ def _render_left_panel():
             )
             key = f"{prefix}-is-enumeration"
             st.checkbox(
-                "Whether the RecordSet is an enumeration",
+                "The RecordSet is an enumeration",
                 key=key,
                 value=record_set.is_enumeration,
                 on_change=handle_record_set_change,
@@ -262,7 +263,7 @@ def _render_left_panel():
             )
             key = f"{prefix}-has-data"
             st.checkbox(
-                "Whether the RecordSet has in-line data",
+                "The RecordSet has in-line data",
                 key=key,
                 value=bool(record_set.data),
                 on_change=handle_record_set_change,
@@ -271,7 +272,7 @@ def _render_left_panel():
 
             joins = _find_joins(record_set.fields)
             has_join = st.checkbox(
-                "Whether the RecordSet contains joins. To add a new join, add a field"
+                "The RecordSet contains joins. To add a new join, add a field"
                 " with a source in `RecordSet`/`FileSet`/`FileObject` and a reference"
                 " to another `RecordSet`/`FileSet`/`FileObject`.",
                 key=f"{prefix}-has-joins",
@@ -380,9 +381,8 @@ def _render_left_panel():
                 args=(record_set_key, record_set),
             )
             key = f"{prefix}-delete-record-set"
-            st.button(
-                "⚠️ Delete RecordSet",
-                type="primary",
+            button_with_confirmation(
+                "Delete RecordSet",
                 key=key,
                 on_click=_handle_remove_record_set,
                 args=(record_set_key,),
