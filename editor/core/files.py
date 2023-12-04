@@ -142,7 +142,10 @@ def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.Data
     elif file_type == FileTypes.PARQUET:
         df = pd.read_parquet(file)
     else:
-        raise NotImplementedError()
+        raise NotImplementedError(
+            f"File type {file_type} is not supported. Please, open an issue on GitHub:"
+            " https://github.com/mlcommons/croissant/issues/new"
+        )
     return df.infer_objects()
 
 
