@@ -32,7 +32,7 @@ def _relevant_fields(class_or_instance: type):
         return [
             field.name
             for field in dataclasses.fields(class_or_instance)
-            if field not in _NON_RELEVANT_METADATA
+            if field.name not in _NON_RELEVANT_METADATA
         ]
     else:
         return [
