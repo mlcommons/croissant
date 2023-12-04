@@ -269,4 +269,9 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
         if file.df is not None:
             st.dataframe(file.df, height=DF_HEIGHT)
         else:
-            st.button("Trigger download", on_click=trigger_download, args=(file,))
+            st.button(
+                "Trigger download",
+                disabled=bool(file.content_url),
+                on_click=trigger_download,
+                args=(file,),
+            )
