@@ -122,6 +122,15 @@ def extract_git_info(full_url: str) -> tuple[str, str | None]:
         )
 
 
+def _get_hash_algorithm(file_object: FileObject):
+    if file_object.md5:
+        return hashlib.md5()
+    elif file_object.sha256:
+        return hashlib.sha256()
+    else:
+        raise ValueError("md5 and sha256 are not specified.")
+
+
 def get_basic_auth_from_env() -> tuple[str, str] | None:
     """Determines a Basic Auth tuple from the environment variables.
 
@@ -151,6 +160,9 @@ class Download(Operation):
         )
         response.raise_for_status()
         total = int(response.headers.get("Content-Length", 0))
+
+        hash = _get_hash_algorithm(self.node)
+
         with filepath.open("wb") as file, tqdm.tqdm(
             desc=f"Downloading {content_url}...",
             total=total,
@@ -160,7 +172,21 @@ class Download(Operation):
         ) as bar:
             for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
                 size = file.write(data)
+                hash.update(data)
                 bar.update(size)
+
+        downloaded_file_hash = hash.hexdigest()
+
+        if downloaded_file_hash != getattr(self.node, hash.name):
+            logging.info(
+                "Hash of downloaded file is not identical with"
+                " reference in metadata.json"
+            )
+            os.remove(filepath)
+            raise ValueError(
+                "Hash of downloaded file is not identical with"
+                " reference in metadata.json"
+            )
 
     def _download_from_git(self, filepath: epath.Path):
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
