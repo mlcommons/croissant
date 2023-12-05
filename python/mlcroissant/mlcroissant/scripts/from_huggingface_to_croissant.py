@@ -169,7 +169,7 @@ def convert(dataset: str) -> dict[str, Any]:
         license=builders[0].info.license,
         description=builders[0].info.description,
         url=dataset_url,
-        version=builders[0].info.version,
+        version=builders[0].info.version.version_str,
         distribution=file_objects + file_sets,
         record_sets=record_sets,
     )
