@@ -67,18 +67,20 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        return remove_empty_values({
-            "@context": self.rdf.context,
-            "@type": "sc:Dataset",
-            "name": self.name,
-            "description": self.description,
-            "citation": self.citation,
-            "license": self.license,
-            "url": self.url,
-            "version": self.version,
-            "distribution": [f.to_json() for f in self.distribution],
-            "recordSet": [record_set.to_json() for record_set in self.record_sets],
-        })
+        return remove_empty_values(
+            {
+                "@context": self.rdf.context,
+                "@type": "sc:Dataset",
+                "name": self.name,
+                "description": self.description,
+                "citation": self.citation,
+                "license": self.license,
+                "url": self.url,
+                "version": self.version,
+                "distribution": [f.to_json() for f in self.distribution],
+                "recordSet": [record_set.to_json() for record_set in self.record_sets],
+            }
+        )
 
     @property
     def file_objects(self) -> list[FileObject]:
@@ -122,7 +124,7 @@ class Metadata(Node):
         if isinstance(version, str):
             points = version.count(".")
             numbers = version.replace(".", "")
-            if (points != 2 or len(numbers) != 3 or not numbers.isnumeric()):
+            if points != 2 or len(numbers) != 3 or not numbers.isnumeric():
                 self.add_error(f"Version doesn't follow MAJOR.MINOR.PATCH: {version}.")
         else:
             self.add_error(f"The version should be a string. Got: {type(version)}.")
