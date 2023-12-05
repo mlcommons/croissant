@@ -112,7 +112,7 @@ class Metadata(Node):
         """Validates the given version.
 
         A valid version follows Semantic Versioning 2.0.0 `MAJOR.MINOR.PATCH`.
-        For more information: https://semver.org/spec/v2.0.0.html
+        For more information: https://semver.org/spec/v2.0.0.html.
         """
         version = self.version
 
