@@ -260,8 +260,11 @@ def _render_left_panel():
                 "The RecordSet is an enumeration",
                 key=key,
                 help=(
-                    "Enumerations indicate that the RecordSet takes its values in a"
-                    " finite set. Similar to `ClassLabel` in TFDS or Hugging Face."
+                    "Enumerations indicate that the RecordSet takes its values from a"
+                    " finite set. Similar to `ClassLabel` in"
+                    " [TFDS](https://www.tensorflow.org/datasets/api_docs/python/tfds/features/ClassLabel)"
+                    " or [Hugging"
+                    " Face](https://huggingface.co/docs/datasets/v2.15.0/en/package_reference/main_classes#datasets.ClassLabel)."
                 ),
                 value=record_set.is_enumeration,
                 on_change=handle_record_set_change,
@@ -336,11 +339,11 @@ def _render_left_panel():
             st.markdown(
                 needed_field("Fields"),
                 help=(
-                    "Add/delete fields by directly editing the table. Warning: the"
+                    "Add/delete fields by directly editing the table. **Warning**: the"
                     " table contains information about the fields--not the data"
-                    " directly. If you wish to embed data, select `The RecordSet is an"
-                    " enumeration` above. To edit fields details, click the button"
-                    " `Edit fields details` below."
+                    " directly. If you wish to embed data, tick the `The RecordSet is"
+                    " an enumeration` box. To edit fields details, click the"
+                    " button `Edit fields details` below."
                 ),
             )
             st.data_editor(
