@@ -56,7 +56,6 @@ class Metadata(Node):
         # Check properties.
         self.validate_name()
         self.validate_version()
-
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("citation", "license", "version")
 
