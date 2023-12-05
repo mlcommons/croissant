@@ -10,6 +10,7 @@ from rdflib import term
 import streamlit as st
 
 from components.safe_button import button_with_confirmation
+from core.constants import NAMES_INFO
 from core.data_types import MLC_DATA_TYPES
 from core.data_types import mlc_to_str_data_type
 from core.data_types import STR_DATA_TYPES
@@ -240,6 +241,7 @@ def _render_left_panel():
                 needed_field("Name"),
                 placeholder="Name without special character.",
                 key=key,
+                help=f"The name of the RecordSet. {NAMES_INFO}",
                 value=record_set.name,
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.NAME, record_set, key),
@@ -257,6 +259,10 @@ def _render_left_panel():
             st.checkbox(
                 "The RecordSet is an enumeration",
                 key=key,
+                help=(
+                    "Enumerations indicate that the RecordSet takes its values in a"
+                    " finite set. Similar to `ClassLabel` in TFDS or Hugging Face."
+                ),
                 value=record_set.is_enumeration,
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.IS_ENUMERATION, record_set, key),
@@ -265,6 +271,10 @@ def _render_left_panel():
             st.checkbox(
                 "The RecordSet has in-line data",
                 key=key,
+                help=(
+                    "In-line data allows to embed data directly within the JSON-LD"
+                    " without referencing another data source."
+                ),
                 value=bool(record_set.data),
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.HAS_DATA, record_set, key),
@@ -324,8 +334,14 @@ def _render_left_panel():
             )
             data_editor_key = _data_editor_key(record_set_key, record_set)
             st.markdown(
-                f"{needed_field('Fields')} (add/delete fields by directly editing the"
-                " table)"
+                needed_field("Fields"),
+                help=(
+                    "Add/delete fields by directly editing the table. Warning: the"
+                    " table contains information about the fields--not the data"
+                    " directly. If you wish to embed data, select `The RecordSet is an"
+                    " enumeration` above. To edit fields details, click the button"
+                    " `Edit fields details` below."
+                ),
             )
             st.data_editor(
                 fields,
@@ -437,6 +453,7 @@ def _render_right_panel():
                     needed_field("Name"),
                     placeholder="Name without special character.",
                     key=key,
+                    help=f"The name of the field. {NAMES_INFO}",
                     value=field.name,
                     on_change=handle_field_change,
                     args=(FieldEvent.NAME, field, key),
@@ -450,32 +467,29 @@ def _render_right_panel():
                     value=field.description,
                     args=(FieldEvent.DESCRIPTION, field, key),
                 )
+                data_type_index = None
                 if field.data_types:
                     data_type = field.data_types[0]
                     if isinstance(data_type, str):
                         data_type = term.URIRef(data_type)
                     if data_type in MLC_DATA_TYPES:
                         data_type_index = MLC_DATA_TYPES.index(data_type)
-                    else:
-                        data_type_index = None
-                else:
-                    data_type_index = None
                 key = f"{prefix}-datatypes"
                 col3.selectbox(
                     needed_field("Data type"),
                     index=data_type_index,
                     options=STR_DATA_TYPES,
                     key=key,
+                    help=(
+                        "The type of the data. `Text` corresponds to"
+                        " https://schema.org/Text, etc."
+                    ),
                     on_change=handle_field_change,
                     args=(FieldEvent.DATA_TYPE, field, key),
                 )
                 possible_sources = _get_possible_sources(metadata)
-                render_source(
-                    record_set_key, record_set, field, field_key, possible_sources
-                )
-                render_references(
-                    record_set_key, record_set, field, field_key, possible_sources
-                )
+                render_source(record_set, field, possible_sources)
+                render_references(record_set, field, possible_sources)
 
                 st.divider()
 

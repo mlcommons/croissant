@@ -3,6 +3,7 @@ import streamlit as st
 from components.safe_button import button_with_confirmation
 from components.tree import render_tree
 from core.constants import DF_HEIGHT
+from core.constants import NAMES_INFO
 from core.constants import OAUTH_CLIENT_ID
 from core.files import code_to_index
 from core.files import file_from_form
@@ -202,6 +203,11 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
         default=file.contained_in,
         options=parent_options,
         key=key,
+        help=(
+            "FileObjects and FileSets can be nested. Specifying `Parents` allows to"
+            " nest a FileObject/FileSet within another FileObject/FileSet. An example"
+            " of this is when images (FileSet) are nested within an archive (FileSet)."
+        ),
         on_change=handle_resource_change,
         args=(ResourceEvent.CONTAINED_IN, file, key),
     )
@@ -210,6 +216,7 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
         needed_field("Name"),
         value=file.name,
         key=key,
+        help=f"The name of the resource. {NAMES_INFO}",
         on_change=handle_resource_change,
         args=(ResourceEvent.NAME, file, key),
     )
@@ -225,9 +232,10 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
     if is_file_object:
         key = f"{prefix}_content_url"
         st.text_input(
-            needed_field("Content URL"),
+            needed_field("Content URL or local path"),
             value=file.content_url,
             key=key,
+            help="The URL or local file path pointing to the original FileObject.",
             on_change=handle_resource_change,
             args=(ResourceEvent.CONTENT_URL, file, key),
         )
@@ -244,6 +252,7 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
             "Content size",
             value=file.content_size,
             key=key,
+            help="The size of the original FileObject in bytes.",
             on_change=handle_resource_change,
             args=(ResourceEvent.CONTENT_SIZE, file, key),
         )
@@ -262,6 +271,10 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
         index=code_to_index(file.encoding_format),
         options=FILE_TYPES.keys(),
         key=key,
+        help=(
+            "MIME type corresponding to"
+            " ([sc:encodingFormat](https://schema.org/encodingFormat))."
+        ),
         on_change=handle_resource_change,
         args=(ResourceEvent.ENCODING_FORMAT, file, key),
     )
