@@ -13,6 +13,8 @@ import mlcroissant as mlc
 from views.load import render_load
 from views.previous_files import render_previous_files
 
+_HUGGING_FACE_URL = "https://huggingface.co/datasets/"
+
 _DATASETS = {
     "Titanic": ["data/embarkation_ports.csv", "data/genders.csv"],
     "FLORES-200": [],
@@ -48,9 +50,7 @@ def render_splash():
         )
     col1, col2 = st.columns([1, 1], gap="large")
     with col1:
-        with st.expander("**Load an existing Croissant JSON-LD file**", expanded=True):
-            render_load()
-        with st.expander("**Create from scratch**", expanded=True):
+        with st.expander("**Create from scratch!**", expanded=True):
 
             def create_new_croissant():
                 st.session_state[Metadata] = Metadata()
@@ -95,6 +95,37 @@ def render_splash():
                 type="primary",
                 args=(dataset,),
             )
+        with st.expander("**Load a dataset from Hugging Face!**", expanded=True):
+            url = st.text_input(
+                label="Hugging Face URL",
+                placeholder="https://huggingface.co/datasets/mnist",
+            )
+            if url.startswith(_HUGGING_FACE_URL):
+                url = url.replace(_HUGGING_FACE_URL, "")
+
+                def download_huggingface_json(name: str):
+                    api_url = f"https://datasets-server.huggingface.co/croissant?dataset={name}"
+                    json = requests.get(api_url, headers=None).json()
+                    try:
+                        metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
+                        st.session_state[Metadata] = Metadata.from_canonical(metadata)
+                        save_current_project()
+                    except Exception:
+                        st.error(f"Malformed JSON: {json}")
+
+                st.button(
+                    f'Download "{url}"',
+                    on_click=download_huggingface_json,
+                    type="primary",
+                    args=(url,),
+                )
+            elif url:
+                st.error(
+                    f"Unknown URL {url}. Hugging Face URLS should look like"
+                    f" {_HUGGING_FACE_URL}somedataset."
+                )
+        with st.expander("**Load an existing Croissant JSON-LD file**", expanded=True):
+            render_load()
     with col2:
         with st.expander("**Past projects**", expanded=True):
             render_previous_files()
