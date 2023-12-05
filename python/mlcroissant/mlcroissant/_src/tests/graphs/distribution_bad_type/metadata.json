@@ -39,7 +39,7 @@
   "citation": "This is a citation.",
   "license": "This is a license.",
   "url": "https://www.google.com/dataset",
-  "version": "1.0",
+  "version": "1.0.0",
   "distribution": [
     {
       "@type": "sc:WRONG_TYPE_HERE",
