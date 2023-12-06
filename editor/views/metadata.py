@@ -21,6 +21,19 @@ def render_metadata():
         on_change=handle_metadata_change,
         args=(MetadataEvent.URL, metadata, key),
     )
+    key = "metadata-version"
+    st.text_input(
+        label="Version (`MAJOR.MINOR.PATCH`)",
+        key=key,
+        help=(
+            "Refer to https://semver.org/spec/v2.0.0.html for more information on the"
+            " format."
+        ),
+        value=metadata.version,
+        placeholder="1.0.0",
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.VERSION, metadata, key),
+    )
     key = "metadata-license"
     st.selectbox(
         label="License",
