@@ -15,6 +15,7 @@ from rdflib import term
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.types import Json
 
+_DCTERMS_PREFIX = constants.DCTERMS
 _ML_COMMONS_PREFIX = constants.ML_COMMONS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
 _WD_PREFIX = "https://www.wikidata.org/wiki/"
@@ -36,10 +37,12 @@ BASE_CONTEXT = {
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {"@id": "ml:data", "@type": "@json"},
     "dataBiases": "ml:dataBiases",
     "dataCollection": "ml:dataCollection",
     "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -192,6 +195,8 @@ def compact_jsonld(json_: Any) -> Any:
             return json_.replace(_SCHEMA_ORG_PREFIX, "sc:")
         elif isinstance(json_, str) and _ML_COMMONS_PREFIX in json_:
             return json_.replace(_ML_COMMONS_PREFIX, "ml:")
+        elif isinstance(json_, str) and _DCTERMS_PREFIX in json_:
+            return json_.replace(_DCTERMS_PREFIX, "dct:")
         elif isinstance(json_, str) and _WD_PREFIX in json_:
             return json_.replace(_WD_PREFIX, "wd:")
         else:
@@ -205,6 +210,7 @@ def compact_jsonld(json_: Any) -> Any:
         if key == "@id":
             if (
                 value.startswith(_SCHEMA_ORG_PREFIX)
+                or value.startswith(_DCTERMS_PREFIX)
                 or value.startswith(_ML_COMMONS_PREFIX)
                 or value.startswith(_WD_PREFIX)
             ):
@@ -218,6 +224,9 @@ def compact_jsonld(json_: Any) -> Any:
             json_[new_key] = new_value
         elif _ML_COMMONS_PREFIX in key:
             new_key = key.replace(_ML_COMMONS_PREFIX, "")
+            json_[new_key] = new_value
+        elif _DCTERMS_PREFIX in key:
+            new_key = key.replace(_DCTERMS_PREFIX, "")
             json_[new_key] = new_value
         else:
             json_[key] = new_value
