@@ -35,3 +35,8 @@ METADATA = "Metadata"
 RESOURCES = "Resources"
 RECORD_SETS = "Record Sets"
 TABS = [OVERVIEW, METADATA, RESOURCES, RECORD_SETS]
+
+NAMES_INFO = (
+    "Names are used as identifiers. They are unique and cannot contain special"
+    " characters. The interface will replace any special characters."
+)

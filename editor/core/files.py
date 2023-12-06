@@ -204,7 +204,7 @@ def file_from_form(
     if type == FILE_OBJECT:
         return FileObject(name=find_unique_name(names, "file_object"), folder=folder)
     elif type == FILE_SET:
-        return FileSet(name=find_unique_name(names, "file_set"), folder=folder)
+        return FileSet(name=find_unique_name(names, "file_set"))
     else:
         raise ValueError("type has to be one of FILE_OBJECT, FILE_SET")
 
