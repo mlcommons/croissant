@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 import dataclasses
+import datetime
+import itertools
+from typing import Any
 
 from etils import epath
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
+from mlcroissant._src.core.dates import from_str_to_date_time
 from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
@@ -25,11 +29,51 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 @dataclasses.dataclass(eq=False, repr=False)
+class PersonOrOrganization:
+    """Representing either https://schema.org/Person or /Organization."""
+
+    name: str | None = None
+    description: str | None = None
+    url: str | None = None
+
+    @classmethod
+    def from_jsonld(cls, jsonld: Any) -> list[PersonOrOrganization]:
+        """Builds the class from the JSON-LD."""
+        if jsonld is None:
+            return []
+        elif isinstance(jsonld, list):
+            persons_or_organizations: itertools.chain[PersonOrOrganization] = (
+                itertools.chain.from_iterable([
+                    cls.from_jsonld(element) for element in jsonld
+                ])
+            )
+            return list(persons_or_organizations)
+        else:
+            return [
+                cls(
+                    name=jsonld.get(constants.SCHEMA_ORG_NAME),
+                    description=jsonld.get(constants.SCHEMA_ORG_DESCRIPTION),
+                    url=jsonld.get(constants.SCHEMA_ORG_URL),
+                )
+            ]
+
+    def to_json(self) -> Json:
+        """Serializes back to JSON-LD."""
+        return remove_empty_values({
+            "name": self.name,
+            "description": self.description,
+            "url": self.url,
+        })
+
+
+@dataclasses.dataclass(eq=False, repr=False)
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
     conforms_to: str | None = None
     citation: str | None = None
+    creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
+    date_published: datetime.datetime | None = None
     description: str | None = None
     license: str | None = None
     name: str = ""
@@ -78,12 +122,24 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
+        date_published = (
+            self.date_published.isoformat() if self.date_published else None
+        )
+        creator: Json | list[Json] | None
+        if len(self.creators) == 1:
+            creator = self.creators[0].to_json()
+        elif len(self.creators) > 1:
+            creator = [creator.to_json() for creator in self.creators]
+        else:
+            creator = None
         return remove_empty_values({
             "@context": self.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
             "conformsTo": self.conforms_to,
             "description": self.description,
+            "creator": creator,
+            "datePublished": date_published,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
             "citation": self.citation,
@@ -219,12 +275,20 @@ class Metadata(Node):
             for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         ]
         url = metadata.get(constants.SCHEMA_ORG_URL)
+        creators = PersonOrOrganization.from_jsonld(
+            metadata.get(constants.SCHEMA_ORG_CREATOR)
+        )
+        date_published = from_str_to_date_time(
+            issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
+        )
         return cls(
             issues=issues,
             context=context,
             folder=folder,
             conforms_to=metadata.get(constants.DCTERMS_CONFORMS_TO),
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
+            creators=creators,
+            date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),

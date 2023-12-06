@@ -106,3 +106,48 @@ def _render_generic_metadata(metadata: Metadata):
         on_change=handle_metadata_change,
         args=(MetadataEvent.CITATION, metadata, key),
     )
+    key = "metadata-date-published"
+    st.date_input(
+        label="Date of first broadcast/publication.",
+        key=key,
+        value=metadata.date_published,
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.DATE_PUBLISHED, metadata, key),
+    )
+    if metadata.creators:
+        creator = metadata.creators[0]
+        col1, col2, col3 = st.columns([1, 1, 1])
+        key = "metadata-creator-name"
+        col1.text_input(
+            label="Creator name",
+            key=key,
+            value=creator.name,
+            on_change=handle_metadata_change,
+            placeholder="A person or an organization",
+            args=(MetadataEvent.CREATOR_NAME, metadata, key),
+        )
+        key = "metadata-creator-url"
+        col2.text_input(
+            label="Creator URL",
+            key=key,
+            value=creator.url,
+            placeholder="https://mlcommons.org",
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.CREATOR_URL, metadata, key),
+        )
+        key = "metadata-creator-remove"
+        col3.button(
+            "✖️",
+            key=key,
+            help="Remove the creator",
+            on_click=handle_metadata_change,
+            args=(MetadataEvent.CREATOR_REMOVE, metadata, key),
+        )
+    else:
+        key = "metadata-add-creator"
+        st.button(
+            label="✚ Add a creator",
+            key=key,
+            on_click=handle_metadata_change,
+            args=(MetadataEvent.CREATOR_ADD, metadata, key),
+        )
