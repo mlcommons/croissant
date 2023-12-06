@@ -8,12 +8,12 @@ from core.constants import PAST_PROJECTS_PATH
 from core.query_params import set_project
 from core.state import CurrentProject
 from core.state import FileObject
-from core.state import get_cached_user
+from core.state import get_user
 from core.state import Metadata
 
 
 def load_past_projects_paths() -> list[epath.Path]:
-    user = get_cached_user()
+    user = get_user()
     past_projects_path = PAST_PROJECTS_PATH(user)
     past_projects_path.mkdir(parents=True, exist_ok=True)
     return sorted(list(past_projects_path.iterdir()), reverse=True)
