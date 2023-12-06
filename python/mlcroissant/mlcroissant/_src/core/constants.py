@@ -43,6 +43,10 @@ ML_COMMONS_TRANSFORM = ML_COMMONS.transform
 # For "@type" key:
 RDF_TYPE = namespace.RDF.type
 
+# Dublin Core terms standard URIs.
+DCTERMS = "http://purl.org/dc/terms/"
+DCTERMS_CONFORMS_TO = namespace.DCTERMS.conformsTo
+
 # Schema.org standard URIs.
 SCHEMA_ORG_CITATION = namespace.SDO.citation
 SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
@@ -82,6 +86,7 @@ TO_CROISSANT = {
     ML_COMMONS_REPLACE: "replace",
     ML_COMMONS_SEPARATOR: "separator",
     ML_COMMONS_SOURCE: "source",
+    DCTERMS_CONFORMS_TO: "conforms_to",
     SCHEMA_ORG_CITATION: "citation",
     SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",

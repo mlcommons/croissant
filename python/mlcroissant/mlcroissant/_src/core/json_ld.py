@@ -88,11 +88,12 @@ def _is_dataset_node(node: Json) -> bool:
 def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     """Sorts items from dict.items().
 
-    For human readability, we want "@type"/"name"/"description" to be at the beginning
-    of the JSON, while long lists (""distribution"/"recordSet") are at the end.
+    For human readability, we want "@type"/"name"/"description/conformsTo" to be
+    at the beginning of the JSON, while long lists (""distribution"/"recordSet")
+    are at the end.
     """
     items = sorted(jsonld.items())
-    start_keys = ["@context", "@type", "name", "description"]
+    start_keys = ["@context", "@type", "name", "description", "conformsTo"]
     end_keys = ["distribution", "field", "data", "recordSet", "subField"]
     sorted_items = []
     for key in start_keys:

@@ -1,5 +1,8 @@
 """Migration: to add the conformsTo field."""
 
+from mlcroissant._src.core.json_ld import compact_jsonld
+from mlcroissant._src.core.json_ld import expand_jsonld
+
 NEW_CONTEXT = {
     "@language": "en",
     "@vocab": "https://schema.org/",
@@ -37,4 +40,10 @@ NEW_CONTEXT = {
 def up(json_ld):
     """Up migration to set conformsTo to croissant specs 1.0."""
     json_ld["@context"] = NEW_CONTEXT
+    json_ld["conformsTo"] = "http://mlcommons.org/croissant/1.0"
+    print("\n\ncorrect json_ld = ", json_ld)
+    # json_ld = expand_jsonld(json_ld)
+    # print("\n\expanded json_ld = ", json_ld)
+    # json_ld = compact_jsonld(json_ld)
+    # print("\n\ncompacted json_ld = ", json_ld)
     return json_ld
