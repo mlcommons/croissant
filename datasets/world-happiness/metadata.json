@@ -27,7 +27,7 @@
     "dataType": { "@id": "ml:dataType", "@type": "@vocab" }
   },
   "citation": "None",
-  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "license": "cc0-1.0",
   "url": "https://www.kaggle.com/datasets/unsdsn/world-happiness",
   "distribution": [
     {

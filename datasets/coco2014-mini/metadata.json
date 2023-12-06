@@ -37,7 +37,7 @@
   "name": "Mini-COCO",
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
   "citation": "None",
-  "license": "None",
+  "license": "cc-by-4.0",
   "url": "None",
   "distribution": [
     {
