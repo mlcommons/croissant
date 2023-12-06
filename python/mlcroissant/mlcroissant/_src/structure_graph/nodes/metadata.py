@@ -36,6 +36,17 @@ class Metadata(Node):
     version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
+    # RAI field - Involves understanding the potential risks associated with data usage
+    # and to prevent unintended and potentially harmful consequences that may arise from
+    # using models trained on or evaluated with the respective data.
+    data_biases: str | None = None
+    # RAI field - Key stages of the data collection process encourage its creators to
+    # reflect on the process and improves understanding for users.
+    data_collection: str | None = None
+    # RAI field - Personal and sensitive information, if contained within the dataset,
+    # can play an important role in the mitigation of any risks and the responsible use
+    # of the datasets.
+    personal_sensitive_information: str | None = None
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -71,8 +82,11 @@ class Metadata(Node):
             "@type": "sc:Dataset",
             "name": self.name,
             "description": self.description,
+            "dataBiases": self.data_biases,
+            "dataCollection": self.data_collection,
             "citation": self.citation,
             "license": self.license,
+            "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
@@ -209,9 +223,14 @@ class Metadata(Node):
             folder=folder,
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
+            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
+            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
+            personal_sensitive_information=metadata.get(
+                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION
+            ),
             record_sets=record_sets,
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),

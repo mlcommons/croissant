@@ -40,6 +40,11 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
+        constants.ML_COMMONS_DATA_BIASES: "data_biases",
+        constants.ML_COMMONS_DATA_COLLECTION: "data_collection",
+        constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION: (
+            "personal_sensitive_information"
+        ),
     }
     assert Metadata.from_jsonld(issues, folder, jsonld) == Metadata(
         issues=issues,
@@ -47,7 +52,10 @@ def test_from_jsonld():
         folder=folder,
         name="foo",
         description="bar",
+        data_biases="data_biases",
+        data_collection="data_collection",
         license="License",
+        personal_sensitive_information="personal_sensitive_information",
         url="https://mlcommons.org",
         version="1.0.0",
     )
