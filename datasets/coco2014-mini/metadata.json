@@ -256,6 +256,30 @@
         },
         {
           "@type": "ml:Field",
+          "name": "image_height",
+          "description": "The height of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_width",
+          "description": "The width of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
           "name": "bbox",
           "description": "The bounding box on the image.",
           "dataType": "ml:BoundingBox",
