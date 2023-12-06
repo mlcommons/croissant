@@ -106,7 +106,19 @@ Here is an extremely simple example of the croissant format, with comments showi
 * [ Contribute code ](https://github.com/mlcommons/croissant) (please sign the MLCommons Association CLA  first!)
 
 ## Integrations
-Forthcoming
+- [Datasets Search](https://datasetsearch.research.google.com) crawls and indexes
+Croissant JSON-LD files on the web and provides a filter to restrict results to
+Croissant datasets.
+- [Kaggle](https://www.kaggle.com/datasets) embeds Croissant JSON-LD directly in
+their HTML.
+- [OpenML](https://www.openml.org/search?type=data) offers a `Croissant` button
+on all of their datasets to download the underlying Croissant JSON-LD file.
+- [Hugging Face](https://huggingface.co/) offers an API endpoint to build a
+Croissant JSON-LD.
+- [TFDS](https://www.tensorflow.org/datasets/overview) has a
+[`CroissantBuilder`](https://www.tensorflow.org/datasets/format_specific_dataset_builders#croissantbuilder)
+to transform any JSON-LD file into a TFDS dataset, which makes it possible to load
+the data into TensorFlow, JAX and PyTorch.
 
 ## Licensing
 Croissant project code and examples are licensed under Apache 2.
