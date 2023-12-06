@@ -95,6 +95,9 @@ class MetadataEvent(enum.Enum):
     LICENSE = "LICENSE"
     CITATION = "CITATION"
     VERSION = "VERSION"
+    DATA_BIASES = "DATA_BIASES"
+    DATA_COLLECTION = "DATA_COLLECTION"
+    PERSONAL_SENSITIVE_INFORMATION = "PERSONAL_SENSITIVE_INFORMATION"
 
 
 def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
@@ -110,3 +113,9 @@ def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
         metadata.url = st.session_state[key]
     elif event == MetadataEvent.VERSION:
         metadata.version = st.session_state[key]
+    elif event == MetadataEvent.DATA_BIASES:
+        metadata.data_biases = st.session_state[key]
+    elif event == MetadataEvent.DATA_COLLECTION:
+        metadata.data_collection = st.session_state[key]
+    elif event == MetadataEvent.PERSONAL_SENSITIVE_INFORMATION:
+        metadata.personal_sensitive_information = st.session_state[key]

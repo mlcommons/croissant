@@ -183,7 +183,10 @@ class Metadata:
     name: str = ""
     description: str | None = None
     citation: str | None = None
+    data_biases: str | None = None
+    data_collection: str | None = None
     license: str | None = ""
+    personal_sensitive_information: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
