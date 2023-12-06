@@ -188,6 +188,7 @@ class Metadata:
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
+    version: str | None = None
 
     def __bool__(self):
         return self.name != "" and self.url != ""

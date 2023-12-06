@@ -93,6 +93,7 @@ class MetadataEvent(enum.Enum):
     URL = "URL"
     LICENSE = "LICENSE"
     CITATION = "CITATION"
+    VERSION = "VERSION"
 
 
 def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
@@ -106,3 +107,5 @@ def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
         metadata.citation = st.session_state[key]
     elif event == MetadataEvent.URL:
         metadata.url = st.session_state[key]
+    elif event == MetadataEvent.VERSION:
+        metadata.version = st.session_state[key]
