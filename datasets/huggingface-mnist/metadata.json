@@ -38,6 +38,7 @@
   "citation": "@article{lecun2010mnist,\n  title={MNIST handwritten digit database},\n  author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n  journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n  volume={2},\n  year={2010}\n}\n",
   "url": "https://huggingface.co/datasets/mnist",
   "version": "1.0.0",
+  "license": "mit",
   "distribution": [
     {
       "@type": "sc:FileObject",
