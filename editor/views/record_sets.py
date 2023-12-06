@@ -249,7 +249,7 @@ def _render_left_panel():
             key = f"{prefix}-description"
             col2.text_input(
                 "Description",
-                placeholder="Provide a clear description of the RecordSet.",
+                placeholder="Provide a description of the RecordSet.",
                 key=key,
                 value=record_set.description,
                 on_change=handle_record_set_change,
@@ -464,7 +464,7 @@ def _render_right_panel():
                 key = f"{prefix}-description"
                 col2.text_input(
                     "Description",
-                    placeholder="Provide a clear description of the RecordSet.",
+                    placeholder="Provide a description of the RecordSet.",
                     key=key,
                     on_change=handle_field_change,
                     value=field.description,

@@ -50,4 +50,4 @@ def render_previous_files():
         except:
             pass
     if has_no_project:
-        st.write("No past project to load. Create one on the left!")
+        st.write("No recent project to load. Create one on the left!")

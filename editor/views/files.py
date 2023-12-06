@@ -40,16 +40,15 @@ resources on the web or manually create new resources."""
 def render_files():
     """Renders the views of the files: warnings and panels to display information."""
     _render_warnings()
-    col1, col2, col3 = st.columns([1, 1, 1], gap="small")
+    col1, col2 = st.columns([1, 1], gap="small")
     with col1:
-        st.markdown("##### Upload more resources")
+        st.markdown("##### Add a resource")
         _render_upload_panel()
-    with col2:
         st.markdown("##### Uploaded resources")
         files = st.session_state[Metadata].distribution
         resource = _render_resources_panel(files)
         st.session_state[SelectedResource] = resource
-    with col3:
+    with col2:
         _render_right_panel()
 
 
@@ -112,9 +111,7 @@ def _render_resources_panel(files: list[Resource]) -> Resource | None:
 def _render_upload_panel():
     """Renders the form to upload from local or upload from URL."""
     with st.form(key="upload_form", clear_on_submit=True):
-        tab1, tab2, tab3 = st.tabs([
-            "Import from a local file", "Import from a URL", "Add manually"
-        ])
+        tab1, tab2, tab3 = st.tabs(["From a local file", "From a URL", "Add manually"])
 
         with tab1:
             st.file_uploader("Select a file", key=_LOCAL_FILE_KEY)
@@ -224,7 +221,7 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
     st.text_area(
         "Description",
         value=file.description,
-        placeholder="Provide a clear description of the file.",
+        placeholder="Provide a description of the file.",
         key=key,
         on_change=handle_resource_change,
         args=(ResourceEvent.DESCRIPTION, file, key),

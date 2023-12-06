@@ -23,9 +23,9 @@ _INFO_TEXT = """Croissant files are composed of three layers:
                 (typically a file or set of files) and the structure of these records,
                 expressed as a set of fields (e.g., the columns of a table).
 
-The next three tabs will guide you through filling those layers. The errors if any will
-be displayed on this page. Once you are ready, you can download the dataset by clicking
-the export button in the upper right corner."""
+The next three tabs will guide you through filling those layers. Any error will be
+displayed on the overview. Once the dataset is finished, you can download the dataset by
+clicking the export button in the upper right corner."""
 
 
 def _relevant_fields(class_or_instance: type):
@@ -64,7 +64,7 @@ def render_overview():
             label="Description",
             key=key,
             value=metadata.description,
-            placeholder="Provide a clear description of the dataset.",
+            placeholder="Provide a description of the dataset.",
             on_change=handle_metadata_change,
             args=(MetadataEvent.DESCRIPTION, metadata, key),
         )
@@ -92,9 +92,9 @@ def render_overview():
                 " that are filled."
             ),
         )
-        col_b.metric("Number of metadata fields", fields)
-        col_c.metric("Number of resources", len(metadata.distribution))
-        col_d.metric("Number of RecordSets", len(metadata.record_sets))
+        col_b.metric("Metadata fields", fields)
+        col_c.metric("Resources", len(metadata.distribution))
+        col_d.metric("RecordSets", len(metadata.record_sets))
     with col2:
         user_started_editing = metadata.record_sets or metadata.distribution
         if user_started_editing:

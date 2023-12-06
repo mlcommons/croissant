@@ -59,7 +59,9 @@ describe('Editor loads a local CSV as a resource', () => {
     // I can edit the details of the fields.
     cy.contains('Generating the dataset...').should('not.exist')
     cy.contains('Edit fields details').click()
-    cy.get('input[aria-label="Description"]').last().type('This is a nice custom description!{enter}')
+    cy.get('[data-testid="stExpander"]').last().within(() => {
+      cy.get('input[aria-label="Description"]').last().type('This is a nice custom description!{enter}')
+    })
     cy.get('[data-testid="glide-cell-2-1"]').contains("This is a nice custom description!")
   })
 })

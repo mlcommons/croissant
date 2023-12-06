@@ -30,5 +30,5 @@ def _on_file_upload(key):
 def render_load():
     key = "json-ld-file-upload"
     st.file_uploader(
-        "Select a JSON-LD", type="json", key=key, on_change=_on_file_upload, args=(key,)
+        "Drop a JSON-LD", type="json", key=key, on_change=_on_file_upload, args=(key,)
     )
