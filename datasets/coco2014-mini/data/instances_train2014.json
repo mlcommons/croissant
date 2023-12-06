@@ -9,46 +9,6 @@
   },
   "images": [
     {
-      "license": 5,
-      "file_name": "COCO_train2014_000000057870.jpg",
-      "coco_url": "http://images.cocodataset.org/train2014/COCO_train2014_000000057870.jpg",
-      "height": 480,
-      "width": 640,
-      "date_captured": "2013-11-14 16:28:13",
-      "flickr_url": "http://farm4.staticflickr.com/3153/2970773875_164f0c0b83_z.jpg",
-      "id": 57870
-    },
-    {
-      "license": 5,
-      "file_name": "COCO_train2014_000000384029.jpg",
-      "coco_url": "http://images.cocodataset.org/train2014/COCO_train2014_000000384029.jpg",
-      "height": 429,
-      "width": 640,
-      "date_captured": "2013-11-14 16:29:45",
-      "flickr_url": "http://farm3.staticflickr.com/2422/3577229611_3a3235458a_z.jpg",
-      "id": 384029
-    },
-    {
-      "license": 1,
-      "file_name": "COCO_train2014_000000222016.jpg",
-      "coco_url": "http://images.cocodataset.org/train2014/COCO_train2014_000000222016.jpg",
-      "height": 640,
-      "width": 480,
-      "date_captured": "2013-11-14 16:37:59",
-      "flickr_url": "http://farm2.staticflickr.com/1431/1118526611_09172475e5_z.jpg",
-      "id": 222016
-    },
-    {
-      "license": 3,
-      "file_name": "COCO_train2014_000000520950.jpg",
-      "coco_url": "http://images.cocodataset.org/train2014/COCO_train2014_000000520950.jpg",
-      "height": 427,
-      "width": 640,
-      "date_captured": "2013-11-14 16:44:40",
-      "flickr_url": "http://farm8.staticflickr.com/7007/6413705793_1c391cd697_z.jpg",
-      "id": 520950
-    },
-    {
       "license": 1,
       "file_name": "COCO_train2014_000000318556.jpg",
       "coco_url": "http://images.cocodataset.org/train2014/COCO_train2014_000000318556.jpg",
