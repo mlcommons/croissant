@@ -122,7 +122,10 @@ class Metadata(Node):
             points = version.count(".")
             numbers = version.replace(".", "")
             if points != 2 or len(numbers) != 3 or not numbers.isnumeric():
-                self.add_error(f"Version doesn't follow MAJOR.MINOR.PATCH: {version}.")
+                self.add_error(
+                    f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
+                    " information refer to: https://semver.org/spec/v2.0.0.html"
+                )
         else:
             self.add_error(f"The version should be a string. Got: {type(version)}.")
             return
