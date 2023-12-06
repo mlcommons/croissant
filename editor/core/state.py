@@ -83,9 +83,8 @@ class User:
         )
 
 
-@st.cache_data(ttl=datetime.timedelta(hours=1))
-def get_cached_user():
-    """Caches user in session_state."""
+def get_user():
+    """Get user from session_state."""
     return st.session_state.get(User)
 
 
@@ -102,7 +101,7 @@ class CurrentProject:
 
     @classmethod
     def from_timestamp(cls, timestamp: str) -> CurrentProject | None:
-        user = get_cached_user()
+        user = get_user()
         if user is None and OAUTH_CLIENT_ID:
             return None
         else:

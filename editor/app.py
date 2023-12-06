@@ -7,7 +7,7 @@ from core.constants import OAUTH_STATE
 from core.constants import REDIRECT_URI
 from core.query_params import get_project_timestamp
 from core.state import CurrentProject
-from core.state import get_cached_user
+from core.state import get_user
 from core.state import User
 from utils import init_state
 from views.splash import render_splash
@@ -19,7 +19,7 @@ col1.header("Croissant Editor")
 
 init_state()
 
-user = get_cached_user()
+user = get_user()
 
 if OAUTH_CLIENT_ID and not user:
     query_params = st.experimental_get_query_params()
@@ -31,8 +31,7 @@ if OAUTH_CLIENT_ID and not user:
         try:
             st.session_state[User] = User.connect(code)
             # Clear the cache to force retrieving the new user.
-            get_cached_user.clear()
-            get_cached_user()
+            get_user()
         except:
             raise
         finally:
@@ -56,7 +55,6 @@ def _back_to_menu():
 def _logout():
     """Logs the user out."""
     st.cache_data.clear()
-    get_cached_user.clear()
     st.session_state[User] = None
     _back_to_menu()
 
