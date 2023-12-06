@@ -55,6 +55,7 @@ class Metadata(Node):
 
         # Check properties.
         self.validate_name()
+        self.validate_version()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("citation", "license", "version")
 
@@ -104,6 +105,30 @@ class Metadata(Node):
             for field in record_set.fields:
                 nodes.extend(field.sub_fields)
         return nodes
+
+    def validate_version(self) -> None:
+        """Validates the given version.
+
+        A valid version follows Semantic Versioning 2.0.0 `MAJOR.MINOR.PATCH`.
+        For more information: https://semver.org/spec/v2.0.0.html.
+        """
+        version = self.version
+
+        # Version is a recommended but not mandatory attribute.
+        if not version:
+            return
+
+        if isinstance(version, str):
+            points = version.count(".")
+            numbers = version.replace(".", "")
+            if points != 2 or len(numbers) != 3 or not numbers.isnumeric():
+                self.add_error(
+                    f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
+                    " information refer to: https://semver.org/spec/v2.0.0.html"
+                )
+        else:
+            self.add_error(f"The version should be a string. Got: {type(version)}.")
+            return
 
     def check_graph(self):
         """Checks the integrity of the structure graph.
