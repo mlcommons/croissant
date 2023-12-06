@@ -16,7 +16,7 @@ newer Croissant format.
 mlcroissant/_src/core/json_ld.py and launch the migration:
 
 ```bash
-python scripts/migrations/migrate.py
+python mlcroissant/scripts/migrations/migrate.py
 ```
 
 - If you want to migrate a property in every file, you'll need to write a custom
@@ -25,7 +25,7 @@ in `previous/YYYYmmddHHmm.py` (similar to previous/202307171508.py) that defines
 function.
 
 ```bash
-python scripts/migrations/migrate.py --migration 202307171508
+python mlcroissant/scripts/migrations/migrate.py --migration 202307171508
 ```
 
 Commiting your migration allows to keep track of previous migrations in the codebase.
@@ -102,10 +102,15 @@ def main(argv):
     """Main function launched for the migration."""
     del argv
     # Datasets in croissant/datasets
-    datasets = [path for path in epath.Path("../../datasets").glob("*/*.json")]
+    datasets_path = (
+        epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
+    )
+    datasets = [path for path in datasets_path.glob("*/*.json")]
+    assert datasets, f"No dataset found in {datasets_path}"
     # Datasets in croissant/python/mlcroissant/_src/tests
     test_path = (
-        epath.Path(__file__).parent.parent.parent / "mlcroissant/_src/tests/graphs"
+        epath.Path(__file__).parent.parent.parent.parent
+        / "mlcroissant/_src/tests/graphs"
     )
     test_datasets = list(test_path.glob("*/*.json"))
     assert test_datasets, f"No dataset found in {test_path}"

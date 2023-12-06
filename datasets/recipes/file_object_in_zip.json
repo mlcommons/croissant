@@ -7,6 +7,8 @@
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
@@ -21,6 +23,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -47,15 +50,15 @@
     {
       "@type": "sc:FileObject",
       "name": "csv2_in_zip",
-      "containedIn": "zip_with_csv",
       "contentUrl": "csv2_in_zip.csv",
+      "containedIn": "zip_with_csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "csv1_in_zip",
-      "containedIn": "zip_with_csv",
       "contentUrl": "csv1_in_zip.csv",
+      "containedIn": "zip_with_csv",
       "encodingFormat": "text/csv"
     }
   ],

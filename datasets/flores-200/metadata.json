@@ -7,6 +7,8 @@
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
@@ -21,6 +23,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",

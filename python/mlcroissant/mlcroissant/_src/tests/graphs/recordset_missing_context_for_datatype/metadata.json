@@ -7,6 +7,8 @@
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -17,6 +19,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
