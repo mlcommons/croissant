@@ -23,8 +23,22 @@ _DATASETS = {
     "Bigcode-The-Stack": [],
 }
 
+_INFO = """Croissant 🥐 is a high-level format for machine learning datasets built
+on [schema.org](https://schema.org/) and its Dataset vocabulary. A croissant
+configuration file combines metadata, resource file descriptions, data structure, and
+default ML semantics of dataset. You can familiarize yourself with the editor by
+exploring the provided examples.
+
+The editor supports creating a new configuration from scratch, as well as uploading
+an existing Croissant JSON-MD file. Finally, you can also select any of your
+past projects from the list.
+
+You can change the project you are currently editing at any time by clicking
+the Menu button and then choosing one of the options on this page."""
+
 
 def render_splash():
+    st.info(_INFO, icon="💡")
     if OAUTH_CLIENT_ID:
         st.info(
             "**Disclaimer**: Do not put sensitive information or datasets here. The"
