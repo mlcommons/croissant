@@ -73,10 +73,6 @@ metadata=mlc.nodes.Metadata(
 metadata.to_json()  # this returns the JSON-LD file.
 ```
 
-For a full working example, refer to
-[the script to convert Hugging Face datasets to Croissant files](./mlcroissant/scripts/from_huggingface_to_croissant.py).
-This script uses the Python API to programmatically build JSON-LD files.
-
 ## Run tests
 
 All tests can be run from the Makefile:
