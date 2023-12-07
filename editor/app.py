@@ -67,7 +67,7 @@ timestamp = get_project_timestamp()
 
 if timestamp:
     col3.write("\n")  # Vertical box to shift the button menu
-    col3.button("Menu", on_click=_back_to_menu)
+    col3.button("Home", on_click=_back_to_menu)
 
 
 should_display_editor = bool(st.session_state.get(CurrentProject))
