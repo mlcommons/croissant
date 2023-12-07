@@ -9,8 +9,6 @@ import numpy as np
 import pandas as pd
 from rdflib import term
 
-# import librosa
-
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.ml import bounding_box
 from mlcroissant._src.core.optional import deps
@@ -19,6 +17,8 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+
+# import librosa
 
 
 def _cast_value(value: Any, data_type: type | term.URIRef | None):
@@ -31,11 +31,11 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
             return value
         elif isinstance(value, bytes):
             return deps.PIL_Image.open(io.BytesIO(value))
-        elif data_type == constants.SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT:
-            # return librosa.load(io.BytesIO(value))
-            return
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
+    elif data_type == DataType.AUDIO_OBJECT:
+        # return librosa.load(io.BytesIO(value))
+        return
     elif data_type == DataType.BOUNDING_BOX:
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
@@ -69,9 +69,9 @@ def _extract_lines(row: pd.Series) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
     path = epath.Path(row[FileProperty.filepath])
     lines = path.open("rb").read().splitlines()
-    return pd.Series({
-        **row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))
-    })
+    return pd.Series(
+        {**row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))}
+    )
 
 
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
