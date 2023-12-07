@@ -48,7 +48,7 @@ def render_overview():
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
         key = "metadata-name"
-        name = st.text_input(
+        st.text_input(
             label=needed_field("Name"),
             key=key,
             value=metadata.name,
@@ -57,8 +57,6 @@ def render_overview():
             on_change=handle_metadata_change,
             args=(MetadataEvent.NAME, metadata, key),
         )
-        if not name:
-            st.stop()
         key = "metadata-description"
         st.text_area(
             label="Description",

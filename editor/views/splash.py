@@ -37,7 +37,7 @@ an existing Croissant JSON-MD file. Finally, you can also select any of your
 past projects from the list.
 
 You can change the project you are currently editing at any time by clicking
-the Menu button and then choosing one of the options on this page."""
+the Home button and then choosing one of the options on this page."""
 
 
 def render_splash():
@@ -96,27 +96,6 @@ def render_splash():
                 type="primary",
                 args=(dataset,),
             )
-            url = st.text_input(
-                label="Hugging Face dataset",
-                placeholder="Example: https://huggingface.co/datasets/mnist",
-            )
-            if url.startswith(_HUGGING_FACE_URL):
-                name = url.replace(_HUGGING_FACE_URL, "")
-                api_url = (
-                    f"https://datasets-server.huggingface.co/croissant?dataset={name}"
-                )
-                json = requests.get(api_url, headers=None).json()
-                try:
-                    metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
-                    st.session_state[Metadata] = Metadata.from_canonical(metadata)
-                    save_current_project()
-                except Exception:
-                    st.error(f"Malformed JSON: {json}")
-            elif url:
-                st.error(
-                    f"Unknown URL {url}. Hugging Face URLS should look like"
-                    f" {_HUGGING_FACE_URL}somedataset."
-                )
             render_load()
     with col2:
         with st.expander("**Recent projects**", expanded=True):

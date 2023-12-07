@@ -375,7 +375,7 @@ def _render_left_panel():
             result: _Result = _generate_data_with_timeout(record_set)
             df, exception = result.get("df"), result.get("exception")
             if exception is None and df is not None and not df.empty:
-                st.markdown("Previsualize the data:")
+                st.markdown("Preview the data:")
                 st.dataframe(df, use_container_width=True)
             # The generation is not triggered if record_set has in-line `data`.
             elif not record_set.data:
