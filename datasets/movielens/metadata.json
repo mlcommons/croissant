@@ -3,6 +3,7 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -13,6 +14,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -37,6 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "Movielens-25M",
+  "conforms_to": "http://mlcommons.org/croissant/1.0",
   "description": "MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019",
   "url": "https://grouplens.org/datasets/movielens/25m/",
   "distribution": [

@@ -3,6 +3,7 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -13,6 +14,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -37,6 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "enum_example",
+  "conforms_to": "http://mlcommons.org/croissant/1.0",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
   "url": "https://example.com/datasets/enum/about",
   "distribution": [

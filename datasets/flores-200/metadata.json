@@ -3,6 +3,7 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -13,6 +14,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -37,6 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "FLORES-200",
+  "conforms_to": "http://mlcommons.org/croissant/1.0",
   "description": "FLORES-200 is an evaluation benchmark for low-resource and multilingual machine translation",
   "citation": [
     "@article{nllb2022, author={NLLB Team, Marta R. Costa-juss\u00e0, James Cross, Onur \u00c7elebi, Maha Elbayad, Kenneth Heafield, Kevin Heffernan, Elahe Kalbassi,  Janice Lam, Daniel Licht, Jean Maillard, Anna Sun, Skyler Wang, Guillaume Wenzek, Al Youngblood, Bapi Akula, Loic Barrault, Gabriel Mejia Gonzalez, Prangthip Hansanti, John Hoffman, Semarley Jarrett, Kaushik Ram Sadagopan, Dirk Rowe, Shannon Spruit, Chau Tran, Pierre Andrews, Necip Fazil Ayan, Shruti Bhosale, Sergey Edunov, Angela Fan, Cynthia Gao, Vedanuj Goswami, Francisco Guzm\u00e1n, Philipp Koehn, Alexandre Mourachko, Christophe Ropers, Safiyyah Saleem, Holger Schwenk, Jeff Wang}, title={No Language Left Behind: Scaling Human-Centered Machine Translation}, year = {2022}}",
