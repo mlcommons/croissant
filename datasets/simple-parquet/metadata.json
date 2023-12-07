@@ -39,7 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "simple-parquet",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Example to read Parquet files.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://mlcommons.org",

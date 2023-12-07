@@ -39,7 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "World-Happiness-Report",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Happiness scored according to economic production, social support, etc.",
   "citation": "None",
   "license": "cc0-1.0",

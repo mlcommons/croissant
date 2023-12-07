@@ -39,7 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "read_binary_file_by_line",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a recipe illustrating how to read files line by line.",
   "url": "https://mlcommons.org",
   "distribution": [

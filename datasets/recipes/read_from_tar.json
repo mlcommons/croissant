@@ -39,7 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "read_from_tar",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Example dataset to read several FileSets from a tar.gz and join them.",
   "url": "https://mlcommons.org",
   "distribution": [

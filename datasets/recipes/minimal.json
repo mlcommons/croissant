@@ -39,7 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "minimal_example",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a very minimal example, with only the required fields.",
   "url": "https://example.com/dataset/minimal/about"
 }

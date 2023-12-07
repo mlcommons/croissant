@@ -40,7 +40,7 @@
   },
   "@type": "sc:Dataset",
   "name": "read_from_directory",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Minimal example showing how to read from local directories.",
   "url": "https://github.com/mlcommons/croissant",
   "distribution": [

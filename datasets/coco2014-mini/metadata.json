@@ -40,10 +40,11 @@
   },
   "@type": "sc:Dataset",
   "name": "Mini-COCO",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
   "citation": "None",
   "license": "cc-by-4.0",
+  "version": "1.0.0",
   "url": "None",
   "distribution": [
     {

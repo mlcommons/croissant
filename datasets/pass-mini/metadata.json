@@ -39,7 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "Mini-PASS",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of PASS to be used in unit tests.",
   "citation": "None",
   "license": "None",

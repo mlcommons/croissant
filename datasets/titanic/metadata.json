@@ -40,7 +40,7 @@
   },
   "@type": "sc:Dataset",
   "name": "Titanic",
-  "conforms_to": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n",
   "citation": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
   "license": "afl-3.0",
