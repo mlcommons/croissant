@@ -1,8 +1,5 @@
 """Migration: to add the conformsTo field."""
 
-from mlcroissant._src.core.json_ld import compact_jsonld
-from mlcroissant._src.core.json_ld import expand_jsonld
-
 NEW_CONTEXT = {
     "@language": "en",
     "@vocab": "https://schema.org/",
