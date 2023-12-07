@@ -82,7 +82,7 @@ class Metadata(Node):
             "@context": self.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
-            "conforms_to": self.conforms_to,
+            "conformsTo": self.conforms_to,
             "description": self.description,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
