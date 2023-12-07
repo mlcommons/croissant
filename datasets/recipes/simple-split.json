@@ -35,7 +35,8 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
-    "transform": "ml:transform"
+    "transform": "ml:transform",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "simple-split",
