@@ -14,7 +14,6 @@ Literal = term.Literal
 # If this test fails, you probably manually updated a dataset in datasets/.
 # Please, use scripts/migrations/migrate.py to migrate datasets.
 def jsonld_to_python_to_jsonld(path):
-    print("DEBUG: open: ", path)
     with path.open() as f:
         json_ld = json.load(f)
     issues = Issues()
