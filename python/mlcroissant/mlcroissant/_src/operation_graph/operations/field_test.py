@@ -132,6 +132,7 @@ def test_extract_lines(separator):
         record_sets = [RecordSet(name="main", fields=fields)]
         Metadata(
             name="metadata",
+            conforms_to="http://mlcommons.org/croissant/1.0",
             url="url.com",
             distribution=distribution,
             record_sets=record_sets,

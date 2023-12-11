@@ -35,6 +35,7 @@ def test_from_jsonld():
     folder = epath.Path("/foo/bar")
     jsonld = {
         "@type": constants.SCHEMA_ORG_DATASET,
+        constants.DCTERMS_CONFORMS_TO: "http://mlcommons.org/croissant/1.0",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_LICENSE: "License",
@@ -50,6 +51,7 @@ def test_from_jsonld():
         issues=issues,
         context=context,
         folder=folder,
+        conforms_to="http://mlcommons.org/croissant/1.0",
         name="foo",
         description="bar",
         data_biases="data_biases",

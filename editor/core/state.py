@@ -183,6 +183,7 @@ class Metadata:
     name: str = ""
     description: str | None = None
     citation: str | None = None
+    conforms_to: str | None = None
     data_biases: str | None = None
     data_collection: str | None = None
     license: str | None = ""

@@ -3,6 +3,7 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -13,6 +14,7 @@
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -38,9 +40,11 @@
   },
   "@type": "sc:Dataset",
   "name": "Mini-COCO",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
   "citation": "None",
   "license": "cc-by-4.0",
+  "version": "1.0.0",
   "url": "None",
   "distribution": [
     {

@@ -28,6 +28,7 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
+    conforms_to: str | None = None
     citation: str | None = None
     description: str | None = None
     license: str | None = None
@@ -81,6 +82,7 @@ class Metadata(Node):
             "@context": self.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
+            "conformsTo": self.conforms_to,
             "description": self.description,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
@@ -221,6 +223,7 @@ class Metadata(Node):
             issues=issues,
             context=context,
             folder=folder,
+            conforms_to=metadata.get(constants.DCTERMS_CONFORMS_TO),
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
