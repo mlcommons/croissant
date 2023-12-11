@@ -193,6 +193,7 @@ class Node(abc.ABC):
             # Do not hash children, graphs, issues and context:
             if field.name not in (
                 "context",
+                "creators",
                 "distribution",
                 "fields",
                 "graph",

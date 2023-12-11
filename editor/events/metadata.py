@@ -1,9 +1,11 @@
+import datetime
 import enum
 
 import streamlit as st
 
 from core.names import find_unique_name
 from core.state import Metadata
+import mlcroissant as mlc
 
 # List from:
 LICENSES_URL = "https://huggingface.co/docs/hub/repositories-licenses"
@@ -92,6 +94,7 @@ class MetadataEvent(enum.Enum):
     NAME = "NAME"
     CONFORMS_TO = "CONFORMS_TO"
     DESCRIPTION = "DESCRIPTION"
+    DATE_PUBLISHED = "DATE_PUBLISHED"
     URL = "URL"
     LICENSE = "LICENSE"
     CITATION = "CITATION"
@@ -99,6 +102,10 @@ class MetadataEvent(enum.Enum):
     DATA_BIASES = "DATA_BIASES"
     DATA_COLLECTION = "DATA_COLLECTION"
     PERSONAL_SENSITIVE_INFORMATION = "PERSONAL_SENSITIVE_INFORMATION"
+    CREATOR_ADD = "CREATOR_ADD"
+    CREATOR_NAME = "CREATOR_NAME"
+    CREATOR_URL = "CREATOR_URL"
+    CREATOR_REMOVE = "CREATOR_REMOVE"
 
 
 def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
@@ -122,3 +129,20 @@ def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
         metadata.data_collection = st.session_state[key]
     elif event == MetadataEvent.PERSONAL_SENSITIVE_INFORMATION:
         metadata.personal_sensitive_information = st.session_state[key]
+    elif event == MetadataEvent.DATE_PUBLISHED:
+        date = st.session_state[key]
+        metadata.date_published = datetime.datetime(date.year, date.month, date.day)
+    elif event == MetadataEvent.CREATOR_ADD:
+        metadata.creators = [mlc.PersonOrOrganization()]
+    elif event == MetadataEvent.CREATOR_REMOVE:
+        metadata.creators = []
+    elif event == MetadataEvent.CREATOR_NAME:
+        if metadata.creators:
+            metadata.creators[0].name = st.session_state[key]
+        else:
+            metadata.creators = [mlc.PersonOrOrganization(name=st.session_state[key])]
+    elif event == MetadataEvent.CREATOR_URL:
+        if metadata.creators:
+            metadata.creators[0].url = st.session_state[key]
+        else:
+            metadata.creators = [mlc.PersonOrOrganization(url=st.session_state[key])]
