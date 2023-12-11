@@ -24,7 +24,7 @@ def test_checks_are_performed():
         Node, "validate_name"
     ) as validate_name_mock:
         create_test_node(Metadata, name="field_name")
-        mandatory_mock.assert_called_once_with("name")
+        mandatory_mock.assert_called_once_with("name", "conforms_to")
         optional_mock.assert_called_once_with("citation", "license", "version")
         validate_name_mock.assert_called_once()
 
