@@ -78,8 +78,7 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        return remove_empty_values(
-            {
+        return remove_empty_values({
                 "@context": self.rdf.context,
                 "@type": "sc:Dataset",
                 "name": self.name,
@@ -94,8 +93,7 @@ class Metadata(Node):
                 "version": self.version,
                 "distribution": [f.to_json() for f in self.distribution],
                 "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            }
-        )
+            })
 
     @property
     def file_objects(self) -> list[FileObject]:
