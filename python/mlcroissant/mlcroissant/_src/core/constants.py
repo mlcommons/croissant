@@ -134,6 +134,7 @@ class EncodingFormat:
     GIT = "git+https"
     JSON = "application/json"
     JSON_LINES = "application/jsonlines"
+    MP3 = "audio/mpeg"
     PARQUET = "application/x-parquet"
     TEXT = "text/plain"
     TSV = "text/tsv"
