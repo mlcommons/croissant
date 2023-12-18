@@ -63,7 +63,19 @@
             "extract": {
               "fileProperty": "content"
             }
-          }
+          },
+          "additionalProperty": [
+            {
+              "@type": "sc:PropertyValue",
+              "name": "bitrate",
+              "value": "24kbps"
+            },
+            {
+              "@type": "sc:PropertyValue",
+              "name": "encodingFormat",
+              "value": "audio/mpeg"
+            }
+          ]
         }
       ]
     }
