@@ -5,6 +5,7 @@ import io
 from typing import Any, Iterator
 
 from etils import epath
+import librosa
 import numpy as np
 import pandas as pd
 from rdflib import term
@@ -17,8 +18,6 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
-
-# import librosa
 
 
 def _cast_value(value: Any, data_type: type | term.URIRef | None):
@@ -34,8 +33,7 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type == DataType.AUDIO_OBJECT:
-        # return librosa.load(io.BytesIO(value))
-        return
+        return librosa.load(io.BytesIO(value))
     elif data_type == DataType.BOUNDING_BOX:
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
