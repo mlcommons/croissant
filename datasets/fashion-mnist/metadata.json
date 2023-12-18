@@ -1,0 +1,101 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "fashion_mnist",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "description": "Fashion-MNIST is a dataset of Zalando's article images\u2014consisting of a training set of\n60,000 examples and a test set of 10,000 examples. Each example is a 28x28 grayscale image,\nassociated with a label from 10 classes. We intend Fashion-MNIST to serve as a direct drop-in\nreplacement for the original MNIST dataset for benchmarking machine learning algorithms.\nIt shares the same image size and structure of training and testing splits.\n",
+  "citation": "@article{DBLP:journals/corr/abs-1708-07747,\n  author    = {Han Xiao and\n               Kashif Rasul and\n               Roland Vollgraf},\n  title     = {Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning\n               Algorithms},\n  journal   = {CoRR},\n  volume    = {abs/1708.07747},\n  year      = {2017},\n  url       = {http://arxiv.org/abs/1708.07747},\n  archivePrefix = {arXiv},\n  eprint    = {1708.07747},\n  timestamp = {Mon, 13 Aug 2018 16:47:27 +0200},\n  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1708-07747},\n  bibsource = {dblp computer science bibliography, https://dblp.org}\n}\n",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/fashion_mnist",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/fashion_mnist/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": "repo",
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "default",
+      "description": "The default set of records in the dataset.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "label",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

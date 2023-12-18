@@ -1,7 +1,6 @@
 """graph_test module."""
 
 import json
-import os
 
 from etils import epath
 from rdflib import term
@@ -36,10 +35,6 @@ def test_jsonld_to_python_to_jsonld():
     dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
     )
-    json_ld_paths = [
-        path
-        for path in dataset_folder.glob("*/*.json")
-        if not os.fspath(path).endswith("_by_openml_converter.json")
-    ]
+    json_ld_paths = [path for path in dataset_folder.glob("*/*.json")]
     for path in json_ld_paths:
         jsonld_to_python_to_jsonld(path)

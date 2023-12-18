@@ -36,7 +36,7 @@ sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
 ## Verify/load a Croissant dataset
 
 ```bash
-python scripts/validate.py --file ../../datasets/titanic/metadata.json
+mlcroissant validate --file ../../datasets/titanic/metadata.json
 ```
 
 The command:
@@ -47,7 +47,7 @@ The command:
 Similarly, you can generate a dataset by launching:
 
 ```bash
-python mlcroissant/scripts/load.py \
+mlcroissant load \
     --file ../../datasets/titanic/metadata.json \
     --record_set passengers \
     --num_records 10
@@ -72,10 +72,6 @@ metadata=mlc.nodes.Metadata(
 )
 metadata.to_json()  # this returns the JSON-LD file.
 ```
-
-For a full working example, refer to
-[the script to convert Hugging Face datasets to Croissant files](./scripts/from_huggingface_to_croissant.py).
-This script uses the Python API to programmatically build JSON-LD files.
 
 ## Run tests
 
@@ -122,13 +118,12 @@ To start a codespace:
 
 Alternatively, you can contribute to `mlcroissant` using the "classic" GitHub workflow:
 
-
 ## Debug
 
 You can debug the validation of the file using the `--debug` flag:
 
 ```bash
-python scripts/validate.py --file ../../datasets/titanic/metadata.json --debug
+mlcroissant validate --file ../../datasets/titanic/metadata.json --debug
 ```
 
 This will:
@@ -159,6 +154,7 @@ password = # generate the password on https://pypi.org/manage/account/token/
 ```
 1. Build locally and push to PyPI:
 ```bash
+rm -rf dist/
 python -m build
 python -m twine upload --repository mlcroissant dist/*
 ```

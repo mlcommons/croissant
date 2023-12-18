@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 import dataclasses
+import datetime
+import itertools
+from typing import Any
 
 from etils import epath
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
+from mlcroissant._src.core.dates import from_str_to_date_time
 from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
@@ -25,16 +29,69 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 @dataclasses.dataclass(eq=False, repr=False)
+class PersonOrOrganization:
+    """Representing either https://schema.org/Person or /Organization."""
+
+    name: str | None = None
+    description: str | None = None
+    url: str | None = None
+
+    @classmethod
+    def from_jsonld(cls, jsonld: Any) -> list[PersonOrOrganization]:
+        """Builds the class from the JSON-LD."""
+        if jsonld is None:
+            return []
+        elif isinstance(jsonld, list):
+            persons_or_organizations: itertools.chain[PersonOrOrganization] = (
+                itertools.chain.from_iterable([
+                    cls.from_jsonld(element) for element in jsonld
+                ])
+            )
+            return list(persons_or_organizations)
+        else:
+            return [
+                cls(
+                    name=jsonld.get(constants.SCHEMA_ORG_NAME),
+                    description=jsonld.get(constants.SCHEMA_ORG_DESCRIPTION),
+                    url=jsonld.get(constants.SCHEMA_ORG_URL),
+                )
+            ]
+
+    def to_json(self) -> Json:
+        """Serializes back to JSON-LD."""
+        return remove_empty_values({
+            "name": self.name,
+            "description": self.description,
+            "url": self.url,
+        })
+
+
+@dataclasses.dataclass(eq=False, repr=False)
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
+    conforms_to: str | None = None
     citation: str | None = None
+    creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
+    date_published: datetime.datetime | None = None
     description: str | None = None
     license: str | None = None
     name: str = ""
     url: str | None = ""
+    version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
+    # RAI field - Involves understanding the potential risks associated with data usage
+    # and to prevent unintended and potentially harmful consequences that may arise from
+    # using models trained on or evaluated with the respective data.
+    data_biases: str | None = None
+    # RAI field - Key stages of the data collection process encourage its creators to
+    # reflect on the process and improves understanding for users.
+    data_collection: str | None = None
+    # RAI field - Personal and sensitive information, if contained within the dataset,
+    # can play an important role in the mitigation of any risks and the responsible use
+    # of the datasets.
+    personal_sensitive_information: str | None = None
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -54,8 +111,9 @@ class Metadata(Node):
 
         # Check properties.
         self.validate_name()
-        self.assert_has_mandatory_properties("name", "url")
-        self.assert_has_optional_properties("citation", "license")
+        self.validate_version()
+        self.assert_has_mandatory_properties("name")
+        self.assert_has_optional_properties("citation", "license", "version")
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -64,14 +122,31 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
+        date_published = (
+            self.date_published.isoformat() if self.date_published else None
+        )
+        creator: Json | list[Json] | None
+        if len(self.creators) == 1:
+            creator = self.creators[0].to_json()
+        elif len(self.creators) > 1:
+            creator = [creator.to_json() for creator in self.creators]
+        else:
+            creator = None
         return remove_empty_values({
             "@context": self.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
+            "conformsTo": self.conforms_to,
             "description": self.description,
+            "creator": creator,
+            "datePublished": date_published,
+            "dataBiases": self.data_biases,
+            "dataCollection": self.data_collection,
             "citation": self.citation,
             "license": self.license,
+            "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
+            "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
         })
@@ -102,6 +177,30 @@ class Metadata(Node):
             for field in record_set.fields:
                 nodes.extend(field.sub_fields)
         return nodes
+
+    def validate_version(self) -> None:
+        """Validates the given version.
+
+        A valid version follows Semantic Versioning 2.0.0 `MAJOR.MINOR.PATCH`.
+        For more information: https://semver.org/spec/v2.0.0.html.
+        """
+        version = self.version
+
+        # Version is a recommended but not mandatory attribute.
+        if not version:
+            return
+
+        if isinstance(version, str):
+            points = version.count(".")
+            numbers = version.replace(".", "")
+            if points != 2 or len(numbers) != 3 or not numbers.isnumeric():
+                self.add_error(
+                    f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
+                    " information refer to: https://semver.org/spec/v2.0.0.html"
+                )
+        else:
+            self.add_error(f"The version should be a string. Got: {type(version)}.")
+            return
 
     def check_graph(self):
         """Checks the integrity of the structure graph.
@@ -176,16 +275,31 @@ class Metadata(Node):
             for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         ]
         url = metadata.get(constants.SCHEMA_ORG_URL)
+        creators = PersonOrOrganization.from_jsonld(
+            metadata.get(constants.SCHEMA_ORG_CREATOR)
+        )
+        date_published = from_str_to_date_time(
+            issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
+        )
         return cls(
             issues=issues,
             context=context,
             folder=folder,
+            conforms_to=metadata.get(constants.DCTERMS_CONFORMS_TO),
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
+            creators=creators,
+            date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
+            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
+            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
+            personal_sensitive_information=metadata.get(
+                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION
+            ),
             record_sets=record_sets,
             url=url,
+            version=metadata.get(constants.SCHEMA_ORG_VERSION),
             rdf=rdf,
         )

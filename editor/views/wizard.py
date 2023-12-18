@@ -1,9 +1,18 @@
 import json
 
 import streamlit as st
+import streamlit_nested_layout  # Do not remove this allows nesting columns.
 
-from core.state import CurrentStep
+from components.tabs import render_tabs
+from core.constants import METADATA
+from core.constants import OVERVIEW
+from core.constants import RECORD_SETS
+from core.constants import RESOURCES
+from core.constants import TABS
+from core.past_projects import save_current_project
+from core.state import get_tab
 from core.state import Metadata
+from core.state import set_tab
 import mlcroissant as mlc
 from views.files import render_files
 from views.metadata import render_metadata
@@ -11,33 +20,33 @@ from views.overview import render_overview
 from views.record_sets import render_record_sets
 
 
-def render_download_button():
+def _export_json() -> str | None:
+    metadata: Metadata = st.session_state[Metadata]
     try:
-        st.download_button(
-            "Save",
-            file_name="croissant.json",
-            type="primary",
-            data=json.dumps(st.session_state[Metadata].to_canonical().to_json()),
-        )
+        return {
+            "name": f"croissant-{metadata.name.lower()}.json",
+            "content": json.dumps(metadata.to_canonical().to_json()),
+        }
     except mlc.ValidationError as exception:
-        st.download_button("Save", disabled=True, data="")
-
-
-OVERVIEW = "Overview"
-METADATA = "Metadata"
-RESOURCES = "Resources"
-RECORD_SETS = "RecordSets"
+        return None
 
 
 def render_editor():
-    tab1, tab2, tab3, tab4 = st.tabs([OVERVIEW, METADATA, RESOURCES, RECORD_SETS])
+    export_json = _export_json()
 
-    with tab1:
+    # Warning: the custom component cannot be nested in a st.columns or it is forced to
+    # re-render even if a `key` is set.
+    selected_tab = get_tab()
+    tab = render_tabs(
+        tabs=TABS, selected_tab=selected_tab, json=export_json, key="tabs"
+    )
+    if tab == OVERVIEW:
         render_overview()
-    with tab2:
+    elif tab == METADATA:
         render_metadata()
-    with tab3:
+    elif tab == RESOURCES:
         render_files()
-    with tab4:
+    elif tab == RECORD_SETS:
         render_record_sets()
-    render_download_button()
+    save_current_project()
+    set_tab(tab)

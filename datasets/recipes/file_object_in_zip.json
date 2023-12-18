@@ -3,14 +3,18 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -21,6 +25,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -34,6 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "file_object_in_zip",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Minimal example to read a FileObject contained in a zip.",
   "url": "https://mlcommons.org",
   "distribution": [
@@ -47,15 +53,15 @@
     {
       "@type": "sc:FileObject",
       "name": "csv2_in_zip",
-      "containedIn": "zip_with_csv",
       "contentUrl": "csv2_in_zip.csv",
+      "containedIn": "zip_with_csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "csv1_in_zip",
-      "containedIn": "zip_with_csv",
       "contentUrl": "csv1_in_zip.csv",
+      "containedIn": "zip_with_csv",
       "encodingFormat": "text/csv"
     }
   ],

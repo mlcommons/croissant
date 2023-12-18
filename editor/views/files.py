@@ -1,37 +1,82 @@
-import pandas as pd
 import streamlit as st
 
+from components.safe_button import button_with_confirmation
 from components.tree import render_tree
+from core.constants import DF_HEIGHT
+from core.constants import NAMES_INFO
+from core.constants import OAUTH_CLIENT_ID
+from core.files import code_to_index
+from core.files import file_from_form
 from core.files import file_from_upload
 from core.files import file_from_url
+from core.files import FILE_OBJECT
+from core.files import FILE_SET
 from core.files import FILE_TYPES
+from core.files import is_url
+from core.files import RESOURCE_TYPES
+from core.files import trigger_download
+from core.path import get_resource_path
 from core.record_sets import infer_record_sets
-from core.state import AddManually
+from core.state import CurrentProject
 from core.state import FileObject
 from core.state import FileSet
 from core.state import Metadata
 from core.state import SelectedResource
-from utils import DF_HEIGHT
+from events.resources import handle_resource_change
+from events.resources import ResourceEvent
 from utils import needed_field
 
 Resource = FileObject | FileSet
 
 _DISTANT_URL_KEY = "import_from_url"
 _LOCAL_FILE_KEY = "import_from_local_file"
+_MANUAL_RESOURCE_TYPE_KEY = "create_manually_type"
+
+_INFO = """Resources can be `FileObjects` (single files) or `FileSets` (sets of files 
+with the same MIME type). On this page, you can upload `FileObjects`, point to external
+resources on the web or manually create new resources."""
 
 
 def render_files():
-    col1, col2, col3 = st.columns([1, 1, 1], gap="small")
+    """Renders the views of the files: warnings and panels to display information."""
+    _render_warnings()
+    col1, col2 = st.columns([1, 1], gap="small")
     with col1:
-        st.subheader("Upload more resources")
+        st.markdown("##### Add a resource")
         _render_upload_panel()
-    with col2:
-        st.subheader("Uploaded resources")
+        st.markdown("##### Uploaded resources")
         files = st.session_state[Metadata].distribution
         resource = _render_resources_panel(files)
         st.session_state[SelectedResource] = resource
-    with col3:
+    with col2:
         _render_right_panel()
+
+
+def _render_warnings():
+    """Renders warnings concerning local files."""
+    metadata: Metadata = st.session_state[Metadata]
+    warning = ""
+    for resource in metadata.distribution:
+        if not isinstance(resource, FileObject):
+            continue
+        content_url = resource.content_url
+        if content_url and not content_url.startswith("http"):
+            path = get_resource_path(content_url)
+            if not path.exists():
+                if OAUTH_CLIENT_ID:
+                    warning += (
+                        f'⚠️ Resource "{resource.name}" points to a local file that'
+                        " doesn't exist on the disk. Fix this by changing the content"
+                        " URL.\n\n"
+                    )
+                else:
+                    warning += (
+                        f'⚠️ Resource "{resource.name}" points to a local file that'
+                        " doesn't exist on the disk. Fix this by either downloading"
+                        f" it to {path} or changing the content URL.\n\n"
+                    )
+    if warning:
+        st.warning(warning.strip())
 
 
 def _render_resources_panel(files: list[Resource]) -> Resource | None:
@@ -66,10 +111,7 @@ def _render_resources_panel(files: list[Resource]) -> Resource | None:
 def _render_upload_panel():
     """Renders the form to upload from local or upload from URL."""
     with st.form(key="upload_form", clear_on_submit=True):
-        file_type_name = st.selectbox("Encoding format", options=FILE_TYPES.keys())
-        tab1, tab2, tab3 = st.tabs([
-            "Import from a local file", "Import from a URL", "Add manually"
-        ])
+        tab1, tab2, tab3 = st.tabs(["From a local file", "From a URL", "Add manually"])
 
         with tab1:
             st.file_uploader("Select a file", key=_LOCAL_FILE_KEY)
@@ -78,48 +120,23 @@ def _render_upload_panel():
             st.text_input("URL:", key=_DISTANT_URL_KEY)
 
         with tab3:
-            resource_type = st.selectbox("Type", options=["FileObject", "FileSet"])
-
-            file = FileObject() if resource_type == "FileObject" else FileSet()
-
-            name = st.text_input(
-                needed_field("File name"), value=file.name, key="manual_name"
-            )
-            description = st.text_area(
-                "File description",
-                value=file.description,
-                placeholder="Provide a clear description of the file.",
-                key="manual_description",
-            )
-            sha256 = st.text_input(
-                needed_field("SHA256"),
-                value=file.sha256,
-                disabled=True,
-                key="manual_sha256",
-            )
-            parent = st.text_input(
-                needed_field("Parent"),
-                value=file.encoding_format,
-                key="manual_parent",
-            )
+            st.selectbox("Type", options=RESOURCE_TYPES, key=_MANUAL_RESOURCE_TYPE_KEY)
 
         def handle_on_click():
             url = st.session_state[_DISTANT_URL_KEY]
             uploaded_file = st.session_state[_LOCAL_FILE_KEY]
-            file_type = FILE_TYPES[file_type_name]
-            nodes = (
-                st.session_state[Metadata].distribution
-                + st.session_state[Metadata].record_sets
-            )
-            names = set([node.name for node in nodes])
+            metadata: Metadata = st.session_state[Metadata]
+            names = metadata.names()
+            project: CurrentProject = st.session_state[CurrentProject]
+            folder = project.path
             if url:
-                file = file_from_url(file_type, url, names)
+                file = file_from_url(url, names, folder)
             elif uploaded_file:
-                file = file_from_upload(file_type, uploaded_file, names)
-            # todo: handle manually created resource.
+                file = file_from_upload(uploaded_file, names, folder)
             else:
-                st.toast("Please, import either a local file or a URL.", icon="❌")
-                return
+                resource_type = st.session_state[_MANUAL_RESOURCE_TYPE_KEY]
+                file = file_from_form(resource_type, names, folder)
+
             st.session_state[Metadata].add_distribution(file)
             record_sets = infer_record_sets(file, names)
             for record_set in record_sets:
@@ -134,52 +151,138 @@ def _render_right_panel():
     of the selected resource."""
     if st.session_state.get(SelectedResource):
         _render_resource_details(st.session_state[SelectedResource])
+    else:
+        st.info(_INFO, icon="💡")
 
 
 def _render_resource_details(selected_file: Resource):
     """Renders the details of the selected resource."""
     file: FileObject | FileSet
-    for key, file in enumerate(st.session_state[Metadata].distribution):
+    for i, file in enumerate(st.session_state[Metadata].distribution):
         if file.name == selected_file.name:
+            is_file_object = isinstance(file, FileObject)
+            index = (
+                RESOURCE_TYPES.index(FILE_OBJECT)
+                if is_file_object
+                else RESOURCE_TYPES.index(FILE_SET)
+            )
+            key = f"{i}-file-name"
+            st.selectbox(
+                "Type",
+                index=index,
+                options=RESOURCE_TYPES,
+                key=key,
+                on_change=handle_resource_change,
+                args=(ResourceEvent.TYPE, file, key),
+            )
+
+            _render_resource(i, file, is_file_object)
 
             def delete_line():
-                st.session_state[Metadata].remove_distribution(key)
+                st.session_state[Metadata].remove_distribution(i)
 
-            name = st.text_input(
-                needed_field("Name"), value=file.name, key=f"{key}_name"
+            def close():
+                st.session_state[SelectedResource] = None
+
+            col1, col2 = st.columns([1, 1])
+            col1.button("Close", key=f"{i}_close", on_click=close, type="primary")
+            with col2:
+                button_with_confirmation(
+                    "Remove", key=f"{i}_remove", on_click=delete_line
+                )
+
+
+def _render_resource(prefix: int, file: Resource, is_file_object: bool):
+    parent_options = [f.name for f in st.session_state[Metadata].distribution]
+    key = f"{prefix}_parents"
+    st.multiselect(
+        "Parents",
+        default=file.contained_in,
+        options=parent_options,
+        key=key,
+        help=(
+            "FileObjects and FileSets can be nested. Specifying `Parents` allows to"
+            " nest a FileObject/FileSet within another FileObject/FileSet. An example"
+            " of this is when images (FileSet) are nested within an archive (FileSet)."
+        ),
+        on_change=handle_resource_change,
+        args=(ResourceEvent.CONTAINED_IN, file, key),
+    )
+    key = f"{prefix}_name"
+    st.text_input(
+        needed_field("Name"),
+        value=file.name,
+        key=key,
+        help=f"The name of the resource. {NAMES_INFO}",
+        on_change=handle_resource_change,
+        args=(ResourceEvent.NAME, file, key),
+    )
+    key = f"{prefix}_description"
+    st.text_area(
+        "Description",
+        value=file.description,
+        placeholder="Provide a description of the file.",
+        key=key,
+        on_change=handle_resource_change,
+        args=(ResourceEvent.DESCRIPTION, file, key),
+    )
+    if is_file_object:
+        key = f"{prefix}_content_url"
+        st.text_input(
+            needed_field("Content URL or local path"),
+            value=file.content_url,
+            key=key,
+            help="The URL or local file path pointing to the original FileObject.",
+            on_change=handle_resource_change,
+            args=(ResourceEvent.CONTENT_URL, file, key),
+        )
+        key = f"{prefix}_sha256"
+        st.text_input(
+            needed_field("SHA256"),
+            value=file.sha256,
+            key=key,
+            on_change=handle_resource_change,
+            args=(ResourceEvent.SHA256, file, key),
+        )
+        key = f"{prefix}_content_size"
+        st.text_input(
+            "Content size",
+            value=file.content_size,
+            key=key,
+            help="The size of the original FileObject in bytes.",
+            on_change=handle_resource_change,
+            args=(ResourceEvent.CONTENT_SIZE, file, key),
+        )
+    else:
+        key = f"{prefix}_includes"
+        st.text_input(
+            needed_field("Glob pattern of files to include"),
+            value=file.includes,
+            key=key,
+            on_change=handle_resource_change,
+            args=(ResourceEvent.INCLUDES, file, key),
+        )
+    key = f"{prefix}_encoding"
+    st.selectbox(
+        needed_field("Encoding format"),
+        index=code_to_index(file.encoding_format),
+        options=FILE_TYPES.keys(),
+        key=key,
+        help=(
+            "MIME type corresponding to"
+            " ([sc:encodingFormat](https://schema.org/encodingFormat))."
+        ),
+        on_change=handle_resource_change,
+        args=(ResourceEvent.ENCODING_FORMAT, file, key),
+    )
+    if is_file_object:
+        st.markdown("First rows of data:")
+        if file.df is not None:
+            st.dataframe(file.df, height=DF_HEIGHT)
+        else:
+            st.button(
+                "Trigger download",
+                disabled=bool(file.content_url),
+                on_click=trigger_download,
+                args=(file,),
             )
-            description = st.text_area(
-                "Description",
-                value=file.description,
-                placeholder="Provide a clear description of the file.",
-                key=f"{key}_description",
-            )
-            sha256 = st.text_input(
-                needed_field("SHA256"),
-                value=file.sha256,
-                disabled=True,
-                key=f"{key}_sha256",
-            )
-            encoding_format = st.text_input(
-                needed_field("Encoding format"),
-                value=file.encoding_format,
-                disabled=True,
-                key=f"{key}_encoding",
-            )
-            st.markdown("First rows of data:")
-            if file.df is not None:
-                st.dataframe(file.df, height=DF_HEIGHT)
-            else:
-                st.text("No rendering possible.")
-            _, col = st.columns([5, 1])
-            col.button("Remove", key=f"{key}_url", on_click=delete_line, type="primary")
-            file = FileObject(
-                name=name,
-                description=description,
-                content_url=file.content_url,
-                content_size=file.content_size,
-                encoding_format=encoding_format,
-                sha256=sha256,
-                df=file.df,
-            )
-            st.session_state[Metadata].update_distribution(key, file)

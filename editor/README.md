@@ -1,11 +1,13 @@
 # Croissant Editor
 
-Start locally:
+Start locally from the
+[Docker image](https://hub.docker.com/repository/docker/mlcommons/croissant-editor/general):
 
 ```bash
-pip install -r requirements.txt
-streamlit run app.py
+docker run -p 8501:8501 -v ~/.cache/croissant:/root/.cache/croissant -it mlcommons/croissant-editor
 ```
+
+Navigate to http://localhost:8501.
 
 Launch the end-to-end tests locally (after you started the application):
 
@@ -17,6 +19,8 @@ npm run cypress:run  # Runs e2e tests in background
 ```
 
 You can debug the tests in Github Actions because failed screenshots are uploaded as artifacts.
+
+You may need to install [`libmagic`](https://pypi.org/project/python-magic).
 
 # Create a custom component
 
@@ -105,3 +109,19 @@ npm run build
 
 - Don't forget to toggle `_RELEASE = True` back to `_RELEASE = False`.
 - Commit your changes.
+
+### Build the docker image
+
+Change `TAG` below and execute the following commands:
+
+```
+TAG=0.0.1
+IMAGE=croissant-editor
+docker build -t ${IMAGE} .
+docker login
+for tag in latest ${TAG}
+do
+  docker tag ${IMAGE} mlcommons/${IMAGE}:${TAG}
+  docker image push mlcommons/${IMAGE}:${TAG}
+done
+```

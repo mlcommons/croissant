@@ -1,10 +1,14 @@
 """download_test module."""
 
+import hashlib
+
 import pytest
 
+from mlcroissant._src.operation_graph.operations.download import _get_hash_algorithm
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
+from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
 
@@ -69,3 +73,21 @@ def test_insert_credentials():
             username=None,
             password="my/password",
         )
+
+
+def test_get_hash_obj_md5():
+    node = FileObject(
+        md5="12345",
+    )
+    hash_algorithm = _get_hash_algorithm(node)
+
+    assert isinstance(hash_algorithm, type(hashlib.md5()))
+
+
+def test_get_hash_obj_sha256():
+    node = FileObject(
+        sha256="12345",
+    )
+    hash_algorithm = _get_hash_algorithm(node)
+
+    assert isinstance(hash_algorithm, type(hashlib.sha256()))
