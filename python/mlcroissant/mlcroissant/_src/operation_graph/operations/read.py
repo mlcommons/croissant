@@ -3,6 +3,7 @@
 import dataclasses
 import enum
 import json
+import librosa
 
 from etils import epath
 import pandas as pd
@@ -120,7 +121,7 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
-            elif encoding_format == EncodingFormat.MP3:
+            elif encoding_format == EncodingFormat.MP3 or encoding_format == EncodingFormat.JPG:
                 return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
