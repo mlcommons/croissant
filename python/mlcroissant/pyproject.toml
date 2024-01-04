@@ -28,6 +28,7 @@ dependencies = [
   "rdflib",
   "requests",
   "tqdm",
+  "librosa",
 ]
 readme = "README.md"
 
@@ -81,8 +82,7 @@ module = [
   "jsonpath_rw",
   "networkx",
   "pandas",
-  "pillow",
-  "librosa"
+  "pillow"
 ]
 ignore_missing_imports = true
 
