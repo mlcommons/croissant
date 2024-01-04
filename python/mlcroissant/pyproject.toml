@@ -21,14 +21,14 @@ dependencies = [
   "absl-py",
   "etils[epath]",
   "jsonpath-rw",
+  "librosa",
   "networkx",
   "pandas",
   "pandas-stubs",
   "python-dateutil",
   "rdflib",
   "requests",
-  "tqdm",
-  "librosa",
+  "tqdm"
 ]
 readme = "README.md"
 
