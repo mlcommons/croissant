@@ -3,7 +3,7 @@
 import dataclasses
 import enum
 import json
-import librosa
+# import librosa
 
 from etils import epath
 import pandas as pd
