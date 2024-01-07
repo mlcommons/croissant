@@ -85,7 +85,7 @@ class OptionalDependencies(object):
     def PIL_Image(cls) -> types.ModuleType:  # pylint: disable=invalid-name
         """Cached git module."""
         return _try_import("PIL.Image", package_name="Pillow")
-    
+
     @cached_class_property
     def LIB_Audio(cls) -> types.ModuleType:  # pylint: disable=invalid-name
         """Cached git module."""
