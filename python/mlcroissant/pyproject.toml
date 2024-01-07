@@ -18,6 +18,7 @@ authors = [
 # pip dependencies of the project
 # Installed locally with `pip install -e .`
 dependencies = [
+  "black[jupyter]",
   "absl-py",
   "etils[epath]",
   "jsonpath-rw",
@@ -35,7 +36,6 @@ readme = "README.md"
 # Development deps (linting, formatting,...)
 # Installed through `pip install -e .[dev]`
 dev = [
-  "black[jupyter]",
   "black==23.11.0",
   "datasets",
   "flake8-docstrings",
