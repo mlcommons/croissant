@@ -35,6 +35,7 @@ readme = "README.md"
 # Development deps (linting, formatting,...)
 # Installed through `pip install -e .[dev]`
 dev = [
+  "black[jupyter]",
   "black==23.11.0",
   "datasets",
   "flake8-docstrings",
