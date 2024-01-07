@@ -21,7 +21,6 @@ dependencies = [
   "absl-py",
   "etils[epath]",
   "jsonpath-rw",
-  "librosa",
   "networkx",
   "pandas",
   "pandas-stubs",
@@ -51,6 +50,7 @@ dev = [
 ]
 git = ["GitPython"]
 image = ["Pillow"]
+audio = ["librosa"]
 parquet = ["pyarrow"]
 
 [project.scripts]
@@ -80,6 +80,7 @@ module = [
   "datasets",
   "etils.*",
   "jsonpath_rw",
+  "librosa",
   "networkx",
   "pandas",
   "pillow"
