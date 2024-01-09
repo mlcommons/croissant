@@ -1,0 +1,49 @@
+# These workflows will upload a Python Package using Twine when a release is created
+# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+
+name: Upload Python Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+    - name: Build distribution
+      run: |
+        cd mlcube
+        python setup.py sdist bdist_wheel
+    - name: Publish
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verify-metadata: true
+        skip-existing: true
+        packages-dir: mlcube/dist/
+        repository-url: https://upload.pypi.org/legacy/
+        verbose: true
+      env:
+        LOGLEVEL: DEBUG
+
+#  dispatch:
+#    needs: deploy
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Repository Dispatch
+#        uses: peter-evans/repository-dispatch@v2
+#        with:
+#          token: ${{ secrets.MLCOMMONS_REPO_ACCESS }}
+#          repository: mlcommons/mlcube
+#          event-type: publish-runners
