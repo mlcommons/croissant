@@ -7,6 +7,7 @@ version = "0.0.5"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
+  { name = "Monjish Bhattacharyya" },
   { name = "Omar Benjelloun" },
   { name = "Peter Mattson" },
   { name = "Pieter Gijsbers" },
