@@ -24,15 +24,15 @@ jobs:
         pip install setuptools wheel twine
     - name: Build distribution
       run: |
-        cd mlcube
-        python setup.py sdist bdist_wheel
+        cd python/mlcroissant
+        python -m build
     - name: Publish
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verify-metadata: true
         skip-existing: true
-        packages-dir: mlcube/dist/
-        repository-url: https://upload.pypi.org/legacy/
+        packages-dir: python/mlcroissant/dist
+        repository-url: https://test.pypi.org/legacy/
         verbose: true
       env:
         LOGLEVEL: DEBUG
