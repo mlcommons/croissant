@@ -40,6 +40,7 @@ dev = [
   "black==23.11.0",
   "datasets",
   "flake8-docstrings",
+  "mlcroissant[audio]",
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
@@ -50,9 +51,9 @@ dev = [
   "pytest",
   "pytype",
 ]
+audio = ["librosa"]
 git = ["GitPython"]
 image = ["Pillow"]
-audio = ["librosa"]
 parquet = ["pyarrow"]
 
 [project.scripts]
