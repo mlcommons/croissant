@@ -130,7 +130,7 @@ def test_hermetic_loading(dataset_name, record_set_name, num_records):
         [
             "audio_test/metadata.json",
             "records",
-            2,
+            -1,
         ],  # Switch the number to 10 if nessacary
     ],
 )
