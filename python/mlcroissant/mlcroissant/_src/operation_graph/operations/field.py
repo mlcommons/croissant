@@ -33,7 +33,7 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type == DataType.AUDIO_OBJECT:
         output = deps.LIB_Audio.load(io.BytesIO(value))
-        return str((output[0].tolist(), output[1]))
+        return [output[0].tolist(), output[1]]
     elif data_type == DataType.BOUNDING_BOX:
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
