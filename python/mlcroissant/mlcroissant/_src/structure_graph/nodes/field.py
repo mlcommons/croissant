@@ -41,12 +41,10 @@ class ParentField:
 
     def to_json(self) -> Json:
         """Converts the `ParentField` to JSON."""
-        return remove_empty_values(
-            {
-                "references": self.references.to_json() if self.references else None,
-                "source": self.source.to_json() if self.source else None,
-            }
-        )
+        return remove_empty_values({
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
+        })
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -129,20 +127,18 @@ class Field(Node):
             self.rdf.shorten_value(data_type) for data_type in self.data_types
         ]
         parent_field = self.parent_field.to_json() if self.parent_field else None
-        return remove_empty_values(
-            {
-                "@type": "ml:Field",
-                "name": self.name,
-                "description": self.description,
-                "dataType": data_types[0] if len(data_types) == 1 else data_types,
-                "isEnumeration": self.is_enumeration,
-                "parentField": parent_field,
-                "repeated": self.repeated,
-                "references": self.references.to_json() if self.references else None,
-                "source": self.source.to_json() if self.source else None,
-                "subField": [sub_field.to_json() for sub_field in self.sub_fields],
-            }
-        )
+        return remove_empty_values({
+            "@type": "ml:Field",
+            "name": self.name,
+            "description": self.description,
+            "dataType": data_types[0] if len(data_types) == 1 else data_types,
+            "isEnumeration": self.is_enumeration,
+            "parentField": parent_field,
+            "repeated": self.repeated,
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
+            "subField": [sub_field.to_json() for sub_field in self.sub_fields],
+        })
 
     @classmethod
     def from_jsonld(

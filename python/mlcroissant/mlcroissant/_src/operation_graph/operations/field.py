@@ -67,9 +67,9 @@ def _extract_lines(row: pd.Series) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
     path = epath.Path(row[FileProperty.filepath])
     lines = path.open("rb").read().splitlines()
-    return pd.Series(
-        {**row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))}
-    )
+    return pd.Series({
+        **row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))
+    })
 
 
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:

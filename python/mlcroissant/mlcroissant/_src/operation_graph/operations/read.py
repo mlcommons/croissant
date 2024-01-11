@@ -97,11 +97,9 @@ class Read(Operation):
                     return parse_json_content(json_content, self.fields)
                 else:
                     # Raw files are returned as a one-line pd.DataFrame.
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [json_content],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [json_content],
+                    })
             elif encoding_format == EncodingFormat.JSON_LINES:
                 return pd.read_json(file, lines=True)
             elif encoding_format == EncodingFormat.PARQUET:
@@ -119,20 +117,16 @@ class Read(Operation):
                         filepath, header=None, names=[FileProperty.lines]
                     )
                 else:
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [file.read()],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [file.read()],
+                    })
             elif (
                 encoding_format == EncodingFormat.MP3
                 or encoding_format == EncodingFormat.JPG
             ):
-                return pd.DataFrame(
-                    {
-                        FileProperty.content: [file.read()],
-                    }
-                )
+                return pd.DataFrame({
+                    FileProperty.content: [file.read()],
+                })
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
