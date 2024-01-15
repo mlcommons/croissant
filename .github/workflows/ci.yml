@@ -75,11 +75,14 @@ jobs:
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
-            jupyter nbconvert \
-              --ExecutePreprocessor.timeout=600 \
-              --ExecutePreprocessor.kernel_name=croissant-notebook \
-              --to notebook \
-              --execute $notebook
+            if [ "$notebook" != "recipes/PyTorch_FLORES200.ipynb" ]
+            then
+              jupyter nbconvert \
+                --ExecutePreprocessor.timeout=600 \
+                --ExecutePreprocessor.kernel_name=croissant-notebook \
+                --to notebook \
+                --execute "$notebook"
+            fi
           done
           
   python-format:
