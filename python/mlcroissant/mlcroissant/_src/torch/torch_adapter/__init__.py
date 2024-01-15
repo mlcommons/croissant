@@ -1,4 +1,4 @@
-"""PyTorch Adapter public API."""
+"""PyTorch dataloader-based public API."""
 
 from .dataloader import LoaderFactory
 from .dataloader import LoaderSpecificationDataType

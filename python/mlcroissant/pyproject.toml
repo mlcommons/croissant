@@ -46,6 +46,7 @@ dev = [
   "pylint",
   "pytest",
   "pytype",
+  "torchdata",
 ]
 git = ["GitPython"]
 image = ["Pillow"]
@@ -81,6 +82,8 @@ module = [
   "networkx",
   "pandas",
   "pillow",
+  "torchdata",
+  "torchdata.datapipes",
 ]
 ignore_missing_imports = true
 

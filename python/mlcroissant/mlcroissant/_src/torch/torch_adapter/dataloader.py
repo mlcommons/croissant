@@ -7,7 +7,11 @@ datasets.
 import enum
 from typing import Any, Dict, Optional
 
-import torchdata.datapipes as dp
+try:
+    import torchdata.datapipes as dp
+except ImportError:
+    dp = None
+    INSTALL_MESSAGE = "torchdata is not installed and is a dependency."
 
 import mlcroissant as mlc
 
@@ -15,8 +19,8 @@ import mlcroissant as mlc
 class LoaderSpecificationDataType(enum.Enum):
     """Enum representing data type specification."""
 
-    INFER = 0
-    UTF8 = 1
+    INFER = "infer"
+    UTF8 = "utf8"
 
 
 # Map from name to DataType
@@ -46,6 +50,35 @@ def apply_data_type_transformation(
     return val
 
 
+if dp is None:
+    # Failed to import dependencies. Stub out affected methods.
+
+    def _as_datapipe_helper(
+        factory: "LoaderFactory",
+        record_set: str,
+        specification: Optional[LoaderSpecificationTypes],
+    ) -> Any:
+        raise NotImplementedError(INSTALL_MESSAGE)
+
+else:
+    IterDataPipe = dp.iter.IterDataPipe
+    IterableWrapper = dp.iter.IterableWrapper
+
+    def _as_datapipe_helper(
+        factory: "LoaderFactory",
+        record_set: str,
+        specification: Optional[LoaderSpecificationTypes],
+    ) -> Any:
+        dataset = mlc.Dataset(file=factory.file)
+        records = dataset.records(record_set=record_set)
+        datapipe = IterableWrapper(records)
+        if specification:
+            row_processor = factory._get_row_processor(specification)
+            datapipe = datapipe.map(row_processor)
+
+        return datapipe
+
+
 class LoaderFactory:
     """Used to create loaders and get metadata."""
 
@@ -54,7 +87,7 @@ class LoaderFactory:
         self.file = file
 
     def _get_row_processor(self, specification: LoaderSpecificationTypes):
-        """Function to remap columns types."""
+        """Remap columns types to desired type."""
 
         def row_processor(row):
             for k, v in specification.items():
@@ -67,15 +100,8 @@ class LoaderFactory:
         self,
         record_set: str,
         specification: Optional[LoaderSpecificationTypes] = None,
-    ) -> dp.iter.IterDataPipe:
+    ) -> Any:
         """Load the record set as a DataPipe."""
-        dataset = mlc.Dataset(file=self.file)
-        records = dataset.records(record_set=record_set)
-
-        datapipe = dp.iter.IterableWrapper(records)
-
-        if specification:
-            row_processor = self._get_row_processor(specification)
-            datapipe = datapipe.map(row_processor)
-
+        datapipe = _as_datapipe_helper(self, record_set, specification)
+        # TODO: cast to IterDataPipe
         return datapipe
