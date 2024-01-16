@@ -84,7 +84,7 @@ function BasicTabs({
               whiteSpace: "nowrap",
             }}
           >
-            Download 🥐 file
+            Export
           </Button>
         </span>
       </Tooltip>

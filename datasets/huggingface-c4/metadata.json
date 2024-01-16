@@ -3,14 +3,18 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -21,6 +25,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -34,8 +39,10 @@
   },
   "@type": "sc:Dataset",
   "name": "c4",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "A colossal, cleaned version of Common Crawl's web crawl corpus.\n\nBased on Common Crawl dataset: \"https://commoncrawl.org\".\n\nThis is the processed version of Google's C4 dataset by AllenAI.\n",
   "citation": "\n@article{2019t5,\n    author = {Colin Raffel and Noam Shazeer and Adam Roberts and Katherine Lee and Sharan Narang and Michael Matena and Yanqi Zhou and Wei Li and Peter J. Liu},\n    title = {Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer},\n    journal = {arXiv e-prints},\n    year = {2019},\n    archivePrefix = {arXiv},\n    eprint = {1910.10683},\n}\n",
+  "license": "odc-by",
   "url": "https://huggingface.co/datasets/c4",
   "version": "0.0.0",
   "distribution": [

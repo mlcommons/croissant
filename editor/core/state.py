@@ -83,9 +83,8 @@ class User:
         )
 
 
-@st.cache_data(ttl=datetime.timedelta(hours=1))
-def get_cached_user():
-    """Caches user in session_state."""
+def get_user():
+    """Get user from session_state."""
     return st.session_state.get(User)
 
 
@@ -102,7 +101,7 @@ class CurrentProject:
 
     @classmethod
     def from_timestamp(cls, timestamp: str) -> CurrentProject | None:
-        user = get_cached_user()
+        user = get_user()
         if user is None and OAUTH_CLIENT_ID:
             return None
         else:
@@ -184,11 +183,18 @@ class Metadata:
     name: str = ""
     description: str | None = None
     citation: str | None = None
+    conforms_to: str | None = None
+    creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
+    data_biases: str | None = None
+    data_collection: str | None = None
+    date_published: datetime.datetime | None = None
     license: str | None = ""
+    personal_sensitive_information: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
+    version: str | None = None
 
     def __bool__(self):
         return self.name != "" and self.url != ""

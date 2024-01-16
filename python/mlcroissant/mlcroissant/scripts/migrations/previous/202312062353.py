@@ -1,19 +1,14 @@
-{
-  "@context": {
+"""Migration: to add the conformsTo field."""
+
+NEW_CONTEXT = {
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
     "conformsTo": "dct:conformsTo",
-    "data": {
-      "@id": "ml:data",
-      "@type": "@json"
-    },
+    "data": {"@id": "ml:data", "@type": "@json"},
     "dataBiases": "ml:dataBiases",
     "dataCollection": "ml:dataCollection",
-    "dataType": {
-      "@id": "ml:dataType",
-      "@type": "@vocab"
-    },
+    "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
     "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
@@ -35,11 +30,12 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
-    "transform": "ml:transform"
-  },
-  "@type": "sc:Dataset",
-  "name": "minimal_example",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "description": "This is a very minimal example, with only the required fields.",
-  "url": "https://example.com/dataset/minimal/about"
+    "transform": "ml:transform",
 }
+
+
+def up(json_ld):
+    """Up migration to set conformsTo to croissant specs 1.0."""
+    json_ld["@context"] = NEW_CONTEXT
+    json_ld["conformsTo"] = "http://mlcommons.org/croissant/1.0"
+    return json_ld

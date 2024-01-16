@@ -3,14 +3,18 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -21,6 +25,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -34,6 +39,7 @@
   },
   "@type": "sc:Dataset",
   "name": "read_binary_file_by_line",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a recipe illustrating how to read files line by line.",
   "url": "https://mlcommons.org",
   "distribution": [
@@ -48,8 +54,8 @@
       "@type": "sc:FileObject",
       "name": "zip",
       "description": "Zip file containing the binary files with the translations.",
-      "encodingFormat": "application/zip",
       "contentUrl": "data/read_binary_file_by_line/files.zip",
+      "encodingFormat": "application/zip",
       "sha256": "49c616fdf402d70a6bc02a1265f2ad410f06395dcec54b8cd8f376f7fdae636b"
     },
     {

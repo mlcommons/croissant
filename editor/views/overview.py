@@ -3,6 +3,7 @@ from typing import Any
 
 import streamlit as st
 
+from core.constants import NAMES_INFO
 from core.state import Metadata
 import mlcroissant as mlc
 from utils import needed_field
@@ -22,9 +23,9 @@ _INFO_TEXT = """Croissant files are composed of three layers:
                 (typically a file or set of files) and the structure of these records,
                 expressed as a set of fields (e.g., the columns of a table).
 
-The next three tabs will guide you through filling those layers. The errors if any will
-be displayed on this page. Once you are ready, you can download the dataset by clicking
-the export button in the upper right corner."""
+The next three tabs will guide you through filling those layers. Any error will be
+displayed on the overview. Once the dataset is finished, you can download the dataset by
+clicking the export button in the upper right corner."""
 
 
 def _relevant_fields(class_or_instance: type):
@@ -47,22 +48,21 @@ def render_overview():
     col1, col2 = st.columns([1, 1], gap="medium")
     with col1:
         key = "metadata-name"
-        name = st.text_input(
+        st.text_input(
             label=needed_field("Name"),
             key=key,
             value=metadata.name,
+            help=f"The name of the dataset. {NAMES_INFO}",
             placeholder="Dataset",
             on_change=handle_metadata_change,
             args=(MetadataEvent.NAME, metadata, key),
         )
-        if not name:
-            st.stop()
         key = "metadata-description"
         st.text_area(
             label="Description",
             key=key,
             value=metadata.description,
-            placeholder="Provide a clear description of the dataset.",
+            placeholder="Provide a description of the dataset.",
             on_change=handle_metadata_change,
             args=(MetadataEvent.DESCRIPTION, metadata, key),
         )
@@ -82,10 +82,17 @@ def render_overview():
             * 100
             / (3 * metadata_weight)
         )
-        col_a.metric("Completion", f"{completion}%")
-        col_b.metric("Number of metadata fields", fields)
-        col_c.metric("Number of resources", len(metadata.distribution))
-        col_d.metric("Number of RecordSets", len(metadata.record_sets))
+        col_a.metric(
+            "Completion",
+            f"{completion}%",
+            help=(
+                "Approximation of the total completion based on the number of fields"
+                " that are filled."
+            ),
+        )
+        col_b.metric("Metadata fields", fields)
+        col_c.metric("Resources", len(metadata.distribution))
+        col_d.metric("RecordSets", len(metadata.record_sets))
     with col2:
         user_started_editing = metadata.record_sets or metadata.distribution
         if user_started_editing:

@@ -9,6 +9,8 @@ from rdflib import term
 ML_COMMONS = rdflib.Namespace("http://mlcommons.org/schema/")
 ML_COMMONS_COLUMN = ML_COMMONS.column
 ML_COMMONS_DATA = ML_COMMONS.data
+ML_COMMONS_DATA_BIASES = ML_COMMONS.dataBiases
+ML_COMMONS_DATA_COLLECTION = ML_COMMONS.dataCollection
 ML_COMMONS_DATA_TYPE = ML_COMMONS.dataType
 ML_COMMONS_DATA_TYPE_BOUNDING_BOX = ML_COMMONS.BoundingBox
 ML_COMMONS_EXTRACT = ML_COMMONS.extract
@@ -22,6 +24,7 @@ ML_COMMONS_IS_ENUMERATION = ML_COMMONS.isEnumeration
 ML_COMMONS_JSON_PATH = ML_COMMONS.jsonPath
 ML_COMMONS_PARENT_FIELD = ML_COMMONS.parentField
 ML_COMMONS_PATH = ML_COMMONS.path
+ML_COMMONS_PERSONAL_SENSITVE_INFORMATION = ML_COMMONS.personalSensitiveInformation
 ML_COMMONS_RECORD_SET = ML_COMMONS.recordSet
 ML_COMMONS_RECORD_SET_TYPE = ML_COMMONS.RecordSet
 ML_COMMONS_REFERENCES = ML_COMMONS.references
@@ -40,11 +43,17 @@ ML_COMMONS_TRANSFORM = ML_COMMONS.transform
 # For "@type" key:
 RDF_TYPE = namespace.RDF.type
 
+# Dublin Core terms standard URIs.
+DCTERMS = "http://purl.org/dc/terms/"
+DCTERMS_CONFORMS_TO = namespace.DCTERMS.conformsTo
+
 # Schema.org standard URIs.
 SCHEMA_ORG_CITATION = namespace.SDO.citation
 SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
 SCHEMA_ORG_CONTENT_SIZE = namespace.SDO.contentSize
 SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
+SCHEMA_ORG_CREATOR = namespace.SDO.creator
+SCHEMA_ORG_DATE_PUBLISHED = namespace.SDO.datePublished
 SCHEMA_ORG_DATASET = namespace.SDO.Dataset
 SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
@@ -79,6 +88,7 @@ TO_CROISSANT = {
     ML_COMMONS_REPLACE: "replace",
     ML_COMMONS_SEPARATOR: "separator",
     ML_COMMONS_SOURCE: "source",
+    DCTERMS_CONFORMS_TO: "conforms_to",
     SCHEMA_ORG_CITATION: "citation",
     SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",

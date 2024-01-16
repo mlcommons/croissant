@@ -8,6 +8,17 @@ from core.past_projects import save_current_project
 from core.state import Metadata
 import mlcroissant as mlc
 
+_JSON_LD_INFO = """You can download JSON-LD Croissant files from major dataset
+providers:
+
+- [Kaggle](https://www.kaggle.com/datasets) embeds Croissant JSON-LD directly in their
+HTML.
+- [OpenML](https://www.openml.org/search?type=data) offers a 🥐 button on all of their
+datasets.
+- [Hugging Face](https://huggingface.co/) offers an
+[API endpoint](https://datasets-server.huggingface.co/croissant?dataset=${dataset_id) to
+build a Croissant JSON-LD."""
+
 
 def _on_file_upload(key):
     """Triggers when a new file gets uploaded to load the Croissant metadata."""
@@ -29,6 +40,7 @@ def _on_file_upload(key):
 
 def render_load():
     key = "json-ld-file-upload"
+    st.info(_JSON_LD_INFO)
     st.file_uploader(
-        "Select a JSON-LD", type="json", key=key, on_change=_on_file_upload, args=(key,)
+        "Drop a JSON-LD", type="json", key=key, on_change=_on_file_upload, args=(key,)
     )

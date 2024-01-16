@@ -12,6 +12,15 @@ from events.fields import TransformType
 import mlcroissant as mlc
 from utils import needed_field
 
+_JSON_PATH_DOCUMENTATION = (
+    "The JSON path if the data source is a JSON (see"
+    " [documentation](https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html))."
+)
+_EXTRACT_DOCUMENTATION = (
+    "The extraction method to get the value of the field (column in a CSV, etc)."
+)
+_COLUMN_NAME_DOCUMENTATION = "The name of the column if the data source is a CSV."
+
 
 class SourceType:
     """The type of the source (distribution or field)."""
@@ -105,10 +114,8 @@ def _handle_remove_reference(field):
 
 
 def render_source(
-    record_set_key: int,
     record_set: RecordSet,
     field: Field,
-    field_key: int,
     possible_sources: list[str],
 ):
     """Renders the form for the source."""
@@ -123,10 +130,13 @@ def render_source(
         index = None
     key = f"{prefix}-source"
     col1.selectbox(
-        needed_field("Source"),
+        needed_field("Data source"),
         index=index,
         options=options,
         key=key,
+        help=(
+            "Data sources can be other resources (FileObject, FileSet) or other fields."
+        ),
         on_change=handle_field_change,
         args=(FieldEvent.SOURCE, field, key),
     )
@@ -135,6 +145,7 @@ def render_source(
             needed_field("Extract"),
             index=_get_extract_index(source),
             key=f"{prefix}-extract",
+            help=_EXTRACT_DOCUMENTATION,
             options=EXTRACT_TYPES,
             on_change=handle_field_change,
             args=(FieldEvent.SOURCE_EXTRACT, field, key),
@@ -145,6 +156,7 @@ def render_source(
                 needed_field("Column name"),
                 value=source.extract.column,
                 key=key,
+                help=_COLUMN_NAME_DOCUMENTATION,
                 on_change=handle_field_change,
                 args=(FieldEvent.SOURCE_EXTRACT_COLUMN, field, key),
             )
@@ -154,6 +166,7 @@ def render_source(
                 needed_field("JSON path"),
                 value=source.extract.json_path,
                 key=key,
+                help=_JSON_PATH_DOCUMENTATION,
                 on_change=handle_field_change,
                 args=(FieldEvent.SOURCE_EXTRACT_JSON_PATH, field, key),
             )
@@ -170,18 +183,23 @@ def render_source(
                 key=key,
                 options=TRANSFORM_TYPES,
                 on_change=handle_field_change,
+                help="One or more transformations to apply after extracting the field.",
                 args=(FieldEvent.TRANSFORM, field, key),
                 kwargs={"number": number},
             )
             if selected == TransformType.FORMAT:
                 key = f"{prefix}-{number}-transform-format"
                 col3.text_input(
-                    needed_field("Format"),
+                    needed_field("Format a date"),
                     value=transform.format,
                     key=key,
                     on_change=handle_field_change,
+                    help=(
+                        "For dates, use [`Python format"
+                        " codes`](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes)."
+                    ),
                     args=(selected, field, key),
-                    kwargs={"number": number, "type": "format"},
+                    kwargs={"number": number},
                 )
             elif selected == TransformType.JSON_PATH:
                 key = f"{prefix}-{number}-jsonpath"
@@ -190,8 +208,9 @@ def render_source(
                     value=transform.json_path,
                     key=key,
                     on_change=handle_field_change,
+                    help=_JSON_PATH_DOCUMENTATION,
                     args=(selected, field, key),
-                    kwargs={"number": number, "type": "format"},
+                    kwargs={"number": number},
                 )
             elif selected == TransformType.REGEX:
                 key = f"{prefix}-{number}-regex"
@@ -200,8 +219,14 @@ def render_source(
                     value=transform.regex,
                     key=key,
                     on_change=handle_field_change,
+                    help=(
+                        "A regular expression following [`re` Python"
+                        " convention](https://docs.python.org/3/library/re.html#regular-expression-syntax)"
+                        " with one capturing group. The result of the operation will be"
+                        " the last captured group."
+                    ),
                     args=(selected, field, key),
-                    kwargs={"number": number, "type": "format"},
+                    kwargs={"number": number},
                 )
             elif selected == TransformType.REPLACE:
                 key = f"{prefix}-{number}-replace"
@@ -210,8 +235,13 @@ def render_source(
                     value=transform.replace,
                     key=key,
                     on_change=handle_field_change,
+                    help=(
+                        "A replace pattern separated by a `/`, i.e."
+                        " `string_to_replace/string_to_substitute` in order to replace"
+                        " `string_to_replace` by `string_to_substitute`."
+                    ),
                     args=(selected, field, key),
-                    kwargs={"number": number, "type": "format"},
+                    kwargs={"number": number},
                 )
             elif selected == TransformType.SEPARATOR:
                 key = f"{prefix}-{number}-separator"
@@ -220,8 +250,9 @@ def render_source(
                     value=transform.separator,
                     key=key,
                     on_change=handle_field_change,
+                    help="A separator to split strings on, e.g. `|` to split `a|b|c`.",
                     args=(selected, field, key),
-                    kwargs={"number": number, "type": "format"},
+                    kwargs={"number": number},
                 )
 
             def _handle_remove_transform(field, number):
@@ -230,6 +261,7 @@ def render_source(
             col4.button(
                 "✖️",
                 key=f"{prefix}-{number}-remove-transform",
+                help="Remove the transformation.",
                 on_click=_handle_remove_transform,
                 args=(field, number),
             )
@@ -243,16 +275,15 @@ def render_source(
     col1.button(
         "Add transform on data",
         key=f"{prefix}-close-fields",
+        help="Add a transformation.",
         on_click=_handle_add_transform,
         args=(field,),
     )
 
 
 def render_references(
-    record_set_key: int,
     record_set: RecordSet,
     field: Field,
-    field_key: int,
     possible_sources: list[str],
 ):
     """Renders the form for references."""
@@ -286,6 +317,7 @@ def render_references(
                 index=_get_extract_index(references),
                 key=key,
                 options=EXTRACT_TYPES,
+                help=_EXTRACT_DOCUMENTATION,
                 on_change=handle_field_change,
                 args=(FieldEvent.REFERENCE_EXTRACT, field, key),
             )
@@ -295,6 +327,7 @@ def render_references(
                     needed_field("Column name"),
                     value=references.extract.column,
                     key=key,
+                    help=_COLUMN_NAME_DOCUMENTATION,
                     on_change=handle_field_change,
                     args=(FieldEvent.REFERENCE_EXTRACT_COLUMN, field, key),
                 )
@@ -304,12 +337,14 @@ def render_references(
                     needed_field("JSON path"),
                     value=references.extract.json_path,
                     key=key,
+                    help=_JSON_PATH_DOCUMENTATION,
                     on_change=handle_field_change,
                     args=(FieldEvent.REFERENCE_EXTRACT_JSON_PATH, field, key),
                 )
         col4.button(
             "✖️",
             key=f"{key}-remove-reference",
+            help="Remove the join.",
             on_click=_handle_remove_reference,
             args=(field,),
         )

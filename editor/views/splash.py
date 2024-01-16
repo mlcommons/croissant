@@ -13,6 +13,8 @@ import mlcroissant as mlc
 from views.load import render_load
 from views.previous_files import render_previous_files
 
+_HUGGING_FACE_URL = "https://huggingface.co/datasets/"
+
 _DATASETS = {
     "Titanic": ["data/embarkation_ports.csv", "data/genders.csv"],
     "FLORES-200": [],
@@ -23,8 +25,23 @@ _DATASETS = {
     "Bigcode-The-Stack": [],
 }
 
+_INFO = """[Croissant](https://mlcommons.org/croissant) 🥐 is a high-level format for
+machine learning datasets built
+on [schema.org](https://schema.org/) and its Dataset vocabulary. A croissant
+configuration file combines metadata, resource file descriptions, data structure, and
+default ML semantics of dataset. You can familiarize yourself with the editor by
+exploring the provided examples.
+
+The editor supports creating a new configuration from scratch, as well as uploading
+an existing Croissant JSON-MD file. Finally, you can also select any of your
+past projects from the list.
+
+You can change the project you are currently editing at any time by clicking
+the Home button and then choosing one of the options on this page."""
+
 
 def render_splash():
+    st.info(_INFO, icon="💡")
     if OAUTH_CLIENT_ID:
         st.info(
             "**Disclaimer**: Do not put sensitive information or datasets here. The"
@@ -34,9 +51,7 @@ def render_splash():
         )
     col1, col2 = st.columns([1, 1], gap="large")
     with col1:
-        with st.expander("**Load an existing Croissant JSON-LD file**", expanded=True):
-            render_load()
-        with st.expander("**Create from scratch**", expanded=True):
+        with st.expander("**Create a new dataset**", expanded=True):
 
             def create_new_croissant():
                 st.session_state[Metadata] = Metadata()
@@ -47,7 +62,7 @@ def render_splash():
                 on_click=create_new_croissant,
                 type="primary",
             )
-        with st.expander("**Try out an example!**", expanded=True):
+        with st.expander("**Load an existing dataset**", expanded=True):
 
             def create_example(dataset: str):
                 base = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/{dataset.lower()}"
@@ -72,7 +87,7 @@ def render_splash():
                     )
 
             dataset = st.selectbox(
-                label="Dataset",
+                label="Canonical dataset",
                 options=_DATASETS.keys(),
             )
             st.button(
@@ -81,6 +96,7 @@ def render_splash():
                 type="primary",
                 args=(dataset,),
             )
+            render_load()
     with col2:
-        with st.expander("**Past projects**", expanded=True):
+        with st.expander("**Recent projects**", expanded=True):
             render_previous_files()
