@@ -19,7 +19,6 @@ authors = [
 # pip dependencies of the project
 # Installed locally with `pip install -e .`
 dependencies = [
-  "black[jupyter]",
   "absl-py",
   "etils[epath]",
   "jsonpath-rw",
