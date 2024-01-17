@@ -32,7 +32,7 @@ jobs:
         verify-metadata: true
         skip-existing: true
         packages-dir: python/mlcroissant/dist
-        repository-url: https://test.pypi.org/legacy/
+        repository-url: https://upload.pypi.org/legacy/
         verbose: true
       env:
         LOGLEVEL: DEBUG
