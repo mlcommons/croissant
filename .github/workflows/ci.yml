@@ -131,7 +131,8 @@ jobs:
           pytype \
           rdflib \
           requests \
-          tqdm
+          tqdm \
+          torchdata
 
     - name: PyType
       run: make pytype
@@ -165,7 +166,8 @@ jobs:
             pytype \
             rdflib \
             requests \
-            tqdm
+            tqdm \
+            torchdata
 
     - name: MyPy
       run: make mypy
