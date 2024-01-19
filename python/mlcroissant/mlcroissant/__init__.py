@@ -1,5 +1,6 @@
 """Defines the public interface to the `mlcroissant` package."""
 
+from mlcroissant._src import torch
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.constants import EncodingFormat
@@ -38,6 +39,7 @@ __all__ = [
     "Records",
     "RecordSet",
     "Source",
+    "torch",
     "Transform",
     "ValidationError",
 ]

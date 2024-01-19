@@ -83,8 +83,13 @@ class OptionalDependencies(object):
 
     @cached_class_property
     def PIL_Image(cls) -> types.ModuleType:  # pylint: disable=invalid-name
-        """Cached git module."""
+        """Cached PIL module."""
         return _try_import("PIL.Image", package_name="Pillow")
+
+    @cached_class_property
+    def torchdata_datapipes(cls) -> types.ModuleType:
+        """Cached torchdata module."""
+        return _try_import("torchdata.datapipes", package_name="torchdata")
 
 
 deps = OptionalDependencies
