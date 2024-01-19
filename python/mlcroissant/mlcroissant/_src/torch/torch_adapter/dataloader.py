@@ -7,13 +7,15 @@ datasets.
 import enum
 from typing import Any, Dict, Optional
 
-try:
-    import torchdata.datapipes as dp
-except ImportError:
-    dp = None
-    INSTALL_MESSAGE = "torchdata is not installed and is a dependency."
-
 import mlcroissant as mlc
+from mlcroissant._src.core.optional import deps
+
+try:
+    dp = deps.torchdata_datapipes
+except ModuleNotFoundError:
+    dp = None
+
+INSTALL_MESSAGE = "torchdata is not installed and is a dependency."
 
 
 class LoaderSpecificationDataType(enum.Enum):
@@ -50,35 +52,6 @@ def apply_data_type_transformation(
     return val
 
 
-if dp is None:
-    # Failed to import dependencies. Stub out affected methods.
-
-    def _as_datapipe_helper(
-        factory: "LoaderFactory",
-        record_set: str,
-        specification: Optional[LoaderSpecificationTypes],
-    ) -> Any:
-        raise NotImplementedError(INSTALL_MESSAGE)
-
-else:
-    IterDataPipe = dp.iter.IterDataPipe
-    IterableWrapper = dp.iter.IterableWrapper
-
-    def _as_datapipe_helper(
-        factory: "LoaderFactory",
-        record_set: str,
-        specification: Optional[LoaderSpecificationTypes],
-    ) -> Any:
-        dataset = mlc.Dataset(file=factory.file)
-        records = dataset.records(record_set=record_set)
-        datapipe = IterableWrapper(records)
-        if specification:
-            row_processor = factory._get_row_processor(specification)
-            datapipe = datapipe.map(row_processor)
-
-        return datapipe
-
-
 class LoaderFactory:
     """Used to create loaders and get metadata."""
 
@@ -102,6 +75,15 @@ class LoaderFactory:
         specification: Optional[LoaderSpecificationTypes] = None,
     ) -> Any:
         """Load the record set as a DataPipe."""
-        datapipe = _as_datapipe_helper(self, record_set, specification)
-        # TODO: cast to IterDataPipe
+        if dp is None:
+            raise NotImplementedError(INSTALL_MESSAGE)
+
+        dataset = mlc.Dataset(file=self.file)
+        records = dataset.records(record_set=record_set)
+        datapipe = dp.iter.IterableWrapper(records)
+        if specification:
+            row_processor = self._get_row_processor(specification)
+            datapipe = datapipe.map(row_processor)
+
+        # TODO: Mark the return type as dp.iter.IterDataPipe
         return datapipe
