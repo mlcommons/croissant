@@ -80,7 +80,9 @@ class Read(Operation):
     folder: epath.Path
     fields: tuple[Field, ...]
 
-    def _read_file_content(self, encoding_format: str, file: Path) -> pd.DataFrame:
+    def _read_file_content(
+        self, encoding_format: str, file: Path, record_set: str | None = None
+    ) -> pd.DataFrame:
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
@@ -94,12 +96,16 @@ class Read(Operation):
             elif encoding_format == EncodingFormat.JSON:
                 json_content = json.load(file)
                 if reading_method == ReadingMethod.JSON:
-                    return parse_json_content(json_content, self.fields)
+                    return parse_json_content(
+                        json_content, self.fields, record_set=record_set
+                    )
                 else:
                     # Raw files are returned as a one-line pd.DataFrame.
-                    return pd.DataFrame({
-                        FileProperty.content: [json_content],
-                    })
+                    return pd.DataFrame(
+                        {
+                            FileProperty.content: [json_content],
+                        }
+                    )
             elif encoding_format == EncodingFormat.JSON_LINES:
                 return pd.read_json(file, lines=True)
             elif encoding_format == EncodingFormat.PARQUET:
@@ -117,15 +123,19 @@ class Read(Operation):
                         filepath, header=None, names=[FileProperty.lines]
                     )
                 else:
-                    return pd.DataFrame({
-                        FileProperty.content: [file.read()],
-                    })
+                    return pd.DataFrame(
+                        {
+                            FileProperty.content: [file.read()],
+                        }
+                    )
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
                 )
 
-    def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
+    def __call__(
+        self, files: list[Path] | Path, record_set: str | None = None
+    ) -> pd.DataFrame:
         """See class' docstring."""
         if isinstance(files, Path):
             files = [files]
@@ -154,7 +164,9 @@ class Read(Operation):
                     " either an invalid URL or an invalid path."
                 )
             assert self.node.encoding_format, "Encoding format is not specified."
-            file_content = self._read_file_content(self.node.encoding_format, file)
+            file_content = self._read_file_content(
+                self.node.encoding_format, file, record_set=record_set
+            )
             if _should_append_line_numbers(self.fields):
                 file_content[FileProperty.lineNumbers] = range(len(file_content))
             file_content[FileProperty.filepath] = file.filepath

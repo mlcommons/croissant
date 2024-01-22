@@ -59,7 +59,10 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                 if previous_operation in results
             ]
             logging.info("Executing %s", operation)
-            results[operation] = operation(*previous_results)
+            if isinstance(operation, Read):
+                results[operation] = operation(*previous_results, record_set=record_set)  # type: ignore  # Force mypy types.
+            else:
+                results[operation] = operation(*previous_results)
             if isinstance(operation, ReadFields):
                 if operation.node.name != record_set:
                     # The RecordSet will be used later in the graph by another RecordSet

@@ -25,6 +25,13 @@ class Operations(nx.DiGraph):
         """
         leaves = [operation for operation in self.nodes if self.is_leaf(operation)]
 
+        # Multiple edges (e.g. to ReadFields operations) could generate from a Read
+        # operation.
+        other_candidates = [
+            operation for operation in self.nodes if str(operation).startswith("Read")
+        ]
+        candidates = leaves + other_candidates
+
         def is_ancestor(node1: Node, node2: Node) -> bool:
             # node1 is predecessor of node2 iff node2 is in the descendants of node1.
             ancestors = nx.ancestors(node2.graph, node2)
@@ -35,15 +42,15 @@ class Operations(nx.DiGraph):
 
         entry = self.entry_operations()[0]
         operations: set[Operation] = set()
-        for leaf in leaves:
-            if is_ancestor(leaf.node, node):
-                operations.add(leaf)
+        for candidate in candidates:
+            if is_ancestor(candidate.node, node):
+                operations.add(candidate)
             elif not only_leaf:
                 # We explore upstream operations until we find the first operation that
                 # matches the node.
                 try:
                     for operation in reversed(
-                        list(nx.shortest_path(self, entry, leaf))
+                        list(nx.shortest_path(self, entry, candidate))
                     ):
                         if is_ancestor(operation.node, node):
                             operations.add(operation)
@@ -83,14 +90,13 @@ class Operation(abc.ABC):
     """Generic base class to define an operation.
 
     `@dataclass(frozen=True)` allows having a hashable operation for NetworkX to use
-    operations as nodes of  graphs.
+    operations as nodes of graphs.
 
     `@dataclass(repr=False)` allows having a readable stringified `str(operation)`.
 
     Args:
+        operations: The current operations graph.
         node: The node attached to the operation for the context.
-        output: The result of the operation when it is executed (as returned by
-            __call__).
     """
 
     operations: Operations
