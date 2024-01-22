@@ -286,6 +286,48 @@
           }
         }
       ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "images_metadata",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.images[*].id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_width",
+          "description": "The width of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.images[*].width"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_heigth",
+          "description": "The heigth of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.images[*].height"
+            }
+          }
+        }
+      ]
     }
   ]
 }
