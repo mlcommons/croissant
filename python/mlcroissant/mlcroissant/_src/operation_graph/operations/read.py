@@ -123,11 +123,9 @@ class Read(Operation):
                         filepath, header=None, names=[FileProperty.lines]
                     )
                 else:
-                    return pd.DataFrame(
-                        {
+                    return pd.DataFrame({
                             FileProperty.content: [file.read()],
-                        }
-                    )
+                        })
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
