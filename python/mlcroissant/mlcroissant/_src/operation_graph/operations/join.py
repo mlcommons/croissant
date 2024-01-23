@@ -5,9 +5,9 @@ import dataclasses
 import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.operation_graph.operations.field import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 from mlcroissant._src.structure_graph.nodes.source import Source
 

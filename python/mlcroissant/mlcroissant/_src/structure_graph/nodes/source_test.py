@@ -1,13 +1,9 @@
 """source_test module."""
 
-import pandas as pd
 import pytest
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
@@ -181,48 +177,6 @@ def test_declaring_wrong_file_property():
         " `fullpath`, `filepath` and `content`. Got: foo"
         in issues.errors
     )
-
-
-@pytest.mark.parametrize(
-    ["value", "source", "data_type", "expected_value"],
-    [
-        # Capturing group
-        [
-            "train1234",
-            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
-            DataType.TEXT,
-            "train",
-        ],
-        # Non working capturing group
-        [
-            "foo1234",
-            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
-            DataType.TEXT,
-            "foo1234",
-        ],
-        [
-            {"one": {"two": "expected_value"}, "three": "non_expected_value"},
-            Source(transforms=[Transform(json_path="one.two")]),
-            DataType.TEXT,
-            "expected_value",
-        ],
-        [
-            pd.Timestamp("2024-12-10 12:00:00"),
-            Source(transforms=[Transform(format="%Y-%m-%d")]),
-            DataType.DATE,
-            "2024-12-10",
-        ],
-        [
-            "2024-12-10 12:00:00",
-            Source(transforms=[Transform(format="%Y-%m-%d")]),
-            DataType.DATE,
-            "2024-12-10",
-        ],
-    ],
-)
-def test_apply_transforms_fn(value, source, data_type, expected_value):
-    field = Field(name="test", data_types=data_type, source=source)
-    assert apply_transforms_fn(value, field) == expected_value
 
 
 @pytest.mark.parametrize(
