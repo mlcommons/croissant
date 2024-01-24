@@ -7,8 +7,8 @@ datasets.
 import enum
 from typing import Any, Dict, Optional
 
-import mlcroissant as mlc
 from mlcroissant._src.core.optional import deps
+from mlcroissant._src.datasets import Dataset
 
 try:
     dp = deps.torchdata_datapipes
@@ -78,7 +78,7 @@ class LoaderFactory:
         if dp is None:
             raise NotImplementedError(INSTALL_MESSAGE)
 
-        dataset = mlc.Dataset(file=self.file)
+        dataset = Dataset(file=self.file)
         records = dataset.records(record_set=record_set)
         datapipe = dp.iter.IterableWrapper(records)
         if specification:
