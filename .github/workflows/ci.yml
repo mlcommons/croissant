@@ -205,6 +205,8 @@ jobs:
     defaults:
       run:
         working-directory: ./python/mlcroissant
+    matrix:
+      versions: ["0.8"]
     steps:
     - uses: actions/checkout@v4
 
@@ -217,10 +219,10 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files - Titanic
-      run: mlcroissant load --file ../../datasets/titanic/metadata.json --record_set passengers
+      run: mlcroissant load --file ../../datasets/${{ matrix.version }}/titanic/metadata.json --record_set passengers
 
     - name: Generate JSON-LD files - PASS
-      run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+      run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/${{ matrix.version }}/pass-mini/metadata.json --record_set images
 
   editor-python-test:
     name: Editor Python Test
