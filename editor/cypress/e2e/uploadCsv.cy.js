@@ -62,6 +62,7 @@ describe('Editor loads a local CSV as a resource', () => {
     cy.get('[data-testid="stExpander"]').last().within(() => {
       cy.get('input[aria-label="Description"]').last().type('This is a nice custom description!{enter}')
     })
+    cy.wait(2000)
     cy.get('[data-testid="glide-cell-2-1"]').contains("This is a nice custom description!")
   })
 })

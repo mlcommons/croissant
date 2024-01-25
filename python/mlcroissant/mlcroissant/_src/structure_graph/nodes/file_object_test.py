@@ -54,7 +54,9 @@ def test_from_jsonld(encoding):
             "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
         ),
     }
-    assert FileObject.from_jsonld(issues, context, folder, rdf, jsonld) == FileObject(
+    mapping = {"file1": epath.Path("~/Downloads/file1.csv")}
+    file_object = FileObject.from_jsonld(issues, context, folder, rdf, jsonld, mapping)
+    assert file_object == FileObject(
         issues=issues,
         context=context,
         folder=folder,
@@ -63,5 +65,6 @@ def test_from_jsonld(encoding):
         content_url="https://mlcommons.org",
         encoding_format=encoding,
         sha256="48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354",
+        mapping=mapping,
     )
     assert not issues.errors
