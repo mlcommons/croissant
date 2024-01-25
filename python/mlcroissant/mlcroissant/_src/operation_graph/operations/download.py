@@ -45,6 +45,8 @@ def get_hash(url: str) -> str:
 
 def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
+    if node.name in node.mapping:
+        return node.mapping[node.name]
     url = node.content_url
     if url and not is_url(url) and not node.contained_in:
         assert url.startswith("data/"), (

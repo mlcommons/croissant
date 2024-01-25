@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Mapping
 
 from etils import epath
 
@@ -30,6 +31,7 @@ class FileObject(Node):
     name: str = ""
     sha256: str | None = None
     source: Source | None = None
+    mapping: Mapping[str, epath.Path] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -66,6 +68,7 @@ class FileObject(Node):
         folder: epath.Path,
         rdf: Rdf,
         file_object: Json,
+        mapping: Mapping[str, epath.Path],
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
         check_expected_type(issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
@@ -86,6 +89,7 @@ class FileObject(Node):
             contained_in=contained_in,
             description=description,
             encoding_format=encoding_format,
+            mapping=mapping,
             md5=file_object.get(constants.SCHEMA_ORG_MD5),
             name=name,
             rdf=rdf,

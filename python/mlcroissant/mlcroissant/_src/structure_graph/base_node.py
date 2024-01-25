@@ -198,11 +198,14 @@ class Node(abc.ABC):
                 "fields",
                 "graph",
                 "issues",
+                "mapping",
                 "parents",
                 "rdf",
                 "record_sets",
                 "sub_fields",
             ):
+                # If the code failed here, you probably added an unhashable property
+                # that should appear in the allow list above.
                 args.append(_make_hashable(getattr(self, field.name)))
         return hash(tuple(args))
 

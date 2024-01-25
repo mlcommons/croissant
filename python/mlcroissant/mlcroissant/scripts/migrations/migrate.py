@@ -80,7 +80,9 @@ def get_migration_fn(migration: str | None):
 
 def migrate_dataset(json_ld):
     """Migrates a regular Croissant file using mlcroissant Python API."""
-    metadata = mlc.Metadata.from_json(issues=Issues(), json_=json_ld, folder=None)
+    metadata = mlc.Metadata.from_json(
+        issues=Issues(), json_=json_ld, folder=None, mapping={}
+    )
     return metadata.to_json()
 
 
