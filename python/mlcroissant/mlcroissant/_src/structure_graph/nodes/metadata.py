@@ -5,7 +5,7 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import itertools
-from typing import Any
+from typing import Any, Mapping
 
 from etils import epath
 
@@ -222,19 +222,27 @@ class Metadata(Node):
             field.data_type
 
     @classmethod
-    def from_file(cls, issues: Issues, file: epath.PathLike) -> Metadata:
+    def from_file(
+        cls, issues: Issues, file: epath.PathLike, mapping: Mapping[str, epath.Path]
+    ) -> Metadata:
         """Creates the Metadata from a Croissant file."""
         folder, json_ = from_file_to_json(file)
-        return cls.from_json(issues=issues, json_=json_, folder=folder)
+        return cls.from_json(issues=issues, json_=json_, folder=folder, mapping=mapping)
 
     @classmethod
     def from_json(
-        cls, issues: Issues, json_: Json, folder: epath.Path | None
+        cls,
+        issues: Issues,
+        json_: Json,
+        folder: epath.Path | None,
+        mapping: Mapping[str, epath.Path],
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
         rdf = Rdf.from_json(json_)
         metadata = expand_jsonld(json_)
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
+        return cls.from_jsonld(
+            issues=issues, folder=folder, metadata=metadata, mapping=mapping, rdf=rdf
+        )
 
     @classmethod
     def from_jsonld(
@@ -242,9 +250,12 @@ class Metadata(Node):
         issues: Issues,
         folder: epath.Path | None,
         metadata: Json,
+        mapping: Mapping[str, epath.Path] | None = None,
         rdf: Rdf | None = None,
     ) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
+        if mapping is None:
+            mapping = {}
         if rdf is None:
             rdf = Rdf()
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
@@ -257,7 +268,9 @@ class Metadata(Node):
             distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)
+                    FileObject.from_jsonld(
+                        issues, context, folder, rdf, set_or_object, mapping=mapping
+                    )
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(

@@ -1,12 +1,15 @@
 """download_test module."""
 
 import hashlib
+import os
 
+from etils import epath
 import pytest
 
 from mlcroissant._src.operation_graph.operations.download import _get_hash_algorithm
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
+from mlcroissant._src.operation_graph.operations.download import get_download_filepath
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.tests.nodes import empty_file_object
@@ -91,3 +94,20 @@ def test_get_hash_obj_sha256():
     hash_algorithm = _get_hash_algorithm(node)
 
     assert isinstance(hash_algorithm, type(hashlib.sha256()))
+
+
+def test_get_download_filepath():
+    # With mapping
+    node = FileObject(
+        name="foo",
+        content_url="http://foo",
+        sha256="12345",
+        mapping={"foo": epath.Path("/bar/foo")},
+    )
+    assert get_download_filepath(node) == epath.Path("/bar/foo")
+
+    # Without mapping
+    node = FileObject(name="foo", content_url="http://foo", sha256="12345")
+    assert os.fspath(get_download_filepath(node)).endswith(
+        "download/croissant-0343a8f6b328d44bfe5b69437797bebc36c59c67ac6527fe1f14684142074fff"
+    )
