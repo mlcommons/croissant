@@ -7,8 +7,9 @@ import pytest
 
 from mlcroissant._src import datasets
 from mlcroissant._src.core.issues import ValidationError
-from mlcroissant._src.tests import parametrize_version
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.tests.records import record_to_python
+from mlcroissant._src.tests.versions import parametrize_version
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
@@ -137,6 +138,23 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
 )
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
+
+
+@pytest.mark.nonhermetic
+def test_load_from_huggingface():
+    url = "https://datasets-server.huggingface.co/croissant?dataset=mnist&full=true"
+    dataset = datasets.Dataset(url)
+    has_one_record = False
+    for record in dataset.records(record_set="record_set_mnist"):
+        assert record["label"] == 7
+        assert isinstance(record["image"], deps.PIL_Image.Image)
+        has_one_record = True
+        break
+    assert has_one_record, (
+        "mlc.Dataset.records() didn't yield any record. Warning: this test is"
+        " non-hermetic and makes an API call to Hugging Face, so it's prone to network"
+        " failure."
+    )
 
 
 @parametrize_version()
