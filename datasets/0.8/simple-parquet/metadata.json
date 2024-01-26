@@ -3,7 +3,6 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
-    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -39,7 +38,6 @@
   },
   "@type": "sc:Dataset",
   "name": "simple-parquet",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Example to read Parquet files.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://mlcommons.org",

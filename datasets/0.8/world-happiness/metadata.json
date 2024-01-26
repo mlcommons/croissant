@@ -3,7 +3,6 @@
     "@language": "en",
     "@vocab": "https://schema.org/",
     "column": "ml:column",
-    "conformsTo": "dct:conformsTo",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -39,7 +38,6 @@
   },
   "@type": "sc:Dataset",
   "name": "World-Happiness-Report",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Happiness scored according to economic production, social support, etc.",
   "citation": "None",
   "license": "cc0-1.0",
