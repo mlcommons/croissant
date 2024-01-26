@@ -1,0 +1,179 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "Mini-PASS",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "description": "Smaller downloadable version of PASS to be used in unit tests.",
+  "citation": "None",
+  "license": "None",
+  "url": "None",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "metadata",
+      "contentUrl": "data/pass_metadata.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "foo"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "pass0",
+      "contentUrl": "data/PASS.0.tar",
+      "encodingFormat": "application/x-tar",
+      "sha256": "bar"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "pass1",
+      "contentUrl": "data/PASS.1.tar",
+      "encodingFormat": "application/x-tar",
+      "sha256": "bar"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "image-files",
+      "containedIn": [
+        "pass0",
+        "pass1"
+      ],
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "key": "hash",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "hash",
+          "description": "The hash of the image, as computed from YFCC-100M.",
+          "dataType": "sc:Text",
+          "references": {
+            "distribution": "metadata",
+            "extract": {
+              "column": "hash"
+            }
+          },
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "([^\\/]*)\\.jpg"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "creator_uname",
+          "description": "Unique name of photo creator.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "metadata",
+            "extract": {
+              "column": "unickname"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "gps_coordinates",
+          "description": "GPS coordinates where the image was taken.",
+          "dataType": "sc:GeoCoordinates",
+          "subField": [
+            {
+              "@type": "ml:Field",
+              "name": "latitude",
+              "dataType": "sc:Float",
+              "source": {
+                "distribution": "metadata",
+                "extract": {
+                  "column": "latitude"
+                }
+              }
+            },
+            {
+              "@type": "ml:Field",
+              "name": "longitude",
+              "dataType": "sc:Float",
+              "source": {
+                "distribution": "metadata",
+                "extract": {
+                  "column": "longitude"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "ml:Field",
+          "name": "date_taken",
+          "description": "The date the photo was taken.",
+          "dataType": "sc:Date",
+          "source": {
+            "distribution": "metadata",
+            "extract": {
+              "column": "datetaken"
+            },
+            "transform": {
+              "format": "%Y-%m-%d %H:%M:%S.%f"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

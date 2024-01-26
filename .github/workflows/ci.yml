@@ -206,7 +206,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     matrix:
-      versions: ["0.8"]
+      versions: ["0.8", "1.0"]
     steps:
     - uses: actions/checkout@v4
 
