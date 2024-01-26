@@ -3,14 +3,17 @@
 from etils import epath
 import pytest
 
+from mlcroissant._src.tests import parametrize_version
 from mlcroissant.scripts import load as load_lib
 
 
-def test_should_raise_when_no_record_set():
+@parametrize_version()
+def test_should_raise_when_no_record_set(version):
     dataset_name = "huggingface-mnist"
     file = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
+        / version
         / dataset_name
         / "metadata.json"
     )
@@ -20,10 +23,12 @@ def test_should_raise_when_no_record_set():
         load_lib.load(file=file, record_set=None)
 
 
-def test_should_raise_when_invalid_mapping():
+@parametrize_version()
+def test_should_raise_when_invalid_mapping(version):
     file = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
+        / version
         / "huggingface-mnist"
         / "metadata.json"
     )

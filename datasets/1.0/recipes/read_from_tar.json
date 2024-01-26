@@ -1,0 +1,186 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "read_from_tar",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "description": "Example dataset to read several FileSets from a tar.gz and join them.",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "tar-gz",
+      "description": "*.tar.gz containing two folders: training and validation. Each folder contains a list of images (img1.jpg, img2.jpg) with their masks (mask1.jpg, mask2.jpg).",
+      "contentUrl": "data/read_from_tar.tar.gz",
+      "encodingFormat": "application/x-tar",
+      "sha256": "42c1b0638ea739f90254d58f97a2b3f6943de0e60ed0a0f86012a7456e2f555f"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "source-images",
+      "containedIn": "tar-gz",
+      "encodingFormat": "image/jpeg",
+      "includes": "*/img*.jpg"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "source-annotations",
+      "containedIn": "tar-gz",
+      "encodingFormat": "image/jpeg",
+      "includes": "*/mask*.jpg"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "description": "The images.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "source-images",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^img(\\d).jpg$"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "source-images",
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "source-images",
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(training|validation)\\/.*\\.jpg$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "annotations",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "dataType": "sc:Integer",
+          "source": {
+            "field": "source-annotations",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^mask(\\d).jpg$"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "annotation",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "source-annotations",
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "images_with_annotations",
+      "description": "The images with the mask annotations.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "source": {
+            "field": "images/split"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "references": {
+            "field": "annotations/id"
+          },
+          "source": {
+            "field": "images/id"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image",
+          "source": {
+            "field": "images/image"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "annotation",
+          "source": {
+            "field": "annotations/annotation"
+          }
+        }
+      ]
+    }
+  ]
+}

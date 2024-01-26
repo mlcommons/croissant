@@ -1,0 +1,8 @@
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "training", "id": 1, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "training", "id": 1, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "training", "id": 2, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "training", "id": 2, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "validation", "id": 1, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "validation", "id": 1, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "validation", "id": 2, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
+{"image": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>", "split": "validation", "id": 2, "annotation": "<PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at <MEMORY_ADDRESS>>"}
