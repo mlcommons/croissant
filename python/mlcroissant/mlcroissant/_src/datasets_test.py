@@ -7,6 +7,7 @@ import pytest
 
 from mlcroissant._src import datasets
 from mlcroissant._src.core.issues import ValidationError
+from mlcroissant._src.tests import parametrize_version
 from mlcroissant._src.tests.records import record_to_python
 
 
@@ -47,7 +48,9 @@ def test_static_analysis(folder):
     assert str(error_info.value) == get_error_msg(base_path / folder)
 
 
-def load_records_and_test_equality(dataset_name, record_set_name, num_records):
+def load_records_and_test_equality(
+    version: str, dataset_name: str, record_set_name: str, num_records: int
+):
     print(
         "If this test fails, update JSONL with: `mlcroissant load"
         f" --file ../../datasets/{dataset_name} --record_set"
@@ -56,6 +59,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
     config = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
+        / version
         / dataset_name
     )
     output_file = config.parent / "output" / f"{record_set_name}.jsonl"
@@ -87,6 +91,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
 
 
 # Hermetic test cases (data from local folders).
+@parametrize_version()
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
@@ -104,12 +109,13 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
         ["simple-parquet/metadata.json", "persons", -1],
     ],
 )
-def test_hermetic_loading(dataset_name, record_set_name, num_records):
-    load_records_and_test_equality(dataset_name, record_set_name, num_records)
+def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
+    load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
 # Non-hermetic test cases (data from the internet).
 @pytest.mark.nonhermetic
+@parametrize_version()
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
@@ -129,13 +135,17 @@ def test_hermetic_loading(dataset_name, record_set_name, num_records):
         ["titanic/metadata.json", "passengers", -1],
     ],
 )
-def test_nonhermetic_loading(dataset_name, record_set_name, num_records):
-    load_records_and_test_equality(dataset_name, record_set_name, num_records)
+def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
+    load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
-def test_raises_when_the_record_set_does_not_exist():
+@parametrize_version()
+def test_raises_when_the_record_set_does_not_exist(version):
     dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent / "datasets" / "titanic"
+        epath.Path(__file__).parent.parent.parent.parent.parent
+        / "datasets"
+        / version
+        / "titanic"
     )
     dataset = datasets.Dataset(dataset_folder / "metadata.json")
     with pytest.raises(ValueError, match="did not find"):

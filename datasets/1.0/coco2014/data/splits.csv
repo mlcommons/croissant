@@ -1,0 +1,4 @@
+name,url
+train,https://mlcommons.org/definitions/training_split
+val,https://mlcommons.org/definitions/validation_split
+test,https://mlcommons.org/definitions/test_split
