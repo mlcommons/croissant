@@ -111,7 +111,7 @@ Croissant JSON-LD files on the web and provides a filter to restrict results to
 Croissant datasets.
 - [Kaggle](https://www.kaggle.com/datasets) embeds Croissant JSON-LD directly in their HTML, and also provides the following ways to download the Croissant JSON-LD file:
   - Via an `Export metadata as Croissant` button on the dataset's page (ex: https://www.kaggle.com/datasets/unsdsn/world-happiness)
-  - Via download URL (e.g. https://www.kaggle.com/datasets/unsdsn/world-happiness/croissant/download)
+  - Via download URL (ex: https://www.kaggle.com/datasets/unsdsn/world-happiness/croissant/download)
 - [OpenML](https://www.openml.org/search?type=data) offers a `Croissant` button
 on all of their datasets to download the underlying Croissant JSON-LD file.
 - [Hugging Face](https://huggingface.co/) offers an API endpoint to build a
