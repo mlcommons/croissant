@@ -109,8 +109,9 @@ Here is an extremely simple example of the croissant format, with comments showi
 - [Datasets Search](https://datasetsearch.research.google.com) crawls and indexes
 Croissant JSON-LD files on the web and provides a filter to restrict results to
 Croissant datasets.
-- [Kaggle](https://www.kaggle.com/datasets) embeds Croissant JSON-LD directly in
-their HTML.
+- [Kaggle](https://www.kaggle.com/datasets) embeds Croissant JSON-LD directly in their HTML, and also provides the following ways to download the Croissant JSON-LD file:
+  - Via an `Export metadata as Croissant` button on the dataset's page (ex: https://www.kaggle.com/datasets/unsdsn/world-happiness)
+  - Via download URL (e.g. https://www.kaggle.com/datasets/unsdsn/world-happiness/croissant/download)
 - [OpenML](https://www.openml.org/search?type=data) offers a `Croissant` button
 on all of their datasets to download the underlying Croissant JSON-LD file.
 - [Hugging Face](https://huggingface.co/) offers an API endpoint to build a
@@ -129,6 +130,6 @@ The Task Force is open to anyone (as is the parent [Datasets working group](http
 The Task Force is co-chaired by [Omar Benjelloun](mailto:benjello@google.com) and [Elena Simperl](mailto:elena.simperl@kcl.ac.uk).
 
 ## Contributors
-Albert Villanova (Hugging Face), Andrew Zaldivar (Google), Baishan Guo (Meta), Carole Jean-Wu (Meta), Ce Zhang (ETH Zurich), Costanza Conforti (Google), D. Sculley (Kaggle), Dan Brickley (Schema.Org), Eduardo Arino de la Rubia (Meta), Edward Lockhart (Deepmind), Elena Simperl (King's College London), Geoff Thomas (Kaggle), Joaquin Vanschoren (TU/Eindhoven, OpenML), Jos van der Velde (TU/Eindhoven, OpenML), Julien Chaumond (Hugging Face), Kurt Bollacker (MLCommons), Lora Aroyo (Google), Luis Oala (Dotphoton), Meg Risdal (Kaggle), Natasha Noy (Google), Newsha Ardalani (Meta), Omar Benjelloun (Google), Peter Mattson (MLCommons), Pierre Marcenac (Google), Pierre Ruyssen (Google), Pieter Gijsbers (TU/Eindhoven, OpenML), Prabhant Singh (TU/Eindhoven, OpenML), Quentin Lhoest (Hugging Face), Steffen Vogler (Bayer), Taniya Das (TU/Eindhoven, OpenML)
+Albert Villanova (Hugging Face), Andrew Zaldivar (Google), Baishan Guo (Meta), Carole Jean-Wu (Meta), Ce Zhang (ETH Zurich), Costanza Conforti (Google), D. Sculley (Kaggle), Dan Brickley (Schema.Org), Eduardo Arino de la Rubia (Meta), Edward Lockhart (Deepmind), Elena Simperl (King's College London), Goeff Thomas (Kaggle), Joaquin Vanschoren (TU/Eindhoven, OpenML), Jos van der Velde (TU/Eindhoven, OpenML), Julien Chaumond (Hugging Face), Kurt Bollacker (MLCommons), Lora Aroyo (Google), Luis Oala (Dotphoton), Meg Risdal (Kaggle), Natasha Noy (Google), Newsha Ardalani (Meta), Omar Benjelloun (Google), Peter Mattson (MLCommons), Pierre Marcenac (Google), Pierre Ruyssen (Google), Pieter Gijsbers (TU/Eindhoven, OpenML), Prabhant Singh (TU/Eindhoven, OpenML), Quentin Lhoest (Hugging Face), Steffen Vogler (Bayer), Taniya Das (TU/Eindhoven, OpenML)
 
 Thank you for supporting Croissant! 🙂
