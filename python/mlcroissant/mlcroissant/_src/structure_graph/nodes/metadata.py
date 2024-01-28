@@ -32,7 +32,7 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 class CroissantVersion(enum.Enum):
-    """Major versions of the Croissant standard."""
+    """Major and minor versions of the Croissant standard."""
 
     V_0_8 = "http://mlcommons.org/croissant/0.8"
     V_1_0 = "http://mlcommons.org/croissant/1.0"
