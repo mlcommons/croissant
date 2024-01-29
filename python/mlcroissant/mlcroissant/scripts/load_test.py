@@ -3,7 +3,7 @@
 from etils import epath
 import pytest
 
-from mlcroissant._src.tests import parametrize_version
+from mlcroissant._src.tests.versions import parametrize_version
 from mlcroissant.scripts import load as load_lib
 
 

@@ -8,6 +8,7 @@ import itertools
 from typing import Any, Mapping
 
 from etils import epath
+import requests
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
@@ -18,6 +19,7 @@ from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.url import is_url
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
@@ -226,6 +228,12 @@ class Metadata(Node):
         cls, issues: Issues, file: epath.PathLike, mapping: Mapping[str, epath.Path]
     ) -> Metadata:
         """Creates the Metadata from a Croissant file."""
+        if is_url(file):
+            response = requests.get(file)
+            json_ = response.json()
+            return cls.from_json(
+                issues=issues, json_=json_, folder=None, mapping=mapping
+            )
         folder, json_ = from_file_to_json(file)
         return cls.from_json(issues=issues, json_=json_, folder=folder, mapping=mapping)
 

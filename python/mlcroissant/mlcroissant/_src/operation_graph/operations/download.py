@@ -16,6 +16,7 @@ from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.core.url import is_url
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 
@@ -28,14 +29,6 @@ _SUPPORTED_HOSTS = [
     _GITLAB_GIT,
     _HUGGING_FACE_GIT,
 ]
-
-
-def is_url(url: str) -> bool:
-    """Tests whether a URL is valid.
-
-    The current version is very loose and only supports the HTTP protocol.
-    """
-    return url.startswith("http://") or url.startswith("https://")
 
 
 def get_hash(url: str) -> str:
