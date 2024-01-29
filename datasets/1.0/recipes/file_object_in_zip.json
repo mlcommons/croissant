@@ -48,7 +48,7 @@
       "name": "zip_with_csv",
       "contentUrl": "data/zip_with_csv.zip",
       "encodingFormat": "application/zip",
-      "sha256": "85c13a7e6940a8376f2448ed6078d4fa407ae33c7839e6d041a0e34413366792"
+      "sha256": "409b80b15f540661197ae22b78cda2f5cd71f336379f5c9cd1a6b4fc6abe74bd"
     },
     {
       "@type": "sc:FileObject",

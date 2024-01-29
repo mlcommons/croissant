@@ -93,7 +93,11 @@ class Dataset:
     def records(self, record_set: str) -> Records:
         """Accesses all records in `record_set` if it exists."""
         if not any(rs for rs in self.metadata.record_sets if rs.name == record_set):
-            raise ValueError(f"did not find any record set with the name {record_set}.")
+            names = [record_set.name for record_set in self.metadata.record_sets]
+            raise ValueError(
+                f"did not find any record set with the name {record_set}. Possible"
+                f" RecordSets: {names}"
+            )
         return Records(self, record_set, debug=self.debug)
 
 

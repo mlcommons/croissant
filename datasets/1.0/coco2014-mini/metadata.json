@@ -53,7 +53,7 @@
       "contentSize": " B",
       "contentUrl": "data/train2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": "sha256"
+      "sha256": "d010037fee9416bdcc187a37a4aec7bef798316147da2753bd86e78fc0d469a5"
     },
     {
       "@type": "sc:FileSet",
@@ -68,14 +68,14 @@
       "contentSize": " B",
       "contentUrl": "data/captions_train2014.json",
       "encodingFormat": "application/json",
-      "sha256": "sha256"
+      "sha256": "6f3755cb987413021018525cbb4c484d696ff41269e6b0b43c5f63eaf576e09f"
     },
     {
       "@type": "sc:FileObject",
       "name": "bbox_annotations-files",
       "contentUrl": "data/instances_train2014.json",
       "encodingFormat": "application/json",
-      "sha256": "sha256"
+      "sha256": "df2760cf1d55e37b9cde91499286a3cac52efc31d95a9d21ba34dbbbcf693654"
     }
   ],
   "recordSet": [

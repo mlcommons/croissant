@@ -49,7 +49,7 @@
       "name": "dataframe",
       "contentUrl": "data/dataframe.parquet",
       "encodingFormat": "application/x-parquet",
-      "sha256": "SHA256"
+      "sha256": "ac97b111a16d2b29cd2ea006a50d6c286cb7e05f89d942192b6d8df0b4198121"
     }
   ],
   "recordSet": [

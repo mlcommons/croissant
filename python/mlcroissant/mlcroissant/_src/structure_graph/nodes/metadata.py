@@ -52,6 +52,22 @@ class CroissantVersion(enum.Enum):
             return None
         return self.value
 
+    def __lt__(self, other):
+        """Implements CroissantVersion.V_0_8 < CroissantVersion.V_1_0."""
+        return self.value < other.value
+
+    def __le__(self, other):
+        """Implements CroissantVersion.V_0_8 <= CroissantVersion.V_1_0."""
+        return self.value <= other.value
+
+    def __gt__(self, other):
+        """Implements CroissantVersion.V_1_0 > CroissantVersion.V_0_8."""
+        return self.value > other.value
+
+    def __ge__(self, other):
+        """Implements CroissantVersion.V_1_0 >= CroissantVersion.V_0_8."""
+        return self.value >= other.value
+
 
 @dataclasses.dataclass(eq=False, repr=False)
 class PersonOrOrganization:
