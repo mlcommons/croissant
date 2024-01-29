@@ -14,6 +14,7 @@ from mlcroissant._src.operation_graph.operations import field
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import Extract
@@ -132,7 +133,7 @@ def test_extract_lines(separator):
         record_sets = [RecordSet(name="main", fields=fields)]
         Metadata(
             name="metadata",
-            conforms_to="http://mlcommons.org/croissant/1.0",
+            conforms_to=CroissantVersion.V_1_0,
             url="url.com",
             distribution=distribution,
             record_sets=record_sets,

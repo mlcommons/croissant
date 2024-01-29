@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
+import enum
 import itertools
 from typing import Any, Mapping
 
@@ -28,6 +29,28 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+
+
+class CroissantVersion(enum.Enum):
+    """Major and minor versions of the Croissant standard."""
+
+    V_0_8 = "http://mlcommons.org/croissant/0.8"
+    V_1_0 = "http://mlcommons.org/croissant/1.0"
+
+    @classmethod
+    def from_jsonld(cls, jsonld: Any) -> CroissantVersion:
+        """Builds the class from the JSON-LD."""
+        for version in cls:
+            if version.value == jsonld:
+                return version
+        return CroissantVersion.V_0_8
+
+    def to_json(self) -> str | None:
+        """Serializes back to JSON-LD."""
+        if self == CroissantVersion.V_0_8:
+            # In 0.8, the field conformsTo doesn't exist yet.
+            return None
+        return self.value
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -72,7 +95,7 @@ class PersonOrOrganization:
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
-    conforms_to: str | None = None
+    conforms_to: CroissantVersion | None = None
     citation: str | None = None
     creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None
@@ -134,11 +157,12 @@ class Metadata(Node):
             creator = [creator.to_json() for creator in self.creators]
         else:
             creator = None
+        conforms_to = self.conforms_to.to_json() if self.conforms_to else None
         return remove_empty_values({
             "@context": self.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
-            "conformsTo": self.conforms_to,
+            "conformsTo": conforms_to,
             "description": self.description,
             "creator": creator,
             "datePublished": date_published,
@@ -306,7 +330,9 @@ class Metadata(Node):
             issues=issues,
             context=context,
             folder=folder,
-            conforms_to=metadata.get(constants.DCTERMS_CONFORMS_TO),
+            conforms_to=CroissantVersion.from_jsonld(
+                metadata.get(constants.DCTERMS_CONFORMS_TO)
+            ),
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             creators=creators,
             date_published=date_published,

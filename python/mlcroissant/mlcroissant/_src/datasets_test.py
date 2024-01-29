@@ -18,6 +18,7 @@ def get_error_msg(folder):
         return file.read().strip()
 
 
+@parametrize_version()
 @pytest.mark.parametrize(
     "folder",
     [
@@ -42,8 +43,8 @@ def get_error_msg(folder):
         "recordset_wrong_join",
     ],
 )
-def test_static_analysis(folder):
-    base_path = epath.Path(__file__).parent / "tests/graphs"
+def test_static_analysis(version, folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs" / version
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)

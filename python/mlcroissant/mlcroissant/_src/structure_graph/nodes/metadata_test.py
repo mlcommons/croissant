@@ -10,6 +10,7 @@ from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_node
@@ -35,7 +36,6 @@ def test_from_jsonld():
     folder = epath.Path("/foo/bar")
     jsonld = {
         "@type": constants.SCHEMA_ORG_DATASET,
-        constants.DCTERMS_CONFORMS_TO: "http://mlcommons.org/croissant/1.0",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_LICENSE: "License",
@@ -51,7 +51,7 @@ def test_from_jsonld():
         issues=issues,
         context=context,
         folder=folder,
-        conforms_to="http://mlcommons.org/croissant/1.0",
+        conforms_to=CroissantVersion.V_0_8,  # No version specified, so default to 0.8.
         name="foo",
         description="bar",
         data_biases="data_biases",

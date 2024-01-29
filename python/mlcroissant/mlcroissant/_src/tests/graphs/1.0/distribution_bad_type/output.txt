@@ -1,0 +1,2 @@
+Found the following 1 error(s) during the validation:
+  -  "a-csv-table" should have an attribute "@type": "https://schema.org/FileObject" or "@type": "https://schema.org/FileSet". Got https://schema.org/WRONG_TYPE_HERE instead.
