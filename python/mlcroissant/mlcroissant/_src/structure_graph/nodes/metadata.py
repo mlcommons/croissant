@@ -161,6 +161,9 @@ class Metadata(Node):
             if node.issues.errors:
                 raise ValidationError(node.issues.report())
 
+        if isinstance(self.conforms_to, str):
+            self.conforms_to = CroissantVersion(self.conforms_to)
+
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
         date_published = (
