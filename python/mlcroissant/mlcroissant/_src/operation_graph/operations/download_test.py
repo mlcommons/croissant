@@ -2,6 +2,7 @@
 
 import hashlib
 import os
+import tempfile
 
 from etils import epath
 import pytest
@@ -12,6 +13,9 @@ from mlcroissant._src.operation_graph.operations.download import extract_git_inf
 from mlcroissant._src.operation_graph.operations.download import get_download_filepath
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
+from mlcroissant._src.structure_graph.nodes.metadata import Metadata
+from mlcroissant._src.tests.nodes import create_test_file_object
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
 
@@ -111,3 +115,35 @@ def test_get_download_filepath():
     assert os.fspath(get_download_filepath(node)).endswith(
         "download/croissant-0343a8f6b328d44bfe5b69437797bebc36c59c67ac6527fe1f14684142074fff"
     )
+
+
+def test_hashes_do_not_match():
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        metadata = Metadata(name="bar", conforms_to=CroissantVersion.V_1_0)
+        file_object = create_test_file_object(
+            name="foo",
+            content_url=os.fspath(filepath),
+            # Hash won't match!
+            sha256="12345",
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        with pytest.raises(ValueError, match="is not identical with the reference"):
+            download()
+
+
+@pytest.mark.parametrize("conforms_to", CroissantVersion)
+def test_hashes_do_match(conforms_to):
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        metadata = Metadata(name="bar", conforms_to=conforms_to)
+        file_object = create_test_file_object(
+            name="foo",
+            content_url=os.fspath(filepath),
+            # Hash will match!
+            sha256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        download()

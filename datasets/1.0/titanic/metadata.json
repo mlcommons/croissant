@@ -62,7 +62,7 @@
       "contentSize": "117743 B",
       "contentUrl": "data/genders.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "3b0d1ce9ffb5224626105c50a0f9e5fbf941bcbcd913e5567aba25936333c3b8"
     },
     {
       "@type": "sc:FileObject",
@@ -71,7 +71,7 @@
       "contentSize": "117743 B",
       "contentUrl": "data/embarkation_ports.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "38dc364ac098f39ecb5c108c8911ef47a7256a146aef3c26c85e7cc01efdd047"
     }
   ],
   "recordSet": [
