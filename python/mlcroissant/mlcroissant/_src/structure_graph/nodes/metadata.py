@@ -161,8 +161,17 @@ class Metadata(Node):
             if node.issues.errors:
                 raise ValidationError(node.issues.report())
 
-        if isinstance(self.conforms_to, str):
-            self.conforms_to = CroissantVersion(self.conforms_to)
+        if not self.conforms_to:
+            self.conforms_to = CroissantVersion.V_0_8
+        else:
+            try:
+                self.conforms_to = CroissantVersion(self.conforms_to)
+            except ValueError:
+                self.issues.add_error(
+                    "conformsTo should be a string or a CroissantVersion. Got:"
+                    f" {self.conforms_to}"
+                )
+                self.conforms_to = CroissantVersion.V_0_8
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
