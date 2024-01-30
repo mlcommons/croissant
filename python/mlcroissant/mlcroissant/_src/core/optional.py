@@ -87,7 +87,7 @@ class OptionalDependencies(object):
         return _try_import("PIL.Image", package_name="Pillow")
 
     @cached_class_property
-    def LIB_Audio(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+    def librosa(cls) -> types.ModuleType:  # pylint: disable=invalid-name
         """Cached librosa module."""
         return _try_import("librosa", package_name="librosa")
 
