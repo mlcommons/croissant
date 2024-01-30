@@ -14,6 +14,7 @@ from mlcroissant._src.operation_graph.operations import field
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import Extract
@@ -132,7 +133,7 @@ def test_extract_lines(separator):
         record_sets = [RecordSet(name="main", fields=fields)]
         Metadata(
             name="metadata",
-            conforms_to="http://mlcommons.org/croissant/1.0",
+            conforms_to=CroissantVersion.V_1_0,
             url="url.com",
             distribution=distribution,
             record_sets=record_sets,
@@ -147,3 +148,45 @@ def test_extract_lines(separator):
         ]
         result = list(read_field(df))
         assert result == expected
+
+
+@pytest.mark.parametrize(
+    ["value", "source", "data_type", "expected_value"],
+    [
+        # Capturing group
+        [
+            "train1234",
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
+            "train",
+        ],
+        # Non working capturing group
+        [
+            "foo1234",
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
+            "foo1234",
+        ],
+        [
+            {"one": {"two": "expected_value"}, "three": "non_expected_value"},
+            Source(transforms=[Transform(json_path="one.two")]),
+            DataType.TEXT,
+            "expected_value",
+        ],
+        [
+            pd.Timestamp("2024-12-10 12:00:00"),
+            Source(transforms=[Transform(format="%Y-%m-%d")]),
+            DataType.DATE,
+            "2024-12-10",
+        ],
+        [
+            "2024-12-10 12:00:00",
+            Source(transforms=[Transform(format="%Y-%m-%d")]),
+            DataType.DATE,
+            "2024-12-10",
+        ],
+    ],
+)
+def test_apply_transforms_fn(value, source, data_type, expected_value):
+    f = Field(name="test", data_types=data_type, source=source)
+    assert field.apply_transforms_fn(value, f) == expected_value

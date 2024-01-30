@@ -10,7 +10,16 @@ from typing import Any
 
 import rdflib
 from rdflib import namespace
+from rdflib import plugin
 from rdflib import term
+
+# This is for compatibility with older versions of rdflib/rdflib-jsonld.
+# Indeed, rdflib-jsonld was merged into rdflib from the version 6.0.1.
+if rdflib.__version__ < "6.0.1":
+    plugin.register(
+        "json-ld", plugin.Serializer, "rdflib_jsonld.serializer", "JsonLDSerializer"
+    )
+    plugin.register("json-ld", plugin.Parser, "rdflib_jsonld.parser", "JsonLDParser")
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.types import Json
@@ -164,7 +173,7 @@ def expand_jsonld(data: Json) -> Json:
     context = get_context(data)
     graph = rdflib.Graph()
     graph.parse(
-        data=data,  # type: ignore  # rdflib also supports dicts.
+        data=json.dumps(data),
         format="json-ld",
     )
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.

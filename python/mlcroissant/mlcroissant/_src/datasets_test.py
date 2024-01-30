@@ -7,7 +7,9 @@ import pytest
 
 from mlcroissant._src import datasets
 from mlcroissant._src.core.issues import ValidationError
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.tests.records import record_to_python
+from mlcroissant._src.tests.versions import parametrize_version
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
@@ -16,6 +18,7 @@ def get_error_msg(folder):
         return file.read().strip()
 
 
+@parametrize_version()
 @pytest.mark.parametrize(
     "folder",
     [
@@ -40,14 +43,16 @@ def get_error_msg(folder):
         "recordset_wrong_join",
     ],
 )
-def test_static_analysis(folder):
-    base_path = epath.Path(__file__).parent / "tests/graphs"
+def test_static_analysis(version, folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs" / version
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
 
 
-def load_records_and_test_equality(dataset_name, record_set_name, num_records):
+def load_records_and_test_equality(
+    version: str, dataset_name: str, record_set_name: str, num_records: int
+):
     print(
         "If this test fails, update JSONL with: `mlcroissant load"
         f" --file ../../datasets/{dataset_name} --record_set"
@@ -56,6 +61,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
     config = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
+        / version
         / dataset_name
     )
     output_file = config.parent / "output" / f"{record_set_name}.jsonl"
@@ -87,6 +93,7 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
 
 
 # Hermetic test cases (data from local folders).
+@parametrize_version()
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
@@ -104,12 +111,13 @@ def load_records_and_test_equality(dataset_name, record_set_name, num_records):
         ["simple-parquet/metadata.json", "persons", -1],
     ],
 )
-def test_hermetic_loading(dataset_name, record_set_name, num_records):
-    load_records_and_test_equality(dataset_name, record_set_name, num_records)
+def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
+    load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
 # Non-hermetic test cases (data from the internet).
 @pytest.mark.nonhermetic
+@parametrize_version()
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
@@ -134,13 +142,34 @@ def test_hermetic_loading(dataset_name, record_set_name, num_records):
         ],
     ],
 )
-def test_nonhermetic_loading(dataset_name, record_set_name, num_records):
-    load_records_and_test_equality(dataset_name, record_set_name, num_records)
+def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
+    load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
-def test_raises_when_the_record_set_does_not_exist():
+@pytest.mark.nonhermetic
+def test_load_from_huggingface():
+    url = "https://datasets-server.huggingface.co/croissant?dataset=mnist&full=true"
+    dataset = datasets.Dataset(url)
+    has_one_record = False
+    for record in dataset.records(record_set="record_set_mnist"):
+        assert record["label"] == 7
+        assert isinstance(record["image"], deps.PIL_Image.Image)
+        has_one_record = True
+        break
+    assert has_one_record, (
+        "mlc.Dataset.records() didn't yield any record. Warning: this test is"
+        " non-hermetic and makes an API call to Hugging Face, so it's prone to network"
+        " failure."
+    )
+
+
+@parametrize_version()
+def test_raises_when_the_record_set_does_not_exist(version):
     dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent / "datasets" / "titanic"
+        epath.Path(__file__).parent.parent.parent.parent.parent
+        / "datasets"
+        / version
+        / "titanic"
     )
     dataset = datasets.Dataset(dataset_folder / "metadata.json")
     with pytest.raises(ValueError, match="did not find"):

@@ -16,10 +16,13 @@ from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.core.url import is_url
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
+from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
-_DOWNLOAD_CHUNK_SIZE = 1024
+_CHUNK_SIZE = 1024
 _GITHUB_GIT = "https://github.com"
 _GITLAB_GIT = "https://gitlab.com"
 _HUGGING_FACE_GIT = "https://huggingface.co/datasets"
@@ -30,14 +33,6 @@ _SUPPORTED_HOSTS = [
 ]
 
 
-def is_url(url: str) -> bool:
-    """Tests whether a URL is valid.
-
-    The current version is very loose and only supports the HTTP protocol.
-    """
-    return url.startswith("http://") or url.startswith("https://")
-
-
 def get_hash(url: str) -> str:
     """Retrieves the sha256 hash of an URL."""
     return hashlib.sha256(url.encode()).hexdigest()
@@ -45,12 +40,10 @@ def get_hash(url: str) -> str:
 
 def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
+    if node.name in node.mapping:
+        return node.mapping[node.name]
     url = node.content_url
     if url and not is_url(url) and not node.contained_in:
-        assert url.startswith("data/"), (
-            f'Local file "{node.uid}" should point to a file within the data/'
-            f' folder next to the JSON-LD Croissant file. But got: "{url}"'
-        )
         if node.folder is None:
             raise ValueError(f"Could not find node folder={node.folder}")
         filepath = node.folder / url
@@ -152,6 +145,31 @@ class Download(Operation):
 
     node: FileObject
 
+    def _check_hash(self, filepath: epath.Path):
+        if filepath.is_dir():
+            return
+        hash = _get_hash_algorithm(self.node)
+        with filepath.open("rb") as f:
+            while chunk := f.read(_CHUNK_SIZE):
+                hash.update(chunk)
+        actual_hash = hash.hexdigest()
+        expected_hash = getattr(self.node, hash.name)
+        if actual_hash != expected_hash:
+            logging.info(
+                "Hash of downloaded file is not identical with"
+                " reference in metadata.json"
+            )
+            # In v0.8 only, hashes were not checked.
+            metadata = self.node.parent
+            if not isinstance(metadata, Metadata):
+                raise ValueError("parent of FileObject should always be Metadata.")
+            if metadata.conforms_to > CroissantVersion.V_0_8:
+                raise ValueError(
+                    f"Hash of downloaded file {filepath} is not identical with the"
+                    f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"
+                    f" Got: {actual_hash}"
+                )
+
     def _download_from_http(self, filepath: epath.Path):
         content_url = self.node.content_url
         assert content_url, "Content URL is None."
@@ -160,9 +178,6 @@ class Download(Operation):
         )
         response.raise_for_status()
         total = int(response.headers.get("Content-Length", 0))
-
-        hash = _get_hash_algorithm(self.node)
-
         with filepath.open("wb") as file, tqdm.tqdm(
             desc=f"Downloading {content_url}...",
             total=total,
@@ -170,23 +185,9 @@ class Download(Operation):
             unit_scale=True,
             unit_divisor=1024,
         ) as bar:
-            for data in response.iter_content(chunk_size=_DOWNLOAD_CHUNK_SIZE):
+            for data in response.iter_content(chunk_size=_CHUNK_SIZE):
                 size = file.write(data)
-                hash.update(data)
                 bar.update(size)
-
-        downloaded_file_hash = hash.hexdigest()
-
-        if downloaded_file_hash != getattr(self.node, hash.name):
-            logging.info(
-                "Hash of downloaded file is not identical with"
-                " reference in metadata.json"
-            )
-            os.remove(filepath)
-            raise ValueError(
-                "Hash of downloaded file is not identical with"
-                " reference in metadata.json"
-            )
 
     def _download_from_git(self, filepath: epath.Path):
         username = os.environ.get(constants.CROISSANT_GIT_USERNAME)
@@ -214,6 +215,7 @@ class Download(Operation):
                 self._download_from_git(filepath)
             else:
                 self._download_from_http(filepath)
+        self._check_hash(filepath)
         logging.info(
             "File %s is downloaded to %s", self.node.content_url, os.fspath(filepath)
         )

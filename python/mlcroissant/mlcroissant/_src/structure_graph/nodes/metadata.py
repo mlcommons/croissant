@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
+import enum
 import itertools
-from typing import Any
+from typing import Any, Mapping
 
 from etils import epath
+import requests
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
@@ -18,6 +20,7 @@ from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.url import is_url
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
@@ -26,6 +29,44 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+
+
+class CroissantVersion(enum.Enum):
+    """Major and minor versions of the Croissant standard."""
+
+    V_0_8 = "http://mlcommons.org/croissant/0.8"
+    V_1_0 = "http://mlcommons.org/croissant/1.0"
+
+    @classmethod
+    def from_jsonld(cls, jsonld: Any) -> CroissantVersion:
+        """Builds the class from the JSON-LD."""
+        for version in cls:
+            if version.value == jsonld:
+                return version
+        return CroissantVersion.V_0_8
+
+    def to_json(self) -> str | None:
+        """Serializes back to JSON-LD."""
+        if self == CroissantVersion.V_0_8:
+            # In 0.8, the field conformsTo doesn't exist yet.
+            return None
+        return self.value
+
+    def __lt__(self, other):
+        """Implements CroissantVersion.V_0_8 < CroissantVersion.V_1_0."""
+        return self.value < other.value
+
+    def __le__(self, other):
+        """Implements CroissantVersion.V_0_8 <= CroissantVersion.V_1_0."""
+        return self.value <= other.value
+
+    def __gt__(self, other):
+        """Implements CroissantVersion.V_1_0 > CroissantVersion.V_0_8."""
+        return self.value > other.value
+
+    def __ge__(self, other):
+        """Implements CroissantVersion.V_1_0 >= CroissantVersion.V_0_8."""
+        return self.value >= other.value
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -70,7 +111,7 @@ class PersonOrOrganization:
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
-    conforms_to: str | None = None
+    conforms_to: CroissantVersion | None = None
     citation: str | None = None
     creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None
@@ -120,6 +161,18 @@ class Metadata(Node):
             if node.issues.errors:
                 raise ValidationError(node.issues.report())
 
+        if not self.conforms_to:
+            self.conforms_to = CroissantVersion.V_0_8
+        else:
+            try:
+                self.conforms_to = CroissantVersion(self.conforms_to)
+            except ValueError:
+                self.issues.add_error(
+                    "conformsTo should be a string or a CroissantVersion. Got:"
+                    f" {self.conforms_to}"
+                )
+                self.conforms_to = CroissantVersion.V_0_8
+
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
         date_published = (
@@ -132,11 +185,12 @@ class Metadata(Node):
             creator = [creator.to_json() for creator in self.creators]
         else:
             creator = None
+        conforms_to = self.conforms_to.to_json() if self.conforms_to else None
         return remove_empty_values({
             "@context": self.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
-            "conformsTo": self.conforms_to,
+            "conformsTo": conforms_to,
             "description": self.description,
             "creator": creator,
             "datePublished": date_published,
@@ -222,19 +276,33 @@ class Metadata(Node):
             field.data_type
 
     @classmethod
-    def from_file(cls, issues: Issues, file: epath.PathLike) -> Metadata:
+    def from_file(
+        cls, issues: Issues, file: epath.PathLike, mapping: Mapping[str, epath.Path]
+    ) -> Metadata:
         """Creates the Metadata from a Croissant file."""
+        if is_url(file):
+            response = requests.get(file)
+            json_ = response.json()
+            return cls.from_json(
+                issues=issues, json_=json_, folder=None, mapping=mapping
+            )
         folder, json_ = from_file_to_json(file)
-        return cls.from_json(issues=issues, json_=json_, folder=folder)
+        return cls.from_json(issues=issues, json_=json_, folder=folder, mapping=mapping)
 
     @classmethod
     def from_json(
-        cls, issues: Issues, json_: Json, folder: epath.Path | None
+        cls,
+        issues: Issues,
+        json_: Json,
+        folder: epath.Path | None,
+        mapping: Mapping[str, epath.Path],
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
         rdf = Rdf.from_json(json_)
         metadata = expand_jsonld(json_)
-        return cls.from_jsonld(issues=issues, folder=folder, metadata=metadata, rdf=rdf)
+        return cls.from_jsonld(
+            issues=issues, folder=folder, metadata=metadata, mapping=mapping, rdf=rdf
+        )
 
     @classmethod
     def from_jsonld(
@@ -242,9 +310,12 @@ class Metadata(Node):
         issues: Issues,
         folder: epath.Path | None,
         metadata: Json,
+        mapping: Mapping[str, epath.Path] | None = None,
         rdf: Rdf | None = None,
     ) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
+        if mapping is None:
+            mapping = {}
         if rdf is None:
             rdf = Rdf()
         check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
@@ -257,7 +328,9 @@ class Metadata(Node):
             distribution_type = set_or_object.get("@type")
             if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
                 distribution.append(
-                    FileObject.from_jsonld(issues, context, folder, rdf, set_or_object)
+                    FileObject.from_jsonld(
+                        issues, context, folder, rdf, set_or_object, mapping=mapping
+                    )
                 )
             elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
                 distribution.append(
@@ -285,7 +358,9 @@ class Metadata(Node):
             issues=issues,
             context=context,
             folder=folder,
-            conforms_to=metadata.get(constants.DCTERMS_CONFORMS_TO),
+            conforms_to=CroissantVersion.from_jsonld(
+                metadata.get(constants.DCTERMS_CONFORMS_TO)
+            ),
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             creators=creators,
             date_published=date_published,

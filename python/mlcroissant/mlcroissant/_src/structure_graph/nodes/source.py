@@ -4,22 +4,15 @@ from __future__ import annotations
 
 import dataclasses
 import enum
-import logging
-import re
-import typing
 from typing import Any, Literal
 
 import jsonpath_rw
 from jsonpath_rw import lexer
-import pandas as pd
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-
-if typing.TYPE_CHECKING:
-    from mlcroissant._src.structure_graph.nodes.field import Field
 
 
 class FileProperty(enum.IntEnum):
@@ -316,39 +309,6 @@ class Source:
                     "Wrong JSONPath (https://goessner.net/articles/JsonPath/):"
                     f" {exception}"
                 )
-
-
-def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
-    """Applies one transform to `value`."""
-    if transform.regex is not None:
-        source_regex = re.compile(transform.regex)
-        match = source_regex.match(value)
-        if match is None:
-            logging.warning(f"Could not match {source_regex} in {value}")
-            return value
-        for group in match.groups():
-            if group is not None:
-                return group
-    elif transform.json_path is not None:
-        jsonpath_expression = jsonpath_rw.parse(transform.json_path)
-        return next(match.value for match in jsonpath_expression.find(value))
-    elif transform.format is not None:
-        if field.data_type is pd.Timestamp:
-            return pd.Timestamp(value).strftime(transform.format)
-        else:
-            raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
-    return value
-
-
-def apply_transforms_fn(value: Any, field: Field) -> Any:
-    """Applies all transforms in `source` to `value`."""
-    source = field.source
-    if source is None:
-        return value
-    transforms = source.transforms
-    for transform in transforms:
-        value = _apply_transform_fn(value, transform, field)
-    return value
 
 
 def get_parent_uid(uid: str) -> str:

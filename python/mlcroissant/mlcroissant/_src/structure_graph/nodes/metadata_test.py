@@ -10,6 +10,7 @@ from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_node
@@ -35,7 +36,6 @@ def test_from_jsonld():
     folder = epath.Path("/foo/bar")
     jsonld = {
         "@type": constants.SCHEMA_ORG_DATASET,
-        constants.DCTERMS_CONFORMS_TO: "http://mlcommons.org/croissant/1.0",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_LICENSE: "License",
@@ -51,7 +51,7 @@ def test_from_jsonld():
         issues=issues,
         context=context,
         folder=folder,
-        conforms_to="http://mlcommons.org/croissant/1.0",
+        conforms_to=CroissantVersion.V_0_8,  # No version specified, so default to 0.8.
         name="foo",
         description="bar",
         data_biases="data_biases",
@@ -110,3 +110,34 @@ def test_issues_in_metadata_are_shared_with_children():
             # We did not specify the RecordSet's name. Hence the exception above:
             record_sets=[RecordSet(description="description")],
         )
+
+
+@pytest.mark.parametrize(
+    "conforms_to",
+    [1, 1.0, "1.0"],
+)
+def test_conforms_to_is_invalid(conforms_to):
+    metadata = Metadata(
+        name="name",
+        conforms_to=conforms_to,
+    )
+    assert any(
+        error.startswith("conformsTo should be a string or a CroissantVersion.")
+        for error in metadata.issues.errors
+    )
+
+
+@pytest.mark.parametrize(
+    ["conforms_to", "expected"],
+    [
+        [None, CroissantVersion.V_0_8],
+        ["http://mlcommons.org/croissant/0.8", CroissantVersion.V_0_8],
+        ["http://mlcommons.org/croissant/1.0", CroissantVersion.V_1_0],
+        [CroissantVersion.V_0_8, CroissantVersion.V_0_8],
+        [CroissantVersion.V_1_0, CroissantVersion.V_1_0],
+    ],
+)
+def test_conforms_to_is_checked(conforms_to, expected: CroissantVersion):
+    # If left empty, conforms_to defaults to 0.8.
+    metadata = Metadata(name="name", conforms_to=conforms_to)
+    assert metadata.conforms_to == expected

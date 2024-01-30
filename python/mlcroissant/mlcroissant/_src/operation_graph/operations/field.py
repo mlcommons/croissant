@@ -2,9 +2,12 @@
 
 import dataclasses
 import io
+import logging
+import re
 from typing import Any, Iterator
 
 from etils import epath
+import jsonpath_rw
 import numpy as np
 import pandas as pd
 from rdflib import term
@@ -15,8 +18,41 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-from mlcroissant._src.structure_graph.nodes.source import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+from mlcroissant._src.structure_graph.nodes.source import Transform
+
+
+def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
+    """Applies one transform to `value`."""
+    if transform.regex is not None:
+        source_regex = re.compile(transform.regex)
+        match = source_regex.match(value)
+        if match is None:
+            logging.warning(f"Could not match {source_regex} in {value}")
+            return value
+        for group in match.groups():
+            if group is not None:
+                return group
+    elif transform.json_path is not None:
+        jsonpath_expression = jsonpath_rw.parse(transform.json_path)
+        return next(match.value for match in jsonpath_expression.find(value))
+    elif transform.format is not None:
+        if field.data_type is pd.Timestamp:
+            return pd.Timestamp(value).strftime(transform.format)
+        else:
+            raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
+    return value
+
+
+def apply_transforms_fn(value: Any, field: Field) -> Any:
+    """Applies all transforms in `source` to `value`."""
+    source = field.source
+    if source is None:
+        return value
+    transforms = source.transforms
+    for transform in transforms:
+        value = _apply_transform_fn(value, transform, field)
+    return value
 
 
 def _cast_value(value: Any, data_type: type | term.URIRef | None):

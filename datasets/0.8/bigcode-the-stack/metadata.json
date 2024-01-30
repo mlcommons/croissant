@@ -1,0 +1,385 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "bigcode-the-stack",
+  "description": "The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.",
+  "citation": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Mu\u00f1oz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
+  "license": "other",
+  "url": "https://huggingface.co/datasets/bigcode/the-stack",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/bigcode/the-stack",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "parquet-files",
+      "containedIn": "repo",
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "default",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "content",
+          "description": "The content of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "content"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "language",
+          "description": "Programming language of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^data\\/(\\d\\w\\+\\-)+\\/train-\\d\\d\\d\\d\\d-of-\\d\\d\\d\\d\\d\\.parquet$"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "hexsha",
+          "description": "Unique git hash of file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "hexsha"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "size",
+          "description": "Size of the uncompressed file..",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "size"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "ext",
+          "description": "File extension.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "ext"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "lang",
+          "description": "Hash of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_stars_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_stars_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_stars_repo_name",
+          "description": "Name of repo containing this file with maximum number of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_stars_repo_name"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_stars_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_stars_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_stars_count",
+          "description": "Number of stars in repository.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_stars_count"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_stars_repo_stars_event_min_datetime",
+          "description": "First timestamp of a stars event.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_stars_repo_stars_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_stars_repo_stars_event_max_datetime",
+          "description": "Last timestamp of a stars event.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_stars_repo_stars_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_issues_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of issues.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_issues_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_issues_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of issues.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_issues_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_issues_count",
+          "description": "Number of issues in repository.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_issues_count"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_issues_repo_issues_event_min_datetime",
+          "description": "First timestamp of an issues event.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_issues_repo_issues_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_issues_repo_issues_event_max_datetime",
+          "description": "Last timestamp of an issues event.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_issues_repo_issues_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_forks_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_forks_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_forks_repo_name",
+          "description": "Name of repo containing this file with maximum number of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_forks_repo_name"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_forks_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_forks_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_forks_count",
+          "description": "Number of forks in repository.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_forks_count"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_forks_repo_forks_event_min_datetime",
+          "description": "First timestamp of a forks event.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_forks_repo_forks_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_forks_repo_forks_event_max_datetime",
+          "description": "Last timestamp of a forks event.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_forks_repo_forks_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "avg_line_length",
+          "description": "The average line-length of the file.",
+          "dataType": "sc:Float",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "avg_line_length"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "max_line_length",
+          "description": "The maximum line-length of the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "max_line_length"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "alphanum_fraction",
+          "description": "The fraction of characters in the file that are alphabetical or numerical characters.",
+          "dataType": "sc:Float",
+          "source": {
+            "distribution": "parquet-files",
+            "extract": {
+              "column": "alphanum_fraction"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

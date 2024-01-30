@@ -17,7 +17,7 @@ def jsonld_to_python_to_jsonld(path):
     with path.open() as f:
         json_ld = json.load(f)
     issues = Issues()
-    metadata = Metadata.from_file(issues, path)
+    metadata = Metadata.from_file(issues, path, {})
     result = metadata.to_json()
     # `distribution` may not be in the right order:
     if "distribution" in result:

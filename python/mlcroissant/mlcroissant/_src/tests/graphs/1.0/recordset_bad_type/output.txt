@@ -1,0 +1,2 @@
+Found the following 1 error(s) during the validation:
+  -  "a-record-set" should have an attribute "@type": "http://mlcommons.org/schema/RecordSet". Got https://schema.org/WRONG_TYPE instead.

@@ -1,6 +1,7 @@
 """Generates the dataset and yields the first example."""
 
 import json
+from typing import Any, Mapping
 
 from absl import app
 from absl import flags
@@ -42,6 +43,15 @@ flags.DEFINE_bool(
     "Whether to update the JSONL output test files.",
 )
 
+flags.DEFINE_string(
+    "mapping",
+    None,
+    "Mapping filename->filepath as a Python dict[str, str] to handle manual downloads."
+    " If `document.csv` is the FileObject and you downloaded it to"
+    ' `~/Downloads/document.csv`, you can specify `--mapping \'{"document.csv":'
+    ' "~/Downloads/document.csv"}\'`.',
+)
+
 flags.mark_flag_as_required("file")
 
 
@@ -56,12 +66,14 @@ def main(argv):
     num_records = FLAGS.num_records
     debug = FLAGS.debug
     update_output = FLAGS.update_output
+    mapping = FLAGS.mapping
     return load(
         file=file,
         record_set=record_set,
         num_records=num_records,
         debug=debug,
         update_output=update_output,
+        mapping=mapping,
     )
 
 
@@ -71,9 +83,17 @@ def load(
     num_records: int = _NUM_MAX_RECORDS,
     debug: bool = False,
     update_output: bool = False,
+    mapping: str | None = None,
 ):
     """Yields data from the `record_set` in the input Croissant file."""
-    dataset = mlc.Dataset(file, debug=debug)
+    if not mapping:
+        file_mapping: Mapping[str, Any] = {}
+    else:
+        try:
+            file_mapping = json.loads(mapping)
+        except json.JSONDecodeError as e:
+            raise ValueError("--mapping should be a valid dict[str, str]") from e
+    dataset = mlc.Dataset(file, debug=debug, mapping=file_mapping)
     if record_set is None:
         record_sets = ", ".join([f"`{rs.name}`" for rs in dataset.metadata.record_sets])
         raise ValueError(f"--record_set flag should have a value in {record_sets}")

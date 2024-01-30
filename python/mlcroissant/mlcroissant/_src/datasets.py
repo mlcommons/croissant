@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any
+from typing import Any, Mapping
 
 from absl import logging
 from etils import epath
@@ -36,6 +36,11 @@ def get_operations(issues: Issues, metadata: Metadata) -> OperationGraph:
     return operations
 
 
+def _expand_mapping(mapping: Mapping[str, epath.PathLike]) -> Mapping[str, epath.Path]:
+    """Expands the file mapping to pathlib-readable paths."""
+    return {key: epath.Path(value).expanduser() for key, value in mapping.items()}
+
+
 @dataclasses.dataclass
 class Dataset:
     """Python representation of a Croissant dataset.
@@ -50,16 +55,23 @@ class Dataset:
     operations: OperationGraph = dataclasses.field(init=False)
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
+    mapping: Mapping[str, epath.PathLike] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
         issues = Issues()
+        self.mapping = _expand_mapping(self.mapping)
         if isinstance(self.file, dict):
             self.metadata = Metadata.from_json(
-                issues=issues, json_=self.file, folder=None
+                issues=issues,
+                json_=self.file,
+                folder=None,
+                mapping=self.mapping,
             )
         elif self.file is not None:
-            self.metadata = Metadata.from_file(issues=issues, file=self.file)
+            self.metadata = Metadata.from_file(
+                issues=issues, file=self.file, mapping=self.mapping
+            )
         else:
             return
         # Draw the structure graph for debugging purposes.
@@ -81,7 +93,11 @@ class Dataset:
     def records(self, record_set: str) -> Records:
         """Accesses all records in `record_set` if it exists."""
         if not any(rs for rs in self.metadata.record_sets if rs.name == record_set):
-            raise ValueError(f"did not find any record set with the name {record_set}.")
+            names = [record_set.name for record_set in self.metadata.record_sets]
+            raise ValueError(
+                f"did not find any record set with the name {record_set}. Possible"
+                f" RecordSets: {names}"
+            )
         return Records(self, record_set, debug=self.debug)
 
 

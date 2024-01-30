@@ -3,7 +3,7 @@
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "0.0.5"
+version = "0.8.0"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
@@ -49,6 +49,7 @@ dev = [
   "pylint",
   "pytest",
   "pytype",
+  "torchdata",
 ]
 audio = ["librosa"]
 git = ["GitPython"]
@@ -85,7 +86,9 @@ module = [
   "librosa",
   "networkx",
   "pandas",
-  "pillow"
+  "pillow",
+  "torchdata",
+  "torchdata.datapipes",
 ]
 ignore_missing_imports = true
 
