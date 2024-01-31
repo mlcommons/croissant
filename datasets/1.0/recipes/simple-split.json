@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -64,7 +66,7 @@
           "description": "The title of the book",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "books.csv",
+            "fileObject": "books.csv",
             "extract": {
               "column": "Title"
             }
@@ -76,7 +78,7 @@
           "description": "The author of the book",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "books.csv",
+            "fileObject": "books.csv",
             "extract": {
               "column": "Author"
             }
@@ -91,7 +93,7 @@
             "wd:Q3985153"
           ],
           "source": {
-            "distribution": "books.csv",
+            "fileObject": "books.csv",
             "extract": {
               "column": "Split"
             }

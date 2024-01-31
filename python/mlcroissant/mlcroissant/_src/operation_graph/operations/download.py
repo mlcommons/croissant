@@ -18,8 +18,8 @@ from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.core.url import is_url
 from mlcroissant._src.operation_graph.base_operation import Operation
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 _CHUNK_SIZE = 1024
@@ -163,7 +163,7 @@ class Download(Operation):
             metadata = self.node.parent
             if not isinstance(metadata, Metadata):
                 raise ValueError("parent of FileObject should always be Metadata.")
-            if metadata.conforms_to > CroissantVersion.V_0_8:
+            if metadata.conforms_to and metadata.conforms_to > CroissantVersion.V_0_8:
                 raise ValueError(
                     f"Hash of downloaded file {filepath} is not identical with the"
                     f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"

@@ -15,6 +15,7 @@ from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
@@ -85,6 +86,7 @@ class RecordSet(Node):
         context: Context,
         folder: epath.Path,
         rdf: Rdf,
+        conforms_to: CroissantVersion,
         record_set: Json,
     ) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
@@ -97,7 +99,8 @@ class RecordSet(Node):
         if isinstance(fields, dict):
             fields = [fields]
         fields = [
-            Field.from_jsonld(issues, context, folder, rdf, field) for field in fields
+            Field.from_jsonld(issues, context, folder, rdf, conforms_to, field)
+            for field in fields
         ]
         key = record_set.get(constants.SCHEMA_ORG_KEY)
         data = record_set.get(constants.ML_COMMONS_DATA)

@@ -10,10 +10,11 @@ from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_node
+from mlcroissant._src.tests.versions import parametrize_conforms_to
 
 
 def test_checks_are_performed():
@@ -30,7 +31,8 @@ def test_checks_are_performed():
         validate_name_mock.assert_called_once()
 
 
-def test_from_jsonld():
+@parametrize_conforms_to()
+def test_from_jsonld(conforms_to: CroissantVersion):
     issues = Issues()
     context = Context()
     folder = epath.Path("/foo/bar")
@@ -38,6 +40,7 @@ def test_from_jsonld():
         "@type": constants.SCHEMA_ORG_DATASET,
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.DCTERMS_CONFORMS_TO: conforms_to.value,
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
@@ -51,7 +54,7 @@ def test_from_jsonld():
         issues=issues,
         context=context,
         folder=folder,
-        conforms_to=CroissantVersion.V_0_8,  # No version specified, so default to 0.8.
+        conforms_to=conforms_to,
         name="foo",
         description="bar",
         data_biases="data_biases",
@@ -110,34 +113,3 @@ def test_issues_in_metadata_are_shared_with_children():
             # We did not specify the RecordSet's name. Hence the exception above:
             record_sets=[RecordSet(description="description")],
         )
-
-
-@pytest.mark.parametrize(
-    "conforms_to",
-    [1, 1.0, "1.0"],
-)
-def test_conforms_to_is_invalid(conforms_to):
-    metadata = Metadata(
-        name="name",
-        conforms_to=conforms_to,
-    )
-    assert any(
-        error.startswith("conformsTo should be a string or a CroissantVersion.")
-        for error in metadata.issues.errors
-    )
-
-
-@pytest.mark.parametrize(
-    ["conforms_to", "expected"],
-    [
-        [None, CroissantVersion.V_0_8],
-        ["http://mlcommons.org/croissant/0.8", CroissantVersion.V_0_8],
-        ["http://mlcommons.org/croissant/1.0", CroissantVersion.V_1_0],
-        [CroissantVersion.V_0_8, CroissantVersion.V_0_8],
-        [CroissantVersion.V_1_0, CroissantVersion.V_1_0],
-    ],
-)
-def test_conforms_to_is_checked(conforms_to, expected: CroissantVersion):
-    # If left empty, conforms_to defaults to 0.8.
-    metadata = Metadata(name="name", conforms_to=conforms_to)
-    assert metadata.conforms_to == expected

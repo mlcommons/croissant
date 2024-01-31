@@ -13,6 +13,19 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
+
+
+def _find_choice(
+    uids: list[Any], node_types: list[NodeType]
+) -> tuple[Any, NodeType | None]:
+    """Returns (None, None) if the inputs don't contain exactly 1 non-null value."""
+    choices = [
+        (uid, node_type) for uid, node_type in zip(uids, node_types) if uid is not None
+    ]
+    if len(choices) != 1:
+        return None, None
+    return choices[0]
 
 
 class FileProperty(enum.IntEnum):
@@ -131,7 +144,7 @@ class Transform:
         return transforms
 
 
-NodeType = Literal["distribution", "field"] | None
+NodeType = Literal["distribution", "field", "fileObject", "fileSet"] | None
 
 
 @dataclasses.dataclass(eq=False)
@@ -192,14 +205,16 @@ class Source:
         })
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, jsonld: Any) -> Source:
+    def from_jsonld(
+        cls, issues: Issues, conforms_to: CroissantVersion, jsonld: Any
+    ) -> Source:
         """Creates a new source from a JSON-LD `field` and populates issues."""
         if jsonld is None:
             return Source()
         elif isinstance(jsonld, list):
             if len(jsonld) != 1:
                 raise ValueError(f"Field {jsonld} should have one element.")
-            return Source.from_jsonld(issues, jsonld[0])
+            return Source.from_jsonld(issues, conforms_to, jsonld[0])
         elif isinstance(jsonld, dict):
             try:
                 transforms = Transform.from_jsonld(
@@ -221,20 +236,38 @@ class Source:
                     )
                 # Safely access and check "uid" from JSON-LD.
                 distribution = jsonld.get(constants.SCHEMA_ORG_DISTRIBUTION)
+                file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT)
+                file_set = jsonld.get(constants.ML_COMMONS_FILE_SET)
                 field = jsonld.get(constants.ML_COMMONS_FIELD)
-                if distribution is not None and field is None:
-                    uid = distribution
-                    node_type: NodeType = "distribution"
-                elif distribution is None and field is not None:
-                    uid = field
-                    node_type = "field"
+                is_v8 = conforms_to <= CroissantVersion.V_0_8
+                if is_v8:
+                    uids = [distribution, field]
+                    node_types: list[NodeType] = ["distribution", "field"]
                 else:
+                    uids = [file_object, file_set, field]
+                    node_types = [
+                        "fileObject",
+                        "fileSet",
+                        "field",
+                    ]
+                uid, node_type = _find_choice(uids, node_types)
+                if uid is None or node_type is None:
                     uid = None
                     node_type = None
+                    if conforms_to <= CroissantVersion.V_0_8:
+                        mandatory_fields_in_source = [
+                            constants.ML_COMMONS_FIELD,
+                            constants.SCHEMA_ORG_DISTRIBUTION,
+                        ]
+                    else:
+                        mandatory_fields_in_source = [
+                            constants.ML_COMMONS_FIELD,
+                            constants.ML_COMMONS_FILE_OBJECT,
+                            constants.ML_COMMONS_FILE_SET,
+                        ]
                     issues.add_error(
                         f"Every {constants.ML_COMMONS_SOURCE} should declare either"
-                        f" {constants.ML_COMMONS_FIELD} or"
-                        f" {constants.SCHEMA_ORG_DISTRIBUTION}"
+                        f" {' or '.join(mandatory_fields_in_source)}"
                     )
                 # Safely access and check "file_property" from JSON-LD.
                 file_property = data_extraction.get(constants.ML_COMMONS_FILE_PROPERTY)
