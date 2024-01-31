@@ -12,9 +12,9 @@ from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import field
 from mlcroissant._src.operation_graph.operations import ReadFields
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import Extract

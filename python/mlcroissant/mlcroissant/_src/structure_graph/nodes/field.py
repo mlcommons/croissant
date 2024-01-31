@@ -16,6 +16,7 @@ from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -28,15 +29,17 @@ class ParentField:
     source: Source | None = None
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, json_) -> ParentField | None:
+    def from_jsonld(
+        cls, issues: Issues, conforms_to: CroissantVersion, json_
+    ) -> ParentField | None:
         """Creates a `ParentField` from JSON-LD."""
         if json_ is None:
             return None
         references = json_.get(constants.ML_COMMONS_REFERENCES)
         source = json_.get(constants.ML_COMMONS_SOURCE)
         return cls(
-            references=Source.from_jsonld(issues, references),
-            source=Source.from_jsonld(issues, source),
+            references=Source.from_jsonld(issues, conforms_to, references),
+            source=Source.from_jsonld(issues, conforms_to, source),
         )
 
     def to_json(self) -> Json:
@@ -146,6 +149,7 @@ class Field(Node):
         context: Context,
         folder: epath.Path,
         rdf: Rdf,
+        conforms_to: CroissantVersion,
         field: Json,
     ) -> Field:
         """Creates a `Field` from JSON-LD."""
@@ -155,9 +159,9 @@ class Field(Node):
             constants.ML_COMMONS_FIELD_TYPE,
         )
         references_jsonld = field.get(constants.ML_COMMONS_REFERENCES)
-        references = Source.from_jsonld(issues, references_jsonld)
+        references = Source.from_jsonld(issues, conforms_to, references_jsonld)
         source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
-        source = Source.from_jsonld(issues, source_jsonld)
+        source = Source.from_jsonld(issues, conforms_to, source_jsonld)
         data_types = field.get(constants.ML_COMMONS_DATA_TYPE, [])
         is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
         if isinstance(data_types, dict):
@@ -175,11 +179,11 @@ class Field(Node):
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]
         sub_fields = [
-            Field.from_jsonld(issues, context, folder, rdf, sub_field)
+            Field.from_jsonld(issues, context, folder, rdf, conforms_to, sub_field)
             for sub_field in sub_fields
         ]
         parent_field = ParentField.from_jsonld(
-            issues, field.get(constants.ML_COMMONS_PARENT_FIELD)
+            issues, conforms_to, field.get(constants.ML_COMMONS_PARENT_FIELD)
         )
         repeated = field.get(constants.ML_COMMONS_REPEATED)
         return cls(

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
-import enum
 import itertools
 from typing import Any, Mapping
 
@@ -24,49 +23,12 @@ from mlcroissant._src.core.url import is_url
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-
-
-class CroissantVersion(enum.Enum):
-    """Major and minor versions of the Croissant standard."""
-
-    V_0_8 = "http://mlcommons.org/croissant/0.8"
-    V_1_0 = "http://mlcommons.org/croissant/1.0"
-
-    @classmethod
-    def from_jsonld(cls, jsonld: Any) -> CroissantVersion:
-        """Builds the class from the JSON-LD."""
-        for version in cls:
-            if version.value == jsonld:
-                return version
-        return CroissantVersion.V_0_8
-
-    def to_json(self) -> str | None:
-        """Serializes back to JSON-LD."""
-        if self == CroissantVersion.V_0_8:
-            # In 0.8, the field conformsTo doesn't exist yet.
-            return None
-        return self.value
-
-    def __lt__(self, other):
-        """Implements CroissantVersion.V_0_8 < CroissantVersion.V_1_0."""
-        return self.value < other.value
-
-    def __le__(self, other):
-        """Implements CroissantVersion.V_0_8 <= CroissantVersion.V_1_0."""
-        return self.value <= other.value
-
-    def __gt__(self, other):
-        """Implements CroissantVersion.V_1_0 > CroissantVersion.V_0_8."""
-        return self.value > other.value
-
-    def __ge__(self, other):
-        """Implements CroissantVersion.V_1_0 >= CroissantVersion.V_0_8."""
-        return self.value >= other.value
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -161,17 +123,7 @@ class Metadata(Node):
             if node.issues.errors:
                 raise ValidationError(node.issues.report())
 
-        if not self.conforms_to:
-            self.conforms_to = CroissantVersion.V_0_8
-        else:
-            try:
-                self.conforms_to = CroissantVersion(self.conforms_to)
-            except ValueError:
-                self.issues.add_error(
-                    "conformsTo should be a string or a CroissantVersion. Got:"
-                    f" {self.conforms_to}"
-                )
-                self.conforms_to = CroissantVersion.V_0_8
+        self.conforms_to = CroissantVersion.from_jsonld(self.issues, self.conforms_to)
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
@@ -343,8 +295,11 @@ class Metadata(Node):
                     f' "{constants.SCHEMA_ORG_FILE_SET}". Got'
                     f" {distribution_type} instead."
                 )
+        conforms_to = CroissantVersion.from_jsonld(
+            issues, metadata.get(constants.DCTERMS_CONFORMS_TO)
+        )
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
+            RecordSet.from_jsonld(issues, context, folder, rdf, conforms_to, record_set)
             for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET, [])
         ]
         url = metadata.get(constants.SCHEMA_ORG_URL)
@@ -358,9 +313,7 @@ class Metadata(Node):
             issues=issues,
             context=context,
             folder=folder,
-            conforms_to=CroissantVersion.from_jsonld(
-                metadata.get(constants.DCTERMS_CONFORMS_TO)
-            ),
+            conforms_to=conforms_to,
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             creators=creators,
             date_published=date_published,
