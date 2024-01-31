@@ -14,11 +14,12 @@ def render_metadata():
     col1, col2 = st.columns([1, 1])
     with col1.expander("**Generic metadata**", expanded=True):
         _render_generic_metadata(metadata)
-    with col2.expander("**Responsible AI (RAI) metadata**", expanded=True):
-        _render_rai_metadata(metadata)
+    with col2.expander("**Instructions**", expanded=True):
+        st.info("Instructions to fill up the metadata section", icon="💡")
 
 
-def _render_rai_metadata(metadata: Metadata):
+
+def render_rai_metadata(metadata: Metadata):
     """Renders RAI (Responsible AI) metadata."""
     key = "metadata-data-collection"
     st.text_area(
