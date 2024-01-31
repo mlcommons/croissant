@@ -346,6 +346,12 @@ class Metadata:
         return set([node.name for node in nodes])
 
 
+@dataclasses.dataclass
+class Rai:
+    """RAI analogue for the editor"""
+    data_biases: str | None = None
+    data_collection: str | None = None
+
 class OpenTab:
     pass
 

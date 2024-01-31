@@ -2,10 +2,10 @@ import streamlit as st
 
 from core.state import Metadata
 from events.metadata import find_license_index
-from events.metadata import handle_metadata_change
+from events.metadata import handle_rai_change
 from events.metadata import LICENSES
 from events.metadata import LICENSES_URL
-from events.metadata import MetadataEvent
+from events.rai import RaiEvent
 
 
 def render_rai_metadata():
@@ -23,8 +23,8 @@ def render_rai_metadata():
                 ),
                 key=key,
                 value=metadata.data_collection,
-                on_change=handle_metadata_change,
-                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                on_change=handle_rai_change,
+                args=(RaiEvent.RAI_DATA_COLLECTION , metadata, key),
             )
             key = "metadata-data-collection-type"
             st.text_area(
@@ -34,8 +34,8 @@ def render_rai_metadata():
                 ),
                 key="metadata-data-collection-type",
                 value=metadata.data_collection,
-                on_change=handle_metadata_change,
-                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                on_change=handle_rai_change,
+                args=(RaiEvent.RAI_DATA_COLLECTION_TYPE, metadata, key),
             )
             key = "metadata-data-collection-missing"
             st.text_area(
@@ -44,8 +44,8 @@ def render_rai_metadata():
                 ),
                 key="metadata-data-collection-missing",
                 value=metadata.data_collection,
-                on_change=handle_metadata_change,
-                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                on_change=handle_rai_change,
+                args=(RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA, metadata, key),
             )
             key = "metadata-data-collection-rawdata"
             st.text_area(
@@ -54,8 +54,8 @@ def render_rai_metadata():
                 ),
                 key="metadata-data-collection-rawdata",
                 value=metadata.data_collection,
-                on_change=handle_metadata_change,
-                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                on_change=handle_rai_change,
+                args=(RaiEvent.RAI_DATA_COLLECTION_RAW_DATA, metadata, key),
             )
             key = "metadata-data-collection-timeframe"
             st.text_area(
@@ -64,8 +64,8 @@ def render_rai_metadata():
                 ),
                 key="metadata-data-collection-timeframe",
                 value=metadata.data_collection,
-                on_change=handle_metadata_change,
-                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                on_change=handle_rai_change,
+                args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME, metadata, key),
             )
          with st.expander("Data Annotation", expanded=False):
                 key = "metadata-data-annotation-protocol"
@@ -75,8 +75,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-annotation-protocol",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_ANNOTATION_PROTOCOL, metadata, key),
                 )
                 key = "metadata-data-annotation-platform"
                 st.text_area(
@@ -85,8 +85,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-annotation-platform",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_ANNOTATION_PLATFORM, metadata, key),
                 )
                 key = "metadata-data-annotation-analysis"
                 st.text_area(
@@ -95,8 +95,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-annotation-analysis",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_ANNOTATION_ANALYSIS, metadata, key),
                 )
                 key = "metadata-data-annotation-demographics"
                 st.text_area(
@@ -105,8 +105,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-annotation-demographics",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_ANNOTATION_DEMOGRAPHICS, metadata, key),
                 )
                 key = "metadata-data-annotation-tools"
                 st.text_area(
@@ -115,8 +115,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-annotation-tools",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_ANNOTATION_TOOLS, metadata, key),
                 )
                 key = "metadata-data-annotation-peritem"
                 st.text_area(
@@ -125,8 +125,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-annotation-peritem",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_ANNOTATION_PERITEM, metadata, key),
                 )            
          with st.expander("Data Preprocessing", expanded=False):
                 key = "metadata-data-imputation-protocol"
@@ -136,8 +136,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-imputation-protocol",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION, metadata, key),
                 )
                 key = "metadata-data-preprocessing-protocol"
                 st.text_area(
@@ -146,8 +146,8 @@ def render_rai_metadata():
                     ),
                     key="metadata-data-preprocessing-protocol",
                     value=metadata.data_collection,
-                    on_change=handle_metadata_change,
-                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL, metadata, key),
                 )
        
     with col2.expander("**Uses and social impact**", expanded=True):
@@ -158,8 +158,8 @@ def render_rai_metadata():
             ),
             key=key,
             value=metadata.data_biases,
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.DATA_BIASES, metadata, key),
+            on_change=handle_rai_change,
+            args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
         )
         key = "metadata-data-biases"
         st.text_area(
@@ -171,8 +171,8 @@ def render_rai_metadata():
             ),
             key=key,
             value=metadata.data_biases,
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.DATA_BIASES, metadata, key),
+            on_change=handle_rai_change,
+            args=(RaiEvent.DATA_BIASES, metadata, key),
         )
         key = "metadata-personal-sensitive-information"
         st.text_area(
@@ -183,8 +183,8 @@ def render_rai_metadata():
             ),
             key=key,
             value=metadata.personal_sensitive_information,
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.PERSONAL_SENSITIVE_INFORMATION, metadata, key),
+            on_change=handle_rai_change,
+            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
         )
         key = "metadata-social-impact"
         st.text_area(
@@ -193,24 +193,24 @@ def render_rai_metadata():
             ),
             key=key,
             value=metadata.data_biases,
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.DATA_BIASES, metadata, key),
+            on_change=handle_rai_change,
+            args=(RaiEvent.RAI_DATA_SOCIAL_IMPACT, metadata, key),
         )
         key = "metadata-data-limitations"
         st.text_area(
             label=("**Data Limitation**. Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."),
             key=key,
             value=metadata.other_field,
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.OTHER_FIELD, metadata, key),
+            on_change=handle_rai_change,
+            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
         )
         key = "metadata-data-maintenance"
         st.text_area(
             label=("**Data Release Maintenance**. Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies. "),
             key=key,
             value=metadata.other_field,
-            on_change=handle_metadata_change,
-            args=(MetadataEvent.OTHER_FIELD, metadata, key),
+            on_change=handle_rai_change,
+            args=(RaiEvent.RAI_MAINTENANCE, metadata, key),
         )
 
         
