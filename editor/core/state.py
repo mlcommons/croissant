@@ -195,6 +195,7 @@ class Metadata:
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     version: str | None = None
+    other_field: str | None = None
 
     def __bool__(self):
         return self.name != "" and self.url != ""

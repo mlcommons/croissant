@@ -57,6 +57,14 @@ def _render_rai_metadata(metadata: Metadata):
         on_change=handle_metadata_change,
         args=(MetadataEvent.PERSONAL_SENSITIVE_INFORMATION, metadata, key),
     )
+    key = "metadata-personal-other"
+    st.text_area(
+        label=("**Other field**. And the desceiption"),
+        key=key,
+        value=metadata.other_field,
+        on_change=handle_metadata_change,
+        args=(MetadataEvent.OTHER_FIELD, metadata, key),
+    )
 
 
 def _render_generic_metadata(metadata: Metadata):

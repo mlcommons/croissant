@@ -95,6 +95,8 @@ class Metadata(Node):
     # can play an important role in the mitigation of any risks and the responsible use
     # of the datasets.
     personal_sensitive_information: str | None = None
+    other_field: str | None = None
+ 
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -155,6 +157,7 @@ class Metadata(Node):
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
+            "other_field": self.other_field
         })
 
     @property
@@ -320,6 +323,7 @@ class Metadata(Node):
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
+            other_field=metadata.get(constants.ML_COMMONS_OTHER_FIELD),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
