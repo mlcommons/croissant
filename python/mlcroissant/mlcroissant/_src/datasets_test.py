@@ -55,7 +55,7 @@ def load_records_and_test_equality(
 ):
     print(
         "If this test fails, update JSONL with: `mlcroissant load"
-        f" --file ../../datasets/{dataset_name} --record_set"
+        f" --file ../../datasets/{version}/{dataset_name} --record_set"
         f" {record_set_name} --num_records {num_records} --debug --update_output`"
     )
     config = (
@@ -85,7 +85,7 @@ def load_records_and_test_equality(
 # You can regenerate .pkl files by launching
 # ```bash
 # mlcroissant load \
-#   --file ../../datasets/{{dataset_name}}/metadata.json \
+#   --file ../../datasets/{{version}}/{{dataset_name}}/metadata.json \
 #   --record_set {{record_set_name}} \
 #   --update_output \
 #   --num_records -1
@@ -135,6 +135,9 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
+        # The following test can only run with a valid `CROISSANT_BASIC_AUTH_USERNAME` and
+        # `CROISSANT_BASIC_AUTH_PASSWORD` configured to hit Kaggle APIs
+        # ["world-happiness/metadata.json", "2015.csv_records", 158],
     ],
 )
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):

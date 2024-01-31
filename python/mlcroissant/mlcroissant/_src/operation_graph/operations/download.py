@@ -1,5 +1,6 @@
 """Download operation module."""
 
+import base64
 import dataclasses
 import hashlib
 import logging
@@ -152,9 +153,11 @@ class Download(Operation):
         with filepath.open("rb") as f:
             while chunk := f.read(_CHUNK_SIZE):
                 hash.update(chunk)
-        actual_hash = hash.hexdigest()
+        # The hash from the Croissant JSON-LD can be in either hex or base64, so check both
+        hex_hash = hash.hexdigest()
+        base64_hash = base64.b64encode(bytes.fromhex(hex_hash)).decode()
         expected_hash = getattr(self.node, hash.name)
-        if actual_hash != expected_hash:
+        if hex_hash != expected_hash and base64_hash != expected_hash:
             logging.info(
                 "Hash of downloaded file is not identical with"
                 " reference in metadata.json"
@@ -167,7 +170,7 @@ class Download(Operation):
                 raise ValueError(
                     f"Hash of downloaded file {filepath} is not identical with the"
                     f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"
-                    f" Got: {actual_hash}"
+                    f" Got: {hex_hash} (hex) / {base64_hash} (base64)"
                 )
 
     def _download_from_http(self, filepath: epath.Path):
