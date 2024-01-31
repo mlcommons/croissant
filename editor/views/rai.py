@@ -12,59 +12,205 @@ def render_rai_metadata():
     """Renders the `Metadata` view."""
     metadata: Metadata = st.session_state[Metadata]
     col1, col2 = st.columns([1, 1])
-    with col1.expander("**Responsible AI (RAI) metadata**", expanded=True):
-        _render_rai_fields(metadata)
-    with col2.expander("Instructions", expanded=True):
-        st.info("Instructions to fill up the RAI section", icon="💡")
+    with col1.expander("**Provenance**", expanded=True):
+         with st.expander("Data Collection", expanded=False):
+            key = "metadata-data-collection"
+            st.text_area(
+                label=(
+                    "**Data collection**. Key stages of the data collection process encourage"
+                    " its creators to reflect on the process and improves understanding for"
+                    " users."
+                ),
+                key=key,
+                value=metadata.data_collection,
+                on_change=handle_metadata_change,
+                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+            )
+            key = "metadata-data-collection-type"
+            st.text_area(
+                label=(
+                    "**Data collection Type**. Define the data collection type. Recommended values:"
+                    "Surveys, Secondary Data analysis, Physical data collection, Direct measurement, Document analysis, Manual Human Curator, Software Collection, Experiments, Web Scraping, Web API, Focus groups, Self-reporting, Customer feedback data, User-generated content data, Passive Data Collection, Others"
+                ),
+                key="metadata-data-collection-type",
+                value=metadata.data_collection,
+                on_change=handle_metadata_change,
+                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+            )
+            key = "metadata-data-collection-missing"
+            st.text_area(
+                label=(
+                    "**Data Collection - Missing Data**. Description of missing data in structured/unstructured form"
+                ),
+                key="metadata-data-collection-missing",
+                value=metadata.data_collection,
+                on_change=handle_metadata_change,
+                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+            )
+            key = "metadata-data-collection-rawdata"
+            st.text_area(
+                label=(
+                    "**Data Collection - RawData**. Description of the raw data i.e. source of the data "
+                ),
+                key="metadata-data-collection-rawdata",
+                value=metadata.data_collection,
+                on_change=handle_metadata_change,
+                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+            )
+            key = "metadata-data-collection-timeframe"
+            st.text_area(
+                label=(
+                    "**Data Collection - Timeframe**. Timeframe in terms of start and end date of the collection process **range**: https://schema.org/DateTime "
+                ),
+                key="metadata-data-collection-timeframe",
+                value=metadata.data_collection,
+                on_change=handle_metadata_change,
+                args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+            )
+         with st.expander("Data Annotation", expanded=False):
+                key = "metadata-data-annotation-protocol"
+                st.text_area(
+                    label=(
+                        "**Data Annotation - Protocol**. Description of annotations (labels, ratings) produced, including how these were created or authored -  Annotation Workforce Type, Annotation Characteristic(s), Annotation Description(s), Annotation Task(s), Annotation Distribution(s)  "
+                    ),
+                    key="metadata-data-annotation-protocol",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+                key = "metadata-data-annotation-platform"
+                st.text_area(
+                    label=(
+                        "**Data Annotation - Platform**. Platform, tool, or library used to collect annotations by human annotators "
+                    ),
+                    key="metadata-data-annotation-platform",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+                key = "metadata-data-annotation-analysis"
+                st.text_area(
+                    label=(
+                        "**Data Annotation - Analysis**. Considerations related to the process of converting the “raw” annotations into the labels that are ultimately packaged in a dataset - Uncertainty or disagreement between annotations on each instance as a signal in the dataset, analysis of systematic disagreements between annotators of different socio demographic group,  how the final dataset annotations will relate to individual annotator responses  "
+                    ),
+                    key="metadata-data-annotation-analysis",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+                key = "metadata-data-annotation-demographics"
+                st.text_area(
+                    label=(
+                        "**Data Annotation - Demogrpahics**. List of demographics specifications about the annotators "
+                    ),
+                    key="metadata-data-annotation-demographics",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+                key = "metadata-data-annotation-tools"
+                st.text_area(
+                    label=(
+                        "**Data Annotation - Tools**. List of software used for data annotation ( e.g. concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)  "
+                    ),
+                    key="metadata-data-annotation-tools",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+                key = "metadata-data-annotation-peritem"
+                st.text_area(
+                    label=(
+                        "**Data Annotation - Per Item**. Number of human labels per dataset item  "
+                    ),
+                    key="metadata-data-annotation-peritem",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )            
+         with st.expander("Data Preprocessing", expanded=False):
+                key = "metadata-data-imputation-protocol"
+                st.text_area(
+                    label=(
+                        "**Data Preprocessing - Imputation Protocol**. Description of data imputation process if applicable  "
+                    ),
+                    key="metadata-data-imputation-protocol",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+                key = "metadata-data-preprocessing-protocol"
+                st.text_area(
+                    label=(
+                        "**Data Preprocessing - Protocol**. Description of data manipulation process if applicable   "
+                    ),
+                    key="metadata-data-preprocessing-protocol",
+                    value=metadata.data_collection,
+                    on_change=handle_metadata_change,
+                    args=(MetadataEvent.DATA_COLLECTION, metadata, key),
+                )
+       
+    with col2.expander("**Uses and social impact**", expanded=True):
+        key = "metadata-data-usecases"
+        st.text_area(
+            label=(
+                "**Data Use Cases**. Dataset Use(s) - Training, Testing, Validation, Development or Production Use, Fine Tuning, Others (please specify), Usage Guidelines. Recommended uses"
+            ),
+            key=key,
+            value=metadata.data_biases,
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.DATA_BIASES, metadata, key),
+        )
+        key = "metadata-data-biases"
+        st.text_area(
+            label=(
+                "**Data biases**. Involves understanding the potential risks associated"
+                " with data usage and to prevent unintended and potentially harmful"
+                " consequences that may arise from using models trained on or evaluated"
+                " with the respective data."
+            ),
+            key=key,
+            value=metadata.data_biases,
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.DATA_BIASES, metadata, key),
+        )
+        key = "metadata-personal-sensitive-information"
+        st.text_area(
+            label=(
+                "**Personal sensitive information**. Personal and sensitive information, if"
+                " contained within the dataset, can play an important role in the"
+                " mitigation of any risks and the responsible use of the datasets."
+            ),
+            key=key,
+            value=metadata.personal_sensitive_information,
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.PERSONAL_SENSITIVE_INFORMATION, metadata, key),
+        )
+        key = "metadata-social-impact"
+        st.text_area(
+            label=(
+                "**Social Impact**. Discussion of social impact, if applicable"
+            ),
+            key=key,
+            value=metadata.data_biases,
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.DATA_BIASES, metadata, key),
+        )
+        key = "metadata-data-limitations"
+        st.text_area(
+            label=("**Data Limitation**. Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."),
+            key=key,
+            value=metadata.other_field,
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.OTHER_FIELD, metadata, key),
+        )
+        key = "metadata-data-maintenance"
+        st.text_area(
+            label=("**Data Release Maintenance**. Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies. "),
+            key=key,
+            value=metadata.other_field,
+            on_change=handle_metadata_change,
+            args=(MetadataEvent.OTHER_FIELD, metadata, key),
+        )
+
         
-
-
-def _render_rai_fields(metadata: Metadata):
-    """Renders RAI (Responsible AI) metadata."""
-    key = "metadata-data-collection"
-    st.text_area(
-        label=(
-            "**Data collection**. Key stages of the data collection process encourage"
-            " its creators to reflect on the process and improves understanding for"
-            " users."
-        ),
-        key=key,
-        value=metadata.data_collection,
-        on_change=handle_metadata_change,
-        args=(MetadataEvent.DATA_COLLECTION, metadata, key),
-    )
-    key = "metadata-data-biases"
-    st.text_area(
-        label=(
-            "**Data biases**. Involves understanding the potential risks associated"
-            " with data usage and to prevent unintended and potentially harmful"
-            " consequences that may arise from using models trained on or evaluated"
-            " with the respective data."
-        ),
-        key=key,
-        value=metadata.data_biases,
-        on_change=handle_metadata_change,
-        args=(MetadataEvent.DATA_BIASES, metadata, key),
-    )
-    key = "metadata-personal-sensitive-information"
-    st.text_area(
-        label=(
-            "**Personal sensitive information**. Personal and sensitive information, if"
-            " contained within the dataset, can play an important role in the"
-            " mitigation of any risks and the responsible use of the datasets."
-        ),
-        key=key,
-        value=metadata.personal_sensitive_information,
-        on_change=handle_metadata_change,
-        args=(MetadataEvent.PERSONAL_SENSITIVE_INFORMATION, metadata, key),
-    )
-    key = "metadata-personal-other"
-    st.text_area(
-        label=("**Other field**. And the desceiption"),
-        key=key,
-        value=metadata.other_field,
-        on_change=handle_metadata_change,
-        args=(MetadataEvent.OTHER_FIELD, metadata, key),
-    )
-
-
