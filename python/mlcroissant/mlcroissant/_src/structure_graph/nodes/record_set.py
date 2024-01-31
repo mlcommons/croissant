@@ -6,18 +6,14 @@ import dataclasses
 import itertools
 import json
 
-from etils import epath
-
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.issues import IssueContext
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 
 
@@ -80,28 +76,21 @@ class RecordSet(Node):
         })
 
     @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: IssueContext,
-        folder: epath.Path,
-        rdf: Rdf,
-        conforms_to: CroissantVersion,
-        record_set: Json,
-    ) -> RecordSet:
+    def from_jsonld(cls, ctx: Context, record_set: Json) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
-        check_expected_type(issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE)
+        check_expected_type(
+            ctx.issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE
+        )
         record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
         context = IssueContext(
-            dataset_name=context.dataset_name, record_set_name=record_set_name
+            dataset_name=ctx.context.dataset_name, record_set_name=record_set_name
         )
+        # TODO(marcenacp): Ici comment faire pour réinjecter le contexte ?
+        ctx = ctx.copy(context=context)
         fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
         if isinstance(fields, dict):
             fields = [fields]
-        fields = [
-            Field.from_jsonld(issues, context, folder, rdf, conforms_to, field)
-            for field in fields
-        ]
+        fields = [Field.from_jsonld(ctx, field) for field in fields]
         key = record_set.get(constants.SCHEMA_ORG_KEY)
         data = record_set.get(constants.ML_COMMONS_DATA)
         if isinstance(data, str):
@@ -109,23 +98,18 @@ class RecordSet(Node):
                 data = json.loads(data)
             except json.decoder.JSONDecodeError:
                 data = None
-                issues.add_error(
+                ctx.issues.add_error(
                     f"{constants.ML_COMMONS_DATA} is not a proper list of JSON: {data}"
                 )
         is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION)
         return cls(
-            issues=issues,
-            folder=folder,
-            context=IssueContext(
-                dataset_name=context.dataset_name, record_set_name=record_set_name
-            ),
+            ctx=ctx,
             data=data,
             description=record_set.get(constants.SCHEMA_ORG_DESCRIPTION),
             is_enumeration=is_enumeration,
             key=key,
             fields=fields,
             name=record_set_name,
-            rdf=rdf,
         )
 
     def check_joins_in_fields(self, fields: list[Field]):

@@ -3,18 +3,14 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Mapping
-
-from etils import epath
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.issues import IssueContext
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -31,7 +27,6 @@ class FileObject(Node):
     name: str = ""
     sha256: str | None = None
     source: Source | None = None
-    mapping: Mapping[str, epath.Path] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -63,15 +58,11 @@ class FileObject(Node):
     @classmethod
     def from_jsonld(
         cls,
-        issues: Issues,
-        context: IssueContext,
-        folder: epath.Path,
-        rdf: Rdf,
+        ctx: Context,
         file_object: Json,
-        mapping: Mapping[str, epath.Path],
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
+        check_expected_type(ctx.issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
         content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
         contained_in = file_object.get(constants.SCHEMA_ORG_CONTAINED_IN, [])
         name = file_object.get(constants.SCHEMA_ORG_NAME, "")
@@ -80,21 +71,20 @@ class FileObject(Node):
         content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
-        return cls(
-            issues=issues,
+        ctx = ctx.copy(
             context=IssueContext(
-                dataset_name=context.dataset_name, distribution_name=name
-            ),
-            folder=folder,
+                dataset_name=ctx.context.dataset_name, distribution_name=name
+            )
+        )
+        return cls(
+            ctx=ctx,
             content_url=content_url,
             content_size=content_size,
             contained_in=contained_in,
             description=description,
             encoding_format=encoding_format,
-            mapping=mapping,
             md5=file_object.get(constants.SCHEMA_ORG_MD5),
             name=name,
-            rdf=rdf,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE),
         )

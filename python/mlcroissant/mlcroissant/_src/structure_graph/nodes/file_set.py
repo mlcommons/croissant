@@ -4,16 +4,13 @@ from __future__ import annotations
 
 import dataclasses
 
-from etils import epath
-
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.issues import IssueContext
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -49,28 +46,25 @@ class FileSet(Node):
     @classmethod
     def from_jsonld(
         cls,
-        issues: Issues,
-        context: IssueContext,
-        folder: epath.Path,
-        rdf: Rdf,
+        ctx: Context,
         file_set: Json,
     ) -> FileSet:
         """Creates a `FileSet` from JSON-LD."""
-        check_expected_type(issues, file_set, constants.SCHEMA_ORG_FILE_SET)
+        check_expected_type(ctx.issues, file_set, constants.SCHEMA_ORG_FILE_SET)
         name = file_set.get(constants.SCHEMA_ORG_NAME, "")
         contained_in = file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
         if contained_in is not None and not isinstance(contained_in, list):
             contained_in = [contained_in]
-        return cls(
-            issues=issues,
+        ctx = ctx.copy(
             context=IssueContext(
-                dataset_name=context.dataset_name, distribution_name=name
-            ),
-            folder=folder,
+                dataset_name=ctx.context.dataset_name, distribution_name=name
+            )
+        )
+        return cls(
+            ctx=ctx,
             contained_in=contained_in,
             description=file_set.get(constants.SCHEMA_ORG_DESCRIPTION),
             encoding_format=file_set.get(constants.SCHEMA_ORG_ENCODING_FORMAT),
             includes=file_set.get(constants.ML_COMMONS_INCLUDES),
             name=name,
-            rdf=rdf,
         )

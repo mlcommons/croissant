@@ -6,6 +6,7 @@ from etils import epath
 import networkx as nx
 
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import Concatenate
@@ -160,13 +161,7 @@ class OperationGraph:
     operations: Operations
 
     @classmethod
-    def from_nodes(
-        cls,
-        issues: Issues,
-        metadata: Node,
-        graph: nx.DiGraph,
-        folder: epath.Path,
-    ) -> "OperationGraph":
+    def from_nodes(cls, ctx: Context, metadata: Node) -> "OperationGraph":
         """Builds the ComputationGraph from the nodes.
 
         This is done by:
@@ -177,7 +172,7 @@ class OperationGraph:
         """
         operations = Operations()
         # Find all fields
-        for node in nx.topological_sort(graph):
+        for node in nx.topological_sort(ctx.graph):
             if isinstance(node, Field):
                 parent = node.parent
                 # TODO(https://github.com/mlcommons/croissant/issues/310): Change the
@@ -194,19 +189,19 @@ class OperationGraph:
                 Data(operations=operations, node=node)
             elif isinstance(node, FileObject):
                 if node.encoding_format == EncodingFormat.GIT:
-                    _add_operations_for_git(operations, node, folder)
+                    _add_operations_for_git(operations, node, ctx.folder)
                 else:
-                    _add_operations_for_file_object(operations, node, folder)
+                    _add_operations_for_file_object(operations, node, ctx.folder)
             elif isinstance(node, FileSet):
                 if not node.contained_in:
-                    _add_operations_for_local_file_sets(operations, node, folder)
+                    _add_operations_for_local_file_sets(operations, node, ctx.folder)
 
         # Attach all entry nodes to a single `start` node
         entry_operations = operations.entry_operations()
         init_operation = InitOperation(operations=operations, node=metadata)
         for entry_operation in entry_operations:
             operations.add_edge(init_operation, entry_operation)
-        return OperationGraph(issues=issues, operations=operations)
+        return OperationGraph(issues=ctx.issues, operations=operations)
 
     def check_graph(self):
         """Checks the operation graph for issues."""

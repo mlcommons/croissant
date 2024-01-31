@@ -10,10 +10,10 @@ import jsonpath_rw
 from jsonpath_rw import lexer
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 
 
 def _find_choice(
@@ -113,7 +113,7 @@ class Transform:
         })
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, jsonld: Json | list[Json]) -> list[Transform]:
+    def from_jsonld(cls, ctx: Context, jsonld: Json | list[Json]) -> list[Transform]:
         """Creates a list of `Transform` from JSON-LD."""
         transforms: list[Transform] = []
         if not isinstance(jsonld, list):
@@ -127,7 +127,7 @@ class Transform:
                 constants.ML_COMMONS_SEPARATOR,
             ]
             if not isinstance(transform, dict):
-                issues.add_error(
+                ctx.issues.add_error(
                     f'Transform "{transform}" should be a dict with the keys'
                     f' {", ".join(keys)}'
                 )
@@ -135,7 +135,7 @@ class Transform:
             kwargs = {constants.TO_CROISSANT[k]: transform.get(k) for k in keys}
             all_values_are_none = all(v is None for v in kwargs.values())
             if all_values_are_none:
-                issues.add_error(
+                ctx.issues.add_error(
                     f'Transform "{transform}" should be a dict with at least one key in'
                     f' {", ".join(keys)}'
                 )
@@ -205,20 +205,18 @@ class Source:
         })
 
     @classmethod
-    def from_jsonld(
-        cls, issues: Issues, conforms_to: CroissantVersion, jsonld: Any
-    ) -> Source:
+    def from_jsonld(cls, ctx: Context, jsonld: Any) -> Source:
         """Creates a new source from a JSON-LD `field` and populates issues."""
         if jsonld is None:
             return Source()
         elif isinstance(jsonld, list):
             if len(jsonld) != 1:
                 raise ValueError(f"Field {jsonld} should have one element.")
-            return Source.from_jsonld(issues, conforms_to, jsonld[0])
+            return Source.from_jsonld(ctx, jsonld[0])
         elif isinstance(jsonld, dict):
             try:
                 transforms = Transform.from_jsonld(
-                    issues, jsonld.get(constants.ML_COMMONS_TRANSFORM, [])
+                    ctx, jsonld.get(constants.ML_COMMONS_TRANSFORM, [])
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
                 data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT, {})
@@ -227,7 +225,7 @@ class Source:
                 # Remove the JSON-LD @id property if it exists:
                 data_extraction.pop("@id", None)
                 if len(data_extraction) > 1:
-                    issues.add_error(
+                    ctx.issues.add_error(
                         f"{constants.ML_COMMONS_EXTRACT} should have one of the"
                         f" following properties: {constants.ML_COMMONS_FORMAT},"
                         f" {constants.ML_COMMONS_REGEX},"
@@ -239,7 +237,7 @@ class Source:
                 file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT)
                 file_set = jsonld.get(constants.ML_COMMONS_FILE_SET)
                 field = jsonld.get(constants.ML_COMMONS_FIELD)
-                is_v8 = conforms_to <= CroissantVersion.V_0_8
+                is_v8 = ctx.conforms_to <= CroissantVersion.V_0_8
                 if is_v8:
                     uids = [distribution, field]
                     node_types: list[NodeType] = ["distribution", "field"]
@@ -252,9 +250,7 @@ class Source:
                     ]
                 uid, node_type = _find_choice(uids, node_types)
                 if uid is None or node_type is None:
-                    uid = None
-                    node_type = None
-                    if conforms_to <= CroissantVersion.V_0_8:
+                    if is_v8:
                         mandatory_fields_in_source = [
                             constants.ML_COMMONS_FIELD,
                             constants.SCHEMA_ORG_DISTRIBUTION,
@@ -265,7 +261,7 @@ class Source:
                             constants.ML_COMMONS_FILE_OBJECT,
                             constants.ML_COMMONS_FILE_SET,
                         ]
-                    issues.add_error(
+                    ctx.issues.add_error(
                         f"Every {constants.ML_COMMONS_SOURCE} should declare either"
                         f" {' or '.join(mandatory_fields_in_source)}"
                     )
@@ -274,7 +270,7 @@ class Source:
                 if is_file_property(file_property):
                     file_property = FileProperty[file_property]
                 elif file_property is not None:
-                    issues.add_error(
+                    ctx.issues.add_error(
                         f"Property {constants.ML_COMMONS_FILE_PROPERTY} can only have"
                         " values in `fullpath`, `filepath` and `content`. Got:"
                         f" {file_property}"
@@ -294,12 +290,12 @@ class Source:
                     node_type=node_type,
                 )
             except TypeError as exception:
-                issues.add_error(
+                ctx.issues.add_error(
                     f"Malformed `source`: {jsonld}. Got exception: {exception}"
                 )
                 return Source()
         else:
-            issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
+            ctx.issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
             return Source()
 
     def __bool__(self):
