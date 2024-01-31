@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -71,7 +73,7 @@
           "description": "0, 1, 2 or 3",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "enum_directions.csv",
+            "fileObject": "enum_directions.csv",
             "extract": {
               "column": "key"
             }
@@ -86,7 +88,7 @@
             "sc:name"
           ],
           "source": {
-            "distribution": "enum_directions.csv",
+            "fileObject": "enum_directions.csv",
             "extract": {
               "column": "label"
             }
@@ -105,7 +107,7 @@
           "description": "The first column contains the name of the object.",
           "dataType": "sc:Text",
           "references": {
-            "distribution": "enum.csv",
+            "fileObject": "enum.csv",
             "extract": {
               "column": "name"
             }
@@ -123,7 +125,7 @@
             "field": "direction_enum/key"
           },
           "source": {
-            "distribution": "enum.csv",
+            "fileObject": "enum.csv",
             "extract": {
               "column": "direction"
             }

@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -77,7 +79,7 @@
           "name": "id",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "source-images",
+            "fileSet": "source-images",
             "extract": {
               "fileProperty": "filename"
             },
@@ -91,7 +93,7 @@
           "name": "image",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "source-images",
+            "fileSet": "source-images",
             "extract": {
               "fileProperty": "content"
             }
@@ -102,7 +104,7 @@
           "name": "split",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "source-images",
+            "fileSet": "source-images",
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -136,7 +138,7 @@
           "name": "annotation",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "source-annotations",
+            "fileSet": "source-annotations",
             "extract": {
               "fileProperty": "content"
             }

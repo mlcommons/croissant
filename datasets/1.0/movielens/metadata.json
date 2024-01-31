@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -104,7 +106,7 @@
           "name": "movie_id",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "movies-table",
+            "fileObject": "movies-table",
             "extract": {
               "column": "movieId"
             }
@@ -116,7 +118,7 @@
           "description": "The title of the  movie with the release year in parentheses.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "movies-table",
+            "fileObject": "movies-table",
             "extract": {
               "column": "title"
             }
@@ -129,7 +131,7 @@
           "dataType": "sc:Text",
           "repeated": "true",
           "source": {
-            "distribution": "movies-table",
+            "fileObject": "movies-table",
             "extract": {
               "column": "genres"
             },
@@ -153,7 +155,7 @@
           "name": "user_id",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "ratings-table",
+            "fileObject": "ratings-table",
             "extract": {
               "column": "userId"
             }
@@ -167,7 +169,7 @@
             "field": "movies/movie_id"
           },
           "source": {
-            "distribution": "ratings-table",
+            "fileObject": "ratings-table",
             "extract": {
               "column": "movieId"
             }
@@ -179,7 +181,7 @@
           "description": "The score of the rating on a five-star scale.",
           "dataType": "sc:Float",
           "source": {
-            "distribution": "ratings-table",
+            "fileObject": "ratings-table",
             "extract": {
               "column": "rating"
             }
@@ -190,7 +192,7 @@
           "name": "timestamp",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "ratings-table",
+            "fileObject": "ratings-table",
             "extract": {
               "column": "timestamp"
             }
@@ -212,7 +214,7 @@
           "name": "user_id",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "tags-table",
+            "fileObject": "tags-table",
             "extract": {
               "column": "userId"
             }
@@ -226,7 +228,7 @@
             "field": "movies/movie_id"
           },
           "source": {
-            "distribution": "tags-table",
+            "fileObject": "tags-table",
             "extract": {
               "column": "movieId"
             }
@@ -238,7 +240,7 @@
           "description": "Tags assigned to the movie.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "tags-table",
+            "fileObject": "tags-table",
             "extract": {
               "column": "tag"
             }
@@ -249,7 +251,7 @@
           "name": "timestamp",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "tags-table",
+            "fileObject": "tags-table",
             "extract": {
               "column": "timestamp"
             }

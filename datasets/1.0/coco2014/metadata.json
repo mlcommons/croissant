@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -175,7 +177,7 @@
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "filename"
             },
@@ -190,7 +192,7 @@
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "filename"
             }
@@ -202,7 +204,7 @@
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "content"
             }
@@ -219,7 +221,7 @@
             "field": "split_enums/name"
           },
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -241,7 +243,7 @@
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileSet": "caption_annotations-files",
             "extract": {
               "column": "id"
             }
@@ -253,7 +255,7 @@
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileSet": "caption_annotations-files",
             "extract": {
               "column": "image_id"
             }
@@ -268,7 +270,7 @@
             "wd:Q18585177"
           ],
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileSet": "caption_annotations-files",
             "extract": {
               "column": "caption"
             }
@@ -285,7 +287,7 @@
             "field": "split_enums/name"
           },
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileSet": "caption_annotations-files",
             "extract": {
               "fileProperty": "filename"
             },
@@ -308,7 +310,7 @@
           "description": "The ID of the category",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "id"
             }
@@ -323,7 +325,7 @@
             "sc:name"
           ],
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "name"
             }
@@ -339,7 +341,7 @@
           ],
           "isEnumeration": true,
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "supercategory"
             }
@@ -358,7 +360,7 @@
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "id"
             }
@@ -373,7 +375,7 @@
             "field": "categories/id"
           },
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "category_id"
             }
@@ -388,7 +390,7 @@
             "field": "images/image_id"
           },
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "image_id"
             }
@@ -400,7 +402,7 @@
           "description": "The bounding box around annotated object[s].",
           "dataType": "ml:BoundingBox",
           "source": {
-            "distribution": "instancesperson_keypoints_annotations",
+            "fileSet": "instancesperson_keypoints_annotations",
             "extract": {
               "column": "bbox"
             }

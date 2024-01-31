@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -79,7 +81,7 @@
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_directory",
+            "fileSet": "languages_in_directory",
             "extract": {
               "fileProperty": "lines"
             }
@@ -91,7 +93,7 @@
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "languages_in_directory",
+            "fileSet": "languages_in_directory",
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -103,7 +105,7 @@
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_directory",
+            "fileSet": "languages_in_directory",
             "extract": {
               "fileProperty": "filename"
             }
@@ -122,7 +124,7 @@
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_zip",
+            "fileSet": "languages_in_zip",
             "extract": {
               "fileProperty": "lines"
             }
@@ -134,7 +136,7 @@
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "languages_in_zip",
+            "fileSet": "languages_in_zip",
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -146,7 +148,7 @@
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_zip",
+            "fileSet": "languages_in_zip",
             "extract": {
               "fileProperty": "filename"
             }
