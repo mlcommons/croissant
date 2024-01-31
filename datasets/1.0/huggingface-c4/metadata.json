@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -75,7 +77,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
@@ -87,7 +89,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
@@ -99,7 +101,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }
@@ -118,7 +120,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
@@ -130,7 +132,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
@@ -142,7 +144,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }
@@ -161,7 +163,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
@@ -173,7 +175,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
@@ -185,7 +187,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }
@@ -204,7 +206,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
@@ -216,7 +218,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
@@ -228,7 +230,7 @@
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }

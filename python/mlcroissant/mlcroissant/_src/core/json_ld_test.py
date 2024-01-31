@@ -36,6 +36,8 @@ def test_make_context():
         "extract": "ml:extract",
         "field": "ml:field",
         "fileProperty": "ml:fileProperty",
+        "fileObject": "ml:fileObject",
+        "fileSet": "ml:fileSet",
         "format": "ml:format",
         "includes": "ml:includes",
         "isEnumeration": "ml:isEnumeration",

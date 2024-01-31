@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -89,13 +91,13 @@
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
-            "distribution": "metadata",
+            "fileObject": "metadata",
             "extract": {
               "column": "hash"
             }
           },
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "filename"
             },
@@ -110,7 +112,7 @@
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "content"
             }
@@ -122,7 +124,7 @@
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "metadata",
+            "fileObject": "metadata",
             "extract": {
               "column": "unickname"
             }
@@ -139,7 +141,7 @@
               "name": "latitude",
               "dataType": "sc:Float",
               "source": {
-                "distribution": "metadata",
+                "fileObject": "metadata",
                 "extract": {
                   "column": "latitude"
                 }
@@ -150,7 +152,7 @@
               "name": "longitude",
               "dataType": "sc:Float",
               "source": {
-                "distribution": "metadata",
+                "fileObject": "metadata",
                 "extract": {
                   "column": "longitude"
                 }
@@ -164,7 +166,7 @@
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
-            "distribution": "metadata",
+            "fileObject": "metadata",
             "extract": {
               "column": "datetaken"
             },

@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -64,7 +66,7 @@
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
           "references": {
-            "distribution": "minimal.csv",
+            "fileObject": "minimal.csv",
             "extract": {
               "column": "name"
             }
@@ -76,7 +78,7 @@
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
           "references": {
-            "distribution": "minimal.csv",
+            "fileObject": "minimal.csv",
             "extract": {
               "column": "age"
             }

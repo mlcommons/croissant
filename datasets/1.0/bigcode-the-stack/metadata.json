@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -72,7 +74,7 @@
           "description": "The content of the file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "content"
             }
@@ -84,7 +86,7 @@
           "description": "Programming language of the file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -99,7 +101,7 @@
           "description": "Unique git hash of file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "hexsha"
             }
@@ -111,7 +113,7 @@
           "description": "Size of the uncompressed file..",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "size"
             }
@@ -123,7 +125,7 @@
           "description": "File extension.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "ext"
             }
@@ -135,7 +137,7 @@
           "description": "Hash of the file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "lang"
             }
@@ -147,7 +149,7 @@
           "description": "Path to file in repo containing this file with maximum number of stars.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_stars_repo_path"
             }
@@ -159,7 +161,7 @@
           "description": "Name of repo containing this file with maximum number of stars.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_stars_repo_name"
             }
@@ -171,7 +173,7 @@
           "description": "Hexsha of repository head with the maximum of stars.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_stars_repo_head_hexsha"
             }
@@ -183,7 +185,7 @@
           "description": "Number of stars in repository.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_stars_count"
             }
@@ -195,7 +197,7 @@
           "description": "First timestamp of a stars event.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_stars_repo_stars_event_min_datetime"
             }
@@ -207,7 +209,7 @@
           "description": "Last timestamp of a stars event.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_stars_repo_stars_event_max_datetime"
             }
@@ -219,7 +221,7 @@
           "description": "Path to file in repo containing this file with maximum number of issues.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_issues_repo_path"
             }
@@ -231,7 +233,7 @@
           "description": "Hexsha of repository head with the maximum of issues.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_issues_repo_head_hexsha"
             }
@@ -243,7 +245,7 @@
           "description": "Number of issues in repository.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_issues_count"
             }
@@ -255,7 +257,7 @@
           "description": "First timestamp of an issues event.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_issues_repo_issues_event_min_datetime"
             }
@@ -267,7 +269,7 @@
           "description": "Last timestamp of an issues event.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_issues_repo_issues_event_max_datetime"
             }
@@ -279,7 +281,7 @@
           "description": "Path to file in repo containing this file with maximum number of forks.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_forks_repo_path"
             }
@@ -291,7 +293,7 @@
           "description": "Name of repo containing this file with maximum number of forks.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_forks_repo_name"
             }
@@ -303,7 +305,7 @@
           "description": "Hexsha of repository head with the maximum of forks.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_forks_repo_head_hexsha"
             }
@@ -315,7 +317,7 @@
           "description": "Number of forks in repository.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_forks_count"
             }
@@ -327,7 +329,7 @@
           "description": "First timestamp of a forks event.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_forks_repo_forks_event_min_datetime"
             }
@@ -339,7 +341,7 @@
           "description": "Last timestamp of a forks event.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_forks_repo_forks_event_max_datetime"
             }
@@ -351,7 +353,7 @@
           "description": "The average line-length of the file.",
           "dataType": "sc:Float",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "avg_line_length"
             }
@@ -363,7 +365,7 @@
           "description": "The maximum line-length of the file.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "max_line_length"
             }
@@ -375,7 +377,7 @@
           "description": "The fraction of characters in the file that are alphabetical or numerical characters.",
           "dataType": "sc:Float",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "alphanum_fraction"
             }
