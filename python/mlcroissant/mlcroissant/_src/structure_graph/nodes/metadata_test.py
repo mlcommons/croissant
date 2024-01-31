@@ -6,7 +6,7 @@ from etils import epath
 import pytest
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.structure_graph.base_node import Node
@@ -34,7 +34,7 @@ def test_checks_are_performed():
 @parametrize_conforms_to()
 def test_from_jsonld(conforms_to: CroissantVersion):
     issues = Issues()
-    context = Context()
+    context = IssueContext()
     folder = epath.Path("/foo/bar")
     jsonld = {
         "@type": constants.SCHEMA_ORG_DATASET,

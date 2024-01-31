@@ -11,7 +11,7 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
@@ -146,7 +146,7 @@ class Field(Node):
     def from_jsonld(
         cls,
         issues: Issues,
-        context: Context,
+        context: IssueContext,
         folder: epath.Path,
         rdf: Rdf,
         conforms_to: CroissantVersion,

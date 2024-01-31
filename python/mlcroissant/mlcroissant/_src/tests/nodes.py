@@ -5,7 +5,7 @@ from typing import Callable, TypeVar
 
 from etils import epath
 
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -29,7 +29,7 @@ class _EmptyNode(Node):
 def _node_params(**kwargs):
     params = {
         "issues": Issues(),
-        "context": Context(),
+        "context": IssueContext(),
         "name": "node_name",
         "folder": epath.Path(),
     }

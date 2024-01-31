@@ -6,7 +6,7 @@ from etils import epath
 import pytest
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
@@ -41,7 +41,7 @@ def test_checks_are_performed():
 )
 def test_from_jsonld(encoding):
     issues = Issues()
-    context = Context()
+    context = IssueContext()
     folder = epath.Path("/foo/bar")
     rdf = Rdf()
     jsonld = {

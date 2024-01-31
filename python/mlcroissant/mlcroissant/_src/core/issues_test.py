@@ -2,7 +2,7 @@
 
 import textwrap
 
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 
 
@@ -12,8 +12,8 @@ def test_issues():
     assert not issues.warnings
 
     # With context
-    issues.add_error("foo", Context(dataset_name="abc"))
-    issues.add_warning("bar", Context(dataset_name="abc", distribution_name="xyz"))
+    issues.add_error("foo", IssueContext(dataset_name="abc"))
+    issues.add_warning("bar", IssueContext(dataset_name="abc", distribution_name="xyz"))
     assert issues.errors == {"[dataset(abc)] foo"}
     assert issues.warnings == {"[dataset(abc) > distribution(xyz)] bar"}
 

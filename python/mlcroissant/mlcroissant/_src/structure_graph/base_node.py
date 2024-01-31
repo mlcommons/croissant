@@ -12,7 +12,7 @@ from etils import epath
 import networkx as nx
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
@@ -44,7 +44,9 @@ class Node(abc.ABC):
     """
 
     issues: Issues = dataclasses.field(default_factory=Issues)
-    context: Context = dataclasses.field(default_factory=Context, compare=False)
+    context: IssueContext = dataclasses.field(
+        default_factory=IssueContext, compare=False
+    )
     folder: epath.Path | None = None
     name: str = ""
     graph: nx.MultiDiGraph = dataclasses.field(

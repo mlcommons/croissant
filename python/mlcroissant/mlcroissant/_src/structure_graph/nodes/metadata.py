@@ -13,7 +13,7 @@ import requests
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_str_to_date_time
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
@@ -274,7 +274,7 @@ class Metadata(Node):
         distribution: list[FileObject | FileSet] = []
         file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
-        context = Context(dataset_name=dataset_name)
+        context = IssueContext(dataset_name=dataset_name)
         for set_or_object in file_set_or_objects:
             name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
             distribution_type = set_or_object.get("@type")

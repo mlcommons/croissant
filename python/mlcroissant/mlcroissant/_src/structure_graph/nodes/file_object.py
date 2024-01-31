@@ -9,7 +9,7 @@ from etils import epath
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
@@ -64,7 +64,7 @@ class FileObject(Node):
     def from_jsonld(
         cls,
         issues: Issues,
-        context: Context,
+        context: IssueContext,
         folder: epath.Path,
         rdf: Rdf,
         file_object: Json,
@@ -82,7 +82,9 @@ class FileObject(Node):
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
         return cls(
             issues=issues,
-            context=Context(dataset_name=context.dataset_name, distribution_name=name),
+            context=IssueContext(
+                dataset_name=context.dataset_name, distribution_name=name
+            ),
             folder=folder,
             content_url=content_url,
             content_size=content_size,

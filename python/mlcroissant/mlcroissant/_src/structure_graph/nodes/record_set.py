@@ -10,7 +10,7 @@ from etils import epath
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
@@ -83,7 +83,7 @@ class RecordSet(Node):
     def from_jsonld(
         cls,
         issues: Issues,
-        context: Context,
+        context: IssueContext,
         folder: epath.Path,
         rdf: Rdf,
         conforms_to: CroissantVersion,
@@ -92,7 +92,7 @@ class RecordSet(Node):
         """Creates a `RecordSet` from JSON-LD."""
         check_expected_type(issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE)
         record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
-        context = Context(
+        context = IssueContext(
             dataset_name=context.dataset_name, record_set_name=record_set_name
         )
         fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
@@ -116,7 +116,7 @@ class RecordSet(Node):
         return cls(
             issues=issues,
             folder=folder,
-            context=Context(
+            context=IssueContext(
                 dataset_name=context.dataset_name, record_set_name=record_set_name
             ),
             data=data,

@@ -6,7 +6,7 @@ from etils import epath
 import pytest
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
@@ -56,7 +56,7 @@ def test_invalid_data(data, error):
     field = create_test_field(issues=issues)
     create_test_record_set(
         issues=issues,
-        context=Context(record_set_name="record_set_name"),
+        context=IssueContext(record_set_name="record_set_name"),
         data=data,
         fields=[field],
     )
@@ -80,7 +80,7 @@ def test_checks_are_performed():
 @parametrize_conforms_to()
 def test_from_jsonld(conforms_to: CroissantVersion):
     issues = Issues()
-    context = Context()
+    context = IssueContext()
     folder = epath.Path("/foo/bar")
     rdf = Rdf()
     jsonld = {
