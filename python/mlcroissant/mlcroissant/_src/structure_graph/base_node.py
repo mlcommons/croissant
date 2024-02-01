@@ -10,6 +10,7 @@ from typing import Any
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
@@ -139,6 +140,11 @@ class Node(abc.ABC):
         # We use tuples in order to have a hashable data structure to be put in input of
         # operations.
         return tuple(self.ctx.graph.successors(self))
+
+    @property
+    def issues(self) -> Issues:
+        """Shortcut to access issues in node."""
+        return self.ctx.issues
 
     @abc.abstractmethod
     def to_json(self) -> Json:
