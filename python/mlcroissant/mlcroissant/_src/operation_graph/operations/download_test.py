@@ -135,7 +135,15 @@ def test_hashes_do_not_match():
 
 
 @pytest.mark.parametrize("conforms_to", CroissantVersion)
-def test_hashes_do_match(conforms_to):
+# Test the hex and base64 hash values
+@pytest.mark.parametrize(
+    "hash_value",
+    [
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+    ],
+)
+def test_sha256_hashes_do_match(conforms_to, hash_value):
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
         ctx = Context(conforms_to=conforms_to, folder=epath.Path())
@@ -144,7 +152,28 @@ def test_hashes_do_match(conforms_to):
             name="foo",
             content_url=os.fspath(filepath),
             # Hash will match!
-            sha256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            sha256=hash_value,
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        download()
+
+
+@pytest.mark.parametrize("conforms_to", CroissantVersion)
+# Test the hex and base64 hash values
+@pytest.mark.parametrize(
+    "hash_value", ["d41d8cd98f00b204e9800998ecf8427e", "1B2M2Y8AsgTpgAmY7PhCfg=="]
+)
+def test_md5_hashes_do_match(conforms_to, hash_value):
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        ctx = Context(conforms_to=conforms_to, folder=epath.Path())
+        metadata = Metadata(ctx=ctx, name="bar")
+        file_object = create_test_file_object(
+            name="foo",
+            content_url=os.fspath(filepath),
+            # Hash will match!
+            md5=hash_value,
         )
         file_object.parents = [metadata]
         download = Download(operations=operations(), node=file_object)
