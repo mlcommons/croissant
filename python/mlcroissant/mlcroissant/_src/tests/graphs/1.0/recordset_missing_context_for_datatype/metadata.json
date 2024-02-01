@@ -20,7 +20,7 @@
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
+    "ml": "http://mlcommons.org/croissant/",
     "parentField": "ml:parentField",
     "path": "ml:path",
     "personalSensitiveInformation": "ml:personalSensitiveInformation",
