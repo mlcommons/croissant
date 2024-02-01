@@ -166,8 +166,7 @@ class Download(Operation):
             return
 
         logging.info(
-            "Hash of downloaded file is not identical with"
-            " reference in metadata.json"
+            "Hash of downloaded file is not identical with reference in metadata.json"
         )
         # In v0.8 only, hashes were not checked.
         ctx = self.node.ctx
