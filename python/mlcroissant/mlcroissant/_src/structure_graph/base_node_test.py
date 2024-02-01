@@ -63,7 +63,7 @@ def test_validate_name(name, expected_errors):
         name=name,
     )
     node.validate_name()
-    assert node.issues.errors == expected_errors
+    assert node.ctx.issues.errors == expected_errors
 
 
 def test_eq():

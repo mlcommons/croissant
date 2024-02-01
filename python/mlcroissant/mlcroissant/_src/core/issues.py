@@ -12,7 +12,7 @@ class GenerationError(Exception):
 
 
 @dataclasses.dataclass
-class Context:
+class IssueContext:
     """Context to identify an issue.
 
     This allows to add context to an issue by tracing it back:
@@ -42,7 +42,7 @@ class Issues:
     errors: set[str] = dataclasses.field(default_factory=set, hash=False)
     warnings: set[str] = dataclasses.field(default_factory=set, hash=False)
 
-    def _wrap_in_context(self, context: Context | None, issue: str) -> str:
+    def _wrap_in_context(self, context: IssueContext | None, issue: str) -> str:
         if context is None:
             return issue
         local_context = []
@@ -60,11 +60,11 @@ class Issues:
             return issue
         return f"[{' > '.join(local_context)}] {issue}"
 
-    def add_error(self, error: str, context: Context | None = None):
+    def add_error(self, error: str, context: IssueContext | None = None):
         """Mutates self.errors with a new error."""
         self.errors.add(self._wrap_in_context(context, error))
 
-    def add_warning(self, warning: str, context: Context | None = None):
+    def add_warning(self, warning: str, context: IssueContext | None = None):
         """Mutates self.warnings with a new warning."""
         self.warnings.add(self._wrap_in_context(context, warning))
 

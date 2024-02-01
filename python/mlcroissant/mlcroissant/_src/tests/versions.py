@@ -1,6 +1,6 @@
 import pytest
 
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
+from mlcroissant._src.core.context import CroissantVersion
 
 VERSIONS = ["0.8", "1.0"]
 

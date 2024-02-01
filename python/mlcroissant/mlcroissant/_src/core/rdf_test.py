@@ -1,6 +1,6 @@
 """Tests for RDF."""
 
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
+from mlcroissant._src.core.rdf import Rdf
 
 
 def test_shorten_value():

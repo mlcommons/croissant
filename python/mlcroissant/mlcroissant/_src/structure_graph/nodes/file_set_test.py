@@ -2,14 +2,10 @@
 
 from unittest import mock
 
-from etils import epath
-
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.tests.nodes import create_test_node
 
 
@@ -28,10 +24,7 @@ def test_checks_are_performed():
 
 
 def test_from_jsonld():
-    issues = Issues()
-    context = Context()
-    folder = epath.Path("/foo/bar")
-    rdf = Rdf()
+    ctx = Context()
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_SET,
         constants.SCHEMA_ORG_NAME: "foo",
@@ -40,14 +33,12 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_ENCODING_FORMAT: "application/json",
         constants.ML_COMMONS_INCLUDES: "*.json",
     }
-    assert FileSet.from_jsonld(issues, context, folder, rdf, jsonld) == FileSet(
-        issues=issues,
-        context=context,
-        folder=folder,
+    assert FileSet.from_jsonld(ctx, jsonld) == FileSet(
+        ctx=ctx,
         name="foo",
         description="bar",
         contained_in=["some.zip"],
         encoding_format="application/json",
         includes="*.json",
     )
-    assert not issues.errors
+    assert not ctx.issues.errors

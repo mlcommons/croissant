@@ -6,11 +6,9 @@ from etils import epath
 import pytest
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.tests.nodes import create_test_node
 
 
@@ -40,10 +38,7 @@ def test_checks_are_performed():
     ],
 )
 def test_from_jsonld(encoding):
-    issues = Issues()
-    context = Context()
-    folder = epath.Path("/foo/bar")
-    rdf = Rdf()
+    ctx = Context()
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_OBJECT,
         constants.SCHEMA_ORG_NAME: "foo",
@@ -54,17 +49,14 @@ def test_from_jsonld(encoding):
             "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
         ),
     }
-    mapping = {"file1": epath.Path("~/Downloads/file1.csv")}
-    file_object = FileObject.from_jsonld(issues, context, folder, rdf, jsonld, mapping)
+    ctx.mapping = {"file1": epath.Path("~/Downloads/file1.csv")}
+    file_object = FileObject.from_jsonld(ctx, jsonld)
     assert file_object == FileObject(
-        issues=issues,
-        context=context,
-        folder=folder,
+        ctx=ctx,
         name="foo",
         description="bar",
         content_url="https://mlcommons.org",
         encoding_format=encoding,
         sha256="48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354",
-        mapping=mapping,
     )
-    assert not issues.errors
+    assert not ctx.issues.errors
