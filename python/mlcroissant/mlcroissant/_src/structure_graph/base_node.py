@@ -8,14 +8,9 @@ import json
 import re
 from typing import Any
 
-from etils import epath
-import networkx as nx
-
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -32,7 +27,8 @@ class Node(abc.ABC):
     - Metadata
     - RecordSet
 
-    When building the node, `self.issues` are populated when issues are encountered.
+    When building the node, `self.context.issues` are populated when issues are
+    encountered.
 
     Args:
         issues: the issues that will be modified in-place.
@@ -43,15 +39,9 @@ class Node(abc.ABC):
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
     """
 
-    issues: Issues = dataclasses.field(default_factory=Issues)
-    context: Context = dataclasses.field(default_factory=Context, compare=False)
-    folder: epath.Path | None = None
+    ctx: Context = dataclasses.field(default_factory=Context)
     name: str = ""
-    graph: nx.MultiDiGraph = dataclasses.field(
-        default_factory=nx.MultiDiGraph, compare=False, init=False
-    )
     parents: list[Node] = dataclasses.field(default_factory=list, init=False)
-    rdf: Rdf = dataclasses.field(default_factory=Rdf)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
@@ -108,11 +98,11 @@ class Node(abc.ABC):
 
     def add_error(self, error: str):
         """Adds a new error."""
-        self.issues.add_error(error, self.context)
+        self.ctx.issues.add_error(error, self.ctx.context)
 
     def add_warning(self, warning: str):
         """Adds a new warning."""
-        self.issues.add_warning(warning, self.context)
+        self.ctx.issues.add_warning(warning, self.ctx.context)
 
     def __repr__(self) -> str:
         """Prints a simplified string representation of the node: `Node(uid="xxx")`."""
@@ -139,16 +129,16 @@ class Node(abc.ABC):
     @property
     def predecessors(self) -> set[Node]:
         """Predecessors in the structure graph."""
-        return set(self.graph.predecessors(self))
+        return set(self.ctx.graph.predecessors(self))
 
     @property
     def successors(self) -> tuple[Node, ...]:
         """Successors in the structure graph."""
-        if self not in self.graph:
+        if self not in self.ctx.graph:
             return ()
         # We use tuples in order to have a hashable data structure to be put in input of
         # operations.
-        return tuple(self.graph.successors(self))
+        return tuple(self.ctx.graph.successors(self))
 
     @abc.abstractmethod
     def to_json(self) -> Json:

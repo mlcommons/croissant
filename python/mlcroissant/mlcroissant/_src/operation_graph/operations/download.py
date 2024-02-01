@@ -13,14 +13,13 @@ import tqdm
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.core.url import is_url
 from mlcroissant._src.operation_graph.base_operation import Operation
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 _CHUNK_SIZE = 1024
 _GITHUB_GIT = "https://github.com"
@@ -40,13 +39,14 @@ def get_hash(url: str) -> str:
 
 def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
-    if node.name in node.mapping:
-        return node.mapping[node.name]
+    ctx = node.ctx
+    if node.name in ctx.mapping:
+        return ctx.mapping[node.name]
     url = node.content_url
     if url and not is_url(url) and not node.contained_in:
-        if node.folder is None:
-            raise ValueError(f"Could not find node folder={node.folder}")
-        filepath = node.folder / url
+        if ctx.folder is None:
+            raise ValueError(f"Could not find node folder={ctx.folder}")
+        filepath = ctx.folder / url
         assert filepath.exists(), (
             f'In node "{node.uid}", file "{url}" is either an invalid URL'
             " or an invalid path."
@@ -160,10 +160,8 @@ class Download(Operation):
                 " reference in metadata.json"
             )
             # In v0.8 only, hashes were not checked.
-            metadata = self.node.parent
-            if not isinstance(metadata, Metadata):
-                raise ValueError("parent of FileObject should always be Metadata.")
-            if metadata.conforms_to and metadata.conforms_to > CroissantVersion.V_0_8:
+            ctx = self.node.ctx
+            if ctx.conforms_to and ctx.conforms_to > CroissantVersion.V_0_8:
                 raise ValueError(
                     f"Hash of downloaded file {filepath} is not identical with the"
                     f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"

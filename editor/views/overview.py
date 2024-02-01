@@ -98,7 +98,7 @@ def render_overview():
         if user_started_editing:
             warning = ""
             try:
-                issues = metadata.to_canonical().issues
+                issues = metadata.to_canonical().ctx.issues
                 if issues.errors:
                     warning += "**Errors**\n"
                     for error in issues.errors:

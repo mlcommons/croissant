@@ -54,7 +54,7 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     graph = nx.MultiDiGraph()
     # Bind graph to nodes:
     for node in metadata.nodes():
-        node.graph = graph
+        node.ctx.graph = graph
         graph.add_node(node)
     uid_to_node = _check_no_duplicate(metadata)
     for node in metadata.distribution:

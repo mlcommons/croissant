@@ -1,9 +1,17 @@
+"""Global context."""
+
 from __future__ import annotations
 
+import dataclasses
 import enum
-from typing import Any
+from typing import Any, Mapping
 
-from mlcroissant._src.core.context import Context
+from etils import epath
+import networkx as nx
+
+from mlcroissant._src.core.issues import IssueContext
+from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.rdf import Rdf
 
 
 class CroissantVersion(enum.Enum):
@@ -51,3 +59,27 @@ class CroissantVersion(enum.Enum):
     def __ge__(self, other: CroissantVersion) -> bool:
         """Implements CroissantVersion.V_1_0 >= CroissantVersion.V_0_8."""
         return self.value >= other.value
+
+
+@dataclasses.dataclass(unsafe_hash=True)
+class Context:
+    """A global context in the application to store commonly used objects."""
+
+    issues: Issues = dataclasses.field(default_factory=Issues)
+    # TODO(marcenacp): Rename to issue_context
+    context: IssueContext = dataclasses.field(
+        default_factory=IssueContext, compare=False, hash=False
+    )
+    folder: epath.Path | None = None
+    graph: nx.MultiDiGraph = dataclasses.field(
+        default_factory=nx.MultiDiGraph, compare=False, init=False, hash=False
+    )
+    rdf: Rdf = dataclasses.field(default_factory=Rdf, hash=False)
+    mapping: Mapping[str, epath.Path] = dataclasses.field(
+        default_factory=dict, hash=False
+    )
+    conforms_to: CroissantVersion = CroissantVersion.V_0_8
+
+    def copy(self, **changes) -> Context:
+        """Copies and replaces all changes."""
+        return dataclasses.replace(self, **changes)

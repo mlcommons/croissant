@@ -4,20 +4,16 @@ from __future__ import annotations
 
 import dataclasses
 
-from etils import epath
 from rdflib import term
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -29,17 +25,15 @@ class ParentField:
     source: Source | None = None
 
     @classmethod
-    def from_jsonld(
-        cls, issues: Issues, conforms_to: CroissantVersion, json_
-    ) -> ParentField | None:
+    def from_jsonld(cls, ctx: Context, json_) -> ParentField | None:
         """Creates a `ParentField` from JSON-LD."""
         if json_ is None:
             return None
         references = json_.get(constants.ML_COMMONS_REFERENCES)
         source = json_.get(constants.ML_COMMONS_SOURCE)
         return cls(
-            references=Source.from_jsonld(issues, conforms_to, references),
-            source=Source.from_jsonld(issues, conforms_to, source),
+            references=Source.from_jsonld(ctx, references),
+            source=Source.from_jsonld(ctx, source),
         )
 
     def to_json(self) -> Json:
@@ -126,7 +120,7 @@ class Field(Node):
     def to_json(self) -> Json:
         """Converts the `Field` to JSON."""
         data_types = [
-            self.rdf.shorten_value(data_type) for data_type in self.data_types
+            self.ctx.rdf.shorten_value(data_type) for data_type in self.data_types
         ]
         parent_field = self.parent_field.to_json() if self.parent_field else None
         return remove_empty_values({
@@ -143,25 +137,17 @@ class Field(Node):
         })
 
     @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
-        conforms_to: CroissantVersion,
-        field: Json,
-    ) -> Field:
+    def from_jsonld(cls, ctx: Context, field: Json) -> Field:
         """Creates a `Field` from JSON-LD."""
         check_expected_type(
-            issues,
+            ctx.issues,
             field,
             constants.ML_COMMONS_FIELD_TYPE,
         )
         references_jsonld = field.get(constants.ML_COMMONS_REFERENCES)
-        references = Source.from_jsonld(issues, conforms_to, references_jsonld)
+        references = Source.from_jsonld(ctx, references_jsonld)
         source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
-        source = Source.from_jsonld(issues, conforms_to, source_jsonld)
+        source = Source.from_jsonld(ctx, source_jsonld)
         data_types = field.get(constants.ML_COMMONS_DATA_TYPE, [])
         is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
         if isinstance(data_types, dict):
@@ -171,31 +157,26 @@ class Field(Node):
         else:
             data_types = []
         field_name = field.get(constants.SCHEMA_ORG_NAME, "")
-        if context.field_name is None:
-            context.field_name = field_name
+        issue_context = ctx.context
+        if issue_context.field_name is None:
+            issue_context.field_name = field_name
         else:
-            context.sub_field_name = field_name
+            issue_context.sub_field_name = field_name
         sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD, [])
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]
-        sub_fields = [
-            Field.from_jsonld(issues, context, folder, rdf, conforms_to, sub_field)
-            for sub_field in sub_fields
-        ]
+        sub_fields = [Field.from_jsonld(ctx, sub_field) for sub_field in sub_fields]
         parent_field = ParentField.from_jsonld(
-            issues, conforms_to, field.get(constants.ML_COMMONS_PARENT_FIELD)
+            ctx, field.get(constants.ML_COMMONS_PARENT_FIELD)
         )
         repeated = field.get(constants.ML_COMMONS_REPEATED)
         return cls(
-            issues=issues,
-            context=context,
-            folder=folder,
+            ctx=ctx,
             description=field.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_types=data_types,
             is_enumeration=is_enumeration,
             name=field_name,
             parent_field=parent_field,
-            rdf=rdf,
             references=references,
             repeated=repeated,
             source=source,
