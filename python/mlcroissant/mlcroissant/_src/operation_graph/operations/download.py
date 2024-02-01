@@ -157,11 +157,11 @@ class Download(Operation):
         expected_hash = getattr(self.node, hash.name)
         # First, try hex as that's likely more common
         hex_hash = hash.hexdigest()
-        if (hex_hash == expected_hash):
+        if hex_hash == expected_hash:
             return
         # Next, try base64 as a fallback
         base64_hash = base64.b64encode(bytes.fromhex(hex_hash)).decode()
-        if (base64_hash == expected_hash):
+        if base64_hash == expected_hash:
             return
 
         logging.info(
