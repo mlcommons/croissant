@@ -152,13 +152,15 @@ def test_sha256_hashes_do_match(conforms_to, hash_value):
         download = Download(operations=operations(), node=file_object)
         download()
 
+
 @pytest.mark.parametrize("conforms_to", CroissantVersion)
 # Test the hex and base64 hash values
 @pytest.mark.parametrize("hash_value", ["d41d8cd98f00b204e9800998ecf8427e", "1B2M2Y8AsgTpgAmY7PhCfg=="])
 def test_md5_hashes_do_match(conforms_to, hash_value):
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
-        metadata = Metadata(name="bar", conforms_to=conforms_to)
+        ctx = Context(conforms_to=conforms_to, folder=epath.Path())
+        metadata = Metadata(ctx=ctx, name="bar")
         file_object = create_test_file_object(
             name="foo",
             content_url=os.fspath(filepath),
