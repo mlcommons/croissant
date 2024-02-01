@@ -196,9 +196,11 @@ class Metadata:
     ## RAI extension attributes
     data_collection: str | None = None
     data_collection_type: str | None = None
+    data_collection_type_others: str | None = None
     data_collection_missing: str | None = None
     data_collection_raw: str | None = None
-    data_collection_timeframe: str | None = None
+    data_collection_timeframe_start: datetime.datetime | None = None
+    data_collection_timeframe_end: datetime.datetime | None = None
     data_preprocessing_imputation: str | None = None
     data_preprocessing_protocol: str | None = None
     data_preprocessing_manipulation: str | None = None

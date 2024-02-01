@@ -13,9 +13,11 @@ class RaiEvent(enum.Enum):
 
     RAI_DATA_COLLECTION = "RAI_DATA_COLLECTION"
     RAI_DATA_COLLECTION_TYPE = "RAI_DATA_COLLECTION_TYPE"
+    RAI_DATA_COLLECTION_TYPE_OTHERS = "RAI_DATA_COLLECTION_TYPE_OTHERS"
     RAI_DATA_COLLECTION_MISSING_DATA = "RAI_DATA_COLLECTION_MISSING_DATA"
     RAI_DATA_COLLECTION_RAW_DATA = "RAI_DATA_COLLECTION_RAW_DATA"
-    RAI_DATA_COLLECTION_TIMEFRAME = "RAI_DATA_COLLECTION_TIMEFRAME"
+    RAI_DATA_COLLECTION_TIMEFRAME_START = "RAI_DATA_COLLECTION_TIMEFRAME_START"
+    RAI_DATA_COLLECTION_TIMEFRAME_END = "RAI_DATA_COLLECTION_TIMEFRAME_END"
     RAI_DATA_PREPROCESSING_IMPUTATION = "RAI_DATA_PREPROCESSING_IMPUTATION"
     RAI_DATA_PREPROCESSING_PROTOCOL = " RAI_DATA_PREPROCESSING_PROTOCOL"
     RAI_DATA_PREPROCESSING_MANIPULATION = "RAI_DATA_PREPROCESSING_MANIPULATIO"
@@ -40,12 +42,18 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
         Metadata.data_collection = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
         Metadata.data_collection_type = st.session_state[key]
+    if event == RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS:
+        Metadata.data_collection_type_others = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA:
         Metadata.data_collection_missing = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_RAW_DATA:
         Metadata.data_collection_raw = st.session_state[key]
-    if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME:
-        Metadata.data_collection_timeframe = st.session_state[key]
+    if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_START:
+        date = st.session_state[key]
+        Metadata.data_collection_timeframe_start = datetime.datetime(date.year, date.month, date.day)
+    if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_END:
+        date = st.session_state[key]
+        Metadata.data_collection_timeframe_end = datetime.datetime(date.year, date.month, date.day)
     if event == RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION:
         Metadata.data_preprocessing_imputation = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL:

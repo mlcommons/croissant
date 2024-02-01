@@ -17,30 +17,37 @@ def render_rai_metadata():
             key = "metadata-data-collection"
             st.text_area(
                 label=(
-                    "**Data collection**. Key stages of the data collection process encourage"
-                    " its creators to reflect on the process and improves understanding for"
-                    " users."
+                    "Explain the key stages of the data collection process to improves understanding of potential users"
                 ),
                 key=key,
                 value=metadata.data_collection,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION , metadata, key),
             )
-            key = "metadata-data-collection-type"
-            st.text_area(
-                label=(
-                    "**Data collection Type**. Define the data collection type. Recommended values:"
-                    "Surveys, Secondary Data analysis, Physical data collection, Direct measurement, Document analysis, Manual Human Curator, Software Collection, Experiments, Web Scraping, Web API, Focus groups, Self-reporting, Customer feedback data, User-generated content data, Passive Data Collection, Others"
-                ),
-                key="metadata-data-collection-type",
-                value=metadata.data_collection_type,
-                on_change=handle_rai_change,
-                args=(RaiEvent.RAI_DATA_COLLECTION_TYPE, metadata, key),
-            )
+            with st.expander("Data Collection Type", expanded=True):
+                key = "metadata-data-collection-type"
+                st.multiselect(
+                    label=('Define the data collection type. Recommended values:'),
+                    options=['Surveys', 'Secondary Data analysis', 'Physical data collection', 'Direct measurement', 'Document analysis', 'Manual Human Curator', 'Software Collection', 'Experiments', 'Web Scraping', 'Web API', 'Focus groups', 'Self-reporting', 'Customer feedback data', 'User-generated content data', 'Passive Data Collection', 'Others'],
+                    key="metadata-data-collection-type",
+                    default=metadata.data_collection_type,
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_COLLECTION_TYPE, metadata, key),
+                )
+                key = "metadata-data-collection-type-others"
+                st.text_area(
+                    label=(
+                        "**Type**. If others, define the data collection type"
+                    ),
+                    key="metadata-data-collection-type-others",
+                    value=metadata.data_collection_type_others,
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS, metadata, key),
+                )
             key = "metadata-data-collection-missing"
             st.text_area(
                 label=(
-                    "**Data Collection - Missing Data**. Description of missing data in structured/unstructured form"
+                    "**Missing Data**. Description of missing data in structured/unstructured form"
                 ),
                 key="metadata-data-collection-missing",
                 value=metadata.data_collection_missing,
@@ -50,28 +57,39 @@ def render_rai_metadata():
             key = "metadata-data-collection-rawdata"
             st.text_area(
                 label=(
-                    "**Data Collection - RawData**. Description of the raw data i.e. source of the data "
+                    "**Raw Data**. Description of the raw data i.e. source of the data "
                 ),
                 key="metadata-data-collection-rawdata",
                 value=metadata.data_collection_raw,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION_RAW_DATA, metadata, key),
             )
-            key = "metadata-data-collection-timeframe"
-            st.text_area(
-                label=(
-                    "**Data Collection - Timeframe**. Timeframe in terms of start and end date of the collection process **range**: https://schema.org/DateTime "
-                ),
-                key="metadata-data-collection-timeframe",
-                value=metadata.data_collection_timeframe,
-                on_change=handle_rai_change,
-                args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME, metadata, key),
-            )
+            with st.expander("Data collection timeframe in terms of start and end the collection process", expanded=True):
+                key = "metadata-data-collection-timeframe-start"
+                st.date_input(
+                    label=(
+                        "Start: **range** https://schema.org/DateTime "
+                    ),
+                    key="metadata-data-collection-timeframe-start",
+                    value=metadata.data_collection_timeframe_start,
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_START, metadata, key),
+                )
+                key = "metadata-data-collection-timeframe-end"
+                st.date_input(
+                    label=(
+                        "End **range**: https://schema.org/DateTime "
+                    ),
+                    key="metadata-data-collection-timeframe-end",
+                    value=metadata.data_collection_timeframe_end,
+                    on_change=handle_rai_change,
+                    args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_END, metadata, key),
+                )
          with st.expander("Data Annotation", expanded=False):
                 key = "metadata-data-annotation-protocol"
                 st.text_area(
                     label=(
-                        "**Data Annotation - Protocol**. Description of annotations (labels, ratings) produced, including how these were created or authored -  Annotation Workforce Type, Annotation Characteristic(s), Annotation Description(s), Annotation Task(s), Annotation Distribution(s)  "
+                        "**Protocol**. Description of annotations (labels, ratings) produced, including how these were created or authored -  Annotation Workforce Type, Annotation Characteristic(s), Annotation Description(s), Annotation Task(s), Annotation Distribution(s)  "
                     ),
                     key="metadata-data-annotation-protocol",
                     value=metadata.data_annotation_protocol,
@@ -81,7 +99,7 @@ def render_rai_metadata():
                 key = "metadata-data-annotation-platform"
                 st.text_area(
                     label=(
-                        "**Data Annotation - Platform**. Platform, tool, or library used to collect annotations by human annotators "
+                        "**Platform**. Platform, tool, or library used to collect annotations by human annotators "
                     ),
                     key="metadata-data-annotation-platform",
                     value=metadata.data_annotation_platform,
@@ -91,7 +109,7 @@ def render_rai_metadata():
                 key = "metadata-data-annotation-analysis"
                 st.text_area(
                     label=(
-                        "**Data Annotation - Analysis**. Considerations related to the process of converting the “raw” annotations into the labels that are ultimately packaged in a dataset - Uncertainty or disagreement between annotations on each instance as a signal in the dataset, analysis of systematic disagreements between annotators of different socio demographic group,  how the final dataset annotations will relate to individual annotator responses  "
+                        "**Analysis**. Considerations related to the process of converting the “raw” annotations into the labels that are ultimately packaged in a dataset - Uncertainty or disagreement between annotations on each instance as a signal in the dataset, analysis of systematic disagreements between annotators of different socio demographic group,  how the final dataset annotations will relate to individual annotator responses  "
                     ),
                     key="metadata-data-annotation-analysis",
                     value=metadata.data_annotation_analysis,
@@ -101,7 +119,7 @@ def render_rai_metadata():
                 key = "metadata-data-annotation-demographics"
                 st.text_area(
                     label=(
-                        "**Data Annotation - Demogrpahics**. List of demographics specifications about the annotators "
+                        "**Demographics**. List of demographics specifications about the annotators "
                     ),
                     key="metadata-data-annotation-demographics",
                     value=metadata.data_annotation_demographics,
@@ -111,7 +129,7 @@ def render_rai_metadata():
                 key = "metadata-data-annotation-tools"
                 st.text_area(
                     label=(
-                        "**Data Annotation - Tools**. List of software used for data annotation ( e.g. concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)  "
+                        "**Tools**. List of software used for data annotation ( e.g. concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)  "
                     ),
                     key="metadata-data-annotation-tools",
                     value=metadata.data_annotation_tools,
@@ -121,7 +139,7 @@ def render_rai_metadata():
                 key = "metadata-data-annotation-peritem"
                 st.text_area(
                     label=(
-                        "**Data Annotation - Per Item**. Number of human labels per dataset item  "
+                        "**Annotation per item**. Number of human labels per dataset item  "
                     ),
                     key="metadata-data-annotation-peritem",
                     value=metadata.data_annotation_peritem,
@@ -133,7 +151,7 @@ def render_rai_metadata():
                 key = "metadata-data-preprocessing-protocol"
                 st.text_area(
                     label=(
-                        "**Data Preprocessing - Protocol**. Description of data manipulation process if applicable   "
+                        "**Protocol**. Description of data manipulation process if applicable   "
                     ),
                     key="metadata-data-preprocessing-protocol",
                     value=metadata.data_preprocessing_protocol,
@@ -143,7 +161,7 @@ def render_rai_metadata():
                 key = "metadata-data-preprocessing-manipulation"
                 st.text_area(
                     label=(
-                        "**Data Preprocessing - Manipulation**. Description of data manipulation process if applicable    "
+                        "**Manipulation**. Description of data manipulation process if applicable    "
                     ),
                     key="metadata-data-preprocessing-manipulation",
                     value=metadata.data_preprocessing_manipulation,
@@ -153,7 +171,7 @@ def render_rai_metadata():
                 key = "metadata-data-preprocessing-imputation"
                 st.text_area(
                     label=(
-                        "**Data Preprocessing - Imputation Protocol**. Description of data imputation process if applicable  "
+                        "**Imputation**. Description of data imputation process if applicable  "
                     ),
                     key="metadata-data-preprocessing-imputation",
                     value=metadata.data_preprocessing_imputation,
@@ -162,11 +180,11 @@ def render_rai_metadata():
                 )
             
        
-    with col2.expander("**Uses and social impact**", expanded=True):
+    with col2.expander("**Data uses and social impact**", expanded=True):
         key = "metadata-data-usecases"
         st.text_area(
             label=(
-                "**Data Use Cases**. Dataset Use(s) - Training, Testing, Validation, Development or Production Use, Fine Tuning, Others (please specify), Usage Guidelines. Recommended uses"
+                "**Data use cases**. Dataset Use(s) - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
             ),
             key=key,
             value=metadata.data_usecases,
@@ -189,7 +207,7 @@ def render_rai_metadata():
         key = "metadata-personal-sensitive-information"
         st.text_area(
             label=(
-                "**Personal sensitive information**. Personal and sensitive information, if"
+                "**Personal and sensitive information**. Personal and sensitive information, if"
                 " contained within the dataset, can play an important role in the"
                 " mitigation of any risks and the responsible use of the datasets."
             ),
@@ -201,7 +219,7 @@ def render_rai_metadata():
         key = "metadata-social-impact"
         st.text_area(
             label=(
-                "**Social Impact**. Discussion of social impact, if applicable"
+                "**Social impact**. Discussion of social impact, if applicable"
             ),
             key=key,
             value=metadata.data_social_impact,
@@ -210,7 +228,7 @@ def render_rai_metadata():
         )
         key = "metadata-data-limitations"
         st.text_area(
-            label=("**Data Limitation**. Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."),
+            label=("**Data limitation**. Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."),
             key=key,
             value=metadata.data_limitation,
             on_change=handle_rai_change,
@@ -218,7 +236,7 @@ def render_rai_metadata():
         )
         key = "metadata-data-maintenance"
         st.text_area(
-            label=("**Data Release Maintenance**. Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies. "),
+            label=("**Data release maintenance**. Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies. "),
             key=key,
             value=metadata.data_maintenance,
             on_change=handle_rai_change,
