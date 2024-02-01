@@ -3,8 +3,9 @@
 import pytest
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
@@ -71,10 +72,10 @@ def test_source_bool():
     ],
 )
 def test_source_parses_list(conforms_to, json_ld, expected_source):
-    issues = Issues()
-    assert Source.from_jsonld(issues, conforms_to, json_ld) == expected_source
-    assert not issues.errors
-    assert not issues.warnings
+    ctx = Context(conforms_to=conforms_to)
+    assert Source.from_jsonld(ctx, json_ld) == expected_source
+    assert not ctx.issues.errors
+    assert not ctx.issues.warnings
 
 
 @pytest.mark.parametrize(
@@ -125,12 +126,13 @@ def test_source_parses_list(conforms_to, json_ld, expected_source):
     ],
 )
 def test_source_parses_list_with_node_type(conforms_to, json_ld, expected_source):
-    issues = Issues()
-    assert Source.from_jsonld(issues, conforms_to, json_ld) == expected_source
-    assert not issues.errors
-    assert not issues.warnings
+    ctx = Context(conforms_to=conforms_to)
+    assert Source.from_jsonld(ctx, json_ld) == expected_source
+    assert not ctx.issues.errors
+    assert not ctx.issues.warnings
 
 
+@parametrize_conforms_to()
 @pytest.mark.parametrize(
     ["jsonld", "expected_errors"],
     [
@@ -158,10 +160,10 @@ def test_source_parses_list_with_node_type(conforms_to, json_ld, expected_source
         ],
     ],
 )
-def test_transformations_with_errors(jsonld, expected_errors):
-    issues = Issues()
-    Transform.from_jsonld(issues=issues, jsonld=jsonld)
-    assert issues.errors == expected_errors
+def test_transformations_with_errors(conforms_to, jsonld, expected_errors):
+    ctx = Context(conforms_to=conforms_to)
+    Transform.from_jsonld(ctx=ctx, jsonld=jsonld)
+    assert ctx.issues.errors == expected_errors
 
 
 @pytest.mark.parametrize(
@@ -198,18 +200,18 @@ def test_transformations_with_errors(jsonld, expected_errors):
     ],
 )
 def test_declaring_multiple_sources_in_one(conforms_to, json_ld):
-    issues = Issues()
-    assert Source.from_jsonld(issues, conforms_to, json_ld) == Source()
-    assert len(issues.errors) == 1
+    ctx = Context(conforms_to=conforms_to)
+    assert Source.from_jsonld(ctx, json_ld) == Source()
+    assert len(ctx.issues.errors) == 1
     assert (
         "Every http://mlcommons.org/schema/source should declare either"
-        in list(issues.errors)[0]
+        in list(ctx.issues.errors)[0]
     )
 
 
 @parametrize_conforms_to()
 def test_declaring_multiple_data_extraction_in_one(conforms_to):
-    issues = Issues()
+    ctx = Context(conforms_to=conforms_to)
     json_ld = {
         constants.ML_COMMONS_EXTRACT: {
             "@id": "jsonld-id",
@@ -217,32 +219,32 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
             constants.ML_COMMONS_JSON_PATH: "json_path",
         },
     }
-    assert Source.from_jsonld(issues, conforms_to, json_ld) == Source(
+    assert Source.from_jsonld(ctx, json_ld) == Source(
         extract=Extract(column="csv_column", json_path="json_path"),
     )
-    assert len(issues.errors) == 2
+    assert len(ctx.issues.errors) == 2
     assert any(
         "http://mlcommons.org/schema/extract should have one of the following"
         " properties"
         in error
-        for error in list(issues.errors)
+        for error in list(ctx.issues.errors)
     )
 
 
 @parametrize_conforms_to()
 def test_declaring_wrong_file_property(conforms_to):
-    issues = Issues()
+    ctx = Context(conforms_to=conforms_to)
     json_ld = {
         constants.ML_COMMONS_EXTRACT: {
             constants.ML_COMMONS_FILE_PROPERTY: "foo",
         },
     }
-    Source.from_jsonld(issues, conforms_to, json_ld)
+    Source.from_jsonld(ctx, json_ld)
     assert any(
         "Property http://mlcommons.org/schema/fileProperty can only have values in"
         " `fullpath`, `filepath` and `content`. Got: foo"
         in error
-        for error in issues.errors
+        for error in ctx.issues.errors
     )
 
 

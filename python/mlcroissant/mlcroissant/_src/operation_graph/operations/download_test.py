@@ -7,12 +7,13 @@ import tempfile
 from etils import epath
 import pytest
 
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.operation_graph.operations.download import _get_hash_algorithm
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.download import extract_git_info
 from mlcroissant._src.operation_graph.operations.download import get_download_filepath
 from mlcroissant._src.operation_graph.operations.download import insert_credentials
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.tests.nodes import create_test_file_object
@@ -101,17 +102,15 @@ def test_get_hash_obj_sha256():
 
 
 def test_get_download_filepath():
+    ctx = Context()
     # With mapping
-    node = FileObject(
-        name="foo",
-        content_url="http://foo",
-        sha256="12345",
-        mapping={"foo": epath.Path("/bar/foo")},
-    )
+    ctx.mapping = {"foo": epath.Path("/bar/foo")}
+    node = FileObject(ctx=ctx, name="foo", content_url="http://foo", sha256="12345")
     assert get_download_filepath(node) == epath.Path("/bar/foo")
 
     # Without mapping
-    node = FileObject(name="foo", content_url="http://foo", sha256="12345")
+    ctx.mapping = {}
+    node = FileObject(ctx=ctx, name="foo", content_url="http://foo", sha256="12345")
     assert os.fspath(get_download_filepath(node)).endswith(
         "download/croissant-0343a8f6b328d44bfe5b69437797bebc36c59c67ac6527fe1f14684142074fff"
     )
@@ -120,8 +119,10 @@ def test_get_download_filepath():
 def test_hashes_do_not_match():
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
-        metadata = Metadata(name="bar", conforms_to=CroissantVersion.V_1_0)
+        ctx = Context(conforms_to=CroissantVersion.V_1_0, folder=epath.Path())
+        metadata = Metadata(ctx=ctx, name="bar")
         file_object = create_test_file_object(
+            ctx=ctx,
             name="foo",
             content_url=os.fspath(filepath),
             # Hash won't match!
@@ -139,7 +140,8 @@ def test_hashes_do_not_match():
 def test_sha256_hashes_do_match(conforms_to, hash_value):
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
-        metadata = Metadata(name="bar", conforms_to=conforms_to)
+        ctx = Context(conforms_to=conforms_to, folder=epath.Path())
+        metadata = Metadata(ctx=ctx, name="bar")
         file_object = create_test_file_object(
             name="foo",
             content_url=os.fspath(filepath),

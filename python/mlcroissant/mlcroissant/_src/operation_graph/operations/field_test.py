@@ -9,10 +9,11 @@ from PIL import Image
 import pytest
 
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import field
 from mlcroissant._src.operation_graph.operations import ReadFields
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
@@ -131,9 +132,10 @@ def test_extract_lines(separator):
             )
         )
         record_sets = [RecordSet(name="main", fields=fields)]
+        ctx = Context(conforms_to=CroissantVersion.V_1_0)
         Metadata(
+            ctx=ctx,
             name="metadata",
-            conforms_to=CroissantVersion.V_1_0,
             url="url.com",
             distribution=distribution,
             record_sets=record_sets,

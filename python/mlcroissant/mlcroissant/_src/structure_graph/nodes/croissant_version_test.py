@@ -2,8 +2,8 @@
 
 import pytest
 
-from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
@@ -13,12 +13,12 @@ from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 )
 def test_conforms_to_is_invalid(conforms_to):
     metadata = Metadata(
+        ctx=Context(conforms_to=conforms_to),
         name="name",
-        conforms_to=conforms_to,
     )
     assert any(
         error.startswith("conformsTo should be a string or a CroissantVersion.")
-        for error in metadata.issues.errors
+        for error in metadata.ctx.issues.errors
     )
 
 
@@ -34,9 +34,7 @@ def test_conforms_to_is_invalid(conforms_to):
 )
 def test_conforms_to_is_checked(conforms_to, expected: CroissantVersion):
     # If left empty, conforms_to defaults to 0.8.
-    metadata = Metadata(name="name", conforms_to=conforms_to)
-    assert metadata.conforms_to == expected
-    issues = Issues()
-    assert CroissantVersion.from_jsonld(issues, conforms_to) == expected
-    assert not issues.errors
-    assert not issues.warnings
+    ctx = Context()
+    assert CroissantVersion.from_jsonld(ctx, conforms_to) == expected
+    assert not ctx.issues.errors
+    assert not ctx.issues.warnings
