@@ -153,7 +153,8 @@ class Download(Operation):
         with filepath.open("rb") as f:
             while chunk := f.read(_CHUNK_SIZE):
                 hash.update(chunk)
-        # The hash from the Croissant JSON-LD can be in either hex or base64, so check both
+        # The hash from the Croissant JSON-LD can be in either hex or base64,
+        # so let's check both
         expected_hash = getattr(self.node, hash.name)
         # First, try hex as that's likely more common
         hex_hash = hash.hexdigest()
