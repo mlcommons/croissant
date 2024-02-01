@@ -135,9 +135,6 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
-        # The following test can only run with a valid `CROISSANT_BASIC_AUTH_USERNAME` and
-        # `CROISSANT_BASIC_AUTH_PASSWORD` configured to hit Kaggle APIs
-        # ["world-happiness/metadata.json", "2015.csv_records", 158],
     ],
 )
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
