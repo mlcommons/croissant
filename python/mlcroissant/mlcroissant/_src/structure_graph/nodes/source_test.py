@@ -4,12 +4,14 @@ import pytest
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 from mlcroissant._src.structure_graph.nodes.source import is_file_property
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
+from mlcroissant._src.tests.versions import parametrize_conforms_to
 
 
 def test_source_bool():
@@ -20,6 +22,7 @@ def test_source_bool():
     assert whole_source
 
 
+@parametrize_conforms_to()
 @pytest.mark.parametrize(
     ["json_ld", "expected_source"],
     [
@@ -65,7 +68,20 @@ def test_source_bool():
                 node_type="field",
             ),
         ],
+    ],
+)
+def test_source_parses_list(conforms_to, json_ld, expected_source):
+    issues = Issues()
+    assert Source.from_jsonld(issues, conforms_to, json_ld) == expected_source
+    assert not issues.errors
+    assert not issues.warnings
+
+
+@pytest.mark.parametrize(
+    ["conforms_to", "json_ld", "expected_source"],
+    [
         [
+            CroissantVersion.V_0_8,
             {
                 constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
                 constants.ML_COMMONS_TRANSFORM: [
@@ -85,11 +101,32 @@ def test_source_bool():
                 node_type="distribution",
             ),
         ],
+        [
+            CroissantVersion.V_1_0,
+            {
+                constants.ML_COMMONS_FILE_OBJECT: "my-csv",
+                constants.ML_COMMONS_TRANSFORM: [
+                    {
+                        constants.ML_COMMONS_REPLACE: "\\n/<eos>",
+                        constants.ML_COMMONS_SEPARATOR: " ",
+                    }
+                ],
+                constants.ML_COMMONS_EXTRACT: {
+                    constants.ML_COMMONS_COLUMN: "my-column"
+                },
+            },
+            Source(
+                extract=Extract(column="my-column"),
+                uid="my-csv",
+                transforms=[Transform(replace="\\n/<eos>", separator=" ")],
+                node_type="fileObject",
+            ),
+        ],
     ],
 )
-def test_source_parses_list(json_ld, expected_source):
+def test_source_parses_list_with_node_type(conforms_to, json_ld, expected_source):
     issues = Issues()
-    assert Source.from_jsonld(issues, json_ld) == expected_source
+    assert Source.from_jsonld(issues, conforms_to, json_ld) == expected_source
     assert not issues.errors
     assert not issues.warnings
 
@@ -127,55 +164,85 @@ def test_transformations_with_errors(jsonld, expected_errors):
     assert issues.errors == expected_errors
 
 
-def test_declaring_multiple_sources_in_one():
+@pytest.mark.parametrize(
+    ["conforms_to", "json_ld"],
+    [
+        [
+            CroissantVersion.V_0_8,
+            {
+                constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
+                constants.ML_COMMONS_FIELD: "my-record-set/my-field",
+            },
+        ],
+        [
+            CroissantVersion.V_1_0,
+            {
+                constants.ML_COMMONS_FILE_OBJECT: "my-csv",
+                constants.ML_COMMONS_FIELD: "my-record-set/my-field",
+            },
+        ],
+        [
+            CroissantVersion.V_1_0,
+            {
+                constants.ML_COMMONS_FILE_SET: "my-csv",
+                constants.ML_COMMONS_FIELD: "my-record-set/my-field",
+            },
+        ],
+        [
+            CroissantVersion.V_1_0,
+            {
+                constants.ML_COMMONS_FILE_OBJECT: "my-csv",
+                constants.ML_COMMONS_FILE_SET: "my-csv",
+            },
+        ],
+    ],
+)
+def test_declaring_multiple_sources_in_one(conforms_to, json_ld):
     issues = Issues()
-    json_ld = {
-        constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
-        constants.ML_COMMONS_FIELD: "my-record-set/my-field",
-    }
-    assert Source.from_jsonld(issues, json_ld) == Source()
-    assert issues.errors == {
+    assert Source.from_jsonld(issues, conforms_to, json_ld) == Source()
+    assert len(issues.errors) == 1
+    assert (
         "Every http://mlcommons.org/schema/source should declare either"
-        " http://mlcommons.org/schema/field or https://schema.org/distribution"
-    }
+        in list(issues.errors)[0]
+    )
 
 
-def test_declaring_multiple_data_extraction_in_one():
+@parametrize_conforms_to()
+def test_declaring_multiple_data_extraction_in_one(conforms_to):
     issues = Issues()
     json_ld = {
-        constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
         constants.ML_COMMONS_EXTRACT: {
             "@id": "jsonld-id",
             constants.ML_COMMONS_COLUMN: "csv_column",
             constants.ML_COMMONS_JSON_PATH: "json_path",
         },
     }
-    assert Source.from_jsonld(issues, json_ld) == Source(
-        uid="my-csv",
+    assert Source.from_jsonld(issues, conforms_to, json_ld) == Source(
         extract=Extract(column="csv_column", json_path="json_path"),
-        node_type="distribution",
     )
-    assert len(issues.errors) == 1
-    assert (
+    assert len(issues.errors) == 2
+    assert any(
         "http://mlcommons.org/schema/extract should have one of the following"
         " properties"
-        in list(issues.errors)[0]
+        in error
+        for error in list(issues.errors)
     )
 
 
-def test_declaring_wrong_file_property():
+@parametrize_conforms_to()
+def test_declaring_wrong_file_property(conforms_to):
     issues = Issues()
     json_ld = {
-        constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
         constants.ML_COMMONS_EXTRACT: {
             constants.ML_COMMONS_FILE_PROPERTY: "foo",
         },
     }
-    Source.from_jsonld(issues, json_ld)
-    assert (
+    Source.from_jsonld(issues, conforms_to, json_ld)
+    assert any(
         "Property http://mlcommons.org/schema/fileProperty can only have values in"
         " `fullpath`, `filepath` and `content`. Got: foo"
-        in issues.errors
+        in error
+        for error in issues.errors
     )
 
 

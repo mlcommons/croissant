@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -64,7 +66,7 @@
           "description": "Name of the person.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "dataframe",
+            "fileObject": "dataframe",
             "extract": {
               "column": "name"
             }
@@ -76,7 +78,7 @@
           "description": "Age of the person.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "dataframe",
+            "fileObject": "dataframe",
             "extract": {
               "column": "age"
             }

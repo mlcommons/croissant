@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -81,7 +83,7 @@
           "description": "One of: train, valid, test.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "splits.csv",
+            "fileObject": "splits.csv",
             "extract": {
               "column": "name"
             }
@@ -96,7 +98,7 @@
             "wd:Q3985153"
           ],
           "source": {
-            "distribution": "splits.csv",
+            "fileObject": "splits.csv",
             "extract": {
               "column": "url"
             }
@@ -116,7 +118,7 @@
           "dataType": "sc:Text",
           "repeated": "true",
           "source": {
-            "distribution": "token-files",
+            "fileSet": "token-files",
             "extract": {
               "fileProperty": "content"
             },
@@ -142,7 +144,7 @@
             "field": "split_enums/name"
           },
           "source": {
-            "distribution": "token-files",
+            "fileSet": "token-files",
             "extract": {
               "fileProperty": "fullpath"
             },

@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -101,7 +103,7 @@
           "description": "Full title of the publication.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "publications",
+            "fileObject": "publications",
             "extract": {
               "column": "title"
             }
@@ -116,7 +118,7 @@
             "field": "users/email"
           },
           "source": {
-            "distribution": "publications",
+            "fileObject": "publications",
             "extract": {
               "column": "by"
             }

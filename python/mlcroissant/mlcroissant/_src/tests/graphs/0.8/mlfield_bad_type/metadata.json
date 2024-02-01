@@ -40,7 +40,6 @@
   "@type": "sc:Dataset",
   "name": "mydataset",
   "description": "This is a description.",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "@language": "en",
   "citation": "This is a citation.",
   "license": "This is a license.",

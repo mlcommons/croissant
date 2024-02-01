@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -44,8 +46,8 @@
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
   "citation": "None",
   "license": "cc-by-4.0",
-  "version": "1.0.0",
   "url": "None",
+  "version": "1.0.0",
   "distribution": [
     {
       "@type": "sc:FileObject",
@@ -127,7 +129,7 @@
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "filename"
             }
@@ -139,7 +141,7 @@
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "content"
             }
@@ -156,7 +158,7 @@
             "field": "split_enums/name"
           },
           "source": {
-            "distribution": "image-files",
+            "fileSet": "image-files",
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -178,7 +180,7 @@
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileObject": "caption_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].id"
             }
@@ -190,7 +192,7 @@
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileObject": "caption_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].image_id"
             }
@@ -205,7 +207,7 @@
             "sc:Text"
           ],
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileObject": "caption_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].caption"
             }
@@ -222,7 +224,7 @@
             "field": "split_enums/name"
           },
           "source": {
-            "distribution": "caption_annotations-files",
+            "fileObject": "caption_annotations-files",
             "extract": {
               "fileProperty": "filename"
             },
@@ -243,7 +245,7 @@
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "bbox_annotations-files",
+            "fileObject": "bbox_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].id"
             }
@@ -255,7 +257,7 @@
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "bbox_annotations-files",
+            "fileObject": "bbox_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].image_id"
             }
@@ -267,7 +269,7 @@
           "description": "The bounding box on the image.",
           "dataType": "ml:BoundingBox",
           "source": {
-            "distribution": "bbox_annotations-files",
+            "fileObject": "bbox_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].bbox"
             }
@@ -279,7 +281,7 @@
           "description": "The area of the bounding box.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "bbox_annotations-files",
+            "fileObject": "bbox_annotations-files",
             "extract": {
               "jsonPath": "$.annotations[*].area"
             }

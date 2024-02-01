@@ -17,6 +17,8 @@ ML_COMMONS_EXTRACT = ML_COMMONS.extract
 ML_COMMONS_FILE_PROPERTY = ML_COMMONS.fileProperty
 ML_COMMONS_FIELD = ML_COMMONS.field
 ML_COMMONS_FIELD_TYPE = ML_COMMONS.Field
+ML_COMMONS_FILE_OBJECT = ML_COMMONS.fileObject
+ML_COMMONS_FILE_SET = ML_COMMONS.fileSet
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
 ML_COMMONS_FORMAT = term.URIRef("http://mlcommons.org/schema/format")
 ML_COMMONS_INCLUDES = ML_COMMONS.includes

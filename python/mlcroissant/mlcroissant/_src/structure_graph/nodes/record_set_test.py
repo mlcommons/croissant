@@ -9,11 +9,13 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.croissant_version import CroissantVersion
 from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_field
 from mlcroissant._src.tests.nodes import create_test_node
 from mlcroissant._src.tests.nodes import create_test_record_set
+from mlcroissant._src.tests.versions import parametrize_conforms_to
 
 
 @pytest.mark.parametrize(
@@ -75,7 +77,8 @@ def test_checks_are_performed():
         validate_name_mock.assert_called_once()
 
 
-def test_from_jsonld():
+@parametrize_conforms_to()
+def test_from_jsonld(conforms_to: CroissantVersion):
     issues = Issues()
     context = Context()
     folder = epath.Path("/foo/bar")
@@ -88,7 +91,9 @@ def test_from_jsonld():
         constants.SCHEMA_ORG_KEY: ["key1", "key2"],
         constants.ML_COMMONS_DATA: [{"column1": ["value1", "value2"]}],
     }
-    assert RecordSet.from_jsonld(issues, context, folder, rdf, jsonld) == RecordSet(
+    assert RecordSet.from_jsonld(
+        issues, context, folder, rdf, conforms_to, jsonld
+    ) == RecordSet(
         issues=issues,
         context=context,
         folder=folder,

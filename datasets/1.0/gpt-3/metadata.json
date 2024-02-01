@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -72,7 +74,7 @@
           "description": "The context in the promt.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "jsonl",
+            "fileSet": "jsonl",
             "extract": {
               "column": "context"
             }
@@ -84,7 +86,7 @@
           "description": "The expected completion of the promt.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "jsonl",
+            "fileSet": "jsonl",
             "extract": {
               "column": "completion"
             }
@@ -96,7 +98,7 @@
           "description": "The machine learning task appearing as the name of the file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "jsonl",
+            "fileSet": "jsonl",
             "extract": {
               "fileProperty": "filename"
             },

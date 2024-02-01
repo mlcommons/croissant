@@ -18,6 +18,8 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
@@ -91,7 +93,7 @@
             "sc:name"
           ],
           "source": {
-            "distribution": "genders.csv",
+            "fileObject": "genders.csv",
             "extract": {
               "column": "label"
             }
@@ -106,7 +108,7 @@
             "wd:Q48277"
           ],
           "source": {
-            "distribution": "genders.csv",
+            "fileObject": "genders.csv",
             "extract": {
               "column": "url"
             }
@@ -127,7 +129,7 @@
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "embarkation_ports.csv",
+            "fileObject": "embarkation_ports.csv",
             "extract": {
               "column": "key"
             }
@@ -142,7 +144,7 @@
             "sc:name"
           ],
           "source": {
-            "distribution": "embarkation_ports.csv",
+            "fileObject": "embarkation_ports.csv",
             "extract": {
               "column": "label"
             }
@@ -157,7 +159,7 @@
             "wd:Q515"
           ],
           "source": {
-            "distribution": "embarkation_ports.csv",
+            "fileObject": "embarkation_ports.csv",
             "extract": {
               "column": "url"
             }
@@ -176,7 +178,7 @@
           "description": "Name of the passenger",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "name"
             }
@@ -191,7 +193,7 @@
             "field": "genders/label"
           },
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "sex"
             }
@@ -203,7 +205,7 @@
           "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "age"
             }
@@ -215,7 +217,7 @@
           "description": "Survival status of passenger (0: Lost, 1: Saved)",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "survived"
             }
@@ -227,7 +229,7 @@
           "description": "Passenger Class (1st/2nd/3rd)",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "pclass"
             }
@@ -239,7 +241,7 @@
           "description": "Passenger cabin.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "cabin"
             }
@@ -254,7 +256,7 @@
             "field": "embarkation_ports/key"
           },
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "embarked"
             }
@@ -266,7 +268,7 @@
           "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "fare"
             }
@@ -278,7 +280,7 @@
           "description": "Home and destination",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "home.dest"
             }
@@ -290,7 +292,7 @@
           "description": "Ticket Number, may include a letter.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "ticket"
             }
@@ -302,7 +304,7 @@
           "description": "Number of Parents/Children Aboard",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "parch"
             }
@@ -314,7 +316,7 @@
           "description": "Number of Siblings/Spouses Aboard",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "sibsp"
             }
@@ -326,7 +328,7 @@
           "description": "Lifeboat used by passenger",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "boat"
             }
@@ -338,7 +340,7 @@
           "description": "Body Identification Number",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": "passengers.csv",
             "extract": {
               "column": "body"
             }
