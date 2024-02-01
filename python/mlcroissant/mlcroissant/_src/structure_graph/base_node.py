@@ -59,8 +59,9 @@ class Node(abc.ABC):
             value = getattr(self, mandatory_property)
             if not value:
                 error = (
-                    f'Property "{constants.FROM_CROISSANT.get(mandatory_property)}" is'
-                    " mandatory, but does not exist."
+                    "Property"
+                    f' "{constants.FROM_CROISSANT(self.ctx).get(mandatory_property)}"'
+                    " is mandatory, but does not exist."
                 )
                 self.add_error(error)
 
@@ -75,7 +76,8 @@ class Node(abc.ABC):
             value = getattr(self, optional_property)
             if not value:
                 error = (
-                    f'Property "{constants.FROM_CROISSANT.get(optional_property)}" is'
+                    "Property"
+                    f' "{constants.FROM_CROISSANT(self.ctx).get(optional_property)}" is'
                     " recommended, but does not exist."
                 )
                 self.add_warning(error)

@@ -86,5 +86,5 @@ class FileObject(Node):
             md5=file_object.get(constants.SCHEMA_ORG_MD5),
             name=name,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
-            source=file_object.get(constants.ML_COMMONS_SOURCE),
+            source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
         )

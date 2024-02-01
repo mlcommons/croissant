@@ -6,7 +6,7 @@ from etils import epath
 
 from mlcroissant._src.core.json_ld import compact_jsonld
 from mlcroissant._src.core.json_ld import expand_jsonld
-from mlcroissant._src.core.json_ld import make_context
+from mlcroissant._src.core.rdf import make_context
 
 
 # If this test fails, you probably manually updated a dataset in datasets/.

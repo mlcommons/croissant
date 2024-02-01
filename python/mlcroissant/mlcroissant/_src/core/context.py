@@ -80,6 +80,13 @@ class Context:
     )
     conforms_to: CroissantVersion = CroissantVersion.V_0_8
 
+    def __post_init__(self):
+        self.conforms_to = CroissantVersion.from_jsonld(self, self.conforms_to)
+
     def copy(self, **changes) -> Context:
         """Copies and replaces all changes."""
         return dataclasses.replace(self, **changes)
+
+    def is_v0(self):
+        """Whether the JSON-LD conforms to Croissant v0.8 or lower."""
+        return self.conforms_to < CroissantVersion.V_1_0

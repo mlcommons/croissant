@@ -22,7 +22,7 @@ class CroissantVersion(enum.Enum):
         else:
             try:
                 return CroissantVersion(jsonld)
-            except ValueError:
+            except (AttributeError, ValueError):
                 ctx.issues.add_error(
                     "conformsTo should be a string or a CroissantVersion. Got:"
                     f" {jsonld}"

@@ -29,8 +29,8 @@ class ParentField:
         """Creates a `ParentField` from JSON-LD."""
         if json_ is None:
             return None
-        references = json_.get(constants.ML_COMMONS_REFERENCES)
-        source = json_.get(constants.ML_COMMONS_SOURCE)
+        references = json_.get(constants.ML_COMMONS_REFERENCES(ctx))
+        source = json_.get(constants.ML_COMMONS_SOURCE(ctx))
         return cls(
             references=Source.from_jsonld(ctx, references),
             source=Source.from_jsonld(ctx, source),
@@ -97,15 +97,16 @@ class Field(Node):
                 # data_type is an ML semantic type:
                 elif data_type in [
                     DataType.IMAGE_OBJECT,
-                    DataType.BOUNDING_BOX,
+                    DataType.BOUNDING_BOX(self.ctx),
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on a predecessor:
         predecessor = next((p for p in self.predecessors if isinstance(p, Field)), None)
         if predecessor is None:
             self.add_error(
-                f"The field does not specify a valid {constants.ML_COMMONS_DATA_TYPE},"
-                f" neither does any of its predecessor. Got: {self.data_types}"
+                "The field does not specify a valid"
+                f" {constants.ML_COMMONS_DATA_TYPE(self.ctx)}, neither does any of its"
+                f" predecessor. Got: {self.data_types}"
             )
             return None
         return predecessor.data_type
@@ -142,14 +143,14 @@ class Field(Node):
         check_expected_type(
             ctx.issues,
             field,
-            constants.ML_COMMONS_FIELD_TYPE,
+            constants.ML_COMMONS_FIELD_TYPE(ctx),
         )
-        references_jsonld = field.get(constants.ML_COMMONS_REFERENCES)
+        references_jsonld = field.get(constants.ML_COMMONS_REFERENCES(ctx))
         references = Source.from_jsonld(ctx, references_jsonld)
-        source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
+        source_jsonld = field.get(constants.ML_COMMONS_SOURCE(ctx))
         source = Source.from_jsonld(ctx, source_jsonld)
-        data_types = field.get(constants.ML_COMMONS_DATA_TYPE, [])
-        is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
+        data_types = field.get(constants.ML_COMMONS_DATA_TYPE(ctx), [])
+        is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION(ctx))
         if isinstance(data_types, dict):
             data_types = [data_types.get("@id")]
         elif isinstance(data_types, list):
@@ -162,14 +163,14 @@ class Field(Node):
             issue_context.field_name = field_name
         else:
             issue_context.sub_field_name = field_name
-        sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD, [])
+        sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD(ctx), [])
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]
         sub_fields = [Field.from_jsonld(ctx, sub_field) for sub_field in sub_fields]
         parent_field = ParentField.from_jsonld(
-            ctx, field.get(constants.ML_COMMONS_PARENT_FIELD)
+            ctx, field.get(constants.ML_COMMONS_PARENT_FIELD(ctx))
         )
-        repeated = field.get(constants.ML_COMMONS_REPEATED)
+        repeated = field.get(constants.ML_COMMONS_REPEATED(ctx))
         return cls(
             ctx=ctx,
             description=field.get(constants.SCHEMA_ORG_DESCRIPTION),

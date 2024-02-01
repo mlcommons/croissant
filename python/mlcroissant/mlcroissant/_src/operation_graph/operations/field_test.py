@@ -24,6 +24,7 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
 from mlcroissant._src.tests.nodes import empty_record_set
 from mlcroissant._src.tests.operations import operations
+from mlcroissant._src.tests.versions import parametrize_conforms_to
 
 
 def test_str_representation():
@@ -31,6 +32,7 @@ def test_str_representation():
     assert str(operation) == "ReadFields(record_set_name)"
 
 
+@parametrize_conforms_to()
 @pytest.mark.parametrize(
     ["value", "data_type", "expected"],
     [
@@ -43,10 +45,12 @@ def test_str_representation():
         ["2024-12-10", pd.Timestamp, pd.Timestamp("2024-12-10")],
     ],
 )
-def test_cast_value(value, data_type, expected):
-    assert field._cast_value(value, data_type) == expected
+def test_cast_value(conforms_to, value, data_type, expected):
+    ctx = Context(conforms_to=conforms_to)
+    assert field._cast_value(ctx, value, data_type) == expected
 
 
+@parametrize_conforms_to()
 @pytest.mark.parametrize(
     ["value", "data_type"],
     [
@@ -57,13 +61,16 @@ def test_cast_value(value, data_type, expected):
         [np.nan, int],
     ],
 )
-def test_cast_value_nan(value, data_type):
-    assert np.isnan(field._cast_value(value, data_type))
+def test_cast_value_nan(conforms_to, value, data_type):
+    ctx = Context(conforms_to=conforms_to)
+    assert np.isnan(field._cast_value(ctx, value, data_type))
 
 
+@parametrize_conforms_to()
 @mock.patch.object(Image, "open", return_value="opened_image")
-def test_cast_value_image(open_mock):
-    expected = field._cast_value(b"PNG...Some image...", DataType.IMAGE_OBJECT)
+def test_cast_value_image(open_mock, conforms_to):
+    ctx = Context(conforms_to=conforms_to)
+    expected = field._cast_value(ctx, b"PNG...Some image...", DataType.IMAGE_OBJECT)
     open_mock.assert_called_once()
     assert expected == "opened_image"
 

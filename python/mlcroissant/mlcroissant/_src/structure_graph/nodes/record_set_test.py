@@ -78,12 +78,12 @@ def test_checks_are_performed():
 def test_from_jsonld(conforms_to: CroissantVersion):
     ctx = Context(conforms_to=conforms_to)
     jsonld = {
-        "@type": constants.ML_COMMONS_RECORD_SET_TYPE,
+        "@type": constants.ML_COMMONS_RECORD_SET_TYPE(ctx),
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
-        constants.ML_COMMONS_IS_ENUMERATION: True,
+        constants.ML_COMMONS_IS_ENUMERATION(ctx): True,
         constants.SCHEMA_ORG_KEY: ["key1", "key2"],
-        constants.ML_COMMONS_DATA: [{"column1": ["value1", "value2"]}],
+        constants.ML_COMMONS_DATA(ctx): [{"column1": ["value1", "value2"]}],
     }
     assert RecordSet.from_jsonld(ctx, jsonld) == RecordSet(
         ctx=ctx,

@@ -40,20 +40,21 @@ class RecordSet(Node):
             data = self.data
             if not isinstance(data, list):
                 self.add_error(
-                    f"{constants.ML_COMMONS_DATA} should declare a list. Got:"
+                    f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a list. Got:"
                     f" {type(data)}."
                 )
                 return
             if not data:
                 self.add_error(
-                    f"{constants.ML_COMMONS_DATA} should declare a non empty list."
+                    f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a non empty"
+                    " list."
                 )
             expected_keys = {field.name for field in self.fields}
             for i, line in enumerate(data):
                 if not isinstance(line, dict):
                     self.add_error(
-                        f"{constants.ML_COMMONS_DATA} should declare a list of dict."
-                        f" Got: a list of {type(line)}."
+                        f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a list"
+                        f" of dict. Got: a list of {type(line)}."
                     )
                     return
                 keys = set(line.keys())
@@ -79,7 +80,7 @@ class RecordSet(Node):
     def from_jsonld(cls, ctx: Context, record_set: Json) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
         check_expected_type(
-            ctx.issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE
+            ctx.issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE(ctx)
         )
         record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
         context = IssueContext(
@@ -87,21 +88,22 @@ class RecordSet(Node):
         )
         # TODO(marcenacp): Ici comment faire pour réinjecter le contexte ?
         ctx = ctx.copy(context=context)
-        fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
+        fields = record_set.pop(constants.ML_COMMONS_FIELD(ctx), [])
         if isinstance(fields, dict):
             fields = [fields]
         fields = [Field.from_jsonld(ctx, field) for field in fields]
         key = record_set.get(constants.SCHEMA_ORG_KEY)
-        data = record_set.get(constants.ML_COMMONS_DATA)
+        data = record_set.get(constants.ML_COMMONS_DATA(ctx))
         if isinstance(data, str):
             try:
                 data = json.loads(data)
             except json.decoder.JSONDecodeError:
                 data = None
                 ctx.issues.add_error(
-                    f"{constants.ML_COMMONS_DATA} is not a proper list of JSON: {data}"
+                    f"{constants.ML_COMMONS_DATA(ctx)} is not a proper list of JSON:"
+                    f" {data}"
                 )
-        is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION)
+        is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION(ctx))
         return cls(
             ctx=ctx,
             data=data,

@@ -5,9 +5,55 @@ from __future__ import annotations
 import dataclasses
 import functools
 
-from mlcroissant._src.core.json_ld import get_context
-from mlcroissant._src.core.json_ld import make_context
 from mlcroissant._src.core.types import Json
+
+BASE_CONTEXT = {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {"@id": "ml:data", "@type": "@json"},
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform",
+}
+
+
+def get_context(json_: Json) -> Json:
+    """Returns the context and raises an error if it is not a dictionary as expected."""
+    context = json_.get("@context", {})
+    if not isinstance(context, dict):
+        raise ValueError("@context should be a dictionary. Got: {existing_context}")
+    return context
+
+
+def make_context(**kwargs):
+    """Returns the JSON-LD @context with additional keys."""
+    return {**BASE_CONTEXT, **kwargs}
 
 
 @dataclasses.dataclass(eq=False, repr=False)
