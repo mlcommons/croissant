@@ -65,11 +65,11 @@ def render_splash():
         with st.expander("**Load an existing dataset**", expanded=True):
 
             def create_example(dataset: str):
-                base = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/{dataset.lower()}"
+                base = f"https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/1.0/{dataset.lower()}"
                 url = f"{base}/metadata.json"
                 try:
                     json = requests.get(url).json()
-                    metadata = mlc.Metadata.from_json(mlc.Issues(), json, None)
+                    metadata = mlc.Metadata.from_json(mlc.Context(), json)
                     st.session_state[Metadata] = Metadata.from_canonical(metadata)
                     save_current_project()
                     # Write supplementary files.

@@ -4,6 +4,7 @@ from mlcroissant._src import torch
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
@@ -23,6 +24,7 @@ from mlcroissant._src.structure_graph.nodes.source import Transform
 
 __all__ = [
     "constants",
+    "Context",
     "Dataset",
     "DataType",
     "EncodingFormat",
