@@ -185,17 +185,36 @@ class Metadata:
     citation: str | None = None
     conforms_to: str | None = None
     creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
-    data_biases: str | None = None
-    data_collection: str | None = None
     date_published: datetime.datetime | None = None
     license: str | None = ""
-    personal_sensitive_information: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     version: str | None = None
-    other_field: str | None = None
+
+    ## RAI extension attributes
+    data_collection: str | None = None
+    data_collection_type: str | None = None
+    data_collection_missing: str | None = None
+    data_collection_raw: str | None = None
+    data_collection_timeframe: str | None = None
+    data_preprocessing_imputation: str | None = None
+    data_preprocessing_protocol: str | None = None
+    data_preprocessing_manipulation: str | None = None
+    data_annotation_protocol: str | None = None
+    data_annotation_platform: str | None = None
+    data_annotation_analysis: str | None = None
+    data_annotation_peritem: str | None = None
+    data_annotation_demographics: str | None = None
+    data_annotation_tools: str | None = None
+    data_biases: str | None = None
+    data_usecases: str | None = None
+    data_limitation: str | None = None
+    data_social_impact: str | None = None
+    data_sensitive: str | None = None
+    data_maintenance: str | None = None
+
 
     def __bool__(self):
         return self.name != "" and self.url != ""
