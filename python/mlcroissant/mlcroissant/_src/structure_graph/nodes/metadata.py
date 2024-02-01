@@ -84,18 +84,28 @@ class Metadata(Node):
     version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    # RAI field - Involves understanding the potential risks associated with data usage
-    # and to prevent unintended and potentially harmful consequences that may arise from
-    # using models trained on or evaluated with the respective data.
-    data_biases: str | None = None
-    # RAI field - Key stages of the data collection process encourage its creators to
-    # reflect on the process and improves understanding for users.
+
+     ## RAI extension attributes
     data_collection: str | None = None
-    # RAI field - Personal and sensitive information, if contained within the dataset,
-    # can play an important role in the mitigation of any risks and the responsible use
-    # of the datasets.
-    personal_sensitive_information: str | None = None
-    other_field: str | None = None
+    data_collection_type: str | None = None
+    data_collection_missing: str | None = None
+    data_collection_raw: str | None = None
+    data_collection_timeframe: str | None = None
+    data_preprocessing_imputation: str | None = None
+    data_preprocessing_protocol: str | None = None
+    data_preprocessing_manipulation: str | None = None
+    data_annotation_protocol: str | None = None
+    data_annotation_platform: str | None = None
+    data_annotation_analysis: str | None = None
+    data_annotation_peritem: str | None = None
+    data_annotation_demographics: str | None = None
+    data_annotation_tools: str | None = None
+    data_biases: str | None = None
+    data_usecases: str | None = None
+    data_limitation: str | None = None
+    data_social_impact: str | None = None
+    data_sensitive: str | None = None
+    data_maintenance: str | None = None
  
 
     def __post_init__(self):
@@ -148,16 +158,32 @@ class Metadata(Node):
             "description": self.description,
             "creator": creator,
             "datePublished": date_published,
-            "dataBiases": self.data_biases,
-            "dataCollection": self.data_collection,
             "citation": self.citation,
             "license": self.license,
-            "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            "other_field": self.other_field
+            ## RAI extension
+            "dataCollection": self.data_collection,
+            "dataCollectionType": self.data_collection_type,
+            "dataCollectionMissing": self.data_collection_missing,
+            "dataCollectionRaw": self.data_collection_raw,
+            "dataCollectionTimeFrame": self.data_collection_timeframe,
+            "dataPreprocessingImputation": self.data_preprocessing_imputation,
+            "dataPreprocessingProtocol": self.data_preprocessing_protocol, 
+            "dataPreprocessingManipulation": self.data_preprocessing_manipulation,           
+            "dataAnnotationProtocol": self.data_annotation_protocol,
+            "dataAnnotationPlatform": self.data_annotation_platform,
+            "dataAnnotationAnalysis": self.data_annotation_analysis,
+            "dataAnnotationPerItem": self.data_annotation_peritem,
+            "dataAnnotationDemographics": self.data_annotation_demographics,
+            "dataBiases": self.data_biases,
+            "dataUseCases": self.data_usecases,
+            "dataLimitations": self.data_limitation,
+            "dataSocialImpact": self.data_social_impact,
+            "dataSensitive": self.data_sensitive,
+            "dataMaitenance": self.data_maintenance,
         })
 
     @property
