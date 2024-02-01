@@ -88,9 +88,11 @@ class Metadata(Node):
      ## RAI extension attributes
     data_collection: str | None = None
     data_collection_type: str | None = None
+    data_collection_type_others: str | None = None
     data_collection_missing: str | None = None
     data_collection_raw: str | None = None
-    data_collection_timeframe: str | None = None
+    data_collection_timeframe_start: datetime.datetime | None = None
+    data_collection_timeframe_end: datetime.datetime | None = None
     data_preprocessing_imputation: str | None = None
     data_preprocessing_protocol: str | None = None
     data_preprocessing_manipulation: str | None = None
@@ -142,6 +144,12 @@ class Metadata(Node):
         date_published = (
             self.date_published.isoformat() if self.date_published else None
         )
+        data_collection_timeframe_start = (
+            self.data_collection_timeframe_start.isoformat() if self.data_collection_timeframe_start else None
+        )
+        data_collection_timeframe_end = (
+            self.data_collection_timeframe_end.isoformat() if self.data_collection_timeframe_end else None
+        )
         creator: Json | list[Json] | None
         if len(self.creators) == 1:
             creator = self.creators[0].to_json()
@@ -167,9 +175,11 @@ class Metadata(Node):
             ## RAI extension
             "dataCollection": self.data_collection,
             "dataCollectionType": self.data_collection_type,
+            "dataCollectionTypeOthers": self.data_collection_type_others,
             "dataCollectionMissing": self.data_collection_missing,
             "dataCollectionRaw": self.data_collection_raw,
-            "dataCollectionTimeFrame": self.data_collection_timeframe,
+            "dataCollectionTimeFrameStart": data_collection_timeframe_start,
+            "dataCollectionTimeFrameEnd": data_collection_timeframe_end,<
             "dataPreprocessingImputation": self.data_preprocessing_imputation,
             "dataPreprocessingProtocol": self.data_preprocessing_protocol, 
             "dataPreprocessingManipulation": self.data_preprocessing_manipulation,           
