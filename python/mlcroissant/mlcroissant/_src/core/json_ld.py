@@ -186,8 +186,8 @@ def compact_jsonld(json_: Any) -> Any:
         else:
             return json_
     for key, value in json_.copy().items():
-        if key == "@context" or key.startswith(_DCTERMS_PREFIX):
-            # `@context` and `conformsTo` are left untouched.
+        if key == "@context":
+            # `@context` is left untouched.
             continue
         new_value = compact_jsonld(value)
         del json_[key]
@@ -215,7 +215,7 @@ def compact_jsonld(json_: Any) -> Any:
             json_[new_key] = new_value
         elif _DCTERMS_PREFIX in key:
             new_key = key.replace(_DCTERMS_PREFIX, "")
-            json_[new_key] = new_value
+            json_[new_key] = value
         else:
             json_[key] = new_value
     return _sort_dict(json_)

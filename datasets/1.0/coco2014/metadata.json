@@ -2,42 +2,42 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "fileObject": "ml:fileObject",
-    "fileSet": "ml:fileSet",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/croissant/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "jsonPath": "cr:jsonPath",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -130,19 +130,19 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
       "key": "name",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "name",
           "description": "One of: train, val, test.",
           "dataType": "sc:Text"
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
@@ -167,12 +167,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "images",
       "key": "image_id",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image_id",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
@@ -187,7 +187,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
@@ -199,7 +199,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
@@ -211,7 +211,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "split",
           "dataType": [
             "sc:Text",
@@ -233,12 +233,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "captions",
       "key": "id",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
@@ -250,7 +250,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
@@ -262,7 +262,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "caption",
           "description": "The caption",
           "dataType": [
@@ -277,7 +277,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "split",
           "dataType": [
             "sc:Text",
@@ -299,13 +299,13 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "categories",
       "isEnumeration": true,
       "key": "id",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "id",
           "description": "The ID of the category",
           "dataType": "sc:Integer",
@@ -317,7 +317,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "name",
           "description": "The name of the category.",
           "dataType": [
@@ -332,7 +332,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "supercategory",
           "description": "The name of the supercategory.",
           "dataType": [
@@ -350,12 +350,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "annotations",
       "key": "id",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
@@ -367,7 +367,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "category_id",
           "description": "The ID of the category.",
           "dataType": "sc:Integer",
@@ -382,7 +382,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
@@ -397,10 +397,10 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "bbox",
           "description": "The bounding box around annotated object[s].",
-          "dataType": "ml:BoundingBox",
+          "dataType": "cr:BoundingBox",
           "source": {
             "fileSet": "instancesperson_keypoints_annotations",
             "extract": {

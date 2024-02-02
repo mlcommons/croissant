@@ -2,42 +2,42 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "fileObject": "ml:fileObject",
-    "fileSet": "ml:fileSet",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/croissant/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "jsonPath": "cr:jsonPath",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "FLORES-200",
@@ -95,12 +95,12 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "language_translations_train_data",
       "description": "Training data for translations to different languages.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
@@ -112,7 +112,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
@@ -124,7 +124,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
@@ -141,12 +141,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "language_translations_train_data_with_metadata",
       "description": "Training data and metadata for translations to different languages.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
@@ -161,7 +161,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
@@ -170,7 +170,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
@@ -179,7 +179,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "URL",
           "description": "The URL of the English source of the sentence.",
           "dataType": "sc:Text",
@@ -191,7 +191,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "domain",
           "description": "The domain of the English source of the sentence.",
           "dataType": "sc:Text",
@@ -203,7 +203,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "topic",
           "description": "The topic of the sentence.",
           "dataType": "sc:Text",
@@ -215,7 +215,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "has_image",
           "description": "Whether the source of the sentence has an image.",
           "dataType": "sc:Text",
@@ -227,7 +227,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "has_hyperlink",
           "description": "Whether the sentence has a hyperlink.",
           "dataType": "sc:Text",
@@ -241,12 +241,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "language_translations_test_data",
       "description": "Testing data for translations to different languages.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
@@ -258,7 +258,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
@@ -270,7 +270,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
@@ -287,12 +287,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "language_translations_test_data_with_metadata",
       "description": "Testing data and metadata for translations to different languages.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
@@ -307,7 +307,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
@@ -316,7 +316,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
@@ -325,7 +325,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "URL",
           "description": "The URL of the English source of the sentence.",
           "dataType": "sc:Text",
@@ -337,7 +337,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "domain",
           "description": "The domain of the English source of the sentence.",
           "dataType": "sc:Text",
@@ -349,7 +349,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "topic",
           "description": "The topic of the sentence.",
           "dataType": "sc:Text",
@@ -361,7 +361,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "has_image",
           "description": "Whether the source of the sentence has an image.",
           "dataType": "sc:Text",
@@ -373,7 +373,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "has_hyperlink",
           "description": "Whether the sentence has a hyperlink.",
           "dataType": "sc:Text",
