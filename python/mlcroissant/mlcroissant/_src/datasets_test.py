@@ -22,25 +22,25 @@ def get_error_msg(folder):
 @pytest.mark.parametrize(
     "folder",
     [
-        # # Distribution.
-        # "distribution_bad_contained_in",
-        # "distribution_bad_type",
-        # # When the name is missing, the context should still appear without the name.
-        # "distribution_missing_name",
-        # "distribution_missing_property_content_url",
-        # # Metadata.
-        # "metadata_bad_type",
-        # "metadata_missing_property_name",
-        # # ML field.
+        # Distribution.
+        "distribution_bad_contained_in",
+        "distribution_bad_type",
+        # When the name is missing, the context should still appear without the name.
+        "distribution_missing_name",
+        "distribution_missing_property_content_url",
+        # Metadata.
+        "metadata_bad_type",
+        "metadata_missing_property_name",
+        # ML field.
         "mlfield_bad_source",
-        # "mlfield_bad_type",
-        # "mlfield_missing_property_name",
-        # "mlfield_missing_source",
-        # # Record set.
-        # "recordset_bad_type",
-        # "recordset_missing_context_for_datatype",
-        # "recordset_missing_property_name",
-        # "recordset_wrong_join",
+        "mlfield_bad_type",
+        "mlfield_missing_property_name",
+        "mlfield_missing_source",
+        # Record set.
+        "recordset_bad_type",
+        "recordset_missing_context_for_datatype",
+        "recordset_missing_property_name",
+        "recordset_wrong_join",
     ],
 )
 def test_static_analysis(version, folder):

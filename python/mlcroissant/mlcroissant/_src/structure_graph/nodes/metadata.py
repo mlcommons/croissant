@@ -15,7 +15,6 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_str_to_date_time
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -251,17 +250,15 @@ class Metadata(Node):
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
     @classmethod
-    def from_jsonld(
-        cls,
-        ctx: Context,
-        metadata: Json,
-    ) -> Metadata:
+    def from_jsonld(cls, ctx: Context, metadata: Json) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
         check_expected_type(ctx.issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
-        ctx.context = IssueContext(dataset_name=dataset_name)
+        ctx.conforms_to = CroissantVersion.from_jsonld(
+            ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
+        )
         for set_or_object in file_set_or_objects:
             name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
             distribution_type = set_or_object.get("@type")
@@ -276,12 +273,9 @@ class Metadata(Node):
                     f' "{constants.SCHEMA_ORG_FILE_SET}". Got'
                     f" {distribution_type} instead."
                 )
-        ctx.conforms_to = CroissantVersion.from_jsonld(
-            ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
-        )
         record_sets = [
             RecordSet.from_jsonld(ctx, record_set)
-            for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET, [])
+            for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET(ctx), [])
         ]
         url = metadata.get(constants.SCHEMA_ORG_URL)
         creators = PersonOrOrganization.from_jsonld(
@@ -296,13 +290,13 @@ class Metadata(Node):
             creators=creators,
             date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
-            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
-            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
+            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
+            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             personal_sensitive_information=metadata.get(
-                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION
+                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
             record_sets=record_sets,
             url=url,

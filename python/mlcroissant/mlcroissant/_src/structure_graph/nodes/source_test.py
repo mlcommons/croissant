@@ -1,6 +1,7 @@
 """source_test module."""
 
 import pytest
+from rdflib.term import URIRef
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
@@ -23,59 +24,59 @@ def test_source_bool():
     assert whole_source
 
 
-@parametrize_conforms_to()
-@pytest.mark.parametrize(
-    ["json_ld", "expected_source"],
-    [
-        [
-            {
-                constants.ML_COMMONS_FIELD: "token-files/content",
-            },
-            Source(uid="token-files/content", node_type="field"),
-        ],
-        [
-            {
-                constants.ML_COMMONS_FIELD: "token-files/content",
-                constants.ML_COMMONS_TRANSFORM: [
-                    {constants.ML_COMMONS_REPLACE: "\\n/<eos>"},
-                    {constants.ML_COMMONS_SEPARATOR: " "},
-                ],
-            },
-            Source(
-                uid="token-files/content",
-                transforms=[
-                    Transform(replace="\\n/<eos>"),
-                    Transform(separator=" "),
-                ],
-                node_type="field",
-            ),
-        ],
+for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion]:
+
+    @pytest.mark.parametrize(
+        ["json_ld", "expected_source"],
         [
             [
                 {
-                    constants.ML_COMMONS_FIELD: "token-files/content",
-                    constants.ML_COMMONS_TRANSFORM: [
-                        {constants.ML_COMMONS_REPLACE: "\\n/<eos>"},
-                        {constants.ML_COMMONS_SEPARATOR: " "},
-                    ],
-                }
+                    constants.ML_COMMONS_FIELD(ctx): "token-files/content",
+                },
+                Source(uid="token-files/content", node_type="field"),
             ],
-            Source(
-                uid="token-files/content",
-                transforms=[
-                    Transform(replace="\\n/<eos>"),
-                    Transform(separator=" "),
+            [
+                {
+                    constants.ML_COMMONS_FIELD(ctx): "token-files/content",
+                    constants.ML_COMMONS_TRANSFORM(ctx): [
+                        {constants.ML_COMMONS_REPLACE(ctx): "\\n/<eos>"},
+                        {constants.ML_COMMONS_SEPARATOR(ctx): " "},
+                    ],
+                },
+                Source(
+                    uid="token-files/content",
+                    transforms=[
+                        Transform(replace="\\n/<eos>"),
+                        Transform(separator=" "),
+                    ],
+                    node_type="field",
+                ),
+            ],
+            [
+                [
+                    {
+                        constants.ML_COMMONS_FIELD(ctx): "token-files/content",
+                        constants.ML_COMMONS_TRANSFORM(ctx): [
+                            {constants.ML_COMMONS_REPLACE(ctx): "\\n/<eos>"},
+                            {constants.ML_COMMONS_SEPARATOR(ctx): " "},
+                        ],
+                    }
                 ],
-                node_type="field",
-            ),
+                Source(
+                    uid="token-files/content",
+                    transforms=[
+                        Transform(replace="\\n/<eos>"),
+                        Transform(separator=" "),
+                    ],
+                    node_type="field",
+                ),
+            ],
         ],
-    ],
-)
-def test_source_parses_list(conforms_to, json_ld, expected_source):
-    ctx = Context(conforms_to=conforms_to)
-    assert Source.from_jsonld(ctx, json_ld) == expected_source
-    assert not ctx.issues.errors
-    assert not ctx.issues.warnings
+    )
+    def test_source_parses_list(json_ld, expected_source):
+        assert Source.from_jsonld(ctx, json_ld) == expected_source
+        assert not ctx.issues.errors
+        assert not ctx.issues.warnings
 
 
 @pytest.mark.parametrize(
@@ -85,14 +86,14 @@ def test_source_parses_list(conforms_to, json_ld, expected_source):
             CroissantVersion.V_0_8,
             {
                 constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
-                constants.ML_COMMONS_TRANSFORM: [
+                URIRef("http://mlcommons.org/schema/transform"): [
                     {
-                        constants.ML_COMMONS_REPLACE: "\\n/<eos>",
-                        constants.ML_COMMONS_SEPARATOR: " ",
+                        URIRef("http://mlcommons.org/schema/replace"): "\\n/<eos>",
+                        URIRef("http://mlcommons.org/schema/separator"): " ",
                     }
                 ],
-                constants.ML_COMMONS_EXTRACT: {
-                    constants.ML_COMMONS_COLUMN: "my-column"
+                URIRef("http://mlcommons.org/schema/extract"): {
+                    URIRef("http://mlcommons.org/schema/column"): "my-column"
                 },
             },
             Source(
@@ -105,15 +106,15 @@ def test_source_parses_list(conforms_to, json_ld, expected_source):
         [
             CroissantVersion.V_1_0,
             {
-                constants.ML_COMMONS_FILE_OBJECT: "my-csv",
-                constants.ML_COMMONS_TRANSFORM: [
+                URIRef("http://mlcommons.org/croissant/fileObject"): "my-csv",
+                URIRef("http://mlcommons.org/croissant/transform"): [
                     {
-                        constants.ML_COMMONS_REPLACE: "\\n/<eos>",
-                        constants.ML_COMMONS_SEPARATOR: " ",
+                        URIRef("http://mlcommons.org/croissant/replace"): "\\n/<eos>",
+                        URIRef("http://mlcommons.org/croissant/separator"): " ",
                     }
                 ],
-                constants.ML_COMMONS_EXTRACT: {
-                    constants.ML_COMMONS_COLUMN: "my-column"
+                URIRef("http://mlcommons.org/croissant/extract"): {
+                    URIRef("http://mlcommons.org/croissant/column"): "my-column"
                 },
             },
             Source(
@@ -134,36 +135,26 @@ def test_source_parses_list_with_node_type(conforms_to, json_ld, expected_source
 
 @parametrize_conforms_to()
 @pytest.mark.parametrize(
-    ["jsonld", "expected_errors"],
+    ["jsonld", "expected_error"],
     [
         [
             "this is not a list",
-            set([
-                'Transform "this is not a list" should be a dict with the keys'
-                " http://mlcommons.org/schema/format,"
-                " http://mlcommons.org/schema/jsonPath,"
-                " http://mlcommons.org/schema/regex,"
-                " http://mlcommons.org/schema/replace,"
-                " http://mlcommons.org/schema/separator"
-            ]),
+            'Transform "this is not a list" should be a dict with the keys',
         ],
         [
             [{"not": "the right keys"}],
-            set([
+            (
                 "Transform \"{'not': 'the right keys'}\" should be a dict with at"
-                " least one key in http://mlcommons.org/schema/format,"
-                " http://mlcommons.org/schema/jsonPath,"
-                " http://mlcommons.org/schema/regex,"
-                " http://mlcommons.org/schema/replace,"
-                " http://mlcommons.org/schema/separator"
-            ]),
+                " least one key in"
+            ),
         ],
     ],
 )
-def test_transformations_with_errors(conforms_to, jsonld, expected_errors):
+def test_transformations_with_errors(conforms_to, jsonld, expected_error):
     ctx = Context(conforms_to=conforms_to)
     Transform.from_jsonld(ctx=ctx, jsonld=jsonld)
-    assert ctx.issues.errors == expected_errors
+    assert len(ctx.issues.errors) == 1
+    assert expected_error in list(ctx.issues.errors)[0]
 
 
 @pytest.mark.parametrize(
@@ -173,28 +164,32 @@ def test_transformations_with_errors(conforms_to, jsonld, expected_errors):
             CroissantVersion.V_0_8,
             {
                 constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
-                constants.ML_COMMONS_FIELD: "my-record-set/my-field",
+                URIRef("http://mlcommons.org/schema/field"): "my-record-set/my-field",
             },
         ],
         [
             CroissantVersion.V_1_0,
             {
-                constants.ML_COMMONS_FILE_OBJECT: "my-csv",
-                constants.ML_COMMONS_FIELD: "my-record-set/my-field",
+                URIRef("http://mlcommons.org/croissant/fileObject"): "my-csv",
+                URIRef(
+                    "http://mlcommons.org/croissant/field"
+                ): "my-record-set/my-field",
             },
         ],
         [
             CroissantVersion.V_1_0,
             {
-                constants.ML_COMMONS_FILE_SET: "my-csv",
-                constants.ML_COMMONS_FIELD: "my-record-set/my-field",
+                URIRef("http://mlcommons.org/croissant/fileSet"): "my-csv",
+                URIRef(
+                    "http://mlcommons.org/croissant/field"
+                ): "my-record-set/my-field",
             },
         ],
         [
             CroissantVersion.V_1_0,
             {
-                constants.ML_COMMONS_FILE_OBJECT: "my-csv",
-                constants.ML_COMMONS_FILE_SET: "my-csv",
+                URIRef("http://mlcommons.org/croissant/fileObject"): "my-csv",
+                URIRef("http://mlcommons.org/croissant/fileSet"): "my-csv",
             },
         ],
     ],
@@ -203,20 +198,17 @@ def test_declaring_multiple_sources_in_one(conforms_to, json_ld):
     ctx = Context(conforms_to=conforms_to)
     assert Source.from_jsonld(ctx, json_ld) == Source()
     assert len(ctx.issues.errors) == 1
-    assert (
-        "Every http://mlcommons.org/schema/source should declare either"
-        in list(ctx.issues.errors)[0]
-    )
+    assert "source should declare either" in list(ctx.issues.errors)[0]
 
 
 @parametrize_conforms_to()
 def test_declaring_multiple_data_extraction_in_one(conforms_to):
     ctx = Context(conforms_to=conforms_to)
     json_ld = {
-        constants.ML_COMMONS_EXTRACT: {
+        constants.ML_COMMONS_EXTRACT(ctx): {
             "@id": "jsonld-id",
-            constants.ML_COMMONS_COLUMN: "csv_column",
-            constants.ML_COMMONS_JSON_PATH: "json_path",
+            constants.ML_COMMONS_COLUMN(ctx): "csv_column",
+            constants.ML_COMMONS_JSON_PATH(ctx): "json_path",
         },
     }
     assert Source.from_jsonld(ctx, json_ld) == Source(
@@ -224,9 +216,7 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
     )
     assert len(ctx.issues.errors) == 2
     assert any(
-        "http://mlcommons.org/schema/extract should have one of the following"
-        " properties"
-        in error
+        "extract should have one of the following properties" in error
         for error in list(ctx.issues.errors)
     )
 
@@ -235,13 +225,13 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
 def test_declaring_wrong_file_property(conforms_to):
     ctx = Context(conforms_to=conforms_to)
     json_ld = {
-        constants.ML_COMMONS_EXTRACT: {
-            constants.ML_COMMONS_FILE_PROPERTY: "foo",
+        constants.ML_COMMONS_EXTRACT(ctx): {
+            constants.ML_COMMONS_FILE_PROPERTY(ctx): "foo",
         },
     }
     Source.from_jsonld(ctx, json_ld)
     assert any(
-        "Property http://mlcommons.org/schema/fileProperty can only have values in"
+        "fileProperty can only have values in"
         " `fullpath`, `filepath` and `content`. Got: foo"
         in error
         for error in ctx.issues.errors

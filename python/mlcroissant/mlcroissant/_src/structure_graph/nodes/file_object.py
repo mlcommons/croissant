@@ -7,7 +7,6 @@ import dataclasses
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
@@ -71,11 +70,6 @@ class FileObject(Node):
         content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
-        ctx = ctx.copy(
-            context=IssueContext(
-                dataset_name=ctx.context.dataset_name, distribution_name=name
-            )
-        )
         return cls(
             ctx=ctx,
             content_url=content_url,
@@ -86,5 +80,5 @@ class FileObject(Node):
             md5=file_object.get(constants.SCHEMA_ORG_MD5),
             name=name,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
-            source=file_object.get(constants.ML_COMMONS_SOURCE),
+            source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
         )

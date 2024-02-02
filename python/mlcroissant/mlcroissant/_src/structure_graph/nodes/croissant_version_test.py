@@ -4,7 +4,6 @@ import pytest
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
 @pytest.mark.parametrize(
@@ -12,13 +11,10 @@ from mlcroissant._src.structure_graph.nodes.metadata import Metadata
     [1, 1.0, "1.0"],
 )
 def test_conforms_to_is_invalid(conforms_to):
-    metadata = Metadata(
-        ctx=Context(conforms_to=conforms_to),
-        name="name",
-    )
+    ctx = Context(conforms_to=conforms_to)
     assert any(
         error.startswith("conformsTo should be a string or a CroissantVersion.")
-        for error in metadata.ctx.issues.errors
+        for error in ctx.issues.errors
     )
 
 

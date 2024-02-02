@@ -11,7 +11,6 @@ from jsonpath_rw import lexer
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 
@@ -120,11 +119,11 @@ class Transform:
             jsonld = [jsonld]
         for transform in jsonld:
             keys = [
-                constants.ML_COMMONS_FORMAT,
-                constants.ML_COMMONS_JSON_PATH,
-                constants.ML_COMMONS_REGEX,
-                constants.ML_COMMONS_REPLACE,
-                constants.ML_COMMONS_SEPARATOR,
+                constants.ML_COMMONS_FORMAT(ctx),
+                constants.ML_COMMONS_JSON_PATH(ctx),
+                constants.ML_COMMONS_REGEX(ctx),
+                constants.ML_COMMONS_REPLACE(ctx),
+                constants.ML_COMMONS_SEPARATOR(ctx),
             ]
             if not isinstance(transform, dict):
                 ctx.issues.add_error(
@@ -132,7 +131,7 @@ class Transform:
                     f' {", ".join(keys)}'
                 )
                 continue
-            kwargs = {constants.TO_CROISSANT[k]: transform.get(k) for k in keys}
+            kwargs = {constants.TO_CROISSANT(ctx)[k]: transform.get(k) for k in keys}
             all_values_are_none = all(v is None for v in kwargs.values())
             if all_values_are_none:
                 ctx.issues.add_error(
@@ -216,68 +215,67 @@ class Source:
         elif isinstance(jsonld, dict):
             try:
                 transforms = Transform.from_jsonld(
-                    ctx, jsonld.get(constants.ML_COMMONS_TRANSFORM, [])
+                    ctx, jsonld.get(constants.ML_COMMONS_TRANSFORM(ctx), [])
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
-                data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT, {})
+                data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT(ctx), {})
                 if isinstance(data_extraction, list) and data_extraction:
                     data_extraction = data_extraction[0]
                 # Remove the JSON-LD @id property if it exists:
                 data_extraction.pop("@id", None)
                 if len(data_extraction) > 1:
                     ctx.issues.add_error(
-                        f"{constants.ML_COMMONS_EXTRACT} should have one of the"
-                        f" following properties: {constants.ML_COMMONS_FORMAT},"
-                        f" {constants.ML_COMMONS_REGEX},"
-                        f" {constants.ML_COMMONS_REPLACE} or"
-                        f" {constants.ML_COMMONS_SEPARATOR}"
+                        f"{constants.ML_COMMONS_EXTRACT(ctx)} should have one of the"
+                        f" following properties: {constants.ML_COMMONS_FORMAT(ctx)},"
+                        f" {constants.ML_COMMONS_REGEX(ctx)},"
+                        f" {constants.ML_COMMONS_REPLACE(ctx)} or"
+                        f" {constants.ML_COMMONS_SEPARATOR(ctx)}"
                     )
                 # Safely access and check "uid" from JSON-LD.
                 distribution = jsonld.get(constants.SCHEMA_ORG_DISTRIBUTION)
-                file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT)
-                file_set = jsonld.get(constants.ML_COMMONS_FILE_SET)
-                field = jsonld.get(constants.ML_COMMONS_FIELD)
-                is_v8 = ctx.conforms_to <= CroissantVersion.V_0_8
-                if is_v8:
+                file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT(ctx))
+                file_set = jsonld.get(constants.ML_COMMONS_FILE_SET(ctx))
+                field = jsonld.get(constants.ML_COMMONS_FIELD(ctx))
+                if ctx.is_v0():
                     uids = [distribution, field]
                     node_types: list[NodeType] = ["distribution", "field"]
                 else:
                     uids = [file_object, file_set, field]
-                    node_types = [
-                        "fileObject",
-                        "fileSet",
-                        "field",
-                    ]
+                    node_types = ["fileObject", "fileSet", "field"]
                 uid, node_type = _find_choice(uids, node_types)
                 if uid is None or node_type is None:
-                    if is_v8:
+                    uid = None
+                    node_type = None
+                    if ctx.is_v0():
                         mandatory_fields_in_source = [
-                            constants.ML_COMMONS_FIELD,
+                            constants.ML_COMMONS_FIELD(ctx),
                             constants.SCHEMA_ORG_DISTRIBUTION,
                         ]
                     else:
                         mandatory_fields_in_source = [
-                            constants.ML_COMMONS_FIELD,
-                            constants.ML_COMMONS_FILE_OBJECT,
-                            constants.ML_COMMONS_FILE_SET,
+                            constants.ML_COMMONS_FIELD(ctx),
+                            constants.ML_COMMONS_FILE_OBJECT(ctx),
+                            constants.ML_COMMONS_FILE_SET(ctx),
                         ]
                     ctx.issues.add_error(
-                        f"Every {constants.ML_COMMONS_SOURCE} should declare either"
-                        f" {' or '.join(mandatory_fields_in_source)}"
+                        f"Every {constants.ML_COMMONS_SOURCE(ctx)} should declare"
+                        f" either {' or '.join(mandatory_fields_in_source)}"
                     )
                 # Safely access and check "file_property" from JSON-LD.
-                file_property = data_extraction.get(constants.ML_COMMONS_FILE_PROPERTY)
+                file_property = data_extraction.get(
+                    constants.ML_COMMONS_FILE_PROPERTY(ctx)
+                )
                 if is_file_property(file_property):
                     file_property = FileProperty[file_property]
                 elif file_property is not None:
                     ctx.issues.add_error(
-                        f"Property {constants.ML_COMMONS_FILE_PROPERTY} can only have"
-                        " values in `fullpath`, `filepath` and `content`. Got:"
+                        f"Property {constants.ML_COMMONS_FILE_PROPERTY(ctx)} can only"
+                        " have values in `fullpath`, `filepath` and `content`. Got:"
                         f" {file_property}"
                     )
                 # Build the source.
-                json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH)
-                csv_column = data_extraction.get(constants.ML_COMMONS_COLUMN)
+                json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH(ctx))
+                csv_column = data_extraction.get(constants.ML_COMMONS_COLUMN(ctx))
                 extract = Extract(
                     column=csv_column,
                     file_property=file_property,
