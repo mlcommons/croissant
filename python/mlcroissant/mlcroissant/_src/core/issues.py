@@ -1,6 +1,7 @@
 """issues module."""
 
 import dataclasses
+from typing import Any
 
 
 class ValidationError(Exception):
@@ -9,25 +10,6 @@ class ValidationError(Exception):
 
 class GenerationError(Exception):
     """Error during the generation of the dataset."""
-
-
-@dataclasses.dataclass
-class IssueContext:
-    """Context to identify an issue.
-
-    This allows to add context to an issue by tracing it back:
-    - within a given dataset,
-    - within a given distribution,
-    - within a given record set,
-    - within a given field,
-    - within a given sub field.
-    """
-
-    dataset_name: str | None = None
-    distribution_name: str | None = None
-    record_set_name: str | None = None
-    field_name: str | None = None
-    sub_field_name: str | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -39,34 +21,43 @@ class Issues:
     We use sets to represent errors and warnings to avoid repeated strings.
     """
 
-    errors: set[str] = dataclasses.field(default_factory=set, hash=False)
-    warnings: set[str] = dataclasses.field(default_factory=set, hash=False)
+    _errors: set[tuple[str, Any]] = dataclasses.field(default_factory=set, hash=False)
+    _warnings: set[tuple[str, Any]] = dataclasses.field(default_factory=set, hash=False)
 
-    def _wrap_in_context(self, context: IssueContext | None, issue: str) -> str:
+    def _wrap_in_context(self, context: str | None, issue: str) -> str:
         if context is None:
             return issue
-        local_context = []
-        if context.dataset_name is not None:
-            local_context.append(f"dataset({context.dataset_name})")
-        if context.distribution_name is not None:
-            local_context.append(f"distribution({context.distribution_name})")
-        if context.record_set_name is not None:
-            local_context.append(f"record_set({context.record_set_name})")
-        if context.field_name is not None:
-            local_context.append(f"field({context.field_name})")
-        if context.sub_field_name is not None:
-            local_context.append(f"sub_field({context.sub_field_name})")
-        if not local_context:
-            return issue
-        return f"[{' > '.join(local_context)}] {issue}"
+        return f"[{context}] {issue}"
 
-    def add_error(self, error: str, context: IssueContext | None = None):
+    def add_error(self, error: str, node: Any = None):
         """Mutates self.errors with a new error."""
-        self.errors.add(self._wrap_in_context(context, error))
+        self._errors.add((error, node))
 
-    def add_warning(self, warning: str, context: IssueContext | None = None):
+    def add_warning(self, warning: str, node: Any = None):
         """Mutates self.warnings with a new warning."""
-        self.warnings.add(self._wrap_in_context(context, warning))
+        self._warnings.add((warning, node))
+
+    @property
+    def errors(self) -> set[str]:
+        errors = set()
+        for error, node in self._errors:
+            if get_issue_context := getattr(node, "get_issue_context", None):
+                if callable(get_issue_context):
+                    errors.add(f"[{get_issue_context()}] {error}")
+                    continue
+            errors.add(error)
+        return errors
+
+    @property
+    def warnings(self) -> set[str]:
+        warnings = set()
+        for error, node in self._warnings:
+            if get_issue_context := getattr(node, "get_issue_context", None):
+                if callable(get_issue_context):
+                    warnings.add(f"[{get_issue_context()}] {error}")
+                    continue
+            warnings.add(error)
+        return warnings
 
     def report(self) -> str:
         """Reports errors and warnings in a string."""

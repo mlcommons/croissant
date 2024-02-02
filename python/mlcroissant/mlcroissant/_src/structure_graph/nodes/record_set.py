@@ -9,7 +9,6 @@ import json
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
@@ -83,11 +82,6 @@ class RecordSet(Node):
             ctx.issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE(ctx)
         )
         record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
-        context = IssueContext(
-            dataset_name=ctx.context.dataset_name, record_set_name=record_set_name
-        )
-        # TODO(marcenacp): Ici comment faire pour réinjecter le contexte ?
-        ctx = ctx.copy(context=context)
         fields = record_set.pop(constants.ML_COMMONS_FIELD(ctx), [])
         if isinstance(fields, dict):
             fields = [fields]

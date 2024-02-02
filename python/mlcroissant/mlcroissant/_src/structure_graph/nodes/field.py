@@ -158,11 +158,6 @@ class Field(Node):
         else:
             data_types = []
         field_name = field.get(constants.SCHEMA_ORG_NAME, "")
-        issue_context = ctx.context
-        if issue_context.field_name is None:
-            issue_context.field_name = field_name
-        else:
-            issue_context.sub_field_name = field_name
         sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD(ctx), [])
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]

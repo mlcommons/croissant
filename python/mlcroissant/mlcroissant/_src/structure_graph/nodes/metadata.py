@@ -15,7 +15,6 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_str_to_date_time
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -251,17 +250,12 @@ class Metadata(Node):
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
     @classmethod
-    def from_jsonld(
-        cls,
-        ctx: Context,
-        metadata: Json,
-    ) -> Metadata:
+    def from_jsonld(cls, ctx: Context, metadata: Json) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
         check_expected_type(ctx.issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
-        ctx.context = IssueContext(dataset_name=dataset_name)
         ctx.conforms_to = CroissantVersion.from_jsonld(
             ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
         )

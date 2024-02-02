@@ -9,7 +9,6 @@ from typing import Any, Mapping
 from etils import epath
 import networkx as nx
 
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.rdf import Rdf
 
@@ -66,10 +65,6 @@ class Context:
     """A global context in the application to store commonly used objects."""
 
     issues: Issues = dataclasses.field(default_factory=Issues)
-    # TODO(marcenacp): Rename to issue_context
-    context: IssueContext = dataclasses.field(
-        default_factory=IssueContext, compare=False, hash=False
-    )
     folder: epath.Path | None = None
     graph: nx.MultiDiGraph = dataclasses.field(
         default_factory=nx.MultiDiGraph, compare=False, init=False, hash=False

@@ -7,7 +7,6 @@ import pytest
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_field
@@ -22,35 +21,35 @@ from mlcroissant._src.tests.versions import parametrize_conforms_to
         [
             {"foo": "bar"},
             (
-                "[record_set(record_set_name)] http://mlcommons.org/schema/data should"
+                "[RecordSet(record_set_name)] http://mlcommons.org/schema/data should"
                 " declare a list. Got: <class 'dict'>."
             ),
         ],
         [
             [],
             (
-                "[record_set(record_set_name)] http://mlcommons.org/schema/data should"
+                "[RecordSet(record_set_name)] http://mlcommons.org/schema/data should"
                 " declare a non empty list."
             ),
         ],
         [
             [[{"foo": "bar"}]],
             (
-                "[record_set(record_set_name)] http://mlcommons.org/schema/data should"
+                "[RecordSet(record_set_name)] http://mlcommons.org/schema/data should"
                 " declare a list of dict. Got: a list of <class 'list'>."
             ),
         ],
         [
             [{"foo": "bar"}],
             (
-                "[record_set(record_set_name)] Line #0 doesn't have the expected"
+                "[RecordSet(record_set_name)] Line #0 doesn't have the expected"
                 " columns. Expected: {'field_name'}. Got: {'foo'}."
             ),
         ],
     ],
 )
 def test_invalid_data(data, error):
-    ctx = Context(context=IssueContext(record_set_name="record_set_name"))
+    ctx = Context()
     field = create_test_field(ctx=ctx)
     create_test_record_set(
         ctx=ctx,
@@ -94,9 +93,12 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         data=[{"column1": ["value1", "value2"]}],
     )
     assert ctx.issues.errors == {
-        "Line #0 doesn't have the expected columns. Expected: set(). Got: {'column1'}.",
         (
-            "[record_set(foo)] Line #0 doesn't have the expected columns. Expected:"
+            "[RecordSet(foo)] Line #0 doesn't have the expected columns. Expected:"
+            " set(). Got: {'column1'}."
+        ),
+        (
+            "[RecordSet(foo)] Line #0 doesn't have the expected columns. Expected:"
             " set(). Got: {'column1'}."
         ),
     }

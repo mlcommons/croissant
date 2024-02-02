@@ -7,7 +7,6 @@ import dataclasses
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import IssueContext
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
@@ -55,11 +54,6 @@ class FileSet(Node):
         contained_in = file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
         if contained_in is not None and not isinstance(contained_in, list):
             contained_in = [contained_in]
-        ctx = ctx.copy(
-            context=IssueContext(
-                dataset_name=ctx.context.dataset_name, distribution_name=name
-            )
-        )
         return cls(
             ctx=ctx,
             contained_in=contained_in,

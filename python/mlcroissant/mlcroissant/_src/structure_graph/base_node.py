@@ -99,13 +99,18 @@ class Node(abc.ABC):
                 )
                 self.add_error(error)
 
+    def get_issue_context(self) -> str:
+        """Adds context to an issue by printing metadata(...) > ... > field(...)."""
+        nodes = self.parents + [self]
+        return " > ".join(f"{type(node).__name__}({node.name})" for node in nodes)
+
     def add_error(self, error: str):
         """Adds a new error."""
-        self.ctx.issues.add_error(error, self.ctx.context)
+        self.ctx.issues.add_error(error, self)
 
     def add_warning(self, warning: str):
         """Adds a new warning."""
-        self.ctx.issues.add_warning(warning, self.ctx.context)
+        self.ctx.issues.add_warning(warning, self)
 
     def __repr__(self) -> str:
         """Prints a simplified string representation of the node: `Node(uid="xxx")`."""
@@ -204,7 +209,10 @@ class Node(abc.ABC):
             ):
                 # If the code failed here, you probably added an unhashable property
                 # that should appear in the allow list above.
-                args.append(_make_hashable(getattr(self, field.name)))
+                try:
+                    args.append(_make_hashable(getattr(self, field.name)))
+                except TypeError:
+                    pass
         return hash(tuple(args))
 
     def __eq__(self, other: Any) -> bool:
