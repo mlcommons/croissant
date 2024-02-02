@@ -179,7 +179,7 @@ class Metadata(Node):
             "dataCollectionMissing": self.data_collection_missing,
             "dataCollectionRaw": self.data_collection_raw,
             "dataCollectionTimeFrameStart": data_collection_timeframe_start,
-            "dataCollectionTimeFrameEnd": data_collection_timeframe_end,<
+            "dataCollectionTimeFrameEnd": data_collection_timeframe_end,
             "dataPreprocessingImputation": self.data_preprocessing_imputation,
             "dataPreprocessingProtocol": self.data_preprocessing_protocol, 
             "dataPreprocessingManipulation": self.data_preprocessing_manipulation,           
@@ -193,7 +193,7 @@ class Metadata(Node):
             "dataLimitations": self.data_limitation,
             "dataSocialImpact": self.data_social_impact,
             "dataSensitive": self.data_sensitive,
-            "dataMaitenance": self.data_maintenance,
+            "dataMaintenance": self.data_maintenance,
         })
 
     @property
