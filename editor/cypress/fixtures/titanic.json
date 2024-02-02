@@ -4,6 +4,7 @@
     "@vocab": "https://schema.org/",
     "column": "ml:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -24,7 +25,6 @@
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
     "personalSensitiveInformation": "ml:personalSensitiveInformation",
@@ -37,7 +37,9 @@
     "separator": "ml:separator",
     "source": "ml:source",
     "subField": "ml:subField",
-    "transform": "ml:transform"
+    "transform": "ml:transform",
+    "ml": "http://mlcommons.org/schema/",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "Titanic",

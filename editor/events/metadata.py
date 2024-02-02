@@ -92,7 +92,6 @@ class MetadataEvent(enum.Enum):
     """Event that triggers a metadata change."""
 
     NAME = "NAME"
-    CONFORMS_TO = "CONFORMS_TO"
     DESCRIPTION = "DESCRIPTION"
     DATE_PUBLISHED = "DATE_PUBLISHED"
     URL = "URL"
@@ -111,8 +110,6 @@ class MetadataEvent(enum.Enum):
 def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
     if event == MetadataEvent.NAME:
         metadata.name = find_unique_name(set(), st.session_state[key])
-    if event == MetadataEvent.CONFORMS_TO:
-        metadata.conforms_to = st.session_state[key]
     elif event == MetadataEvent.DESCRIPTION:
         metadata.description = st.session_state[key]
     elif event == MetadataEvent.LICENSE:
