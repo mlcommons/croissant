@@ -4,7 +4,6 @@ import pytest
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
 @pytest.mark.parametrize(

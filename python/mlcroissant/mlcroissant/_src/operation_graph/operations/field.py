@@ -68,7 +68,7 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
             return deps.PIL_Image.open(io.BytesIO(value))
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
-    elif data_type == DataType.BOUNDING_BOX(ctx):
+    elif data_type == DataType.BOUNDING_BOX(ctx):  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")

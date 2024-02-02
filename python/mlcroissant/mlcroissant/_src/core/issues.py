@@ -39,6 +39,7 @@ class Issues:
 
     @property
     def errors(self) -> set[str]:
+        """Outputs errors as a set of human-readable strings."""
         errors = set()
         for error, node in self._errors:
             if get_issue_context := getattr(node, "get_issue_context", None):
@@ -50,6 +51,7 @@ class Issues:
 
     @property
     def warnings(self) -> set[str]:
+        """Outputs warnings as a set of human-readable strings."""
         warnings = set()
         for error, node in self._warnings:
             if get_issue_context := getattr(node, "get_issue_context", None):

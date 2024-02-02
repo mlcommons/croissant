@@ -97,7 +97,8 @@ class Field(Node):
                 # data_type is an ML semantic type:
                 elif data_type in [
                     DataType.IMAGE_OBJECT,
-                    DataType.BOUNDING_BOX(self.ctx),
+                    # For some reasons, pytype cannot infer `Any` on ctx:
+                    DataType.BOUNDING_BOX(self.ctx),  # pytype: disable=wrong-arg-types
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on a predecessor:

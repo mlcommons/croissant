@@ -1,5 +1,7 @@
 """constants module."""
 
+# flake8: noqa
+
 from etils import epath
 import rdflib
 from rdflib import namespace
@@ -11,6 +13,7 @@ ML_COMMONS_V_1_0 = rdflib.Namespace("http://mlcommons.org/croissant/")
 
 # ctx: Context is untyped to avoid cyclic dependencies. A unit test tests the behaviour.
 def ML_COMMONS(ctx) -> rdflib.Namespace:
+    """Switches the main Croissant namespace according to the version."""
     if ctx.is_v0():  # pytype: disable=attribute-error
         return ML_COMMONS_V_0_8
     else:

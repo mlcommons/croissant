@@ -76,6 +76,7 @@ class Context:
     conforms_to: CroissantVersion = CroissantVersion.V_0_8
 
     def __post_init__(self):
+        """Standardizes conforms_to."""
         self.conforms_to = CroissantVersion.from_jsonld(self, self.conforms_to)
 
     def copy(self, **changes) -> Context:

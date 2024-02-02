@@ -23,7 +23,7 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
 
 __all__ = [
-    "cst",
+    "constants",
     "Context",
     "Dataset",
     "DataType",
