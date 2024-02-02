@@ -2,42 +2,42 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "fileObject": "ml:fileObject",
-    "fileSet": "ml:fileSet",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "jsonPath": "cr:jsonPath",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "Movielens-25M",
@@ -97,12 +97,12 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "movies",
       "key": "movie_id",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
           "source": {
@@ -113,7 +113,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "title",
           "description": "The title of the  movie with the release year in parentheses.",
           "dataType": "sc:Text",
@@ -125,7 +125,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "genre",
           "description": "A sequence of genres to which the rated movie belongs.",
           "dataType": "sc:Text",
@@ -143,7 +143,7 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "ratings",
       "key": [
         "user_id",
@@ -151,7 +151,7 @@
       ],
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "user_id",
           "dataType": "sc:Integer",
           "source": {
@@ -162,7 +162,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
           "references": {
@@ -176,7 +176,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "rating",
           "description": "The score of the rating on a five-star scale.",
           "dataType": "sc:Float",
@@ -188,7 +188,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "timestamp",
           "dataType": "sc:Integer",
           "source": {
@@ -201,7 +201,7 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "tags",
       "key": [
         "user_id",
@@ -210,7 +210,7 @@
       ],
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "user_id",
           "dataType": "sc:Integer",
           "source": {
@@ -221,7 +221,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "movie_id",
           "dataType": "sc:Integer",
           "references": {
@@ -235,7 +235,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "tag",
           "description": "Tags assigned to the movie.",
           "dataType": "sc:Text",
@@ -247,7 +247,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "timestamp",
           "dataType": "sc:Integer",
           "source": {
@@ -260,35 +260,35 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "movies_with_ratings_with_tags",
       "key": "movie_id",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "movie_id",
           "source": {
             "field": "movies/movie_id"
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "movie_title",
           "source": {
             "field": "movies/title"
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "movie_genres",
           "source": {
             "field": "movies/genre"
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "ratings",
-          "dataType": "ml:RecordSet",
+          "dataType": "cr:RecordSet",
           "parentField": {
             "references": {
               "field": "movies/movie_id"
@@ -299,21 +299,21 @@
           },
           "subField": [
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
               "name": "user_id",
               "source": {
                 "field": "ratings/user_id"
               }
             },
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
               "name": "rating",
               "source": {
                 "field": "ratings/rating"
               }
             },
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
               "name": "timestamp",
               "source": {
                 "field": "ratings/timestamp"
@@ -322,9 +322,9 @@
           ]
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "tags",
-          "dataType": "ml:RecordSet",
+          "dataType": "cr:RecordSet",
           "parentField": {
             "references": {
               "field": "movies/movie_id"
@@ -335,21 +335,21 @@
           },
           "subField": [
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
               "name": "user_id",
               "source": {
                 "field": "tags/user_id"
               }
             },
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
               "name": "tag",
               "source": {
                 "field": "tags/tag"
               }
             },
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
               "name": "timestamp",
               "source": {
                 "field": "tags/timestamp"

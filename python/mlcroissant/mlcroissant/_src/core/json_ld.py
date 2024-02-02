@@ -22,73 +22,43 @@ if rdflib.__version__ < "6.0.1":
     plugin.register("json-ld", plugin.Parser, "rdflib_jsonld.parser", "JsonLDParser")
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
+from mlcroissant._src.core.rdf import get_context
+from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.types import Json
 
 _DCTERMS_PREFIX = constants.DCTERMS
-_ML_COMMONS_PREFIX = constants.ML_COMMONS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
 _WD_PREFIX = "https://www.wikidata.org/wiki/"
 # Mapping for non-trivial conversion:
-_PREFIX_MAP = {
-    constants.ML_COMMONS_FIELD_TYPE: "field",
-    constants.ML_COMMONS_RECORD_SET_TYPE: "recordSet",
-    constants.ML_COMMONS_SUB_FIELD_TYPE: "subField",
-}
+_DATA = set()
+for conforms_to in CroissantVersion:
+    ctx = Context(conforms_to=conforms_to)
+    _DATA.add(constants.ML_COMMONS_FIELD_TYPE(ctx))
+# Mapping for non-trivial conversion:
+_PREFIX_MAP = {}
+for conforms_to in CroissantVersion:
+    ctx = Context(conforms_to=conforms_to)
+    _PREFIX_MAP[constants.ML_COMMONS_FIELD_TYPE(ctx)] = "field"
+    _PREFIX_MAP[constants.ML_COMMONS_RECORD_SET_TYPE(ctx)] = "recordSet"
+    _PREFIX_MAP[constants.ML_COMMONS_SUB_FIELD_TYPE(ctx)] = "subField"
 # List of key/type where `key` always outputs lists when used in nodes of type `type`.
-_KEYS_WITH_LIST = {
-    (constants.ML_COMMONS_FIELD, constants.ML_COMMONS_RECORD_SET_TYPE),
-    (constants.ML_COMMONS_RECORD_SET, constants.SCHEMA_ORG_DATASET),
-    (constants.ML_COMMONS_SUB_FIELD, constants.ML_COMMONS_FIELD_TYPE),
-    (constants.SCHEMA_ORG_DISTRIBUTION, constants.SCHEMA_ORG_DATASET),
-}
-
-BASE_CONTEXT = {
-    "@language": "en",
-    "@vocab": "https://schema.org/",
-    "column": "ml:column",
-    "conformsTo": "dct:conformsTo",
-    "data": {"@id": "ml:data", "@type": "@json"},
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
-    "dataType": {"@id": "ml:dataType", "@type": "@vocab"},
-    "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "fileObject": "ml:fileObject",
-    "fileSet": "ml:fileSet",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
-    "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform",
-}
-
-
-def get_context(json_: Json) -> Json:
-    """Returns the context and raises an error if it is not a dictionary as expected."""
-    context = json_.get("@context", {})
-    if not isinstance(context, dict):
-        raise ValueError("@context should be a dictionary. Got: {existing_context}")
-    return context
-
-
-def make_context(**kwargs):
-    """Returns the JSON-LD @context with additional keys."""
-    return {**BASE_CONTEXT, **kwargs}
+_KEYS_WITH_LIST = set()
+for conforms_to in CroissantVersion:
+    ctx = Context(conforms_to=conforms_to)
+    _KEYS_WITH_LIST.add(
+        (constants.ML_COMMONS_FIELD(ctx), constants.ML_COMMONS_RECORD_SET_TYPE(ctx))
+    )
+    _KEYS_WITH_LIST.add(
+        (constants.ML_COMMONS_RECORD_SET(ctx), constants.SCHEMA_ORG_DATASET)
+    )
+    _KEYS_WITH_LIST.add(
+        (constants.ML_COMMONS_SUB_FIELD(ctx), constants.ML_COMMONS_FIELD_TYPE(ctx))
+    )
+    _KEYS_WITH_LIST.add(
+        (constants.SCHEMA_ORG_DISTRIBUTION, constants.SCHEMA_ORG_DATASET)
+    )
 
 
 def _is_dataset_node(node: Json) -> bool:
@@ -205,8 +175,10 @@ def compact_jsonld(json_: Any) -> Any:
     elif not isinstance(json_, dict):
         if isinstance(json_, str) and _SCHEMA_ORG_PREFIX in json_:
             return json_.replace(_SCHEMA_ORG_PREFIX, "sc:")
-        elif isinstance(json_, str) and _ML_COMMONS_PREFIX in json_:
-            return json_.replace(_ML_COMMONS_PREFIX, "ml:")
+        elif isinstance(json_, str) and constants.ML_COMMONS_V_0_8 in json_:
+            return json_.replace(constants.ML_COMMONS_V_0_8, "ml:")
+        elif isinstance(json_, str) and constants.ML_COMMONS_V_1_0 in json_:
+            return json_.replace(constants.ML_COMMONS_V_1_0, "cr:")
         elif isinstance(json_, str) and _DCTERMS_PREFIX in json_:
             return json_.replace(_DCTERMS_PREFIX, "dct:")
         elif isinstance(json_, str) and _WD_PREFIX in json_:
@@ -223,23 +195,27 @@ def compact_jsonld(json_: Any) -> Any:
             if (
                 value.startswith(_SCHEMA_ORG_PREFIX)
                 or value.startswith(_DCTERMS_PREFIX)
-                or value.startswith(_ML_COMMONS_PREFIX)
+                or value.startswith(constants.ML_COMMONS_V_0_8)
+                or value.startswith(constants.ML_COMMONS_V_1_0)
                 or value.startswith(_WD_PREFIX)
             ):
                 return new_value
-        elif key == constants.ML_COMMONS_DATA:
+        elif key in _DATA:
             json_["data"] = json.loads(value)
         elif key in _PREFIX_MAP:
             json_[_PREFIX_MAP[key]] = new_value
         elif _SCHEMA_ORG_PREFIX in key:
             new_key = key.replace(_SCHEMA_ORG_PREFIX, "")
             json_[new_key] = new_value
-        elif _ML_COMMONS_PREFIX in key:
-            new_key = key.replace(_ML_COMMONS_PREFIX, "")
+        elif constants.ML_COMMONS_V_0_8 in key:
+            new_key = key.replace(constants.ML_COMMONS_V_0_8, "")
+            json_[new_key] = new_value
+        elif constants.ML_COMMONS_V_1_0 in key:
+            new_key = key.replace(constants.ML_COMMONS_V_1_0, "")
             json_[new_key] = new_value
         elif _DCTERMS_PREFIX in key:
             new_key = key.replace(_DCTERMS_PREFIX, "")
-            json_[new_key] = new_value
+            json_[new_key] = value
         else:
             json_[key] = new_value
     return _sort_dict(json_)

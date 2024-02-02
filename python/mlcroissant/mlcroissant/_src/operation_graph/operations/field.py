@@ -13,6 +13,7 @@ import pandas as pd
 from rdflib import term
 
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.ml import bounding_box
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
@@ -55,7 +56,7 @@ def apply_transforms_fn(value: Any, field: Field) -> Any:
     return value
 
 
-def _cast_value(value: Any, data_type: type | term.URIRef | None):
+def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     """Casts the value `value` to the desired target data type `data_type`."""
     is_na = not isinstance(value, (list, np.ndarray)) and pd.isna(value)
     if is_na:
@@ -67,7 +68,7 @@ def _cast_value(value: Any, data_type: type | term.URIRef | None):
             return deps.PIL_Image.open(io.BytesIO(value))
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
-    elif data_type == DataType.BOUNDING_BOX:
+    elif data_type == DataType.BOUNDING_BOX(ctx):  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
@@ -158,6 +159,6 @@ class ReadFields(Operation):
                 )
                 value = row[column]
                 value = apply_transforms_fn(value, field=field)
-                value = _cast_value(value, field.data_type)
+                value = _cast_value(self.node.ctx, value, field.data_type)
                 result[field.name] = value
             yield result

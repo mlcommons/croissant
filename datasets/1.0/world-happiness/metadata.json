@@ -2,42 +2,42 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "fileObject": "ml:fileObject",
-    "fileSet": "ml:fileSet",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "jsonPath": "cr:jsonPath",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "World-Happiness-Report",
@@ -99,12 +99,12 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "2015.csv_records",
       "description": "Happiness rank and scores by country, 2015",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Country",
           "description": "Name of the country.",
           "dataType": "sc:Text",
@@ -116,7 +116,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Region",
           "description": "Region the country belongs to.",
           "dataType": "sc:Text",
@@ -128,7 +128,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Happiness-Rank",
           "description": "Rank of the country based on the Happiness Score.",
           "dataType": "sc:Integer",
@@ -140,7 +140,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Happiness-Score",
           "description": "A metric measured in 2015 by asking the sampled people the question: \"How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest.\"",
           "dataType": "sc:Float",
@@ -152,7 +152,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Standard-Error",
           "description": "The standard error of the happiness score.",
           "dataType": "sc:Float",
@@ -164,7 +164,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Economy--GDP-per-Capita-",
           "description": "The extent to which GDP contributes to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
@@ -176,7 +176,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Family",
           "description": "The extent to which Family contributes to the calculation of the Happiness Score",
           "dataType": "sc:Float",
@@ -188,7 +188,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Health--Life-Expectancy-",
           "description": "The extent to which Life expectancy contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
@@ -200,7 +200,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Freedom",
           "description": "The extent to which Freedom contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
@@ -212,7 +212,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Trust--Government-Corruption-",
           "description": "The extent to which Perception of Corruption contributes to Happiness Score.",
           "dataType": "sc:Float",
@@ -224,7 +224,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Generosity",
           "description": "The extent to which Generosity contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
@@ -236,7 +236,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Dystopia-Residual",
           "description": "The extent to which Dystopia Residual contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
@@ -250,12 +250,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "2016.csv_records",
       "description": "Happiness rank and scores by country, 2016",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Country",
           "description": "Name of the country",
           "dataType": "sc:Text",
@@ -267,7 +267,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Region",
           "description": "Region the country belongs to",
           "dataType": "sc:Text",
@@ -279,7 +279,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Happiness-Rank",
           "description": "Rank of the country based on the Happiness Score.",
           "dataType": "sc:Integer",
@@ -291,7 +291,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Happiness-Score",
           "description": "A metric measured in 2016 by asking the sampled people the question: \"How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest\"",
           "dataType": "sc:Float",
@@ -303,7 +303,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Lower-Confidence-Interval",
           "description": "Lower Confidence Interval of the Happiness Score",
           "dataType": "sc:Float",
@@ -315,7 +315,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Upper-Confidence-Interval",
           "description": "Upper Confidence Interval of the Happiness Score",
           "dataType": "sc:Float",
@@ -327,7 +327,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Economy--GDP-per-Capita-",
           "description": "The extent to which GDP contributes to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
@@ -339,7 +339,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Family",
           "description": "The extent to which Family contributes to the calculation of the Happiness Score",
           "dataType": "sc:Float",
@@ -351,7 +351,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Health--Life-Expectancy-",
           "description": "The extent to which Life expectancy contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
@@ -363,7 +363,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Freedom",
           "description": "The extent to which Freedom contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
@@ -375,7 +375,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Trust--Government-Corruption-",
           "description": "The extent to which Perception of Corruption contributes to Happiness Score",
           "dataType": "sc:Float",
@@ -387,7 +387,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Generosity",
           "description": "The extent to which Generosity contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
@@ -399,7 +399,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Dystopia-Residual",
           "description": "The extent to which Dystopia Residual contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
@@ -413,12 +413,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "2017.csv_records",
       "description": "Happiness rank and scores by country, 2017",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Country",
           "description": "Country column",
           "dataType": "sc:Text",
@@ -430,7 +430,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Happiness.Rank",
           "description": "Happiness.Rank column",
           "dataType": "sc:Integer",
@@ -442,7 +442,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Happiness.Score",
           "description": "A metric measured in 2016 by asking the sampled people the question: \"How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest\"",
           "dataType": "sc:Float",
@@ -454,7 +454,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Whisker.high",
           "description": "Whisker.high column",
           "dataType": "sc:Float",
@@ -466,7 +466,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Whisker.low",
           "description": "Whisker.low column",
           "dataType": "sc:Float",
@@ -478,7 +478,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Economy..GDP.per.Capita.",
           "description": "Economy..GDP.per.Capita. column",
           "dataType": "sc:Float",
@@ -490,7 +490,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Family",
           "description": "Family column",
           "dataType": "sc:Float",
@@ -502,7 +502,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Health..Life.Expectancy.",
           "description": "Health..Life.Expectancy. column",
           "dataType": "sc:Float",
@@ -514,7 +514,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Freedom",
           "description": "Freedom column",
           "dataType": "sc:Float",
@@ -526,7 +526,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Generosity",
           "description": "Generosity column",
           "dataType": "sc:Float",
@@ -538,7 +538,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Trust..Government.Corruption.",
           "description": "Trust..Government.Corruption. column",
           "dataType": "sc:Float",
@@ -550,7 +550,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Dystopia.Residual",
           "description": "Dystopia.Residual column",
           "dataType": "sc:Float",
@@ -564,12 +564,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "2018.csv_records",
       "description": "Happiness rank and scores by country, 2018",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Overall-rank",
           "description": "Overall rank column",
           "dataType": "sc:Integer",
@@ -581,7 +581,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Country-or-region",
           "description": "Country or region column",
           "dataType": "sc:Text",
@@ -593,7 +593,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Score",
           "description": "Score column",
           "dataType": "sc:Float",
@@ -605,7 +605,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "GDP-per-capita",
           "description": "GDP per capita column",
           "dataType": "sc:Float",
@@ -617,7 +617,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Social-support",
           "description": "Social support column",
           "dataType": "sc:Float",
@@ -629,7 +629,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Healthy-life-expectancy",
           "description": "Healthy life expectancy column",
           "dataType": "sc:Float",
@@ -641,7 +641,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Freedom-to-make-life-choices",
           "description": "Freedom to make life choices column",
           "dataType": "sc:Float",
@@ -653,7 +653,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Generosity",
           "description": "Generosity column",
           "dataType": "sc:Float",
@@ -665,7 +665,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Perceptions-of-corruption",
           "description": "Perceptions of corruption column",
           "dataType": "sc:Text",
@@ -679,12 +679,12 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "2019.csv_records",
       "description": "Happiness rank and scores by country, 2019",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Overall-rank",
           "description": "Overall rank column",
           "dataType": "sc:Integer",
@@ -696,7 +696,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Country-or-region",
           "description": "Country or region column",
           "dataType": "sc:Text",
@@ -708,7 +708,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Score",
           "description": "Score column",
           "dataType": "sc:Float",
@@ -720,7 +720,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "GDP-per-capita",
           "description": "GDP per capita column",
           "dataType": "sc:Float",
@@ -732,7 +732,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Social-support",
           "description": "Social support column",
           "dataType": "sc:Float",
@@ -744,7 +744,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Healthy-life-expectancy",
           "description": "Healthy life expectancy column",
           "dataType": "sc:Float",
@@ -756,7 +756,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Freedom-to-make-life-choices",
           "description": "Freedom to make life choices column",
           "dataType": "sc:Float",
@@ -768,7 +768,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Generosity",
           "description": "Generosity column",
           "dataType": "sc:Float",
@@ -780,7 +780,7 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Perceptions-of-corruption",
           "description": "Perceptions of corruption column",
           "dataType": "sc:Float",

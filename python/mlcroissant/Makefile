@@ -15,6 +15,10 @@ pylint:
 pytest:
 	pytest .
 
+# Excluding non-hermetic tests that are slow.
+pytest-fast:
+	pytest . -m "not nonhermetic"
+
 pytype:
 	pytype \
 		--jobs="$$(if [ -f /proc/cpuinfo ]; then grep -c ^processor /proc/cpuinfo; \

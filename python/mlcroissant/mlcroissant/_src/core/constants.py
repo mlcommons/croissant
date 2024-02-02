@@ -1,44 +1,59 @@
 """constants module."""
 
+# flake8: noqa
+
 from etils import epath
 import rdflib
 from rdflib import namespace
-from rdflib import term
 
-# MLCommons-defined URIs (still draft).
-ML_COMMONS = rdflib.Namespace("http://mlcommons.org/schema/")
-ML_COMMONS_COLUMN = ML_COMMONS.column
-ML_COMMONS_DATA = ML_COMMONS.data
-ML_COMMONS_DATA_BIASES = ML_COMMONS.dataBiases
-ML_COMMONS_DATA_COLLECTION = ML_COMMONS.dataCollection
-ML_COMMONS_DATA_TYPE = ML_COMMONS.dataType
-ML_COMMONS_DATA_TYPE_BOUNDING_BOX = ML_COMMONS.BoundingBox
-ML_COMMONS_EXTRACT = ML_COMMONS.extract
-ML_COMMONS_FILE_PROPERTY = ML_COMMONS.fileProperty
-ML_COMMONS_FIELD = ML_COMMONS.field
-ML_COMMONS_FIELD_TYPE = ML_COMMONS.Field
-ML_COMMONS_FILE_OBJECT = ML_COMMONS.fileObject
-ML_COMMONS_FILE_SET = ML_COMMONS.fileSet
+# MLCommons-defined URIs.
+ML_COMMONS_V_0_8 = rdflib.Namespace("http://mlcommons.org/schema/")
+ML_COMMONS_V_1_0 = rdflib.Namespace("http://mlcommons.org/croissant/")
+
+
+# ctx: Context is untyped to avoid cyclic dependencies. A unit test tests the behaviour.
+def ML_COMMONS(ctx) -> rdflib.Namespace:
+    """Switches the main Croissant namespace according to the version."""
+    if ctx.is_v0():  # pytype: disable=attribute-error
+        return ML_COMMONS_V_0_8
+    else:
+        return ML_COMMONS_V_1_0
+
+
+ML_COMMONS_COLUMN = lambda ctx: ML_COMMONS(ctx).column
+ML_COMMONS_DATA = lambda ctx: ML_COMMONS(ctx).data
+ML_COMMONS_DATA_BIASES = lambda ctx: ML_COMMONS(ctx).dataBiases
+ML_COMMONS_DATA_COLLECTION = lambda ctx: ML_COMMONS(ctx).dataCollection
+ML_COMMONS_DATA_TYPE = lambda ctx: ML_COMMONS(ctx).dataType
+ML_COMMONS_DATA_TYPE_BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
+ML_COMMONS_EXTRACT = lambda ctx: ML_COMMONS(ctx).extract
+ML_COMMONS_FILE_PROPERTY = lambda ctx: ML_COMMONS(ctx).fileProperty
+ML_COMMONS_FIELD = lambda ctx: ML_COMMONS(ctx).field
+ML_COMMONS_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).Field
+ML_COMMONS_FILE_OBJECT = lambda ctx: ML_COMMONS(ctx).fileObject
+ML_COMMONS_FILE_SET = lambda ctx: ML_COMMONS(ctx).fileSet
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
-ML_COMMONS_FORMAT = term.URIRef("http://mlcommons.org/schema/format")
-ML_COMMONS_INCLUDES = ML_COMMONS.includes
-ML_COMMONS_IS_ENUMERATION = ML_COMMONS.isEnumeration
-ML_COMMONS_JSON_PATH = ML_COMMONS.jsonPath
-ML_COMMONS_PARENT_FIELD = ML_COMMONS.parentField
-ML_COMMONS_PATH = ML_COMMONS.path
-ML_COMMONS_PERSONAL_SENSITVE_INFORMATION = ML_COMMONS.personalSensitiveInformation
-ML_COMMONS_RECORD_SET = ML_COMMONS.recordSet
-ML_COMMONS_RECORD_SET_TYPE = ML_COMMONS.RecordSet
-ML_COMMONS_REFERENCES = ML_COMMONS.references
-ML_COMMONS_REGEX = ML_COMMONS.regex
-ML_COMMONS_REPEATED = ML_COMMONS.repeated
+ML_COMMONS_FORMAT = lambda ctx: ML_COMMONS(ctx)["format"]
+ML_COMMONS_INCLUDES = lambda ctx: ML_COMMONS(ctx).includes
+ML_COMMONS_IS_ENUMERATION = lambda ctx: ML_COMMONS(ctx).isEnumeration
+ML_COMMONS_JSON_PATH = lambda ctx: ML_COMMONS(ctx).jsonPath
+ML_COMMONS_PARENT_FIELD = lambda ctx: ML_COMMONS(ctx).parentField
+ML_COMMONS_PATH = lambda ctx: ML_COMMONS(ctx).path
+ML_COMMONS_PERSONAL_SENSITVE_INFORMATION = lambda ctx: ML_COMMONS(
+    ctx
+).personalSensitiveInformation
+ML_COMMONS_RECORD_SET = lambda ctx: ML_COMMONS(ctx).recordSet
+ML_COMMONS_RECORD_SET_TYPE = lambda ctx: ML_COMMONS(ctx).RecordSet
+ML_COMMONS_REFERENCES = lambda ctx: ML_COMMONS(ctx).references
+ML_COMMONS_REGEX = lambda ctx: ML_COMMONS(ctx).regex
+ML_COMMONS_REPEATED = lambda ctx: ML_COMMONS(ctx).repeated
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
-ML_COMMONS_REPLACE = term.URIRef("http://mlcommons.org/schema/replace")
-ML_COMMONS_SEPARATOR = ML_COMMONS.separator
-ML_COMMONS_SOURCE = ML_COMMONS.source
-ML_COMMONS_SUB_FIELD = ML_COMMONS.subField
-ML_COMMONS_SUB_FIELD_TYPE = ML_COMMONS.SubField
-ML_COMMONS_TRANSFORM = ML_COMMONS.transform
+ML_COMMONS_REPLACE = lambda ctx: ML_COMMONS(ctx)["replace"]
+ML_COMMONS_SEPARATOR = lambda ctx: ML_COMMONS(ctx).separator
+ML_COMMONS_SOURCE = lambda ctx: ML_COMMONS(ctx).source
+ML_COMMONS_SUB_FIELD = lambda ctx: ML_COMMONS(ctx).subField
+ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
+ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
 
 
 # RDF standard URIs.
@@ -74,22 +89,22 @@ SCHEMA_ORG_FILE_OBJECT = SCHEMA_ORG.FileObject
 SCHEMA_ORG_FILE_SET = SCHEMA_ORG.FileSet
 SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
 
-TO_CROISSANT = {
-    ML_COMMONS_TRANSFORM: "transforms",
-    ML_COMMONS_COLUMN: "csv_column",
-    ML_COMMONS_DATA_TYPE: "data_type",
-    ML_COMMONS_DATA: "data",
-    ML_COMMONS_EXTRACT: "extract",
-    ML_COMMONS_FIELD: "field",
-    ML_COMMONS_FILE_PROPERTY: "file_property",
-    ML_COMMONS_FORMAT: "format",
-    ML_COMMONS_INCLUDES: "includes",
-    ML_COMMONS_JSON_PATH: "json_path",
-    ML_COMMONS_REFERENCES: "references",
-    ML_COMMONS_REGEX: "regex",
-    ML_COMMONS_REPLACE: "replace",
-    ML_COMMONS_SEPARATOR: "separator",
-    ML_COMMONS_SOURCE: "source",
+TO_CROISSANT = lambda ctx: {
+    ML_COMMONS_TRANSFORM(ctx): "transforms",
+    ML_COMMONS_COLUMN(ctx): "csv_column",
+    ML_COMMONS_DATA_TYPE(ctx): "data_type",
+    ML_COMMONS_DATA(ctx): "data",
+    ML_COMMONS_EXTRACT(ctx): "extract",
+    ML_COMMONS_FIELD(ctx): "field",
+    ML_COMMONS_FILE_PROPERTY(ctx): "file_property",
+    ML_COMMONS_FORMAT(ctx): "format",
+    ML_COMMONS_INCLUDES(ctx): "includes",
+    ML_COMMONS_JSON_PATH(ctx): "json_path",
+    ML_COMMONS_REFERENCES(ctx): "references",
+    ML_COMMONS_REGEX(ctx): "regex",
+    ML_COMMONS_REPLACE(ctx): "replace",
+    ML_COMMONS_SEPARATOR(ctx): "separator",
+    ML_COMMONS_SOURCE(ctx): "source",
     DCTERMS_CONFORMS_TO: "conforms_to",
     SCHEMA_ORG_CITATION: "citation",
     SCHEMA_ORG_CONTAINED_IN: "contained_in",
@@ -106,7 +121,7 @@ TO_CROISSANT = {
     SCHEMA_ORG_VERSION: "version",
 }
 
-FROM_CROISSANT = {v: k for k, v in TO_CROISSANT.items()}
+FROM_CROISSANT = lambda ctx: {v: k for k, v in TO_CROISSANT(ctx).items()}
 
 # Environment variables
 CROISSANT_CACHE = epath.Path("~/.cache/croissant").expanduser()
@@ -139,7 +154,7 @@ class DataType:
     """Data types supported by Croissant."""
 
     BOOL = namespace.SDO.Boolean
-    BOUNDING_BOX = ML_COMMONS.BoundingBox
+    BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
     DATE = namespace.SDO.Date
     FLOAT = namespace.SDO.Float
     IMAGE_OBJECT = namespace.SDO.ImageObject
