@@ -73,7 +73,7 @@ class Context:
     mapping: Mapping[str, epath.Path] = dataclasses.field(
         default_factory=dict, hash=False
     )
-    conforms_to: CroissantVersion = CroissantVersion.V_0_8
+    conforms_to: CroissantVersion = CroissantVersion.V_1_0
 
     def __post_init__(self):
         """Standardizes conforms_to."""

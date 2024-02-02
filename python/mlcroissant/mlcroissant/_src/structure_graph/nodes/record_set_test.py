@@ -21,22 +21,22 @@ from mlcroissant._src.tests.versions import parametrize_conforms_to
         [
             {"foo": "bar"},
             (
-                "[RecordSet(record_set_name)] http://mlcommons.org/schema/data should"
-                " declare a list. Got: <class 'dict'>."
+                "[RecordSet(record_set_name)] http://mlcommons.org/croissant/data"
+                " should declare a list. Got: <class 'dict'>."
             ),
         ],
         [
             [],
             (
-                "[RecordSet(record_set_name)] http://mlcommons.org/schema/data should"
-                " declare a non empty list."
+                "[RecordSet(record_set_name)] http://mlcommons.org/croissant/data"
+                " should declare a non empty list."
             ),
         ],
         [
             [[{"foo": "bar"}]],
             (
-                "[RecordSet(record_set_name)] http://mlcommons.org/schema/data should"
-                " declare a list of dict. Got: a list of <class 'list'>."
+                "[RecordSet(record_set_name)] http://mlcommons.org/croissant/data"
+                " should declare a list of dict. Got: a list of <class 'list'>."
             ),
         ],
         [
