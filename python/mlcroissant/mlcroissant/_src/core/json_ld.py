@@ -178,7 +178,7 @@ def compact_jsonld(json_: Any) -> Any:
         elif isinstance(json_, str) and constants.ML_COMMONS_V_0_8 in json_:
             return json_.replace(constants.ML_COMMONS_V_0_8, "ml:")
         elif isinstance(json_, str) and constants.ML_COMMONS_V_1_0 in json_:
-            return json_.replace(constants.ML_COMMONS_V_1_0, "ml:")
+            return json_.replace(constants.ML_COMMONS_V_1_0, "cr:")
         elif isinstance(json_, str) and _DCTERMS_PREFIX in json_:
             return json_.replace(_DCTERMS_PREFIX, "dct:")
         elif isinstance(json_, str) and _WD_PREFIX in json_:
@@ -186,8 +186,8 @@ def compact_jsonld(json_: Any) -> Any:
         else:
             return json_
     for key, value in json_.copy().items():
-        if key == "@context":
-            # `@context` is left untouched.
+        if key == "@context" or key.startswith(_DCTERMS_PREFIX):
+            # `@context` and `conformsTo` are left untouched.
             continue
         new_value = compact_jsonld(value)
         del json_[key]

@@ -125,8 +125,9 @@ class Field(Node):
             self.ctx.rdf.shorten_value(data_type) for data_type in self.data_types
         ]
         parent_field = self.parent_field.to_json() if self.parent_field else None
+        prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
-            "@type": "ml:Field",
+            "@type": f"{prefix}:Field",
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,

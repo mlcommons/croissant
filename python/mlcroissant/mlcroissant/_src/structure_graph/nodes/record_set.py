@@ -65,8 +65,9 @@ class RecordSet(Node):
 
     def to_json(self) -> Json:
         """Converts the `RecordSet` to JSON."""
+        prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
-            "@type": "ml:RecordSet",
+            "@type": f"{prefix}:RecordSet",
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
