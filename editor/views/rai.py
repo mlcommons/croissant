@@ -16,12 +16,13 @@ def render_rai_metadata():
 
     col1, col2 = st.columns([1, 1])
     with col1.expander("**Provenance**", expanded=True):
-         with st.expander("Data Collection", expanded=False):
+         with st.expander("**Data Collection**", expanded=False):
             key = "metadata-data-collection"
             st.text_area(
                 label=(
-                    "Explain the key stages of the data collection process to improves understanding of potential users"
+                    "Explanation"
                 ),
+                placeholder= "Explain the key stages of the data collection process to improves understanding of potential users",
                 key=key,
                 value=metadata.data_collection,
                 on_change=handle_rai_change,
@@ -30,7 +31,7 @@ def render_rai_metadata():
             with st.expander("Data Collection Type", expanded=True):
                 key = "metadata-data-collection-type"
                 st.multiselect(
-                    label=('Define the data collection type. Recommended values:'),
+                    label=('Define the data collection type.'),
                     options=['Surveys', 'Secondary Data analysis', 'Physical data collection', 'Direct measurement', 'Document analysis', 'Manual Human Curator', 'Software Collection', 'Experiments', 'Web Scraping', 'Web API', 'Focus groups', 'Self-reporting', 'Customer feedback data', 'User-generated content data', 'Passive Data Collection', 'Others'],
                     key="metadata-data-collection-type",
                     default=metadata.data_collection_type,
@@ -50,9 +51,10 @@ def render_rai_metadata():
             key = "metadata-data-collection-missing"
             st.text_area(
                 label=(
-                    "**Missing Data**. Description of missing data in structured/unstructured form"
+                    "**Missing Data**. "
                 ),
                 key="metadata-data-collection-missing",
+                placeholder="Description of missing data in structured/unstructured form",
                 value=metadata.data_collection_missing,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA, metadata, key),
@@ -60,9 +62,10 @@ def render_rai_metadata():
             key = "metadata-data-collection-rawdata"
             st.text_area(
                 label=(
-                    "**Raw Data**. Description of the raw data i.e. source of the data "
+                    "**Raw Data**. "
                 ),
                 key="metadata-data-collection-rawdata",
+                placeholder="Description of the raw data i.e. source of the data ",
                 value=metadata.data_collection_raw,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION_RAW_DATA, metadata, key),
@@ -88,7 +91,7 @@ def render_rai_metadata():
                     on_change=handle_rai_change,
                     args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_END, metadata, key),
                 )
-         with st.expander("Data Annotation", expanded=False):
+         with st.expander("**Data Annotation**", expanded=False):
                 key = "metadata-data-annotation-protocol"
                 st.text_area(
                     label=(
@@ -149,7 +152,7 @@ def render_rai_metadata():
                     on_change=handle_rai_change,
                     args=(RaiEvent.RAI_DATA_ANNOTATION_PERITEM, metadata, key),
                 )            
-         with st.expander("Data Preprocessing", expanded=False):
+         with st.expander("**Data Preprocessing**", expanded=False):
                 with st.expander("Protocols",expanded=True): 
                     if (metadata.data_preprocessing_protocol):
                         for index, protocol in enumerate(metadata.data_preprocessing_protocol):
@@ -212,29 +215,89 @@ def render_rai_metadata():
             
        
     with col2.expander("**Data uses and social impact**", expanded=True):
-        key = "metadata-data-usecases"
-        st.text_area(
-            label=(
-                "**Data use cases**. Dataset Use(s) - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
-            ),
-            key=key,
-            value=metadata.data_usecases,
-            on_change=handle_rai_change,
-            args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
-        )
-        key = "metadata-data-biases"
-        st.text_area(
-            label=(
-                "**Data biases**. Involves understanding the potential risks associated"
-                " with data usage and to prevent unintended and potentially harmful"
-                " consequences that may arise from using models trained on or evaluated"
-                " with the respective data."
-            ),
-            key=key,
-            value=metadata.data_biases,
-            on_change=handle_rai_change,
-            args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
-        )
+        with st.expander("**Use cases**",expanded=True): 
+                    if (metadata.data_usecases):
+                        for index, protocol in enumerate(metadata.data_usecases):
+                            key = "metadata-data-usecases_"+str(index)
+                            st.text_area(
+                                label=(
+                                    "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
+                                ),
+                                key=key,
+                                value=protocol,
+                                on_change=handle_rai_change,
+                                args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
+                            )
+                    else:
+                       key = "metadata-data-usecases_"+"0"
+                       st.text_area(
+                            label=(
+                                "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
+                            ),
+                            key=key,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
+                        ) 
+                    add, remove = st.columns(2)
+                    with add:
+                        if st.button("+ add use case"):
+                            if (metadata.data_usecases):
+                                metadata.data_usecases.append("")
+                                st.rerun()
+                            else:
+                                metadata.data_usecases = []
+                                metadata.data_usecases.append("")
+                                st.rerun()
+                    with remove:
+                        if st.button("- remove use case"):
+                            if (metadata.data_usecases):
+                                metadata.data_usecases.pop()
+                                st.rerun()
+        with st.expander("**Data biases**",expanded=True):
+            if (metadata.data_biases):
+                    for index, protocol in enumerate(metadata.data_biases):
+                        key = "metadata-data-biases_"+str(index)
+                        st.text_area(
+                            label=(
+                                "**Data biases**. Involves understanding the potential risks associated"
+            " with data usage and to prevent unintended and potentially harmful"
+            " consequences that may arise from using models trained on or evaluated"
+            " with the respective data."
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
+                        )
+            else:
+                key = "metadata-data-biases_"+"0"
+                st.text_area(
+                        label=(
+                            "**Data biases**. Involves understanding the potential risks associated"
+            " with data usage and to prevent unintended and potentially harmful"
+            " consequences that may arise from using models trained on or evaluated"
+            " with the respective data."
+                        ),
+                        key=key,
+                        on_change=handle_rai_change,
+                        args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
+                    ) 
+            add, remove = st.columns(2)
+            with add:
+                if st.button("+ add bias"):
+                    if (metadata.data_biases):
+                        metadata.data_biases.append("")
+                        st.rerun()
+                    else:
+                        metadata.data_biases = []
+                        metadata.data_biases.append("")
+                        st.rerun()
+            with remove:
+                if st.button("- remove bias"):
+                    if (metadata.data_biases):
+                        metadata.data_biases.pop()
+                        st.rerun()
+        
         key = "metadata-personal-sensitive-information"
         st.text_area(
             label=(

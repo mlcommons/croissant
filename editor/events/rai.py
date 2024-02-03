@@ -62,7 +62,7 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
             Metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
         else:
             Metadata.data_preprocessing_protocol = []
-            Metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
+            Metadata.data_preprocessing_protocol.append(st.session_state[key])
     if event == RaiEvent.RAI_DATA_PREPROCESSING_MANIPULATION:
         Metadata.data_preprocessing_manipulation = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PROTOCOL:
@@ -79,9 +79,23 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
     if event == RaiEvent.RAI_DATA_ANNOTATION_TOOLS:
         Metadata.data_annotation_tools = st.session_state[key]
     if event == RaiEvent.RAI_DATA_USECASES:
-        Metadata.data_usecases = st.session_state[key]
+       
+        if Metadata.data_usecases:
+            index = key.split("_")[-1]
+            Metadata.data_usecases[int(index)] = st.session_state[key]
+        else:
+            Metadata.data_usecases = []
+            Metadata.data_usecases.append(st.session_state[key])
+
     if event == RaiEvent.RAI_DATA_BIAS:
-        Metadata.data_biases = st.session_state[key]
+       
+        if Metadata.data_biases:   
+            index = key.split("_")[-1]
+            Metadata.data_biases[int(index)] = st.session_state[key]
+        else:
+            Metadata.data_biases = []
+            Metadata.data_biases.append(st.session_state[key])
+
     if event == RaiEvent.RAI_DATA_LIMITATION:
         Metadata.data_limitation = st.session_state[key]
     if event == RaiEvent.RAI_DATA_SOCIAL_IMPACT:
