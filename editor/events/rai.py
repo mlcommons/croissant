@@ -57,10 +57,16 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
     if event == RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION:
         Metadata.data_preprocessing_imputation = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL:
-        Metadata.data_preprocessing_protocol = st.session_state[key]
+        if Metadata.data_preprocessing_protocol:
+            index = key.split("_")[-1]
+            Metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
+        else:
+            Metadata.data_preprocessing_protocol = []
+            Metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_MANIPULATION:
         Metadata.data_preprocessing_manipulation = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PROTOCOL:
+
         Metadata.data_annotation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PLATFORM:
         Metadata.data_annotation_platform = st.session_state[key]

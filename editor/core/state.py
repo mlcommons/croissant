@@ -202,7 +202,7 @@ class Metadata:
     data_collection_timeframe_start: datetime.datetime | None = None
     data_collection_timeframe_end: datetime.datetime | None = None
     data_preprocessing_imputation: str | None = None
-    data_preprocessing_protocol: str | None = None
+    data_preprocessing_protocol: list[str] = None
     data_preprocessing_manipulation: str | None = None
     data_annotation_protocol: str | None = None
     data_annotation_platform: str | None = None

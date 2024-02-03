@@ -11,6 +11,9 @@ from events.rai import RaiEvent
 def render_rai_metadata():
     """Renders the `Metadata` view."""
     metadata: Metadata = st.session_state[Metadata]
+
+
+
     col1, col2 = st.columns([1, 1])
     with col1.expander("**Provenance**", expanded=True):
          with st.expander("Data Collection", expanded=False):
@@ -147,17 +150,45 @@ def render_rai_metadata():
                     args=(RaiEvent.RAI_DATA_ANNOTATION_PERITEM, metadata, key),
                 )            
          with st.expander("Data Preprocessing", expanded=False):
-                    
-                key = "metadata-data-preprocessing-protocol"
-                st.text_area(
-                    label=(
-                        "**Protocol**. Description of data manipulation process if applicable   "
-                    ),
-                    key="metadata-data-preprocessing-protocol",
-                    value=metadata.data_preprocessing_protocol,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL, metadata, key),
-                )
+                with st.expander("Protocols",expanded=True): 
+                    if (metadata.data_preprocessing_protocol):
+                        for index, protocol in enumerate(metadata.data_preprocessing_protocol):
+                            key = "metadata-data-preprocessing-protocol_"+str(index)
+                            st.text_area(
+                                label=(
+                                    "Description of data manipulation process if applicable   "
+                                ),
+                                key=key,
+                                value=protocol,
+                                on_change=handle_rai_change,
+                                args=(RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL, metadata, key),
+                            )
+                    else:
+                       key = "metadata-data-preprocessing-protocol_"+"0"
+                       st.text_area(
+                            label=(
+                                "Description of data manipulation process if applicable   "
+                            ),
+                            key=key,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL, metadata, key),
+                        ) 
+                    add, remove = st.columns(2)
+                    with add:
+                        if st.button("+ add protocol"):
+                            if (metadata.data_preprocessing_protocol):
+                                metadata.data_preprocessing_protocol.append("")
+                                st.rerun()
+                            else:
+                                metadata.data_preprocessing_protocol = []
+                                metadata.data_preprocessing_protocol.append("")
+                                st.rerun()
+                    with remove:
+                        if st.button("- remove protocol"):
+                            if (metadata.data_preprocessing_protocol):
+                                metadata.data_preprocessing_protocol.pop()
+                                st.rerun()
+           
                 key = "metadata-data-preprocessing-manipulation"
                 st.text_area(
                     label=(
