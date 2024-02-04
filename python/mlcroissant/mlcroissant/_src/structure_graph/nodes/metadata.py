@@ -170,30 +170,31 @@ class Metadata(Node):
             "license": self.license,
             "url": self.url,
             "version": self.version,
+            ## RAI extension
+            "dataCollection": self.data_collection,
+            "dataCollectionType": self.data_collection_type,
+            "dataCollectionTypeOthers": self.data_collection_type_others,
+            "dataCollectionMissing": self.data_collection_missing,
+            "dataCollectionRaw": self.data_collection_raw,
+            "dataCollectionTimeFrameStart": data_collection_timeframe_start,
+            "dataCollectionTimeFrameEnd": data_collection_timeframe_end,
+            "dataPreprocessingImputation": self.data_preprocessing_imputation,
+            "dataPreprocessingProtocol": self.data_preprocessing_protocol, 
+            "dataPreprocessingManipulation": self.data_preprocessing_manipulation,           
+            "dataAnnotationProtocol": self.data_annotation_protocol,
+            "dataAnnotationPlatform": self.data_annotation_platform,
+            "dataAnnotationAnalysis": self.data_annotation_analysis,
+            "dataAnnotationPerItem": self.data_annotation_peritem,
+            "dataAnnotationDemographics": self.data_annotation_demographics,
+            "dataBiases": self.data_biases,
+            "dataUseCases": self.data_usecases,
+            "dataLimitations": self.data_limitation,
+            "dataSocialImpact": self.data_social_impact,
+            "dataSensitive": self.data_sensitive,
+            "dataMaitenance": self.data_maintenance,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            ## RAI extension
-            "raiDataCollection": self.data_collection,
-            "raiDataCollectionType": self.data_collection_type,
-            "raiDataCollectionTypeOthers": self.data_collection_type_others,
-            "raiDataCollectionMissing": self.data_collection_missing,
-            "raiDataCollectionRaw": self.data_collection_raw,
-            "raiDataCollectionTimeFrameStart": data_collection_timeframe_start,
-            "raiDataCollectionTimeFrameEnd": data_collection_timeframe_end,
-            "raiDataPreprocessingImputation": self.data_preprocessing_imputation,
-            "raiDataPreprocessingProtocol": self.data_preprocessing_protocol, 
-            "raiDataPreprocessingManipulation": self.data_preprocessing_manipulation,           
-            "raiDataAnnotationProtocol": self.data_annotation_protocol,
-            "raiDataAnnotationPlatform": self.data_annotation_platform,
-            "raiDataAnnotationAnalysis": self.data_annotation_analysis,
-            "raiDataAnnotationPerItem": self.data_annotation_peritem,
-            "raiDataAnnotationDemographics": self.data_annotation_demographics,
-            "raiDataBiases": self.data_biases,
-            "raiDataUseCases": self.data_usecases,
-            "raiDataLimitations": self.data_limitation,
-            "raiDataSocialImpact": self.data_social_impact,
-            "raiDataSensitive": self.data_sensitive,
-            "raiDataMaitenance": self.data_maintenance,
+
         })
 
     @property
@@ -285,6 +286,7 @@ class Metadata(Node):
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
         ctx.rdf = Rdf.from_json(json_)
+        print(ctx.rdf)
         metadata = expand_jsonld(json_)
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
@@ -335,13 +337,7 @@ class Metadata(Node):
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             creators=creators,
             date_published=date_published,
-            description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
-            distribution=distribution,
-            license=metadata.get(constants.SCHEMA_ORG_LICENSE),
-            name=dataset_name,
-            record_sets=record_sets,
-            url=url,
-            version=metadata.get(constants.SCHEMA_ORG_VERSION),
+            description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),    
             data_collection=metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION),
             data_collection_type= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE),
             data_collection_type_others= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS),
@@ -364,4 +360,10 @@ class Metadata(Node):
             data_social_impact= metadata.get(constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT),
             data_sensitive= metadata.get(constants.ML_COMMONS_RAI_DATA_SENSITIVE),
             data_maintenance= metadata.get(constants.ML_COMMONS_RAI_DATA_MAINTENANCE),
+            distribution=distribution,
+            license=metadata.get(constants.SCHEMA_ORG_LICENSE),
+            name=dataset_name,
+            record_sets=record_sets,
+            url=url,
+            version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )
