@@ -324,10 +324,10 @@ class Metadata(Node):
             ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
         )
         date_collection_timeframe_start = from_str_to_date_time(
-            issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
+            ctx.issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
         )
         date_collection_timeframe_end = from_str_to_date_time(
-            issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END)
+            ctx.issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END)
         )
   
         return cls(
@@ -336,15 +336,9 @@ class Metadata(Node):
             creators=creators,
             date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
-            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
-            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
-            other_field=metadata.get(constants.ML_COMMONS_OTHER_FIELD),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
-            personal_sensitive_information=metadata.get(
-                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
-            ),
             record_sets=record_sets,
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
