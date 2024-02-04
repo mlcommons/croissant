@@ -189,6 +189,7 @@ class Metadata(Node):
             "dataAnnotationAnalysis": self.data_annotation_analysis,
             "dataAnnotationPerItem": self.data_annotation_peritem,
             "dataAnnotationDemographics": self.data_annotation_demographics,
+            "dataAnnotationTools": self.data_annotation_tools,
             "dataBiases": self.data_biases,
             "dataUseCases": self.data_usecases,
             "dataLimitations": self.data_limitation,
@@ -333,13 +334,19 @@ class Metadata(Node):
         )
         date_collection_timeframe_start = from_str_to_date_time(
             ctx.issues, metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START(ctx))
         )
         date_collection_timeframe_end = from_str_to_date_time(
             ctx.issues, metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END)
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END(ctx))
         )
-
+        print(constants.ML_COMMONS_RAI_DATA_COLLECTION)
+        missing = metadata.get(
+            constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING(ctx))
+        collection2 = metadata.get(
+            constants.ML_COMMONS_RAI_DATA_COLLECTION)
+        desc = metadata.get(
+            constants.SCHEMA_ORG_DESCRIPTION)
         return cls(
             ctx=ctx,
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
@@ -347,45 +354,45 @@ class Metadata(Node):
             date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_collection=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION),
+               constants.ML_COMMONS_RAI_DATA_COLLECTION(ctx)),
             data_collection_type=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE),
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE(ctx)),
             data_collection_type_others=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS),
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS(ctx)),
             data_collection_missing=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA),
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING(ctx)),
             data_collection_raw=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA),
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA(ctx)),
             data_collection_timeframe_start=date_collection_timeframe_start,
             data_collection_timeframe_end=date_collection_timeframe_end,
             data_preprocessing_imputation=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION),
+                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION(ctx)),
             data_preprocessing_protocol=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL),
+                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL(ctx)),
             data_preprocessing_manipulation=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION),
+                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION(ctx)),
             data_annotation_protocol=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL),
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL(ctx)),
             data_annotation_platform=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM),
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM(ctx)),
             data_annotation_analysis=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS),
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS(ctx)),
             data_annotation_peritem=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM),
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM(ctx)),
             data_annotation_demographics=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS),
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS(ctx)),
             data_annotation_tools=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS),
-            data_biases=metadata.get(constants.ML_COMMONS_RAI_DATA_BIAS),
-            data_usecases=metadata.get(constants.ML_COMMONS_RAI_DATA_USECASES),
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS(ctx)),
+            data_biases=metadata.get(constants.ML_COMMONS_RAI_DATA_BIAS(ctx)),
+            data_usecases=metadata.get(constants.ML_COMMONS_RAI_DATA_USECASES(ctx)),
             data_limitation=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_LIMITATION),
+                constants.ML_COMMONS_RAI_DATA_LIMITATION(ctx)),
             data_social_impact=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT),
+                constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT(ctx)),
             data_sensitive=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_SENSITIVE),
+                constants.ML_COMMONS_RAI_DATA_SENSITIVE(ctx)),
             data_maintenance=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_MAINTENANCE),
+                constants.ML_COMMONS_RAI_DATA_MAINTENANCE(ctx)),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
