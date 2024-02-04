@@ -82,17 +82,31 @@ class Metadata(Node):
     version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    # RAI field - Involves understanding the potential risks associated with data usage
-    # and to prevent unintended and potentially harmful consequences that may arise from
-    # using models trained on or evaluated with the respective data.
-    data_biases: str | None = None
-    # RAI field - Key stages of the data collection process encourage its creators to
-    # reflect on the process and improves understanding for users.
+
+     ## RAI extension attributes
     data_collection: str | None = None
-    # RAI field - Personal and sensitive information, if contained within the dataset,
-    # can play an important role in the mitigation of any risks and the responsible use
-    # of the datasets.
-    personal_sensitive_information: str | None = None
+    data_collection_type: str | None = None
+    data_collection_type_others: str | None = None
+    data_collection_missing: str | None = None
+    data_collection_raw: str | None = None
+    data_collection_timeframe_start: datetime.datetime | None = None
+    data_collection_timeframe_end: datetime.datetime | None = None
+    data_preprocessing_imputation: str | None = None
+    data_preprocessing_protocol: str | None = None
+    data_preprocessing_manipulation: str | None = None
+    data_annotation_protocol: str | None = None
+    data_annotation_platform: str | None = None
+    data_annotation_analysis: str | None = None
+    data_annotation_peritem: str | None = None
+    data_annotation_demographics: str | None = None
+    data_annotation_tools: str | None = None
+    data_biases: str | None = None
+    data_usecases: str | None = None
+    data_limitation: str | None = None
+    data_social_impact: str | None = None
+    data_sensitive: str | None = None
+    data_maintenance: str | None = None
+ 
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -130,6 +144,12 @@ class Metadata(Node):
         date_published = (
             self.date_published.isoformat() if self.date_published else None
         )
+        data_collection_timeframe_start = (
+            self.data_collection_timeframe_start.isoformat() if self.data_collection_timeframe_start else None
+        )
+        data_collection_timeframe_end = (
+            self.data_collection_timeframe_end.isoformat() if self.data_collection_timeframe_end else None
+        )
         creator: Json | list[Json] | None
         if len(self.creators) == 1:
             creator = self.creators[0].to_json()
@@ -146,15 +166,34 @@ class Metadata(Node):
             "description": self.description,
             "creator": creator,
             "datePublished": date_published,
-            "dataBiases": self.data_biases,
-            "dataCollection": self.data_collection,
             "citation": self.citation,
             "license": self.license,
-            "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
+            ## RAI extension
+            "raiDataCollection": self.data_collection,
+            "raiDataCollectionType": self.data_collection_type,
+            "raiDataCollectionTypeOthers": self.data_collection_type_others,
+            "raiDataCollectionMissing": self.data_collection_missing,
+            "raiDataCollectionRaw": self.data_collection_raw,
+            "raiDataCollectionTimeFrameStart": data_collection_timeframe_start,
+            "raiDataCollectionTimeFrameEnd": data_collection_timeframe_end,
+            "raiDataPreprocessingImputation": self.data_preprocessing_imputation,
+            "raiDataPreprocessingProtocol": self.data_preprocessing_protocol, 
+            "raiDataPreprocessingManipulation": self.data_preprocessing_manipulation,           
+            "raiDataAnnotationProtocol": self.data_annotation_protocol,
+            "raiDataAnnotationPlatform": self.data_annotation_platform,
+            "raiDataAnnotationAnalysis": self.data_annotation_analysis,
+            "raiDataAnnotationPerItem": self.data_annotation_peritem,
+            "raiDataAnnotationDemographics": self.data_annotation_demographics,
+            "raiDataBiases": self.data_biases,
+            "raiDataUseCases": self.data_usecases,
+            "raiDataLimitations": self.data_limitation,
+            "raiDataSocialImpact": self.data_social_impact,
+            "raiDataSensitive": self.data_sensitive,
+            "raiDataMaitenance": self.data_maintenance,
         })
 
     @property
@@ -284,14 +323,22 @@ class Metadata(Node):
         date_published = from_str_to_date_time(
             ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
         )
+        date_collection_timeframe_start = from_str_to_date_time(
+            issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
+        )
+        date_collection_timeframe_end = from_str_to_date_time(
+            issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END)
+        )
+  
         return cls(
             ctx=ctx,
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             creators=creators,
             date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
-            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
-            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
+            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
+            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
+            other_field=metadata.get(constants.ML_COMMONS_OTHER_FIELD),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
@@ -301,4 +348,26 @@ class Metadata(Node):
             record_sets=record_sets,
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
+            data_collection=metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION),
+            data_collection_type= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE),
+            data_collection_type_others= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS),
+            data_collection_missing= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA),
+            data_collection_raw= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA),
+            data_collection_timeframe_start= date_collection_timeframe_start,
+            data_collection_timeframe_end= date_collection_timeframe_end,
+            data_preprocessing_imputation= metadata.get(constants.ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION),
+            data_preprocessing_protocol= metadata.get(constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL),
+            data_preprocessing_manipulation= metadata.get(constants.ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION),
+            data_annotation_protocol= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL),
+            data_annotation_platform= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM),
+            data_annotation_analysis= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS),
+            data_annotation_peritem= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM),
+            data_annotation_demographics= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS),
+            data_annotation_tools= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS),
+            data_biases= metadata.get(constants.ML_COMMONS_RAI_DATA_BIAS),
+            data_usecases = metadata.get(constants.ML_COMMONS_RAI_DATA_USECASES),
+            data_limitation= metadata.get(constants.ML_COMMONS_RAI_DATA_LIMITATION),
+            data_social_impact= metadata.get(constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT),
+            data_sensitive= metadata.get(constants.ML_COMMONS_RAI_DATA_SENSITIVE),
+            data_maintenance= metadata.get(constants.ML_COMMONS_RAI_DATA_MAINTENANCE),
         )

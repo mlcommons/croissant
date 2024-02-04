@@ -55,6 +55,29 @@ ML_COMMONS_SUB_FIELD = lambda ctx: ML_COMMONS(ctx).subField
 ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
 ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
 
+# RAI 
+ML_COMMONS_RAI_DATA_COLLECTION = lambda ctx: ML_COMMONS(ctx).raiDataCollection
+ML_COMMONS_RAI_DATA_COLLECTION_TYPE = lambda ctx: ML_COMMONS(ctx).raiDataCollectionType
+ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS = lambda ctx: ML_COMMONS(ctx).raiDataCollectionTypeOthers
+ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA = lambda ctx: ML_COMMONS(ctx).raiDataCollectionMissingData
+ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA = lambda ctx: ML_COMMONS(ctx).raiDataCollectionRawData
+ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START = lambda ctx: ML_COMMONS(ctx).raiDataCollectionTimeFrameStart
+ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END = lambda ctx: ML_COMMONS(ctx).raiDataCollectionTimeFrameEnd
+ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION = lambda ctx: ML_COMMONS(ctx).raiDataPreprocessingImputations
+ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL =lambda ctx: ML_COMMONS(ctx).raiDataPreprocessingProtocol
+ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION = lambda ctx: ML_COMMONS(ctx).raiDataPreprocessingManipulation
+ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL = lambda ctx: ML_COMMONS(ctx).raiDataAnnotationProtocol
+ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM = lambda ctx: ML_COMMONS(ctx).raiDataAnnotationPlatform
+ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS = lambda ctx: ML_COMMONS(ctx).raiDataAnnotationAnalysis
+ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM = lambda ctx: ML_COMMONS(ctx).raiDataAnnotationPerItem
+ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS = lambda ctx: ML_COMMONS(ctx).raiDataAnnotationDemographics
+ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS = lambda ctx: ML_COMMONS(ctx).raiDataAnnotationTools
+ML_COMMONS_RAI_DATA_USECASES = lambda ctx: ML_COMMONS(ctx).raiDataUseCases
+ML_COMMONS_RAI_DATA_BIAS = lambda ctx: ML_COMMONS(ctx).raiDataBias
+ML_COMMONS_RAI_DATA_LIMITATION = lambda ctx: ML_COMMONS(ctx).raiDataLimitations
+ML_COMMONS_RAI_DATA_SOCIAL_IMPACT = lambda ctx: ML_COMMONS(ctx).raiDataSocialImpact
+ML_COMMONS_RAI_DATA_SENSITIVE = lambda ctx: ML_COMMONS(ctx).raiDataSensitive
+ML_COMMONS_RAI_DATA_MAINTENANCE = lambda ctx: ML_COMMONS(ctx).raiDataMaintenance
 
 # RDF standard URIs.
 # For "@type" key:

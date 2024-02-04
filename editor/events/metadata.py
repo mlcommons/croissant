@@ -99,6 +99,7 @@ class MetadataEvent(enum.Enum):
     CITATION = "CITATION"
     VERSION = "VERSION"
     DATA_BIASES = "DATA_BIASES"
+    OTHER_FIELD = "OTHER_FIELD"
     DATA_COLLECTION = "DATA_COLLECTION"
     PERSONAL_SENSITIVE_INFORMATION = "PERSONAL_SENSITIVE_INFORMATION"
     CREATOR_ADD = "CREATOR_ADD"
@@ -126,6 +127,8 @@ def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
         metadata.data_collection = st.session_state[key]
     elif event == MetadataEvent.PERSONAL_SENSITIVE_INFORMATION:
         metadata.personal_sensitive_information = st.session_state[key]
+    elif event == MetadataEvent.OTHER_FIELD:
+        metadata.other_field = st.session_state[key]
     elif event == MetadataEvent.DATE_PUBLISHED:
         date = st.session_state[key]
         metadata.date_published = datetime.datetime(date.year, date.month, date.day)

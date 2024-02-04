@@ -6,6 +6,7 @@ import streamlit_nested_layout  # Do not remove this allows nesting columns.
 from components.tabs import render_tabs
 from core.constants import METADATA
 from core.constants import OVERVIEW
+from core.constants import RAI
 from core.constants import RECORD_SETS
 from core.constants import RESOURCES
 from core.constants import TABS
@@ -17,6 +18,7 @@ import mlcroissant as mlc
 from views.files import render_files
 from views.metadata import render_metadata
 from views.overview import render_overview
+from views.rai import render_rai_metadata
 from views.record_sets import render_record_sets
 
 
@@ -48,5 +50,7 @@ def render_editor():
         render_files()
     elif tab == RECORD_SETS:
         render_record_sets()
+    elif tab == RAI:
+        render_rai_metadata()
     save_current_project()
     set_tab(tab)
