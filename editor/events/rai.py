@@ -34,8 +34,6 @@ class RaiEvent(enum.Enum):
     RAI_SENSITIVE = "RAI_SENSITIVE"
     RAI_MAINTENANCE = "RAI_MAINTENANCE"
 
- 
-
 
 def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
     if event == RaiEvent.RAI_DATA_COLLECTION:
@@ -50,10 +48,12 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
         Metadata.data_collection_raw = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_START:
         date = st.session_state[key]
-        Metadata.data_collection_timeframe_start = datetime.datetime(date.year, date.month, date.day)
+        Metadata.data_collection_timeframe_start = datetime.datetime(
+            date.year, date.month, date.day)
     if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_END:
         date = st.session_state[key]
-        Metadata.data_collection_timeframe_end = datetime.datetime(date.year, date.month, date.day)
+        Metadata.data_collection_timeframe_end = datetime.datetime(
+            date.year, date.month, date.day)
     if event == RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION:
         Metadata.data_preprocessing_imputation = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL:
@@ -84,5 +84,3 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
         Metadata.data_sensitive = st.session_state[key]
     if event == RaiEvent.RAI_MAINTENANCE:
         Metadata.data_maintenance = st.session_state[key]
-   
-  

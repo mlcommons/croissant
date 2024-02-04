@@ -185,16 +185,18 @@ class Metadata:
     citation: str | None = None
     conforms_to: str | None = None
     context: dict = dataclasses.field(default_factory=dict)
-    creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
+    creators: list[mlc.PersonOrOrganization] = dataclasses.field(
+        default_factory=list)
     date_published: datetime.datetime | None = None
     license: str | None = ""
     url: str = ""
-    distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
+    distribution: list[FileObject | FileSet] = dataclasses.field(
+        default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
     rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     version: str | None = None
 
-    ## RAI extension attributes
+    #  RAI extension attributes
     data_collection: str | None = None
     data_collection_type: str | None = None
     data_collection_type_others: str | None = None
@@ -217,7 +219,6 @@ class Metadata:
     data_social_impact: str | None = None
     data_sensitive: str | None = None
     data_maintenance: str | None = None
-
 
     def __bool__(self):
         return self.name != "" and self.url != ""
@@ -303,7 +304,8 @@ class Metadata:
 
     def _find_record_set(self, record_set_key: int) -> RecordSet:
         if record_set_key >= len(self.record_sets):
-            raise ValueError(f"Wrong index when finding a RecordSet: {record_set_key}")
+            raise ValueError(
+                f"Wrong index when finding a RecordSet: {record_set_key}")
         return self.record_sets[record_set_key]
 
     def add_field(self, record_set_key: int, field: Field) -> None:
@@ -323,7 +325,8 @@ class Metadata:
         )
         for file in self.distribution:
             if isinstance(file, FileObject):
-                distribution.append(create_class(mlc.FileObject, file, ctx=ctx))
+                distribution.append(create_class(
+                    mlc.FileObject, file, ctx=ctx))
             elif isinstance(file, FileSet):
                 distribution.append(create_class(mlc.FileSet, file, ctx=ctx))
         record_sets = []
@@ -374,7 +377,6 @@ class Metadata:
     def names(self) -> set[str]:
         nodes = self.distribution + self.record_sets
         return set([node.name for node in nodes])
-
 
 
 class OpenTab:
