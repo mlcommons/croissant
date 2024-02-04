@@ -205,7 +205,7 @@ class Metadata:
     data_collection_timeframe_start: datetime.datetime | None = None
     data_collection_timeframe_end: datetime.datetime | None = None
     data_preprocessing_imputation: str | None = None
-    data_preprocessing_protocol: str | None = None
+    data_preprocessing_protocol: list[str] = None
     data_preprocessing_manipulation: str | None = None
     data_annotation_protocol: str | None = None
     data_annotation_platform: str | None = None
@@ -213,11 +213,11 @@ class Metadata:
     data_annotation_peritem: str | None = None
     data_annotation_demographics: str | None = None
     data_annotation_tools: str | None = None
-    data_biases: str | None = None
-    data_usecases: str | None = None
-    data_limitation: str | None = None
+    data_biases: list[str] = None
+    data_usecases: list[str] = None
+    data_limitation: list[str] = None
     data_social_impact: str | None = None
-    data_sensitive: str | None = None
+    data_sensitive: [str] = None
     data_maintenance: str | None = None
 
     def __bool__(self):
