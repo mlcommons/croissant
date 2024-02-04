@@ -51,7 +51,7 @@
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/fashion_mnist/tree/refs%2Fconvert%2Fparquet",
       "encodingFormat": "git+https",
-      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+      "sha256": "6894fa1803ae2e42ac3d46a7613037b5b59b47622f7e75c55d3f076657b21531"
     },
     {
       "@type": "sc:FileSet",

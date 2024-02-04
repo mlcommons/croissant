@@ -48,14 +48,14 @@
       "name": "metadata",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
       "encodingFormat": "text/csv",
-      "sha256": "0b033707ea49365a5ffdd14615825511"
+      "sha256": "8b6fde80b48326bda9da0a7c48f92146a58a847f76a1dc40603b7e4f73f5e798"
     },
     {
       "@type": "sc:FileObject",
       "name": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
       "encodingFormat": "application/x-tar",
-      "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc"
+      "sha256": "9a7ab254638f4bf21267aa0165452572ae52d82aabb451a65e56a2d51a17e982"
     },
     {
       "@type": "sc:FileSet",
@@ -88,7 +88,7 @@
               "fileProperty": "filename"
             },
             "transform": {
-              "regex": "([^\\/]*)\\.jpg"
+              "regex": "^(.*)\\.jpg$"
             }
           }
         }

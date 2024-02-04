@@ -48,47 +48,47 @@
       "name": "ml-25m-archive",
       "contentUrl": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
       "encodingFormat": "application/zip",
-      "sha256": "6b51fb2759a8657d3bfcbfc42b592ada"
+      "sha256": "8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa"
     },
     {
       "@type": "sc:FileObject",
       "name": "ratings-table",
-      "contentUrl": "ratings.csv",
+      "contentUrl": "ml-25m/ratings.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "movies-table",
-      "contentUrl": "movies.csv",
+      "contentUrl": "ml-25m/movies.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "tags-table",
-      "contentUrl": "tags.csv",
+      "contentUrl": "ml-25m/tags.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "links-table",
-      "contentUrl": "links.csv",
+      "contentUrl": "ml-25m/links.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-scores-table",
-      "contentUrl": "genome-scores.csv",
+      "contentUrl": "ml-25m/genome-scores.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-tags-table",
-      "contentUrl": "genome-tags.csv",
+      "contentUrl": "ml-25m/genome-tags.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     }
