@@ -73,17 +73,19 @@ class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
     citation: str | None = None
-    creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
+    creators: list[PersonOrOrganization] = dataclasses.field(
+        default_factory=list)
     date_published: datetime.datetime | None = None
     description: str | None = None
     license: str | None = None
     name: str = ""
     url: str | None = ""
     version: str | None = ""
-    distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
+    distribution: list[FileObject | FileSet] = dataclasses.field(
+        default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
 
-     ## RAI extension attributes
+    #  RAI extension attributes
     data_collection: str | None = None
     data_collection_type: str | None = None
     data_collection_type_others: str | None = None
@@ -106,7 +108,6 @@ class Metadata(Node):
     data_social_impact: str | None = None
     data_sensitive: str | None = None
     data_maintenance: str | None = None
- 
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -145,10 +146,12 @@ class Metadata(Node):
             self.date_published.isoformat() if self.date_published else None
         )
         data_collection_timeframe_start = (
-            self.data_collection_timeframe_start.isoformat() if self.data_collection_timeframe_start else None
+            self.data_collection_timeframe_start.isoformat(
+            ) if self.data_collection_timeframe_start else None
         )
         data_collection_timeframe_end = (
-            self.data_collection_timeframe_end.isoformat() if self.data_collection_timeframe_end else None
+            self.data_collection_timeframe_end.isoformat(
+            ) if self.data_collection_timeframe_end else None
         )
         creator: Json | list[Json] | None
         if len(self.creators) == 1:
@@ -170,7 +173,7 @@ class Metadata(Node):
             "license": self.license,
             "url": self.url,
             "version": self.version,
-            ## RAI extension
+            #  RAI extension
             "dataCollection": self.data_collection,
             "dataCollectionType": self.data_collection_type,
             "dataCollectionTypeOthers": self.data_collection_type_others,
@@ -179,8 +182,8 @@ class Metadata(Node):
             "dataCollectionTimeFrameStart": data_collection_timeframe_start,
             "dataCollectionTimeFrameEnd": data_collection_timeframe_end,
             "dataPreprocessingImputation": self.data_preprocessing_imputation,
-            "dataPreprocessingProtocol": self.data_preprocessing_protocol, 
-            "dataPreprocessingManipulation": self.data_preprocessing_manipulation,           
+            "dataPreprocessingProtocol": self.data_preprocessing_protocol,
+            "dataPreprocessingManipulation": self.data_preprocessing_manipulation,
             "dataAnnotationProtocol": self.data_annotation_protocol,
             "dataAnnotationPlatform": self.data_annotation_platform,
             "dataAnnotationAnalysis": self.data_annotation_analysis,
@@ -245,7 +248,8 @@ class Metadata(Node):
                     " information refer to: https://semver.org/spec/v2.0.0.html"
                 )
         else:
-            self.add_error(f"The version should be a string. Got: {type(version)}.")
+            self.add_error(
+                f"The version should be a string. Got: {type(version)}.")
             return
 
     def check_graph(self):
@@ -262,7 +266,8 @@ class Metadata(Node):
         # Check that the graph is directed.
         if not self.ctx.graph.is_directed():
             self.ctx.issues.add_error("The structure graph is not directed.")
-        fields = [node for node in self.ctx.graph.nodes if isinstance(node, Field)]
+        fields = [
+            node for node in self.ctx.graph.nodes if isinstance(node, Field)]
         # Check all fields have a data type: either on the field, on a parent.
         for field in fields:
             field.data_type
@@ -295,7 +300,8 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON-LD."""
         check_expected_type(ctx.issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
-        file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
+        file_set_or_objects = metadata.get(
+            constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
         ctx.conforms_to = CroissantVersion.from_jsonld(
             ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
@@ -326,40 +332,60 @@ class Metadata(Node):
             ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
         )
         date_collection_timeframe_start = from_str_to_date_time(
-            ctx.issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
+            ctx.issues, metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
         )
         date_collection_timeframe_end = from_str_to_date_time(
-            ctx.issues, metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END)
+            ctx.issues, metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END)
         )
-  
+
         return cls(
             ctx=ctx,
             citation=metadata.get(constants.SCHEMA_ORG_CITATION),
             creators=creators,
             date_published=date_published,
-            description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),    
-            data_collection=metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION),
-            data_collection_type= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE),
-            data_collection_type_others= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS),
-            data_collection_missing= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA),
-            data_collection_raw= metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA),
-            data_collection_timeframe_start= date_collection_timeframe_start,
-            data_collection_timeframe_end= date_collection_timeframe_end,
-            data_preprocessing_imputation= metadata.get(constants.ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION),
-            data_preprocessing_protocol= metadata.get(constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL),
-            data_preprocessing_manipulation= metadata.get(constants.ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION),
-            data_annotation_protocol= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL),
-            data_annotation_platform= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM),
-            data_annotation_analysis= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS),
-            data_annotation_peritem= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM),
-            data_annotation_demographics= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS),
-            data_annotation_tools= metadata.get(constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS),
-            data_biases= metadata.get(constants.ML_COMMONS_RAI_DATA_BIAS),
-            data_usecases = metadata.get(constants.ML_COMMONS_RAI_DATA_USECASES),
-            data_limitation= metadata.get(constants.ML_COMMONS_RAI_DATA_LIMITATION),
-            data_social_impact= metadata.get(constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT),
-            data_sensitive= metadata.get(constants.ML_COMMONS_RAI_DATA_SENSITIVE),
-            data_maintenance= metadata.get(constants.ML_COMMONS_RAI_DATA_MAINTENANCE),
+            description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
+            data_collection=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION),
+            data_collection_type=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE),
+            data_collection_type_others=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS),
+            data_collection_missing=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA),
+            data_collection_raw=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA),
+            data_collection_timeframe_start=date_collection_timeframe_start,
+            data_collection_timeframe_end=date_collection_timeframe_end,
+            data_preprocessing_imputation=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION),
+            data_preprocessing_protocol=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL),
+            data_preprocessing_manipulation=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION),
+            data_annotation_protocol=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL),
+            data_annotation_platform=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM),
+            data_annotation_analysis=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS),
+            data_annotation_peritem=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM),
+            data_annotation_demographics=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS),
+            data_annotation_tools=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS),
+            data_biases=metadata.get(constants.ML_COMMONS_RAI_DATA_BIAS),
+            data_usecases=metadata.get(constants.ML_COMMONS_RAI_DATA_USECASES),
+            data_limitation=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_LIMITATION),
+            data_social_impact=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT),
+            data_sensitive=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_SENSITIVE),
+            data_maintenance=metadata.get(
+                constants.ML_COMMONS_RAI_DATA_MAINTENANCE),
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,

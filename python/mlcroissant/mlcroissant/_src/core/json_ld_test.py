@@ -13,7 +13,8 @@ from mlcroissant._src.core.rdf import make_context
 # Please, use scripts/migrations/migrate.py to migrate datasets.
 def test_expand_and_reduce_json_ld():
     dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
+        epath.Path(
+            __file__).parent.parent.parent.parent.parent.parent / "datasets"
     )
     json_ld_paths = [path for path in dataset_folder.glob("*/*.json")]
     for path in json_ld_paths:
@@ -57,26 +58,26 @@ def test_make_context():
         "subField": "cr:subField",
         "transform": "cr:transform",
         "foo": "bar",
-        "raiDataCollection":"ml.raiDataCollection",
-        "raiDataCollectionType":"ml.raiDataCollectionType",
-        "raiDataCollectionTypeOthers":"ml.raiDataCollectionTypeOthers",
-        "raiDataCollectionMissingData":"ml.raiDataCollectionMissingData",
-        "raiDataCollectionRawData":"ml.raiDataCollectionRawData",
-        "raiDataCollectionTimeFrameStart":"ml.raiDataCollectionTimeFrameStart",
-        "raiDataCollectionTimeFrameEnd":"ml.raiDataCollectionTimeFrameEnd",
-        "raiDataPreprocessingImputations":"ml.raiDataPreprocessingImputations",
-        "raiDataPreprocessingProtocol":"ml.raiDataPreprocessingProtocol",
-        "raiDataPreprocessingManipulation":"ml.raiDataPreprocessingManipulation",
-        "raiDataAnnotationProtocol":"ml.raiDataAnnotationProtocol",
-        "raiDataAnnotationPlatform":"ml.raiDataAnnotationPlatform",
-        "raiDataAnnotationAnalysis":"ml.raiDataAnnotationAnalysis",
-        "raiDataAnnotationPerItem":"ml.raiDataAnnotationPerItem",
-        "raiDataAnnotationDemographics":"ml.raiDataAnnotationDemographics",
-        "raiDataAnnotationTools":"ml.raiDataAnnotationTools",
-        "raiDataUseCases":"ml.raiDataUseCases",
-        "raiDataBias":"ml.raiDataBias",
-        "raiDataLimitations":"ml.raiDataLimitations",
-        "raiDataSocialImpact":"ml.raiDataSocialImpact",
-        "raiDataSensitive":"ml.raiDataSensitive",
-        "raiDataMaintenance":"ml.raiDataMaintenance",
+        "dataCollection": "ml.dataCollection",
+        "dataCollectionType": "ml.dataCollectionType",
+        "dataCollectionTypeOthers": "ml.dataCollectionTypeOthers",
+        "dataCollectionMissingData": "ml.dataCollectionMissingData",
+        "dataCollectionRawData": "ml.dataCollectionRawData",
+        "dataCollectionTimeFrameStart": "ml.dataCollectionTimeFrameStart",
+        "dataCollectionTimeFrameEnd": "ml.dataCollectionTimeFrameEnd",
+        "dataPreprocessingImputations": "ml.dataPreprocessingImputations",
+        "dataPreprocessingProtocol": "ml.dataPreprocessingProtocol",
+        "dataPreprocessingManipulation": "ml.dataPreprocessingManipulation",
+        "dataAnnotationProtocol": "ml.dataAnnotationProtocol",
+        "dataAnnotationPlatform": "ml.dataAnnotationPlatform",
+        "dataAnnotationAnalysis": "ml.dataAnnotationAnalysis",
+        "dataAnnotationPerItem": "ml.dataAnnotationPerItem",
+        "dataAnnotationDemographics": "ml.dataAnnotationDemographics",
+        "dataAnnotationTools": "ml.dataAnnotationTools",
+        "dataUseCases": "ml.dataUseCases",
+        "dataBias": "ml.dataBias",
+        "dataLimitations": "ml.dataLimitations",
+        "dataSocialImpact": "ml.dataSocialImpact",
+        "dataSensitive": "ml.dataSensitive",
+        "dataMaintenance": "ml.dataMaintenance",
     }

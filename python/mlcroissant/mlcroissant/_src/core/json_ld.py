@@ -19,7 +19,8 @@ if rdflib.__version__ < "6.0.1":
     plugin.register(
         "json-ld", plugin.Serializer, "rdflib_jsonld.serializer", "JsonLDSerializer"
     )
-    plugin.register("json-ld", plugin.Parser, "rdflib_jsonld.parser", "JsonLDParser")
+    plugin.register("json-ld", plugin.Parser,
+                    "rdflib_jsonld.parser", "JsonLDParser")
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
@@ -123,7 +124,8 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
             entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
             del entry_node[key]
-            value = [recursively_populate_jsonld(child, id_to_node) for child in value]
+            value = [recursively_populate_jsonld(
+                child, id_to_node) for child in value]
             node_type = entry_node.get("@type", "")
             key, node_type = term.URIRef(key), term.URIRef(node_type)
             if (key, node_type) in _KEYS_WITH_LIST:

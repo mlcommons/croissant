@@ -20,64 +20,120 @@ def ML_COMMONS(ctx) -> rdflib.Namespace:
         return ML_COMMONS_V_1_0
 
 
-ML_COMMONS_COLUMN = lambda ctx: ML_COMMONS(ctx).column
-ML_COMMONS_DATA = lambda ctx: ML_COMMONS(ctx).data
-ML_COMMONS_DATA_BIASES = lambda ctx: ML_COMMONS(ctx).dataBiases
-ML_COMMONS_DATA_COLLECTION = lambda ctx: ML_COMMONS(ctx).dataCollection
-ML_COMMONS_DATA_TYPE = lambda ctx: ML_COMMONS(ctx).dataType
-ML_COMMONS_DATA_TYPE_BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
-ML_COMMONS_EXTRACT = lambda ctx: ML_COMMONS(ctx).extract
-ML_COMMONS_FILE_PROPERTY = lambda ctx: ML_COMMONS(ctx).fileProperty
-ML_COMMONS_FIELD = lambda ctx: ML_COMMONS(ctx).field
-ML_COMMONS_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).Field
-ML_COMMONS_FILE_OBJECT = lambda ctx: ML_COMMONS(ctx).fileObject
-ML_COMMONS_FILE_SET = lambda ctx: ML_COMMONS(ctx).fileSet
+def ML_COMMONS_COLUMN(ctx): return ML_COMMONS(ctx).column
+def ML_COMMONS_DATA(ctx): return ML_COMMONS(ctx).data
+def ML_COMMONS_DATA_BIASES(ctx): return ML_COMMONS(ctx).dataBiases
+def ML_COMMONS_DATA_COLLECTION(ctx): return ML_COMMONS(ctx).dataCollection
+def ML_COMMONS_DATA_TYPE(ctx): return ML_COMMONS(ctx).dataType
+def ML_COMMONS_DATA_TYPE_BOUNDING_BOX(ctx): return ML_COMMONS(ctx).BoundingBox
+def ML_COMMONS_EXTRACT(ctx): return ML_COMMONS(ctx).extract
+def ML_COMMONS_FILE_PROPERTY(ctx): return ML_COMMONS(ctx).fileProperty
+def ML_COMMONS_FIELD(ctx): return ML_COMMONS(ctx).field
+def ML_COMMONS_FIELD_TYPE(ctx): return ML_COMMONS(ctx).Field
+def ML_COMMONS_FILE_OBJECT(ctx): return ML_COMMONS(ctx).fileObject
+def ML_COMMONS_FILE_SET(ctx): return ML_COMMONS(ctx).fileSet
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
-ML_COMMONS_FORMAT = lambda ctx: ML_COMMONS(ctx)["format"]
-ML_COMMONS_INCLUDES = lambda ctx: ML_COMMONS(ctx).includes
-ML_COMMONS_IS_ENUMERATION = lambda ctx: ML_COMMONS(ctx).isEnumeration
-ML_COMMONS_JSON_PATH = lambda ctx: ML_COMMONS(ctx).jsonPath
-ML_COMMONS_PARENT_FIELD = lambda ctx: ML_COMMONS(ctx).parentField
-ML_COMMONS_PATH = lambda ctx: ML_COMMONS(ctx).path
-ML_COMMONS_PERSONAL_SENSITVE_INFORMATION = lambda ctx: ML_COMMONS(
+def ML_COMMONS_FORMAT(ctx): return ML_COMMONS(ctx)["format"]
+def ML_COMMONS_INCLUDES(ctx): return ML_COMMONS(ctx).includes
+def ML_COMMONS_IS_ENUMERATION(ctx): return ML_COMMONS(ctx).isEnumeration
+def ML_COMMONS_JSON_PATH(ctx): return ML_COMMONS(ctx).jsonPath
+def ML_COMMONS_PARENT_FIELD(ctx): return ML_COMMONS(ctx).parentField
+def ML_COMMONS_PATH(ctx): return ML_COMMONS(ctx).path
+
+
+def ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx): return ML_COMMONS(
     ctx
 ).personalSensitiveInformation
-ML_COMMONS_RECORD_SET = lambda ctx: ML_COMMONS(ctx).recordSet
-ML_COMMONS_RECORD_SET_TYPE = lambda ctx: ML_COMMONS(ctx).RecordSet
-ML_COMMONS_REFERENCES = lambda ctx: ML_COMMONS(ctx).references
-ML_COMMONS_REGEX = lambda ctx: ML_COMMONS(ctx).regex
-ML_COMMONS_REPEATED = lambda ctx: ML_COMMONS(ctx).repeated
+def ML_COMMONS_RECORD_SET(ctx): return ML_COMMONS(ctx).recordSet
+def ML_COMMONS_RECORD_SET_TYPE(ctx): return ML_COMMONS(ctx).RecordSet
+def ML_COMMONS_REFERENCES(ctx): return ML_COMMONS(ctx).references
+def ML_COMMONS_REGEX(ctx): return ML_COMMONS(ctx).regex
+def ML_COMMONS_REPEATED(ctx): return ML_COMMONS(ctx).repeated
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
-ML_COMMONS_REPLACE = lambda ctx: ML_COMMONS(ctx)["replace"]
-ML_COMMONS_SEPARATOR = lambda ctx: ML_COMMONS(ctx).separator
-ML_COMMONS_SOURCE = lambda ctx: ML_COMMONS(ctx).source
-ML_COMMONS_SUB_FIELD = lambda ctx: ML_COMMONS(ctx).subField
-ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
-ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
+def ML_COMMONS_REPLACE(ctx): return ML_COMMONS(ctx)["replace"]
+def ML_COMMONS_SEPARATOR(ctx): return ML_COMMONS(ctx).separator
+def ML_COMMONS_SOURCE(ctx): return ML_COMMONS(ctx).source
+def ML_COMMONS_SUB_FIELD(ctx): return ML_COMMONS(ctx).subField
+def ML_COMMONS_SUB_FIELD_TYPE(ctx): return ML_COMMONS(ctx).SubField
+def ML_COMMONS_TRANSFORM(ctx): return ML_COMMONS(ctx).transform
 
-# RAI 
-ML_COMMONS_RAI_DATA_COLLECTION = lambda ctx: ML_COMMONS(ctx).dataCollection
-ML_COMMONS_RAI_DATA_COLLECTION_TYPE = lambda ctx: ML_COMMONS(ctx).dataCollectionType
-ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS = lambda ctx: ML_COMMONS(ctx).dataCollectionTypeOthers
-ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA = lambda ctx: ML_COMMONS(ctx).dataCollectionMissingData
-ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA = lambda ctx: ML_COMMONS(ctx).dataCollectionRawData
-ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START = lambda ctx: ML_COMMONS(ctx).dataCollectionTimeFrameStart
-ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END = lambda ctx: ML_COMMONS(ctx).dataCollectionTimeFrameEnd
-ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION = lambda ctx: ML_COMMONS(ctx).dataPreprocessingImputations
-ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL =lambda ctx: ML_COMMONS(ctx).dataPreprocessingProtocol
-ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION = lambda ctx: ML_COMMONS(ctx).dataPreprocessingManipulation
-ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL = lambda ctx: ML_COMMONS(ctx).dataAnnotationProtocol
-ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM = lambda ctx: ML_COMMONS(ctx).dataAnnotationPlatform
-ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS = lambda ctx: ML_COMMONS(ctx).dataAnnotationAnalysis
-ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM = lambda ctx: ML_COMMONS(ctx).dataAnnotationPerItem
-ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS = lambda ctx: ML_COMMONS(ctx).dataAnnotationDemographics
-ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS = lambda ctx: ML_COMMONS(ctx).dataAnnotationTools
-ML_COMMONS_RAI_DATA_USECASES = lambda ctx: ML_COMMONS(ctx).dataUseCases
-ML_COMMONS_RAI_DATA_BIAS = lambda ctx: ML_COMMONS(ctx).dataBias
-ML_COMMONS_RAI_DATA_LIMITATION = lambda ctx: ML_COMMONS(ctx).dataLimitations
-ML_COMMONS_RAI_DATA_SOCIAL_IMPACT = lambda ctx: ML_COMMONS(ctx).dataSocialImpact
-ML_COMMONS_RAI_DATA_SENSITIVE = lambda ctx: ML_COMMONS(ctx).dataSensitive
-ML_COMMONS_RAI_DATA_MAINTENANCE = lambda ctx: ML_COMMONS(ctx).dataMaintenance
+#  RAI
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION(ctx): return ML_COMMONS(ctx).dataCollection
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TYPE(
+    ctx): return ML_COMMONS(ctx).dataCollectionType
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS(
+    ctx): return ML_COMMONS(ctx).dataCollectionTypeOthers
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA(
+    ctx): return ML_COMMONS(ctx).dataCollectionMissingData
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA(
+    ctx): return ML_COMMONS(ctx).dataCollectionRawData
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START(
+    ctx): return ML_COMMONS(ctx).dataCollectionTimeFrameStart
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END(
+    ctx): return ML_COMMONS(ctx).dataCollectionTimeFrameEnd
+
+
+def ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION(
+    ctx): return ML_COMMONS(ctx).dataPreprocessingImputations
+
+
+def ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL(
+    ctx): return ML_COMMONS(ctx).dataPreprocessingProtocol
+
+
+def ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION(
+    ctx): return ML_COMMONS(ctx).dataPreprocessingManipulation
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL(
+    ctx): return ML_COMMONS(ctx).dataAnnotationProtocol
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM(
+    ctx): return ML_COMMONS(ctx).dataAnnotationPlatform
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS(
+    ctx): return ML_COMMONS(ctx).dataAnnotationAnalysis
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM(
+    ctx): return ML_COMMONS(ctx).dataAnnotationPerItem
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS(
+    ctx): return ML_COMMONS(ctx).dataAnnotationDemographics
+def ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS(
+    ctx): return ML_COMMONS(ctx).dataAnnotationTools
+
+
+def ML_COMMONS_RAI_DATA_USECASES(ctx): return ML_COMMONS(ctx).dataUseCases
+def ML_COMMONS_RAI_DATA_BIAS(ctx): return ML_COMMONS(ctx).dataBias
+def ML_COMMONS_RAI_DATA_LIMITATION(ctx): return ML_COMMONS(ctx).dataLimitations
+def ML_COMMONS_RAI_DATA_SOCIAL_IMPACT(
+    ctx): return ML_COMMONS(ctx).dataSocialImpact
+
+
+def ML_COMMONS_RAI_DATA_SENSITIVE(ctx): return ML_COMMONS(ctx).dataSensitive
+
+
+def ML_COMMONS_RAI_DATA_MAINTENANCE(
+    ctx): return ML_COMMONS(ctx).dataMaintenance
+
 
 # RDF standard URIs.
 # For "@type" key:
@@ -112,7 +168,8 @@ SCHEMA_ORG_FILE_OBJECT = SCHEMA_ORG.FileObject
 SCHEMA_ORG_FILE_SET = SCHEMA_ORG.FileSet
 SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
 
-TO_CROISSANT = lambda ctx: {
+
+def TO_CROISSANT(ctx): return {
     ML_COMMONS_TRANSFORM(ctx): "transforms",
     ML_COMMONS_COLUMN(ctx): "csv_column",
     ML_COMMONS_DATA_TYPE(ctx): "data_type",
@@ -144,7 +201,9 @@ TO_CROISSANT = lambda ctx: {
     SCHEMA_ORG_VERSION: "version",
 }
 
-FROM_CROISSANT = lambda ctx: {v: k for k, v in TO_CROISSANT(ctx).items()}
+
+def FROM_CROISSANT(ctx): return {v: k for k, v in TO_CROISSANT(ctx).items()}
+
 
 # Environment variables
 CROISSANT_CACHE = epath.Path("~/.cache/croissant").expanduser()
@@ -177,7 +236,7 @@ class DataType:
     """Data types supported by Croissant."""
 
     BOOL = namespace.SDO.Boolean
-    BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
+    def BOUNDING_BOX(ctx): return ML_COMMONS(ctx).BoundingBox
     DATE = namespace.SDO.Date
     FLOAT = namespace.SDO.Float
     IMAGE_OBJECT = namespace.SDO.ImageObject
