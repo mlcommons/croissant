@@ -97,11 +97,22 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
             Metadata.data_biases.append(st.session_state[key])
 
     if event == RaiEvent.RAI_DATA_LIMITATION:
-        Metadata.data_limitation = st.session_state[key]
+        if Metadata.data_limitation:   
+            index = key.split("_")[-1]
+            Metadata.data_limitation[int(index)] = st.session_state[key]
+        else:
+            Metadata.data_limitation = []
+            Metadata.data_limitation.append(st.session_state[key])
     if event == RaiEvent.RAI_DATA_SOCIAL_IMPACT:
         Metadata.data_social_impact = st.session_state[key]
     if event == RaiEvent.RAI_SENSITIVE:
-        Metadata.data_sensitive = st.session_state[key]
+          
+        if Metadata.data_sensitive:   
+            index = key.split("_")[-1]
+            Metadata.data_sensitive[int(index)] = st.session_state[key]
+        else:
+            Metadata.data_sensitive = []
+            Metadata.data_sensitive.append(st.session_state[key])
     if event == RaiEvent.RAI_MAINTENANCE:
         Metadata.data_maintenance = st.session_state[key]
    

@@ -273,7 +273,7 @@ def render_rai_metadata():
                 key = "metadata-data-biases_"+"0"
                 st.text_area(
                         label=(
-                            "**Data biases**. Involves understanding the potential risks associated"
+                            "Involves understanding the potential risks associated"
             " with data usage and to prevent unintended and potentially harmful"
             " consequences that may arise from using models trained on or evaluated"
             " with the respective data."
@@ -297,19 +297,49 @@ def render_rai_metadata():
                     if (metadata.data_biases):
                         metadata.data_biases.pop()
                         st.rerun()
-        
-        key = "metadata-personal-sensitive-information"
-        st.text_area(
-            label=(
-                "**Personal and sensitive information**. Personal and sensitive information, if"
+        with st.expander("**Personal and sensitive information**",expanded=True):
+            if (metadata.data_sensitive):
+                    for index, protocol in enumerate(metadata.data_sensitive):
+                        key = "metadata-personal-sensitive-information_"+str(index)
+                        st.text_area(
+                            label=(
+                                "Personal and sensitive information, if"
                 " contained within the dataset, can play an important role in the"
                 " mitigation of any risks and the responsible use of the datasets."
-            ),
-            key=key,
-            value=metadata.data_sensitive,
-            on_change=handle_rai_change,
-            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
-        )
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
+                        )
+            else:
+                key = "metadata-personal-sensitive-information_"+"0"
+                st.text_area(
+                        label=(
+                            "if"
+                " contained within the dataset, can play an important role in the"
+                " mitigation of any risks and the responsible use of the datasets."
+                        ),
+                        key=key,
+                        on_change=handle_rai_change,
+                        args=(RaiEvent.RAI_SENSITIVE, metadata, key),
+                    ) 
+            add, remove = st.columns(2)
+            with add:
+                if st.button("+ add sensitive"):
+                    if (metadata.data_sensitive):
+                        metadata.data_sensitive.append("")
+                        st.rerun()
+                    else:
+                        metadata.data_sensitive = []
+                        metadata.data_sensitive.append("")
+                        st.rerun()
+            with remove:
+                if st.button("- remove sensitive"):
+                    if (metadata.data_sensitive):
+                        metadata.data_sensitive.pop()
+                        st.rerun()
+        
         key = "metadata-social-impact"
         st.text_area(
             label=(
@@ -320,14 +350,44 @@ def render_rai_metadata():
             on_change=handle_rai_change,
             args=(RaiEvent.RAI_DATA_SOCIAL_IMPACT, metadata, key),
         )
-        key = "metadata-data-limitations"
-        st.text_area(
-            label=("**Data limitation**. Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."),
-            key=key,
-            value=metadata.data_limitation,
-            on_change=handle_rai_change,
-            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
-        )
+        with st.expander("**Data limitations**",expanded=True):
+            if (metadata.data_limitation):
+                    for index, protocol in enumerate(metadata.data_limitation):
+                        key = "metadata-data-limitations_"+str(index)
+                        st.text_area(
+                            label=(
+                                "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
+                        )
+            else:
+                key = "metadata-data-limitations_"+"0"
+                st.text_area(
+                        label=(
+                            "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
+                        ),
+                        key=key,
+                        on_change=handle_rai_change,
+                        args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
+                    ) 
+            add, remove = st.columns(2)
+            with add:
+                if st.button("+ add limitations"):
+                    if (metadata.data_limitation):
+                        metadata.data_limitation.append("")
+                        st.rerun()
+                    else:
+                        metadata.data_limitation = []
+                        metadata.data_limitation.append("")
+                        st.rerun()
+            with remove:
+                if st.button("- remove limitations"):
+                    if (metadata.data_limitation):
+                        metadata.data_limitation.pop()
+                        st.rerun()
         key = "metadata-data-maintenance"
         st.text_area(
             label=("**Data release maintenance**. Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies. "),

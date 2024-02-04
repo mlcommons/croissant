@@ -214,7 +214,7 @@ class Metadata:
     data_usecases: list[str] = None
     data_limitation: list[str] = None
     data_social_impact: str | None = None
-    data_sensitive: str | None = None
+    data_sensitive: [str] = None
     data_maintenance: str | None = None
 
 
