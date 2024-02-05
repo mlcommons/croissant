@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -46,21 +48,21 @@
   "url": "https://mlcommons.org",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "zip_with_csv",
       "contentUrl": "data/zip_with_csv.zip",
       "encodingFormat": "application/zip",
       "sha256": "409b80b15f540661197ae22b78cda2f5cd71f336379f5c9cd1a6b4fc6abe74bd"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "csv2_in_zip",
       "contentUrl": "csv2_in_zip.csv",
       "containedIn": "zip_with_csv",
       "encodingFormat": "text/csv"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "csv1_in_zip",
       "contentUrl": "csv1_in_zip.csv",
       "containedIn": "zip_with_csv",

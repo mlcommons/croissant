@@ -87,7 +87,7 @@ class RecordSet(Node):
         if isinstance(fields, dict):
             fields = [fields]
         fields = [Field.from_jsonld(ctx, field) for field in fields]
-        key = record_set.get(constants.SCHEMA_ORG_KEY)
+        key = record_set.get(constants.SCHEMA_ORG_KEY(ctx))
         data = record_set.get(constants.ML_COMMONS_DATA(ctx))
         if isinstance(data, str):
             try:

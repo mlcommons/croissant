@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -52,7 +54,7 @@
   "url": "https://github.com/facebookresearch/flores",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "tinyurl-repository",
       "description": "Flores 200 is hosted on a webserver.",
       "contentSize": "25585843 B",
@@ -61,7 +63,7 @@
       "sha256": "b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "files-dev",
       "description": "dev files are inside the tar.",
       "containedIn": "tinyurl-repository",
@@ -69,7 +71,7 @@
       "includes": "flores200_dataset/dev/*.dev"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "metadata-dev",
       "description": "Contains labels for the records in each line in the dev files.",
       "contentUrl": "flores200_dataset/metadata_dev.tsv",
@@ -77,7 +79,7 @@
       "encodingFormat": "text/tsv"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "metadata-devtest",
       "description": "Contains labels for the records in each line in the devtest files.",
       "contentUrl": "flores200_dataset/metadata_devtest.tsv",
@@ -85,7 +87,7 @@
       "encodingFormat": "text/tsv"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "files-devtest",
       "description": "devtest files are inside the tar.",
       "containedIn": "tinyurl-repository",

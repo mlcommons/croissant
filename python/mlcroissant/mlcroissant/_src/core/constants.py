@@ -84,10 +84,14 @@ SCHEMA_ORG_VERSION = namespace.SDO.version
 
 # Schema.org URIs that do not exist yet in the standard.
 SCHEMA_ORG = rdflib.Namespace("https://schema.org/")
-SCHEMA_ORG_KEY = SCHEMA_ORG.key
-SCHEMA_ORG_FILE_OBJECT = SCHEMA_ORG.FileObject
-SCHEMA_ORG_FILE_SET = SCHEMA_ORG.FileSet
-SCHEMA_ORG_MD5 = SCHEMA_ORG.md5
+SCHEMA_ORG_KEY = lambda ctx: SCHEMA_ORG.key if ctx.is_v0() else ML_COMMONS(ctx)["key"]
+SCHEMA_ORG_FILE_OBJECT = lambda ctx: (
+    SCHEMA_ORG.FileObject if ctx.is_v0() else ML_COMMONS(ctx)["FileObject"]
+)
+SCHEMA_ORG_FILE_SET = lambda ctx: (
+    SCHEMA_ORG.FileSet if ctx.is_v0() else ML_COMMONS(ctx)["FileSet"]
+)
+SCHEMA_ORG_MD5 = lambda ctx: SCHEMA_ORG.md5 if ctx.is_v0() else ML_COMMONS(ctx)["md5"]
 
 TO_CROISSANT = lambda ctx: {
     ML_COMMONS_TRANSFORM(ctx): "transforms",

@@ -34,7 +34,7 @@ class FileSet(Node):
         else:
             contained_in = self.contained_in
         return remove_empty_values({
-            "@type": "sc:FileSet",
+            "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
             "name": self.name,
             "description": self.description,
             "containedIn": contained_in,
@@ -49,7 +49,7 @@ class FileSet(Node):
         file_set: Json,
     ) -> FileSet:
         """Creates a `FileSet` from JSON-LD."""
-        check_expected_type(ctx.issues, file_set, constants.SCHEMA_ORG_FILE_SET)
+        check_expected_type(ctx.issues, file_set, constants.SCHEMA_ORG_FILE_SET(ctx))
         name = file_set.get(constants.SCHEMA_ORG_NAME, "")
         contained_in = file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
         if contained_in is not None and not isinstance(contained_in, list):

@@ -28,7 +28,7 @@ def test_checks_are_performed():
 def test_from_jsonld(conforms_to):
     ctx = Context(conforms_to=conforms_to)
     jsonld = {
-        "@type": constants.SCHEMA_ORG_FILE_SET,
+        "@type": constants.SCHEMA_ORG_FILE_SET(ctx),
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_CONTAINED_IN: "some.zip",

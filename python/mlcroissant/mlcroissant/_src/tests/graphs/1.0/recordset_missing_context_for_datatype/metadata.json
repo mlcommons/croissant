@@ -21,6 +21,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -46,7 +48,7 @@
   "version": "1.0.0",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "a-csv-table",
       "contentSize": "117743 B",
       "contentUrl": "https://www.google.com/data.csv",

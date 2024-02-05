@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -48,21 +50,21 @@
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "metadata",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
       "encodingFormat": "text/csv",
       "sha256": "0b033707ea49365a5ffdd14615825511"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
       "encodingFormat": "application/x-tar",
       "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "image-files",
       "containedIn": "pass9",
       "encodingFormat": "image/jpeg",

@@ -42,7 +42,7 @@ class FileObject(Node):
         else:
             contained_in = self.contained_in
         return remove_empty_values({
-            "@type": "sc:FileObject",
+            "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
             "name": self.name,
             "description": self.description,
             "contentSize": self.content_size,
@@ -61,7 +61,9 @@ class FileObject(Node):
         file_object: Json,
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(ctx.issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
+        check_expected_type(
+            ctx.issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT(ctx)
+        )
         content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
         contained_in = file_object.get(constants.SCHEMA_ORG_CONTAINED_IN, [])
         name = file_object.get(constants.SCHEMA_ORG_NAME, "")
@@ -77,7 +79,7 @@ class FileObject(Node):
             contained_in=contained_in,
             description=description,
             encoding_format=encoding_format,
-            md5=file_object.get(constants.SCHEMA_ORG_MD5),
+            md5=file_object.get(constants.SCHEMA_ORG_MD5(ctx)),
             name=name,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
