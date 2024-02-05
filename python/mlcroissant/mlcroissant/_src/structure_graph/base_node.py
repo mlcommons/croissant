@@ -13,8 +13,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 
-ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
-_MAX_ID_LENGTH = 255
+_MAX_ID_LENGTH = 256
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -165,7 +164,7 @@ class Node(abc.ABC):
         ...
 
     def validate_name(self):
-        """Validates the name (which are used as unique identifiers in Croissant)."""
+        """Implements https://www.w3.org/TR/xml-id."""
         name = self.name
         if not isinstance(name, str):
             self.add_error(f"The identifier should be a string. Got: {type(name)}.")
@@ -178,9 +177,16 @@ class Node(abc.ABC):
             self.add_error(
                 f'The identifier "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
             )
-        regex = re.compile(rf"^{ID_REGEX}$")
+        if self.ctx.is_v0():
+            regex = re.compile(r"[a-zA-Z0-9\\-_\\.]+")
+        else:
+            regex = re.compile(r"^[:A-Z_a-z][:A-Z_a-z-.0-9]*$")
         if not regex.match(name):
-            self.add_error(f'The identifier "{name}" contains forbidden characters.')
+            self.add_error(
+                f'The identifier "{name}" contains forbidden characters. Make sure'
+                " names follow the constraints for XML identifiers specified in"
+                " https://www.w3.org/TR/xml/#sec-common-syn"
+            )
 
     def there_exists_at_least_one_property(self, possible_properties: list[str]):
         """Checks for the existence of one of `possible_properties` in `keys`."""

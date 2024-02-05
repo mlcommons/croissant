@@ -26,7 +26,8 @@ def test_checks_are_performed():
         create_test_node(Metadata, name="field_name")
         mandatory_mock.assert_called_once_with("name")
         optional_mock.assert_called_once_with("cite_as", "license", "version")
-        validate_name_mock.assert_called_once()
+        # The name of a dataset doesn't have any constraint:
+        validate_name_mock.assert_not_called()
 
 
 @parametrize_conforms_to()

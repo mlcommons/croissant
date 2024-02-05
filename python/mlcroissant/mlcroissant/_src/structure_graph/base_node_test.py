@@ -36,20 +36,28 @@ def test_there_exists_at_least_one_property():
     ["name", "expected_errors"],
     [
         [
-            "a-regular-id",
+            "a-regular-id_012345",
             [],
         ],
         [
-            "a" * 256,
+            "a" * 257,
             [
                 "The identifier"
-                ' "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
-                " is too long (>255 characters)."
+                ' "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
+                " is too long (>256 characters)."
             ],
         ],
         [
             "this is not valid",
             ['The identifier "this is not valid" contains forbidden characters.'],
+        ],
+        [
+            "-this-is-not-valid",
+            ['The identifier "-this-is-not-valid" contains forbidden characters.'],
+        ],
+        [
+            "🙈",
+            ['The identifier "🙈" contains forbidden characters.'],
         ],
         [
             {"not": {"a": {"string"}}},
@@ -63,6 +71,7 @@ def test_validate_name(name, expected_errors):
         name=name,
     )
     node.validate_name()
+    assert len(expected_errors) == len(node.ctx.issues.errors)
     for expected_error, error in zip(expected_errors, node.ctx.issues.errors):
         assert expected_error in error
 

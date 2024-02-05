@@ -110,8 +110,7 @@ class Metadata(Node):
         self.ctx.graph = from_nodes_to_graph(self)
         self.check_graph()
 
-        # Check properties.
-        self.validate_name()
+        # Check properties. The dataset name can contain any character/have any length.
         self.validate_version()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("cite_as", "license", "version")
