@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -46,7 +48,7 @@
   "url": "https://mlcommons.org",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "tar-gz",
       "description": "*.tar.gz containing two folders: training and validation. Each folder contains a list of images (img1.jpg, img2.jpg) with their masks (mask1.jpg, mask2.jpg).",
       "contentUrl": "data/read_from_tar.tar.gz",
@@ -54,14 +56,14 @@
       "sha256": "42c1b0638ea739f90254d58f97a2b3f6943de0e60ed0a0f86012a7456e2f555f"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "source-images",
       "containedIn": "tar-gz",
       "encodingFormat": "image/jpeg",
       "includes": "*/img*.jpg"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "source-annotations",
       "containedIn": "tar-gz",
       "encodingFormat": "image/jpeg",

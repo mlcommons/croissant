@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -46,14 +48,14 @@
   "url": "https://example.com/datasets/enum/about",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "enum.csv",
       "contentUrl": "data/enum.csv",
       "encodingFormat": "text/csv",
       "sha256": "52121a5df209dc2d63069710923e25f769d380a1388d00798e84d432c54fd934"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "enum_directions.csv",
       "contentUrl": "data/enum_directions.csv",
       "encodingFormat": "text/csv",

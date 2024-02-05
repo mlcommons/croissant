@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -48,28 +50,28 @@
   "url": "None",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "metadata",
       "contentUrl": "data/pass_metadata.csv",
       "encodingFormat": "text/csv",
       "sha256": "22f083fb90d4d6d44c5492481c99049a960cf1dcbae71020bd87b94cb4141dae"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "pass0",
       "contentUrl": "data/PASS.0.tar",
       "encodingFormat": "application/x-tar",
       "sha256": "7e0ae9fd44a42e2b2f647ded8073b380239c2505862fd7eb1eff17430c52a60e"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "pass1",
       "contentUrl": "data/PASS.1.tar",
       "encodingFormat": "application/x-tar",
       "sha256": "a7dfd02caa9eba288e3d60083d2fdeb41c6f8aca771362059b1999b9fdf7ffb2"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "image-files",
       "containedIn": [
         "pass0",

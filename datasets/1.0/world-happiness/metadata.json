@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -48,7 +50,7 @@
   "url": "https://www.kaggle.com/datasets/unsdsn/world-happiness",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "archive.zip",
       "description": "Archive containing all the contents of the World Happiness Report dataset",
       "contentSize": "36.809 KB",
@@ -57,7 +59,7 @@
       "md5": "bc1++XNoIWW685QyDLewsg=="
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "2015.csv",
       "description": "Happiness rank and scores by country, 2015",
       "contentUrl": "2015.csv",
@@ -65,7 +67,7 @@
       "encodingFormat": "text/csv"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "2016.csv",
       "description": "Happiness rank and scores by country, 2016",
       "contentUrl": "2016.csv",
@@ -73,7 +75,7 @@
       "encodingFormat": "text/csv"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "2017.csv",
       "description": "Happiness rank and scores by country, 2017",
       "contentUrl": "2017.csv",
@@ -81,7 +83,7 @@
       "encodingFormat": "text/csv"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "2018.csv",
       "description": "Happiness rank and scores by country, 2018",
       "contentUrl": "2018.csv",
@@ -89,7 +91,7 @@
       "encodingFormat": "text/csv"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "2019.csv",
       "description": "Happiness rank and scores by country, 2019",
       "contentUrl": "2019.csv",
