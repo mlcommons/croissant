@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -49,21 +51,21 @@
   "url": "https://blog.salesforceairesearch.com/the-wikitext-long-term-dependency-language-modeling-dataset/",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "wikitext-103-v1.zip",
       "contentUrl": "https://s3.amazonaws.com/research.metamind.io/wikitext/wikitext-103-v1.zip",
       "encodingFormat": "application/zip",
       "sha256": "242ba0f20b329cfdf1ccc61e9e9e5b59becf189db7f7a81cd2a0e2fc31539590"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "token-files",
       "containedIn": "wikitext-103-v1.zip",
       "encodingFormat": "image/jpeg",
       "includes": "wikitext-103/*.tokens"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "splits.csv",
       "contentUrl": "data/splits.csv",
       "encodingFormat": "text/csv",

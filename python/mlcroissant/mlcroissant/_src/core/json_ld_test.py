@@ -43,6 +43,8 @@ def test_make_context():
         "includes": "cr:includes",
         "isEnumeration": "cr:isEnumeration",
         "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "md5": "cr:md5",
         "parentField": "cr:parentField",
         "path": "cr:path",
         "personalSensitiveInformation": "cr:personalSensitiveInformation",

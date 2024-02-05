@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -50,7 +52,7 @@
   "version": "1.0.0",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "train2014.zip",
       "contentSize": " B",
       "contentUrl": "data/train2014.zip",
@@ -58,14 +60,14 @@
       "sha256": "d010037fee9416bdcc187a37a4aec7bef798316147da2753bd86e78fc0d469a5"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "image-files",
       "containedIn": "train2014.zip",
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "caption_annotations-files",
       "contentSize": " B",
       "contentUrl": "data/captions_train2014.json",
@@ -73,7 +75,7 @@
       "sha256": "6f3755cb987413021018525cbb4c484d696ff41269e6b0b43c5f63eaf576e09f"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "bbox_annotations-files",
       "contentUrl": "data/instances_train2014.json",
       "encodingFormat": "application/json",

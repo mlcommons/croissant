@@ -25,6 +25,8 @@
     "includes": "cr:includes",
     "isEnumeration": "cr:isEnumeration",
     "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
     "personalSensitiveInformation": "cr:personalSensitiveInformation",
@@ -48,7 +50,7 @@
   "url": "https://huggingface.co/datasets/bigcode/the-stack",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "repo",
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/bigcode/the-stack",
@@ -56,7 +58,7 @@
       "sha256": "https://github.com/mlcommons/croissant/issues/80"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "parquet-files",
       "containedIn": "repo",
       "encodingFormat": "application/x-parquet",

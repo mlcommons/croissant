@@ -25,6 +25,8 @@
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
+    "key": "sc:key",
+    "md5": "sc:md5",
     "parentField": "ml:parentField",
     "path": "ml:path",
     "personalSensitiveInformation": "ml:personalSensitiveInformation",
