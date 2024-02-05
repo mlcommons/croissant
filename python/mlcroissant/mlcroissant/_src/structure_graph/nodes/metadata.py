@@ -245,7 +245,7 @@ class Metadata(Node):
         json_: Json,
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
-        ctx.rdf = Rdf.from_json(json_)
+        ctx.rdf = Rdf.from_json(ctx, json_)
         metadata = expand_jsonld(json_)
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
@@ -262,15 +262,15 @@ class Metadata(Node):
         for set_or_object in file_set_or_objects:
             name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
             distribution_type = set_or_object.get("@type")
-            if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
+            if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT(ctx):
                 distribution.append(FileObject.from_jsonld(ctx, set_or_object))
-            elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
+            elif distribution_type == constants.SCHEMA_ORG_FILE_SET(ctx):
                 distribution.append(FileSet.from_jsonld(ctx, set_or_object))
             else:
                 ctx.issues.add_error(
                     f'"{name}" should have an attribute "@type":'
-                    f' "{constants.SCHEMA_ORG_FILE_OBJECT}" or "@type":'
-                    f' "{constants.SCHEMA_ORG_FILE_SET}". Got'
+                    f' "{constants.SCHEMA_ORG_FILE_OBJECT(ctx)}" or "@type":'
+                    f' "{constants.SCHEMA_ORG_FILE_SET(ctx)}". Got'
                     f" {distribution_type} instead."
                 )
         record_sets = [

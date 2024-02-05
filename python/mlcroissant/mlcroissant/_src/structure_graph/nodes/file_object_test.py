@@ -40,7 +40,7 @@ def test_checks_are_performed():
 def test_from_jsonld(encoding):
     ctx = Context()
     jsonld = {
-        "@type": constants.SCHEMA_ORG_FILE_OBJECT,
+        "@type": constants.SCHEMA_ORG_FILE_OBJECT(ctx),
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_CONTENT_URL: "https://mlcommons.org",

@@ -1,16 +1,18 @@
 """Tests for RDF."""
 
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.rdf import Rdf
 
 
 def test_shorten_value():
     rdf = Rdf.from_json(
+        ctx=Context(),
         json={
             "@context": {
                 "bio": "https://bioschemas.org/",
                 "replace": "ml:replace",
             }
-        }
+        },
     )
 
     # assert rdf.shorten_value("https://schema.org/name") == "sc:name"

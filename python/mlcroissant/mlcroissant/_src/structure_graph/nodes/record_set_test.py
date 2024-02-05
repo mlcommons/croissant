@@ -81,7 +81,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.ML_COMMONS_IS_ENUMERATION(ctx): True,
-        constants.SCHEMA_ORG_KEY: ["key1", "key2"],
+        constants.SCHEMA_ORG_KEY(ctx): ["key1", "key2"],
         constants.ML_COMMONS_DATA(ctx): [{"column1": ["value1", "value2"]}],
     }
     assert RecordSet.from_jsonld(ctx, jsonld) == RecordSet(
