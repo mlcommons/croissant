@@ -4,7 +4,7 @@ import json
 
 
 def up(json_ld):
-    """Migrates:
+    """Performs the following sc->cr migration.
 
     sc:md5->cr:md5, sc:FileSet->cr:FileSet, sc:FileObject->cr:FileObject, sc:key->cr:key
     """
