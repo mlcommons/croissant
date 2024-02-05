@@ -1,12 +1,19 @@
 """Tests for RDF."""
 
+import pytest
+
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.rdf import Rdf
+from mlcroissant._src.tests.versions import CONFORMS_TO
 
 
-def test_shorten_value():
+@pytest.mark.parametrize(
+    "ctx",
+    [None] + [Context(conforms_to=conforms_to) for conforms_to in CONFORMS_TO],
+)
+def test_shorten_value(ctx):
     rdf = Rdf.from_json(
-        ctx=Context(),
+        ctx=ctx,
         json={
             "@context": {
                 "bio": "https://bioschemas.org/",
