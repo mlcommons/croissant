@@ -30,7 +30,7 @@ croissant:Reference a rdf:Class ;
 croissant:DataType a rdf:Class ;
   rdfs:label "DataType" ;
   rdfs:comment "The data type of values expected for a Field in a RecordSet.  This class is inspired by the Datatype class in CSVW. In addition to simple atomic types, types can be semantic types, such as schema.org classes, as well types defined in other vocabularies." ;
-  rdfs:subClassOf schema:Intangible .
+  rdfs:subClassOf schema:URL .
 
 croissant:Format a rdf:Class ;
   rdfs:label "Format" ;
@@ -100,8 +100,28 @@ croissant:key a rdf:Property ;
 
 croissant:data a rdf:Property ;
   schema:domainIncludes croissant:RecordSet ;
-  schema:rangeIncludes JSON
+  schema:rangeIncludes rdf:JSON .
+
 # Field properties
 
+croissant:source a rdf:Property ;
+  schema:domainIncludes croissant:Field ; # TODO: Do we want to allow source on RecordSet as well?
+  schema:rangeIncludes croissant:DataSource .
 
+croissant:dataType a rdf:Property ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:DataType .
 
+croissant:references a rdf:Property ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:Reference .
+
+croissant:subField a rdf:Property ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:Field .
+
+croissant:parentField a rdf:Property ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:Reference .
+
+# DataSource properties
