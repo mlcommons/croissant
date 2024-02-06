@@ -1,2 +1,4 @@
 Found the following 1 error(s) during the validation:
   -  "mydataset" should have an attribute "@type": "https://schema.org/Dataset". Got https://schema.org/WRONG_TYPE instead.
+Found the following 1 warning(s) during the validation:
+  -  [Metadata(mydataset)] Property "http://mlcommons.org/croissant/citeAs" is recommended, but does not exist.

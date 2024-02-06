@@ -26,6 +26,7 @@ def test_make_context():
     assert make_context(foo="bar") == {
         "@language": "en",
         "@vocab": "https://schema.org/",
+        'citeAs': 'cr:citeAs',
         "column": "cr:column",
         "conformsTo": "dct:conformsTo",
         "cr": "http://mlcommons.org/croissant/",
