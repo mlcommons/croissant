@@ -61,13 +61,11 @@ class PersonOrOrganization:
 
     def to_json(self) -> Json:
         """Serializes back to JSON-LD."""
-        return remove_empty_values(
-            {
-                "name": self.name,
-                "description": self.description,
-                "url": self.url,
-            }
-        )
+        return remove_empty_values({
+            "name": self.name,
+            "description": self.description,
+            "url": self.url,
+        })
 
 
 @dataclasses.dataclass(eq=False, repr=False)
