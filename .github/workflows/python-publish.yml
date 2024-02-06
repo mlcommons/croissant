@@ -37,13 +37,5 @@ jobs:
       env:
         LOGLEVEL: DEBUG
 
-#  dispatch:
-#    needs: deploy
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Repository Dispatch
-#        uses: peter-evans/repository-dispatch@v2
-#        with:
-#          token: ${{ secrets.MLCOMMONS_REPO_ACCESS }}
-#          repository: mlcommons/mlcube
-#          event-type: publish-runners
+# If you wish to publish the package to multiple repositories at once, get inspiration from
+# https://github.com/mlcommons/mlcube/blob/master/.github/workflows/python-publish.yml.
