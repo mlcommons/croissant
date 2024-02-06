@@ -182,11 +182,13 @@ class Node(abc.ABC):
         else:
             regex = re.compile(r"^[:A-Z_a-z][:A-Z_a-z-.0-9]*$")
         if not regex.match(name):
-            self.add_error(
-                f'The identifier "{name}" contains forbidden characters. Make sure'
-                " names follow the constraints for XML identifiers specified in"
-                " https://www.w3.org/TR/xml/#sec-common-syn"
-            )
+            error = f'The identifier "{name}" contains forbidden characters.'
+            if not self.ctx.is_v0():
+                error += (
+                    "Make sure names follow the constraints for XML identifiers"
+                    " specified in https://www.w3.org/TR/xml/#sec-common-syn"
+                )
+            self.add_error(error)
 
     def there_exists_at_least_one_property(self, possible_properties: list[str]):
         """Checks for the existence of one of `possible_properties` in `keys`."""
