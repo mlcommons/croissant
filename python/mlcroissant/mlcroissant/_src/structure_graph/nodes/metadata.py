@@ -260,7 +260,7 @@ class Metadata(Node):
             ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
         )
 
-        if ctx.is_v0:
+        if ctx.is_v0():
             cite_as = metadata.get(constants.SCHEMA_ORG_CITATION)
         else:
             cite_as = metadata.get(constants.ML_COMMONS_CITE_AS)
