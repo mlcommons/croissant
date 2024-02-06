@@ -36,7 +36,7 @@ sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
 ## Verify/load a Croissant dataset
 
 ```bash
-mlcroissant validate --file ../../datasets/titanic/metadata.json
+mlcroissant validate --jsonld ../../datasets/titanic/metadata.json
 ```
 
 The command:
@@ -48,7 +48,7 @@ Similarly, you can generate a dataset by launching:
 
 ```bash
 mlcroissant load \
-    --file ../../datasets/titanic/metadata.json \
+    --jsonld ../../datasets/titanic/metadata.json \
     --record_set passengers \
     --num_records 10
 ```
@@ -123,7 +123,7 @@ Alternatively, you can contribute to `mlcroissant` using the "classic" GitHub wo
 You can debug the validation of the file using the `--debug` flag:
 
 ```bash
-mlcroissant validate --file ../../datasets/titanic/metadata.json --debug
+mlcroissant validate --jsonld ../../datasets/titanic/metadata.json --debug
 ```
 
 This will:
