@@ -263,7 +263,7 @@ class Metadata(Node):
         if ctx.is_v0():
             cite_as = metadata.get(constants.SCHEMA_ORG_CITATION)
         else:
-            cite_as = metadata.get(constants.ML_COMMONS_CITE_AS)
+            cite_as = metadata.get(constants.ML_COMMONS_CITE_AS(ctx))
 
         for set_or_object in file_set_or_objects:
             name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
