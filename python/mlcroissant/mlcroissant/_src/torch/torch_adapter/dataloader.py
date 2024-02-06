@@ -55,9 +55,9 @@ def apply_data_type_transformation(
 class LoaderFactory:
     """Used to create loaders and get metadata."""
 
-    def __init__(self, file: str):
+    def __init__(self, jsonld: str):
         """Initialize LoaderFactory with a Croissant file."""
-        self.file = file
+        self.jsonld = jsonld
 
     def _get_row_processor(self, specification: LoaderSpecificationTypes):
         """Remap columns types to desired type."""
@@ -78,7 +78,7 @@ class LoaderFactory:
         if dp is None:
             raise NotImplementedError(INSTALL_MESSAGE)
 
-        dataset = Dataset(file=self.file)
+        dataset = Dataset(jsonld=self.jsonld)
         records = dataset.records(record_set=record_set)
         datapipe = dp.iter.IterableWrapper(records)
         if specification:
