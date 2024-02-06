@@ -2,6 +2,8 @@
 
 # flake8: noqa
 
+import os
+
 from etils import epath
 import rdflib
 from rdflib import namespace
@@ -128,7 +130,10 @@ TO_CROISSANT = lambda ctx: {
 FROM_CROISSANT = lambda ctx: {v: k for k, v in TO_CROISSANT(ctx).items()}
 
 # Environment variables
-CROISSANT_CACHE = epath.Path("~/.cache/croissant").expanduser()
+DEFAULT_CROISSANT_CACHE = "~/.cache/croissant"
+CROISSANT_CACHE = epath.Path(
+    os.getenv("CROISSANT_CACHE", DEFAULT_CROISSANT_CACHE)
+).expanduser()
 DOWNLOAD_PATH = CROISSANT_CACHE / "download"
 EXTRACT_PATH = CROISSANT_CACHE / "extract"
 CROISSANT_GIT_USERNAME = "CROISSANT_GIT_USERNAME"
