@@ -34,7 +34,7 @@ OVERVIEW = "Overview"
 METADATA = "Metadata"
 RESOURCES = "Resources"
 RECORD_SETS = "Record Sets"
-TABS = [OVERVIEW, METADATA, RESOURCES, RECORD_SETS]
+TABS = [OVERVIEW, METADATA, RAI, RESOURCES, RECORD_SETS]
 
 NAMES_INFO = (
     "Names are used as identifiers. They are unique and cannot contain special"
