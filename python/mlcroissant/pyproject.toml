@@ -35,12 +35,15 @@ readme = "README.md"
 # Development deps (linting, formatting,...)
 # Installed through `pip install -e .[dev]`
 dev = [
-  "black==23.11.0",
-  "datasets",
-  "flake8-docstrings",
+  "mlcroissant[dev_deps]",
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
+]
+dev_deps = [
+  "black==23.11.0",
+  "datasets",
+  "flake8-docstrings",
   "mypy",
   "pyflakes",
   "pygraphviz",

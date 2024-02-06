@@ -1,7 +1,6 @@
 #!/bin/bash
 
-sudo apt-get update
-sudo apt-get install -y libgraphviz-dev
+apt-get update && apt-get install -y libgraphviz-dev
 
 # Install dev packages.
-pip3 install python/mlcroissant/.[dev]
+pip3 install croissant/python/mlcroissant/.[dev_deps]

@@ -13,6 +13,7 @@
 
 	// Install the required dependencies.
 	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+	"remoteUser": "root",
 
 	// Configure tool-specific properties.
 	"customizations": {
