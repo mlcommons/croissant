@@ -1,5 +1,6 @@
 """Migration: citation should be citeAs."""
 
+
 def up(json_ld):
     """Up migration to set conformsTo to croissant specs 1.0."""
     if "citation" in json_ld:
