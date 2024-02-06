@@ -130,31 +130,10 @@ This will:
 1. print extra information, like the generated nodes;
 2. save the generated structure graph to a folder indicated in the logs.
 
-## Publishing wheels
+## Publishing packages
 
-Publishing is done manually.
-We are in the process of setting up an automatic deployment with GitHub Actions.
+To publish a package,
 
 1. Bump the version in `croissant/python/mlcroissant/pyproject.toml`.
-1. Configure Twine locally ([full tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/)):
-```
-[distutils]
-  index-servers =
-    pypi
-    mlcroissant
+2. Publish a release in GitHub. The workflow script `python-publish.yml` will trigger and publish the package to PyPI.
 
-[pypi]
-username =
-password =
-
-[mlcroissant]
-repository = https://upload.pypi.org/legacy/
-username = __token__
-password = # generate the password on https://pypi.org/manage/account/token/
-```
-1. Build locally and push to PyPI:
-```bash
-rm -rf dist/
-python -m build
-python -m twine upload --repository mlcroissant dist/*
-```
