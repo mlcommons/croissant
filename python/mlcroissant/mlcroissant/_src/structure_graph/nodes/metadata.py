@@ -167,7 +167,7 @@ class Metadata(Node):
             "@type": "sc:Dataset",
             "name": self.name,
             "conformsTo": conforms_to,
-            "description": self.description,q
+            "description": self.description,
             "creator": creator,
             "datePublished": date_published,
             #  RAI extension
