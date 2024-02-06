@@ -46,6 +46,7 @@
   "name": "Mini-PASS",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of PASS to be used in unit tests.",
+  "citeAs": "None",
   "license": "None",
   "url": "None",
   "distribution": [

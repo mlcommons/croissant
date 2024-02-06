@@ -47,6 +47,7 @@
   "name": "Mini-COCO",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
+  "citeAs": "None",
   "license": "cc-by-4.0",
   "url": "None",
   "version": "1.0.0",
