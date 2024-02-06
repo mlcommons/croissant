@@ -2,5 +2,19 @@
 
 sudo apt-get install -y libgraphviz-dev git-lfs
 
-# Install dev packages.
-pip3 install croissant/python/mlcroissant/.[devdeps]
+# Install dependencies except mlcroissant itself
+pip install absl-py \
+          datasets \
+          etils[epath] \
+          GitPython \
+          jsonpath_rw \
+          mypy \
+          networkx \
+          pandas \
+          pyarrow \
+          pytest \
+          pytype \
+          rdflib \
+          requests \
+          torchdata \
+          tqdm
