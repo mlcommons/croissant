@@ -25,6 +25,7 @@
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "ml:jsonPath",
     "key": "sc:key",
     "md5": "sc:md5",
