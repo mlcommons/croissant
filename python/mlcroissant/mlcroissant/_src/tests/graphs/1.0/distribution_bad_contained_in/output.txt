@@ -1,4 +1,2 @@
 Found the following 1 error(s) during the validation:
   -  [Metadata(mydataset) > FileObject(a-csv-table)] There is a reference to node named "THISDOESNOTEXIST" in node "a-csv-table", but this node doesn't exist.
-Found the following 1 warning(s) during the validation:
-  -  [Metadata(mydataset)] Property "http://mlcommons.org/croissant/citeAs" is recommended, but does not exist.
