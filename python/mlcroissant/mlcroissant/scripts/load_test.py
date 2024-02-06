@@ -20,7 +20,7 @@ def test_should_raise_when_no_record_set(version):
     with pytest.raises(
         ValueError, match="--record_set flag should have a value in `default`"
     ):
-        load_lib.load(file=file, record_set=None)
+        load_lib.load(jsonld=file, record_set=None)
 
 
 @parametrize_version()
@@ -35,4 +35,4 @@ def test_should_raise_when_invalid_mapping(version):
     with pytest.raises(
         ValueError, match="--mapping should be a valid dict\\[str, str\\]"
     ):
-        load_lib.load(file=file, record_set="default", mapping="foobarbaz")
+        load_lib.load(jsonld=file, record_set="default", mapping="foobarbaz")
