@@ -39,12 +39,15 @@ class Dataset:
     """Python representation of a Croissant dataset.
 
     Args:
-        file: A JSON object or a path to a Croissant file (string or pathlib.Path).
-        operations: The operation graph class. None by default.
+        jsonld: A JSON object or a path to a Croissant file (URL, str or pathlib.Path).
         debug: Whether to print debug hints. False by default.
+        mapping: Mapping filename->filepath as a Python dict[str, str] to handle manual
+            downloads. If `document.csv` is the FileObject and you downloaded it to
+            `~/Downloads/document.csv`, you can specify `mapping={"document.csv":
+            "~/Downloads/document.csv"}`.,
     """
 
-    file: epath.PathLike | str | dict[str, Any] | None
+    jsonld: epath.PathLike | str | dict[str, Any] | None
     operations: OperationGraph = dataclasses.field(init=False)
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
@@ -54,10 +57,10 @@ class Dataset:
         """Runs the static analysis of `file`."""
         ctx = Context()
         ctx.mapping = _expand_mapping(self.mapping)
-        if isinstance(self.file, dict):
-            self.metadata = Metadata.from_json(ctx=ctx, json_=self.file)
-        elif self.file is not None:
-            self.metadata = Metadata.from_file(ctx=ctx, file=self.file)
+        if isinstance(self.jsonld, dict):
+            self.metadata = Metadata.from_json(ctx=ctx, json_=self.jsonld)
+        elif self.jsonld is not None:
+            self.metadata = Metadata.from_file(ctx=ctx, file=self.jsonld)
         else:
             return
         # Draw the structure graph for debugging purposes.
@@ -71,7 +74,7 @@ class Dataset:
     @classmethod
     def from_metadata(cls, metadata: Metadata) -> Dataset:
         """Creates a new `Dataset` from a `Metadata`."""
-        dataset = Dataset(file=None)
+        dataset = Dataset(jsonld=None)
         dataset.metadata = metadata
         dataset.operations = get_operations(metadata.ctx, metadata)
         return dataset
