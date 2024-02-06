@@ -34,6 +34,7 @@ OVERVIEW = "Overview"
 METADATA = "Metadata"
 RESOURCES = "Resources"
 RECORD_SETS = "Record Sets"
+RAI = "Extension: Responsible AI"
 TABS = [OVERVIEW, METADATA, RAI, RESOURCES, RECORD_SETS]
 
 NAMES_INFO = (
