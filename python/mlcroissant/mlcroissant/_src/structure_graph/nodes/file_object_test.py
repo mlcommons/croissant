@@ -23,10 +23,29 @@ def test_checks_are_performed():
         Node, "assert_has_exclusive_properties"
     ) as exclusive_mock:
         create_test_node(FileObject)
-        mandatory_mock.assert_has_calls([
-            mock.call("encoding_format", "name"), mock.call("content_url")
-        ])
+        mandatory_mock.assert_has_calls(
+            [mock.call("encoding_format", "name"), mock.call("content_url")]
+        )
         exclusive_mock.assert_called_once_with(["md5", "sha256"])
+        validate_name_mock.assert_called_once()
+
+
+def test_checks_not_performed_for_live_dataset():
+    with mock.patch.object(
+        Node, "assert_has_mandatory_properties"
+    ) as mandatory_mock, mock.patch.object(
+        Node, "assert_has_optional_properties"
+    ), mock.patch.object(
+        Node, "validate_name"
+    ) as validate_name_mock, mock.patch.object(
+        Node, "assert_has_exclusive_properties"
+    ) as exclusive_mock:
+        ctx = Context(is_live_dataset=True)
+        create_test_node(FileObject, ctx=ctx)
+        mandatory_mock.assert_has_calls(
+            [mock.call("encoding_format", "name"), mock.call("content_url")]
+        )
+        exclusive_mock.assert_not_called()
         validate_name_mock.assert_called_once()
 
 

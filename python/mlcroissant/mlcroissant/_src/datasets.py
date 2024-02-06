@@ -63,6 +63,7 @@ class Dataset:
             self.metadata = Metadata.from_file(ctx=ctx, file=self.jsonld)
         else:
             return
+        ctx.is_live_dataset = self.metadata.is_live_dataset
         # Draw the structure graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(ctx.graph, simplify=True)

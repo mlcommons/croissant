@@ -168,8 +168,13 @@ class Download(Operation):
         logging.info(
             "Hash of downloaded file is not identical with reference in metadata.json"
         )
-        # In v0.8 only, hashes were not checked.
+
         ctx = self.node.ctx
+        # For live datasets, we do not raise an error if the hashes checks fail, but
+        # only the warning above.
+        if ctx.is_live_dataset:
+            return
+        # In v0.8 only, hashes were not checked.
         if ctx.conforms_to and ctx.conforms_to > CroissantVersion.V_0_8:
             raise ValueError(
                 f"Hash of downloaded file {filepath} is not identical with the"
