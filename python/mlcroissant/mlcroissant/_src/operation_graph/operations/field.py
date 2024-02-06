@@ -1,6 +1,7 @@
 """Field operation module."""
 
 import dataclasses
+import functools
 import io
 import logging
 import re
@@ -23,6 +24,12 @@ from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import Transform
 
 
+@functools.cache
+def _parse_jsonpath(json_path: str):
+    """Memoizes jsonpath_rw.parse for better performances."""
+    return jsonpath_rw.parse(json_path)
+
+
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
@@ -35,7 +42,7 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             if group is not None:
                 return group
     elif transform.json_path is not None:
-        jsonpath_expression = jsonpath_rw.parse(transform.json_path)
+        jsonpath_expression = _parse_jsonpath(transform.json_path)
         return next(match.value for match in jsonpath_expression.find(value))
     elif transform.format is not None:
         if field.data_type is pd.Timestamp:
@@ -148,7 +155,8 @@ class ReadFields(Operation):
         fields = self._fields()
         for field in fields:
             df = _extract_value(df, field)
-        for _, row in df.iterrows():
+
+        def _get_result(row):
             result: dict[str, Any] = {}
             for field in fields:
                 source = field.source
@@ -161,4 +169,8 @@ class ReadFields(Operation):
                 value = apply_transforms_fn(value, field=field)
                 value = _cast_value(self.node.ctx, value, field.data_type)
                 result[field.name] = value
-            yield result
+            return result
+
+        chunk_size = 100
+        for i in range(0, len(df), chunk_size):
+            yield from df[i : i + chunk_size].apply(_get_result, axis=1)
