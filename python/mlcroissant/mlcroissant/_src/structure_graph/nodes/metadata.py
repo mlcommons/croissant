@@ -138,7 +138,7 @@ class Metadata(Node):
         else:
             creator = None
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
-        return remove_empty_values({
+        output = {
             "@context": self.ctx.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
@@ -148,14 +148,18 @@ class Metadata(Node):
             "datePublished": date_published,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
-            "citeAs": self.cite_as,
             "license": self.license,
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
-        })
+        }
+        if self.ctx.is_v0():
+            output["citation"] = self.cite_as
+        else:
+            output["citeAs"] = self.cite_as
+        return remove_empty_values(output)
 
     @property
     def file_objects(self) -> list[FileObject]:
