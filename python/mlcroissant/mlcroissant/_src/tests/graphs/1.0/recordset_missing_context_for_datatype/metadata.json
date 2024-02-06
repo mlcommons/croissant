@@ -2,6 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
@@ -42,7 +43,7 @@
   "description": "This is a description.",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "@language": "en",
-  "citation": "This is a citation.",
+  "citeAs": "This is a citation.",
   "license": "This is a license.",
   "url": "https://www.google.com/dataset",
   "version": "1.0.0",

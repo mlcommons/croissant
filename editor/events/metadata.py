@@ -96,7 +96,7 @@ class MetadataEvent(enum.Enum):
     DATE_PUBLISHED = "DATE_PUBLISHED"
     URL = "URL"
     LICENSE = "LICENSE"
-    CITATION = "CITATION"
+    CITE_AS = "CITE_AS"
     VERSION = "VERSION"
     DATA_BIASES = "DATA_BIASES"
     DATA_COLLECTION = "DATA_COLLECTION"
@@ -114,8 +114,8 @@ def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
         metadata.description = st.session_state[key]
     elif event == MetadataEvent.LICENSE:
         metadata.license = LICENSES.get(st.session_state[key])
-    elif event == MetadataEvent.CITATION:
-        metadata.citation = st.session_state[key]
+    elif event == MetadataEvent.CITE_AS:
+        metadata.cite_as = st.session_state[key]
     elif event == MetadataEvent.URL:
         metadata.url = st.session_state[key]
     elif event == MetadataEvent.VERSION:

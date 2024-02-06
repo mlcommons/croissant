@@ -2,6 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
@@ -45,7 +46,6 @@
   "name": "Mini-PASS",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of PASS to be used in unit tests.",
-  "citation": "None",
   "license": "None",
   "url": "None",
   "distribution": [

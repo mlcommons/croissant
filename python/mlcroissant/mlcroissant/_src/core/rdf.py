@@ -21,6 +21,7 @@ def make_context(ctx=None, **kwargs):
     context = {
         "@language": "en",
         "@vocab": "https://schema.org/",
+        "citeAs": "cr:citeAs",
         "column": "cr:column",
         "conformsTo": "dct:conformsTo",
         "cr": "http://mlcommons.org/croissant/",
