@@ -48,6 +48,7 @@ class PersonOrOrganization:
                 itertools.chain.from_iterable([
                     cls.from_jsonld(element) for element in jsonld
                 ])
+            )
             return list(persons_or_organizations)
         else:
             return [
