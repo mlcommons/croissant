@@ -99,7 +99,7 @@ def _render_generic_metadata(metadata: Metadata):
     )
     key = "metadata-cite-as"
     st.text_area(
-        label="Cite as",
+        label="Citation",
         key=key,
         value=metadata.cite_as,
         placeholder="@book{\n  title={Title}\n}",
