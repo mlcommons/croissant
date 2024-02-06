@@ -182,7 +182,7 @@ class Metadata:
 
     name: str = ""
     description: str | None = None
-    citation: str | None = None
+    cite_as: str | None = None
     conforms_to: str | None = None
     context: dict = dataclasses.field(default_factory=dict)
     creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)

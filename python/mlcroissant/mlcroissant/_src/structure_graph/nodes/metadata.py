@@ -72,7 +72,7 @@ class PersonOrOrganization:
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
-    citation: str | None = None
+    cite_as: str | None = None
     creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None
     description: str | None = None
@@ -114,7 +114,7 @@ class Metadata(Node):
         self.validate_name()
         self.validate_version()
         self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("citation", "license", "version")
+        self.assert_has_optional_properties("cite_as", "license", "version")
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -148,7 +148,8 @@ class Metadata(Node):
             "datePublished": date_published,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
-            "citation": self.citation,
+            "citation": self.cite_as if self.ctx.is_v0() else None,
+            "citeAs": None if self.ctx.is_v0() else self.cite_as,
             "license": self.license,
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
@@ -259,6 +260,12 @@ class Metadata(Node):
         ctx.conforms_to = CroissantVersion.from_jsonld(
             ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
         )
+
+        if ctx.is_v0():
+            cite_as = metadata.get(constants.SCHEMA_ORG_CITATION)
+        else:
+            cite_as = metadata.get(constants.ML_COMMONS_CITE_AS(ctx))
+
         for set_or_object in file_set_or_objects:
             name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
             distribution_type = set_or_object.get("@type")
@@ -286,7 +293,7 @@ class Metadata(Node):
         )
         return cls(
             ctx=ctx,
-            citation=metadata.get(constants.SCHEMA_ORG_CITATION),
+            cite_as=cite_as,
             creators=creators,
             date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),

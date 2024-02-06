@@ -97,14 +97,14 @@ def _render_generic_metadata(metadata: Metadata):
         on_change=handle_metadata_change,
         args=(MetadataEvent.LICENSE, metadata, key),
     )
-    key = "metadata-citation"
+    key = "metadata-cite-as"
     st.text_area(
         label="Citation",
         key=key,
-        value=metadata.citation,
+        value=metadata.cite_as,
         placeholder="@book{\n  title={Title}\n}",
         on_change=handle_metadata_change,
-        args=(MetadataEvent.CITATION, metadata, key),
+        args=(MetadataEvent.CITE_AS, metadata, key),
     )
     key = "metadata-date-published"
     st.date_input(

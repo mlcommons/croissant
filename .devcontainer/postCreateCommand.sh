@@ -11,6 +11,7 @@ pip install absl-py \
           mypy \
           networkx \
           pandas \
+          Pillow \
           pyarrow \
           pytest \
           pytype \
