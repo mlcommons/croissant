@@ -56,6 +56,95 @@ ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
 ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
 
 
+#  RAI extension
+def ML_COMMONS_RAI_DATA_COLLECTION(ctx):
+    return ML_COMMONS(ctx).dataCollection
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TYPE(ctx):
+    return ML_COMMONS(ctx).dataCollectionType
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS(ctx):
+    return ML_COMMONS(ctx).dataCollectionTypeOthers
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_MISSING(ctx):
+    return ML_COMMONS(ctx).dataCollectionMissing
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA(ctx):
+    return ML_COMMONS(ctx).dataCollectionRaw
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START(ctx):
+    return ML_COMMONS(ctx).dataCollectionTimeframeStart
+
+
+def ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END(ctx):
+    return ML_COMMONS(ctx).dataCollectionTimeframeEnd
+
+
+def ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION(ctx):
+    return ML_COMMONS(ctx).dataPreprocessingImputation
+
+
+def ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL(ctx):
+    return ML_COMMONS(ctx).dataPeprocessingProtocol
+
+
+def ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION(ctx):
+    return ML_COMMONS(ctx).dataPreprocessingManipulation
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL(ctx):
+    return ML_COMMONS(ctx).dataAnnotationProtocol
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM(ctx):
+    return ML_COMMONS(ctx).dataAnnotationPlatform
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS(ctx):
+    return ML_COMMONS(ctx).dataAnnotationAnalysis
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM(ctx):
+    return ML_COMMONS(ctx).dataAnnotationPeritem
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS(ctx):
+    return ML_COMMONS(ctx).dataAnnotationDemographics
+
+
+def ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS(ctx):
+    return ML_COMMONS(ctx).dataAnnotationTools
+
+
+def ML_COMMONS_RAI_DATA_USECASES(ctx):
+    return ML_COMMONS(ctx).dataUsecases
+
+
+def ML_COMMONS_RAI_DATA_BIAS(ctx):
+    return ML_COMMONS(ctx).dataBiases
+
+
+def ML_COMMONS_RAI_DATA_LIMITATION(ctx):
+    return ML_COMMONS(ctx).dataLimitation
+
+
+def ML_COMMONS_RAI_DATA_SOCIAL_IMPACT(ctx):
+    return ML_COMMONS(ctx).dataSocialImpact
+
+
+def ML_COMMONS_RAI_DATA_SENSITIVE(ctx):
+    return ML_COMMONS(ctx).dataSensitive
+
+
+def ML_COMMONS_RAI_DATA_MAINTENANCE(ctx):
+    return ML_COMMONS(ctx).dataMaintenance
+
+
 # RDF standard URIs.
 # For "@type" key:
 RDF_TYPE = namespace.RDF.type
