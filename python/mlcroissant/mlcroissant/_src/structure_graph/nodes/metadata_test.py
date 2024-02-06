@@ -38,7 +38,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.DCTERMS_CONFORMS_TO: conforms_to.value,
         constants.SCHEMA_ORG_LICENSE: "License",
-        constants.ML_COMMONS_IS_LIVE_DATASET: False,
+        constants.ML_COMMONS_IS_LIVE_DATASET(ctx): False,
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
         constants.ML_COMMONS_DATA_BIASES(ctx): "data_biases",

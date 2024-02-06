@@ -45,9 +45,9 @@ class PersonOrOrganization:
             return []
         elif isinstance(jsonld, list):
             persons_or_organizations: itertools.chain[PersonOrOrganization] = (
-                itertools.chain.from_iterable([
-                    cls.from_jsonld(element) for element in jsonld
-                ])
+                itertools.chain.from_iterable(
+                    [cls.from_jsonld(element) for element in jsonld]
+                )
             )
             return list(persons_or_organizations)
         else:
@@ -302,7 +302,7 @@ class Metadata(Node):
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
             distribution=distribution,
-            is_live_dataset=metadata.get(constants.ML_COMMONS_IS_LIVE_DATASET),
+            is_live_dataset=metadata.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx)),
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             personal_sensitive_information=metadata.get(
