@@ -181,7 +181,7 @@ def test_hashes_are_not_checked_for_live_datasets(caplog):
         download = Download(operations=operations(), node=file_object)
         # Warning is raised, but no error.
         download()
-        assert "Hash of downloaded file is not identical" in caplog.text
+        assert "Hash of downloaded file not identical" in caplog.text
 
 
 @pytest.mark.parametrize("conforms_to", CroissantVersion)
