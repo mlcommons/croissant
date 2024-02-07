@@ -160,28 +160,54 @@ def test_sha256_hashes_do_match(conforms_to, hash_value):
         download()
 
 
-def test_hashes_are_not_checked_for_live_datasets(caplog):
+@pytest.fixture()
+def dummy_ctx():
+    return Context(
+        conforms_to=CroissantVersion.V_1_0,
+        folder=epath.Path(),
+        is_live_dataset=True,
+    )
+
+
+def test_hashes_are_not_checked_for_live_datasets(caplog, dummy_ctx):
     logging.captureWarnings(True)
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
-        ctx = Context(
-            conforms_to=CroissantVersion.V_1_0,
-            folder=epath.Path(),
-            is_live_dataset=True,
-        )
-        metadata = Metadata(ctx=ctx, name="bar")
+        metadata = Metadata(ctx=dummy_ctx, name="bar")
         file_object = create_test_file_object(
-            ctx=ctx,
+            ctx=dummy_ctx,
             name="foo",
             content_url=os.fspath(filepath),
-            # Hash won't match, but no error raised!
-            sha256="12345",
+            # No hash given, no error raised.
+            sha256=None,
         )
         file_object.parents = [metadata]
         download = Download(operations=operations(), node=file_object)
         # Warning is raised, but no error.
         download()
-        assert "Hash of downloaded file not identical" in caplog.text
+        assert "no hash will be checked" in caplog.text
+
+
+@pytest.mark.parametrize(
+    "sha256,md5",
+    [("12345", None), (None, "12345")],
+)
+def test_hashes_are_checked_for_live_datasets(dummy_ctx, sha256, md5):
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        metadata = Metadata(ctx=dummy_ctx, name="bar")
+        file_object = create_test_file_object(
+            ctx=dummy_ctx,
+            name="foo",
+            content_url=os.fspath(filepath),
+            # Hash won't match.
+            sha256=sha256,
+            md5=md5,
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        with pytest.raises(ValueError, match="is not identical with the reference"):
+            download()
 
 
 @pytest.mark.parametrize("conforms_to", CroissantVersion)
