@@ -74,6 +74,7 @@ class Context:
         default_factory=dict, hash=False
     )
     conforms_to: CroissantVersion = CroissantVersion.V_1_0
+    is_live_dataset: bool | None = None
 
     def __post_init__(self):
         """Standardizes conforms_to."""

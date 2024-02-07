@@ -14,7 +14,6 @@ import tqdm
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import EncodingFormat
-from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
@@ -168,9 +167,17 @@ class Download(Operation):
         logging.info(
             "Hash of downloaded file is not identical with reference in metadata.json"
         )
-        # In v0.8 only, hashes were not checked.
+
         ctx = self.node.ctx
-        if ctx.conforms_to and ctx.conforms_to > CroissantVersion.V_0_8:
+        # For live datasets, we do not raise an error if the hashes checks fail, but
+        # only a warning.
+        if ctx.is_live_dataset:
+            logging.warning(
+                "Hash of downloaded file not identical with reference in metadata.json!"
+            )
+            return
+        # In v0.8 only, hashes were not checked.
+        if not ctx.is_v0():
             raise ValueError(
                 f"Hash of downloaded file {filepath} is not identical with the"
                 f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"

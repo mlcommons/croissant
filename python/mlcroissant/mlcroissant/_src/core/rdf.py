@@ -38,6 +38,7 @@ def make_context(ctx=None, **kwargs):
         "format": "cr:format",
         "includes": "cr:includes",
         "isEnumeration": "cr:isEnumeration",
+        "isLiveDataset": "cr:isLiveDataset",
         "jsonPath": "cr:jsonPath",
         "key": "sc:key" if ctx is not None and ctx.is_v0() else "cr:key",
         "md5": "sc:md5" if ctx is not None and ctx.is_v0() else "cr:md5",

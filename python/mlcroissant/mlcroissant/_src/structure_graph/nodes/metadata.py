@@ -76,6 +76,7 @@ class Metadata(Node):
     creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None
     description: str | None = None
+    is_live_dataset: bool | None = None
     license: str | None = None
     name: str = ""
     url: str | None = ""
@@ -150,6 +151,7 @@ class Metadata(Node):
             "dataCollection": self.data_collection,
             "citation": self.cite_as if self.ctx.is_v0() else None,
             "citeAs": None if self.ctx.is_v0() else self.cite_as,
+            "isLiveDataset": self.is_live_dataset,
             "license": self.license,
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
@@ -300,6 +302,7 @@ class Metadata(Node):
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
             distribution=distribution,
+            is_live_dataset=metadata.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx)),
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             personal_sensitive_information=metadata.get(
