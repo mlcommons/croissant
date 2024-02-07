@@ -9,6 +9,7 @@ from typing import Iterable
 import networkx as nx
 
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
@@ -25,34 +26,37 @@ class Operations(nx.DiGraph):
         """
         leaves = [operation for operation in self.nodes if self.is_leaf(operation)]
 
-        # Multiple edges (e.g. to ReadFields operations) could generate from a Read
-        # operation.
-        other_candidates = [
-            operation for operation in self.nodes if str(operation).startswith("Read")
-        ]
-        candidates = leaves + other_candidates
-
-        def is_ancestor(node1: Node, node2: Node) -> bool:
+        def is_ancestor(node1: Node, node2: Node, ancestor_leaf: Operation) -> bool:
             # node1 is predecessor of node2 iff node2 is in the descendants of node1.
             ancestors = nx.ancestors(node2.graph, node2)
             if isinstance(node1, RecordSet):
                 # If node1 is a RecordSet, we have to inspect its fields.
-                return any(is_ancestor(field1, node2) for field1 in node1.fields)
+                return any(
+                    is_ancestor(field1, node2, ancestor_leaf) for field1 in node1.fields
+                )
+
+            if str(ancestor_leaf).startswith("Read/") and isinstance(node2, Field):
+                node_record_set = node2.uid.split("/")[0].strip()
+                if node_record_set == leaf.record_set:
+                    return node1 in ancestors
+                else:
+                    return False
+
             return node1 in ancestors
 
         entry = self.entry_operations()[0]
         operations: set[Operation] = set()
-        for candidate in candidates:
-            if is_ancestor(candidate.node, node):
-                operations.add(candidate)
+        for leaf in leaves:
+            if is_ancestor(leaf.node, node, leaf):
+                operations.add(leaf)
             elif not only_leaf:
                 # We explore upstream operations until we find the first operation that
                 # matches the node.
                 try:
                     for operation in reversed(
-                        list(nx.shortest_path(self, entry, candidate))
+                        list(nx.shortest_path(self, entry, leaf))
                     ):
-                        if is_ancestor(operation.node, node):
+                        if is_ancestor(operation.node, node, leaf):
                             operations.add(operation)
                             break
                 except nx.exception.NetworkXNoPath:

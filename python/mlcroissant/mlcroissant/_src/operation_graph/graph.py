@@ -93,16 +93,28 @@ def _add_operations_for_file_object(
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
             ]
+
+        # Multiple Read operations could originate from the same FileObject.
+        # We therefore add a separate Read operation for each RecordSet.
         if node.encoding_format and not should_extract(node.encoding_format):
-            fields = tuple([
-                field for field in node.successors if isinstance(field, Field)
-            ])
-            operation >> Read(
-                operations=operations,
-                node=node,
-                folder=folder,
-                fields=fields,
-            )
+            recordset_to_fields = {}
+            # TODO put get recordset to fields into function and add tests.
+            for field in node.successors:
+                if isinstance(field, Field):
+                    # Field names are in the form: record_set/field_name
+                    record_set = field.uid.split("/")[0].strip()
+                    if record_set not in recordset_to_fields:
+                        recordset_to_fields[record_set] = []
+                    recordset_to_fields[record_set].append(field)
+
+            for record_set, fields in recordset_to_fields.items():
+                operation >> Read(
+                    operations=operations,
+                    node=node,
+                    folder=folder,
+                    fields=tuple(fields),
+                    record_set=record_set,
+                )
 
 
 def _add_operations_for_git(
@@ -136,6 +148,7 @@ def _add_operations_for_local_file_sets(
 ):
     """Adds all operations for a FileSet reading from local files."""
     fields = tuple([field for field in node.successors if isinstance(field, Field)])
+
     (
         LocalDirectory(
             operations=operations,
