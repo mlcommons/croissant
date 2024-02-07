@@ -183,9 +183,9 @@ class Metadata:
     name: str = ""
     description: str | None = None
     cite_as: str | None = None
-    conforms_to: str | None = None
     context: dict = dataclasses.field(default_factory=dict)
     creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     data_biases: str | None = None
     data_collection: str | None = None
     date_published: datetime.datetime | None = None
@@ -296,9 +296,7 @@ class Metadata:
 
     def to_canonical(self) -> mlc.Metadata:
         distribution = []
-        ctx = mlc.Context(
-            conforms_to=self.conforms_to, rdf=mlc.Rdf(context=self.context)
-        )
+        ctx = self.ctx
         for file in self.distribution:
             if isinstance(file, FileObject):
                 distribution.append(create_class(mlc.FileObject, file, ctx=ctx))
@@ -315,7 +313,6 @@ class Metadata:
         return create_class(
             mlc.Metadata,
             self,
-            ctx=ctx,
             distribution=distribution,
             record_sets=record_sets,
         )
@@ -343,8 +340,6 @@ class Metadata:
         return create_class(
             cls,
             canonical_metadata,
-            conforms_to=canonical_metadata.ctx.conforms_to,
-            context=canonical_metadata.ctx.rdf.context,
             distribution=distribution,
             record_sets=record_sets,
         )
