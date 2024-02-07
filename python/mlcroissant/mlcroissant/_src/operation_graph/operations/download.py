@@ -173,7 +173,7 @@ class Download(Operation):
         # only a warning.
         if ctx.is_live_dataset:
             logging.warning(
-                "Hash of downloaded file is not identical with reference in metadata.json"
+                "Hash of downloaded file not identical with reference in metadata.json!"
             )
             return
         # In v0.8 only, hashes were not checked.
