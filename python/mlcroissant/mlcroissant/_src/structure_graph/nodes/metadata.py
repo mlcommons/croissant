@@ -139,28 +139,26 @@ class Metadata(Node):
         else:
             creator = None
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
-        return remove_empty_values(
-            {
-                "@context": self.ctx.rdf.context,
-                "@type": "sc:Dataset",
-                "name": self.name,
-                "conformsTo": conforms_to,
-                "description": self.description,
-                "creator": creator,
-                "datePublished": date_published,
-                "dataBiases": self.data_biases,
-                "dataCollection": self.data_collection,
-                "citation": self.cite_as if self.ctx.is_v0() else None,
-                "citeAs": None if self.ctx.is_v0() else self.cite_as,
-                "isLiveDataset": self.is_live_dataset,
-                "license": self.license,
-                "personalSensitiveInformation": self.personal_sensitive_information,
-                "url": self.url,
-                "version": self.version,
-                "distribution": [f.to_json() for f in self.distribution],
-                "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            }
-        )
+        return remove_empty_values({
+            "@context": self.ctx.rdf.context,
+            "@type": "sc:Dataset",
+            "name": self.name,
+            "conformsTo": conforms_to,
+            "description": self.description,
+            "creator": creator,
+            "datePublished": date_published,
+            "dataBiases": self.data_biases,
+            "dataCollection": self.data_collection,
+            "citation": self.cite_as if self.ctx.is_v0() else None,
+            "citeAs": None if self.ctx.is_v0() else self.cite_as,
+            "isLiveDataset": self.is_live_dataset,
+            "license": self.license,
+            "personalSensitiveInformation": self.personal_sensitive_information,
+            "url": self.url,
+            "version": self.version,
+            "distribution": [f.to_json() for f in self.distribution],
+            "recordSet": [record_set.to_json() for record_set in self.record_sets],
+        })
 
     @property
     def file_objects(self) -> list[FileObject]:
