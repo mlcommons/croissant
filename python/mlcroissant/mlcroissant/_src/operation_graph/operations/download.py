@@ -171,11 +171,14 @@ class Download(Operation):
 
         ctx = self.node.ctx
         # For live datasets, we do not raise an error if the hashes checks fail, but
-        # only the warning above.
+        # only a warning.
         if ctx.is_live_dataset:
+            logging.warning(
+                "Hash of downloaded file is not identical with reference in metadata.json"
+            )
             return
         # In v0.8 only, hashes were not checked.
-        if ctx.conforms_to and ctx.conforms_to > CroissantVersion.V_0_8:
+        if not ctx.is_v0():
             raise ValueError(
                 f"Hash of downloaded file {filepath} is not identical with the"
                 f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"
