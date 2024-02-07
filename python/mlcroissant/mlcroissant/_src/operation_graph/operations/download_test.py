@@ -188,7 +188,11 @@ def test_hashes_are_not_checked_for_live_datasets(caplog, dummy_ctx):
         assert "no hash will be checked" in caplog.text
 
 
-def test_hashes_are_checked_for_live_datasets(dummy_ctx):
+@pytest.mark.parametrize(
+    "sha256,md5",
+    [("12345", None), (None, "12345")],
+)
+def test_hashes_are_checked_for_live_datasets(dummy_ctx, sha256, md5):
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
         metadata = Metadata(ctx=dummy_ctx, name="bar")
@@ -197,7 +201,8 @@ def test_hashes_are_checked_for_live_datasets(dummy_ctx):
             name="foo",
             content_url=os.fspath(filepath),
             # Hash won't match.
-            sha256="12345",
+            sha256=sha256,
+            md5=md5,
         )
         file_object.parents = [metadata]
         download = Download(operations=operations(), node=file_object)
