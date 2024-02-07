@@ -161,16 +161,32 @@ def render_rai_metadata():
         with st.expander("**Data Preprocessing**", expanded=False):
             with st.expander("Protocols", expanded=True):
                 if metadata.data_preprocessing_protocol:
-                    for index, protocol in enumerate(
-                        metadata.data_preprocessing_protocol
-                    ):
-                        key = "metadata-data-preprocessing-protocol_" + str(index)
+                    if type(metadata.data_preprocessing_protocol) is list:
+                        for index, protocol in enumerate(
+                            metadata.data_preprocessing_protocol
+                        ):
+                            key = "metadata-data-preprocessing-protocol_" + str(index)
+                            st.text_area(
+                                label=(
+                                    "Description of data manipulation process if applicable   "
+                                ),
+                                key=key,
+                                value=protocol,
+                                on_change=handle_rai_change,
+                                args=(
+                                    RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
+                                    metadata,
+                                    key,
+                                ),
+                            )
+                    else:
+                        key = "metadata-data-preprocessing-protocol_" + "0"
                         st.text_area(
                             label=(
                                 "Description of data manipulation process if applicable   "
                             ),
                             key=key,
-                            value=protocol,
+                            value=metadata.data_preprocessing_protocol,
                             on_change=handle_rai_change,
                             args=(
                                 RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
@@ -178,6 +194,7 @@ def render_rai_metadata():
                                 key,
                             ),
                         )
+
                 else:
                     key = "metadata-data-preprocessing-protocol_" + "0"
                     st.text_area(
@@ -228,14 +245,26 @@ def render_rai_metadata():
     with col2.expander("**Data uses and social impact**", expanded=True):
         with st.expander("**Use cases**", expanded=True):
             if metadata.data_usecases:
-                for index, protocol in enumerate(metadata.data_usecases):
-                    key = "metadata-data-usecases_" + str(index)
+                if type(metadata.data_usecases) is list:
+                    for index, protocol in enumerate(metadata.data_usecases):
+                        key = "metadata-data-usecases_" + str(index)
+                        st.text_area(
+                            label=(
+                                "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
+                        )
+                else:
+                    key = "metadata-data-usecases_" + "0"
                     st.text_area(
                         label=(
                             "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
                         ),
                         key=key,
-                        value=protocol,
+                        value=metadata.data_usecases,
                         on_change=handle_rai_change,
                         args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
                     )
@@ -266,8 +295,23 @@ def render_rai_metadata():
                         st.rerun()
         with st.expander("**Data biases**", expanded=True):
             if metadata.data_biases:
-                for index, protocol in enumerate(metadata.data_biases):
-                    key = "metadata-data-biases_" + str(index)
+                if type(metadata.data_biases) is list:
+                    for index, protocol in enumerate(metadata.data_biases):
+                        key = "metadata-data-biases_" + str(index)
+                        st.text_area(
+                            label=(
+                                "**Data biases**. Involves understanding the potential risks associated"
+                                " with data usage and to prevent unintended and potentially harmful"
+                                " consequences that may arise from using models trained on or evaluated"
+                                " with the respective data."
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
+                        )
+                else:
+                    key = "metadata-data-biases_" + "0"
                     st.text_area(
                         label=(
                             "**Data biases**. Involves understanding the potential risks associated"
@@ -276,7 +320,7 @@ def render_rai_metadata():
                             " with the respective data."
                         ),
                         key=key,
-                        value=protocol,
+                        value=metadata.data_biases,
                         on_change=handle_rai_change,
                         args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
                     )
@@ -310,19 +354,33 @@ def render_rai_metadata():
                         st.rerun()
         with st.expander("**Personal and sensitive information**", expanded=True):
             if metadata.data_sensitive:
-                for index, protocol in enumerate(metadata.data_sensitive):
-                    key = "metadata-personal-sensitive-information_" + str(index)
-                    st.text_area(
-                        label=(
-                            "Personal and sensitive information, if"
-                            " contained within the dataset, can play an important role in the"
-                            " mitigation of any risks and the responsible use of the datasets."
-                        ),
-                        key=key,
-                        value=protocol,
-                        on_change=handle_rai_change,
-                        args=(RaiEvent.RAI_SENSITIVE, metadata, key),
-                    )
+                if type(metadata.data_sensitive) is list:
+                    for index, protocol in enumerate(metadata.data_sensitive):
+                        key = "metadata-personal-sensitive-information_" + str(index)
+                        st.text_area(
+                            label=(
+                                "Personal and sensitive information, if"
+                                " contained within the dataset, can play an important role in the"
+                                " mitigation of any risks and the responsible use of the datasets."
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
+                        )
+                    else:
+                        key = "metadata-personal-sensitive-information_" + "0"
+                        st.text_area(
+                            label=(
+                                "Personal and sensitive information, if"
+                                " contained within the dataset, can play an important role in the"
+                                " mitigation of any risks and the responsible use of the datasets."
+                            ),
+                            key=key,
+                            value=metadata.data_sensitive,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
+                        )
             else:
                 key = "metadata-personal-sensitive-information_" + "0"
                 st.text_area(
@@ -361,17 +419,30 @@ def render_rai_metadata():
         )
         with st.expander("**Data limitations**", expanded=True):
             if metadata.data_limitation:
-                for index, protocol in enumerate(metadata.data_limitation):
-                    key = "metadata-data-limitations_" + str(index)
+                if type(metadata.data_limitation) is list:
+                    for index, protocol in enumerate(metadata.data_limitation):
+                        key = "metadata-data-limitations_" + str(index)
+                        st.text_area(
+                            label=(
+                                "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
+                            ),
+                            key=key,
+                            value=protocol,
+                            on_change=handle_rai_change,
+                            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
+                        )
+                else:
+                    key = "metadata-data-limitations_" + "0"
                     st.text_area(
                         label=(
                             "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
                         ),
                         key=key,
-                        value=protocol,
+                        value=metadata.data_limitation,
                         on_change=handle_rai_change,
                         args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
                     )
+
             else:
                 key = "metadata-data-limitations_" + "0"
                 st.text_area(
