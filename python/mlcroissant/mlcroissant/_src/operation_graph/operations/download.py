@@ -151,7 +151,7 @@ class Download(Operation):
         ctx = self.node.ctx
         # For live datasets which do not specify checksums, we do not check the hash.
         if ctx.is_live_dataset and not (self.node.md5 or self.node.sha256):
-            logging.warning(
+            logging.info(
                 "Checksums not provided for a live dataset, no hash will be checked."
             )
             return

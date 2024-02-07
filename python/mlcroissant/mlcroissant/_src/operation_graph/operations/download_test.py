@@ -183,9 +183,7 @@ def test_hashes_are_not_checked_for_live_datasets(caplog, dummy_ctx):
         )
         file_object.parents = [metadata]
         download = Download(operations=operations(), node=file_object)
-        # Warning is raised, but no error.
         download()
-        assert "no hash will be checked" in caplog.text
 
 
 @pytest.mark.parametrize(
