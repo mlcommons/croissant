@@ -5,6 +5,7 @@ import "cypress-iframe";
 import * as path from "path";
 
 import { VERSIONS } from "../support/constants";
+import { deepEqual } from "../support/deepEqual";
 
 VERSIONS.forEach((version) => {
   const fixture = `${version}/titanic.json`;
@@ -50,12 +51,9 @@ VERSIONS.forEach((version) => {
       });
       cy.fixture(fixture).then((fileContent) => {
         const downloadsFolder = Cypress.config("downloadsFolder");
-        cy.readFile(path.join(downloadsFolder, "croissant-titanic.json"))
-          .then((downloadedFile) => {
-            downloadedFile = JSON.stringify(downloadedFile);
-            return downloadedFile;
-          })
-          .should("deep.equal", JSON.stringify(fileContent));
+        cy.readFile(path.join(downloadsFolder, "croissant-titanic.json")).then(
+          (downloadedFile) => deepEqual(fileContent, downloadedFile)
+        );
       });
     });
   });
