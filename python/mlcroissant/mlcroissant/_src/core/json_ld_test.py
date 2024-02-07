@@ -43,6 +43,7 @@ def test_make_context():
         "format": "cr:format",
         "includes": "cr:includes",
         "isEnumeration": "cr:isEnumeration",
+        "isLiveDataset": "cr:isLiveDataset",
         "jsonPath": "cr:jsonPath",
         "key": "cr:key",
         "md5": "cr:md5",

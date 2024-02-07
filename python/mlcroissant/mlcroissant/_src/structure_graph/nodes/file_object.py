@@ -33,7 +33,8 @@ class FileObject(Node):
         self.assert_has_mandatory_properties("encoding_format", "name")
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
-            self.assert_has_exclusive_properties(["md5", "sha256"])
+            if self.ctx and not self.ctx.is_live_dataset:
+                self.assert_has_exclusive_properties(["md5", "sha256"])
 
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""

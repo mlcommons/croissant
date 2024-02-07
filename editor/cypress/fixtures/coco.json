@@ -18,6 +18,7 @@
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "ml:jsonPath",
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",

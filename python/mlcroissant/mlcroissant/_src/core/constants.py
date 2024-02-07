@@ -39,6 +39,7 @@ ML_COMMONS_FILE_SET = lambda ctx: ML_COMMONS(ctx).fileSet
 ML_COMMONS_FORMAT = lambda ctx: ML_COMMONS(ctx)["format"]
 ML_COMMONS_INCLUDES = lambda ctx: ML_COMMONS(ctx).includes
 ML_COMMONS_IS_ENUMERATION = lambda ctx: ML_COMMONS(ctx).isEnumeration
+ML_COMMONS_IS_LIVE_DATASET = lambda ctx: ML_COMMONS(ctx).isLiveDataset
 ML_COMMONS_JSON_PATH = lambda ctx: ML_COMMONS(ctx).jsonPath
 ML_COMMONS_PARENT_FIELD = lambda ctx: ML_COMMONS(ctx).parentField
 ML_COMMONS_PATH = lambda ctx: ML_COMMONS(ctx).path
@@ -106,6 +107,7 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_FILE_PROPERTY(ctx): "file_property",
     ML_COMMONS_FORMAT(ctx): "format",
     ML_COMMONS_INCLUDES(ctx): "includes",
+    ML_COMMONS_IS_LIVE_DATASET(ctx): "is_live_dataset",
     ML_COMMONS_JSON_PATH(ctx): "json_path",
     ML_COMMONS_REFERENCES(ctx): "references",
     ML_COMMONS_REGEX(ctx): "regex",
