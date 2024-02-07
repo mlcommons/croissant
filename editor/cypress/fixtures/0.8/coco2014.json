@@ -1,0 +1,289 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "Mini-COCO",
+  "description": "Smaller downloadable version of COCO to be used in unit tests.",
+  "citation": "None",
+  "license": "cc-by-4.0",
+  "version": "1.0.0",
+  "url": "None",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "train2014.zip",
+      "contentSize": " B",
+      "contentUrl": "data/train2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileSet",
+      "name": "image-files",
+      "containedIn": "train2014.zip",
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "caption_annotations-files",
+      "contentSize": " B",
+      "contentUrl": "data/captions_train2014.json",
+      "encodingFormat": "application/json",
+      "sha256": "sha256"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "bbox_annotations-files",
+      "contentUrl": "data/instances_train2014.json",
+      "encodingFormat": "application/json",
+      "sha256": "sha256"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "split_enums",
+      "description": "Maps split names to semantic values.",
+      "key": "name",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "One of: train, val, test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:URL"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "name": "train",
+          "url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "name": "val",
+          "url": "https://mlcommons.org/definitions/validation_split"
+        },
+        {
+          "name": "test",
+          "url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "images",
+      "key": "img_id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "image_filename",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": "split_enums/name"
+          },
+          "source": {
+            "distribution": "image-files",
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(train|val|test)2014/.*\\.jpg$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "captions",
+      "key": "id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the caption",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "caption",
+          "description": "The caption",
+          "dataType": [
+            "wd:Q18585177",
+            "sc:Text"
+          ],
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].caption"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": "split_enums/name"
+          },
+          "source": {
+            "distribution": "caption_annotations-files",
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": ".*_(val|train)2014\\.json$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "bounding_boxes",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "The ID of the annotation.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "image_id",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "bbox",
+          "description": "The bounding box on the image.",
+          "dataType": "ml:BoundingBox",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].bbox"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "area",
+          "description": "The area of the bounding box.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "bbox_annotations-files",
+            "extract": {
+              "jsonPath": "$.annotations[*].area"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
