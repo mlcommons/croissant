@@ -1,0 +1,355 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "ml:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "key": "sc:key",
+    "md5": "sc:md5",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform",
+    "ml": "http://mlcommons.org/schema/",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "Titanic",
+  "description": "The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n",
+  "citation": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
+  "license": "afl-3.0",
+  "url": "https://www.openml.org/d/40945",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "passengers.csv",
+      "contentSize": "117743 B",
+      "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
+      "encodingFormat": "text/csv",
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "genders.csv",
+      "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
+      "contentSize": "117743 B",
+      "contentUrl": "data/genders.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "embarkation_ports.csv",
+      "description": "Maps Embarkation port initial to labeled values.",
+      "contentSize": "117743 B",
+      "contentUrl": "data/embarkation_ports.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "genders",
+      "description": "Maps gender labels to semantic definitions.",
+      "isEnumeration": true,
+      "key": "label",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "label",
+          "description": "One of {\"male\", \"female\"}",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": {
+            "distribution": "genders.csv",
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "url",
+          "description": "Corresponding WikiData URL",
+          "dataType": [
+            "sc:URL",
+            "wd:Q48277"
+          ],
+          "source": {
+            "distribution": "genders.csv",
+            "extract": {
+              "column": "url"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "embarkation_ports",
+      "description": "Maps Embarkation port initial to labeled values.",
+      "isEnumeration": true,
+      "key": "key",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "key",
+          "description": "C, Q, S or ?",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "embarkation_ports.csv",
+            "extract": {
+              "column": "key"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "label",
+          "description": "Human-readable label",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": {
+            "distribution": "embarkation_ports.csv",
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "url",
+          "description": "Corresponding WikiData URL",
+          "dataType": [
+            "sc:URL",
+            "wd:Q515"
+          ],
+          "source": {
+            "distribution": "embarkation_ports.csv",
+            "extract": {
+              "column": "url"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "passengers",
+      "description": "The list of passengers. Does not include crew members.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "Name of the passenger",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "gender",
+          "description": "Gender of passenger (male or female)",
+          "dataType": "sc:Text",
+          "references": {
+            "field": "genders/label"
+          },
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "sex"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "age",
+          "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "age"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "survived",
+          "description": "Survival status of passenger (0: Lost, 1: Saved)",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "survived"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "pclass",
+          "description": "Passenger Class (1st/2nd/3rd)",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "pclass"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "cabin",
+          "description": "Passenger cabin.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "cabin"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "embarked",
+          "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
+          "dataType": "sc:Text",
+          "references": {
+            "field": "embarkation_ports/key"
+          },
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "embarked"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "fare",
+          "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "fare"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "home_destination",
+          "description": "Home and destination",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "home.dest"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "ticket",
+          "description": "Ticket Number, may include a letter.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "ticket"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "num_parents_children",
+          "description": "Number of Parents/Children Aboard",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "parch"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "num_siblings_spouses",
+          "description": "Number of Siblings/Spouses Aboard",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "sibsp"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "boat",
+          "description": "Lifeboat used by passenger",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "boat"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "body",
+          "description": "Body Identification Number",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "passengers.csv",
+            "extract": {
+              "column": "body"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
