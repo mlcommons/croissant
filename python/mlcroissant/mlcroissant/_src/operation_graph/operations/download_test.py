@@ -1,7 +1,6 @@
 """download_test module."""
 
 import hashlib
-import logging
 import os
 import tempfile
 
