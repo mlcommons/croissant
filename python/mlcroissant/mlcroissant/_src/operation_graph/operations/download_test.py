@@ -1,6 +1,7 @@
 """download_test module."""
 
 import hashlib
+import logging
 import os
 import tempfile
 
@@ -157,6 +158,51 @@ def test_sha256_hashes_do_match(conforms_to, hash_value):
         file_object.parents = [metadata]
         download = Download(operations=operations(), node=file_object)
         download()
+
+
+@pytest.fixture()
+def dummy_ctx():
+    return Context(
+        conforms_to=CroissantVersion.V_1_0,
+        folder=epath.Path(),
+        is_live_dataset=True,
+    )
+
+
+def test_hashes_are_not_checked_for_live_datasets(caplog, dummy_ctx):
+    logging.captureWarnings(True)
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        metadata = Metadata(ctx=dummy_ctx, name="bar")
+        file_object = create_test_file_object(
+            ctx=dummy_ctx,
+            name="foo",
+            content_url=os.fspath(filepath),
+            # No hash given, no error raised.
+            sha256=None,
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        # Warning is raised, but no error.
+        download()
+        assert "no hash will be checked" in caplog.text
+
+
+def test_hashes_are_checked_for_live_datasets(dummy_ctx):
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        metadata = Metadata(ctx=dummy_ctx, name="bar")
+        file_object = create_test_file_object(
+            ctx=dummy_ctx,
+            name="foo",
+            content_url=os.fspath(filepath),
+            # Hash won't match.
+            sha256="12345",
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        with pytest.raises(ValueError, match="is not identical with the reference"):
+            download()
 
 
 @pytest.mark.parametrize("conforms_to", CroissantVersion)

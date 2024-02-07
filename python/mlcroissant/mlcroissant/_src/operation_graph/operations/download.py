@@ -148,6 +148,13 @@ class Download(Operation):
     def _check_hash(self, filepath: epath.Path):
         if filepath.is_dir():
             return
+        ctx = self.node.ctx
+        # For live datasets which do not specify checksums, we do not check the hash.
+        if ctx.is_live_dataset and not (self.node.md5 or self.node.sha256):
+            logging.warning(
+                "Checksums not provided for a live dataset, no hash will be checked."
+            )
+            return
         hash = _get_hash_algorithm(self.node)
         with filepath.open("rb") as f:
             while chunk := f.read(_CHUNK_SIZE):
@@ -167,8 +174,6 @@ class Download(Operation):
         logging.info(
             "Hash of downloaded file is not identical with reference in metadata.json"
         )
-
-        ctx = self.node.ctx
         # In v0.8 only, hashes were not checked.
         if not ctx.is_v0():
             raise ValueError(
