@@ -6,7 +6,7 @@ import "cypress-iframe";
 import { VERSIONS } from "../support/constants";
 
 VERSIONS.forEach((version) => {
-  const fixture = `${version}/coco.json`;
+  const fixture = `${version}/coco2014.json`;
   describe(`[Version ${version}] load existing errored croissant`, () => {
     it("should display errors", () => {
       cy.visit("http://localhost:8501");
