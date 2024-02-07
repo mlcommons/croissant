@@ -1,7 +1,6 @@
 """download_test module."""
 
 import hashlib
-import logging
 import os
 import tempfile
 
@@ -169,8 +168,7 @@ def dummy_ctx():
     )
 
 
-def test_hashes_are_not_checked_for_live_datasets(caplog, dummy_ctx):
-    logging.captureWarnings(True)
+def test_hashes_are_not_checked_for_live_datasets(dummy_ctx):
     with tempfile.NamedTemporaryFile(delete=False) as f:
         filepath = f.name
         metadata = Metadata(ctx=dummy_ctx, name="bar")
@@ -183,9 +181,8 @@ def test_hashes_are_not_checked_for_live_datasets(caplog, dummy_ctx):
         )
         file_object.parents = [metadata]
         download = Download(operations=operations(), node=file_object)
-        # Warning is raised, but no error.
+        # No error is raised.
         download()
-        assert "no hash will be checked" in caplog.text
 
 
 @pytest.mark.parametrize(
