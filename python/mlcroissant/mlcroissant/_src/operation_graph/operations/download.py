@@ -14,7 +14,6 @@ import tqdm
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import EncodingFormat
-from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import get_fullpath
 from mlcroissant._src.core.path import Path
