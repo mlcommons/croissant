@@ -169,13 +169,6 @@ class Download(Operation):
         )
 
         ctx = self.node.ctx
-        # For live datasets, we do not raise an error if the hashes checks fail, but
-        # only a warning.
-        if ctx.is_live_dataset:
-            logging.warning(
-                "Hash of downloaded file not identical with reference in metadata.json!"
-            )
-            return
         # In v0.8 only, hashes were not checked.
         if not ctx.is_v0():
             raise ValueError(

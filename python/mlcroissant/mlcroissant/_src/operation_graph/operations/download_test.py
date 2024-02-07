@@ -160,30 +160,6 @@ def test_sha256_hashes_do_match(conforms_to, hash_value):
         download()
 
 
-def test_hashes_are_not_checked_for_live_datasets(caplog):
-    logging.captureWarnings(True)
-    with tempfile.NamedTemporaryFile(delete=False) as f:
-        filepath = f.name
-        ctx = Context(
-            conforms_to=CroissantVersion.V_1_0,
-            folder=epath.Path(),
-            is_live_dataset=True,
-        )
-        metadata = Metadata(ctx=ctx, name="bar")
-        file_object = create_test_file_object(
-            ctx=ctx,
-            name="foo",
-            content_url=os.fspath(filepath),
-            # Hash won't match, but no error raised!
-            sha256="12345",
-        )
-        file_object.parents = [metadata]
-        download = Download(operations=operations(), node=file_object)
-        # Warning is raised, but no error.
-        download()
-        assert "Hash of downloaded file not identical" in caplog.text
-
-
 @pytest.mark.parametrize("conforms_to", CroissantVersion)
 # Test the hex and base64 hash values
 @pytest.mark.parametrize(
