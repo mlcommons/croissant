@@ -127,6 +127,7 @@ class SelectedRecordSet:
 class FileObject:
     """FileObject analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     name: str | None = None
     description: str | None = None
     contained_in: list[str] | None = dataclasses.field(default_factory=list)
@@ -135,7 +136,6 @@ class FileObject:
     encoding_format: str | None = None
     sha256: str | None = None
     df: pd.DataFrame | None = None
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     folder: epath.PathLike | None = None
 
 
@@ -143,23 +143,23 @@ class FileObject:
 class FileSet:
     """FileSet analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
     encoding_format: str | None = ""
     includes: str | None = ""
     name: str = ""
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
 class Field:
     """Field analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     name: str | None = None
     description: str | None = None
     data_types: str | list[str] | None = None
     source: mlc.Source | None = None
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     references: mlc.Source | None = None
 
 
@@ -167,13 +167,13 @@ class Field:
 class RecordSet:
     """Record Set analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     name: str = ""
     data: list[Any] | None = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
@@ -194,7 +194,6 @@ class Metadata:
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     version: str | None = None
 
     def __bool__(self):
