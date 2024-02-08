@@ -35,7 +35,7 @@ class Operations(nx.DiGraph):
                     is_ancestor(field1, node2, ancestor_leaf) for field1 in node1.fields
                 )
 
-            if str(ancestor_leaf).startswith("Read/") and isinstance(node2, Field):
+            if hasattr(ancestor_leaf, "is_read_operation") and isinstance(node2, Field):
                 node_record_set = node2.uid.split("/")[0].strip()
                 if node_record_set == leaf.record_set:
                     return node1 in ancestors

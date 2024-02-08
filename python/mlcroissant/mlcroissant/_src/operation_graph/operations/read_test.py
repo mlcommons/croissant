@@ -29,6 +29,8 @@ def test_str_representation():
         fields=(),
     )
     assert str(operation) == "Read(file_object_name)"
+    assert hasattr(operation, "is_read_operation")
+    assert operation.is_read_operation
 
 
 def test_explicit_message_when_pyarrow_is_not_installed():

@@ -80,11 +80,7 @@ class Read(Operation):
     folder: epath.Path
     fields: tuple[Field, ...]
     record_set: str | None = None
-
-    def __repr__(self):
-        """Prints a simplified string representation of the operation."""
-        rs = f"/{self.record_set}" if self.record_set else ""
-        return f"{type(self).__name__}{rs}({self.node.uid})"
+    is_read_operation: bool = True
 
     def _read_file_content(
         self, encoding_format: str, file: Path, record_set: str | None = None
@@ -105,11 +101,9 @@ class Read(Operation):
                     return parse_json_content(json_content, self.fields)
                 else:
                     # Raw files are returned as a one-line pd.DataFrame.
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [json_content],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [json_content],
+                    })
             elif encoding_format == EncodingFormat.JSON_LINES:
                 return pd.read_json(file, lines=True)
             elif encoding_format == EncodingFormat.PARQUET:
@@ -127,11 +121,9 @@ class Read(Operation):
                         filepath, header=None, names=[FileProperty.lines]
                     )
                 else:
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [file.read()],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [file.read()],
+                    })
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"
