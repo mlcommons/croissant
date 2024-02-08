@@ -4,6 +4,7 @@
     "@vocab": "https://schema.org/",
     "column": "ml:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -18,11 +19,13 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "ml:fileObject",
+    "fileSet": "ml:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
     "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
+    "ml": "http://mlcommons.org/croissant/",
     "parentField": "ml:parentField",
     "path": "ml:path",
     "personalSensitiveInformation": "ml:personalSensitiveInformation",
@@ -48,7 +51,7 @@
   "version": "1.0.0",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "a-csv-table",
       "contentSize": "117743 B",
       "contentUrl": "https://www.google.com/data.csv",
@@ -70,7 +73,7 @@
           "extract": {
             "column": "a-column"
           },
-          "distribution": "a-csv-table"
+          "fileObject": "a-csv-table"
         }
       }
     }

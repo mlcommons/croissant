@@ -8,8 +8,8 @@ from typing import Any, Mapping
 from absl import logging
 from etils import epath
 
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.execute import execute_downloads
@@ -18,21 +18,14 @@ from mlcroissant._src.operation_graph.execute import execute_operations_sequenti
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
-def get_operations(issues: Issues, metadata: Metadata) -> OperationGraph:
+def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
     """Returns operations from the metadata."""
-    graph = metadata.graph
-    folder = metadata.folder
-    operations = OperationGraph.from_nodes(
-        issues=issues,
-        metadata=metadata,
-        graph=graph,
-        folder=folder,
-    )
+    operations = OperationGraph.from_nodes(ctx=ctx, metadata=metadata)
     operations.check_graph()
-    if issues.errors:
-        raise ValidationError(issues.report())
-    elif issues.warnings:
-        logging.warning(issues.report())
+    if ctx.issues.errors:
+        raise ValidationError(ctx.issues.report())
+    elif ctx.issues.warnings:
+        logging.warning(ctx.issues.report())
     return operations
 
 
@@ -46,12 +39,15 @@ class Dataset:
     """Python representation of a Croissant dataset.
 
     Args:
-        file: A JSON object or a path to a Croissant file (string or pathlib.Path).
-        operations: The operation graph class. None by default.
+        jsonld: A JSON object or a path to a Croissant file (URL, str or pathlib.Path).
         debug: Whether to print debug hints. False by default.
+        mapping: Mapping filename->filepath as a Python dict[str, str] to handle manual
+            downloads. If `document.csv` is the FileObject and you downloaded it to
+            `~/Downloads/document.csv`, you can specify `mapping={"document.csv":
+            "~/Downloads/document.csv"}`.,
     """
 
-    file: epath.PathLike | str | dict[str, Any] | None
+    jsonld: epath.PathLike | str | dict[str, Any] | None
     operations: OperationGraph = dataclasses.field(init=False)
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
@@ -59,25 +55,19 @@ class Dataset:
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
-        issues = Issues()
-        self.mapping = _expand_mapping(self.mapping)
-        if isinstance(self.file, dict):
-            self.metadata = Metadata.from_json(
-                issues=issues,
-                json_=self.file,
-                folder=None,
-                mapping=self.mapping,
-            )
-        elif self.file is not None:
-            self.metadata = Metadata.from_file(
-                issues=issues, file=self.file, mapping=self.mapping
-            )
+        ctx = Context()
+        ctx.mapping = _expand_mapping(self.mapping)
+        if isinstance(self.jsonld, dict):
+            self.metadata = Metadata.from_json(ctx=ctx, json_=self.jsonld)
+        elif self.jsonld is not None:
+            self.metadata = Metadata.from_file(ctx=ctx, file=self.jsonld)
         else:
             return
+        ctx.is_live_dataset = self.metadata.is_live_dataset
         # Draw the structure graph for debugging purposes.
         if self.debug:
-            graphs_utils.pretty_print_graph(self.metadata.graph, simplify=True)
-        self.operations = get_operations(issues, self.metadata)
+            graphs_utils.pretty_print_graph(ctx.graph, simplify=True)
+        self.operations = get_operations(ctx, self.metadata)
         # Draw the operations graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
@@ -85,9 +75,9 @@ class Dataset:
     @classmethod
     def from_metadata(cls, metadata: Metadata) -> Dataset:
         """Creates a new `Dataset` from a `Metadata`."""
-        dataset = Dataset(file=None)
+        dataset = Dataset(jsonld=None)
         dataset.metadata = metadata
-        dataset.operations = get_operations(metadata.issues, metadata)
+        dataset.operations = get_operations(metadata.ctx, metadata)
         return dataset
 
     def records(self, record_set: str) -> Records:

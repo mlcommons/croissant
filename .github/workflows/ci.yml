@@ -65,7 +65,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev
 
     - run: pip install ipython ipykernel nbconvert
 
@@ -196,7 +196,7 @@ jobs:
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
-          python mlcroissant/scripts/validate.py --file ${file}
+          python mlcroissant/scripts/validate.py --jsonld ${file}
         done
 
   generation-test:
@@ -220,10 +220,10 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files - Titanic
-      run: mlcroissant load --file ../../datasets/${{ matrix.version }}/titanic/metadata.json --record_set passengers
+      run: mlcroissant load --jsonld ../../datasets/${{ matrix.version }}/titanic/metadata.json --record_set passengers
 
     - name: Generate JSON-LD files - PASS
-      run: pip install .[image] && python mlcroissant/scripts/load.py --file ../../datasets/${{ matrix.version }}/pass-mini/metadata.json --record_set images
+      run: pip install .[image] && python mlcroissant/scripts/load.py --jsonld ../../datasets/${{ matrix.version }}/pass-mini/metadata.json --record_set images
 
   editor-python-test:
     name: Editor Python Test

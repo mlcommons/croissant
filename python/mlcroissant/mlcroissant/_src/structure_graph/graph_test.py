@@ -5,7 +5,7 @@ import json
 from etils import epath
 from rdflib import term
 
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 Literal = term.Literal
@@ -16,8 +16,8 @@ Literal = term.Literal
 def jsonld_to_python_to_jsonld(path):
     with path.open() as f:
         json_ld = json.load(f)
-    issues = Issues()
-    metadata = Metadata.from_file(issues, path, {})
+    ctx = Context()
+    metadata = Metadata.from_file(ctx, {})
     result = metadata.to_json()
     # `distribution` may not be in the right order:
     if "distribution" in result:
@@ -28,7 +28,7 @@ def jsonld_to_python_to_jsonld(path):
         assert distribution == expected_distribution
     # Check the expected JSON-LD:
     assert result == json_ld
-    assert not issues.errors
+    assert not ctx.issues.errors
 
 
 def test_jsonld_to_python_to_jsonld():

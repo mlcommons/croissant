@@ -1,5 +1,6 @@
 """Download operation module."""
 
+import base64
 import dataclasses
 import hashlib
 import logging
@@ -19,8 +20,6 @@ from mlcroissant._src.core.path import Path
 from mlcroissant._src.core.url import is_url
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.metadata import CroissantVersion
-from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 _CHUNK_SIZE = 1024
 _GITHUB_GIT = "https://github.com"
@@ -40,13 +39,14 @@ def get_hash(url: str) -> str:
 
 def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
-    if node.name in node.mapping:
-        return node.mapping[node.name]
+    ctx = node.ctx
+    if node.name in ctx.mapping:
+        return ctx.mapping[node.name]
     url = node.content_url
     if url and not is_url(url) and not node.contained_in:
-        if node.folder is None:
-            raise ValueError(f"Could not find node folder={node.folder}")
-        filepath = node.folder / url
+        if ctx.folder is None:
+            raise ValueError(f"Could not find node folder={ctx.folder}")
+        filepath = ctx.folder / url
         assert filepath.exists(), (
             f'In node "{node.uid}", file "{url}" is either an invalid URL'
             " or an invalid path."
@@ -148,27 +148,39 @@ class Download(Operation):
     def _check_hash(self, filepath: epath.Path):
         if filepath.is_dir():
             return
+        ctx = self.node.ctx
+        # For live datasets which do not specify checksums, we do not check the hash.
+        if ctx.is_live_dataset and not (self.node.md5 or self.node.sha256):
+            logging.info(
+                "Checksums not provided for a live dataset, no hash will be checked."
+            )
+            return
         hash = _get_hash_algorithm(self.node)
         with filepath.open("rb") as f:
             while chunk := f.read(_CHUNK_SIZE):
                 hash.update(chunk)
-        actual_hash = hash.hexdigest()
+        # The hash from the Croissant JSON-LD can be in either hex or base64,
+        # so let's check both
         expected_hash = getattr(self.node, hash.name)
-        if actual_hash != expected_hash:
-            logging.info(
-                "Hash of downloaded file is not identical with"
-                " reference in metadata.json"
+        # First, try hex as that's likely more common
+        hex_hash = hash.hexdigest()
+        if hex_hash == expected_hash:
+            return
+        # Next, try base64 as a fallback
+        base64_hash = base64.b64encode(bytes.fromhex(hex_hash)).decode()
+        if base64_hash == expected_hash:
+            return
+
+        logging.info(
+            "Hash of downloaded file is not identical with reference in metadata.json"
+        )
+        # In v0.8 only, hashes were not checked.
+        if not ctx.is_v0():
+            raise ValueError(
+                f"Hash of downloaded file {filepath} is not identical with the"
+                f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"
+                f" Got: {hex_hash} (hex) / {base64_hash} (base64)"
             )
-            # In v0.8 only, hashes were not checked.
-            metadata = self.node.parent
-            if not isinstance(metadata, Metadata):
-                raise ValueError("parent of FileObject should always be Metadata.")
-            if metadata.conforms_to > CroissantVersion.V_0_8:
-                raise ValueError(
-                    f"Hash of downloaded file {filepath} is not identical with the"
-                    f" reference in the Croissant JSON-LD. Expected: {expected_hash} -"
-                    f" Got: {actual_hash}"
-                )
 
     def _download_from_http(self, filepath: epath.Path):
         content_url = self.node.content_url

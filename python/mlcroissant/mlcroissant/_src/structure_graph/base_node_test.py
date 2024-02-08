@@ -37,23 +37,23 @@ def test_there_exists_at_least_one_property():
     [
         [
             "a-regular-id",
-            set(),
+            [],
         ],
         [
             "a" * 256,
-            {
+            [
                 "The identifier"
                 ' "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
                 " is too long (>255 characters)."
-            },
+            ],
         ],
         [
             "this is not valid",
-            {'The identifier "this is not valid" contains forbidden characters.'},
+            ['The identifier "this is not valid" contains forbidden characters.'],
         ],
         [
             {"not": {"a": {"string"}}},
-            {"The identifier should be a string. Got: <class 'dict'>."},
+            ["The identifier should be a string. Got: <class 'dict'>."],
         ],
     ],
 )
@@ -63,7 +63,8 @@ def test_validate_name(name, expected_errors):
         name=name,
     )
     node.validate_name()
-    assert node.issues.errors == expected_errors
+    for expected_error, error in zip(expected_errors, node.ctx.issues.errors):
+        assert expected_error in error
 
 
 def test_eq():

@@ -10,9 +10,21 @@ import jsonpath_rw
 from jsonpath_rw import lexer
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+
+
+def _find_choice(
+    uids: list[Any], node_types: list[NodeType]
+) -> tuple[Any, NodeType | None]:
+    """Returns (None, None) if the inputs don't contain exactly 1 non-null value."""
+    choices = [
+        (uid, node_type) for uid, node_type in zip(uids, node_types) if uid is not None
+    ]
+    if len(choices) != 1:
+        return None, None
+    return choices[0]
 
 
 class FileProperty(enum.IntEnum):
@@ -100,29 +112,29 @@ class Transform:
         })
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, jsonld: Json | list[Json]) -> list[Transform]:
+    def from_jsonld(cls, ctx: Context, jsonld: Json | list[Json]) -> list[Transform]:
         """Creates a list of `Transform` from JSON-LD."""
         transforms: list[Transform] = []
         if not isinstance(jsonld, list):
             jsonld = [jsonld]
         for transform in jsonld:
             keys = [
-                constants.ML_COMMONS_FORMAT,
-                constants.ML_COMMONS_JSON_PATH,
-                constants.ML_COMMONS_REGEX,
-                constants.ML_COMMONS_REPLACE,
-                constants.ML_COMMONS_SEPARATOR,
+                constants.ML_COMMONS_FORMAT(ctx),
+                constants.ML_COMMONS_JSON_PATH(ctx),
+                constants.ML_COMMONS_REGEX(ctx),
+                constants.ML_COMMONS_REPLACE(ctx),
+                constants.ML_COMMONS_SEPARATOR(ctx),
             ]
             if not isinstance(transform, dict):
-                issues.add_error(
+                ctx.issues.add_error(
                     f'Transform "{transform}" should be a dict with the keys'
                     f' {", ".join(keys)}'
                 )
                 continue
-            kwargs = {constants.TO_CROISSANT[k]: transform.get(k) for k in keys}
+            kwargs = {constants.TO_CROISSANT(ctx)[k]: transform.get(k) for k in keys}
             all_values_are_none = all(v is None for v in kwargs.values())
             if all_values_are_none:
-                issues.add_error(
+                ctx.issues.add_error(
                     f'Transform "{transform}" should be a dict with at least one key in'
                     f' {", ".join(keys)}'
                 )
@@ -131,7 +143,7 @@ class Transform:
         return transforms
 
 
-NodeType = Literal["distribution", "field"] | None
+NodeType = Literal["distribution", "field", "fileObject", "fileSet"] | None
 
 
 @dataclasses.dataclass(eq=False)
@@ -192,63 +204,78 @@ class Source:
         })
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, jsonld: Any) -> Source:
+    def from_jsonld(cls, ctx: Context, jsonld: Any) -> Source:
         """Creates a new source from a JSON-LD `field` and populates issues."""
         if jsonld is None:
             return Source()
         elif isinstance(jsonld, list):
             if len(jsonld) != 1:
                 raise ValueError(f"Field {jsonld} should have one element.")
-            return Source.from_jsonld(issues, jsonld[0])
+            return Source.from_jsonld(ctx, jsonld[0])
         elif isinstance(jsonld, dict):
             try:
                 transforms = Transform.from_jsonld(
-                    issues, jsonld.get(constants.ML_COMMONS_TRANSFORM, [])
+                    ctx, jsonld.get(constants.ML_COMMONS_TRANSFORM(ctx), [])
                 )
                 # Safely access and check "data_extraction" from JSON-LD.
-                data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT, {})
+                data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT(ctx), {})
                 if isinstance(data_extraction, list) and data_extraction:
                     data_extraction = data_extraction[0]
                 # Remove the JSON-LD @id property if it exists:
                 data_extraction.pop("@id", None)
                 if len(data_extraction) > 1:
-                    issues.add_error(
-                        f"{constants.ML_COMMONS_EXTRACT} should have one of the"
-                        f" following properties: {constants.ML_COMMONS_FORMAT},"
-                        f" {constants.ML_COMMONS_REGEX},"
-                        f" {constants.ML_COMMONS_REPLACE} or"
-                        f" {constants.ML_COMMONS_SEPARATOR}"
+                    ctx.issues.add_error(
+                        f"{constants.ML_COMMONS_EXTRACT(ctx)} should have one of the"
+                        f" following properties: {constants.ML_COMMONS_FORMAT(ctx)},"
+                        f" {constants.ML_COMMONS_REGEX(ctx)},"
+                        f" {constants.ML_COMMONS_REPLACE(ctx)} or"
+                        f" {constants.ML_COMMONS_SEPARATOR(ctx)}"
                     )
                 # Safely access and check "uid" from JSON-LD.
                 distribution = jsonld.get(constants.SCHEMA_ORG_DISTRIBUTION)
-                field = jsonld.get(constants.ML_COMMONS_FIELD)
-                if distribution is not None and field is None:
-                    uid = distribution
-                    node_type: NodeType = "distribution"
-                elif distribution is None and field is not None:
-                    uid = field
-                    node_type = "field"
+                file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT(ctx))
+                file_set = jsonld.get(constants.ML_COMMONS_FILE_SET(ctx))
+                field = jsonld.get(constants.ML_COMMONS_FIELD(ctx))
+                if ctx.is_v0():
+                    uids = [distribution, field]
+                    node_types: list[NodeType] = ["distribution", "field"]
                 else:
+                    uids = [file_object, file_set, field]
+                    node_types = ["fileObject", "fileSet", "field"]
+                uid, node_type = _find_choice(uids, node_types)
+                if uid is None or node_type is None:
                     uid = None
                     node_type = None
-                    issues.add_error(
-                        f"Every {constants.ML_COMMONS_SOURCE} should declare either"
-                        f" {constants.ML_COMMONS_FIELD} or"
-                        f" {constants.SCHEMA_ORG_DISTRIBUTION}"
+                    if ctx.is_v0():
+                        mandatory_fields_in_source = [
+                            constants.ML_COMMONS_FIELD(ctx),
+                            constants.SCHEMA_ORG_DISTRIBUTION,
+                        ]
+                    else:
+                        mandatory_fields_in_source = [
+                            constants.ML_COMMONS_FIELD(ctx),
+                            constants.ML_COMMONS_FILE_OBJECT(ctx),
+                            constants.ML_COMMONS_FILE_SET(ctx),
+                        ]
+                    ctx.issues.add_error(
+                        f"Every {constants.ML_COMMONS_SOURCE(ctx)} should declare"
+                        f" either {' or '.join(mandatory_fields_in_source)}"
                     )
                 # Safely access and check "file_property" from JSON-LD.
-                file_property = data_extraction.get(constants.ML_COMMONS_FILE_PROPERTY)
+                file_property = data_extraction.get(
+                    constants.ML_COMMONS_FILE_PROPERTY(ctx)
+                )
                 if is_file_property(file_property):
                     file_property = FileProperty[file_property]
                 elif file_property is not None:
-                    issues.add_error(
-                        f"Property {constants.ML_COMMONS_FILE_PROPERTY} can only have"
-                        " values in `fullpath`, `filepath` and `content`. Got:"
+                    ctx.issues.add_error(
+                        f"Property {constants.ML_COMMONS_FILE_PROPERTY(ctx)} can only"
+                        " have values in `fullpath`, `filepath` and `content`. Got:"
                         f" {file_property}"
                     )
                 # Build the source.
-                json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH)
-                csv_column = data_extraction.get(constants.ML_COMMONS_COLUMN)
+                json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH(ctx))
+                csv_column = data_extraction.get(constants.ML_COMMONS_COLUMN(ctx))
                 extract = Extract(
                     column=csv_column,
                     file_property=file_property,
@@ -261,12 +288,12 @@ class Source:
                     node_type=node_type,
                 )
             except TypeError as exception:
-                issues.add_error(
+                ctx.issues.add_error(
                     f"Malformed `source`: {jsonld}. Got exception: {exception}"
                 )
                 return Source()
         else:
-            issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
+            ctx.issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
             return Source()
 
     def __bool__(self):

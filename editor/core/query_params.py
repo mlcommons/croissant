@@ -25,17 +25,17 @@ def _get_query_param(params: dict[str, Any], name: str) -> str | None:
 
 
 def _set_query_param(param: str, new_value: str) -> str | None:
-    params = st.experimental_get_query_params()
+    params = st.query_params
     if params.get(param) == [new_value]:
         # The value already exists in the query params.
         return
     new_params = {k: v for k, v in params.items() if k != param}
     new_params[param] = new_value
-    st.experimental_set_query_params(**new_params)
+    st.query_params = new_params
 
 
 def is_record_set_expanded(record_set: RecordSet) -> bool:
-    params = st.experimental_get_query_params()
+    params = st.query_params
     open_record_set_name = _get_query_param(params, QueryParams.OPEN_RECORD_SET)
     if open_record_set_name:
         return open_record_set_name == record_set.name
@@ -47,7 +47,7 @@ def expand_record_set(record_set: RecordSet) -> None:
 
 
 def get_project_timestamp() -> str | None:
-    params = st.experimental_get_query_params()
+    params = st.query_params
     return _get_query_param(params, QueryParams.OPEN_PROJECT)
 
 
