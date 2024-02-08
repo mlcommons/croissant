@@ -10,12 +10,10 @@ from mlcroissant._src.tests.nodes import create_test_field
 
 def test_parse_json():
     field1 = create_test_field(
-        source=Source(extract=Extract(json_path="$.annotations[*].id")),
-        name="record_set_a/field1",
+        source=Source(extract=Extract(json_path="$.annotations[*].id"))
     )
     field2 = create_test_field(
-        source=Source(extract=Extract(json_path="$.annotations[*].value")),
-        name="record_set_b/field2",
+        source=Source(extract=Extract(json_path="$.annotations[*].value"))
     )
     fields = (field1, field2)
     json = {
@@ -26,14 +24,7 @@ def test_parse_json():
         ],
     }
 
-    # Without specifying a record_set name.
     expected_df = pd.DataFrame(
         data={"$.annotations[*].id": [1, 2], "$.annotations[*].value": [3, 4]}
     )
     pd.testing.assert_frame_equal(parse_json_content(json, fields), expected_df)
-
-    # Specifying a record_set name.
-    expected_df = pd.DataFrame(data={"$.annotations[*].id": [1, 2]})
-    pd.testing.assert_frame_equal(
-        parse_json_content(json, fields, record_set="record_set_a"), expected_df
-    )
