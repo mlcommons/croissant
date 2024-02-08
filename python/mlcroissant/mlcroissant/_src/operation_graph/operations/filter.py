@@ -27,11 +27,10 @@ class FilterFiles(Operation):
         includes_re = re.compile(includes)
         included_files: list[Path] = []
         for path in paths:
-            path = os.fspath(path.filepath)
-            for basepath, _, files in os.walk(path):  # type: ignore  # https://github.com/python/mypy/issues/11880
+            for basepath, _, files in path.filepath.walk():  # type: ignore  # https://github.com/python/mypy/issues/11880
                 for file in files:
                     filepath = epath.Path(basepath) / file
-                    fullpath = get_fullpath(filepath, epath.Path(path))
+                    fullpath = get_fullpath(filepath, path.filepath)
                     if includes_re.match(os.fspath(fullpath)):
                         included_files.append(
                             Path(
