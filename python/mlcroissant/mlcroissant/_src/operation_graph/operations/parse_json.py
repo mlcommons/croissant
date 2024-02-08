@@ -7,15 +7,10 @@ from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
-def parse_json_content(
-    json: Json, fields: tuple[Field, ...], record_set: str | None = None
-) -> pd.DataFrame:
+def parse_json_content(json: Json, fields: tuple[Field, ...]) -> pd.DataFrame:
     """Parsed all JSONs defined in the fields of RecordSet and outputs a pd.DF."""
     series = {}
     for field in fields:
-        # Only select fields relevant to the requested record_set (if given).
-        if record_set and not field.uid.startswith(record_set):
-            continue
         json_path = field.source.extract.json_path
         if json_path is None:
             continue

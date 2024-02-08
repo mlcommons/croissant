@@ -57,6 +57,26 @@ def _add_operations_for_field_with_source(
     (operation >> ReadFields(operations=operations, node=record_set))
 
 
+def _get_recordsets_for_fields(file_obejct: FileObject) -> dict[str, Field]:
+    """Gets dictionary of RecordSet and their respective Fields generated from a node.
+
+    Args:
+        file_obejct: A FileObject.
+
+    Returns:
+        A dictionary of RecordSet names, and the Fields relative tho that RecordSet.
+    """
+    recordset_to_fields = {}
+    for field in file_obejct.successors:
+        if isinstance(field, Field):
+            # Field names are in the form: record_set/field_name
+            record_set = field.uid.split("/")[0].strip()
+            if record_set not in recordset_to_fields:
+                recordset_to_fields[record_set] = []
+            recordset_to_fields[record_set].append(field)
+    return recordset_to_fields
+
+
 def _add_operations_for_file_object(
     operations: Operations,
     node: FileObject,
@@ -98,15 +118,7 @@ def _add_operations_for_file_object(
         # Multiple Read operations could originate from the same FileObject.
         # We therefore add a separate Read operation for each RecordSet.
         if node.encoding_format and not should_extract(node.encoding_format):
-            recordset_to_fields = {}
-            # TODO put get recordset to fields into function and add tests.
-            for field in node.successors:
-                if isinstance(field, Field):
-                    # Field names are in the form: record_set/field_name
-                    record_set = field.uid.split("/")[0].strip()
-                    if record_set not in recordset_to_fields:
-                        recordset_to_fields[record_set] = []
-                    recordset_to_fields[record_set].append(field)
+            recordset_to_fields = _get_recordsets_for_fields(file_obejct=node)
 
             for record_set, fields in recordset_to_fields.items():
                 operation >> Read(
