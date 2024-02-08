@@ -99,6 +99,7 @@ class Field(Node):
                     DataType.IMAGE_OBJECT,
                     # For some reasons, pytype cannot infer `Any` on ctx:
                     DataType.BOUNDING_BOX(self.ctx),  # pytype: disable=wrong-arg-types
+                    DataType.AUDIO_OBJECT,
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on a predecessor:

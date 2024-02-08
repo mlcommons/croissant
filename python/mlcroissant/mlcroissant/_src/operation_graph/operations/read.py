@@ -120,6 +120,13 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
+            elif (
+                encoding_format == EncodingFormat.MP3
+                or encoding_format == EncodingFormat.JPG
+            ):
+                return pd.DataFrame({
+                    FileProperty.content: [file.read()],
+                })
             else:
                 raise ValueError(
                     f"Unsupported encoding format for file: {encoding_format}"

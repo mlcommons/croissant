@@ -7,6 +7,7 @@ version = "0.8.2"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
+  { name = "Monjish Bhattacharyya" },
   { name = "Omar Benjelloun" },
   { name = "Peter Mattson" },
   { name = "Pieter Gijsbers" },
@@ -27,7 +28,7 @@ dependencies = [
   "python-dateutil",
   "rdflib",
   "requests",
-  "tqdm",
+  "tqdm"
 ]
 readme = "README.md"
 
@@ -38,6 +39,7 @@ dev = [
   "black==23.11.0",
   "datasets",
   "flake8-docstrings",
+  "mlcroissant[audio]",
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
@@ -49,6 +51,7 @@ dev = [
   "pytype",
   "torchdata",
 ]
+audio = ["librosa"]
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
@@ -80,6 +83,7 @@ module = [
   "datasets",
   "etils.*",
   "jsonpath_rw",
+  "librosa",
   "networkx",
   "pandas",
   "pillow",

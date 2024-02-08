@@ -76,6 +76,14 @@ SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
 SCHEMA_ORG_CREATOR = namespace.SDO.creator
 SCHEMA_ORG_DATE_PUBLISHED = namespace.SDO.datePublished
 SCHEMA_ORG_DATASET = namespace.SDO.Dataset
+SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT = namespace.SDO.AudioObject
+SCHEMA_ORG_DATA_TYPE_BOOL = namespace.SDO.Boolean
+SCHEMA_ORG_DATA_TYPE_DATE = namespace.SDO.Date
+SCHEMA_ORG_DATA_TYPE_FLOAT = namespace.SDO.Float
+SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT = namespace.SDO.ImageObject
+SCHEMA_ORG_DATA_TYPE_INTEGER = namespace.SDO.Integer
+SCHEMA_ORG_DATA_TYPE_TEXT = namespace.SDO.Text
+SCHEMA_ORG_DATA_TYPE_URL = namespace.SDO.URL
 SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
 SCHEMA_ORG_EMAIL = namespace.SDO.email
@@ -154,8 +162,10 @@ class EncodingFormat:
 
     CSV = "text/csv"
     GIT = "git+https"
+    JPG = "image/jpeg"
     JSON = "application/json"
     JSON_LINES = "application/jsonlines"
+    MP3 = "audio/mpeg"
     PARQUET = "application/x-parquet"
     TEXT = "text/plain"
     TSV = "text/tsv"
@@ -166,6 +176,7 @@ class EncodingFormat:
 class DataType:
     """Data types supported by Croissant."""
 
+    AUDIO_OBJECT = namespace.SDO.AudioObject
     BOOL = namespace.SDO.Boolean
     BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
     DATE = namespace.SDO.Date
