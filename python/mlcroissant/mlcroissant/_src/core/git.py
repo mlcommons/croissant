@@ -15,7 +15,7 @@ def is_git_lfs_file(filepath: epath.Path) -> bool:
     An optimization of this function would be to only read the file if there is a git
     repository in the distribution.
     """
-    with open(filepath, "rb") as file:
+    with filepath.open("rb") as file:
         # Only read the first line of the file. In the future, this could be a problem,
         # e.g. if we accept *.txt files and the file starts with the same header.
         first_line = file.readline()

@@ -13,8 +13,9 @@ from mlcroissant._src.tests.versions import parametrize_version
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
-def get_error_msg(folder):
-    with open(f"{folder}/output.txt", "r") as file:
+def get_error_msg(folder: epath.Path):
+    path = folder / "output.txt"
+    with path.open("r") as file:
         return file.read().strip()
 
 
