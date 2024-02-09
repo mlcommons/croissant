@@ -29,9 +29,13 @@ def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
     return operations
 
 
-def _expand_mapping(mapping: Mapping[str, epath.PathLike]) -> Mapping[str, epath.Path]:
+def _expand_mapping(
+    mapping: Mapping[str, epath.PathLike] | None
+) -> Mapping[str, epath.Path]:
     """Expands the file mapping to pathlib-readable paths."""
-    return {key: epath.Path(value).expanduser() for key, value in mapping.items()}
+    if isinstance(mapping, Mapping):
+        return {key: epath.Path(value).expanduser() for key, value in mapping.items()}
+    return {}
 
 
 @dataclasses.dataclass
@@ -51,12 +55,11 @@ class Dataset:
     operations: OperationGraph = dataclasses.field(init=False)
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
-    mapping: Mapping[str, epath.PathLike] = dataclasses.field(default_factory=dict)
+    mapping: Mapping[str, epath.PathLike] | None = None
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
-        ctx = Context()
-        ctx.mapping = _expand_mapping(self.mapping)
+        ctx = Context(mapping=_expand_mapping(self.mapping))
         if isinstance(self.jsonld, dict):
             self.metadata = Metadata.from_json(ctx=ctx, json_=self.jsonld)
         elif self.jsonld is not None:
