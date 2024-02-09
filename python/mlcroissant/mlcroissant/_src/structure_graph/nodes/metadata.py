@@ -46,9 +46,9 @@ class PersonOrOrganization:
         elif isinstance(jsonld, list):
 
             persons_or_organizations: itertools.chain[PersonOrOrganization] = (
-                itertools.chain.from_iterable([
-                    cls.from_jsonld(element) for element in jsonld
-                ])
+                itertools.chain.from_iterable(
+                    [cls.from_jsonld(element) for element in jsonld]
+                )
             )
             return list(persons_or_organizations)
         else:
@@ -162,47 +162,45 @@ class Metadata(Node):
         else:
             creator = None
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
-        return remove_empty_values(
-            {
-                "@context": self.ctx.rdf.context,
-                "@type": "sc:Dataset",
-                "name": self.name,
-                "conformsTo": conforms_to,
-                "description": self.description,
-                "creator": creator,
-                "datePublished": date_published,
-                #  RAI extension
-                "dataCollection": self.data_collection,
-                "dataCollectionType": self.data_collection_type,
-                "dataCollectionTypeOthers": self.data_collection_type_others,
-                "dataCollectionMissing": self.data_collection_missing,
-                "dataCollectionRaw": self.data_collection_raw,
-                "dataCollectionTimeFrameStart": data_collection_timeframe_start,
-                "dataCollectionTimeFrameEnd": data_collection_timeframe_end,
-                "dataPreprocessingImputation": self.data_preprocessing_imputation,
-                "dataPreprocessingProtocol": self.data_preprocessing_protocol,
-                "dataPreprocessingManipulation": self.data_preprocessing_manipulation,
-                "dataAnnotationProtocol": self.data_annotation_protocol,
-                "dataAnnotationPlatform": self.data_annotation_platform,
-                "dataAnnotationAnalysis": self.data_annotation_analysis,
-                "dataAnnotationPerItem": self.data_annotation_peritem,
-                "dataAnnotationDemographics": self.data_annotation_demographics,
-                "dataAnnotationTools": self.data_annotation_tools,
-                "dataBiases": self.data_biases,
-                "dataUseCases": self.data_usecases,
-                "dataLimitations": self.data_limitation,
-                "dataSocialImpact": self.data_social_impact,
-                "dataSensitive": self.data_sensitive,
-                "dataMaitenance": self.data_maintenance,
-                "citation": self.citation,
-                "license": self.license,
-                "personalSensitiveInformation": self.personal_sensitive_information,
-                "url": self.url,
-                "version": self.version,
-                "distribution": [f.to_json() for f in self.distribution],
-                "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            }
-        )
+        return remove_empty_values({
+            "@context": self.ctx.rdf.context,
+            "@type": "sc:Dataset",
+            "name": self.name,
+            "conformsTo": conforms_to,
+            "description": self.description,
+            "creator": creator,
+            "datePublished": date_published,
+            #  RAI extension
+            "rai:dataCollection": self.data_collection,
+            "rai:dataCollectionType": self.data_collection_type,
+            "rai:dataCollectionTypeOthers": self.data_collection_type_others,
+            "rai:dataCollectionMissing": self.data_collection_missing,
+            "rai:dataCollectionRaw": self.data_collection_raw,
+            "rai:dataCollectionTimeFrameStart": data_collection_timeframe_start,
+            "rai:dataCollectionTimeFrameEnd": data_collection_timeframe_end,
+            "rai:dataPreprocessingImputation": self.data_preprocessing_imputation,
+            "rai:dataPreprocessingProtocol": self.data_preprocessing_protocol,
+            "rai:dataPreprocessingManipulation": self.data_preprocessing_manipulation,
+            "rai:dataAnnotationProtocol": self.data_annotation_protocol,
+            "rai:dataAnnotationPlatform": self.data_annotation_platform,
+            "rai:dataAnnotationAnalysis": self.data_annotation_analysis,
+            "rai:dataAnnotationPerItem": self.data_annotation_peritem,
+            "rai:dataAnnotationDemographics": self.data_annotation_demographics,
+            "rai:dataAnnotationTools": self.data_annotation_tools,
+            "rai:dataBiases": self.data_biases,
+            "rai:dataUseCases": self.data_usecases,
+            "rai:dataLimitations": self.data_limitation,
+            "rai:dataSocialImpact": self.data_social_impact,
+            "rai:dataSensitive": self.data_sensitive,
+            "rai:dataMaitenance": self.data_maintenance,
+            "citation": self.citation,
+            "license": self.license,
+            "personalSensitiveInformation": self.personal_sensitive_information,
+            "url": self.url,
+            "version": self.version,
+            "distribution": [f.to_json() for f in self.distribution],
+            "recordSet": [record_set.to_json() for record_set in self.record_sets],
+        })
 
     @property
     def file_objects(self) -> list[FileObject]:
