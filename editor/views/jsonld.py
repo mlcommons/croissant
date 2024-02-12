@@ -47,7 +47,7 @@ def render_jsonld():
         if croissant.metadata:
             metadata = mlc.Metadata(
                 name=croissant.metadata.name,
-                citation=croissant.metadata.citation,
+                cite_as=croissant.metadata.cite_as,
                 license=croissant.metadata.license,
                 description=croissant.metadata.description,
                 url=croissant.metadata.url,

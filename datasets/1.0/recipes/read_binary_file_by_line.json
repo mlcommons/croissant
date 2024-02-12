@@ -2,40 +2,46 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "read_binary_file_by_line",
@@ -44,14 +50,14 @@
   "url": "https://mlcommons.org",
   "distribution": [
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "languages_in_directory",
       "description": "Binary files containing the expression \"hello\" translated in several languages.",
       "encodingFormat": "text/plain",
       "includes": "data/read_binary_file_by_line/*.txt"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "zip",
       "description": "Zip file containing the binary files with the translations.",
       "contentUrl": "data/read_binary_file_by_line/files.zip",
@@ -59,7 +65,7 @@
       "sha256": "49c616fdf402d70a6bc02a1265f2ad410f06395dcec54b8cd8f376f7fdae636b"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "languages_in_zip",
       "description": "Binary files containing the expression \"hello\" translated in several languages.",
       "containedIn": "zip",
@@ -69,41 +75,41 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "translations_from_directory",
       "description": "\"Hello\" translated in several languages [from a directory].",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_directory",
+            "fileSet": "languages_in_directory",
             "extract": {
               "fileProperty": "lines"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "lineNumber",
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "languages_in_directory",
+            "fileSet": "languages_in_directory",
             "extract": {
               "fileProperty": "lineNumbers"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "filename",
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_directory",
+            "fileSet": "languages_in_directory",
             "extract": {
               "fileProperty": "filename"
             }
@@ -112,41 +118,41 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "translations_from_zip",
       "description": "\"Hello\" translated in several languages [from a zip].",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_zip",
+            "fileSet": "languages_in_zip",
             "extract": {
               "fileProperty": "lines"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "lineNumber",
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "languages_in_zip",
+            "fileSet": "languages_in_zip",
             "extract": {
               "fileProperty": "lineNumbers"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "filename",
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "languages_in_zip",
+            "fileSet": "languages_in_zip",
             "extract": {
               "fileProperty": "filename"
             }

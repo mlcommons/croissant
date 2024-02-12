@@ -21,10 +21,10 @@ init_state()
 user = get_user()
 
 if OAUTH_CLIENT_ID and not user:
-    query_params = st.experimental_get_query_params()
-    state = query_params.get("state")
+    query_params = st.query_params
+    state = query_params.get_all("state")
     if state and state[0] == OAUTH_STATE:
-        code = query_params.get("code")
+        code = query_params["code"]
         if not code:
             st.stop()
         try:
@@ -34,7 +34,7 @@ if OAUTH_CLIENT_ID and not user:
         except:
             raise
         finally:
-            st.experimental_set_query_params()
+            st.query_params.clear()
     else:
         redirect_uri = urllib.parse.quote(REDIRECT_URI, safe="")
         client_id = urllib.parse.quote(OAUTH_CLIENT_ID, safe="")
@@ -48,7 +48,7 @@ if OAUTH_CLIENT_ID and not user:
 
 def _back_to_menu():
     """Sends the user back to the menu."""
-    st.experimental_set_query_params()
+    st.query_params.clear()
     init_state(force=True)
 
 

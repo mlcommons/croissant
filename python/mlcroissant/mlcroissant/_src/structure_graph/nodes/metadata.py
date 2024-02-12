@@ -4,21 +4,21 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
-import enum
 import itertools
-from typing import Any, Mapping
+from typing import Any
 
 from etils import epath
 import requests
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_str_to_date_time
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
 from mlcroissant._src.structure_graph.base_node import Node
@@ -27,46 +27,7 @@ from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-
-
-class CroissantVersion(enum.Enum):
-    """Major and minor versions of the Croissant standard."""
-
-    V_0_8 = "http://mlcommons.org/croissant/0.8"
-    V_1_0 = "http://mlcommons.org/croissant/1.0"
-
-    @classmethod
-    def from_jsonld(cls, jsonld: Any) -> CroissantVersion:
-        """Builds the class from the JSON-LD."""
-        for version in cls:
-            if version.value == jsonld:
-                return version
-        return CroissantVersion.V_0_8
-
-    def to_json(self) -> str | None:
-        """Serializes back to JSON-LD."""
-        if self == CroissantVersion.V_0_8:
-            # In 0.8, the field conformsTo doesn't exist yet.
-            return None
-        return self.value
-
-    def __lt__(self, other):
-        """Implements CroissantVersion.V_0_8 < CroissantVersion.V_1_0."""
-        return self.value < other.value
-
-    def __le__(self, other):
-        """Implements CroissantVersion.V_0_8 <= CroissantVersion.V_1_0."""
-        return self.value <= other.value
-
-    def __gt__(self, other):
-        """Implements CroissantVersion.V_1_0 > CroissantVersion.V_0_8."""
-        return self.value > other.value
-
-    def __ge__(self, other):
-        """Implements CroissantVersion.V_1_0 >= CroissantVersion.V_0_8."""
-        return self.value >= other.value
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -111,11 +72,11 @@ class PersonOrOrganization:
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
-    conforms_to: CroissantVersion | None = None
-    citation: str | None = None
+    cite_as: str | None = None
     creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None
     description: str | None = None
+    is_live_dataset: bool | None = None
     license: str | None = None
     name: str = ""
     url: str | None = ""
@@ -147,19 +108,23 @@ class Metadata(Node):
                     sub_field.parents = [self, record_set, field]
 
         # Back-fill the graph in every node.
-        self.graph = from_nodes_to_graph(self)
+        self.ctx.graph = from_nodes_to_graph(self)
         self.check_graph()
 
         # Check properties.
         self.validate_name()
         self.validate_version()
         self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("citation", "license", "version")
+        self.assert_has_optional_properties("cite_as", "license", "version")
 
         # Raise exception if there are errors.
         for node in self.nodes():
-            if node.issues.errors:
-                raise ValidationError(node.issues.report())
+            if node.ctx.issues.errors:
+                raise ValidationError(node.ctx.issues.report())
+
+        self.ctx.conforms_to = CroissantVersion.from_jsonld(
+            self.ctx, self.ctx.conforms_to
+        )
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
@@ -173,9 +138,9 @@ class Metadata(Node):
             creator = [creator.to_json() for creator in self.creators]
         else:
             creator = None
-        conforms_to = self.conforms_to.to_json() if self.conforms_to else None
+        conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
         return remove_empty_values({
-            "@context": self.rdf.context,
+            "@context": self.ctx.rdf.context,
             "@type": "sc:Dataset",
             "name": self.name,
             "conformsTo": conforms_to,
@@ -184,7 +149,9 @@ class Metadata(Node):
             "datePublished": date_published,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
-            "citation": self.citation,
+            "citation": self.cite_as if self.ctx.is_v0() else None,
+            "citeAs": None if self.ctx.is_v0() else self.cite_as,
+            "isLiveDataset": self.is_live_dataset,
             "license": self.license,
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
@@ -256,113 +223,92 @@ class Metadata(Node):
             graph: The structure graph to be checked.
         """
         # Check that the graph is directed.
-        if not self.graph.is_directed():
-            self.issues.add_error("The structure graph is not directed.")
-        fields = [node for node in self.graph.nodes if isinstance(node, Field)]
+        if not self.ctx.graph.is_directed():
+            self.ctx.issues.add_error("The structure graph is not directed.")
+        fields = [node for node in self.ctx.graph.nodes if isinstance(node, Field)]
         # Check all fields have a data type: either on the field, on a parent.
         for field in fields:
             field.data_type
 
     @classmethod
-    def from_file(
-        cls, issues: Issues, file: epath.PathLike, mapping: Mapping[str, epath.Path]
-    ) -> Metadata:
+    def from_file(cls, ctx: Context, file: epath.PathLike) -> Metadata:
         """Creates the Metadata from a Croissant file."""
         if is_url(file):
             response = requests.get(file)
             json_ = response.json()
-            return cls.from_json(
-                issues=issues, json_=json_, folder=None, mapping=mapping
-            )
+            return cls.from_json(ctx=ctx, json_=json_)
         folder, json_ = from_file_to_json(file)
-        return cls.from_json(issues=issues, json_=json_, folder=folder, mapping=mapping)
+        ctx.folder = folder
+        return cls.from_json(ctx=ctx, json_=json_)
 
     @classmethod
     def from_json(
         cls,
-        issues: Issues,
+        ctx: Context,
         json_: Json,
-        folder: epath.Path | None,
-        mapping: Mapping[str, epath.Path],
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
-        rdf = Rdf.from_json(json_)
+        ctx.rdf = Rdf.from_json(ctx, json_)
         metadata = expand_jsonld(json_)
-        return cls.from_jsonld(
-            issues=issues, folder=folder, metadata=metadata, mapping=mapping, rdf=rdf
-        )
+        return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
     @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        folder: epath.Path | None,
-        metadata: Json,
-        mapping: Mapping[str, epath.Path] | None = None,
-        rdf: Rdf | None = None,
-    ) -> Metadata:
+    def from_jsonld(cls, ctx: Context, metadata: Json) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
-        if mapping is None:
-            mapping = {}
-        if rdf is None:
-            rdf = Rdf()
-        check_expected_type(issues, metadata, constants.SCHEMA_ORG_DATASET)
+        check_expected_type(ctx.issues, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")
-        context = Context(dataset_name=dataset_name)
+        ctx.conforms_to = CroissantVersion.from_jsonld(
+            ctx, metadata.get(constants.DCTERMS_CONFORMS_TO)
+        )
+
+        if ctx.is_v0():
+            cite_as = metadata.get(constants.SCHEMA_ORG_CITATION)
+        else:
+            cite_as = metadata.get(constants.ML_COMMONS_CITE_AS(ctx))
+
         for set_or_object in file_set_or_objects:
             name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
             distribution_type = set_or_object.get("@type")
-            if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT:
-                distribution.append(
-                    FileObject.from_jsonld(
-                        issues, context, folder, rdf, set_or_object, mapping=mapping
-                    )
-                )
-            elif distribution_type == constants.SCHEMA_ORG_FILE_SET:
-                distribution.append(
-                    FileSet.from_jsonld(issues, context, folder, rdf, set_or_object)
-                )
+            if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT(ctx):
+                distribution.append(FileObject.from_jsonld(ctx, set_or_object))
+            elif distribution_type == constants.SCHEMA_ORG_FILE_SET(ctx):
+                distribution.append(FileSet.from_jsonld(ctx, set_or_object))
             else:
-                issues.add_error(
+                ctx.issues.add_error(
                     f'"{name}" should have an attribute "@type":'
-                    f' "{constants.SCHEMA_ORG_FILE_OBJECT}" or "@type":'
-                    f' "{constants.SCHEMA_ORG_FILE_SET}". Got'
+                    f' "{constants.SCHEMA_ORG_FILE_OBJECT(ctx)}" or "@type":'
+                    f' "{constants.SCHEMA_ORG_FILE_SET(ctx)}". Got'
                     f" {distribution_type} instead."
                 )
         record_sets = [
-            RecordSet.from_jsonld(issues, context, folder, rdf, record_set)
-            for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET, [])
+            RecordSet.from_jsonld(ctx, record_set)
+            for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET(ctx), [])
         ]
         url = metadata.get(constants.SCHEMA_ORG_URL)
         creators = PersonOrOrganization.from_jsonld(
             metadata.get(constants.SCHEMA_ORG_CREATOR)
         )
         date_published = from_str_to_date_time(
-            issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
+            ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
         )
         return cls(
-            issues=issues,
-            context=context,
-            folder=folder,
-            conforms_to=CroissantVersion.from_jsonld(
-                metadata.get(constants.DCTERMS_CONFORMS_TO)
-            ),
-            citation=metadata.get(constants.SCHEMA_ORG_CITATION),
+            ctx=ctx,
+            cite_as=cite_as,
             creators=creators,
             date_published=date_published,
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
-            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES),
-            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION),
+            data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
+            data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
             distribution=distribution,
+            is_live_dataset=metadata.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx)),
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             personal_sensitive_information=metadata.get(
-                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION
+                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
             record_sets=record_sets,
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
-            rdf=rdf,
         )

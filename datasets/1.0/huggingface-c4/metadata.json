@@ -2,52 +2,58 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "c4",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "A colossal, cleaned version of Common Crawl's web crawl corpus.\n\nBased on Common Crawl dataset: \"https://commoncrawl.org\".\n\nThis is the processed version of Google's C4 dataset by AllenAI.\n",
-  "citation": "\n@article{2019t5,\n    author = {Colin Raffel and Noam Shazeer and Adam Roberts and Katherine Lee and Sharan Narang and Michael Matena and Yanqi Zhou and Wei Li and Peter J. Liu},\n    title = {Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer},\n    journal = {arXiv e-prints},\n    year = {2019},\n    archivePrefix = {arXiv},\n    eprint = {1910.10683},\n}\n",
+  "citeAs": "\n@article{2019t5,\n author = {Colin Raffel and Noam Shazeer and Adam Roberts and Katherine Lee and Sharan Narang and Michael Matena and Yanqi Zhou and Wei Li and Peter J. Liu},\n title = {Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer},\n journal = {arXiv e-prints},\n year = {2019},\n archivePrefix = {arXiv},\n eprint = {1910.10683},\n}\n",
   "license": "odc-by",
   "url": "https://huggingface.co/datasets/c4",
   "version": "0.0.0",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "repo",
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/c4/tree/refs%2Fconvert%2Fparquet",
@@ -55,7 +61,7 @@
       "sha256": "https://github.com/mlcommons/croissant/issues/80"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "parquet-files",
       "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
       "containedIn": "repo",
@@ -65,41 +71,41 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "en",
       "description": "The en set of records in the dataset.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }
@@ -108,41 +114,41 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "realnewslike",
       "description": "The realnewslike set of records in the dataset.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }
@@ -151,41 +157,41 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "en.noblocklist",
       "description": "The en.noblocklist set of records in the dataset.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }
@@ -194,41 +200,41 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "en.noclean",
       "description": "The en.noclean set of records in the dataset.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "text"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "timestamp"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "url"
             }

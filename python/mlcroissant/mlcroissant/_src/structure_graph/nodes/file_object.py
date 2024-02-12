@@ -3,18 +3,13 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Mapping
-
-from etils import epath
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -31,7 +26,6 @@ class FileObject(Node):
     name: str = ""
     sha256: str | None = None
     source: Source | None = None
-    mapping: Mapping[str, epath.Path] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -39,7 +33,8 @@ class FileObject(Node):
         self.assert_has_mandatory_properties("encoding_format", "name")
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
-            self.assert_has_exclusive_properties(["md5", "sha256"])
+            if self.ctx and not self.ctx.is_live_dataset:
+                self.assert_has_exclusive_properties(["md5", "sha256"])
 
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
@@ -48,7 +43,7 @@ class FileObject(Node):
         else:
             contained_in = self.contained_in
         return remove_empty_values({
-            "@type": "sc:FileObject",
+            "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
             "name": self.name,
             "description": self.description,
             "contentSize": self.content_size,
@@ -63,15 +58,13 @@ class FileObject(Node):
     @classmethod
     def from_jsonld(
         cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
+        ctx: Context,
         file_object: Json,
-        mapping: Mapping[str, epath.Path],
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
+        check_expected_type(
+            ctx.issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT(ctx)
+        )
         content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
         contained_in = file_object.get(constants.SCHEMA_ORG_CONTAINED_IN, [])
         name = file_object.get(constants.SCHEMA_ORG_NAME, "")
@@ -81,18 +74,14 @@ class FileObject(Node):
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
         return cls(
-            issues=issues,
-            context=Context(dataset_name=context.dataset_name, distribution_name=name),
-            folder=folder,
+            ctx=ctx,
             content_url=content_url,
             content_size=content_size,
             contained_in=contained_in,
             description=description,
             encoding_format=encoding_format,
-            mapping=mapping,
-            md5=file_object.get(constants.SCHEMA_ORG_MD5),
+            md5=file_object.get(constants.SCHEMA_ORG_MD5(ctx)),
             name=name,
-            rdf=rdf,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
-            source=file_object.get(constants.ML_COMMONS_SOURCE),
+            source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
         )

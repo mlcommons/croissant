@@ -2,40 +2,46 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "read_from_tar",
@@ -44,7 +50,7 @@
   "url": "https://mlcommons.org",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "tar-gz",
       "description": "*.tar.gz containing two folders: training and validation. Each folder contains a list of images (img1.jpg, img2.jpg) with their masks (mask1.jpg, mask2.jpg).",
       "contentUrl": "data/read_from_tar.tar.gz",
@@ -52,14 +58,14 @@
       "sha256": "42c1b0638ea739f90254d58f97a2b3f6943de0e60ed0a0f86012a7456e2f555f"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "source-images",
       "containedIn": "tar-gz",
       "encodingFormat": "image/jpeg",
       "includes": "*/img*.jpg"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "source-annotations",
       "containedIn": "tar-gz",
       "encodingFormat": "image/jpeg",
@@ -68,16 +74,16 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "images",
       "description": "The images.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "id",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "source-images",
+            "fileSet": "source-images",
             "extract": {
               "fileProperty": "filename"
             },
@@ -87,22 +93,22 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "source-images",
+            "fileSet": "source-images",
             "extract": {
               "fileProperty": "content"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "split",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "source-images",
+            "fileSet": "source-images",
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -114,11 +120,11 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "annotations",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "id",
           "dataType": "sc:Integer",
           "source": {
@@ -132,11 +138,11 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "annotation",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "source-annotations",
+            "fileSet": "source-annotations",
             "extract": {
               "fileProperty": "content"
             }
@@ -145,19 +151,19 @@
       ]
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "images_with_annotations",
       "description": "The images with the mask annotations.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "split",
           "source": {
             "field": "images/split"
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "id",
           "references": {
             "field": "annotations/id"
@@ -167,14 +173,14 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image",
           "source": {
             "field": "images/image"
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "annotation",
           "source": {
             "field": "annotations/annotation"

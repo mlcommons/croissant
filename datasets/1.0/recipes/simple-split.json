@@ -2,40 +2,46 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
@@ -46,7 +52,7 @@
   "url": "https://mlcommons.org",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "books.csv",
       "contentUrl": "data/books.csv",
       "encodingFormat": "text/csv",
@@ -55,35 +61,35 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "books",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "title",
           "description": "The title of the book",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "books.csv",
+            "fileObject": "books.csv",
             "extract": {
               "column": "Title"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "Author",
           "description": "The author of the book",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "books.csv",
+            "fileObject": "books.csv",
             "extract": {
               "column": "Author"
             }
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "split",
           "description": "The data split to which belongs the record",
           "dataType": [
@@ -91,7 +97,7 @@
             "wd:Q3985153"
           ],
           "source": {
-            "distribution": "books.csv",
+            "fileObject": "books.csv",
             "extract": {
               "column": "Split"
             }

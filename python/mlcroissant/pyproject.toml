@@ -3,10 +3,11 @@
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "0.0.6"
+version = "1.0.0"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
+  { name = "Monjish Bhattacharyya" },
   { name = "Omar Benjelloun" },
   { name = "Peter Mattson" },
   { name = "Pieter Gijsbers" },
@@ -19,7 +20,8 @@ authors = [
 # Installed locally with `pip install -e .`
 dependencies = [
   "absl-py",
-  "etils[epath]",
+  # Temporarily install from GitHub to benefit the latest features.
+  "etils[epath]@git+https://github.com/google/etils.git#egg=etils[epath]",
   "jsonpath-rw",
   "networkx",
   "pandas",
@@ -38,6 +40,7 @@ dev = [
   "black==23.11.0",
   "datasets",
   "flake8-docstrings",
+  "mlcroissant[audio]",
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
@@ -49,6 +52,7 @@ dev = [
   "pytype",
   "torchdata",
 ]
+audio = ["librosa"]
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
@@ -80,6 +84,7 @@ module = [
   "datasets",
   "etils.*",
   "jsonpath_rw",
+  "librosa",
   "networkx",
   "pandas",
   "pillow",

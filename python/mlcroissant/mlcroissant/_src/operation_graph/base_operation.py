@@ -27,7 +27,7 @@ class Operations(nx.DiGraph):
 
         def is_ancestor(node1: Node, node2: Node) -> bool:
             # node1 is predecessor of node2 iff node2 is in the descendants of node1.
-            ancestors = nx.ancestors(node2.graph, node2)
+            ancestors = nx.ancestors(node2.ctx.graph, node2)
             if isinstance(node1, RecordSet):
                 # If node1 is a RecordSet, we have to inspect its fields.
                 return any(is_ancestor(field1, node2) for field1 in node1.fields)

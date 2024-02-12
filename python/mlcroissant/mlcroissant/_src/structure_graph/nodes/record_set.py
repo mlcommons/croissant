@@ -6,17 +6,13 @@ import dataclasses
 import itertools
 import json
 
-from etils import epath
-
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 
 
@@ -43,20 +39,21 @@ class RecordSet(Node):
             data = self.data
             if not isinstance(data, list):
                 self.add_error(
-                    f"{constants.ML_COMMONS_DATA} should declare a list. Got:"
+                    f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a list. Got:"
                     f" {type(data)}."
                 )
                 return
             if not data:
                 self.add_error(
-                    f"{constants.ML_COMMONS_DATA} should declare a non empty list."
+                    f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a non empty"
+                    " list."
                 )
             expected_keys = {field.name for field in self.fields}
             for i, line in enumerate(data):
                 if not isinstance(line, dict):
                     self.add_error(
-                        f"{constants.ML_COMMONS_DATA} should declare a list of dict."
-                        f" Got: a list of {type(line)}."
+                        f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a list"
+                        f" of dict. Got: a list of {type(line)}."
                     )
                     return
                 keys = set(line.keys())
@@ -68,8 +65,9 @@ class RecordSet(Node):
 
     def to_json(self) -> Json:
         """Converts the `RecordSet` to JSON."""
+        prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
-            "@type": "ml:RecordSet",
+            "@type": f"{prefix}:RecordSet",
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
@@ -79,50 +77,36 @@ class RecordSet(Node):
         })
 
     @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
-        record_set: Json,
-    ) -> RecordSet:
+    def from_jsonld(cls, ctx: Context, record_set: Json) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
-        check_expected_type(issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE)
-        record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
-        context = Context(
-            dataset_name=context.dataset_name, record_set_name=record_set_name
+        check_expected_type(
+            ctx.issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE(ctx)
         )
-        fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
+        record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
+        fields = record_set.pop(constants.ML_COMMONS_FIELD(ctx), [])
         if isinstance(fields, dict):
             fields = [fields]
-        fields = [
-            Field.from_jsonld(issues, context, folder, rdf, field) for field in fields
-        ]
-        key = record_set.get(constants.SCHEMA_ORG_KEY)
-        data = record_set.get(constants.ML_COMMONS_DATA)
+        fields = [Field.from_jsonld(ctx, field) for field in fields]
+        key = record_set.get(constants.SCHEMA_ORG_KEY(ctx))
+        data = record_set.get(constants.ML_COMMONS_DATA(ctx))
         if isinstance(data, str):
             try:
                 data = json.loads(data)
             except json.decoder.JSONDecodeError:
                 data = None
-                issues.add_error(
-                    f"{constants.ML_COMMONS_DATA} is not a proper list of JSON: {data}"
+                ctx.issues.add_error(
+                    f"{constants.ML_COMMONS_DATA(ctx)} is not a proper list of JSON:"
+                    f" {data}"
                 )
-        is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION)
+        is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION(ctx))
         return cls(
-            issues=issues,
-            folder=folder,
-            context=Context(
-                dataset_name=context.dataset_name, record_set_name=record_set_name
-            ),
+            ctx=ctx,
             data=data,
             description=record_set.get(constants.SCHEMA_ORG_DESCRIPTION),
             is_enumeration=is_enumeration,
             key=key,
             fields=fields,
             name=record_set_name,
-            rdf=rdf,
         )
 
     def check_joins_in_fields(self, fields: list[Field]):

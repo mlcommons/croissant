@@ -8,14 +8,10 @@ import json
 import re
 from typing import Any
 
-from etils import epath
-import networkx as nx
-
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.issues import Context
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -32,26 +28,18 @@ class Node(abc.ABC):
     - Metadata
     - RecordSet
 
-    When building the node, `self.issues` are populated when issues are encountered.
+    When building the node, `self.context.issues` are populated when issues are
+    encountered.
 
     Args:
-        issues: the issues that will be modified in-place.
-        context: the context of the node in the JSON-LD structure (see `Context` class).
-        folder: The path of the Croissant folder.
+        ctx: the context containing the shared state between all nodes.
         name: The name of the node.
-        graph: The structure graph as a `nx.MultiDiGraph`.
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
     """
 
-    issues: Issues = dataclasses.field(default_factory=Issues)
-    context: Context = dataclasses.field(default_factory=Context, compare=False)
-    folder: epath.Path | None = None
+    ctx: Context = dataclasses.field(default_factory=Context)
     name: str = ""
-    graph: nx.MultiDiGraph = dataclasses.field(
-        default_factory=nx.MultiDiGraph, compare=False, init=False
-    )
-    parents: list[Node] = dataclasses.field(default_factory=list, init=False)
-    rdf: Rdf = dataclasses.field(default_factory=Rdf)
+    parents: list[Node] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
@@ -68,8 +56,9 @@ class Node(abc.ABC):
             value = getattr(self, mandatory_property)
             if not value:
                 error = (
-                    f'Property "{constants.FROM_CROISSANT.get(mandatory_property)}" is'
-                    " mandatory, but does not exist."
+                    "Property"
+                    f' "{constants.FROM_CROISSANT(self.ctx).get(mandatory_property)}"'
+                    " is mandatory, but does not exist."
                 )
                 self.add_error(error)
 
@@ -84,7 +73,8 @@ class Node(abc.ABC):
             value = getattr(self, optional_property)
             if not value:
                 error = (
-                    f'Property "{constants.FROM_CROISSANT.get(optional_property)}" is'
+                    "Property"
+                    f' "{constants.FROM_CROISSANT(self.ctx).get(optional_property)}" is'
                     " recommended, but does not exist."
                 )
                 self.add_warning(error)
@@ -106,13 +96,18 @@ class Node(abc.ABC):
                 )
                 self.add_error(error)
 
+    def get_issue_context(self) -> str:
+        """Adds context to an issue by printing metadata(...) > ... > field(...)."""
+        nodes = self.parents + [self]
+        return " > ".join(f"{type(node).__name__}({node.name})" for node in nodes)
+
     def add_error(self, error: str):
         """Adds a new error."""
-        self.issues.add_error(error, self.context)
+        self.ctx.issues.add_error(error, self)
 
     def add_warning(self, warning: str):
         """Adds a new warning."""
-        self.issues.add_warning(warning, self.context)
+        self.ctx.issues.add_warning(warning, self)
 
     def __repr__(self) -> str:
         """Prints a simplified string representation of the node: `Node(uid="xxx")`."""
@@ -139,16 +134,21 @@ class Node(abc.ABC):
     @property
     def predecessors(self) -> set[Node]:
         """Predecessors in the structure graph."""
-        return set(self.graph.predecessors(self))
+        return set(self.ctx.graph.predecessors(self))
 
     @property
     def successors(self) -> tuple[Node, ...]:
         """Successors in the structure graph."""
-        if self not in self.graph:
+        if self not in self.ctx.graph:
             return ()
         # We use tuples in order to have a hashable data structure to be put in input of
         # operations.
-        return tuple(self.graph.successors(self))
+        return tuple(self.ctx.graph.successors(self))
+
+    @property
+    def issues(self) -> Issues:
+        """Shortcut to access issues in node."""
+        return self.ctx.issues
 
     @abc.abstractmethod
     def to_json(self) -> Json:
@@ -190,23 +190,22 @@ class Node(abc.ABC):
         """Hashes all immutable arguments."""
         args = []
         for field in dataclasses.fields(self):
-            # Do not hash children, graphs, issues and context:
+            # Do not hash unhashable elements:
             if field.name not in (
-                "context",
+                "ctx",
                 "creators",
                 "distribution",
                 "fields",
-                "graph",
-                "issues",
-                "mapping",
                 "parents",
-                "rdf",
                 "record_sets",
                 "sub_fields",
             ):
                 # If the code failed here, you probably added an unhashable property
                 # that should appear in the allow list above.
-                args.append(_make_hashable(getattr(self, field.name)))
+                try:
+                    args.append(_make_hashable(getattr(self, field.name)))
+                except TypeError:
+                    pass
         return hash(tuple(args))
 
     def __eq__(self, other: Any) -> bool:

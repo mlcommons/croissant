@@ -36,7 +36,7 @@ sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
 ## Verify/load a Croissant dataset
 
 ```bash
-mlcroissant validate --file ../../datasets/titanic/metadata.json
+mlcroissant validate --jsonld ../../datasets/titanic/metadata.json
 ```
 
 The command:
@@ -48,7 +48,7 @@ Similarly, you can generate a dataset by launching:
 
 ```bash
 mlcroissant load \
-    --file ../../datasets/titanic/metadata.json \
+    --jsonld ../../datasets/titanic/metadata.json \
     --record_set passengers \
     --num_records 10
 ```
@@ -101,6 +101,8 @@ Other important modules are:
 
 For the full design, refer to the [design doc](https://docs.google.com/document/d/1zYQIUX9ae1sZOOBq9OCsJ8JW8-Ejy3NLSeqaI5LtOEM/edit?resourcekey=0-CK78DfFvF7fnufyZqF3h3Q) for an overview of the implementation.
 
+**Caching**. By default, all downloaded/extracted files are cached in `~/.cache/croissant`, but you can overwrite this by setting the environment variable `$CROISSANT_CACHE`.
+
 ## Contribute
 
 All contributions are welcome! We even have [good first issues](https://github.com/mlcommons/croissant/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to start in the project. Refer to the [GitHub project](https://github.com/orgs/mlcommons/projects/26) for more detailed user stories and read above how the repo is [designed](#design).
@@ -123,38 +125,17 @@ Alternatively, you can contribute to `mlcroissant` using the "classic" GitHub wo
 You can debug the validation of the file using the `--debug` flag:
 
 ```bash
-mlcroissant validate --file ../../datasets/titanic/metadata.json --debug
+mlcroissant validate --jsonld ../../datasets/titanic/metadata.json --debug
 ```
 
 This will:
 1. print extra information, like the generated nodes;
 2. save the generated structure graph to a folder indicated in the logs.
 
-## Publishing wheels
+## Publishing packages
 
-Publishing is done manually.
-We are in the process of setting up an automatic deployment with GitHub Actions.
+To publish a package,
 
 1. Bump the version in `croissant/python/mlcroissant/pyproject.toml`.
-1. Configure Twine locally ([full tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/)):
-```
-[distutils]
-  index-servers =
-    pypi
-    mlcroissant
+2. Publish a release in GitHub. The workflow script `python-publish.yml` will trigger and publish the package to PyPI.
 
-[pypi]
-username =
-password =
-
-[mlcroissant]
-repository = https://upload.pypi.org/legacy/
-username = __token__
-password = # generate the password on https://pypi.org/manage/account/token/
-```
-1. Build locally and push to PyPI:
-```bash
-rm -rf dist/
-python -m build
-python -m twine upload --repository mlcroissant dist/*
-```

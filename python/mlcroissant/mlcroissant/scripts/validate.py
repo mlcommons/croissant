@@ -3,7 +3,7 @@
 Usage:
 
 ```
-mlcroissant validate --file /path/to/file.json
+mlcroissant validate --jsonld /path/to/file.json
 ```
 """
 
@@ -16,9 +16,17 @@ from absl import logging
 import mlcroissant as mlc
 
 flags.DEFINE_string(
-    "file",
+    "jsonld",
     None,
-    "Path to the file to validate.",
+    "JSON-LD to validate (path to the file or URL).",
+    required=True,
+)
+
+flags.DEFINE_string(
+    "file",
+    "",
+    "[DEPRECATED] Path to the file to validate.",
+    required=False,
 )
 
 flags.DEFINE_bool(
@@ -27,7 +35,7 @@ flags.DEFINE_bool(
     "Whether to print debug hints.",
 )
 
-flags.mark_flag_as_required("file")
+flags.mark_flag_as_required("jsonld")
 
 
 FLAGS = flags.FLAGS
@@ -36,10 +44,12 @@ FLAGS = flags.FLAGS
 def main(argv):
     """Main function launched by the script."""
     del argv
-    file = FLAGS.file
+    if FLAGS.file:
+        logging.warning("--file is deprecated. Please, use --jsonld with a path or URL")
+    jsonld = FLAGS.jsonld or FLAGS.file
     debug = FLAGS.debug
     try:
-        mlc.Dataset(file, debug=debug)
+        mlc.Dataset(jsonld, debug=debug)
         logging.info("Done.")
     except mlc.ValidationError as exception:
         logging.error(exception)

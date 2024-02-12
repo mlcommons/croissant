@@ -2,52 +2,58 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "ml:dataBiases",
-    "dataCollection": "ml:dataCollection",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "mnist",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n",
-  "citation": "@article{lecun2010mnist,\n  title={MNIST handwritten digit database},\n  author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n  journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n  volume={2},\n  year={2010}\n}\n",
+  "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
   "license": "mit",
   "url": "https://huggingface.co/datasets/mnist",
   "version": "1.0.0",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "repo",
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/mnist/tree/refs%2Fconvert%2Fparquet",
@@ -55,7 +61,7 @@
       "sha256": "https://github.com/mlcommons/croissant/issues/80"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "name": "parquet-files",
       "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
       "containedIn": "repo",
@@ -65,17 +71,17 @@
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "default",
       "description": "The default set of records in the dataset.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "image",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "image"
             },
@@ -85,12 +91,12 @@
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "label",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "parquet-files",
+            "fileSet": "parquet-files",
             "extract": {
               "column": "label"
             }

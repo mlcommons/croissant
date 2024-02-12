@@ -13,8 +13,9 @@ from mlcroissant._src.tests.versions import parametrize_version
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
-def get_error_msg(folder):
-    with open(f"{folder}/output.txt", "r") as file:
+def get_error_msg(folder: epath.Path):
+    path = folder / "output.txt"
+    with path.open("r") as file:
         return file.read().strip()
 
 
@@ -55,7 +56,7 @@ def load_records_and_test_equality(
 ):
     print(
         "If this test fails, update JSONL with: `mlcroissant load"
-        f" --file ../../datasets/{dataset_name} --record_set"
+        f" --jsonld ../../datasets/{version}/{dataset_name} --record_set"
         f" {record_set_name} --num_records {num_records} --debug --update_output`"
     )
     config = (
@@ -85,7 +86,7 @@ def load_records_and_test_equality(
 # You can regenerate .pkl files by launching
 # ```bash
 # mlcroissant load \
-#   --file ../../datasets/{{dataset_name}}/metadata.json \
+#   --jsonld ../../datasets/{{version}}/{{dataset_name}}/metadata.json \
 #   --record_set {{record_set_name}} \
 #   --update_output \
 #   --num_records -1
@@ -135,6 +136,11 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
+        [
+            "audio_test/metadata.json",
+            "records",
+            10,
+        ],
     ],
 )
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
@@ -169,3 +175,25 @@ def test_raises_when_the_record_set_does_not_exist(version):
     dataset = datasets.Dataset(dataset_folder / "metadata.json")
     with pytest.raises(ValueError, match="did not find"):
         dataset.records("this_record_set_does_not_exist")
+
+
+@parametrize_version()
+def test_cypress_fixtures(version):
+    # Cypress cannot read files outside of its direct scope, so we have to copy them
+    # as fixtures. This test tests that the copies are equal to the original.
+    fixture_folder: epath.Path = (
+        epath.Path(__file__).parent.parent.parent.parent.parent
+        / "editor"
+        / "cypress"
+        / "fixtures"
+        / version
+    )
+    datasets_folder: epath.Path = (
+        epath.Path(__file__).parent.parent.parent.parent.parent / "datasets" / version
+    )
+    for fixture in fixture_folder.glob("*.json"):
+        dataset = datasets_folder / f"{fixture.stem}" / "metadata.json"
+        assert json.load(fixture.open()) == json.load(dataset.open()), (
+            f"If this test fails, you probably have to copy the content of {dataset} to"
+            f" {fixture}. Launch the command `cp {dataset} {fixture}`"
+        )

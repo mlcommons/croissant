@@ -4,19 +4,16 @@ from __future__ import annotations
 
 import dataclasses
 
-from etils import epath
 from rdflib import term
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -28,15 +25,15 @@ class ParentField:
     source: Source | None = None
 
     @classmethod
-    def from_jsonld(cls, issues: Issues, json_) -> ParentField | None:
+    def from_jsonld(cls, ctx: Context, json_) -> ParentField | None:
         """Creates a `ParentField` from JSON-LD."""
         if json_ is None:
             return None
-        references = json_.get(constants.ML_COMMONS_REFERENCES)
-        source = json_.get(constants.ML_COMMONS_SOURCE)
+        references = json_.get(constants.ML_COMMONS_REFERENCES(ctx))
+        source = json_.get(constants.ML_COMMONS_SOURCE(ctx))
         return cls(
-            references=Source.from_jsonld(issues, references),
-            source=Source.from_jsonld(issues, source),
+            references=Source.from_jsonld(ctx, references),
+            source=Source.from_jsonld(ctx, source),
         )
 
     def to_json(self) -> Json:
@@ -100,15 +97,18 @@ class Field(Node):
                 # data_type is an ML semantic type:
                 elif data_type in [
                     DataType.IMAGE_OBJECT,
-                    DataType.BOUNDING_BOX,
+                    # For some reasons, pytype cannot infer `Any` on ctx:
+                    DataType.BOUNDING_BOX(self.ctx),  # pytype: disable=wrong-arg-types
+                    DataType.AUDIO_OBJECT,
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on a predecessor:
         predecessor = next((p for p in self.predecessors if isinstance(p, Field)), None)
         if predecessor is None:
             self.add_error(
-                f"The field does not specify a valid {constants.ML_COMMONS_DATA_TYPE},"
-                f" neither does any of its predecessor. Got: {self.data_types}"
+                "The field does not specify a valid"
+                f" {constants.ML_COMMONS_DATA_TYPE(self.ctx)}, neither does any of its"
+                f" predecessor. Got: {self.data_types}"
             )
             return None
         return predecessor.data_type
@@ -123,11 +123,12 @@ class Field(Node):
     def to_json(self) -> Json:
         """Converts the `Field` to JSON."""
         data_types = [
-            self.rdf.shorten_value(data_type) for data_type in self.data_types
+            self.ctx.rdf.shorten_value(data_type) for data_type in self.data_types
         ]
         parent_field = self.parent_field.to_json() if self.parent_field else None
+        prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
-            "@type": "ml:Field",
+            "@type": f"{prefix}:Field",
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,
@@ -140,26 +141,19 @@ class Field(Node):
         })
 
     @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
-        field: Json,
-    ) -> Field:
+    def from_jsonld(cls, ctx: Context, field: Json) -> Field:
         """Creates a `Field` from JSON-LD."""
         check_expected_type(
-            issues,
+            ctx.issues,
             field,
-            constants.ML_COMMONS_FIELD_TYPE,
+            constants.ML_COMMONS_FIELD_TYPE(ctx),
         )
-        references_jsonld = field.get(constants.ML_COMMONS_REFERENCES)
-        references = Source.from_jsonld(issues, references_jsonld)
-        source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
-        source = Source.from_jsonld(issues, source_jsonld)
-        data_types = field.get(constants.ML_COMMONS_DATA_TYPE, [])
-        is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
+        references_jsonld = field.get(constants.ML_COMMONS_REFERENCES(ctx))
+        references = Source.from_jsonld(ctx, references_jsonld)
+        source_jsonld = field.get(constants.ML_COMMONS_SOURCE(ctx))
+        source = Source.from_jsonld(ctx, source_jsonld)
+        data_types = field.get(constants.ML_COMMONS_DATA_TYPE(ctx), [])
+        is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION(ctx))
         if isinstance(data_types, dict):
             data_types = [data_types.get("@id")]
         elif isinstance(data_types, list):
@@ -167,31 +161,21 @@ class Field(Node):
         else:
             data_types = []
         field_name = field.get(constants.SCHEMA_ORG_NAME, "")
-        if context.field_name is None:
-            context.field_name = field_name
-        else:
-            context.sub_field_name = field_name
-        sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD, [])
+        sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD(ctx), [])
         if isinstance(sub_fields, dict):
             sub_fields = [sub_fields]
-        sub_fields = [
-            Field.from_jsonld(issues, context, folder, rdf, sub_field)
-            for sub_field in sub_fields
-        ]
+        sub_fields = [Field.from_jsonld(ctx, sub_field) for sub_field in sub_fields]
         parent_field = ParentField.from_jsonld(
-            issues, field.get(constants.ML_COMMONS_PARENT_FIELD)
+            ctx, field.get(constants.ML_COMMONS_PARENT_FIELD(ctx))
         )
-        repeated = field.get(constants.ML_COMMONS_REPEATED)
+        repeated = field.get(constants.ML_COMMONS_REPEATED(ctx))
         return cls(
-            issues=issues,
-            context=context,
-            folder=folder,
+            ctx=ctx,
             description=field.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_types=data_types,
             is_enumeration=is_enumeration,
             name=field_name,
             parent_field=parent_field,
-            rdf=rdf,
             references=references,
             repeated=repeated,
             source=source,

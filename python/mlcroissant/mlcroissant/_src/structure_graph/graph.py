@@ -54,7 +54,7 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     graph = nx.MultiDiGraph()
     # Bind graph to nodes:
     for node in metadata.nodes():
-        node.graph = graph
+        node.ctx.graph = graph
         graph.add_node(node)
     uid_to_node = _check_no_duplicate(metadata)
     for node in metadata.distribution:
@@ -77,8 +77,9 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     return graph
 
 
-def _get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
+def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
     """Retrieves the entry nodes (without predecessors) in a graph."""
+    ctx = node.ctx
     entry_nodes: list[Node] = []
     for node, indegree in graph.in_degree(graph.nodes()):
         if indegree == 0:
@@ -90,13 +91,13 @@ def _get_entry_nodes(graph: nx.MultiDiGraph) -> list[Node]:
             if not node.source:
                 node.add_error(
                     f'Node "{node.uid}" is a field and has no source. Please, use'
-                    f" {constants.ML_COMMONS_SOURCE} to specify the source."
+                    f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
                 )
             else:
                 uid = node.source.uid
                 node.add_error(
                     f"Malformed source data: {uid}. It does not refer to any existing"
-                    f" node. Have you used {constants.ML_COMMONS_FIELD} or"
+                    f" node. Have you used {constants.ML_COMMONS_FIELD(ctx)} or"
                     f" {constants.SCHEMA_ORG_DISTRIBUTION} to indicate the source field"
                     " or the source distribution? If you specified a field, it should"
                     " contain all the names from the RecordSet separated by `/`, e.g.:"
@@ -120,7 +121,7 @@ def _check_no_duplicate(metadata) -> dict[str, Node]:
 def _add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
     """Add `node` as the entry node of the graph by updating `graph` in place."""
     graph.add_node(node, parent=None)
-    entry_nodes = _get_entry_nodes(graph)
+    entry_nodes = _get_entry_nodes(graph, node)
     for entry_node in entry_nodes:
         if isinstance(node, (FileObject, FileSet)):
             graph.add_edge(entry_node, node)

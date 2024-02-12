@@ -10,7 +10,7 @@ from utils import needed_field
 from views.metadata import handle_metadata_change
 from views.metadata import MetadataEvent
 
-_NON_RELEVANT_METADATA = ["name", "distribution", "record_sets", "rdf"]
+_NON_RELEVANT_METADATA = ["ctx", "name", "distribution", "record_sets"]
 
 _INFO_TEXT = """Croissant files are composed of three layers:
 
@@ -98,7 +98,7 @@ def render_overview():
         if user_started_editing:
             warning = ""
             try:
-                issues = metadata.to_canonical().issues
+                issues = metadata.to_canonical().ctx.issues
                 if issues.errors:
                     warning += "**Errors**\n"
                     for error in issues.errors:

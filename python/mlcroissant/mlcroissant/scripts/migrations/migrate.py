@@ -40,7 +40,7 @@ from absl import flags
 from etils import epath
 
 import mlcroissant as mlc
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.json_ld import compact_jsonld
 from mlcroissant._src.core.json_ld import expand_jsonld
 
@@ -50,6 +50,12 @@ flags.DEFINE_string(
     "migration",
     None,
     "The name of the Python file with the migration.",
+)
+
+flags.DEFINE_string(
+    "version",
+    "1.0",
+    "The version to migrate (datasets/0.8, datasets/1.0, etc).",
 )
 
 FLAGS = flags.FLAGS
@@ -80,9 +86,7 @@ def get_migration_fn(migration: str | None):
 
 def migrate_dataset(json_ld):
     """Migrates a regular Croissant file using mlcroissant Python API."""
-    metadata = mlc.Metadata.from_json(
-        issues=Issues(), json_=json_ld, folder=None, mapping={}
-    )
+    metadata = mlc.Metadata.from_json(ctx=Context(), json_=json_ld)
     return metadata.to_json()
 
 
@@ -103,9 +107,12 @@ def migrate_test_dataset(dataset: epath.Path, json_ld):
 def main(argv):
     """Main function launched for the migration."""
     del argv
+    version = FLAGS.version
     # Datasets in croissant/datasets
     datasets_path = (
-        epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
+        epath.Path(__file__).parent.parent.parent.parent.parent.parent
+        / "datasets"
+        / version
     )
     datasets = [path for path in datasets_path.glob("*/*.json")]
     assert datasets, f"No dataset found in {datasets_path}"
@@ -113,8 +120,13 @@ def main(argv):
     test_path = (
         epath.Path(__file__).parent.parent.parent.parent
         / "mlcroissant/_src/tests/graphs"
+        / version
     )
-    test_datasets = list(test_path.glob("*/*.json"))
+    test_datasets = [
+        p
+        for p in test_path.glob("*/*.json")
+        if not os.fspath(p).endswith("recordset_bad_type/metadata.json")
+    ]
     assert test_datasets, f"No dataset found in {test_path}"
     for dataset in datasets:
         print(f"Converting {dataset}...")
