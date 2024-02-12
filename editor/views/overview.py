@@ -10,7 +10,7 @@ from utils import needed_field
 from views.metadata import handle_metadata_change
 from views.metadata import MetadataEvent
 
-_NON_RELEVANT_METADATA = ["name", "distribution", "record_sets", "rdf"]
+_NON_RELEVANT_METADATA = ["ctx", "name", "distribution", "record_sets"]
 
 _INFO_TEXT = """Croissant files are composed of three layers:
 

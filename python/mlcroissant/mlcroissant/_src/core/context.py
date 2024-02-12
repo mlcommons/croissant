@@ -60,7 +60,7 @@ class CroissantVersion(enum.Enum):
         return self.value >= other.value
 
 
-@dataclasses.dataclass(unsafe_hash=True)
+@dataclasses.dataclass
 class Context:
     """A global context in the application to store commonly used objects."""
 

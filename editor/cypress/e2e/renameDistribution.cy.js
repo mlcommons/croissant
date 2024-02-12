@@ -8,7 +8,7 @@ describe('Renaming of FileObjects/FileSets/RecordSets/Fields.', () => {
   it('should rename the FileObject/FileSet everywhere', () => {
     cy.visit('http://localhost:8501')
 
-    cy.fixture('titanic.json').then((fileContent) => {
+    cy.fixture('1.0/titanic.json').then((fileContent) => {
       const file = {
         fileContent,
         fileName: 'titanic.json', mimeType: 'text/json',

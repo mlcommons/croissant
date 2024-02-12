@@ -70,7 +70,7 @@ class Rdf:
     def from_json(cls, ctx, json: Json) -> Rdf:
         """Creates a `Rdf` from JSON."""
         context = get_context(json)
-        return cls(context=make_context(ctx, **context))
+        return cls(context=context)
 
     @functools.cache
     def reverse_context(self) -> Json:

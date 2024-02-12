@@ -32,17 +32,14 @@ class Node(abc.ABC):
     encountered.
 
     Args:
-        issues: the issues that will be modified in-place.
-        context: the context of the node in the JSON-LD structure (see `Context` class).
-        folder: The path of the Croissant folder.
+        ctx: the context containing the shared state between all nodes.
         name: The name of the node.
-        graph: The structure graph as a `nx.MultiDiGraph`.
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
     """
 
     ctx: Context = dataclasses.field(default_factory=Context)
     name: str = ""
-    parents: list[Node] = dataclasses.field(default_factory=list, init=False)
+    parents: list[Node] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
@@ -193,17 +190,13 @@ class Node(abc.ABC):
         """Hashes all immutable arguments."""
         args = []
         for field in dataclasses.fields(self):
-            # Do not hash children, graphs, issues and context:
+            # Do not hash unhashable elements:
             if field.name not in (
-                "context",
+                "ctx",
                 "creators",
                 "distribution",
                 "fields",
-                "graph",
-                "issues",
-                "mapping",
                 "parents",
-                "rdf",
                 "record_sets",
                 "sub_fields",
             ):

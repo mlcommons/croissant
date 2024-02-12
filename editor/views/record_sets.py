@@ -44,11 +44,9 @@ class _Result(TypedDict):
 @st.cache_data(
     show_spinner="Generating the dataset...",
     hash_funcs={
-        "mlcroissant.Metadata": hash,
-        "mlcroissant.Field": hash,
-        "mlcroissant.FileObject": hash,
-        "mlcroissant.FileSet": hash,
-        "mlcroissant.RecordSet": hash,
+        "core.state.RecordSet": lambda record_set: hash(
+            (record_set.name, record_set.description)
+        ),
     },
 )
 def _generate_data_with_timeout(record_set: RecordSet) -> _Result:

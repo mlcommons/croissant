@@ -127,6 +127,7 @@ class SelectedRecordSet:
 class FileObject:
     """FileObject analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     name: str | None = None
     description: str | None = None
     contained_in: list[str] | None = dataclasses.field(default_factory=list)
@@ -135,7 +136,6 @@ class FileObject:
     encoding_format: str | None = None
     sha256: str | None = None
     df: pd.DataFrame | None = None
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     folder: epath.PathLike | None = None
 
 
@@ -143,23 +143,23 @@ class FileObject:
 class FileSet:
     """FileSet analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
     encoding_format: str | None = ""
     includes: str | None = ""
     name: str = ""
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
 class Field:
     """Field analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     name: str | None = None
     description: str | None = None
     data_types: str | list[str] | None = None
     source: mlc.Source | None = None
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     references: mlc.Source | None = None
 
 
@@ -167,13 +167,13 @@ class Field:
 class RecordSet:
     """Record Set analogue for editor"""
 
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     name: str = ""
     data: list[Any] | None = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
 
 
 @dataclasses.dataclass
@@ -183,9 +183,9 @@ class Metadata:
     name: str = ""
     description: str | None = None
     cite_as: str | None = None
-    conforms_to: str | None = None
     context: dict = dataclasses.field(default_factory=dict)
     creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     data_biases: str | None = None
     data_collection: str | None = None
     date_published: datetime.datetime | None = None
@@ -194,7 +194,6 @@ class Metadata:
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    rdf: mlc.Rdf = dataclasses.field(default_factory=mlc.Rdf)
     version: str | None = None
 
     def __bool__(self):
@@ -296,9 +295,7 @@ class Metadata:
 
     def to_canonical(self) -> mlc.Metadata:
         distribution = []
-        ctx = mlc.Context(
-            conforms_to=self.conforms_to, rdf=mlc.Rdf(context=self.context)
-        )
+        ctx = self.ctx
         for file in self.distribution:
             if isinstance(file, FileObject):
                 distribution.append(create_class(mlc.FileObject, file, ctx=ctx))
@@ -315,7 +312,6 @@ class Metadata:
         return create_class(
             mlc.Metadata,
             self,
-            ctx=ctx,
             distribution=distribution,
             record_sets=record_sets,
         )
@@ -343,8 +339,6 @@ class Metadata:
         return create_class(
             cls,
             canonical_metadata,
-            conforms_to=canonical_metadata.ctx.conforms_to,
-            context=canonical_metadata.ctx.rdf.context,
             distribution=distribution,
             record_sets=record_sets,
         )
