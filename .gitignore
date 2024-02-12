@@ -134,3 +134,10 @@ dmypy.json
 
 # NPM
 node_modules/
+
+# Scrapy
+health/data/
+health/dbs/
+health/logs/
+health/setup.py
+health/twistd.pid
