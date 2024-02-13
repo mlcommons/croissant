@@ -40,16 +40,12 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
-        constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(
-            ctx
-        ): "personal_sensitive_information",
     }
     assert Metadata.from_jsonld(ctx, jsonld) == Metadata(
         ctx=ctx,
         name="foo",
         description="bar",
         license="License",
-        personal_sensitive_information="personal_sensitive_information",
         url="https://mlcommons.org",
         version="1.0.0",
     )

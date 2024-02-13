@@ -106,7 +106,6 @@ class Metadata(Node):
     data_social_impact: str | None = None
     data_sensitive: str | None = None
     data_maintenance: str | None = None
-    personal_sensitive_information: str | None = None
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -395,9 +394,6 @@ class Metadata(Node):
             distribution=distribution,
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
-            personal_sensitive_information=metadata.get(
-                constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
-            ),
             record_sets=record_sets,
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
