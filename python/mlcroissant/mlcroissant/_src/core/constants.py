@@ -56,93 +56,32 @@ ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
 ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
 
 
-#  RAI extension
-def ML_COMMONS_RAI_DATA_COLLECTION(ctx):
-    return ML_COMMONS(ctx).dataCollection
-
-
-def ML_COMMONS_RAI_DATA_COLLECTION_TYPE(ctx):
-    return ML_COMMONS(ctx).dataCollectionType
-
-
-def ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS(ctx):
-    return ML_COMMONS(ctx).dataCollectionTypeOthers
-
-
-def ML_COMMONS_RAI_DATA_COLLECTION_MISSING(ctx):
-    return ML_COMMONS(ctx).dataCollectionMissing
-
-
-def ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA(ctx):
-    return ML_COMMONS(ctx).dataCollectionRaw
-
-
-def ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START(ctx):
-    return ML_COMMONS(ctx).dataCollectionTimeframeStart
-
-
-def ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END(ctx):
-    return ML_COMMONS(ctx).dataCollectionTimeframeEnd
-
-
-def ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION(ctx):
-    return ML_COMMONS(ctx).dataPreprocessingImputation
-
-
-def ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL(ctx):
-    return ML_COMMONS(ctx).dataPeprocessingProtocol
-
-
-def ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION(ctx):
-    return ML_COMMONS(ctx).dataPreprocessingManipulation
-
-
-def ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL(ctx):
-    return ML_COMMONS(ctx).dataAnnotationProtocol
-
-
-def ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM(ctx):
-    return ML_COMMONS(ctx).dataAnnotationPlatform
-
-
-def ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS(ctx):
-    return ML_COMMONS(ctx).dataAnnotationAnalysis
-
-
-def ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM(ctx):
-    return ML_COMMONS(ctx).dataAnnotationPeritem
-
-
-def ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS(ctx):
-    return ML_COMMONS(ctx).dataAnnotationDemographics
-
-
-def ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS(ctx):
-    return ML_COMMONS(ctx).dataAnnotationTools
-
-
-def ML_COMMONS_RAI_DATA_USECASES(ctx):
-    return ML_COMMONS(ctx).dataUsecases
-
-
-def ML_COMMONS_RAI_DATA_BIAS(ctx):
-    return ML_COMMONS(ctx).dataBiases
-
-
-def ML_COMMONS_RAI_DATA_LIMITATION(ctx):
-    return ML_COMMONS(ctx).dataLimitation
-
-
-def ML_COMMONS_RAI_DATA_SOCIAL_IMPACT(ctx):
-    return ML_COMMONS(ctx).dataSocialImpact
-
-
-def ML_COMMONS_RAI_DATA_SENSITIVE(ctx):
-    return ML_COMMONS(ctx).dataSensitive
-
-
-def ML_COMMONS_RAI_DATA_MAINTENANCE(ctx):
-    return ML_COMMONS(ctx).dataMaintenance
+#  Croissant RAI extension
+# V1.0 namespace
+RAI = rdflib.Namespace("http://mlcommons.org/croissant-RAI/1.0/")
+# Attributes
+ML_COMMONS_RAI_DATA_COLLECTION = RAI.dataCollection
+ML_COMMONS_RAI_DATA_COLLECTION_TYPE = RAI.dataCollectionType
+ML_COMMONS_RAI_DATA_COLLECTION_TYPE_OTHERS = RAI.dataCollectionTypeOthers
+ML_COMMONS_RAI_DATA_COLLECTION_MISSING = RAI.dataCollectionMissing
+ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA = RAI.dataCollectionRaw
+ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START = RAI.dataCollectionTimeFrameStart
+ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END = RAI.dataCollectionTimeFrameEnd
+ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION = RAI.dataPreprocessingImputation
+ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL = RAI.dataPeprocessingProtocol
+ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION = RAI.dataPreprocessingManipulation
+ML_COMMONS_RAI_DATA_ANNOTATION_PROTOCOL = RAI.dataAnnotationProtocol
+ML_COMMONS_RAI_DATA_ANNOTATION_PLATFORM = RAI.dataAnnotationPlatform
+ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS = RAI.dataAnnotationAnalysis
+ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM = RAI.dataAnnotationPerItem
+ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS = RAI.dataAnnotationDemographics
+ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS = RAI.dataAnnotationTools
+ML_COMMONS_RAI_DATA_USECASES = RAI.dataUseCases
+ML_COMMONS_RAI_DATA_BIAS = RAI.dataBiases
+ML_COMMONS_RAI_DATA_LIMITATION = RAI.dataLimitation
+ML_COMMONS_RAI_DATA_SOCIAL_IMPACT = RAI.dataSocialImpact
+ML_COMMONS_RAI_DATA_SENSITIVE = RAI.dataSensitive
+ML_COMMONS_RAI_DATA_MAINTENANCE = RAI.dataMaintenance
 
 
 # RDF standard URIs.
