@@ -194,6 +194,7 @@ class Node(abc.ABC):
             if field.name not in (
                 "ctx",
                 "creators",
+                "data_types",
                 "distribution",
                 "fields",
                 "parents",
