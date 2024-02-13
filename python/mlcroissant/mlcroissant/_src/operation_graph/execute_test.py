@@ -54,7 +54,7 @@ def test_only_execute_needed_operations():
     with mock.patch.object(Download, "__call__") as download_call, mock.patch.object(
         Data, "__call__"
     ) as data_call, mock.patch.object(
-        ReadFields, "__call__", return_value=pd.Series([])
+        ReadFields, "__call__", return_value=pd.DataFrame([])
     ) as read_field_mock:
         # Use list(iterator) to actually yield all operations and execute them.
         list(execute_operations_sequentially("my-record-set", operations))

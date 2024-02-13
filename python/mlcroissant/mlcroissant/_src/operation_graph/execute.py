@@ -54,6 +54,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: dict[Operation, Any] = {}
     relevant_ops = _order_relevant_operations(operations, record_set)
+    print("DEBUGGING: relevant_ops", relevant_ops)
     for i, operation in enumerate(relevant_ops):
         try:
             previous_results = [
@@ -81,12 +82,13 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                             field.name: row[field.name]
                             for field in operation.node.fields
                         }
+
                     yield from results[operation].apply(df_to_dict, axis=1)
                 else:
                     raise NotImplementedError(
-                        "The final operation in the sequential generation of the"
-                        f"dataset returns a {type(results[operation])} instead of a"
-                        f"generator. This might indicate that the operation {operation}"
+                        "The final operation in the sequential generation of the "
+                        f"dataset returns a {type(results[operation])} instead of a "
+                        f"generator. This might indicate that the operation {operation} "
                         "is not implemented to yield examples yet."
                     )
         except Exception as e:
