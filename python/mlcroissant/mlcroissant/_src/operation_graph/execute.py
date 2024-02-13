@@ -6,10 +6,12 @@ from typing import Any
 from absl import logging
 import networkx as nx
 import pandas as pd
+from typing import Iterator
 
 from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
+from mlcroissant._src.operation_graph.operations import Data
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -29,12 +31,12 @@ def _order_relevant_operations(
     operations: Operations, record_set_name: str
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
-    # ReadFields linked to the `record_set_name`.
+    # ReadFields or Data operations linked to the `record_set_name`.
     group_record_set = next(
         (
             operation
             for operation in operations.nodes
-            if isinstance(operation, ReadFields)
+            if (isinstance(operation, ReadFields) or isinstance(operation, Data))
             and operation.node.name == record_set_name
         )
     )
@@ -51,7 +53,8 @@ def _order_relevant_operations(
 def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: dict[Operation, Any] = {}
-    for operation in _order_relevant_operations(operations, record_set):
+    relevant_ops = _order_relevant_operations(operations, record_set)
+    for i, operation in enumerate(relevant_ops):
         try:
             previous_results = [
                 results[previous_operation]
@@ -60,14 +63,32 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
             ]
             logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)
-            if isinstance(operation, ReadFields):
-                if operation.node.name != record_set:
-                    # The RecordSet will be used later in the graph by another RecordSet
-                    # This could be multi-threaded to build the pd.DataFrame faster.
-                    results[operation] = pd.DataFrame(list(results[operation]))
-                else:
-                    # This is the target RecordSet, so we can yield records.
+            if isinstance(operation, ReadFields) and operation.node.name != record_set:
+                # The RecordSet will be used later in the graph by another RecordSet.
+                # This could be multi-threaded to build the pd.DataFrame faster.
+                results[operation] = pd.DataFrame(list(results[operation]))
+
+            # This is the target RecordSet, as it has the same name and is the last
+            # in the ordered operations chain. So we can yield records.
+            if (i == len(relevant_ops) - 1) and operation.node.name == record_set:
+                if isinstance(results[operation], Iterator):
                     yield from results[operation]
+                elif isinstance(results[operation], pd.DataFrame):
+                    # Output of the operation is a DataFrame and needs to be formatted.
+                    def df_to_dict(row):
+                        """Formats a DataFrame's row to a dict of the needed fields."""
+                        return {
+                            field.name: row[field.name]
+                            for field in operation.node.fields
+                        }
+                    yield from results[operation].apply(df_to_dict, axis=1)
+                else:
+                    raise NotImplementedError(
+                        "The final operation in the sequential generation of the"
+                        f"dataset returns a {type(results[operation])} instead of a"
+                        f"generator. This might indicate that the operation {operation}"
+                        "is not implemented to yield examples yet."
+                    )
         except Exception as e:
             raise GenerationError(
                 "An error occured during the sequential generation of the dataset, more"
