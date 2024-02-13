@@ -195,7 +195,6 @@ class Metadata(Node):
             "rai:dataMaitenance": self.data_maintenance,
             "citation": self.citation,
             "license": self.license,
-            "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],

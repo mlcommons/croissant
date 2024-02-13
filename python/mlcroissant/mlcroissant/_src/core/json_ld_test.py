@@ -45,7 +45,6 @@ def test_make_context():
         "md5": "cr:md5",
         "parentField": "cr:parentField",
         "path": "cr:path",
-        "personalSensitiveInformation": "cr:personalSensitiveInformation",
         "rai": "http://mlcommons.org/croissant-RAI/1.0/",
         "recordSet": "cr:recordSet",
         "references": "cr:references",

@@ -27,7 +27,6 @@
     "md5": "sc:md5",
     "parentField": "ml:parentField",
     "path": "ml:path",
-    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "rai": "http://mlcommons.org/croissant-RAI/1.0/",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
