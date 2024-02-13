@@ -12,7 +12,7 @@ croissant:FileObject a rdf:Class ;
 
 croissant:FileSet a rdf:Class ;
   rdfs:label "FileSet" ;
-  rdfs:comment "A set of homogeneous files extracted from a container, optionally filtered by inclusion and/or exclusion filters. " ;
+  rdfs:comment "A set of homogeneous files extracted from a container, optionally filtered by inclusion and/or exclusion filters." ;
   rdfs:subClassOf schema:CreativeWork .
 
 croissant:RecordSet a rdf:Class ;
