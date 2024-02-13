@@ -75,6 +75,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
                     yield from results[operation]
                 elif isinstance(results[operation], pd.DataFrame):
                     # Output of the operation is a DataFrame and needs to be formatted.
+
                     def df_to_dict(row):
                         """Formats a DataFrame's row to a dict of the needed fields."""
                         return {
