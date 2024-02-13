@@ -54,7 +54,6 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
     results: dict[Operation, Any] = {}
     relevant_ops = _order_relevant_operations(operations, record_set)
-    print("DEBUGGING: relevant_ops", relevant_ops)
     for i, operation in enumerate(relevant_ops):
         try:
             previous_results = [
