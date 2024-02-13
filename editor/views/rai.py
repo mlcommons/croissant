@@ -7,11 +7,16 @@ from events.metadata import LICENSES_URL
 from events.rai import handle_rai_change
 from events.rai import RaiEvent
 
+_INFO_TEXT = """This tab is the Responsible AI extension of Croissant. **Filling this tab is optional.**
+        
+More information on how to fill this part at: http://mlcommons.org/croissant-RAI/1.0/.
+"""
+
 
 def render_rai_metadata():
     """Renders the `Metadata` view."""
     metadata: Metadata = st.session_state[Metadata]
-
+    st.info(_INFO_TEXT, icon="💡")
     col1, col2 = st.columns([1, 1])
     with col1.expander("**Provenance**", expanded=True):
         with st.expander("**Data Collection**", expanded=False):
@@ -368,19 +373,19 @@ def render_rai_metadata():
                             on_change=handle_rai_change,
                             args=(RaiEvent.RAI_SENSITIVE, metadata, key),
                         )
-                    else:
-                        key = "metadata-personal-sensitive-information_" + "0"
-                        st.text_area(
-                            label=(
-                                "Personal and sensitive information, if"
-                                " contained within the dataset, can play an important role in the"
-                                " mitigation of any risks and the responsible use of the datasets."
-                            ),
-                            key=key,
-                            value=metadata.data_sensitive,
-                            on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
-                        )
+                else:
+                    key = "metadata-personal-sensitive-information_" + "0"
+                    st.text_area(
+                        label=(
+                            "Personal and sensitive information, if"
+                            " contained within the dataset, can play an important role in the"
+                            " mitigation of any risks and the responsible use of the datasets."
+                        ),
+                        key=key,
+                        value=metadata.data_sensitive,
+                        on_change=handle_rai_change,
+                        args=(RaiEvent.RAI_SENSITIVE, metadata, key),
+                    )
             else:
                 key = "metadata-personal-sensitive-information_" + "0"
                 st.text_area(
