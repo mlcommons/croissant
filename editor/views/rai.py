@@ -185,6 +185,7 @@ def render_rai_metadata():
                                 ),
                             )
                     else:
+                        metadata.data_preprocessing_protocol = [metadata.data_preprocessing_protocol]
                         key = "metadata-data-preprocessing-protocol_" + "0"
                         st.text_area(
                             label=(
@@ -263,6 +264,7 @@ def render_rai_metadata():
                             args=(RaiEvent.RAI_DATA_USECASES, metadata, key),
                         )
                 else:
+                    metadata.data_usecases = [metadata.data_usecases]
                     key = "metadata-data-usecases_" + "0"
                     st.text_area(
                         label=(
@@ -316,6 +318,7 @@ def render_rai_metadata():
                             args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
                         )
                 else:
+                    metadata.data_biases = [metadata.data_biases]
                     key = "metadata-data-biases_" + "0"
                     st.text_area(
                         label=(
@@ -374,6 +377,7 @@ def render_rai_metadata():
                             args=(RaiEvent.RAI_SENSITIVE, metadata, key),
                         )
                 else:
+                    metadata.data_sensitive = [metadata.data_sensitive]
                     key = "metadata-personal-sensitive-information_" + "0"
                     st.text_area(
                         label=(
@@ -437,6 +441,7 @@ def render_rai_metadata():
                             args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
                         )
                 else:
+                    metadata.data_limitation = [metadata.data_limitation]
                     key = "metadata-data-limitations_" + "0"
                     st.text_area(
                         label=(
