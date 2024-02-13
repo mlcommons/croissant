@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get install -y libgraphviz-dev git-lfs
+sudo apt-get update && sudo apt-get install -y libgraphviz-dev git-lfs
 
 # Install dependencies except mlcroissant itself
 pip install absl-py \
