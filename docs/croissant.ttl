@@ -29,7 +29,7 @@ croissant:DataType a rdf:Class ;
 
 croissant:Format a rdf:Class ;
   rdfs:label "Format" ;
-  rdfs:comment "Specifies how to parse the format of the data froma string representation. For example, format may hold a date format string, a number format, or a bounding box format." ; 
+  rdfs:comment "Specifies how to parse the format of the data from a string representation. For example, format may hold a date format string, a number format, or a bounding box format." ; 
   rdfs:subClassOf schema:Text .
 
 croissant:Field a rdf:Class ;
