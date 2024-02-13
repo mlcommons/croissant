@@ -333,7 +333,6 @@ class Metadata(Node):
             ctx.issues,
             metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START),
         )
-        print(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START)
         date_collection_timeframe_end = from_str_to_date_time(
             ctx.issues,
             metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END),

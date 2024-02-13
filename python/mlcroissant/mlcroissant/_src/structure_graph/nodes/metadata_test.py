@@ -40,8 +40,6 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
-        constants.ML_COMMONS_DATA_BIASES(ctx): "data_biases",
-        constants.ML_COMMONS_DATA_COLLECTION(ctx): "data_collection",
         constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(
             ctx
         ): "personal_sensitive_information",
@@ -50,8 +48,6 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         ctx=ctx,
         name="foo",
         description="bar",
-        data_biases="data_biases",
-        data_collection="data_collection",
         license="License",
         personal_sensitive_information="personal_sensitive_information",
         url="https://mlcommons.org",
