@@ -114,8 +114,9 @@ Croissant datasets.
   - Via download URL (ex: https://www.kaggle.com/datasets/unsdsn/world-happiness/croissant/download)
 - [OpenML](https://www.openml.org/search?type=data) offers a `Croissant` button
 on all of their datasets to download the underlying Croissant JSON-LD file.
-- [Hugging Face](https://huggingface.co/) offers an API endpoint to build a
-Croissant JSON-LD.
+- [Hugging Face](https://huggingface.co/) embeds Croissant JSON-LD directly in the HTML of dataset pages. It also offers ways to download the Croissant JSON-LD file:
+  - Via a `Croissant` tag button on the dataset's page (ex: https://huggingface.co/datasets/CohereForAI/aya_collection)
+  - Via their API (ex: https://datasets-server.huggingface.co/croissant?dataset=CohereForAI/aya_collection)
 - [TFDS](https://www.tensorflow.org/datasets/overview) has a
 [`CroissantBuilder`](https://www.tensorflow.org/datasets/format_specific_dataset_builders#croissantbuilder)
 to transform any JSON-LD file into a TFDS dataset, which makes it possible to load
