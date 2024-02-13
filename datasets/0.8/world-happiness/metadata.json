@@ -48,9 +48,9 @@
       "name": "archive.zip",
       "description": "Archive containing all the contents of the World Happiness Report dataset",
       "contentSize": "36.809 KB",
-      "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/unsdsn/world-happiness",
+      "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/unsdsn/world-happiness/archive.zip",
       "encodingFormat": "application/zip",
-      "md5": "bc1++XNoIWW685QyDLewsg=="
+      "sha256": "7967bcf1ee6de3a8a597f45ca3cfd378c8a98a91109e2d8f164dc86aefca9c89"
     },
     {
       "@type": "sc:FileObject",
