@@ -75,7 +75,7 @@ jobs:
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
-            if [ "$notebook" != "recipes/PyTorch_FLORES200.ipynb" ]
+            if [ "$notebook" != "recipes/flores200_datapipes.ipynb" ]
             then
               jupyter nbconvert \
                 --ExecutePreprocessor.timeout=600 \
