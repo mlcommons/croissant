@@ -54,6 +54,7 @@
   ],
   "license": "cc-by-sa-4.0",
   "url": "https://github.com/facebookresearch/flores",
+  "version": "0.0.0",
   "distribution": [
     {
       "@type": "cr:FileObject",
