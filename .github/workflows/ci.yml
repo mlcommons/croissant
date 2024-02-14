@@ -75,8 +75,19 @@ jobs:
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
-            if [ "$notebook" != "recipes/flores200_datapipes.ipynb" ]
+            if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ]
             then
+              MAX_SEQUENCE_LENGTH="10" \
+              TRAIN_BATCH_SIZE="1" \
+              TEST_BATCH_SIZE="1" \
+              NUM_TRAIN_EPOCHS="0" \
+              TEST_FRACTION="2e-5" \
+              jupyter nbconvert \
+                --ExecutePreprocessor.timeout=600 \
+                --ExecutePreprocessor.kernel_name=croissant-notebook \
+                --to notebook \
+                --execute "$notebook"
+            else
               jupyter nbconvert \
                 --ExecutePreprocessor.timeout=600 \
                 --ExecutePreprocessor.kernel_name=croissant-notebook \
