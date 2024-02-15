@@ -6,9 +6,7 @@ from components.flex import st_flex
 from core.constants import OAUTH_CLIENT_ID
 from core.constants import OAUTH_STATE
 from core.constants import REDIRECT_URI
-from core.query_params import clear_query_params
 from core.query_params import get_project_timestamp
-from core.query_params import get_state
 from core.state import CurrentProject
 from core.state import get_user
 from core.state import User
@@ -23,7 +21,8 @@ init_state()
 user = get_user()
 
 if OAUTH_CLIENT_ID and not user:
-    state = get_state("state")
+    query_params = st.query_params
+    state = query_params.get_all("state")
     if state and state[0] == OAUTH_STATE:
         code = query_params["code"]
         if not code:
@@ -35,7 +34,7 @@ if OAUTH_CLIENT_ID and not user:
         except:
             raise
         finally:
-            clear_query_params()
+            st.query_params.clear()
     else:
         redirect_uri = urllib.parse.quote(REDIRECT_URI, safe="")
         client_id = urllib.parse.quote(OAUTH_CLIENT_ID, safe="")
@@ -49,7 +48,7 @@ if OAUTH_CLIENT_ID and not user:
 
 def _back_to_menu():
     """Sends the user back to the menu."""
-    clear_query_params()
+    st.query_params.clear()
     init_state(force=True)
 
 
