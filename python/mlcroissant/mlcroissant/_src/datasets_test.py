@@ -146,20 +146,8 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
-
-# Non-hermetic test cases (data from the internet) for 1.0 specs version only.
 @pytest.mark.nonhermetic
-@pytest.mark.parametrize(
-    ["dataset_name", "record_set_name", "num_records"],
-    [
-        ["bigcode-the-stack/metadata.json", "default", 10]
-    ]
-)
-def test_nonhermetic_loading(dataset_name, record_set_name, num_records):
-    load_records_and_test_equality("1.0", dataset_name, record_set_name, num_records)
-
-@pytest.mark.nonhermetic
-def test_load_from_huggingface_1_0():
+def test_load_from_huggingface():
     url = "https://datasets-server.huggingface.co/croissant?dataset=mnist&full=true"
     dataset = datasets.Dataset(url)
     has_one_record = False
