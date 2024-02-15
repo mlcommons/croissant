@@ -57,6 +57,8 @@ mlcroissant load \
 
 If the `encodingFormat` of a `distribution` is `git+https`, please provide the username and password by setting the `CROISSANT_GIT_USERNAME` and `CROISSANT_GIT_PASSWORD` environment variables. These will be used to construct the authentication necessary to load the distribution.
 
+Note that, for datasets hosted on HuggingFace, `CROISSANT_GIT_USERNAME` and `CROISSANT_GIT_PASSWORD` should correspond respectively to your HuggingFace's username and User Access Token. User Access Tokens can be generated following [this guide](https://huggingface.co/docs/hub/security-tokens#user-access-tokens).
+
 ### Loading a `distribution` via HTTP with Basic Auth
 
 If the `contentUrl` of a `distribution` requires authentication via Basic Auth, please provide the username and password by setting the `CROISSANT_BASIC_AUTH_USERNAME` and `CROISSANT_BASIC_AUTH_PASSWORD` environment variables. These will be used to construct the authentication necessary to load the distribution.

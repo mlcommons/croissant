@@ -92,10 +92,7 @@
           "source": {
             "fileSet": "parquet-files",
             "extract": {
-              "fileProperty": "fullpath"
-            },
-            "transform": {
-              "regex": "^data\\/(\\d\\w\\+\\-)+\\/train-\\d\\d\\d\\d\\d-of-\\d\\d\\d\\d\\d\\.parquet$"
+              "column": "lang"
             }
           }
         },

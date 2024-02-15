@@ -94,7 +94,7 @@ def _to_bytes(value: Any) -> bytes:
         return value
     elif isinstance(value, str):
         return value.encode("utf-8")
-    elif isinstance(value, int):
+    elif isinstance(value, int) or isinstance(value, float):
         return str(value).encode("utf-8")
     else:
         return bytes(value)
