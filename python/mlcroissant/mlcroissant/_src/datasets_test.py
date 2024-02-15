@@ -146,6 +146,7 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
+
 @pytest.mark.nonhermetic
 def test_load_from_huggingface():
     url = "https://datasets-server.huggingface.co/croissant?dataset=mnist&full=true"
