@@ -1,0 +1,8 @@
+duckdb
+pandas
+polars
+pyarrow
+scrapy
+scrapyd
+scrapydweb
+scrapyd-client

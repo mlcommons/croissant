@@ -8,3 +8,4 @@ rdflib
 requests
 streamlit
 streamlit-nested-layout
+twisted
