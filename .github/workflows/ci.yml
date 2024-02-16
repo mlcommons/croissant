@@ -77,6 +77,7 @@ jobs:
           do
             if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ]
             then
+              GITHUB_HEAD_REF="$GITHUB_HEAD_REF"
               MAX_SEQUENCE_LENGTH="10" \
               TRAIN_BATCH_SIZE="1" \
               TEST_BATCH_SIZE="1" \
