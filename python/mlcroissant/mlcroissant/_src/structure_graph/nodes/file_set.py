@@ -61,4 +61,5 @@ class FileSet(Node):
             encoding_format=file_set.get(constants.SCHEMA_ORG_ENCODING_FORMAT),
             includes=file_set.get(constants.ML_COMMONS_INCLUDES(ctx)),
             name=name,
+            uuid=file_set.get("@id"),
         )

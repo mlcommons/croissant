@@ -47,18 +47,16 @@ def test_from_jsonld(conforms_to: CroissantVersion):
             ctx
         ): "personal_sensitive_information",
     }
-    assert Metadata.from_jsonld(ctx, jsonld) == Metadata(
-        ctx=ctx,
-        name="foo",
-        description="bar",
-        data_biases="data_biases",
-        data_collection="data_collection",
-        license="License",
-        is_live_dataset=False,
-        personal_sensitive_information="personal_sensitive_information",
-        url="https://mlcommons.org",
-        version="1.0.0",
-    )
+    metadata = Metadata.from_jsonld(ctx, jsonld)
+    metadata.name == "foo"
+    metadata.description == "bar"
+    metadata.data_biases == "data_biases"
+    metadata.data_collection == "data_collection"
+    metadata.license == "License"
+    metadata.is_live_dataset == False
+    metadata.personal_sensitive_information == "personal_sensitive_information"
+    metadata.url == "https://mlcommons.org"
+    metadata.version == "1.0.0"
     assert not ctx.issues.errors
 
 

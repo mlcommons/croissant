@@ -107,6 +107,7 @@ class RecordSet(Node):
             key=key,
             fields=fields,
             name=record_set_name,
+            uuid=record_set.get("@id"),
         )
 
     def check_joins_in_fields(self, fields: list[Field]):

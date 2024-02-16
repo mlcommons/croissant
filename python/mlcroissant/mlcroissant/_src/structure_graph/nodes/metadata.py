@@ -309,6 +309,7 @@ class Metadata(Node):
                 constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
             record_sets=record_sets,
+            uuid=metadata.get("@id"),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )

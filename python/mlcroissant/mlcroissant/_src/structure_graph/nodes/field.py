@@ -180,4 +180,5 @@ class Field(Node):
             repeated=repeated,
             source=source,
             sub_fields=sub_fields,
+            uuid=field.get("@id"),
         )

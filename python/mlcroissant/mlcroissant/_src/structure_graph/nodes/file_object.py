@@ -84,4 +84,5 @@ class FileObject(Node):
             name=name,
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
+            uuid=file_object.get("@id"),
         )
