@@ -74,6 +74,10 @@ def get_state() -> str | None:
     return _get_query_param("state")
 
 
+def get_code():
+    return _get_query_param("code")
+
+
 def set_project(project: CurrentProject):
     _set_query_param(QueryParams.OPEN_PROJECT, project.path.name)
 
