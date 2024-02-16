@@ -117,6 +117,7 @@ class Records:
         Warning: at the moment, this method yields examples from the first explored
         record_set.
         """
+        # We only consider the operations that are useful to produce the `ReadFields`.
         operations = self._filter_interesting_operations()
         if self.debug:
             graphs_utils.pretty_print_graph(operations)
@@ -125,8 +126,7 @@ class Records:
         # We can stream the dataset iff the operation graph is a path graph (meaning
         # that all operations lie on a single straight line, i.e. have an
         # in-degree of 0 or 1. That means that the operation graph is a single line
-        # (without external joins for example). We only consider the operations that
-        # are useful to produce the `ReadFields(record_set)`.
+        # (without external joins for example).
         can_stream_dataset = all(d == 1 or d == 2 for _, d in operations.degree())
         if can_stream_dataset:
             yield from execute_operations_in_streaming(
