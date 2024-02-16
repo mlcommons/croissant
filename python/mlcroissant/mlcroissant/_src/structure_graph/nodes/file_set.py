@@ -9,6 +9,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 
 
@@ -61,5 +62,5 @@ class FileSet(Node):
             encoding_format=file_set.get(constants.SCHEMA_ORG_ENCODING_FORMAT),
             includes=file_set.get(constants.ML_COMMONS_INCLUDES(ctx)),
             name=name,
-            uuid=file_set.get("@id"),
+            uuid=uuid_from_jsonld(file_set),
         )

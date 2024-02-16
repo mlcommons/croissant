@@ -6,20 +6,15 @@ import abc
 import dataclasses
 import re
 from typing import Any
-import uuid
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import generate_uid
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
-
-
-def _generate_uid():
-    """Generates a 16-byte UID."""
-    return str(uuid.uuid4())
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -47,7 +42,7 @@ class Node(abc.ABC):
     parents: list[Node] = dataclasses.field(default_factory=list)
     # TODO(https://github.com/mlcommons/croissant/discussions/506): During the
     # implementation of a new reference mechanism, this is deemed to replace `uid`.
-    uuid: str = dataclasses.field(default_factory=_generate_uid)
+    uuid: str = dataclasses.field(default_factory=generate_uid)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""

@@ -13,6 +13,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -180,5 +181,5 @@ class Field(Node):
             repeated=repeated,
             source=source,
             sub_fields=sub_fields,
-            uuid=field.get("@id"),
+            uuid=uuid_from_jsonld(field),
         )

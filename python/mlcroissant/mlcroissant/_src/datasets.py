@@ -143,12 +143,12 @@ class Records:
         operations = self.dataset.operations.operations
         source = next(
             operation
-            for operation in operations.nodes()
+            for operation in operations.nodes
             if isinstance(operation, InitOperation)
         )
         target = next(
             operation
-            for operation in operations.nodes()
+            for operation in operations.nodes
             if isinstance(operation, ReadFields)
             and operation.node.name == self.record_set
         )
