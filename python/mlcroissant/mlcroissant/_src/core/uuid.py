@@ -6,7 +6,7 @@ from mlcroissant._src.core.types import Json
 
 
 def generate_uid() -> str:
-    """Generates a random UUID of version 4."""
+    """Generates a UUID of version 4 because it's random and simple."""
     return str(uuid.uuid4())
 
 
