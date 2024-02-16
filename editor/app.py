@@ -7,6 +7,7 @@ from core.constants import OAUTH_CLIENT_ID
 from core.constants import OAUTH_STATE
 from core.constants import REDIRECT_URI
 from core.query_params import clear_query_params
+from core.query_params import get_code
 from core.query_params import get_project_timestamp
 from core.query_params import get_state
 from core.state import CurrentProject
@@ -23,9 +24,9 @@ init_state()
 user = get_user()
 
 if OAUTH_CLIENT_ID and not user:
-    state = get_state("state")
-    if state and state[0] == OAUTH_STATE:
-        code = query_params["code"]
+    state = get_state()
+    if state and state == OAUTH_STATE:
+        code = get_code()
         if not code:
             st.stop()
         try:
