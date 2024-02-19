@@ -152,6 +152,22 @@ class Node(abc.ABC):
         return set(self.ctx.graph.predecessors(self))
 
     @property
+    def recursive_predecessors(self) -> set[Node]:
+        """Predecessors and predecessors of predecessors in the structure graph."""
+        predecessors = set()
+        for predecessor in self.predecessors:
+            predecessors.add(predecessor)
+            predecessors.update(predecessor.recursive_predecessors)
+        return predecessors
+
+    @property
+    def predecessor(self) -> Node | None:
+        """First predecessor in the structure graph."""
+        if not self.ctx.graph.has_node(self):
+            return None
+        return next(self.ctx.graph.predecessors(self), None)
+
+    @property
     def successors(self) -> tuple[Node, ...]:
         """Successors in the structure graph."""
         if self not in self.ctx.graph:
@@ -159,6 +175,22 @@ class Node(abc.ABC):
         # We use tuples in order to have a hashable data structure to be put in input of
         # operations.
         return tuple(self.ctx.graph.successors(self))
+
+    @property
+    def recursive_successors(self) -> set[Node]:
+        """Successors and successors of successors in the structure graph."""
+        successors = set()
+        for successor in self.successors:
+            successors.add(successor)
+            successors.update(successor.recursive_successors)
+        return successors
+
+    @property
+    def successor(self) -> Node | None:
+        """Direct successor in the structure graph."""
+        if not self.ctx.graph.has_node(self):
+            return None
+        return next(self.ctx.graph.successors(self), None)
 
     @property
     def issues(self) -> Issues:

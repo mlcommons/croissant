@@ -8,6 +8,7 @@ import networkx as nx
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import Concatenate
 from mlcroissant._src.operation_graph.operations import Data
@@ -38,23 +39,27 @@ def _find_record_set(node: Node) -> RecordSet:
     raise ValueError(f"Node {node} has no RecordSet parent.")
 
 
-def _add_operations_for_field_with_source(
+def _add_operations_for_record_set(
     operations: Operations,
-    node: Field,
+    record_set: RecordSet,
 ):
-    """Adds all operations for a node of type `Field`.
+    """Adds all operations for a node of type `RecordSet`.
 
     Operations are:
 
     - `Join` if the field comes from several sources.
     - `ReadFields` to specify how the fields are read.
     """
-    record_set = _find_record_set(node)
-    operation = operations.last_operations(node, only_leaf=True)
+    if record_set.data:
+        Data(operations=operations, node=record_set)
+        return
     has_join = any(field for field in record_set.fields if field.references.uid)
     if has_join:
-        operation = [operation >> Join(operations=operations, node=record_set)]
-    (operation >> ReadFields(operations=operations, node=record_set))
+        Join(operations=operations, node=record_set) >> ReadFields(
+            operations=operations, node=record_set
+        )
+    else:
+        ReadFields(operations=operations, node=record_set)
 
 
 def _add_operations_for_file_object(
@@ -71,12 +76,10 @@ def _add_operations_for_file_object(
     - `Concatenate` to merge several dataframes into one.
     - `Read` to read the file if it's a CSV.
     """
-    if node.contained_in:
-        # Chain the operation from the predecessor
-        operation = operations.last_operations(node, only_leaf=False)
-    else:
+    operation: Operation | None = None
+    if not node.contained_in:
         # Download the file
-        operation = [Download(operations=operations, node=node)]
+        operation = Download(operations=operations, node=node)
     first_operation = operation
     for successor in node.successors:
         # Reset `operation` to be the very first operation at each loop.
@@ -87,16 +90,16 @@ def _add_operations_for_file_object(
             and isinstance(successor, (FileObject, FileSet))
             and not should_extract(successor.encoding_format)
         ):
-            operation = [operation >> Extract(operations=operations, node=node)]
+            operation = operation >> Extract(operations=operations, node=node)
         if isinstance(successor, FileSet):
-            operation = [
+            operation = (
                 operation
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
-            ]
+            )
         if node.encoding_format and not should_extract(node.encoding_format):
             fields = tuple([
-                field for field in node.successors if isinstance(field, Field)
+                field for field in node.recursive_successors if isinstance(field, Field)
             ])
             operation >> Read(
                 operations=operations,
@@ -116,7 +119,7 @@ def _add_operations_for_git(
     for successor in node.successors:
         if isinstance(successor, FileSet):
             fields = tuple(
-                field for field in node.successors if isinstance(field, Field)
+                field for field in node.recursive_successors if isinstance(field, Field)
             )
             (
                 operation
@@ -136,7 +139,9 @@ def _add_operations_for_local_file_sets(
     folder: epath.Path,
 ):
     """Adds all operations for a FileSet reading from local files."""
-    fields = tuple([field for field in node.successors if isinstance(field, Field)])
+    fields = tuple([
+        field for field in node.recursive_successors if isinstance(field, Field)
+    ])
     (
         LocalDirectory(
             operations=operations,
@@ -151,6 +156,22 @@ def _add_operations_for_local_file_sets(
             fields=fields,
         )
     )
+
+
+def _add_operations_for_field(operations: Operations, node: Field):
+    """Adds all joins for a Field."""
+    record_set = _find_record_set(node)
+    joins = [
+        operation
+        for operation in operations.nodes
+        if isinstance(operation, Join) and operation.node == record_set
+    ]
+    for join in joins:
+        left_node = node.ctx.node_by_uid(node.source.uid)
+        right_node = node.ctx.node_by_uid(node.references.uid)
+        if left_node and right_node:
+            join.connect_to_last_operation(left_node)
+            join.connect_to_last_operation(right_node)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -171,23 +192,8 @@ class OperationGraph:
         layers in a breadth-first search.
         """
         operations = Operations()
-        # Find all fields
         for node in nx.topological_sort(ctx.graph):
-            if isinstance(node, Field):
-                parent = node.parent
-                # TODO(https://github.com/mlcommons/croissant/issues/310): Change the
-                # condition if isinstance(node, RecordSet). We don't need to iterate on
-                # fields anymore as all fields are computed at the RecordSet level with
-                # ReadFields.
-                parent_has_data = isinstance(parent, RecordSet) and parent.data
-                if node.source and not node.sub_fields and not parent_has_data:
-                    _add_operations_for_field_with_source(
-                        operations,
-                        node,
-                    )
-            elif isinstance(node, RecordSet) and node.data:
-                Data(operations=operations, node=node)
-            elif isinstance(node, FileObject):
+            if isinstance(node, FileObject):
                 if node.encoding_format == EncodingFormat.GIT:
                     _add_operations_for_git(operations, node, ctx.folder)
                 else:
@@ -195,6 +201,13 @@ class OperationGraph:
             elif isinstance(node, FileSet):
                 if not node.contained_in:
                     _add_operations_for_local_file_sets(operations, node, ctx.folder)
+            elif isinstance(node, RecordSet):
+                _add_operations_for_record_set(
+                    operations,
+                    node,
+                )
+            elif isinstance(node, Field):
+                _add_operations_for_field(operations, node)
 
         # Attach all entry nodes to a single `start` node
         entry_operations = operations.entry_operations()

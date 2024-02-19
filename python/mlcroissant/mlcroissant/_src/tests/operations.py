@@ -1,8 +1,8 @@
 """Testing utils for `Operation`."""
 
-import networkx as nx
+from mlcroissant._src.operation_graph.base_operation import Operations
 
 
-def operations() -> nx.DiGraph:
+def operations() -> Operations:
     """An empty graph of operations to be used in tests."""
-    return nx.DiGraph()
+    return Operations()
