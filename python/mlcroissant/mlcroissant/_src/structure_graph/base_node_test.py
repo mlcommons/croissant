@@ -68,15 +68,10 @@ def test_validate_name(name, expected_errors):
 
 
 def test_eq():
-    node_1_with_parent_a = create_test_node(Node, name="node1")
-    node_1_with_parent_a.parents = ["parentA"]
-    node_1_with_parent_b = create_test_node(Node, name="node1")
-    node_1_with_parent_b.parents = ["parentB"]
-    node_2_with_parent_a = create_test_node(Node, name="node2")
-    node_2_with_parent_a.parents = ["parentA"]
-    node_2_with_parent_b = create_test_node(Node, name="node2")
-    node_2_with_parent_b.parents = ["parentB"]
-    assert node_1_with_parent_a == node_1_with_parent_b
-    assert node_2_with_parent_a == node_2_with_parent_b
-    assert node_1_with_parent_a != node_2_with_parent_a
-    assert node_1_with_parent_a != node_2_with_parent_b
+    node1 = create_test_node(Node, uuid="node1", name="node1")
+    node2 = create_test_node(Node, uuid="node2", name="node2")
+    node1_doppelganger = create_test_node(Node, uuid="node1", name="node1_doppelganger")
+    # Same UUID.
+    assert node1 == node1_doppelganger
+    # Different UUID.
+    assert node1 != node2

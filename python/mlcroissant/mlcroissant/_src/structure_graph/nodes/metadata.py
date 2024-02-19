@@ -21,6 +21,7 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
@@ -309,6 +310,7 @@ class Metadata(Node):
                 constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
             record_sets=record_sets,
+            uuid=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )

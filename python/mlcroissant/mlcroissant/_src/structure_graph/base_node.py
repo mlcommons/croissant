@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import abc
 import dataclasses
-import json
 import re
 from typing import Any
 
@@ -12,6 +11,7 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import generate_uuid
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -40,6 +40,9 @@ class Node(abc.ABC):
     ctx: Context = dataclasses.field(default_factory=Context)
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
+    # TODO(https://github.com/mlcommons/croissant/discussions/506): During the
+    # implementation of a new reference mechanism, this is deemed to replace `uid`.
+    uuid: str = dataclasses.field(default_factory=generate_uuid)
 
     def __post_init__(self):
         """Checks for `name` (common property between all nodes)."""
@@ -53,14 +56,20 @@ class Node(abc.ABC):
                 If the node doesn't have one, it triggers an error.
         """
         for mandatory_property in mandatory_properties:
-            value = getattr(self, mandatory_property)
-            if not value:
-                error = (
-                    "Property"
-                    f' "{constants.FROM_CROISSANT(self.ctx).get(mandatory_property)}"'
-                    " is mandatory, but does not exist."
+            if hasattr(self, mandatory_property):
+                value = getattr(self, mandatory_property)
+                if not value:
+                    error = (
+                        "Property"
+                        f' "{constants.FROM_CROISSANT(self.ctx).get(mandatory_property)}"'
+                        " is mandatory, but does not exist."
+                    )
+                    self.add_error(error)
+            else:
+                self.add_error(
+                    "mlcroissant checks for an inexisting property:"
+                    f" {mandatory_property}"
                 )
-                self.add_error(error)
 
     def assert_has_optional_properties(self, *optional_properties: str):
         """Checks a node in the graph for existing properties with constraints.
@@ -70,14 +79,20 @@ class Node(abc.ABC):
                 the node doesn't have one, it triggers a warning.
         """
         for optional_property in optional_properties:
-            value = getattr(self, optional_property)
-            if not value:
-                error = (
-                    "Property"
-                    f' "{constants.FROM_CROISSANT(self.ctx).get(optional_property)}" is'
-                    " recommended, but does not exist."
+            if hasattr(self, optional_property):
+                value = getattr(self, optional_property)
+                if not value:
+                    error = (
+                        "Property"
+                        f' "{constants.FROM_CROISSANT(self.ctx).get(optional_property)}"'
+                        " is recommended, but does not exist."
+                    )
+                    self.add_warning(error)
+            else:
+                self.add_error(
+                    "mlcroissant checks for an inexisting property:"
+                    f" {optional_property}"
                 )
-                self.add_warning(error)
 
     def assert_has_exclusive_properties(self, *exclusive_properties: list[str]):
         """Checks a node in the graph for existing properties with constraints.
@@ -188,36 +203,27 @@ class Node(abc.ABC):
 
     def __hash__(self):
         """Hashes all immutable arguments."""
-        args = []
-        for field in dataclasses.fields(self):
-            # Do not hash unhashable elements:
-            if field.name not in (
-                "ctx",
-                "creators",
-                "data_types",
-                "distribution",
-                "fields",
-                "parents",
-                "record_sets",
-                "sub_fields",
-            ):
-                # If the code failed here, you probably added an unhashable property
-                # that should appear in the allow list above.
-                try:
-                    args.append(_make_hashable(getattr(self, field.name)))
-                except TypeError:
-                    pass
-        return hash(tuple(args))
+        return hash(self.uuid)
 
     def __eq__(self, other: Any) -> bool:
         """Compares two Nodes given their arguments."""
-        if type(self) is not type(other):
-            return False
-        return hash(self) == hash(other)
+        if isinstance(other, Node):
+            return self.uuid == other.uuid
+        return False
 
+    def __deepcopy__(self, memo):
+        """Overwrites [`copy.deepcopy`](https://docs.python.org/3/library/copy.html).
 
-def _make_hashable(arg: Any) -> Any:
-    if isinstance(arg, (dict, list)):
-        return json.dumps(arg)
-    else:
-        return arg
+        This is required to use `copy.deepcopy(metadata)` as needed by e.g. PyTorch
+        DataPipes. It is unsure what the full consequences are. So we'll keep
+        investigating on a better approach in
+        https://github.com/mlcommons/croissant/issues/531.
+        """
+        kwargs = {}
+        for field in dataclasses.fields(self.__class__):
+            if field.name in self.__dict__:
+                kwargs[field.name] = self.__dict__[field.name]
+        # We properly selected the correct kwargs:
+        copy = self.__class__(**kwargs)  # pytype: disable=not-instantiable
+        memo[id(self)] = copy
+        return copy

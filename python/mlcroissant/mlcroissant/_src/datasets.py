@@ -7,6 +7,7 @@ from typing import Any, Mapping
 
 from absl import logging
 from etils import epath
+import networkx as nx
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
@@ -15,6 +16,8 @@ from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
+from mlcroissant._src.operation_graph.operations import InitOperation
+from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
@@ -30,7 +33,7 @@ def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
 
 
 def _expand_mapping(
-    mapping: Mapping[str, epath.PathLike] | None
+    mapping: Mapping[str, epath.PathLike] | None,
 ) -> Mapping[str, epath.Path]:
     """Expands the file mapping to pathlib-readable paths."""
     if isinstance(mapping, Mapping):
@@ -114,7 +117,8 @@ class Records:
         Warning: at the moment, this method yields examples from the first explored
         record_set.
         """
-        operations = self.dataset.operations.operations
+        # We only consider the operations that are useful to produce the `ReadFields`.
+        operations = self._filter_interesting_operations()
         if self.debug:
             graphs_utils.pretty_print_graph(operations)
         # Downloads can be parallelized, so we execute them in priority.
@@ -133,3 +137,21 @@ class Records:
             yield from execute_operations_sequentially(
                 record_set=self.record_set, operations=operations
             )
+
+    def _filter_interesting_operations(self) -> nx.DiGraph:
+        """Filters connected operations to `ReadFields(self.record_set)`."""
+        operations = self.dataset.operations.operations
+        source = next(
+            operation
+            for operation in operations.nodes
+            if isinstance(operation, InitOperation)
+        )
+        target = next(
+            operation
+            for operation in operations.nodes
+            if isinstance(operation, ReadFields)
+            and operation.node.name == self.record_set
+        )
+        paths = nx.all_simple_paths(operations, source=source, target=target)
+        interesting_nodes = {node for path in paths for node in path}
+        return operations.subgraph(interesting_nodes)

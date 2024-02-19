@@ -10,7 +10,7 @@ from utils import needed_field
 from views.metadata import handle_metadata_change
 from views.metadata import MetadataEvent
 
-_NON_RELEVANT_METADATA = ["ctx", "name", "distribution", "record_sets"]
+_NON_RELEVANT_METADATA = ["ctx", "name", "distribution", "record_sets", "uuid"]
 
 _INFO_TEXT = """Croissant files are composed of three layers:
 
@@ -38,8 +38,9 @@ def _relevant_fields(class_or_instance: type):
     else:
         return [
             field
-            for field, value in dataclasses.asdict(class_or_instance).items()
-            if value and field not in _NON_RELEVANT_METADATA
+            for field in dataclasses.fields(Metadata)
+            if hasattr(class_or_instance, field.name)
+            and field.name not in _NON_RELEVANT_METADATA
         ]
 
 

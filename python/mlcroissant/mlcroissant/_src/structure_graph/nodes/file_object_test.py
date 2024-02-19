@@ -70,12 +70,12 @@ def test_from_jsonld(encoding):
     }
     ctx.mapping = {"file1": epath.Path("~/Downloads/file1.csv")}
     file_object = FileObject.from_jsonld(ctx, jsonld)
-    assert file_object == FileObject(
-        ctx=ctx,
-        name="foo",
-        description="bar",
-        content_url="https://mlcommons.org",
-        encoding_format=encoding,
-        sha256="48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354",
+    assert file_object.name == "foo"
+    assert file_object.description == "bar"
+    assert file_object.content_url == "https://mlcommons.org"
+    assert file_object.encoding_format == encoding
+    assert (
+        file_object.sha256
+        == "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
     )
     assert not ctx.issues.errors

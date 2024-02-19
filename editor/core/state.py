@@ -33,6 +33,9 @@ def create_class(mlc_class: type, instance: Any, **kwargs) -> Any:
         name = field.name
         if hasattr(instance, name) and name not in kwargs:
             params[name] = getattr(instance, name)
+    if "uuid" in params and params.get("uuid") is None:
+        # Let mlcroissant handle the default value
+        del params["uuid"]
     return mlc_class(**params, **kwargs)
 
 
@@ -137,6 +140,7 @@ class FileObject:
     sha256: str | None = None
     df: pd.DataFrame | None = None
     folder: epath.PathLike | None = None
+    uuid: str | None = None
 
 
 @dataclasses.dataclass
@@ -149,6 +153,7 @@ class FileSet:
     encoding_format: str | None = ""
     includes: str | None = ""
     name: str = ""
+    uuid: str | None = None
 
 
 @dataclasses.dataclass
@@ -161,6 +166,7 @@ class Field:
     data_types: str | list[str] | None = None
     source: mlc.Source | None = None
     references: mlc.Source | None = None
+    uuid: str | None = None
 
 
 @dataclasses.dataclass
@@ -174,6 +180,7 @@ class RecordSet:
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
+    uuid: str | None = None
 
 
 @dataclasses.dataclass
@@ -191,6 +198,7 @@ class Metadata:
     date_published: datetime.datetime | None = None
     license: str | None = ""
     personal_sensitive_information: str | None = None
+    uuid: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
