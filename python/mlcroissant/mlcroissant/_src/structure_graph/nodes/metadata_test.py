@@ -1,5 +1,6 @@
 """Tests for Metadata."""
 
+import copy
 from unittest import mock
 
 import pytest
@@ -105,3 +106,11 @@ def test_issues_in_metadata_are_shared_with_children():
             # We did not specify the RecordSet's name. Hence the exception above:
             record_sets=[RecordSet(description="description")],
         )
+
+
+def test_metadata_can_be_deep_copied():
+    metadata = Metadata(name="foo")
+    # PyTorch DataPipes requries copy.deepcopy:
+    copied_metadata = copy.deepcopy(metadata)
+    assert copied_metadata.name == metadata.name == "foo"
+    assert copied_metadata is not metadata

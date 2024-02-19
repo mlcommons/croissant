@@ -5,7 +5,7 @@ import uuid
 from mlcroissant._src.core.types import Json
 
 
-def generate_uid() -> str:
+def generate_uuid() -> str:
     """Generates a UUID of version 4 because it's random and simple."""
     return str(uuid.uuid4())
 
@@ -15,4 +15,4 @@ def uuid_from_jsonld(jsonld: Json) -> str:
     uuid = jsonld.get("@id")
     if isinstance(uuid, str):
         return uuid
-    return generate_uid()
+    return generate_uuid()
