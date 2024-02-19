@@ -33,6 +33,18 @@ This can be fixed by running
 sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
 ```
 
+### Conda installation
+Conda can help create a consistent environment.
+It can also be useful to install packages without root access.
+To use Conda, run:
+
+```bash
+conda create --name croissant python=3.10 -y
+conda activate croissant
+conda install graphviz
+python3 -m pip install ".[dev]"
+```
+
 ## Verify/load a Croissant dataset
 
 ```bash
