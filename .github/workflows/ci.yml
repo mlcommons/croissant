@@ -57,7 +57,7 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     env:
-      GITHUB_REPOSITORY: ${{ github.actor }}/${{ github.event.repository.name }}
+      GITHUB_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
     steps:
     - uses: actions/checkout@v4
 

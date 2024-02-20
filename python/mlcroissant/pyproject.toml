@@ -20,8 +20,7 @@ authors = [
 # Installed locally with `pip install -e .`
 dependencies = [
   "absl-py",
-  # Temporarily install from GitHub to benefit the latest features.
-  "etils[epath]@git+https://github.com/google/etils.git#egg=etils[epath]",
+  "etils[epath]>=1.7.0",
   "jsonpath-rw",
   "networkx",
   "pandas",
