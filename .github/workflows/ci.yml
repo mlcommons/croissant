@@ -56,6 +56,8 @@ jobs:
     defaults:
       run:
         working-directory: ./python/mlcroissant
+    env:
+      GITHUB_REPOSITORY: ${{ github.actor }}/${{ github.event.repository.name }}
     steps:
     - uses: actions/checkout@v4
 
@@ -72,6 +74,7 @@ jobs:
     # Notebooks are in the recipes/ folder.
     - name: Run notebook
       run: |
+        GITHUB_REPOSITORY="${{ env.GITHUB_REPOSITORY }}"
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
