@@ -1,4 +1,8 @@
 duckdb
+etils[epath]
+huggingface_hub
+openml
+mlcroissant
 pandas
 polars
 pyarrow

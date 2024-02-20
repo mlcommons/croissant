@@ -4,19 +4,20 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import dataclasses
+import datetime
 
 
 @dataclasses.dataclass(kw_only=True, repr=False)
 class DownloadedItem:
     body: bytes
-    dataset_id: str
     response_status: int
     source: str
+    run: datetime.datetime
     url: str
     timeout_seconds: int | None = None
 
     def __repr__(self):
-        return f"DownloadedItem({self.dataset_id})"
+        return f"DownloadedItem({self.url})"
 
 
 @dataclasses.dataclass(kw_only=True, repr=False)
@@ -32,4 +33,4 @@ class CroissantItem(DownloadedItem):
     croissant_timeout_seconds: int | None = None
 
     def __repr__(self):
-        return f"CroissantItem({self.dataset_id})"
+        return f"CroissantItem({self.url})"
