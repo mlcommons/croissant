@@ -103,16 +103,16 @@ class Field(Node):
                     DataType.AUDIO_OBJECT,
                 ]:
                     return term.URIRef(data_type)
-        # The data_type has to be found on a predecessor:
-        predecessor = next((p for p in self.predecessors if isinstance(p, Field)), None)
-        if predecessor is None:
+        # The data_type has to be found on the source:
+        source = self.ctx.node_by_uid(self.source.uid)
+        if not isinstance(source, Field):
             self.add_error(
                 "The field does not specify a valid"
-                f" {constants.ML_COMMONS_DATA_TYPE(self.ctx)}, neither does any of its"
-                f" predecessor. Got: {self.data_types}"
+                f" {constants.ML_COMMONS_DATA_TYPE(self.ctx)}, neither does any of"
+                f" its predecessor. Got: {self.data_types}"
             )
             return None
-        return predecessor.data_type
+        return source.data_type
 
     @property
     def data(self) -> str | None:

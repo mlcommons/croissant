@@ -1,5 +1,5 @@
 Found the following 2 error(s) during the validation:
   -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] Malformed source data: THISDOESNOTEXIST. It does not refer to any existing node. Have you used http://mlcommons.org/croissant/field or https://schema.org/distribution to indicate the source field or the source distribution? If you specified a field, it should contain all the names from the RecordSet separated by `/`, e.g.: "record_set_name/field_name"
-  -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] There is a reference to node named "THISDOESNOTEXIST" in node "a-record-set/first-field", but this node doesn't exist.
+  -  [Metadata(mydataset) > RecordSet(a-record-set)] There is a reference to node named "THISDOESNOTEXIST" in node "a-record-set", but this node doesn't exist.
 Found the following 1 warning(s) during the validation:
   -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] Property "https://schema.org/description" is recommended, but does not exist.

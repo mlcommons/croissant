@@ -26,9 +26,9 @@ import networkx as nx
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
+from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
@@ -62,15 +62,14 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
                 _add_edge(graph, uid_to_node, uid, node)
     for record_set in metadata.record_sets:
         for field in record_set.fields:
-            if record_set.data:
-                _add_edge(graph, uid_to_node, record_set.uid, field)
+            _add_edge(graph, uid_to_node, record_set.uid, field)
             for origin in [field.source, field.references]:
                 if origin:
-                    _add_edge(graph, uid_to_node, origin.uid, field)
+                    _add_edge(graph, uid_to_node, origin.uid, record_set)
             for sub_field in field.sub_fields:
                 for origin in [sub_field.source, sub_field.references]:
                     if origin:
-                        _add_edge(graph, uid_to_node, origin.uid, sub_field)
+                        _add_edge(graph, uid_to_node, origin.uid, record_set)
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
@@ -86,22 +85,24 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
     # Fields should usually not be entry nodes, except if they have subFields. So we
     # check for this:
     for node in entry_nodes:
-        if isinstance(node, Field) and not node.sub_fields and not node.data:
-            if not node.source:
-                node.add_error(
-                    f'Node "{node.uid}" is a field and has no source. Please, use'
-                    f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
-                )
-            else:
-                uid = node.source.uid
-                node.add_error(
-                    f"Malformed source data: {uid}. It does not refer to any existing"
-                    f" node. Have you used {constants.ML_COMMONS_FIELD(ctx)} or"
-                    f" {constants.SCHEMA_ORG_DISTRIBUTION} to indicate the source field"
-                    " or the source distribution? If you specified a field, it should"
-                    " contain all the names from the RecordSet separated by `/`, e.g.:"
-                    ' "record_set_name/field_name"'
-                )
+        if isinstance(node, RecordSet) and not node.data:
+            for field in node.fields:
+                if not field.source:
+                    field.add_error(
+                        f'Node "{field.uid}" is a field and has no source. Please, use'
+                        f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
+                    )
+                else:
+                    uid = field.source.uid
+                    field.add_error(
+                        f"Malformed source data: {uid}. It does not refer to any"
+                        " existing node. Have you used"
+                        f" {constants.ML_COMMONS_FIELD(ctx)} or"
+                        f" {constants.SCHEMA_ORG_DISTRIBUTION} to indicate the source"
+                        " field or the source distribution? If you specified a field,"
+                        " it should contain all the names from the RecordSet separated"
+                        ' by `/`, e.g.: "record_set_name/field_name"'
+                    )
     return entry_nodes
 
 
