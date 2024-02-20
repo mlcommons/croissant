@@ -52,6 +52,9 @@ class FileTypes:
         encoding_format="application/x-tar",
         extensions=["tar"],
     )
+    TSV = FileType(
+        name="TSV", encoding_format="text/tab-separated-values", extensions=["tsv"]
+    )
     TXT = FileType(
         name="Text",
         encoding_format="text/plain",
@@ -79,6 +82,7 @@ FILE_TYPES: dict[str, FileType] = {
         FileTypes.JSONL,
         FileTypes.PARQUET,
         FileTypes.TAR,
+        FileTypes.TSV,
         FileTypes.TXT,
         FileTypes.ZIP,
     ]
@@ -141,6 +145,8 @@ def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.Data
         df = pd.read_json(file, lines=True)
     elif file_type == FileTypes.PARQUET:
         df = pd.read_parquet(file)
+    elif file_type == FileTypes.TSV:
+        df = pd.read_csv(file, sep="\t")
     else:
         raise NotImplementedError(
             f"File type {file_type} is not supported. Please, open an issue on GitHub:"
@@ -149,8 +155,22 @@ def get_dataframe(file_type: FileType, file: io.BytesIO | epath.Path) -> pd.Data
     return df.infer_objects()
 
 
-def guess_file_type(path: epath.Path) -> FileType | None:
+def _guess_mime_type(path: epath.Path) -> str:
+    """Guess most specific MIME type."""
     mime = magic.from_file(path, mime=True)
+    extension = path.suffix
+    if mime == "text/plain":
+        # In some cases, a CSV/TSV may be classified as text
+        # For example, if the file is not terminated by a newline
+        if extension == ".csv":
+            mime = "text/csv"
+        elif extension == ".tsv":
+            mime = "text/tab-separated-values"
+    return mime
+
+
+def guess_file_type(path: epath.Path) -> FileType | None:
+    mime = _guess_mime_type(path)
     return ENCODING_FORMATS.get(mime)
 
 
