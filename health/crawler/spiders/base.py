@@ -24,7 +24,7 @@ class BaseSpider(scrapy.Spider):
         super().__init__(*args, **kwargs)
         self.df = self._scan_parquet_files()
         dispatcher.connect(self.spider_closed, signals.spider_closed)
-        self.run = datetime.datetime.now()
+        self.date = datetime.datetime.now()
 
     def _scan_parquet_files(self) -> pl.LazyFrame | None:
         """Scans cached parquet files."""
@@ -86,8 +86,8 @@ class BaseSpider(scrapy.Spider):
         """See scrapy documentation for more details."""
         return DownloadedItem(
             body=response.body,
+            date=self.date,
             response_status=response.status,
-            run=self.run,
             source=self.name,
             url=response.url,
         )

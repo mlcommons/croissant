@@ -10,9 +10,9 @@ import datetime
 @dataclasses.dataclass(kw_only=True, repr=False)
 class DownloadedItem:
     body: bytes
+    date: datetime.datetime
     response_status: int
     source: str
-    run: datetime.datetime
     url: str
     timeout_seconds: int | None = None
 
