@@ -73,10 +73,14 @@ class Operation(abc.ABC):
         """Adds the operation to the graph of operations."""
         self.operations.add_node(self)
         self.connect_to_last_operation(self.node)
-        self.operations.last_operations[self.node] = self
-        if self.node.successor:
+        self.set_last_operation_for(self.node)
+
+    def set_last_operation_for(self, node: Node):
+        """Sets self as the last operation for the node and its successors."""
+        self.operations.last_operations[node] = self
+        for successor in node.successors:
             # Report the last operation to the next node in the graph.
-            self.operations.last_operations[self.node.successor] = self
+            self.operations.last_operations[successor] = self
 
     def connect_to_last_operation(self, node: Node):
         """Connects the current operation (self) to the last operation for node."""

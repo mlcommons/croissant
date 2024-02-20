@@ -45,9 +45,10 @@ def _add_operations_for_record_set(
 ):
     """Adds all operations for a node of type `RecordSet`."""
     if record_set.data:
-        Data(operations=operations, node=record_set)
-        return
-    has_join = any(field for field in record_set.fields if field.references.uuid)
+        Data(operations=operations, node=record_set) >> ReadFields(
+            operations=operations, node=record_set
+        )
+    has_join = any(field for field in record_set.fields if field.references.uid)
     if has_join:
         Join(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set

@@ -1,0 +1,3 @@
+{"name": "train", "url": "https://mlcommons.org/definitions/training_split"}
+{"name": "val", "url": "https://mlcommons.org/definitions/validation_split"}
+{"name": "test", "url": "https://mlcommons.org/definitions/test_split"}

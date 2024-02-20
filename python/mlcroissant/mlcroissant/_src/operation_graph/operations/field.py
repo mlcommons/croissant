@@ -155,6 +155,11 @@ class ReadFields(Operation):
 
     def __call__(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
+        if self.node.data:
+            # The RecordSet has `data`, so we directly yield from the dataframe.
+            for _, row in df.iterrows():
+                yield dict(row)
+            return
         fields = self._fields()
         for field in fields:
             df = _extract_value(df, field)
