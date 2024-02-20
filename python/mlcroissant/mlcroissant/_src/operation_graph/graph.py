@@ -43,13 +43,7 @@ def _add_operations_for_record_set(
     operations: Operations,
     record_set: RecordSet,
 ):
-    """Adds all operations for a node of type `RecordSet`.
-
-    Operations are:
-
-    - `Join` if the field comes from several sources.
-    - `ReadFields` to specify how the fields are read.
-    """
+    """Adds all operations for a node of type `RecordSet`."""
     if record_set.data:
         Data(operations=operations, node=record_set)
         return

@@ -12,9 +12,10 @@ from mlcroissant._src.structure_graph.base_node import Node
 
 
 class Operations(nx.DiGraph):
-    """Overwrites nx.DiGraph to keep track of last operations.
+    """Overwrites nx.DiGraph to keep track of operations.
 
-    `self.last_operations` maintains a pointer to the last operation for each node.
+    `self.last_operations` maintains a pointer to the chain of last operations for each
+    node.
     """
 
     def __init__(self):
