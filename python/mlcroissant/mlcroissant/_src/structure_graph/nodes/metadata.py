@@ -114,7 +114,7 @@ class Metadata(Node):
 
         # Check properties.
         self.validate_name()
-        self.validate_version()
+        self.version = self.validate_version()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("cite_as", "license", "version")
 
@@ -188,8 +188,8 @@ class Metadata(Node):
                 nodes.extend(field.sub_fields)
         return nodes
 
-    def validate_version(self) -> None:
-        """Validates the given version.
+    def validate_version(self) -> str | None:
+        """Validates the given version and returns a normalized string version.
 
         A valid version follows Semantic Versioning 2.0.0 `MAJOR.MINOR.PATCH`.
         For more information: https://semver.org/spec/v2.0.0.html.
@@ -197,20 +197,27 @@ class Metadata(Node):
         version = self.version
 
         # Version is a recommended but not mandatory attribute.
-        if not version:
-            return
+        if version is None:
+            return None
 
         if isinstance(version, str):
-            points = version.count(".")
-            numbers = version.replace(".", "")
-            if points != 2 or len(numbers) != 3 or not numbers.isnumeric():
-                self.add_error(
+            numbers = version.split(".")
+            are_not_all_numbers = any(not number.isnumeric() for number in numbers)
+            if len(numbers) != 3 or are_not_all_numbers:
+                self.add_warning(
                     f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
                     " information refer to: https://semver.org/spec/v2.0.0.html"
                 )
+            return version
+        elif isinstance(version, int):
+            return f"{version}.0.0"
+        elif isinstance(version, float):
+            return f"{version}.0"
         else:
-            self.add_error(f"The version should be a string. Got: {type(version)}.")
-            return
+            self.add_error(
+                f"The version should be a string or a number. Got: {type(version)}."
+            )
+            return None
 
     def check_graph(self):
         """Checks the integrity of the structure graph.
