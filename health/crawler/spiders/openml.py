@@ -16,7 +16,7 @@ class OpenmlSpider(BaseSpider):
 
     def list_datasets(self):
         """See base class."""
-        return list(openml.datasets.list_datasets(output_format="dataframe")["did"])[:1]
+        return list(openml.datasets.list_datasets(output_format="dataframe")["did"])
 
     def get_url(self, dataset_id: str):
         """See base class."""

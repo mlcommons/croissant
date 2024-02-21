@@ -18,23 +18,24 @@ logging.getLogger("absl").addFilter(lambda _: False)
 _TIMEOUT_SECONDS = 10
 
 
+def scan_parquet_files() -> pl.LazyFrame | None:
+    """Scans cached parquet files."""
+    folder = epath.Path(__file__).parent.parent.parent / "data"
+    parquet_files = list(folder.glob("*/*.parquet"))
+    if parquet_files:
+        logging.info(f"Found existing {len(parquet_files)} Parquet files")
+        return pl.scan_parquet(parquet_files)
+    else:
+        return None
+
+
 class BaseSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         """Opens a connection to the local cache repository to do look-ups."""
         super().__init__(*args, **kwargs)
-        self.df = self._scan_parquet_files()
+        self.df = scan_parquet_files()
         dispatcher.connect(self.spider_closed, signals.spider_closed)
         self.date = datetime.datetime.now()
-
-    def _scan_parquet_files(self) -> pl.LazyFrame | None:
-        """Scans cached parquet files."""
-        folder = epath.Path(__file__).parent.parent.parent / "data"
-        parquet_files = list(folder.glob("*/*.parquet"))
-        if parquet_files:
-            logging.info(f"Found existing Parquet files {parquet_files}")
-            return pl.scan_parquet(parquet_files)
-        else:
-            return None
 
     def list_datasets(self) -> list[Any]:
         """Returns the list of all datasets in the repository.
@@ -73,13 +74,8 @@ class BaseSpider(scrapy.Spider):
                 url=url,
                 callback=self.parse,
                 errback=self.parse_error,
-                # Only wait 20 seconds, because some requests seem to timeout
-                meta={
-                    "download_timeout": _TIMEOUT_SECONDS,
-                    "handle_httpstatus_list": self.settings.attributes[
-                        "HTTPERROR_ALLOWED_CODES"
-                    ].value,
-                },
+                # Only wait _TIMEOUT_SECONDS, because some requests seem to timeout
+                meta={"download_timeout": _TIMEOUT_SECONDS},
             )
 
     def parse(self, response: http.Response) -> DownloadedItem:
@@ -108,7 +104,7 @@ class BaseSpider(scrapy.Spider):
 
     def spider_closed(self, spider):
         del spider
-        df = self._scan_parquet_files()
+        df = scan_parquet_files()
         if df is None:
             logging.info("No data written to disk yet")
         else:
