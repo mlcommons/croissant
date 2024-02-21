@@ -48,6 +48,7 @@
   "name": "read_from_directory",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Minimal example showing how to read from local directories.",
+  "sdLicense": "apache-2.0",
   "url": "https://github.com/mlcommons/croissant",
   "distribution": [
     {

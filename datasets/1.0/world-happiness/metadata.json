@@ -49,6 +49,7 @@
   "description": "Happiness scored according to economic production, social support, etc.",
   "citeAs": "None",
   "license": "cc0-1.0",
+  "sdLicense": "apache-2.0",
   "url": "https://www.kaggle.com/datasets/unsdsn/world-happiness",
   "distribution": [
     {

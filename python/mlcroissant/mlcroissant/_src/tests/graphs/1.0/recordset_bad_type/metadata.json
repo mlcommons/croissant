@@ -48,6 +48,7 @@
   "citation": "This is a citation.",
   "datePublished": "1990-02-01",
   "license": "This is a license.",
+  "sdLicense": "This is a sdLicense.",
   "url": "https://www.google.com/dataset",
   "version": "1.0.0",
   "distribution": [

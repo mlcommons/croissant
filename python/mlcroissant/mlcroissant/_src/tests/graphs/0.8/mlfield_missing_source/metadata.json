@@ -2,8 +2,10 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
     "column": "ml:column",
     "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -18,11 +20,15 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
+    "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
+    "key": "cr:key",
+    "md5": "cr:md5",
     "parentField": "ml:parentField",
     "path": "ml:path",
     "personalSensitiveInformation": "ml:personalSensitiveInformation",
@@ -34,7 +40,8 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "subField": "ml:subField",
-    "transform": "ml:transform"
+    "transform": "ml:transform",
+    "ml": "http://mlcommons.org/schema/"
   },
   "@type": "sc:Dataset",
   "name": "mydataset",
@@ -43,6 +50,7 @@
   "citation": "This is a citation.",
   "datePublished": "1990-02-01",
   "license": "This is a license.",
+  "sdLicense": "apache-2.0",
   "url": "https://www.google.com/dataset",
   "version": "1.0.0",
   "distribution": [

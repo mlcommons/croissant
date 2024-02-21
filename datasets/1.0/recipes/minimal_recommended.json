@@ -48,6 +48,7 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a minimal example, including the required and the recommended fields.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
+  "sdLicense": "apache-2.0",
   "url": "https://example.com/dataset/recipes/minimal-recommended",
   "distribution": [
     {

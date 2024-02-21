@@ -47,6 +47,7 @@
   "name": "compressed_archive_example",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a fairly minimal example, showing a way to describe archive files.",
+  "sdLicense": "apache-2.0",
   "url": "https://example.com/datasets/recipes/compressed_archive/about",
   "distribution": [
     {

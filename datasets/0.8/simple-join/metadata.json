@@ -40,6 +40,7 @@
   "name": "simple-join",
   "description": "Example to showcase the use of join.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
+  "sdLicense": "apache-2.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {

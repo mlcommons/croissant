@@ -40,6 +40,7 @@
   "@type": "sc:Dataset",
   "name": "read_from_directory",
   "description": "Minimal example showing how to read from local directories.",
+  "sdLicense": "apache-2.0",
   "url": "https://github.com/mlcommons/croissant",
   "distribution": [
     {

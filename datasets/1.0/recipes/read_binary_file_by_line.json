@@ -47,6 +47,7 @@
   "name": "read_binary_file_by_line",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a recipe illustrating how to read files line by line.",
+  "sdLicense": "apache-2.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {

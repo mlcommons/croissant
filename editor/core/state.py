@@ -198,6 +198,7 @@ class Metadata:
     date_published: datetime.datetime | None = None
     license: str | None = ""
     personal_sensitive_information: str | None = None
+    sd_license: str | None = ""
     uuid: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)

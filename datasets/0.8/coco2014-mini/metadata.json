@@ -42,8 +42,9 @@
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
   "citation": "None",
   "license": "cc-by-4.0",
-  "version": "1.0.0",
+  "sdLicense": "apache-2.0",
   "url": "None",
+  "version": "1.0.0",
   "distribution": [
     {
       "@type": "sc:FileObject",

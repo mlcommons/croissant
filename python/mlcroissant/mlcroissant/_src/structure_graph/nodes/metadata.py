@@ -106,6 +106,7 @@ class Metadata(Node):
     is_live_dataset: bool | None = None
     keywords: list[str] | None = None
     license: list[str] | None = None
+    sd_license: str | None = None
     name: str = ""
     publisher: list[PersonOrOrganization] | None = None
     same_as: list[str] | None = None
@@ -145,12 +146,13 @@ class Metadata(Node):
         self.validate_name()
         self.version = self.validate_version()
         self.license = self.validate_license()
+        self.sd_license = self.validate_sd_license()
         self.date_created = self.validate_date(self.date_created)
         self.date_modified = self.validate_date(self.date_modified)
         self.date_published = self.validate_date(self.date_published)
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties(
-            "cite_as", "date_published", "license", "version"
+            "cite_as", "date_published", "license", "sd_license", "version"
         )
 
         # Raise exception if there are errors.
@@ -184,6 +186,7 @@ class Metadata(Node):
             "license": unbox_singleton_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
             "publisher": PersonOrOrganization.to_json(self.publisher),
+            "sdLicense": self.sd_license,
             "url": self.url,
             "sameAs": unbox_singleton_list(self.same_as),
             "version": self.version,
@@ -263,6 +266,17 @@ class Metadata(Node):
             return [license]
         else:
             self.add_error(f"License should be a list of str. Got: {license}")
+            return None
+
+    def validate_sd_license(self) -> str | None:
+        """Validates the sdLicense as a string."""
+        sd_license = self.sd_license
+        if sd_license is None:
+            return None
+        elif isinstance(sd_license, str):
+            return sd_license
+        else:
+            self.add_error(f"sdLicense should be a str. Got: {sd_license}")
             return None
 
     def validate_date(self, date: Any) -> datetime.datetime | None:
@@ -381,6 +395,7 @@ class Metadata(Node):
             publisher=publisher,
             record_sets=record_sets,
             same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
+            sd_license=metadata.get(constants.SCHEMA_ORG_SD_LICENSE),
             uuid=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
