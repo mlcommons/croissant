@@ -54,7 +54,7 @@ class FileTypes:
     )
     TXT = FileType(
         name="Text",
-        encoding_format="plain/text",
+        encoding_format="text/plain",
         extensions=["txt"],
     )
     ZIP = FileType(
