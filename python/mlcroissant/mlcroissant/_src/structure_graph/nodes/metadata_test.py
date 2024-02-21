@@ -65,35 +65,53 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     ["version", "expected_error"],
     [
         [
+            ["1.2.3"],
+            "The version should be a string or a number. Got: <class 'list'>.",
+        ],
+    ],
+)
+def test_invalid_version(version, expected_error):
+    ctx = Context()
+    with pytest.raises(ValidationError, match=rf"{expected_error}"):
+        Metadata(ctx, name="foo", version=version)
+
+
+@pytest.mark.parametrize(
+    ["version", "expected_warning"],
+    [
+        [
             "1.2.x",
             "Version doesn't follow MAJOR.MINOR.PATCH: 1.2.x.",
         ],
         [
-            "1.2",
-            "Version doesn't follow MAJOR.MINOR.PATCH: 1.2",
+            "...123",
+            "Version doesn't follow MAJOR.MINOR.PATCH: ...123.",
         ],
         [
             "a.b.c",
             "Version doesn't follow MAJOR.MINOR.PATCH: a.b.c",
         ],
-        [
-            1.2,
-            "The version should be a string. Got: <class 'float'>.",
-        ],
     ],
 )
-def test_validate_version(version, expected_error):
+def test_warning_version(version, expected_warning):
     ctx = Context()
-    jsonld = {
-        "@type": constants.SCHEMA_ORG_DATASET,
-        constants.SCHEMA_ORG_NAME: "foo",
-        constants.SCHEMA_ORG_DESCRIPTION: "bar",
-        constants.SCHEMA_ORG_LICENSE: "License",
-        constants.SCHEMA_ORG_URL: "https://mlcommons.org",
-        constants.SCHEMA_ORG_VERSION: version,
-    }
-    with pytest.raises(ValidationError, match=rf"{expected_error}"):
-        Metadata.from_jsonld(ctx, jsonld)
+    Metadata(ctx, name="foo", version=version)
+    assert any(expected_warning in warning for warning in ctx.issues.warnings)
+
+
+@pytest.mark.parametrize(
+    ["version", "expected_version"],
+    [
+        ["1.2.3", "1.2.3"],
+        [1, "1.0.0"],
+        [1.2, "1.2.0"],
+        ["thisisanarbitraryversion", "thisisanarbitraryversion"],
+    ],
+)
+def test_valid_version(version, expected_version):
+    ctx = Context()
+    metadata = Metadata(ctx, name="foo", version=version)
+    assert metadata.version == expected_version
 
 
 def test_issues_in_metadata_are_shared_with_children():
