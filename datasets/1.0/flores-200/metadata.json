@@ -54,7 +54,7 @@
   ],
   "license": "cc-by-sa-4.0",
   "url": "https://github.com/facebookresearch/flores",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -79,7 +79,7 @@
       "description": "Contains labels for the records in each line in the dev files.",
       "contentUrl": "flores200_dataset/metadata_dev.tsv",
       "containedIn": "tinyurl-repository",
-      "encodingFormat": "text/tsv"
+      "encodingFormat": "text/tab-separated-values"
     },
     {
       "@type": "cr:FileObject",
@@ -87,7 +87,7 @@
       "description": "Contains labels for the records in each line in the devtest files.",
       "contentUrl": "flores200_dataset/metadata_devtest.tsv",
       "containedIn": "tinyurl-repository",
-      "encodingFormat": "text/tsv"
+      "encodingFormat": "text/tab-separated-values"
     },
     {
       "@type": "cr:FileSet",

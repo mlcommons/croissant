@@ -172,7 +172,7 @@ class EncodingFormat:
     MP3 = "audio/mpeg"
     PARQUET = "application/x-parquet"
     TEXT = "text/plain"
-    TSV = "text/tsv"
+    TSV = "text/tab-separated-values"
     TAR = "application/x-tar"
     ZIP = "application/zip"
 
