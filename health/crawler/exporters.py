@@ -1,6 +1,7 @@
 """Exporter to Parquet files."""
 
 import dataclasses
+import datetime
 import logging
 import os
 
@@ -63,6 +64,8 @@ class ParquetItemExporter(BaseItemExporter):
                 schema.append(pa.field(field.name, pa.bool_(), nullable=True))
             elif field.type == list[str]:
                 schema.append(pa.field(field.name, pa.list_(pa.string())))
+            elif field.type is datetime.datetime:
+                schema.append(pa.field(field.name, pa.timestamp("s")))
             else:
                 raise ValueError(f"unsupported type: {field.type}")
         return pa.schema(schema)
