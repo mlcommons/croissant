@@ -53,7 +53,7 @@ def test_checks_not_performed_for_live_dataset():
     ["encoding"],
     [
         ["text/csv"],
-        ["text/tsv"],
+        ["text/tab-separated-values"],
     ],
 )
 def test_from_jsonld(encoding):
