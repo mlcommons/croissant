@@ -1,0 +1,23 @@
+import openml
+
+from crawler.spiders.base import BaseSpider
+
+
+class OpenmlSpider(BaseSpider):
+    name = "openml"
+
+    custom_settings = {
+        "AUTOTHROTTLE_ENABLED": True,
+        "AUTOTHROTTLE_START_DELAY": 2,
+        "AUTOTHROTTLE_MAX_DELAY": 60,
+        "AUTOTHROTTLE_TARGET_CONCURRENCY": 5.0,
+        "AUTOTHROTTLE_DEBUG": True,
+    }
+
+    def list_datasets(self):
+        """See base class."""
+        return list(openml.datasets.list_datasets(output_format="dataframe")["did"])[:1]
+
+    def get_url(self, dataset_id: str):
+        """See base class."""
+        return f"https://openml1.win.tue.nl/dataset{dataset_id}/croissant.json"

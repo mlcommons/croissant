@@ -59,11 +59,13 @@ class CrawlerPipeline:
                             )
                             item.croissant_num_file_sets = count(nodes, mlc.FileSet)
                             item.croissant_num_record_sets = count(nodes, mlc.RecordSet)
-                        except (json.JSONDecodeError, mlc.ValidationError):
+                        except (json.JSONDecodeError, mlc.ValidationError) as exception:
                             item.croissant_is_valid = False
                             if metadata:
                                 errors = [error for _, error in metadata.issues._errors]
                                 item.croissant_errors = errors
+                            else:
+                                item.croissant_errors = [str(exception)]
                     except json.JSONDecodeError:
                         item.croissant_is_json = False
                     finally:
