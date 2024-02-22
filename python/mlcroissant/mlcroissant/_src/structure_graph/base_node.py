@@ -141,11 +141,6 @@ class Node(abc.ABC):
         else:
             return self._uuid
 
-    # @uuid.setter
-    # def uuid(self, uuid: str) -> None:
-    #     """Sets the uuid property."""
-    #     self._uuid = uuid
-
     @property
     def parent(self) -> Node | None:
         """Direct parent of the node or None if no parent."""
@@ -214,10 +209,6 @@ class Node(abc.ABC):
     def from_jsonld(cls, *args, **kwargs) -> Any:
         """Creates a node from JSON-LD."""
         ...
-
-    def validate_uuid(self):
-        """Validates the unique identifier of a node."""
-        pass
 
     def validate_name(self):
         """Validates the name."""

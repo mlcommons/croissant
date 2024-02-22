@@ -68,7 +68,6 @@ class Field(Node):
         """Checks arguments of the node and sets UUID."""
         self._uuid = uuid
         self.validate_name()
-        self.validate_uuid()
         self.assert_has_mandatory_properties("name", "_uuid")
         self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
