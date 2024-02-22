@@ -37,7 +37,6 @@ def test_expand_and_reduce_json_ld():
 
 def test_make_context():
     assert make_context(foo="bar") == {
-        "@base": "cr_base_iri/",
         "@language": "en",
         "@vocab": "https://schema.org/",
         "citeAs": "cr:citeAs",

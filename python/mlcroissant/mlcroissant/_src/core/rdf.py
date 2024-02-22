@@ -20,7 +20,6 @@ def get_context(json_: Json) -> Json:
 def make_context(ctx=None, **kwargs):
     """Returns the JSON-LD @context with additional keys."""
     context = {
-        "@base": "cr_base_iri/",
         "@language": "en",
         "@vocab": "https://schema.org/",
         "citeAs": "cr:citeAs",
