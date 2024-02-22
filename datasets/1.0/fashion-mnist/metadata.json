@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -53,6 +54,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "repo",
       "name": "repo",
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/fashion_mnist/tree/refs%2Fconvert%2Fparquet",
@@ -61,9 +63,10 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "parquet-files",
       "name": "parquet-files",
       "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
-      "containedIn": "repo",
+      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/repo",
       "encodingFormat": "application/x-parquet",
       "includes": "*/*/*.parquet"
     }
@@ -71,16 +74,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "default",
       "name": "default",
       "description": "The default set of records in the dataset.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "default/image",
           "name": "image",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "image"
             },
@@ -91,11 +98,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/label",
           "name": "label",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "label"
             }

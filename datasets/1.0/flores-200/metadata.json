@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -58,6 +59,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "tinyurl-repository",
       "name": "tinyurl-repository",
       "description": "Flores 200 is hosted on a webserver.",
       "contentSize": "25585843 B",
@@ -67,33 +69,45 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "files-dev",
       "name": "files-dev",
       "description": "dev files are inside the tar.",
-      "containedIn": "tinyurl-repository",
+      "containedIn": {
+        "@id": "tinyurl-repository"
+      },
       "encodingFormat": "application/json",
       "includes": "flores200_dataset/dev/*.dev"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "metadata-dev",
       "name": "metadata-dev",
       "description": "Contains labels for the records in each line in the dev files.",
       "contentUrl": "flores200_dataset/metadata_dev.tsv",
-      "containedIn": "tinyurl-repository",
+      "containedIn": {
+        "@id": "tinyurl-repository"
+      },
       "encodingFormat": "text/tab-separated-values"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "metadata-devtest",
       "name": "metadata-devtest",
       "description": "Contains labels for the records in each line in the devtest files.",
       "contentUrl": "flores200_dataset/metadata_devtest.tsv",
-      "containedIn": "tinyurl-repository",
+      "containedIn": {
+        "@id": "tinyurl-repository"
+      },
       "encodingFormat": "text/tab-separated-values"
     },
     {
       "@type": "cr:FileSet",
+      "@id": "files-devtest",
       "name": "files-devtest",
       "description": "devtest files are inside the tar.",
-      "containedIn": "tinyurl-repository",
+      "containedIn": {
+        "@id": "tinyurl-repository"
+      },
       "encodingFormat": "application/json",
       "includes": "flores200_dataset/devtest/*.devtest"
     }
@@ -101,16 +115,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "language_translations_train_data",
       "name": "language_translations_train_data",
       "description": "Training data for translations to different languages.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data/line_number",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "files-dev",
+            "fileSet": {
+              "@id": "files-dev"
+            },
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -118,11 +136,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data/translation",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "files-dev",
+            "fileSet": {
+              "@id": "files-dev"
+            },
             "extract": {
               "fileProperty": "lines"
             }
@@ -130,11 +151,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data/language",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "files-dev",
+            "fileSet": {
+              "@id": "files-dev"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -147,19 +171,25 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "language_translations_train_data_with_metadata",
       "name": "language_translations_train_data_with_metadata",
       "description": "Training data and metadata for translations to different languages.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/line_number",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
           "references": {
-            "field": "language_translations_train_data/line_number"
+            "field": {
+              "@id": "language_translations_train_data/line_number"
+            }
           },
           "source": {
-            "fileObject": "metadata-dev",
+            "fileObject": {
+              "@id": "metadata-dev"
+            },
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -167,29 +197,38 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/translation",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "field": "language_translations_train_data/translation"
+            "field": {
+              "@id": "language_translations_train_data/translation"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/language",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
           "source": {
-            "field": "language_translations_train_data/language"
+            "field": {
+              "@id": "language_translations_train_data/language"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/URL",
           "name": "URL",
           "description": "The URL of the English source of the sentence.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-dev",
+            "fileObject": {
+              "@id": "metadata-dev"
+            },
             "extract": {
               "column": "URL"
             }
@@ -197,11 +236,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/domain",
           "name": "domain",
           "description": "The domain of the English source of the sentence.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-dev",
+            "fileObject": {
+              "@id": "metadata-dev"
+            },
             "extract": {
               "column": "domain"
             }
@@ -209,11 +251,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/topic",
           "name": "topic",
           "description": "The topic of the sentence.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-dev",
+            "fileObject": {
+              "@id": "metadata-dev"
+            },
             "extract": {
               "column": "topic"
             }
@@ -221,11 +266,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/has_image",
           "name": "has_image",
           "description": "Whether the source of the sentence has an image.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-dev",
+            "fileObject": {
+              "@id": "metadata-dev"
+            },
             "extract": {
               "column": "has_image"
             }
@@ -233,11 +281,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_train_data_with_metadata/has_hyperlink",
           "name": "has_hyperlink",
           "description": "Whether the sentence has a hyperlink.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-dev",
+            "fileObject": {
+              "@id": "metadata-dev"
+            },
             "extract": {
               "column": "has_hyperlink"
             }
@@ -247,16 +298,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "language_translations_test_data",
       "name": "language_translations_test_data",
       "description": "Testing data for translations to different languages.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data/line_number",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "files-devtest",
+            "fileSet": {
+              "@id": "files-devtest"
+            },
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -264,11 +319,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data/translation",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "files-devtest",
+            "fileSet": {
+              "@id": "files-devtest"
+            },
             "extract": {
               "fileProperty": "lines"
             }
@@ -276,11 +334,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data/language",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "files-devtest",
+            "fileSet": {
+              "@id": "files-devtest"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -293,19 +354,25 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "language_translations_test_data_with_metadata",
       "name": "language_translations_test_data_with_metadata",
       "description": "Testing data and metadata for translations to different languages.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/line_number",
           "name": "line_number",
           "description": "The line number for extracted sentences.",
           "dataType": "sc:Integer",
           "references": {
-            "field": "language_translations_test_data/line_number"
+            "field": {
+              "@id": "language_translations_test_data/line_number"
+            }
           },
           "source": {
-            "fileObject": "metadata-devtest",
+            "fileObject": {
+              "@id": "metadata-devtest"
+            },
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -313,29 +380,38 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/translation",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "field": "language_translations_test_data/translation"
+            "field": {
+              "@id": "language_translations_test_data/translation"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/language",
           "name": "language",
           "description": "The language of the sentence translation in ISO 639-3 along with a code for the script used.",
           "dataType": "sc:Text",
           "source": {
-            "field": "language_translations_test_data/language"
+            "field": {
+              "@id": "language_translations_test_data/language"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/URL",
           "name": "URL",
           "description": "The URL of the English source of the sentence.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-devtest",
+            "fileObject": {
+              "@id": "metadata-devtest"
+            },
             "extract": {
               "column": "URL"
             }
@@ -343,11 +419,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/domain",
           "name": "domain",
           "description": "The domain of the English source of the sentence.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-devtest",
+            "fileObject": {
+              "@id": "metadata-devtest"
+            },
             "extract": {
               "column": "domain"
             }
@@ -355,11 +434,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/topic",
           "name": "topic",
           "description": "The topic of the sentence.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-devtest",
+            "fileObject": {
+              "@id": "metadata-devtest"
+            },
             "extract": {
               "column": "topic"
             }
@@ -367,11 +449,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/has_image",
           "name": "has_image",
           "description": "Whether the source of the sentence has an image.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-devtest",
+            "fileObject": {
+              "@id": "metadata-devtest"
+            },
             "extract": {
               "column": "has_image"
             }
@@ -379,11 +464,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "language_translations_test_data_with_metadata/has_hyperlink",
           "name": "has_hyperlink",
           "description": "Whether the sentence has a hyperlink.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata-devtest",
+            "fileObject": {
+              "@id": "metadata-devtest"
+            },
             "extract": {
               "column": "has_hyperlink"
             }

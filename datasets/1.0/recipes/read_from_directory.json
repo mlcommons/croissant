@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -41,8 +42,7 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform",
-    "wd": "https://www.wikidata.org/wiki/"
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "read_from_directory",
@@ -52,6 +52,7 @@
   "distribution": [
     {
       "@type": "cr:FileSet",
+      "@id": "files",
       "name": "files",
       "encodingFormat": "text/plain",
       "includes": "data/file*.txt"
@@ -60,14 +61,18 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "read_from_directory_example",
       "name": "read_from_directory_example",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "read_from_directory_example/id",
           "name": "id",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "files",
+            "fileSet": {
+              "@id": "files"
+            },
             "extract": {
               "fileProperty": "content"
             }

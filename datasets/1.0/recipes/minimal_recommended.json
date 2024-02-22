@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -52,6 +53,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "minimal.csv",
       "name": "minimal.csv",
       "contentUrl": "data/minimal.csv",
       "encodingFormat": "text/csv",
@@ -61,16 +63,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "examples",
       "name": "examples",
       "description": "Records extracted from the example table, with their schema.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "examples/name",
           "name": "name",
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
           "references": {
-            "fileObject": "minimal.csv",
+            "fileObject": {
+              "@id": "minimal.csv"
+            },
             "extract": {
               "column": "name"
             }
@@ -78,11 +84,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "examples/age",
           "name": "age",
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
           "references": {
-            "fileObject": "minimal.csv",
+            "fileObject": {
+              "@id": "minimal.csv"
+            },
             "extract": {
               "column": "age"
             }

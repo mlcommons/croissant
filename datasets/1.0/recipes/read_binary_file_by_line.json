@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -51,6 +52,7 @@
   "distribution": [
     {
       "@type": "cr:FileSet",
+      "@id": "languages_in_directory",
       "name": "languages_in_directory",
       "description": "Binary files containing the expression \"hello\" translated in several languages.",
       "encodingFormat": "text/plain",
@@ -58,6 +60,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "zip",
       "name": "zip",
       "description": "Zip file containing the binary files with the translations.",
       "contentUrl": "data/read_binary_file_by_line/files.zip",
@@ -66,9 +69,12 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "languages_in_zip",
       "name": "languages_in_zip",
       "description": "Binary files containing the expression \"hello\" translated in several languages.",
-      "containedIn": "zip",
+      "containedIn": {
+        "@id": "zip"
+      },
       "encodingFormat": "text/plain",
       "includes": "*.txt"
     }
@@ -76,16 +82,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "translations_from_directory",
       "name": "translations_from_directory",
       "description": "\"Hello\" translated in several languages [from a directory].",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "translations_from_directory/translation",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "languages_in_directory",
+            "fileSet": {
+              "@id": "languages_in_directory"
+            },
             "extract": {
               "fileProperty": "lines"
             }
@@ -93,11 +103,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "translations_from_directory/lineNumber",
           "name": "lineNumber",
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "languages_in_directory",
+            "fileSet": {
+              "@id": "languages_in_directory"
+            },
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -105,11 +118,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "translations_from_directory/filename",
           "name": "filename",
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "languages_in_directory",
+            "fileSet": {
+              "@id": "languages_in_directory"
+            },
             "extract": {
               "fileProperty": "filename"
             }
@@ -119,16 +135,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "translations_from_zip",
       "name": "translations_from_zip",
       "description": "\"Hello\" translated in several languages [from a zip].",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "translations_from_zip/translation",
           "name": "translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "languages_in_zip",
+            "fileSet": {
+              "@id": "languages_in_zip"
+            },
             "extract": {
               "fileProperty": "lines"
             }
@@ -136,11 +156,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "translations_from_zip/lineNumber",
           "name": "lineNumber",
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "languages_in_zip",
+            "fileSet": {
+              "@id": "languages_in_zip"
+            },
             "extract": {
               "fileProperty": "lineNumbers"
             }
@@ -148,11 +171,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "translations_from_zip/filename",
           "name": "filename",
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "languages_in_zip",
+            "fileSet": {
+              "@id": "languages_in_zip"
+            },
             "extract": {
               "fileProperty": "filename"
             }

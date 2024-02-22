@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -54,6 +55,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "repo",
       "name": "repo",
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/c4/tree/refs%2Fconvert%2Fparquet",
@@ -62,9 +64,10 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "parquet-files",
       "name": "parquet-files",
       "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
-      "containedIn": "repo",
+      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/repo",
       "encodingFormat": "application/x-parquet",
       "includes": "*/*/*.parquet"
     }
@@ -72,16 +75,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "en",
       "name": "en",
       "description": "The en set of records in the dataset.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "en/text",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "text"
             }
@@ -89,11 +96,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "en/timestamp",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "timestamp"
             }
@@ -101,11 +111,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "en/url",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "url"
             }
@@ -115,16 +128,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "realnewslike",
       "name": "realnewslike",
       "description": "The realnewslike set of records in the dataset.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "realnewslike/text",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "text"
             }
@@ -132,11 +149,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "realnewslike/timestamp",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "timestamp"
             }
@@ -144,11 +164,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "realnewslike/url",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "url"
             }
@@ -158,16 +181,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "en.noblocklist",
       "name": "en.noblocklist",
       "description": "The en.noblocklist set of records in the dataset.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "en.noblocklist/text",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "text"
             }
@@ -175,11 +202,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "en.noblocklist/timestamp",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "timestamp"
             }
@@ -187,11 +217,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "en.noblocklist/url",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "url"
             }
@@ -201,16 +234,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "en.noclean",
       "name": "en.noclean",
       "description": "The en.noclean set of records in the dataset.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "en.noclean/text",
           "name": "text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "text"
             }
@@ -218,11 +255,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "en.noclean/timestamp",
           "name": "timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "timestamp"
             }
@@ -230,11 +270,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "en.noclean/url",
           "name": "url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "url"
             }

@@ -66,6 +66,7 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "a-record-set",
       "name": "a-record-set",
       "description": "This is a record set.",
       "field": [

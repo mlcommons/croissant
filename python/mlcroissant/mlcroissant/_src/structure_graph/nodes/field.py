@@ -108,7 +108,7 @@ class Field(Node):
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on the source:
-        source = self.ctx.node_by_uid(self.source.uid)
+        source = self.ctx.node_by_uuid(self.source.uuid)
         if not isinstance(source, Field):
             self.add_error(
                 "The field does not specify a valid"

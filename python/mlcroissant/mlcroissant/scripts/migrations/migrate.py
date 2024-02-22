@@ -130,11 +130,7 @@ def main(argv):
     assert test_datasets, f"No dataset found in {test_path}"
     for dataset in datasets:
         print(str(dataset), "coco" not in str(dataset))
-        if (
-            "pass" not in str(dataset)
-            and "coco" not in str(dataset)
-            and "movie" not in str(dataset)
-        ):
+        if "pass" in str(dataset) or "coco" in str(dataset) or "movie" in str(dataset):
             print(f"Converting {dataset}...")
             with dataset.open("r") as f:
                 json_ld = json.load(f)
@@ -142,16 +138,16 @@ def main(argv):
                 json_ld = up(json_ld)
             json_ld = migrate_dataset(json_ld)
             print("\nOutput of migrate_dataset\n", json.dumps(json_ld, indent=4))
-    #     with dataset.open("w") as f:
-    #         json.dump(json_ld, f, indent="  ")
-    #         f.write("\n")
-    for dataset in test_datasets:
-        print(f"Converting test dataset {dataset}...")
-        with dataset.open("r") as f:
-            json_ld = json.load(f)
-            up = get_migration_fn(FLAGS.migration)
-            json_ld = up(json_ld)
-        json_ld = migrate_test_dataset(dataset, json_ld)
+            # with dataset.open("w") as f:
+            #     json.dump(json_ld, f, indent="  ")
+            #     f.write("\n")
+    # for dataset in test_datasets:
+    #     print(f"Converting test dataset {dataset}...")
+    #     with dataset.open("r") as f:
+    #         json_ld = json.load(f)
+    #         up = get_migration_fn(FLAGS.migration)
+    #         json_ld = up(json_ld)
+    #     json_ld = migrate_test_dataset(dataset, json_ld)
     #     with dataset.open("w") as f:
     #         json.dump(json_ld, f, indent="  ")
     #         f.write("\n")

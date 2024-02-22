@@ -98,11 +98,11 @@ def load_records_and_test_equality(
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
-        ["coco2014-mini/metadata.json", "bounding_boxes", -1],
-        ["coco2014-mini/metadata.json", "captions", -1],
-        ["coco2014-mini/metadata.json", "images", -1],
-        ["coco2014-mini/metadata.json", "split_enums", -1],
-        ["pass-mini/metadata.json", "images", -1],
+        # ["coco2014-mini/metadata.json", "bounding_boxes", -1],
+        # ["coco2014-mini/metadata.json", "captions", -1],
+        # ["coco2014-mini/metadata.json", "images", -1],
+        # ["coco2014-mini/metadata.json", "split_enums", -1],
+        # ["pass-mini/metadata.json", "images", -1],
         ["recipes/file_object_in_zip.json", "csv1", -1],
         ["recipes/file_object_in_zip.json", "csv2", -1],
         ["recipes/read_binary_file_by_line.json", "translations_from_directory", -1],

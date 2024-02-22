@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -41,8 +42,7 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform",
-    "wd": "https://www.wikidata.org/wiki/"
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "simple-split",
@@ -53,6 +53,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "books.csv",
       "name": "books.csv",
       "contentUrl": "data/books.csv",
       "encodingFormat": "text/csv",
@@ -62,15 +63,19 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "books",
       "name": "books",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "books/title",
           "name": "title",
           "description": "The title of the book",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "books.csv",
+            "fileObject": {
+              "@id": "books.csv"
+            },
             "extract": {
               "column": "Title"
             }
@@ -78,11 +83,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "books/Author",
           "name": "Author",
           "description": "The author of the book",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "books.csv",
+            "fileObject": {
+              "@id": "books.csv"
+            },
             "extract": {
               "column": "Author"
             }
@@ -90,6 +98,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "books/split",
           "name": "split",
           "description": "The data split to which belongs the record",
           "dataType": [
@@ -97,7 +106,9 @@
             "wd:Q3985153"
           ],
           "source": {
-            "fileObject": "books.csv",
+            "fileObject": {
+              "@id": "books.csv"
+            },
             "extract": {
               "column": "Split"
             }

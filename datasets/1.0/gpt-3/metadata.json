@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -53,6 +54,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "repo",
       "name": "repo",
       "contentUrl": "https://github.com/openai/gpt-3",
       "encodingFormat": "git+https",
@@ -60,8 +62,9 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "jsonl",
       "name": "jsonl",
-      "containedIn": "repo",
+      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/repo",
       "encodingFormat": "application/jsonlines",
       "includes": "data/*.jsonl"
     }
@@ -69,16 +72,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "default",
       "name": "default",
       "description": "Contexts and completions.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "default/context",
           "name": "context",
           "description": "The context in the promt.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "jsonl",
+            "fileSet": {
+              "@id": "jsonl"
+            },
             "extract": {
               "column": "context"
             }
@@ -86,11 +93,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/completion",
           "name": "completion",
           "description": "The expected completion of the promt.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "jsonl",
+            "fileSet": {
+              "@id": "jsonl"
+            },
             "extract": {
               "column": "completion"
             }
@@ -98,11 +108,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/task",
           "name": "task",
           "description": "The machine learning task appearing as the name of the file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "jsonl",
+            "fileSet": {
+              "@id": "jsonl"
+            },
             "extract": {
               "fileProperty": "filename"
             },

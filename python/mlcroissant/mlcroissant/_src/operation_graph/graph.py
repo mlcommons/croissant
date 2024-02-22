@@ -162,8 +162,8 @@ def _add_operations_for_field(operations: Operations, node: Field):
         if isinstance(operation, Join) and operation.node == record_set
     ]
     for join in joins:
-        left_node = node.ctx.node_by_uid(node.source.uid)
-        right_node = node.ctx.node_by_uid(node.references.uid)
+        left_node = node.ctx.node_by_uuid(node.source.uuid)
+        right_node = node.ctx.node_by_uuid(node.references.uuid)
         if left_node and right_node:
             join.connect_to_last_operation(left_node)
             join.connect_to_last_operation(right_node)

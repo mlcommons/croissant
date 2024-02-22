@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -53,6 +54,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "archive.zip",
       "name": "archive.zip",
       "description": "Archive containing all the contents of the World Happiness Report dataset",
       "contentSize": "36.809 KB",
@@ -62,58 +64,75 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "2015.csv",
       "name": "2015.csv",
       "description": "Happiness rank and scores by country, 2015",
       "contentUrl": "2015.csv",
-      "containedIn": "archive.zip",
+      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/archive.zip",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "2016.csv",
       "name": "2016.csv",
       "description": "Happiness rank and scores by country, 2016",
       "contentUrl": "2016.csv",
-      "containedIn": "archive.zip",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "2017.csv",
       "name": "2017.csv",
       "description": "Happiness rank and scores by country, 2017",
       "contentUrl": "2017.csv",
-      "containedIn": "archive.zip",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "2018.csv",
       "name": "2018.csv",
       "description": "Happiness rank and scores by country, 2018",
       "contentUrl": "2018.csv",
-      "containedIn": "archive.zip",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "2019.csv",
       "name": "2019.csv",
       "description": "Happiness rank and scores by country, 2019",
       "contentUrl": "2019.csv",
-      "containedIn": "archive.zip",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
       "encodingFormat": "text/csv"
     }
   ],
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "2015.csv_records",
       "name": "2015.csv_records",
       "description": "Happiness rank and scores by country, 2015",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Country",
           "name": "Country",
           "description": "Name of the country.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Country"
             }
@@ -121,11 +140,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Region",
           "name": "Region",
           "description": "Region the country belongs to.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Region"
             }
@@ -133,11 +155,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Happiness-Rank",
           "name": "Happiness-Rank",
           "description": "Rank of the country based on the Happiness Score.",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Happiness Rank"
             }
@@ -145,11 +170,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Happiness-Score",
           "name": "Happiness-Score",
           "description": "A metric measured in 2015 by asking the sampled people the question: \"How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest.\"",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Happiness Score"
             }
@@ -157,11 +185,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Standard-Error",
           "name": "Standard-Error",
           "description": "The standard error of the happiness score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Standard Error"
             }
@@ -169,11 +200,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Economy--GDP-per-Capita-",
           "name": "Economy--GDP-per-Capita-",
           "description": "The extent to which GDP contributes to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Economy (GDP per Capita)"
             }
@@ -181,11 +215,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Family",
           "name": "Family",
           "description": "The extent to which Family contributes to the calculation of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Family"
             }
@@ -193,11 +230,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Health--Life-Expectancy-",
           "name": "Health--Life-Expectancy-",
           "description": "The extent to which Life expectancy contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Health (Life Expectancy)"
             }
@@ -205,11 +245,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Freedom",
           "name": "Freedom",
           "description": "The extent to which Freedom contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Freedom"
             }
@@ -217,11 +260,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Trust--Government-Corruption-",
           "name": "Trust--Government-Corruption-",
           "description": "The extent to which Perception of Corruption contributes to Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Trust (Government Corruption)"
             }
@@ -229,11 +275,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Generosity",
           "name": "Generosity",
           "description": "The extent to which Generosity contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Generosity"
             }
@@ -241,11 +290,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2015.csv_records/Dystopia-Residual",
           "name": "Dystopia-Residual",
           "description": "The extent to which Dystopia Residual contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2015.csv",
+            "fileObject": {
+              "@id": "2015.csv"
+            },
             "extract": {
               "column": "Dystopia Residual"
             }
@@ -255,16 +307,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "2016.csv_records",
       "name": "2016.csv_records",
       "description": "Happiness rank and scores by country, 2016",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Country",
           "name": "Country",
           "description": "Name of the country",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Country"
             }
@@ -272,11 +328,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Region",
           "name": "Region",
           "description": "Region the country belongs to",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Region"
             }
@@ -284,11 +343,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Happiness-Rank",
           "name": "Happiness-Rank",
           "description": "Rank of the country based on the Happiness Score.",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Happiness Rank"
             }
@@ -296,11 +358,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Happiness-Score",
           "name": "Happiness-Score",
           "description": "A metric measured in 2016 by asking the sampled people the question: \"How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest\"",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Happiness Score"
             }
@@ -308,11 +373,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Lower-Confidence-Interval",
           "name": "Lower-Confidence-Interval",
           "description": "Lower Confidence Interval of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Lower Confidence Interval"
             }
@@ -320,11 +388,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Upper-Confidence-Interval",
           "name": "Upper-Confidence-Interval",
           "description": "Upper Confidence Interval of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Upper Confidence Interval"
             }
@@ -332,11 +403,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Economy--GDP-per-Capita-",
           "name": "Economy--GDP-per-Capita-",
           "description": "The extent to which GDP contributes to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Economy (GDP per Capita)"
             }
@@ -344,11 +418,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Family",
           "name": "Family",
           "description": "The extent to which Family contributes to the calculation of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Family"
             }
@@ -356,11 +433,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Health--Life-Expectancy-",
           "name": "Health--Life-Expectancy-",
           "description": "The extent to which Life expectancy contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Health (Life Expectancy)"
             }
@@ -368,11 +448,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Freedom",
           "name": "Freedom",
           "description": "The extent to which Freedom contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Freedom"
             }
@@ -380,11 +463,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Trust--Government-Corruption-",
           "name": "Trust--Government-Corruption-",
           "description": "The extent to which Perception of Corruption contributes to Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Trust (Government Corruption)"
             }
@@ -392,11 +478,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Generosity",
           "name": "Generosity",
           "description": "The extent to which Generosity contributed to the calculation of the Happiness Score",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Generosity"
             }
@@ -404,11 +493,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2016.csv_records/Dystopia-Residual",
           "name": "Dystopia-Residual",
           "description": "The extent to which Dystopia Residual contributed to the calculation of the Happiness Score.",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2016.csv",
+            "fileObject": {
+              "@id": "2016.csv"
+            },
             "extract": {
               "column": "Dystopia Residual"
             }
@@ -418,16 +510,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "2017.csv_records",
       "name": "2017.csv_records",
       "description": "Happiness rank and scores by country, 2017",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Country",
           "name": "Country",
           "description": "Country column",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Country"
             }
@@ -435,11 +531,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Happiness.Rank",
           "name": "Happiness.Rank",
           "description": "Happiness.Rank column",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Happiness.Rank"
             }
@@ -447,11 +546,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Happiness.Score",
           "name": "Happiness.Score",
           "description": "A metric measured in 2016 by asking the sampled people the question: \"How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest\"",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Happiness.Score"
             }
@@ -459,11 +561,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Whisker.high",
           "name": "Whisker.high",
           "description": "Whisker.high column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Whisker.high"
             }
@@ -471,11 +576,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Whisker.low",
           "name": "Whisker.low",
           "description": "Whisker.low column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Whisker.low"
             }
@@ -483,11 +591,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Economy..GDP.per.Capita.",
           "name": "Economy..GDP.per.Capita.",
           "description": "Economy..GDP.per.Capita. column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Economy..GDP.per.Capita."
             }
@@ -495,11 +606,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Family",
           "name": "Family",
           "description": "Family column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Family"
             }
@@ -507,11 +621,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Health..Life.Expectancy.",
           "name": "Health..Life.Expectancy.",
           "description": "Health..Life.Expectancy. column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Health..Life.Expectancy."
             }
@@ -519,11 +636,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Freedom",
           "name": "Freedom",
           "description": "Freedom column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Freedom"
             }
@@ -531,11 +651,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Generosity",
           "name": "Generosity",
           "description": "Generosity column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Generosity"
             }
@@ -543,11 +666,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Trust..Government.Corruption.",
           "name": "Trust..Government.Corruption.",
           "description": "Trust..Government.Corruption. column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Trust..Government.Corruption."
             }
@@ -555,11 +681,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2017.csv_records/Dystopia.Residual",
           "name": "Dystopia.Residual",
           "description": "Dystopia.Residual column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2017.csv",
+            "fileObject": {
+              "@id": "2017.csv"
+            },
             "extract": {
               "column": "Dystopia.Residual"
             }
@@ -569,16 +698,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "2018.csv_records",
       "name": "2018.csv_records",
       "description": "Happiness rank and scores by country, 2018",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Overall-rank",
           "name": "Overall-rank",
           "description": "Overall rank column",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Overall rank"
             }
@@ -586,11 +719,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Country-or-region",
           "name": "Country-or-region",
           "description": "Country or region column",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Country or region"
             }
@@ -598,11 +734,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Score",
           "name": "Score",
           "description": "Score column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Score"
             }
@@ -610,11 +749,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/GDP-per-capita",
           "name": "GDP-per-capita",
           "description": "GDP per capita column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "GDP per capita"
             }
@@ -622,11 +764,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Social-support",
           "name": "Social-support",
           "description": "Social support column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Social support"
             }
@@ -634,11 +779,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Healthy-life-expectancy",
           "name": "Healthy-life-expectancy",
           "description": "Healthy life expectancy column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Healthy life expectancy"
             }
@@ -646,11 +794,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Freedom-to-make-life-choices",
           "name": "Freedom-to-make-life-choices",
           "description": "Freedom to make life choices column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Freedom to make life choices"
             }
@@ -658,11 +809,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Generosity",
           "name": "Generosity",
           "description": "Generosity column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Generosity"
             }
@@ -670,11 +824,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2018.csv_records/Perceptions-of-corruption",
           "name": "Perceptions-of-corruption",
           "description": "Perceptions of corruption column",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2018.csv",
+            "fileObject": {
+              "@id": "2018.csv"
+            },
             "extract": {
               "column": "Perceptions of corruption"
             }
@@ -684,16 +841,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "2019.csv_records",
       "name": "2019.csv_records",
       "description": "Happiness rank and scores by country, 2019",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Overall-rank",
           "name": "Overall-rank",
           "description": "Overall rank column",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Overall rank"
             }
@@ -701,11 +862,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Country-or-region",
           "name": "Country-or-region",
           "description": "Country or region column",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Country or region"
             }
@@ -713,11 +877,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Score",
           "name": "Score",
           "description": "Score column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Score"
             }
@@ -725,11 +892,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/GDP-per-capita",
           "name": "GDP-per-capita",
           "description": "GDP per capita column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "GDP per capita"
             }
@@ -737,11 +907,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Social-support",
           "name": "Social-support",
           "description": "Social support column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Social support"
             }
@@ -749,11 +922,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Healthy-life-expectancy",
           "name": "Healthy-life-expectancy",
           "description": "Healthy life expectancy column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Healthy life expectancy"
             }
@@ -761,11 +937,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Freedom-to-make-life-choices",
           "name": "Freedom-to-make-life-choices",
           "description": "Freedom to make life choices column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Freedom to make life choices"
             }
@@ -773,11 +952,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Generosity",
           "name": "Generosity",
           "description": "Generosity column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Generosity"
             }
@@ -785,11 +967,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "2019.csv_records/Perceptions-of-corruption",
           "name": "Perceptions-of-corruption",
           "description": "Perceptions of corruption column",
           "dataType": "sc:Float",
           "source": {
-            "fileObject": "2019.csv",
+            "fileObject": {
+              "@id": "2019.csv"
+            },
             "extract": {
               "column": "Perceptions of corruption"
             }

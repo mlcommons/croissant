@@ -92,7 +92,7 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
                 if not field.source:
                     uuid = uuid_to_jsonld(field.uuid)
                     field.add_error(
-                        f'Node "{field.uuid}" is a field and has no source. Please, use'
+                        f'Node "{uuid}" is a field and has no source. Please, use'
                         f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
                     )
                 else:
