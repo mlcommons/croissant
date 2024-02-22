@@ -132,3 +132,15 @@ def test_metadata_can_be_deep_copied():
     copied_metadata = copy.deepcopy(metadata)
     assert copied_metadata.name == metadata.name == "foo"
     assert copied_metadata is not metadata
+
+
+def test_validate_license():
+    assert Metadata(name="foo").license == None
+    assert Metadata(name="foo", license=None).license == None
+    assert Metadata(name="foo", license="mit").license == ["mit"]
+    assert Metadata(name="foo", license=["apache-2.0", "mit"]).license == [
+        "apache-2.0",
+        "mit",
+    ]
+    with pytest.raises(ValidationError, match="License should be a list of str"):
+        Metadata(name="foo", license=42)

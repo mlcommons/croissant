@@ -17,6 +17,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_str_to_date_time
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
+from mlcroissant._src.core.json_ld import first_element_or_list
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
@@ -78,7 +79,7 @@ class Metadata(Node):
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
-    license: str | None = None
+    license: list[str] | None = None
     name: str = ""
     url: str | None = ""
     version: str | None = ""
@@ -115,6 +116,7 @@ class Metadata(Node):
         # Check properties.
         self.validate_name()
         self.version = self.validate_version()
+        self.license = self.validate_license()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("cite_as", "license", "version")
 
@@ -153,7 +155,7 @@ class Metadata(Node):
             "citation": self.cite_as if self.ctx.is_v0() else None,
             "citeAs": None if self.ctx.is_v0() else self.cite_as,
             "isLiveDataset": self.is_live_dataset,
-            "license": self.license,
+            "license": first_element_or_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
@@ -217,6 +219,22 @@ class Metadata(Node):
             self.add_error(
                 f"The version should be a string or a number. Got: {type(version)}."
             )
+            return None
+
+    def validate_license(self) -> list[str] | None:
+        """Validates the license as a list of strings."""
+        license = self.license
+        if license is None:
+            return None
+        elif isinstance(license, list):
+            if any(not isinstance(el, str) for el in license):
+                self.add_error(f"License should be a list of str. Got: {license}")
+                return None
+            return license
+        elif isinstance(license, str):
+            return [license]
+        else:
+            self.add_error(f"License should be a list of str. Got: {license}")
             return None
 
     def check_graph(self):
