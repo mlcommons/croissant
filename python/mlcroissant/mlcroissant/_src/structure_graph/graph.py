@@ -63,7 +63,8 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
                 _add_edge(graph, uuid_to_node, uuid, node)
     for record_set in metadata.record_sets:
         for field in record_set.fields:
-            _add_edge(graph, uuid_to_node, record_set.uuid, field)
+            if record_set.data:
+                _add_edge(graph, uuid_to_node, record_set.uuid, field)
             for origin in [field.source, field.references]:
                 if origin:
                     _add_edge(graph, uuid_to_node, origin.uuid, record_set)
