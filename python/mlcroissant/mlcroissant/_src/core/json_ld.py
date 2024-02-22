@@ -102,7 +102,7 @@ def remove_empty_values(d: Json) -> Json:
     return {k: v for k, v in d.items() if v}
 
 
-def first_element_or_list(d: Any):
+def unbox_singleton_list(d: Any):
     """Returns the first element if one element, else the whole list.
 
     This is interesting in JSON-LD for properties with a MANY cardinality where we want

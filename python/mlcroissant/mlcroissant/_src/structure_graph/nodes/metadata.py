@@ -17,8 +17,8 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_str_to_date_time
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
-from mlcroissant._src.core.json_ld import first_element_or_list
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
@@ -155,7 +155,7 @@ class Metadata(Node):
             "citation": self.cite_as if self.ctx.is_v0() else None,
             "citeAs": None if self.ctx.is_v0() else self.cite_as,
             "isLiveDataset": self.is_live_dataset,
-            "license": first_element_or_list(self.license),
+            "license": unbox_singleton_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
             "version": self.version,
