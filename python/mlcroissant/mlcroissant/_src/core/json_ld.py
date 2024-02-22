@@ -151,7 +151,6 @@ def expand_jsonld(data: Json) -> Json:
         data=json.dumps(data),
         format="json-ld",
     )
-    # print("DEBUG: graph is: ", graph)
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
