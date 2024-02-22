@@ -89,13 +89,13 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
         if isinstance(node, RecordSet) and not node.data:
             for field in node.fields:
                 if not field.source:
-                    uuid = uuid_to_jsonld(node.uuid)
+                    uuid = uuid_to_jsonld(field.uuid)
                     field.add_error(
-                        f'Node "{field.uuid}" is a field and has no source. Please, use'
+                        f'Node "{uuid}" is a field and has no source. Please, use'
                         f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
                     )
                 else:
-                    uuid = uuid_to_jsonld(node.source.uuid)
+                    uuid = uuid_to_jsonld(field.source.uuid)
                     field.add_error(
                         f"Malformed source data: {uuid}. It does not refer to any"
                         " existing node. Have you used"
