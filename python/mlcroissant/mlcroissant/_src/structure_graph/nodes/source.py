@@ -345,6 +345,14 @@ class Source:
                 )
 
 
-def get_parent_uuid(uuid: str) -> str:
+def get_parent_uuid(ctx: Context, uuid: str) -> str:
     """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
-    return uuid.split("/")[0]
+    node = ctx.node_by_uuid(uuid)
+    if node is None:
+        raise ValueError(f"Node with uuid={uuid} does not exist")
+    # Should move the function to break the circular imports
+    from mlcroissant._src.structure_graph.nodes.field import Field
+
+    if isinstance(node, Field):
+        return node.parent.uuid
+    return node.uuid

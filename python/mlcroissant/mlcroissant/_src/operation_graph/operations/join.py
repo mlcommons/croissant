@@ -39,8 +39,8 @@ class Join(Operation):
                 continue
             if left.uuid is None or right.uuid is None:
                 continue
-            left_index = predecessors.index(get_parent_uuid(left.uuid))
-            right_index = predecessors.index(get_parent_uuid(right.uuid))
+            left_index = predecessors.index(get_parent_uuid(self.node.ctx, left.uuid))
+            right_index = predecessors.index(get_parent_uuid(self.node.ctx, right.uuid))
             join = (field, (left, args[left_index]), (right, args[right_index]))
             if join not in joins:
                 joins.append(join)

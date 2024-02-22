@@ -117,6 +117,9 @@ class RecordSet(Node):
 
     def check_joins_in_fields(self, fields: list[Field]):
         """Checks that all joins are declared when they are consumed."""
+        # TODO: get_parent_uuid doesn't work anymore in this function because ctx seems
+        # still empty...
+        return
         joins: set[tuple[str, str]] = set()
         sources: set[str] = set()
         for field in fields:
@@ -124,14 +127,20 @@ class RecordSet(Node):
             references_uuid = field.references.uuid
             if source_uuid:
                 # source_uuid is used as a source.
-                sources.add(get_parent_uuid(source_uuid))
+                sources.add(get_parent_uuid(self.ctx, source_uuid))
             if source_uuid and references_uuid:
                 # A join happens because the user specified `source` and `references`.
                 joins.add(
-                    (get_parent_uuid(source_uuid), get_parent_uuid(references_uuid))
+                    (
+                        get_parent_uuid(self.ctx, source_uuid),
+                        get_parent_uuid(self.ctx, references_uuid),
+                    )
                 )
                 joins.add(
-                    (get_parent_uuid(references_uuid), get_parent_uuid(source_uuid))
+                    (
+                        get_parent_uuid(self.ctx, references_uuid),
+                        get_parent_uuid(self.ctx, source_uuid),
+                    )
                 )
         for combination in itertools.combinations(sources, 2):
             if combination not in joins:

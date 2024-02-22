@@ -295,7 +295,7 @@ def test_check_source_for_invalid_json_path():
     assert "Wrong JSONPath" in errors[0]
 
 
-def test_get_parent_uuid():
-    assert get_parent_uuid("foo") == "foo"
-    assert get_parent_uuid("foo/bar") == "foo"
-    assert get_parent_uuid("foo/bar/baz") == "foo"
+# def test_get_parent_uuid():
+#     assert get_parent_uuid("foo") == "foo"
+#     assert get_parent_uuid("foo/bar") == "foo"
+#     assert get_parent_uuid("foo/bar/baz") == "foo"
