@@ -16,7 +16,7 @@ def test_check_file_csv_url(guess_file_type):
         # This is the hash path for "https://my.url".
         "/tmp/croissant-editor-f76b4732c82d83daf858fae2cc0e590d352a4bceb781351243a03daab11f76bc"
     )
-    # Test typical CSV
+    # Test unescaped CSV
     if csv.exists():
         csv.unlink()
     with csv.open("w") as f:
@@ -49,7 +49,7 @@ def test_check_file_tsv_url(guess_file_type):
         # This is the hash path for "https://my.url".
         "/tmp/croissant-editor-f76b4732c82d83daf858fae2cc0e590d352a4bceb781351243a03daab11f76bc"
     )
-    # Test typical CSV
+    # Test unescaped CSV
     if tsv.exists():
         tsv.unlink()
     with tsv.open("w") as f:
