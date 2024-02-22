@@ -66,11 +66,11 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
             _add_edge(graph, uuid_to_node, record_set.uuid, field)
             for origin in [field.source, field.references]:
                 if origin:
-                    _add_edge(graph, uuid_to_node, origin.uid, record_set)
+                    _add_edge(graph, uuid_to_node, origin.uuid, record_set)
             for sub_field in field.sub_fields:
                 for origin in [sub_field.source, sub_field.references]:
                     if origin:
-                        _add_edge(graph, uuid_to_node, origin.uid, record_set)
+                        _add_edge(graph, uuid_to_node, origin.uuid, record_set)
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
@@ -89,9 +89,9 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
         if isinstance(node, RecordSet) and not node.data:
             for field in node.fields:
                 if not field.source:
-                    uuid = uuid_to_jsonld(field.uuid)
+                    uuid = uuid_to_jsonld(node.uuid)
                     field.add_error(
-                        f'Node "{uuid}" is a field and has no source. Please, use'
+                        f'Node "{field.uuid}" is a field and has no source. Please, use'
                         f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
                     )
                 else:

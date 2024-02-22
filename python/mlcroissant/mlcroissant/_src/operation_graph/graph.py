@@ -48,7 +48,7 @@ def _add_operations_for_record_set(
         Data(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
         )
-    has_join = any(field for field in record_set.fields if field.references.uid)
+    has_join = any(field for field in record_set.fields if field.references.uuid)
     if has_join:
         Join(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
