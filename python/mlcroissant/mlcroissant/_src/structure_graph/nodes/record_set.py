@@ -9,13 +9,14 @@ import json
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
+from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.source import get_parent_uuid
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -34,11 +35,13 @@ class RecordSet(Node):
 
     def __post_init__(self, uuid: str = ""):
         """Checks arguments of the node and sets UUID."""
+        if not uuid:
+            uuid = generate_uuid()
         self._uuid = uuid
         self.validate_name()
         self.assert_has_mandatory_properties("name", "_uuid")
         self.assert_has_optional_properties("description")
-        self.check_joins_in_fields(self.fields)
+        # self.check_joins_in_fields(self.fields)
         if self.data is not None:
             data = self.data
             if not isinstance(data, list):
@@ -115,31 +118,54 @@ class RecordSet(Node):
             uuid=uuid_from_jsonld(record_set),
         )
 
-    def check_joins_in_fields(self, fields: list[Field]):
+    def check_joins_in_fields(self):
         """Checks that all joins are declared when they are consumed."""
         joins: set[tuple[str, str]] = set()
         sources: set[str] = set()
-        for field in fields:
+        for field in self.fields:
             source_uuid = field.source.uuid
             references_uuid = field.references.uuid
             if source_uuid:
                 # source_uuid is used as a source.
-                sources.add(get_parent_uuid(source_uuid))
+                sources.add(get_parent_uuid(self.ctx, source_uuid))
             if source_uuid and references_uuid:
                 # A join happens because the user specified `source` and `references`.
                 joins.add(
-                    (get_parent_uuid(source_uuid), get_parent_uuid(references_uuid))
+                    (
+                        get_parent_uuid(self.ctx, source_uuid),
+                        get_parent_uuid(self.ctx, references_uuid),
+                    )
                 )
                 joins.add(
-                    (get_parent_uuid(references_uuid), get_parent_uuid(source_uuid))
+                    (
+                        get_parent_uuid(self.ctx, references_uuid),
+                        get_parent_uuid(self.ctx, source_uuid),
+                    )
                 )
         for combination in itertools.combinations(sources, 2):
             if combination not in joins:
                 # Sort for reproducibility.
-                ordered_combination = tuple(sorted(combination))
+                ordered_combination = tuple(
+                    sorted([uuid_to_jsonld(source) for source in combination])
+                )
                 self.add_error(
                     f"You try to use the sources with names {ordered_combination} as"
                     " sources, but you didn't declare a join between them. Use"
                     " `ml:references` to declare a join. Please, refer to the"
                     " documentation for more information."
                 )
+
+
+def get_parent_uuid(ctx: Context, uuid: str) -> str:
+    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
+    # TODO: rename this function and have better error message.
+    node = ctx.node_by_uuid(uuid)
+    if node is None:
+        raise ValidationError(
+            "Found the following 1 error(s) during the validation:\n  -  Node with"
+            f" uuid={uuid_to_jsonld(uuid)} does not exist. This error might have been"
+            " found during a Join operation."
+        )
+    if isinstance(node, Field):
+        return node.parent.uuid  # type: ignore[union-attr]
+    return node.uuid

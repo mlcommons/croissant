@@ -343,8 +343,3 @@ class Source:
                     "Wrong JSONPath (https://goessner.net/articles/JsonPath/):"
                     f" {exception}"
                 )
-
-
-def get_parent_uuid(uuid: str) -> str:
-    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
-    return uuid.split("/")[0]

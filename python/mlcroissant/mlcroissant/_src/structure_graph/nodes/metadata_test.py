@@ -95,8 +95,8 @@ def test_invalid_version(version, expected_error):
 )
 def test_warning_version(version, expected_warning):
     ctx = Context()
-    Metadata(ctx, name="foo", version=version)
-    assert any(expected_warning in warning for warning in ctx.issues.warnings)
+    metadata = Metadata(ctx, name="foo", version=version)
+    assert any(expected_warning in warning for warning in metadata.ctx.issues.warnings)
 
 
 @pytest.mark.parametrize(

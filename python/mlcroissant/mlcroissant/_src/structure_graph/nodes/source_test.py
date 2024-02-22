@@ -2,14 +2,12 @@
 
 import pytest
 from rdflib.term import URIRef
-
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
-from mlcroissant._src.structure_graph.nodes.source import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.source import is_file_property
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
@@ -293,9 +291,3 @@ def test_check_source_for_invalid_json_path():
     errors = list(issues.errors)
     assert len(errors) == 1
     assert "Wrong JSONPath" in errors[0]
-
-
-def test_get_parent_uuid():
-    assert get_parent_uuid("foo") == "foo"
-    assert get_parent_uuid("foo/bar") == "foo"
-    assert get_parent_uuid("foo/bar/baz") == "foo"

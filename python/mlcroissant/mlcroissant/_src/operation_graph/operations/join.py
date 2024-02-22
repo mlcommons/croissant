@@ -7,8 +7,8 @@ import pandas as pd
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.field import apply_transforms_fn
 from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.record_set import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-from mlcroissant._src.structure_graph.nodes.source import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -39,8 +39,8 @@ class Join(Operation):
                 continue
             if left.uuid is None or right.uuid is None:
                 continue
-            left_index = predecessors.index(get_parent_uuid(left.uuid))
-            right_index = predecessors.index(get_parent_uuid(right.uuid))
+            left_index = predecessors.index(get_parent_uuid(self.node.ctx, left.uuid))
+            right_index = predecessors.index(get_parent_uuid(self.node.ctx, right.uuid))
             join = (field, (left, args[left_index]), (right, args[right_index]))
             if join not in joins:
                 joins.append(join)

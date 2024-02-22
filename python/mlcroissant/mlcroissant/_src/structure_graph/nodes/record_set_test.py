@@ -8,6 +8,8 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.record_set import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_field
 from mlcroissant._src.tests.nodes import create_test_node
@@ -102,3 +104,18 @@ def test_from_jsonld(conforms_to: CroissantVersion):
             " set(). Got: {'column1'}."
         ),
     }
+
+
+@pytest.mark.parametrize(
+    ["node_type", "uuid", "parent_uuid", "input", "output"],
+    [
+        [RecordSet, "foo", "other", "foo", "foo"],
+        [Field, "foo/bar", "foo", "bar", "foo"],
+    ],
+)
+def test_get_parent_uuid(node_type, uuid, parent_uuid, input, output):
+    mocked_node = mock.Mock(uuid=uuid, spec_set=node_type)
+    mocked_node.parent.uuid = parent_uuid
+    mocked_ctx = Context()
+    mocked_ctx.node_by_uuid = mock.Mock(return_value=mocked_node)
+    assert get_parent_uuid(mocked_ctx, input) == output

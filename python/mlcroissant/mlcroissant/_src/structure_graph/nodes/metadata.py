@@ -22,6 +22,7 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
+from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
@@ -74,6 +75,7 @@ class PersonOrOrganization:
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
+    uuid: dataclasses.InitVar[str]
     cite_as: str | None = None
     creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None
@@ -96,10 +98,11 @@ class Metadata(Node):
     # can play an important role in the mitigation of any risks and the responsible use
     # of the datasets.
     personal_sensitive_information: str | None = None
-    uuid: str = ""
 
-    def __post_init__(self):
+    def __post_init__(self, uuid: str | None = None):
         """Checks arguments of the node."""
+        self._uuid = generate_uuid()
+
         # Define parents.
         for node in self.distribution:
             node.parents = [self]
@@ -239,6 +242,12 @@ class Metadata(Node):
         # Check all fields have a data type: either on the field, on a parent.
         for field in fields:
             field.data_type
+        # Check that all joins in RecordSets are correctly declared.
+        record_sets = [
+            node for node in self.ctx.graph.nodes if isinstance(node, RecordSet)
+        ]
+        for record_set in record_sets:
+            record_set.check_joins_in_fields()
 
     @classmethod
     def from_file(cls, ctx: Context, file: epath.PathLike) -> Metadata:

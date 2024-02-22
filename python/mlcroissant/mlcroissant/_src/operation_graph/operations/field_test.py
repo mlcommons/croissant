@@ -143,25 +143,28 @@ def test_extract_lines(separator):
                 ),
             )
         )
-        record_sets = [RecordSet(name="main", uuid="main", fields=fields)]
-        ctx = Context(conforms_to=CroissantVersion.V_1_0)
-        Metadata(
-            ctx=ctx,
-            name="metadata",
-            url="url.com",
-            distribution=distribution,
-            record_sets=record_sets,
-        )
-        read_field = ReadFields(operations=Operations(), node=record_sets[0])
-        df = pd.DataFrame({FileProperty.filepath: [path]})
-        expected = [
-            {"line_number": 0, "line": b"bon jour  ", "filename": b"file"},
-            {"line_number": 1, "line": b"", "filename": b"file"},
-            {"line_number": 2, "line": b" h\xc3\xa9llo ", "filename": b"file"},
-            {"line_number": 3, "line": b"hallo ", "filename": b"file"},
-        ]
-        result = list(read_field(df))
-        assert result == expected
+        with mock.patch.object(RecordSet, "check_joins_in_fields") as mock_check_joins:
+            mock_check_joins.return_value = True
+            record_set = RecordSet(name="main", uuid="main", fields=fields)
+            record_sets = [record_set]
+            ctx = Context(conforms_to=CroissantVersion.V_1_0)
+            Metadata(
+                ctx=ctx,
+                name="metadata",
+                url="url.com",
+                distribution=distribution,
+                record_sets=record_sets,
+            )
+            read_field = ReadFields(operations=Operations(), node=record_sets[0])
+            df = pd.DataFrame({FileProperty.filepath: [path]})
+            expected = [
+                {"line_number": 0, "line": b"bon jour  ", "filename": b"file"},
+                {"line_number": 1, "line": b"", "filename": b"file"},
+                {"line_number": 2, "line": b" h\xc3\xa9llo ", "filename": b"file"},
+                {"line_number": 3, "line": b"hallo ", "filename": b"file"},
+            ]
+            result = list(read_field(df))
+            assert result == expected
 
 
 @pytest.mark.parametrize(

@@ -13,6 +13,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -64,8 +65,10 @@ class Field(Node):
     source: Source = dataclasses.field(default_factory=Source)
     sub_fields: list[Field] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self, uuid: str = ""):
+    def __post_init__(self, uuid: str | None = None):
         """Checks arguments of the node and sets UUID."""
+        if not uuid:
+            uuid = generate_uuid()
         self._uuid = uuid
         self.validate_name()
         self.assert_has_mandatory_properties("name", "_uuid")

@@ -9,6 +9,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -25,8 +26,10 @@ class FileSet(Node):
     includes: str | None = ""
     name: str = ""
 
-    def __post_init__(self, uuid: str = ""):
+    def __post_init__(self, uuid: str | None = None):
         """Checks arguments of the node and sets UUID."""
+        if not uuid:
+            uuid = generate_uuid()
         self._uuid = uuid
         self.validate_name()
         self.assert_has_mandatory_properties(
@@ -36,7 +39,7 @@ class FileSet(Node):
     def to_json(self) -> Json:
         """Converts the `FileSet` to JSON."""
         if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
-            contained_in: str | list[str] = self.contained_in[0]
+            contained_in: str | list[str] | dict = self.contained_in[0]
         else:
             contained_in = self.contained_in
         if not self.ctx.is_v0():
