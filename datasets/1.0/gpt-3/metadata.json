@@ -64,7 +64,9 @@
       "@type": "cr:FileSet",
       "@id": "jsonl",
       "name": "jsonl",
-      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/repo",
+      "containedIn": {
+        "@id": "repo"
+      },
       "encodingFormat": "application/jsonlines",
       "includes": "data/*.jsonl"
     }

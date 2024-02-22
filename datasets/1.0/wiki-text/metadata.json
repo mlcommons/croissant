@@ -64,7 +64,9 @@
       "@type": "cr:FileSet",
       "@id": "token-files",
       "name": "token-files",
-      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/wikitext-103-v1.zip",
+      "containedIn": {
+        "@id": "wikitext-103-v1.zip"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "wikitext-103/*.tokens"
     },

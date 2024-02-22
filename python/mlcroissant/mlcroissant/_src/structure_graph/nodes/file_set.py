@@ -39,6 +39,8 @@ class FileSet(Node):
             contained_in: str | list[str] = self.contained_in[0]
         else:
             contained_in = self.contained_in
+        if self.ctx.is_v0():
+            contained_in = {"@id": source for source in contained_in}
         return remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
             "@id": uuid_to_jsonld(self.uuid),

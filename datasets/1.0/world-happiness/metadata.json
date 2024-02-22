@@ -68,7 +68,9 @@
       "name": "2015.csv",
       "description": "Happiness rank and scores by country, 2015",
       "contentUrl": "2015.csv",
-      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/archive.zip",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
       "encodingFormat": "text/csv"
     },
     {

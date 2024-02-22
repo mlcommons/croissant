@@ -65,7 +65,9 @@
       "@type": "cr:FileSet",
       "@id": "parquet-files",
       "name": "parquet-files",
-      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/repo",
+      "containedIn": {
+        "@id": "repo"
+      },
       "encodingFormat": "application/x-parquet",
       "includes": "*/*.parquet"
     }

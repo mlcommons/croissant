@@ -62,7 +62,9 @@
       "@type": "cr:FileSet",
       "@id": "image-files",
       "name": "image-files",
-      "containedIn": "file:///usr/local/google/home/stanzelc/croissant/python/mlcroissant/mlcroissant/scripts/migrations/cr_base_iri/compressed_archive.zip",
+      "containedIn": {
+        "@id": "compressed_archive.zip"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "*.jpeg"
     }
