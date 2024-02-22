@@ -5,6 +5,7 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import itertools
+import json
 from typing import Any
 
 from etils import epath
@@ -95,6 +96,7 @@ class Metadata(Node):
     # can play an important role in the mitigation of any risks and the responsible use
     # of the datasets.
     personal_sensitive_information: str | None = None
+    uuid: str = ""
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -251,6 +253,7 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON."""
         ctx.rdf = Rdf.from_json(ctx, json_)
         metadata = expand_jsonld(json_)
+        # print("\nOutput of expand_jsonld\n", json.dumps(metadata, indent=4))
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
     @classmethod

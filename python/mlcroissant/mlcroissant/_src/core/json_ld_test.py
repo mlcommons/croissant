@@ -1,12 +1,25 @@
 """migrate_test module."""
 
 import json
+import pytest
 
 from etils import epath
 
 from mlcroissant._src.core.json_ld import compact_jsonld
 from mlcroissant._src.core.json_ld import expand_jsonld
+from mlcroissant._src.core.json_ld import _is_dataset_node
 from mlcroissant._src.core.rdf import make_context
+
+
+@pytest.mark.parametrize(
+    ["node", "output"],
+    [
+        [{"@type": ["http://mlcommons.org/croissant/RecordSet"]}, False],
+        [{"@type": ["https://schema.org/Dataset"]}, True],
+    ],
+)
+def test_is_dataset_node(node, output):
+    assert _is_dataset_node(node) == output
 
 
 # If this test fails, you probably manually updated a dataset in datasets/.
@@ -24,6 +37,7 @@ def test_expand_and_reduce_json_ld():
 
 def test_make_context():
     assert make_context(foo="bar") == {
+        "@base": "cr_base_iri/",
         "@language": "en",
         "@vocab": "https://schema.org/",
         "citeAs": "cr:citeAs",

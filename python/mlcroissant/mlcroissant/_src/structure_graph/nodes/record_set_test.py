@@ -68,7 +68,7 @@ def test_checks_are_performed():
         Node, "validate_name"
     ) as validate_name_mock:
         create_test_node(RecordSet)
-        mandatory_mock.assert_called_once_with("name")
+        mandatory_mock.assert_called_once_with("name", "_uuid")
         optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 
@@ -78,6 +78,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     ctx = Context(conforms_to=conforms_to)
     jsonld = {
         "@type": constants.ML_COMMONS_RECORD_SET_TYPE(ctx),
+        "@id": "foo_uuid",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.ML_COMMONS_IS_ENUMERATION(ctx): True,
@@ -86,6 +87,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     }
     record_set = RecordSet.from_jsonld(ctx, jsonld)
     record_set.name == "foo"
+    record_set.uuid == "foo_uuid"
     record_set.description == "bar"
     record_set.is_enumeration == True
     record_set.key == ["key1", "key2"]

@@ -54,6 +54,7 @@ class Operations(nx.DiGraph):
 
     def add_node(self, operation: Operation) -> None:
         """Overloads nx.add_node to keep track of the last operations."""
+        print("DEBUG:", "adding node: ", operation)
         super().add_node(operation)
 
     def add_edge(self, operation1: Operation, operation2: Operation) -> None:
@@ -107,7 +108,7 @@ class Operation(abc.ABC):
 
     def __repr__(self):
         """Prints a simplified string representation of the operation."""
-        return f"{type(self).__name__}({self.node.uid})"
+        return f"{type(self).__name__}({self.node.uuid})"
 
     def __rrshift__(self, left_operations: Operation | list[Operation]) -> Operation:
         """Allows to chain operations in their graph: `operation1 >> operation2`."""

@@ -14,6 +14,7 @@ from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -49,6 +50,7 @@ class ParentField:
 class Field(Node):
     """Nodes to describe a dataset Field."""
 
+    uuid: dataclasses.InitVar[str]
     description: str | None = None
     # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
     data_types: term.URIRef | list[term.URIRef] = dataclasses.field(  # type: ignore  # https://github.com/python/mypy/issues/11923
@@ -62,10 +64,12 @@ class Field(Node):
     source: Source = dataclasses.field(default_factory=Source)
     sub_fields: list[Field] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self):
-        """Checks arguments of the node."""
+    def __post_init__(self, uuid: str = ""):
+        """Checks arguments of the node and sets UUID."""
+        self._uuid = uuid
         self.validate_name()
-        self.assert_has_mandatory_properties("name")
+        self.validate_uuid()
+        self.assert_has_mandatory_properties("name", "_uuid")
         self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
         self._standardize_data_types()
@@ -130,6 +134,7 @@ class Field(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
             "@type": f"{prefix}:Field",
+            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,

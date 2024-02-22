@@ -12,15 +12,17 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
+from mlcroissant._src.structure_graph.nodes.source import get_parent_uuid
 
 
 @dataclasses.dataclass(eq=False, repr=False)
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
+    uuid: dataclasses.InitVar[str]
     # `data` is passed as a string for the moment, because dicts and lists are not
     # hashable.
     data: list[Json] | None = None
@@ -30,10 +32,11 @@ class RecordSet(Node):
     name: str = ""
     fields: list[Field] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self):
-        """Checks arguments of the node."""
+    def __post_init__(self, uuid: str = ""):
+        """Checks arguments of the node and sets UUID."""
+        self._uuid = uuid
         self.validate_name()
-        self.assert_has_mandatory_properties("name")
+        self.assert_has_mandatory_properties("name", "_uuid")
         self.assert_has_optional_properties("description")
         self.check_joins_in_fields(self.fields)
         if self.data is not None:
@@ -69,6 +72,7 @@ class RecordSet(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
             "@type": f"{prefix}:RecordSet",
+            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
@@ -116,15 +120,19 @@ class RecordSet(Node):
         joins: set[tuple[str, str]] = set()
         sources: set[str] = set()
         for field in fields:
-            source_uid = field.source.uid
-            references_uid = field.references.uid
-            if source_uid:
-                # source_uid is used as a source.
-                sources.add(get_parent_uid(source_uid))
-            if source_uid and references_uid:
+            source_uuid = field.source.uuid
+            references_uuid = field.references.uuid
+            if source_uuid:
+                # source_uuid is used as a source.
+                sources.add(get_parent_uuid(source_uuid))
+            if source_uuid and references_uuid:
                 # A join happens because the user specified `source` and `references`.
-                joins.add((get_parent_uid(source_uid), get_parent_uid(references_uid)))
-                joins.add((get_parent_uid(references_uid), get_parent_uid(source_uid)))
+                joins.add(
+                    (get_parent_uuid(source_uuid), get_parent_uuid(references_uuid))
+                )
+                joins.add(
+                    (get_parent_uuid(references_uuid), get_parent_uuid(source_uuid))
+                )
         for combination in itertools.combinations(sources, 2):
             if combination not in joins:
                 # Sort for reproducibility.

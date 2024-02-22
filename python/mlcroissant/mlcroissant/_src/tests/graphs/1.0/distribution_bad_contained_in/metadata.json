@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -54,9 +55,12 @@
   "version": "1.0.0",
   "distribution": [
     {
+      "@id": "a-csv-table",
       "@type": "cr:FileObject",
       "name": "a-csv-table",
-      "containedIn": "THISDOESNOTEXIST",
+      "containedIn": {
+        "@id": "THISDOESNOTEXIST"
+      },
       "contentUrl": "ratings.csv",
       "encodingFormat": "text/csv",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"

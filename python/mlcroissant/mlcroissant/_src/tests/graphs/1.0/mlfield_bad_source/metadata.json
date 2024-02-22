@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -69,6 +70,7 @@
       "description": "This is a record set.",
       "field": [
         {
+          "@id": "a-record-set/first-field",
           "@type": "cr:Field",
           "name": "first-field",
           "dataType": "sc:Integer",
@@ -76,7 +78,9 @@
             "extract": {
               "column": "a-column"
             },
-            "fileObject": "THISDOESNOTEXIST"
+            "fileObject": {
+              "@id": "THISDOESNOTEXIST"
+            }
           }
         }
       ]

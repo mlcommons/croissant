@@ -1,5 +1,6 @@
 {
   "@context": {
+    "@base": "cr_base_iri/",
     "@language": "en",
     "@vocab": "https://schema.org/",
     "citeAs": "cr:citeAs",
@@ -54,6 +55,7 @@
   "version": "1.0.0",
   "distribution": [
     {
+      "@id": "a-csv-table",
       "@type": "cr:FileObject",
       "name": "a-csv-table",
       "contentSize": "117743 B",
@@ -64,10 +66,12 @@
   ],
   "recordSet": [
     {
+      "@id": "a-record-set",
       "@type": "cr:RecordSet",
       "description": "This is a record set.",
       "field": [
         {
+          "@id": "a-record-set/first-field",
           "@type": "cr:Field",
           "name": "first-field",
           "dataType": "sc:Integer",
@@ -75,7 +79,9 @@
             "extract": {
               "column": "a-column"
             },
-            "fileObject": "a-csv-table"
+            "fileObject": {
+              "@id": "a-csv-table"
+            }
           }
         }
       ]

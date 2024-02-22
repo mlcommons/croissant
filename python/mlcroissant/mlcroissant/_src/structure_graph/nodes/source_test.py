@@ -9,7 +9,7 @@ from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
-from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
+from mlcroissant._src.structure_graph.nodes.source import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.source import is_file_property
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
@@ -20,7 +20,7 @@ def test_source_bool():
     empty_source = Source(transforms=[Transform(replace="\\n/<eos>")])
     assert not empty_source
 
-    whole_source = Source(uid="one/two")
+    whole_source = Source(uuid="one/two")
     assert whole_source
 
 
@@ -33,7 +33,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
                 {
                     constants.ML_COMMONS_FIELD(ctx): "token-files/content",
                 },
-                Source(uid="token-files/content", node_type="field"),
+                Source(uuid="token-files/content", node_type="field"),
             ],
             [
                 {
@@ -44,7 +44,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
                     ],
                 },
                 Source(
-                    uid="token-files/content",
+                    uuid="token-files/content",
                     transforms=[
                         Transform(replace="\\n/<eos>"),
                         Transform(separator=" "),
@@ -63,7 +63,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
                     }
                 ],
                 Source(
-                    uid="token-files/content",
+                    uuid="token-files/content",
                     transforms=[
                         Transform(replace="\\n/<eos>"),
                         Transform(separator=" "),
@@ -98,7 +98,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
             },
             Source(
                 extract=Extract(column="my-column"),
-                uid="my-csv",
+                uuid="my-csv",
                 transforms=[Transform(replace="\\n/<eos>", separator=" ")],
                 node_type="distribution",
             ),
@@ -119,7 +119,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
             },
             Source(
                 extract=Extract(column="my-column"),
-                uid="my-csv",
+                uuid="my-csv",
                 transforms=[Transform(replace="\\n/<eos>", separator=" ")],
                 node_type="fileObject",
             ),
@@ -242,25 +242,25 @@ def test_declaring_wrong_file_property(conforms_to):
     ["source", "expected_column"],
     [
         [
-            Source(uid="my-csv", extract=Extract(column="my-csv-column")),
+            Source(uuid="my-csv", extract=Extract(column="my-csv-column")),
             "my-csv-column",
         ],
         [
             Source(
-                uid="my-csv",
+                uuid="my-csv",
                 extract=Extract(file_property=FileProperty.content),
             ),
             FileProperty.content,
         ],
         [
             Source(
-                uid="my-csv",
+                uuid="my-csv",
                 extract=Extract(json_path="/some/json/path"),
             ),
             "/some/json/path",
         ],
         [
-            Source(uid="record_set/field_name"),
+            Source(uuid="record_set/field_name"),
             "field_name",
         ],
     ],
@@ -279,7 +279,7 @@ def test_is_file_property():
 
 def test_check_source_for_valid_json_path():
     issues = Issues()
-    Source(uid="uid", extract=Extract(json_path="*.first.second")).check_source(
+    Source(uuid="uuid", extract=Extract(json_path="*.first.second")).check_source(
         issues.add_error
     )
     assert not issues.errors
@@ -287,7 +287,7 @@ def test_check_source_for_valid_json_path():
 
 def test_check_source_for_invalid_json_path():
     issues = Issues()
-    Source(uid="uid", extract=Extract(json_path="invalid/json/path")).check_source(
+    Source(uuid="uuid", extract=Extract(json_path="invalid/json/path")).check_source(
         issues.add_error
     )
     errors = list(issues.errors)
@@ -295,7 +295,7 @@ def test_check_source_for_invalid_json_path():
     assert "Wrong JSONPath" in errors[0]
 
 
-def test_get_parent_uid():
-    assert get_parent_uid("foo") == "foo"
-    assert get_parent_uid("foo/bar") == "foo"
-    assert get_parent_uid("foo/bar/baz") == "foo"
+def test_get_parent_uuid():
+    assert get_parent_uuid("foo") == "foo"
+    assert get_parent_uuid("foo/bar") == "foo"
+    assert get_parent_uuid("foo/bar/baz") == "foo"

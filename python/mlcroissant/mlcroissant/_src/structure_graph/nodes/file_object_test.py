@@ -24,7 +24,7 @@ def test_checks_are_performed():
     ) as exclusive_mock:
         create_test_node(FileObject)
         mandatory_mock.assert_has_calls([
-            mock.call("encoding_format", "name"), mock.call("content_url")
+            mock.call("encoding_format", "name", "_uuid"), mock.call("content_url")
         ])
         exclusive_mock.assert_called_once_with(["md5", "sha256"])
         validate_name_mock.assert_called_once()
@@ -43,7 +43,7 @@ def test_checks_not_performed_for_live_dataset():
         ctx = Context(is_live_dataset=True)
         create_test_node(FileObject, ctx=ctx)
         mandatory_mock.assert_has_calls([
-            mock.call("encoding_format", "name"), mock.call("content_url")
+            mock.call("encoding_format", "name", "_uuid"), mock.call("content_url")
         ])
         exclusive_mock.assert_not_called()
         validate_name_mock.assert_called_once()
@@ -60,6 +60,7 @@ def test_from_jsonld(encoding):
     ctx = Context()
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_OBJECT(ctx),
+        "@id": "foo_uuid",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_CONTENT_URL: "https://mlcommons.org",
@@ -71,6 +72,7 @@ def test_from_jsonld(encoding):
     ctx.mapping = {"file1": epath.Path("~/Downloads/file1.csv")}
     file_object = FileObject.from_jsonld(ctx, jsonld)
     assert file_object.name == "foo"
+    assert file_object.uuid == "foo_uuid"
     assert file_object.description == "bar"
     assert file_object.content_url == "https://mlcommons.org"
     assert file_object.encoding_format == encoding

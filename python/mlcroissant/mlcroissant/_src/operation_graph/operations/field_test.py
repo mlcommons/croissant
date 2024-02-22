@@ -103,6 +103,7 @@ def test_extract_lines(separator):
         distribution = [
             FileObject(
                 name="file",
+                uuid="file_uuid",
                 content_url=path,
                 sha256="None",
                 encoding_format="text/plain",
@@ -112,33 +113,37 @@ def test_extract_lines(separator):
         fields.append(
             Field(
                 name="line",
+                uuid="main/line",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    uid="file", extract=Extract(file_property=FileProperty.lines)
+                    uuid="file_uuid", extract=Extract(file_property=FileProperty.lines)
                 ),
             )
         )
         fields.append(
             Field(
                 name="line_number",
+                uuid="main/line_number",
                 data_types=[DataType.INTEGER],
                 source=Source(
-                    uid="file", extract=Extract(file_property=FileProperty.lineNumbers)
+                    uuid="file_uuid",
+                    extract=Extract(file_property=FileProperty.lineNumbers),
                 ),
             )
         )
         fields.append(
             Field(
                 name="filename",
+                uuid="main/filename",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    uid="file",
+                    uuid="file_uuid",
                     extract=Extract(file_property=FileProperty.filepath),
                     transforms=[Transform(regex=".*\\/(\\w*)\\.txt")],
                 ),
             )
         )
-        record_sets = [RecordSet(name="main", fields=fields)]
+        record_sets = [RecordSet(name="main", uuid="main", fields=fields)]
         ctx = Context(conforms_to=CroissantVersion.V_1_0)
         Metadata(
             ctx=ctx,

@@ -19,7 +19,9 @@ def test_checks_are_performed():
         Node, "validate_name"
     ) as validate_name_mock:
         create_test_node(FileSet)
-        mandatory_mock.assert_called_once_with("includes", "encoding_format", "name")
+        mandatory_mock.assert_called_once_with(
+            "includes", "encoding_format", "name", "_uuid"
+        )
         optional_mock.assert_not_called()
         validate_name_mock.assert_called_once()
 
@@ -27,16 +29,22 @@ def test_checks_are_performed():
 @parametrize_conforms_to()
 def test_from_jsonld(conforms_to):
     ctx = Context(conforms_to=conforms_to)
+    if ctx.is_v0():
+        contained_in = "some.zip"
+    else:
+        contained_in = {"@id": "some.zip"}
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_SET(ctx),
+        "@id": "foo_uuid",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
-        constants.SCHEMA_ORG_CONTAINED_IN: "some.zip",
+        constants.SCHEMA_ORG_CONTAINED_IN: contained_in,
         constants.SCHEMA_ORG_ENCODING_FORMAT: "application/json",
         constants.ML_COMMONS_INCLUDES(ctx): "*.json",
     }
     file_set = FileSet.from_jsonld(ctx, jsonld)
     file_set.name == "foo"
+    file_set.uuid == "foo_uuid"
     file_set.description == "bar"
     file_set.contained_in == ["some.zip"]
     file_set.encoding_format == "application/json"

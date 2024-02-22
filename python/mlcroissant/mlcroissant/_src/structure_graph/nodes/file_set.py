@@ -10,6 +10,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 
 
@@ -17,16 +18,20 @@ from mlcroissant._src.structure_graph.base_node import Node
 class FileSet(Node):
     """Nodes to describe a dataset FileSet (distribution)."""
 
+    uuid: dataclasses.InitVar[str]
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
     encoding_format: str | None = ""
     includes: str | None = ""
     name: str = ""
 
-    def __post_init__(self):
-        """Checks arguments of the node."""
+    def __post_init__(self, uuid: str = ""):
+        """Checks arguments of the node and sets UUID."""
+        self._uuid = uuid
         self.validate_name()
-        self.assert_has_mandatory_properties("includes", "encoding_format", "name")
+        self.assert_has_mandatory_properties(
+            "includes", "encoding_format", "name", "_uuid"
+        )
 
     def to_json(self) -> Json:
         """Converts the `FileSet` to JSON."""
@@ -36,6 +41,7 @@ class FileSet(Node):
             contained_in = self.contained_in
         return remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
+            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "containedIn": contained_in,
@@ -55,6 +61,8 @@ class FileSet(Node):
         contained_in = file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
         if contained_in is not None and not isinstance(contained_in, list):
             contained_in = [contained_in]
+        if contained_in is not None and not ctx.is_v0():
+            contained_in = [uuid_from_jsonld(source) for source in contained_in]
         return cls(
             ctx=ctx,
             contained_in=contained_in,

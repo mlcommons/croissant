@@ -51,7 +51,7 @@ def _add_operations_for_field_with_source(
     """
     record_set = _find_record_set(node)
     operation = operations.last_operations(node, only_leaf=True)
-    has_join = any(field for field in record_set.fields if field.references.uid)
+    has_join = any(field for field in record_set.fields if field.references.uuid)
     if has_join:
         operation = [operation >> Join(operations=operations, node=record_set)]
     (operation >> ReadFields(operations=operations, node=record_set))

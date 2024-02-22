@@ -63,7 +63,10 @@ for conforms_to in CroissantVersion:
 
 def _is_dataset_node(node: Json) -> bool:
     """Checks if the type of a node is schema.org/Dataset."""
-    return node.get("@type") == [constants.SCHEMA_ORG_DATASET]
+    node_type = node.get("@type")
+    if isinstance(node_type, list) and node_type[0] in constants.SCHEMA_ORG_DATASET:
+        return True
+    return False
 
 
 def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
@@ -119,7 +122,7 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
         else:
             return entry_node
     for key, value in entry_node.copy().items():
-        if key == "@type":
+        if key == "@type" and isinstance(value, list):
             entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
             del entry_node[key]
@@ -148,11 +151,14 @@ def expand_jsonld(data: Json) -> Json:
         data=json.dumps(data),
         format="json-ld",
     )
+    # print("DEBUG: graph is: ", graph)
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
     assert nodes, "Found no node in graph"
-    # Find the entry node (schema.org/Dataset).
+    # print("DEBUG: nodes are: ", json.dumps(nodes, indent=4))
+    # Find the entry node (schema.org/Dataset). If None found, will use the first node
+    # in the graph.
     entry_node = next(
         (record for record in nodes if _is_dataset_node(record)), nodes[0]
     )

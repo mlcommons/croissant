@@ -10,6 +10,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -18,6 +19,7 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
+    uuid: dataclasses.InitVar[str]
     content_url: str | None = None
     content_size: str | None = None
     contained_in: list[str] = dataclasses.field(default_factory=list)
@@ -28,10 +30,11 @@ class FileObject(Node):
     sha256: str | None = None
     source: Source | None = None
 
-    def __post_init__(self):
-        """Checks arguments of the node."""
+    def __post_init__(self, uuid: str = ""):
+        """Checks arguments of the node and sets UUID."""
+        self._uuid = uuid
         self.validate_name()
-        self.assert_has_mandatory_properties("encoding_format", "name")
+        self.assert_has_mandatory_properties("encoding_format", "name", "_uuid")
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
             if self.ctx and not self.ctx.is_live_dataset:
@@ -45,6 +48,7 @@ class FileObject(Node):
             contained_in = self.contained_in
         return remove_empty_values({
             "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
+            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "contentSize": self.content_size,
@@ -71,6 +75,8 @@ class FileObject(Node):
         name = file_object.get(constants.SCHEMA_ORG_NAME, "")
         if contained_in is not None and not isinstance(contained_in, list):
             contained_in = [contained_in]
+        if contained_in is not None and not ctx.is_v0():
+            contained_in = [uuid_from_jsonld(source) for source in contained_in]
         content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)

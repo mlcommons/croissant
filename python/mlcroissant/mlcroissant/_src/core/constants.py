@@ -13,6 +13,10 @@ ML_COMMONS_V_0_8 = rdflib.Namespace("http://mlcommons.org/schema/")
 ML_COMMONS_V_1_0 = rdflib.Namespace("http://mlcommons.org/croissant/")
 
 
+# Value for the base IRI used when expanding @ids in the JSON-LD.
+BASE_IRI = "cr_base_iri/"
+
+
 # ctx: Context is untyped to avoid cyclic dependencies. A unit test tests the behaviour.
 def ML_COMMONS(ctx) -> rdflib.Namespace:
     """Switches the main Croissant namespace according to the version."""

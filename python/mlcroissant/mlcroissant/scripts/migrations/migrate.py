@@ -13,7 +13,7 @@ newer Croissant format.
 ## What you have to do
 
 - If you want to change the `@context` in Croissant files. Then change the context in
-mlcroissant/_src/core/json_ld.py and launch the migration:
+the `make_context` function in mlcroissant/_src/core/rdf.py and launch the migration:
 
 ```bash
 python mlcroissant/scripts/migrations/migrate.py
@@ -129,15 +129,22 @@ def main(argv):
     ]
     assert test_datasets, f"No dataset found in {test_path}"
     for dataset in datasets:
-        print(f"Converting {dataset}...")
-        with dataset.open("r") as f:
-            json_ld = json.load(f)
-            up = get_migration_fn(FLAGS.migration)
-            json_ld = up(json_ld)
-        json_ld = migrate_dataset(json_ld)
-        with dataset.open("w") as f:
-            json.dump(json_ld, f, indent="  ")
-            f.write("\n")
+        print(str(dataset), "coco" not in str(dataset))
+        if (
+            "pass" not in str(dataset)
+            and "coco" not in str(dataset)
+            and "movie" not in str(dataset)
+        ):
+            print(f"Converting {dataset}...")
+            with dataset.open("r") as f:
+                json_ld = json.load(f)
+                up = get_migration_fn(FLAGS.migration)
+                json_ld = up(json_ld)
+            json_ld = migrate_dataset(json_ld)
+            print("\nOutput of migrate_dataset\n", json.dumps(json_ld, indent=4))
+    #     with dataset.open("w") as f:
+    #         json.dump(json_ld, f, indent="  ")
+    #         f.write("\n")
     for dataset in test_datasets:
         print(f"Converting test dataset {dataset}...")
         with dataset.open("r") as f:
@@ -145,9 +152,9 @@ def main(argv):
             up = get_migration_fn(FLAGS.migration)
             json_ld = up(json_ld)
         json_ld = migrate_test_dataset(dataset, json_ld)
-        with dataset.open("w") as f:
-            json.dump(json_ld, f, indent="  ")
-            f.write("\n")
+    #     with dataset.open("w") as f:
+    #         json.dump(json_ld, f, indent="  ")
+    #         f.write("\n")
     print("Done.")
 
 

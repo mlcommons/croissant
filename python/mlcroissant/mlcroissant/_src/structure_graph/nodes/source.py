@@ -13,14 +13,18 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import uuid_to_jsonld
 
 
 def _find_choice(
-    uids: list[Any], node_types: list[NodeType]
+    uuids: list[Any], node_types: list[NodeType]
 ) -> tuple[Any, NodeType | None]:
     """Returns (None, None) if the inputs don't contain exactly 1 non-null value."""
     choices = [
-        (uid, node_type) for uid, node_type in zip(uids, node_types) if uid is not None
+        (uuid, node_type)
+        for uuid, node_type in zip(uuids, node_types)
+        if uuid is not None
     ]
     if len(choices) != 1:
         return None, None
@@ -156,7 +160,7 @@ class Source:
 
     ```json
     "source": {
-        "field": "record_set/name",
+        "field": {"@id": "record_set/name"},
     }
     ```
 
@@ -164,7 +168,7 @@ class Source:
 
     ```json
     "source": {
-        "distribution": "my-csv",
+        "distribution": {"@id": "my-csv"},
         "extract": {
             "column": "my-csv-column"
         }
@@ -177,7 +181,7 @@ class Source:
 
     ```json
     "source": {
-        "field": "record_set/name",
+        "field": {"@id": "record_set/name"},
         "transform": {
             "format": "yyyy-MM-dd HH:mm:ss.S",
             "regex": "([^\\/]*)\\.jpg",
@@ -189,7 +193,7 @@ class Source:
 
     extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: list[Transform] = dataclasses.field(default_factory=list)
-    uid: str | None = None
+    uuid: str | None = None
     node_type: NodeType = None
 
     def to_json(self) -> Json:
@@ -198,7 +202,7 @@ class Source:
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values({
-            self.node_type: self.uid,
+            self.node_type: {"@id": uuid_to_jsonld(self.uuid)},
             "extract": self.extract.to_json(),
             "transform": transforms[0] if len(transforms) == 1 else transforms,
         })
@@ -231,20 +235,23 @@ class Source:
                         f" {constants.ML_COMMONS_REPLACE(ctx)} or"
                         f" {constants.ML_COMMONS_SEPARATOR(ctx)}"
                     )
-                # Safely access and check "uid" from JSON-LD.
+                # Safely access and check "uuid" from JSON-LD.
                 distribution = jsonld.get(constants.SCHEMA_ORG_DISTRIBUTION)
                 file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT(ctx))
                 file_set = jsonld.get(constants.ML_COMMONS_FILE_SET(ctx))
                 field = jsonld.get(constants.ML_COMMONS_FIELD(ctx))
                 if ctx.is_v0():
-                    uids = [distribution, field]
+                    uuids = [distribution, field]
                     node_types: list[NodeType] = ["distribution", "field"]
                 else:
-                    uids = [file_object, file_set, field]
+                    uuids = [file_object, file_set, field]
                     node_types = ["fileObject", "fileSet", "field"]
-                uid, node_type = _find_choice(uids, node_types)
-                if uid is None or node_type is None:
-                    uid = None
+                uuid, node_type = _find_choice(uuids, node_types)
+                if isinstance(uuid, dict):
+                    uuid = uuid_from_jsonld(uuid)
+
+                if uuid is None or node_type is None:
+                    uuid = None
                     node_type = None
                     if ctx.is_v0():
                         mandatory_fields_in_source = [
@@ -282,9 +289,9 @@ class Source:
                     json_path=json_path,
                 )
                 return Source(
+                    uuid=uuid,
                     extract=extract,
                     transforms=transforms,
-                    uid=uid,
                     node_type=node_type,
                 )
             except TypeError as exception:
@@ -298,11 +305,11 @@ class Source:
 
     def __bool__(self):
         """Allows to write `if not node.source` / `if node.source`."""
-        return self.uid is not None
+        return self.uuid is not None
 
     def __hash__(self):
         """Hashes all immutable arguments."""
-        return hash((self.extract, tuple(self.transforms), self.uid, self.node_type))
+        return hash((self.extract, tuple(self.transforms), self.uuid, self.node_type))
 
     def __eq__(self, other: Any) -> bool:
         """Overwrites the equality between two sources."""
@@ -312,9 +319,9 @@ class Source:
 
     def get_column(self) -> str | FileProperty:
         """Retrieves the name of the column associated to the source."""
-        if self.uid is None:
+        if self.uuid is None:
             raise ValueError(
-                "No UID! This case already rose an issue and should not happen at run"
+                "No UUID! This case already rose an issue and should not happen at run"
                 " time."
             )
         if self.extract.column:
@@ -324,7 +331,7 @@ class Source:
         elif self.extract.json_path:
             return self.extract.json_path
         else:
-            return self.uid.split("/")[-1]
+            return self.uuid.split("/")[-1]
 
     def check_source(self, add_error: Any):
         """Checks if the source is valid and adds error otherwise."""
@@ -338,6 +345,6 @@ class Source:
                 )
 
 
-def get_parent_uid(uid: str) -> str:
+def get_parent_uuid(uuid: str) -> str:
     """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
-    return uid.split("/")[0]
+    return uuid.split("/")[0]

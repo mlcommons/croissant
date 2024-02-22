@@ -42,18 +42,18 @@ def test_there_exists_at_least_one_property():
         [
             "a" * 256,
             [
-                "The identifier"
+                "The name"
                 ' "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
                 " is too long (>255 characters)."
             ],
         ],
         [
             "this is not valid",
-            ['The identifier "this is not valid" contains forbidden characters.'],
+            ['The name "this is not valid" contains forbidden characters.'],
         ],
         [
             {"not": {"a": {"string"}}},
-            ["The identifier should be a string. Got: <class 'dict'>."],
+            ["The name should be a string. Got: <class 'dict'>."],
         ],
     ],
 )
