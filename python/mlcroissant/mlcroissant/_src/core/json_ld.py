@@ -151,12 +151,10 @@ def expand_jsonld(data: Json) -> Json:
         data=json.dumps(data),
         format="json-ld",
     )
-    # print("DEBUG: graph is: ", graph)
     # `graph.serialize` outputs a stringified list of JSON-LD nodes.
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
     assert nodes, "Found no node in graph"
-    # print("DEBUG: nodes are: ", json.dumps(nodes, indent=4))
     # Find the entry node (schema.org/Dataset). If None found, will use the first node
     # in the graph.
     entry_node = next(

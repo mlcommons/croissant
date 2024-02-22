@@ -54,7 +54,6 @@ class Operations(nx.DiGraph):
 
     def add_node(self, operation: Operation) -> None:
         """Overloads nx.add_node to keep track of the last operations."""
-        print("DEBUG:", "adding node: ", operation)
         super().add_node(operation)
 
     def add_edge(self, operation1: Operation, operation2: Operation) -> None:
