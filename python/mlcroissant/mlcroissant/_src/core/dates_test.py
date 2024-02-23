@@ -4,7 +4,8 @@ import datetime
 
 import pytest
 
-from mlcroissant._src.core.dates import from_str_to_date_time
+from mlcroissant._src.core.dates import from_datetime_to_str
+from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import Issues
 
 
@@ -28,6 +29,21 @@ def test_from_str_to_date_time(
     date: str, expected: datetime.datetime, errors: set[str]
 ):
     issues = Issues()
-    result = from_str_to_date_time(issues, date)
+    result = from_str_to_datetime(issues, date)
     assert issues.errors == errors
     assert expected == result
+
+
+@pytest.mark.parametrize(
+    ["date", "expected"],
+    [
+        [None, None],
+        [datetime.datetime(year=2024, month=1, day=1), "2024-01-01"],
+        [
+            datetime.datetime(year=2024, month=1, day=1, hour=12, minute=20),
+            "2024-01-01T12:20:00",
+        ],
+    ],
+)
+def test_from_str_to_date_time(date: datetime.datetime | None, expected: str):
+    assert from_datetime_to_str(date) == expected

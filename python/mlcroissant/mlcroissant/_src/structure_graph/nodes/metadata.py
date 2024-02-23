@@ -15,7 +15,8 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.dates import from_str_to_date_time
+from mlcroissant._src.core.dates import from_datetime_to_str
+from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -162,9 +163,6 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        date_published = (
-            self.date_published.isoformat() if self.date_published else None
-        )
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
         return remove_empty_values({
             "@context": self.ctx.rdf.context,
@@ -173,7 +171,9 @@ class Metadata(Node):
             "conformsTo": conforms_to,
             "description": self.description,
             "creator": PersonOrOrganization.to_json(self.creators),
-            "datePublished": date_published,
+            "dateCreated": from_datetime_to_str(self.date_created),
+            "dateModified": from_datetime_to_str(self.date_modified),
+            "datePublished": from_datetime_to_str(self.date_published),
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
             "citation": self.cite_as if self.ctx.is_v0() else None,
@@ -269,7 +269,7 @@ class Metadata(Node):
         if date is None:
             return None
         elif isinstance(date, str):
-            return from_str_to_date_time(self.ctx.issues, date)
+            return from_str_to_datetime(self.ctx.issues, date)
         elif isinstance(date, datetime.datetime):
             return date
         elif isinstance(date, datetime.date):
