@@ -42,8 +42,13 @@ class FileSet(Node):
             contained_in: str | list[str] | dict = self.contained_in[0]
         else:
             contained_in = self.contained_in
+
         if not self.ctx.is_v0():
-            contained_in = {"@id": source for source in contained_in}
+            if isinstance(contained_in, list):
+                contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]  # type: ignore
+            elif isinstance(contained_in, str):
+                contained_in = {"@id": uuid_to_jsonld(contained_in)}
+
         return remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
             "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types

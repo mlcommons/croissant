@@ -53,6 +53,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "metadata",
       "name": "metadata",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
       "encodingFormat": "text/csv",
@@ -60,6 +61,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass0",
       "name": "pass0",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.0.tar",
       "encodingFormat": "application/x-tar",
@@ -67,6 +69,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass1",
       "name": "pass1",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.1.tar",
       "encodingFormat": "application/x-tar",
@@ -74,6 +77,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass2",
       "name": "pass2",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.2.tar",
       "encodingFormat": "application/x-tar",
@@ -81,6 +85,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass3",
       "name": "pass3",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.3.tar",
       "encodingFormat": "application/x-tar",
@@ -88,6 +93,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass4",
       "name": "pass4",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.4.tar",
       "encodingFormat": "application/x-tar",
@@ -95,6 +101,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass5",
       "name": "pass5",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.5.tar",
       "encodingFormat": "application/x-tar",
@@ -102,6 +109,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass6",
       "name": "pass6",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.6.tar",
       "encodingFormat": "application/x-tar",
@@ -109,6 +117,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass7",
       "name": "pass7",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.7.tar",
       "encodingFormat": "application/x-tar",
@@ -116,6 +125,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass8",
       "name": "pass8",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.8.tar",
       "encodingFormat": "application/x-tar",
@@ -123,6 +133,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass9",
       "name": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
       "encodingFormat": "application/x-tar",
@@ -130,18 +141,39 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "image-files",
       "name": "image-files",
       "containedIn": [
-        "pass0",
-        "pass1",
-        "pass2",
-        "pass3",
-        "pass4",
-        "pass5",
-        "pass6",
-        "pass7",
-        "pass8",
-        "pass9"
+        {
+          "@id": "pass0"
+        },
+        {
+          "@id": "pass1"
+        },
+        {
+          "@id": "pass2"
+        },
+        {
+          "@id": "pass3"
+        },
+        {
+          "@id": "pass4"
+        },
+        {
+          "@id": "pass5"
+        },
+        {
+          "@id": "pass6"
+        },
+        {
+          "@id": "pass7"
+        },
+        {
+          "@id": "pass8"
+        },
+        {
+          "@id": "pass9"
+        }
       ],
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
@@ -150,22 +182,28 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "key": "hash",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images/hash",
           "name": "hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
-            "fileObject": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "hash"
             }
           },
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -176,11 +214,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/image_content",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "content"
             }
@@ -188,11 +229,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/creator_uname",
           "name": "creator_uname",
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "unickname"
             }
@@ -200,16 +244,20 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/gps_coordinates",
           "name": "gps_coordinates",
           "description": "GPS coordinates where the image was taken.",
           "dataType": "sc:GeoCoordinates",
           "subField": [
             {
               "@type": "cr:Field",
+              "@id": "images/latitude",
               "name": "latitude",
               "dataType": "sc:Float",
               "source": {
-                "fileObject": "metadata",
+                "fileObject": {
+                  "@id": "metadata"
+                },
                 "extract": {
                   "column": "latitude"
                 }
@@ -217,10 +265,13 @@
             },
             {
               "@type": "cr:Field",
+              "@id": "images/longitude",
               "name": "longitude",
               "dataType": "sc:Float",
               "source": {
-                "fileObject": "metadata",
+                "fileObject": {
+                  "@id": "metadata"
+                },
                 "extract": {
                   "column": "longitude"
                 }
@@ -230,11 +281,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/date_taken",
           "name": "date_taken",
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
-            "fileObject": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "datetaken"
             },

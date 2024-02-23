@@ -12,7 +12,11 @@ def migrate_distribution(distribution):
         d["@id"] = d["name"]
         if "containedIn" in d:
             d_id = d["containedIn"]
-            d["containedIn"] = {"@id": d_id}
+            if isinstance(d_id, list):
+                output_list = [{"@id": d} for d in d_id]
+                d["containedIn"] = output_list
+            else:
+                d["containedIn"] = {"@id": d_id}
 
 
 def get_distr_uuid(element, distribution):
@@ -41,12 +45,10 @@ def _migrate_field(json_ld, record_set, distribution):
             d_uuid = json_ld["source"]["field"]
             json_ld["source"]["field"] = {"@id": d_uuid}
         else:
-            print("SOURCE", source)
             raise ValueError("Source should be a field, file_object or a file_set")
 
     if "references" in json_ld:
         references = json_ld["references"]
-        print("references is: ", references)
         if "fileObject" in references:
             d_uuid = get_distr_uuid(references["fileObject"], distribution)
             json_ld["references"]["fileObject"] = {"@id": d_uuid}
@@ -94,5 +96,8 @@ def up(json_ld):
                 field["subField"][k] = sub_field
             record_set["field"][j] = field
         json_ld["recordSet"][i] = record_set
+
+    # print("DEBUG: Resulting metadata: ")
+    # print(json.dumps(json_ld, indent=4))
 
     return json_ld

@@ -144,8 +144,13 @@ class Metadata(Node):
         else:
             creator = None
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
+
+        context = self.ctx.rdf.context
+        if context["@base"] == constants.BASE_IRI:
+            context.pop("@base")
+
         return remove_empty_values({
-            "@context": self.ctx.rdf.context,
+            "@context": context,
             "@type": "sc:Dataset",
             "name": self.name,
             "conformsTo": conforms_to,

@@ -146,6 +146,8 @@ def expand_jsonld(data: Json) -> Json:
     need to reconstruct the hierarchy.
     """
     context = get_context(data)
+    # TODO: Check here that @base is not already used in the context. If so, use the
+    # user's provided @base.
     context["@base"] = constants.BASE_IRI
     graph = rdflib.Graph()
     graph.parse(
