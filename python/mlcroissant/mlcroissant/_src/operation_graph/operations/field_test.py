@@ -205,5 +205,5 @@ def test_extract_lines(separator):
     ],
 )
 def test_apply_transforms_fn(value, source, data_type, expected_value):
-    f = Field(name="test", data_types=data_type, source=source)
+    f = Field(uuid="test", name="test", data_types=data_type, source=source)
     assert field.apply_transforms_fn(value, f) == expected_value

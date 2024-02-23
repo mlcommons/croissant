@@ -33,9 +33,9 @@ def create_class(mlc_class: type, instance: Any, **kwargs) -> Any:
         name = field.name
         if hasattr(instance, name) and name not in kwargs:
             params[name] = getattr(instance, name)
-    # if "uuid" in params and params.get("uuid") is None:
-    #     # Let mlcroissant handle the default value
-    #     del params["uuid"]
+    if "uuid" in params and params.get("uuid") is None:
+        # Let mlcroissant handle the default value
+        del params["uuid"]
     return mlc_class(**params, **kwargs)
 
 
