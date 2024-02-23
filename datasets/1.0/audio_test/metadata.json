@@ -76,7 +76,8 @@
             },
             "extract": {
               "fileProperty": "content"
-            }
+            },
+            "fileSet": "files"
           }
         }
       ]

@@ -3,36 +3,29 @@
 import json
 
 from etils import epath
-import pytest
 
-from mlcroissant._src.core.json_ld import _is_dataset_node
-from mlcroissant._src.core.json_ld import compact_jsonld
-from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.rdf import make_context
-
-
-@pytest.mark.parametrize(
-    ["node", "output"],
-    [
-        [{"@type": ["http://mlcommons.org/croissant/RecordSet"]}, False],
-        [{"@type": ["https://schema.org/Dataset"]}, True],
-    ],
-)
-def test_is_dataset_node(node, output):
-    assert _is_dataset_node(node) == output
-
+from mlcroissant._src.datasets import Dataset
+from mlcroissant._src.tests.versions import parametrize_version
 
 # If this test fails, you probably manually updated a dataset in datasets/.
 # Please, use scripts/migrations/migrate.py to migrate datasets.
-def test_expand_and_reduce_json_ld():
+@parametrize_version()
+def test_expand_and_reduce_json_ld(version):
     dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
+        epath.Path(__file__).parent.parent.parent.parent.parent.parent
+        / "datasets"
+        / version
     )
-    json_ld_paths = [path for path in dataset_folder.glob("*/*.json")]
-    for path in json_ld_paths:
+    paths = [path for path in dataset_folder.glob("*/*.json")]
+    assert paths, f"Warning: Checking an empty list of paths: {dataset_folder}"
+    for path in paths:
         with path.open() as f:
-            json_ld = json.load(f)
-        assert compact_jsonld(expand_jsonld(json_ld)) == json_ld
+            expected = json.load(f)
+        dataset = Dataset(path)
+        metadata = dataset.metadata
+        actual = metadata.to_json()
+        assert actual == expected, f"Error in {path}"
 
 
 def test_make_context():

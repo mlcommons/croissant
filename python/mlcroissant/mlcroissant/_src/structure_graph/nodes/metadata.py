@@ -18,6 +18,7 @@ from mlcroissant._src.core.dates import from_str_to_date_time
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
@@ -80,8 +81,10 @@ class Metadata(Node):
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
-    license: str | None = None
+    keywords: list[str] | None = None
+    license: list[str] | None = None
     name: str = ""
+    same_as: list[str] | None = None
     url: str | None = ""
     version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
@@ -119,6 +122,7 @@ class Metadata(Node):
         # Check properties.
         self.validate_name()
         self.version = self.validate_version()
+        self.license = self.validate_license()
         self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties("cite_as", "license", "version")
 
@@ -162,9 +166,11 @@ class Metadata(Node):
             "citation": self.cite_as if self.ctx.is_v0() else None,
             "citeAs": None if self.ctx.is_v0() else self.cite_as,
             "isLiveDataset": self.is_live_dataset,
-            "license": self.license,
+            "keywords": unbox_singleton_list(self.keywords),
+            "license": unbox_singleton_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
+            "sameAs": unbox_singleton_list(self.same_as),
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
@@ -226,6 +232,22 @@ class Metadata(Node):
             self.add_error(
                 f"The version should be a string or a number. Got: {type(version)}."
             )
+            return None
+
+    def validate_license(self) -> list[str] | None:
+        """Validates the license as a list of strings."""
+        license = self.license
+        if license is None:
+            return None
+        elif isinstance(license, list):
+            if any(not isinstance(el, str) for el in license):
+                self.add_error(f"License should be a list of str. Got: {license}")
+                return None
+            return license
+        elif isinstance(license, str):
+            return [license]
+        else:
+            self.add_error(f"License should be a list of str. Got: {license}")
             return None
 
     def check_graph(self):
@@ -327,12 +349,14 @@ class Metadata(Node):
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
             distribution=distribution,
             is_live_dataset=metadata.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx)),
+            keywords=metadata.get(constants.SCHEMA_ORG_KEYWORDS),
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             personal_sensitive_information=metadata.get(
                 constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
             record_sets=record_sets,
+            same_as=metadata.get(constants.SCHEMA_ORG_SAME_AS),
             uuid=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),

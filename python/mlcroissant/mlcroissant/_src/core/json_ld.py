@@ -105,6 +105,18 @@ def remove_empty_values(d: Json) -> Json:
     return {k: v for k, v in d.items() if v}
 
 
+def unbox_singleton_list(d: Any):
+    """Returns the first element if one element, else the whole list.
+
+    This is interesting in JSON-LD for properties with a MANY cardinality where we want
+    to return one element if there's only one element, else the whole list.
+    """
+    if isinstance(d, list):
+        if len(d) == 1:
+            return d[0]
+    return d
+
+
 def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
     """Changes in place `entry_node` with its children."""
     if "@value" in entry_node:
