@@ -41,7 +41,7 @@ class RecordSet(Node):
         self.validate_name()
         self.assert_has_mandatory_properties("name", "_uuid")
         self.assert_has_optional_properties("description")
-        # self.check_joins_in_fields(self.fields)
+
         if self.data is not None:
             data = self.data
             if not isinstance(data, list):

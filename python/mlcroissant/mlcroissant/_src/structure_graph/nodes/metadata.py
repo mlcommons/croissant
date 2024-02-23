@@ -305,12 +305,6 @@ class Metadata(Node):
         # Check all fields have a data type: either on the field, on a parent.
         for field in fields:
             field.data_type
-        # Check that all joins in RecordSets are correctly declared.
-        record_sets = [
-            node for node in self.ctx.graph.nodes if isinstance(node, RecordSet)
-        ]
-        for record_set in record_sets:
-            record_set.check_joins_in_fields()
 
     @classmethod
     def from_file(cls, ctx: Context, file: epath.PathLike) -> Metadata:
@@ -332,7 +326,6 @@ class Metadata(Node):
         """Creates a `Metadata` from JSON."""
         ctx.rdf = Rdf.from_json(ctx, json_)
         metadata = expand_jsonld(json_)
-        # print("\nOutput of expand_jsonld\n", json.dumps(metadata, indent=4))
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
     @classmethod

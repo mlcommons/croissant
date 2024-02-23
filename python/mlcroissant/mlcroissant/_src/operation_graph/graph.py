@@ -211,7 +211,7 @@ class OperationGraph:
             operations.add_edge(init_operation, entry_operation)
         return OperationGraph(issues=ctx.issues, operations=operations)
 
-    def check_graph(self):
+    def check_graph(self, ctx: Context):
         """Checks the operation graph for issues."""
         if not self.operations.is_directed():
             self.issues.add_error("Computation graph is not directed.")
@@ -220,3 +220,6 @@ class OperationGraph:
             self.issues.add_error(
                 f"The following operations refered to themselves: {selfloops}"
             )
+        record_sets = [node for node in ctx.graph.nodes if isinstance(node, RecordSet)]
+        for record_set in record_sets:
+            record_set.check_joins_in_fields()
