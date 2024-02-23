@@ -115,10 +115,11 @@ def unbox_singleton_list(d: Any):
 
 
 def box_singleton_list(element: Any) -> list[Any] | None:
-    """Returns the elemtn always boxed inside a list.
+    """Returns the element always boxed inside of a list.
 
-    This is interesting for JSON-LD properties with a MANY cardinality where we want to
-    return a list even if the input element was a singleton.
+    This is interesting for JSON-LD properties with a MANY cardinality (e.g.,
+    https://schema.org/containedIn) where we want to return a list even if the input
+    element was a singleton.
     """
     if element is None:
         return None
