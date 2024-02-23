@@ -62,7 +62,9 @@
       "@id": "ratings-table",
       "name": "ratings-table",
       "contentUrl": "ml-25m/ratings.csv",
-      "containedIn": "ml-25m-archive",
+      "containedIn": {
+        "@id": "ml-25m-archive"
+      },
       "encodingFormat": "text/csv"
     },
     {
@@ -70,7 +72,9 @@
       "@id": "movies-table",
       "name": "movies-table",
       "contentUrl": "ml-25m/movies.csv",
-      "containedIn": "ml-25m-archive",
+      "containedIn": {
+        "@id": "ml-25m-archive"
+      },
       "encodingFormat": "text/csv"
     },
     {
@@ -78,7 +82,9 @@
       "@id": "tags-table",
       "name": "tags-table",
       "contentUrl": "ml-25m/tags.csv",
-      "containedIn": "ml-25m-archive",
+      "containedIn": {
+        "@id": "ml-25m-archive"
+      },
       "encodingFormat": "text/csv"
     },
     {
@@ -86,7 +92,9 @@
       "@id": "links-table",
       "name": "links-table",
       "contentUrl": "ml-25m/links.csv",
-      "containedIn": "ml-25m-archive",
+      "containedIn": {
+        "@id": "ml-25m-archive"
+      },
       "encodingFormat": "text/csv"
     },
     {
@@ -94,7 +102,9 @@
       "@id": "genome-scores-table",
       "name": "genome-scores-table",
       "contentUrl": "ml-25m/genome-scores.csv",
-      "containedIn": "ml-25m-archive",
+      "containedIn": {
+        "@id": "ml-25m-archive"
+      },
       "encodingFormat": "text/csv"
     },
     {
@@ -102,7 +112,9 @@
       "@id": "genome-tags-table",
       "name": "genome-tags-table",
       "contentUrl": "ml-25m/genome-tags.csv",
-      "containedIn": "ml-25m-archive",
+      "containedIn": {
+        "@id": "ml-25m-archive"
+      },
       "encodingFormat": "text/csv"
     }
   ],
@@ -238,6 +250,7 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "tags",
       "name": "tags",
       "key": [
         "user_id",
@@ -388,7 +401,7 @@
               "@id": "movies_with_ratings_with_tags/ratings/timestamp",
               "name": "timestamp",
               "source": {
-                "@id": {
+                "field": {
                   "@id": "ratings/timestamp"
                 }
               }

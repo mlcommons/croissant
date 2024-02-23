@@ -33,7 +33,7 @@ class RecordSet(Node):
     name: str = ""
     fields: list[Field] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self, uuid: str = ""):
+    def __post_init__(self, uuid: str | None = None):
         """Checks arguments of the node and sets UUID."""
         if not uuid:
             uuid = generate_uuid()

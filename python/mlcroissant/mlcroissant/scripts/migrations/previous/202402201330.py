@@ -97,7 +97,4 @@ def up(json_ld):
             record_set["field"][j] = field
         json_ld["recordSet"][i] = record_set
 
-    # print("DEBUG: Resulting metadata: ")
-    # print(json.dumps(json_ld, indent=4))
-
     return json_ld
