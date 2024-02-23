@@ -82,12 +82,16 @@ class Node(abc.ABC):
             if hasattr(self, optional_property):
                 value = getattr(self, optional_property)
                 if not value:
-                    error = (
-                        "Property"
-                        f' "{constants.FROM_CROISSANT(self.ctx).get(optional_property)}"'
-                        " is recommended, but does not exist."
-                    )
-                    self.add_warning(error)
+                    property = constants.FROM_CROISSANT(self.ctx).get(optional_property)
+                    if property is None:
+                        self.add_error(
+                            "mlcroissant does not define property"
+                            f' "{optional_property}" in constants.FROM_CROISSANT.'
+                        )
+                    else:
+                        self.add_warning(
+                            f'Property "{property}" is recommended, but does not exist.'
+                        )
             else:
                 self.add_error(
                     "mlcroissant checks for an inexisting property:"

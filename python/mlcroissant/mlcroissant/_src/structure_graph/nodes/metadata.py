@@ -97,6 +97,8 @@ class Metadata(Node):
 
     cite_as: str | None = None
     creators: list[PersonOrOrganization] | None = None
+    date_created: datetime.datetime | None = None
+    date_modified: datetime.datetime | None = None
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
@@ -141,8 +143,13 @@ class Metadata(Node):
         self.validate_name()
         self.version = self.validate_version()
         self.license = self.validate_license()
+        self.date_created = self.validate_date(self.date_created)
+        self.date_modified = self.validate_date(self.date_modified)
+        self.date_published = self.validate_date(self.date_published)
         self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("cite_as", "license", "version")
+        self.assert_has_optional_properties(
+            "cite_as", "date_published", "license", "version"
+        )
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -257,6 +264,19 @@ class Metadata(Node):
             self.add_error(f"License should be a list of str. Got: {license}")
             return None
 
+    def validate_date(self, date: Any) -> datetime.datetime | None:
+        """Validates dates as a datetime for any input."""
+        if date is None:
+            return None
+        elif isinstance(date, str):
+            return from_str_to_date_time(self.ctx.issues, date)
+        elif isinstance(date, datetime.datetime):
+            return date
+        elif isinstance(date, datetime.date):
+            return datetime.datetime.combine(date, datetime.time.min)
+        self.add_error(f"Wrong type for a date. Expected Date or Datetime. Got: {date}")
+        return None
+
     def check_graph(self):
         """Checks the integrity of the structure graph.
 
@@ -339,14 +359,13 @@ class Metadata(Node):
         publisher = PersonOrOrganization.from_jsonld(
             metadata.get(constants.SCHEMA_ORG_PUBLISHER)
         )
-        date_published = from_str_to_date_time(
-            ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
-        )
         return cls(
             ctx=ctx,
             cite_as=cite_as,
             creators=creators,
-            date_published=date_published,
+            date_created=metadata.get(constants.SCHEMA_ORG_DATE_CREATED),
+            date_modified=metadata.get(constants.SCHEMA_ORG_DATE_MODIFIED),
+            date_published=metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED),
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
