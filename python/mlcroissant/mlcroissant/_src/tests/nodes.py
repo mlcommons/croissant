@@ -15,7 +15,7 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 class _EmptyNode(Node):
     def __post_init__(self, uuid: str | None = None):
-        self._uuid = uuid
+        self._uuid = uuid  # type: ignore[assignment]
 
     @classmethod
     def from_jsonld(cls):

@@ -139,7 +139,7 @@ def _add_edge(
     """Adds an edge in the structure graph."""
     if uuid not in uuid_to_node:
         uuid = uuid_to_jsonld(uuid)  # type: ignore[assignment]
-        node_uuid = uuid_to_jsonld(node.uuid)
+        node_uuid = uuid_to_jsonld(node.uuid)  # pytype: disable=wrong-arg-types
         node.add_error(
             f'There is a reference to node with UUID "{uuid}" in node "{node_uuid}",'
             " but this node doesn't exist."
