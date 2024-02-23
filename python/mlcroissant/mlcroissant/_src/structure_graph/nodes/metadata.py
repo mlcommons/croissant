@@ -15,7 +15,8 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.dates import from_str_to_date_time
+from mlcroissant._src.core.dates import from_datetime_to_str
+from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -97,6 +98,8 @@ class Metadata(Node):
 
     cite_as: str | None = None
     creators: list[PersonOrOrganization] | None = None
+    date_created: datetime.datetime | None = None
+    date_modified: datetime.datetime | None = None
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
@@ -141,8 +144,13 @@ class Metadata(Node):
         self.validate_name()
         self.version = self.validate_version()
         self.license = self.validate_license()
+        self.date_created = self.validate_date(self.date_created)
+        self.date_modified = self.validate_date(self.date_modified)
+        self.date_published = self.validate_date(self.date_published)
         self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("cite_as", "license", "version")
+        self.assert_has_optional_properties(
+            "cite_as", "date_published", "license", "version"
+        )
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -155,9 +163,6 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        date_published = (
-            self.date_published.isoformat() if self.date_published else None
-        )
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
         return remove_empty_values({
             "@context": self.ctx.rdf.context,
@@ -166,7 +171,9 @@ class Metadata(Node):
             "conformsTo": conforms_to,
             "description": self.description,
             "creator": PersonOrOrganization.to_json(self.creators),
-            "datePublished": date_published,
+            "dateCreated": from_datetime_to_str(self.date_created),
+            "dateModified": from_datetime_to_str(self.date_modified),
+            "datePublished": from_datetime_to_str(self.date_published),
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
             "citation": self.cite_as if self.ctx.is_v0() else None,
@@ -257,6 +264,19 @@ class Metadata(Node):
             self.add_error(f"License should be a list of str. Got: {license}")
             return None
 
+    def validate_date(self, date: Any) -> datetime.datetime | None:
+        """Validates dates as a datetime for any input."""
+        if date is None:
+            return None
+        elif isinstance(date, str):
+            return from_str_to_datetime(self.ctx.issues, date)
+        elif isinstance(date, datetime.datetime):
+            return date
+        elif isinstance(date, datetime.date):
+            return datetime.datetime.combine(date, datetime.time.min)
+        self.add_error(f"Wrong type for a date. Expected Date or Datetime. Got: {date}")
+        return None
+
     def check_graph(self):
         """Checks the integrity of the structure graph.
 
@@ -339,14 +359,13 @@ class Metadata(Node):
         publisher = PersonOrOrganization.from_jsonld(
             metadata.get(constants.SCHEMA_ORG_PUBLISHER)
         )
-        date_published = from_str_to_date_time(
-            ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
-        )
         return cls(
             ctx=ctx,
             cite_as=cite_as,
             creators=creators,
-            date_published=date_published,
+            date_created=metadata.get(constants.SCHEMA_ORG_DATE_CREATED),
+            date_modified=metadata.get(constants.SCHEMA_ORG_DATE_MODIFIED),
+            date_published=metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED),
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),

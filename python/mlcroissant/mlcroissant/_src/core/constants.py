@@ -74,6 +74,8 @@ SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
 SCHEMA_ORG_CONTENT_SIZE = namespace.SDO.contentSize
 SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
 SCHEMA_ORG_CREATOR = namespace.SDO.creator
+SCHEMA_ORG_DATE_CREATED = namespace.SDO.dateCreated
+SCHEMA_ORG_DATE_MODIFIED = namespace.SDO.dateModified
 SCHEMA_ORG_DATE_PUBLISHED = namespace.SDO.datePublished
 SCHEMA_ORG_DATASET = namespace.SDO.Dataset
 SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT = namespace.SDO.AudioObject
@@ -132,6 +134,9 @@ TO_CROISSANT = lambda ctx: {
     SCHEMA_ORG_CONTENT_SIZE: "content_size",
     SCHEMA_ORG_CONTENT_URL: "content_url",
     SCHEMA_ORG_CREATOR: "creators",
+    SCHEMA_ORG_DATE_CREATED: "date_created",
+    SCHEMA_ORG_DATE_MODIFIED: "date_modified",
+    SCHEMA_ORG_DATE_PUBLISHED: "date_published",
     SCHEMA_ORG_DESCRIPTION: "description",
     SCHEMA_ORG_DISTRIBUTION: "distribution",
     SCHEMA_ORG_ENCODING_FORMAT: "encoding_format",
