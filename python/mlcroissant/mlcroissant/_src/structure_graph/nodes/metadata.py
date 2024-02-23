@@ -129,6 +129,7 @@ class Metadata(Node):
 
     def __post_init__(self, uuid: str | None = None):
         """Checks arguments of the node."""
+        del uuid
         self._uuid = generate_uuid()
 
         # Define parents.
