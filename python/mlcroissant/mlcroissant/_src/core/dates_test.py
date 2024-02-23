@@ -25,9 +25,7 @@ from mlcroissant._src.core.issues import Issues
         ],
     ],
 )
-def test_from_str_to_date_time(
-    date: str, expected: datetime.datetime, errors: set[str]
-):
+def test_from_str_to_datetime(date: str, expected: datetime.datetime, errors: set[str]):
     issues = Issues()
     result = from_str_to_datetime(issues, date)
     assert issues.errors == errors
@@ -45,5 +43,5 @@ def test_from_str_to_date_time(
         ],
     ],
 )
-def test_from_str_to_date_time(date: datetime.datetime | None, expected: str):
+def test_from_datetime_to_str(date: datetime.datetime | None, expected: str):
     assert from_datetime_to_str(date) == expected

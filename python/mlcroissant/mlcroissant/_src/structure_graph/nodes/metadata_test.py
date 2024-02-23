@@ -41,9 +41,12 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.DCTERMS_CONFORMS_TO: conforms_to.value,
-        constants.SCHEMA_ORG_DATE_CREATED: "1990-02-01",
+        # Dates can be datetimes...
+        constants.SCHEMA_ORG_DATE_CREATED: datetime.datetime(1990, 2, 1, 0, 0),
+        # ...or dates can be string...
         constants.SCHEMA_ORG_DATE_MODIFIED: "1990-02-02",
-        constants.SCHEMA_ORG_DATE_PUBLISHED: "1990-02-03",
+        # ...or dates can be datetime.dates.
+        constants.SCHEMA_ORG_DATE_PUBLISHED: datetime.date(1990, 2, 3),
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
