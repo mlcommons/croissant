@@ -87,8 +87,9 @@ class FileObject(Node):
         content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
         name = file_object.get(constants.SCHEMA_ORG_NAME, "")
 
-        if contained_in is not None and not isinstance(contained_in, list):
-            contained_in = [contained_in]
+        contained_in = box_singleton_list(
+                file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
+            )
         if contained_in is not None and not ctx.is_v0():
             contained_in = [uuid_from_jsonld(source) for source in contained_in]
 

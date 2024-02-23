@@ -74,17 +74,13 @@ class FileSet(Node):
         """Creates a `FileSet` from JSON-LD."""
         check_expected_type(ctx.issues, file_set, constants.SCHEMA_ORG_FILE_SET(ctx))
 
-        contained_in = file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
-        if contained_in is not None and not isinstance(contained_in, list):
-            contained_in = [contained_in]
+        contained_in = box_singleton_list(file_set.get(constants.SCHEMA_ORG_CONTAINED_IN))
         if contained_in is not None and not ctx.is_v0():
             contained_in = [uuid_from_jsonld(source) for source in contained_in]
 
         return cls(
             ctx=ctx,
-            contained_in=box_singleton_list(
-                file_set.get(constants.SCHEMA_ORG_CONTAINED_IN)
-            ),
+            contained_in=contained_in,
             description=file_set.get(constants.SCHEMA_ORG_DESCRIPTION),
             encoding_format=file_set.get(constants.SCHEMA_ORG_ENCODING_FORMAT),
             excludes=box_singleton_list(
