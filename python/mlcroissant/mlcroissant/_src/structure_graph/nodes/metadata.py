@@ -5,9 +5,10 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import itertools
-from typing import Any
+from typing import Any, Literal
 
 from etils import epath
+from rdflib import namespace
 import requests
 
 from mlcroissant._src.core import constants
@@ -38,6 +39,10 @@ class PersonOrOrganization:
 
     name: str | None = None
     description: str | None = None
+    email: str | None = None
+    type: (
+        Literal["https://schema.org/Person", "https://schema.org/Organization"] | None
+    ) = None
     url: str | None = None
 
     @classmethod
@@ -57,17 +62,33 @@ class PersonOrOrganization:
                 cls(
                     name=jsonld.get(constants.SCHEMA_ORG_NAME),
                     description=jsonld.get(constants.SCHEMA_ORG_DESCRIPTION),
+                    email=jsonld.get(constants.SCHEMA_ORG_EMAIL),
+                    type=jsonld.get("@type"),
                     url=jsonld.get(constants.SCHEMA_ORG_URL),
                 )
             ]
 
-    def to_json(self) -> Json:
+    @classmethod
+    def to_json(cls, creator: list[PersonOrOrganization] | None) -> Any:
         """Serializes back to JSON-LD."""
-        return remove_empty_values({
-            "name": self.name,
-            "description": self.description,
-            "url": self.url,
-        })
+        if creator is None:
+            return None
+        else:
+            creators = [
+                remove_empty_values({
+                    "@type": (
+                        "Person"
+                        if element.type == namespace.SDO.Person
+                        else "Organization"
+                    ),
+                    "email": element.email,
+                    "name": element.name,
+                    "description": element.description,
+                    "url": element.url,
+                })
+                for element in creator
+            ]
+            return unbox_singleton_list(creators)
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -75,13 +96,14 @@ class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
     cite_as: str | None = None
-    creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
+    creators: list[PersonOrOrganization] | None = None
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
     keywords: list[str] | None = None
     license: list[str] | None = None
     name: str = ""
+    publisher: list[PersonOrOrganization] | None = None
     same_as: list[str] | None = None
     url: str | None = ""
     version: str | None = ""
@@ -136,13 +158,6 @@ class Metadata(Node):
         date_published = (
             self.date_published.isoformat() if self.date_published else None
         )
-        creator: Json | list[Json] | None
-        if len(self.creators) == 1:
-            creator = self.creators[0].to_json()
-        elif len(self.creators) > 1:
-            creator = [creator.to_json() for creator in self.creators]
-        else:
-            creator = None
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
         return remove_empty_values({
             "@context": self.ctx.rdf.context,
@@ -150,7 +165,7 @@ class Metadata(Node):
             "name": self.name,
             "conformsTo": conforms_to,
             "description": self.description,
-            "creator": creator,
+            "creator": PersonOrOrganization.to_json(self.creators),
             "datePublished": date_published,
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
@@ -160,6 +175,7 @@ class Metadata(Node):
             "keywords": unbox_singleton_list(self.keywords),
             "license": unbox_singleton_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
+            "publisher": PersonOrOrganization.to_json(self.publisher),
             "url": self.url,
             "sameAs": unbox_singleton_list(self.same_as),
             "version": self.version,
@@ -320,6 +336,9 @@ class Metadata(Node):
         creators = PersonOrOrganization.from_jsonld(
             metadata.get(constants.SCHEMA_ORG_CREATOR)
         )
+        publisher = PersonOrOrganization.from_jsonld(
+            metadata.get(constants.SCHEMA_ORG_PUBLISHER)
+        )
         date_published = from_str_to_date_time(
             ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
         )
@@ -339,6 +358,7 @@ class Metadata(Node):
             personal_sensitive_information=metadata.get(
                 constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
+            publisher=publisher,
             record_sets=record_sets,
             same_as=metadata.get(constants.SCHEMA_ORG_SAME_AS),
             uuid=uuid_from_jsonld(metadata),
