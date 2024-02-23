@@ -8,6 +8,7 @@ import itertools
 from typing import Any, Literal
 
 from etils import epath
+from rdflib import namespace
 import requests
 
 from mlcroissant._src.core import constants
@@ -38,8 +39,11 @@ class PersonOrOrganization:
 
     name: str | None = None
     description: str | None = None
+    email: str | None = None
+    type: (
+        Literal["https://schema.org/Person", "https://schema.org/Organization"] | None
+    ) = None
     url: str | None = None
-    type: Literal["Person", "Organization"] | None = None
 
     @classmethod
     def from_jsonld(cls, jsonld: Any) -> list[PersonOrOrganization]:
@@ -58,20 +62,26 @@ class PersonOrOrganization:
                 cls(
                     name=jsonld.get(constants.SCHEMA_ORG_NAME),
                     description=jsonld.get(constants.SCHEMA_ORG_DESCRIPTION),
+                    email=jsonld.get(constants.SCHEMA_ORG_EMAIL),
                     type=jsonld.get("@type"),
                     url=jsonld.get(constants.SCHEMA_ORG_URL),
                 )
             ]
 
     @classmethod
-    def to_json(self, creator: list[PersonOrOrganization] | None) -> Any:
+    def to_json(cls, creator: list[PersonOrOrganization] | None) -> Any:
         """Serializes back to JSON-LD."""
         if creator is None:
             return None
         else:
             creators = [
                 remove_empty_values({
-                    "@type": self.type,
+                    "@type": (
+                        "Person"
+                        if element.type == namespace.SDO.Person
+                        else "Organization"
+                    ),
+                    "email": element.email,
                     "name": element.name,
                     "description": element.description,
                     "url": element.url,
