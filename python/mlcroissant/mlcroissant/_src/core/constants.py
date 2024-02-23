@@ -33,6 +33,7 @@ ML_COMMONS_DATA_BIASES = lambda ctx: ML_COMMONS(ctx).dataBiases
 ML_COMMONS_DATA_COLLECTION = lambda ctx: ML_COMMONS(ctx).dataCollection
 ML_COMMONS_DATA_TYPE = lambda ctx: ML_COMMONS(ctx).dataType
 ML_COMMONS_DATA_TYPE_BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
+ML_COMMONS_EXCLUDES = lambda ctx: ML_COMMONS(ctx).excludes
 ML_COMMONS_EXTRACT = lambda ctx: ML_COMMONS(ctx).extract
 ML_COMMONS_FILE_PROPERTY = lambda ctx: ML_COMMONS(ctx).fileProperty
 ML_COMMONS_FIELD = lambda ctx: ML_COMMONS(ctx).field
@@ -78,6 +79,8 @@ SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
 SCHEMA_ORG_CONTENT_SIZE = namespace.SDO.contentSize
 SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
 SCHEMA_ORG_CREATOR = namespace.SDO.creator
+SCHEMA_ORG_DATE_CREATED = namespace.SDO.dateCreated
+SCHEMA_ORG_DATE_MODIFIED = namespace.SDO.dateModified
 SCHEMA_ORG_DATE_PUBLISHED = namespace.SDO.datePublished
 SCHEMA_ORG_DATASET = namespace.SDO.Dataset
 SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT = namespace.SDO.AudioObject
@@ -95,6 +98,7 @@ SCHEMA_ORG_ENCODING_FORMAT = namespace.SDO.encodingFormat
 SCHEMA_ORG_KEYWORDS = namespace.SDO.keywords
 SCHEMA_ORG_LICENSE = namespace.SDO.license
 SCHEMA_ORG_NAME = namespace.SDO.name
+SCHEMA_ORG_PUBLISHER = namespace.SDO.publisher
 SCHEMA_ORG_SAME_AS = namespace.SDO.sameAs
 SCHEMA_ORG_SHA256 = namespace.SDO.sha256
 SCHEMA_ORG_URL = namespace.SDO.url
@@ -134,6 +138,10 @@ TO_CROISSANT = lambda ctx: {
     SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",
     SCHEMA_ORG_CONTENT_URL: "content_url",
+    SCHEMA_ORG_CREATOR: "creators",
+    SCHEMA_ORG_DATE_CREATED: "date_created",
+    SCHEMA_ORG_DATE_MODIFIED: "date_modified",
+    SCHEMA_ORG_DATE_PUBLISHED: "date_published",
     SCHEMA_ORG_DESCRIPTION: "description",
     SCHEMA_ORG_DISTRIBUTION: "distribution",
     SCHEMA_ORG_ENCODING_FORMAT: "encoding_format",
@@ -141,6 +149,7 @@ TO_CROISSANT = lambda ctx: {
     SCHEMA_ORG_LICENSE: "license",
     SCHEMA_ORG_MD5: "md5",
     SCHEMA_ORG_NAME: "name",
+    SCHEMA_ORG_PUBLISHER: "publisher",
     SCHEMA_ORG_SAME_AS: "sameAs",
     SCHEMA_ORG_SHA256: "sha256",
     SCHEMA_ORG_URL: "url",

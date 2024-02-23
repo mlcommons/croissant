@@ -7,7 +7,7 @@ import dateutil.parser
 from mlcroissant._src.core.issues import Issues
 
 
-def from_str_to_date_time(issues: Issues, date: str | None) -> datetime.datetime | None:
+def from_str_to_datetime(issues: Issues, date: str | None) -> datetime.datetime | None:
     """Converts https://schema.org/DateTime or https://schema.org/Date to datetime."""
     if date is None:
         return None
@@ -25,3 +25,12 @@ def from_str_to_date_time(issues: Issues, date: str | None) -> datetime.datetime
     else:
         issues.add_error(f"Wrong type for date. Expected str. Got {type(date)}")
     return None
+
+
+def from_datetime_to_str(date: datetime.datetime | None) -> str | None:
+    """Converts a datetime to https://schema.org/Date (ISO 8601 date format)."""
+    if date is None:
+        return None
+    elif date.time() == datetime.time.min:
+        return date.strftime("%Y-%m-%d")
+    return date.isoformat()

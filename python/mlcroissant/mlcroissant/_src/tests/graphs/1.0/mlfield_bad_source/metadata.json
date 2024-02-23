@@ -47,6 +47,7 @@
   "name": "mydataset",
   "description": "This is a description.",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "datePublished": "1990-02-01",
   "@language": "en",
   "citeAs": "This is a citation.",
   "license": "This is a license.",

@@ -46,6 +46,7 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "@language": "en",
   "citation": "This is a citation.",
+  "datePublished": "1990-02-01",
   "license": "This is a license.",
   "url": "https://www.google.com/dataset",
   "version": "1.0.0",

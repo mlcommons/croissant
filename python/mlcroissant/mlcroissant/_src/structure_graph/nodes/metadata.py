@@ -5,17 +5,20 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import itertools
-from typing import Any
+from typing import Any, Literal
 
 from etils import epath
+from rdflib import namespace
 import requests
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.dates import from_str_to_date_time
+from mlcroissant._src.core.dates import from_datetime_to_str
+from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
+from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
@@ -39,6 +42,10 @@ class PersonOrOrganization:
 
     name: str | None = None
     description: str | None = None
+    email: str | None = None
+    type: (
+        Literal["https://schema.org/Person", "https://schema.org/Organization"] | None
+    ) = None
     url: str | None = None
 
     @classmethod
@@ -58,17 +65,33 @@ class PersonOrOrganization:
                 cls(
                     name=jsonld.get(constants.SCHEMA_ORG_NAME),
                     description=jsonld.get(constants.SCHEMA_ORG_DESCRIPTION),
+                    email=jsonld.get(constants.SCHEMA_ORG_EMAIL),
+                    type=jsonld.get("@type"),
                     url=jsonld.get(constants.SCHEMA_ORG_URL),
                 )
             ]
 
-    def to_json(self) -> Json:
+    @classmethod
+    def to_json(cls, creator: list[PersonOrOrganization] | None) -> Any:
         """Serializes back to JSON-LD."""
-        return remove_empty_values({
-            "name": self.name,
-            "description": self.description,
-            "url": self.url,
-        })
+        if creator is None:
+            return None
+        else:
+            creators = [
+                remove_empty_values({
+                    "@type": (
+                        "Person"
+                        if element.type == namespace.SDO.Person
+                        else "Organization"
+                    ),
+                    "email": element.email,
+                    "name": element.name,
+                    "description": element.description,
+                    "url": element.url,
+                })
+                for element in creator
+            ]
+            return unbox_singleton_list(creators)
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -77,13 +100,16 @@ class Metadata(Node):
 
     uuid: dataclasses.InitVar[str]
     cite_as: str | None = None
-    creators: list[PersonOrOrganization] = dataclasses.field(default_factory=list)
+    creators: list[PersonOrOrganization] | None = None
+    date_created: datetime.datetime | None = None
+    date_modified: datetime.datetime | None = None
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
     keywords: list[str] | None = None
     license: list[str] | None = None
     name: str = ""
+    publisher: list[PersonOrOrganization] | None = None
     same_as: list[str] | None = None
     url: str | None = ""
     version: str | None = ""
@@ -123,8 +149,13 @@ class Metadata(Node):
         self.validate_name()
         self.version = self.validate_version()
         self.license = self.validate_license()
+        self.date_created = self.validate_date(self.date_created)
+        self.date_modified = self.validate_date(self.date_modified)
+        self.date_published = self.validate_date(self.date_published)
         self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("cite_as", "license", "version")
+        self.assert_has_optional_properties(
+            "cite_as", "date_published", "license", "version"
+        )
 
         # Raise exception if there are errors.
         for node in self.nodes():
@@ -137,16 +168,6 @@ class Metadata(Node):
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
-        date_published = (
-            self.date_published.isoformat() if self.date_published else None
-        )
-        creator: Json | list[Json] | None
-        if len(self.creators) == 1:
-            creator = self.creators[0].to_json()
-        elif len(self.creators) > 1:
-            creator = [creator.to_json() for creator in self.creators]
-        else:
-            creator = None
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
 
         context = self.ctx.rdf.context
@@ -159,8 +180,10 @@ class Metadata(Node):
             "name": self.name,
             "conformsTo": conforms_to,
             "description": self.description,
-            "creator": creator,
-            "datePublished": date_published,
+            "creator": PersonOrOrganization.to_json(self.creators),
+            "dateCreated": from_datetime_to_str(self.date_created),
+            "dateModified": from_datetime_to_str(self.date_modified),
+            "datePublished": from_datetime_to_str(self.date_published),
             "dataBiases": self.data_biases,
             "dataCollection": self.data_collection,
             "citation": self.cite_as if self.ctx.is_v0() else None,
@@ -169,6 +192,7 @@ class Metadata(Node):
             "keywords": unbox_singleton_list(self.keywords),
             "license": unbox_singleton_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
+            "publisher": PersonOrOrganization.to_json(self.publisher),
             "url": self.url,
             "sameAs": unbox_singleton_list(self.same_as),
             "version": self.version,
@@ -249,6 +273,19 @@ class Metadata(Node):
         else:
             self.add_error(f"License should be a list of str. Got: {license}")
             return None
+
+    def validate_date(self, date: Any) -> datetime.datetime | None:
+        """Validates dates as a datetime for any input."""
+        if date is None:
+            return None
+        elif isinstance(date, str):
+            return from_str_to_datetime(self.ctx.issues, date)
+        elif isinstance(date, datetime.datetime):
+            return date
+        elif isinstance(date, datetime.date):
+            return datetime.datetime.combine(date, datetime.time.min)
+        self.add_error(f"Wrong type for a date. Expected Date or Datetime. Got: {date}")
+        return None
 
     def check_graph(self):
         """Checks the integrity of the structure graph.
@@ -336,14 +373,16 @@ class Metadata(Node):
         creators = PersonOrOrganization.from_jsonld(
             metadata.get(constants.SCHEMA_ORG_CREATOR)
         )
-        date_published = from_str_to_date_time(
-            ctx.issues, metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED)
+        publisher = PersonOrOrganization.from_jsonld(
+            metadata.get(constants.SCHEMA_ORG_PUBLISHER)
         )
         return cls(
             ctx=ctx,
             cite_as=cite_as,
             creators=creators,
-            date_published=date_published,
+            date_created=metadata.get(constants.SCHEMA_ORG_DATE_CREATED),
+            date_modified=metadata.get(constants.SCHEMA_ORG_DATE_MODIFIED),
+            date_published=metadata.get(constants.SCHEMA_ORG_DATE_PUBLISHED),
             description=metadata.get(constants.SCHEMA_ORG_DESCRIPTION),
             data_biases=metadata.get(constants.ML_COMMONS_DATA_BIASES(ctx)),
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
@@ -355,8 +394,9 @@ class Metadata(Node):
             personal_sensitive_information=metadata.get(
                 constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
+            publisher=publisher,
             record_sets=record_sets,
-            same_as=metadata.get(constants.SCHEMA_ORG_SAME_AS),
+            same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
             uuid=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
