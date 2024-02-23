@@ -21,10 +21,12 @@ def test_find_joins():
             references=mlc.Source(uuid="some_other_record_set/some_other_field"),
         ),
     ]
-    assert _find_joins(fields) == set([
-        (("some_csv", "some_column"), ("some_record_set", "some_field")),
-        (
-            ("some_record_set", "some_field"),
-            ("some_other_record_set", "some_other_field"),
-        ),
-    ])
+    assert _find_joins(fields) == set(
+        [
+            (("some_csv", "some_column"), ("some_record_set", "some_field")),
+            (
+                ("some_record_set", "some_field"),
+                ("some_other_record_set", "some_other_field"),
+            ),
+        ]
+    )
