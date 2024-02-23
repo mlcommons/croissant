@@ -80,6 +80,7 @@ jobs:
           do
             if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ]
             then
+              echo "DEBUG"
               # MAX_SEQUENCE_LENGTH="10" \
               # TRAIN_BATCH_SIZE="1" \
               # TEST_BATCH_SIZE="1" \
