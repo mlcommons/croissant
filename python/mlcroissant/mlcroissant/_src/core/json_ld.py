@@ -27,6 +27,7 @@ from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.rdf import get_context
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import uuid_to_jsonld
 
 _DCTERMS_PREFIX = constants.DCTERMS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
@@ -103,6 +104,13 @@ def _sort_dict(d: Json):
 def remove_empty_values(d: Json) -> Json:
     """Removes empty values in a JSON."""
     return {k: v for k, v in d.items() if v}
+
+
+def versioned_uid_to_json(ctx: Context, uuid):
+    if ctx.is_v0():
+        return uuid
+    else:
+        return {"@id": uuid_to_jsonld(uuid)}
 
 
 def unbox_singleton_list(d: Any):

@@ -39,11 +39,11 @@ class ParentField:
             source=Source.from_jsonld(ctx, source),
         )
 
-    def to_json(self) -> Json:
+    def to_json(self, ctx: Context) -> Json:
         """Converts the `ParentField` to JSON."""
         return remove_empty_values({
-            "references": self.references.to_json() if self.references else None,
-            "source": self.source.to_json() if self.source else None,
+            "references": self.references.to_json(ctx=ctx) if self.references else None,
+            "source": self.source.to_json(ctx=ctx) if self.source else None,
         })
 
 
@@ -132,9 +132,11 @@ class Field(Node):
         data_types = [
             self.ctx.rdf.shorten_value(data_type) for data_type in self.data_types
         ]
-        parent_field = self.parent_field.to_json() if self.parent_field else None
+        parent_field = (
+            self.parent_field.to_json(ctx=self.ctx) if self.parent_field else None
+        )
         prefix = "ml" if self.ctx.is_v0() else "cr"
-        return remove_empty_values({
+        json_output = remove_empty_values({
             "@type": f"{prefix}:Field",
             "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
@@ -143,10 +145,15 @@ class Field(Node):
             "isEnumeration": self.is_enumeration,
             "parentField": parent_field,
             "repeated": self.repeated,
-            "references": self.references.to_json() if self.references else None,
-            "source": self.source.to_json() if self.source else None,
+            "references": (
+                self.references.to_json(ctx=self.ctx) if self.references else None
+            ),
+            "source": self.source.to_json(ctx=self.ctx) if self.source else None,
             "subField": [sub_field.to_json() for sub_field in self.sub_fields],
         })
+        if self.ctx.is_v0():
+            json_output.pop("@id")
+        return json_output
 
     @classmethod
     def from_jsonld(cls, ctx: Context, field: Json) -> Field:

@@ -73,7 +73,7 @@ class RecordSet(Node):
     def to_json(self) -> Json:
         """Converts the `RecordSet` to JSON."""
         prefix = "ml" if self.ctx.is_v0() else "cr"
-        return remove_empty_values({
+        json_output = remove_empty_values({
             "@type": f"{prefix}:RecordSet",
             "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
@@ -83,6 +83,9 @@ class RecordSet(Node):
             "field": [field.to_json() for field in self.fields],
             "data": self.data,
         })
+        if self.ctx.is_v0():
+            json_output.pop("@id")
+        return json_output
 
     @classmethod
     def from_jsonld(cls, ctx: Context, record_set: Json) -> RecordSet:

@@ -56,7 +56,7 @@ class FileObject(Node):
             elif isinstance(contained_in, str):
                 contained_in = {"@id": uuid_to_jsonld(contained_in)}
 
-        return remove_empty_values({
+        json_output = remove_empty_values({
             "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
             "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
@@ -68,8 +68,11 @@ class FileObject(Node):
             "md5": self.md5,
             "sameAs": unbox_singleton_list(self.same_as),
             "sha256": self.sha256,
-            "source": self.source.to_json() if self.source else None,
+            "source": self.source.to_json(ctx=self.ctx) if self.source else None,
         })
+        if self.ctx.is_v0():
+            json_output.pop("@id")
+        return json_output
 
     @classmethod
     def from_jsonld(

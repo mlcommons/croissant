@@ -12,6 +12,7 @@ from jsonpath_rw import lexer
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import versioned_uid_to_json
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
@@ -196,15 +197,13 @@ class Source:
     uuid: str | None = None
     node_type: NodeType = None
 
-    def to_json(self) -> Json:
+    def to_json(self, ctx: Context) -> Json:
         """Converts the `Source` to JSON."""
         transforms = [transform.to_json() for transform in self.transforms]
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values({
-            self.node_type: {
-                "@id": uuid_to_jsonld(self.uuid)
-            },  # pytype: disable=wrong-arg-types
+            self.node_type: versioned_uid_to_json(ctx, self.uuid),
             "extract": self.extract.to_json(),
             "transform": transforms[0] if len(transforms) == 1 else transforms,
         })

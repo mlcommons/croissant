@@ -50,7 +50,7 @@ class FileSet(Node):
             elif isinstance(contained_in, str):
                 contained_in = {"@id": uuid_to_jsonld(contained_in)}
 
-        return remove_empty_values({
+        json_output = remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
             "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
@@ -60,6 +60,9 @@ class FileSet(Node):
             "excludes": unbox_singleton_list(self.excludes),
             "includes": unbox_singleton_list(self.includes),
         })
+        if self.ctx.is_v0():
+            json_output.pop("@id")
+        return json_output
 
     @classmethod
     def from_jsonld(
