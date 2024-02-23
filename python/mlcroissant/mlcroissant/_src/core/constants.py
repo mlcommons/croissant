@@ -29,6 +29,7 @@ ML_COMMONS_DATA_BIASES = lambda ctx: ML_COMMONS(ctx).dataBiases
 ML_COMMONS_DATA_COLLECTION = lambda ctx: ML_COMMONS(ctx).dataCollection
 ML_COMMONS_DATA_TYPE = lambda ctx: ML_COMMONS(ctx).dataType
 ML_COMMONS_DATA_TYPE_BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
+ML_COMMONS_EXCLUDES = lambda ctx: ML_COMMONS(ctx).excludes
 ML_COMMONS_EXTRACT = lambda ctx: ML_COMMONS(ctx).extract
 ML_COMMONS_FILE_PROPERTY = lambda ctx: ML_COMMONS(ctx).fileProperty
 ML_COMMONS_FIELD = lambda ctx: ML_COMMONS(ctx).field

@@ -114,6 +114,20 @@ def unbox_singleton_list(d: Any):
     return d
 
 
+def box_singleton_list(element: Any) -> list[Any] | None:
+    """Returns the elemtn always boxed inside a list.
+
+    This is interesting for JSON-LD properties with a MANY cardinality where we want to
+    return a list even if the input element was a singleton.
+    """
+    if element is None:
+        return None
+    elif isinstance(element, list):
+        return element
+    else:
+        return [element]
+
+
 def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
     """Changes in place `entry_node` with its children."""
     if "@value" in entry_node:
