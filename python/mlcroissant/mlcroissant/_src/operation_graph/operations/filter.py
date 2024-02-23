@@ -21,7 +21,7 @@ def _memoized_regex(pattern: str) -> re.Pattern:
     return re.compile(regex)
 
 
-def match(patterns: list[str] | None, path: pathlib.PurePath) -> bool:
+def match_path(patterns: list[str] | None, path: pathlib.PurePath) -> bool:
     """Returns True if at least one pattern matches path."""
     if not patterns:
         return True
@@ -48,8 +48,8 @@ class FilterFiles(Operation):
                 for file in files:
                     filepath = epath.Path(basepath) / file
                     fullpath = get_fullpath(filepath, path.filepath)
-                    match_includes = match(self.node.includes, fullpath)
-                    match_excludes = match(self.node.excludes, fullpath)
+                    match_includes = match_path(self.node.includes, fullpath)
+                    match_excludes = match_path(self.node.excludes, fullpath)
                     if match_includes and match_excludes:
                         included_files.append(
                             Path(
