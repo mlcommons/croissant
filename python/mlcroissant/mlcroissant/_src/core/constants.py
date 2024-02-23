@@ -88,8 +88,10 @@ SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
 SCHEMA_ORG_EMAIL = namespace.SDO.email
 SCHEMA_ORG_ENCODING_FORMAT = namespace.SDO.encodingFormat
+SCHEMA_ORG_KEYWORDS = namespace.SDO.keywords
 SCHEMA_ORG_LICENSE = namespace.SDO.license
 SCHEMA_ORG_NAME = namespace.SDO.name
+SCHEMA_ORG_SAME_AS = namespace.SDO.sameAs
 SCHEMA_ORG_SHA256 = namespace.SDO.sha256
 SCHEMA_ORG_URL = namespace.SDO.url
 SCHEMA_ORG_VERSION = namespace.SDO.version
@@ -131,9 +133,11 @@ TO_CROISSANT = lambda ctx: {
     SCHEMA_ORG_DESCRIPTION: "description",
     SCHEMA_ORG_DISTRIBUTION: "distribution",
     SCHEMA_ORG_ENCODING_FORMAT: "encoding_format",
+    SCHEMA_ORG_KEYWORDS: "keywords",
     SCHEMA_ORG_LICENSE: "license",
     SCHEMA_ORG_MD5: "md5",
     SCHEMA_ORG_NAME: "name",
+    SCHEMA_ORG_SAME_AS: "sameAs",
     SCHEMA_ORG_SHA256: "sha256",
     SCHEMA_ORG_URL: "url",
     SCHEMA_ORG_VERSION: "version",

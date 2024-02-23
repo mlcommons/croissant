@@ -79,8 +79,10 @@ class Metadata(Node):
     date_published: datetime.datetime | None = None
     description: str | None = None
     is_live_dataset: bool | None = None
+    keywords: list[str] | None = None
     license: list[str] | None = None
     name: str = ""
+    same_as: list[str] | None = None
     url: str | None = ""
     version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
@@ -155,9 +157,11 @@ class Metadata(Node):
             "citation": self.cite_as if self.ctx.is_v0() else None,
             "citeAs": None if self.ctx.is_v0() else self.cite_as,
             "isLiveDataset": self.is_live_dataset,
+            "keywords": unbox_singleton_list(self.keywords),
             "license": unbox_singleton_list(self.license),
             "personalSensitiveInformation": self.personal_sensitive_information,
             "url": self.url,
+            "sameAs": unbox_singleton_list(self.same_as),
             "version": self.version,
             "distribution": [f.to_json() for f in self.distribution],
             "recordSet": [record_set.to_json() for record_set in self.record_sets],
@@ -329,12 +333,14 @@ class Metadata(Node):
             data_collection=metadata.get(constants.ML_COMMONS_DATA_COLLECTION(ctx)),
             distribution=distribution,
             is_live_dataset=metadata.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx)),
+            keywords=metadata.get(constants.SCHEMA_ORG_KEYWORDS),
             license=metadata.get(constants.SCHEMA_ORG_LICENSE),
             name=dataset_name,
             personal_sensitive_information=metadata.get(
                 constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(ctx)
             ),
             record_sets=record_sets,
+            same_as=metadata.get(constants.SCHEMA_ORG_SAME_AS),
             uuid=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
