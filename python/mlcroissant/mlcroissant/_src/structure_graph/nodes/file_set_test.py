@@ -36,9 +36,9 @@ def test_from_jsonld(conforms_to):
         constants.ML_COMMONS_INCLUDES(ctx): "*.json",
     }
     file_set = FileSet.from_jsonld(ctx, jsonld)
-    file_set.name == "foo"
-    file_set.description == "bar"
-    file_set.contained_in == ["some.zip"]
-    file_set.encoding_format == "application/json"
-    file_set.includes == "*.json"
+    assert file_set.name == "foo"
+    assert file_set.description == "bar"
+    assert file_set.contained_in == ["some.zip"]
+    assert file_set.encoding_format == "application/json"
+    assert file_set.includes == "*.json"
     assert not ctx.issues.errors
