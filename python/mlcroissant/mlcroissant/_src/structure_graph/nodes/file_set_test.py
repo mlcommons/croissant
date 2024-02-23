@@ -33,6 +33,7 @@ def test_from_jsonld(conforms_to):
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.SCHEMA_ORG_CONTAINED_IN: "some.zip",
         constants.SCHEMA_ORG_ENCODING_FORMAT: "application/json",
+        constants.ML_COMMONS_EXCLUDES(ctx): "*.csv",
         constants.ML_COMMONS_INCLUDES(ctx): "*.json",
     }
     file_set = FileSet.from_jsonld(ctx, jsonld)
@@ -40,5 +41,6 @@ def test_from_jsonld(conforms_to):
     assert file_set.description == "bar"
     assert file_set.contained_in == ["some.zip"]
     assert file_set.encoding_format == "application/json"
-    assert file_set.includes == "*.json"
+    assert file_set.excludes == ["*.csv"]
+    assert file_set.includes == ["*.json"]
     assert not ctx.issues.errors

@@ -18,6 +18,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_datetime_to_str
 from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
+from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
@@ -379,7 +380,7 @@ class Metadata(Node):
             ),
             publisher=publisher,
             record_sets=record_sets,
-            same_as=metadata.get(constants.SCHEMA_ORG_SAME_AS),
+            same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
             uuid=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
