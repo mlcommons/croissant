@@ -1,13 +1,13 @@
 """migrate_test module."""
 
 import json
-import pytest
 
 from etils import epath
+import pytest
 
+from mlcroissant._src.core.json_ld import _is_dataset_node
 from mlcroissant._src.core.json_ld import compact_jsonld
 from mlcroissant._src.core.json_ld import expand_jsonld
-from mlcroissant._src.core.json_ld import _is_dataset_node
 from mlcroissant._src.core.rdf import make_context
 
 

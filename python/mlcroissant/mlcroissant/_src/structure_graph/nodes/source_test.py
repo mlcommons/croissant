@@ -2,6 +2,7 @@
 
 import pytest
 from rdflib.term import URIRef
+
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
