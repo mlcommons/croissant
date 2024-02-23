@@ -48,7 +48,6 @@ class FileObject(Node):
 
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
-
         contained_in = unbox_singleton_list(self.contained_in)
         if not self.ctx.is_v0():
             if isinstance(contained_in, list):

@@ -25,7 +25,6 @@ class Operations(nx.DiGraph):
 
     def add_node(self, operation: Operation) -> None:
         """Overloads nx.add_node to keep track of the last operations."""
-
         if not self.has_node(operation):
             super().add_node(operation)
 

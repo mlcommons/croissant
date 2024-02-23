@@ -12,7 +12,7 @@ from jsonpath_rw import lexer
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.json_ld import remove_empty_values
-from mlcroissant._src.core.json_ld import versioned_uid_to_json
+from mlcroissant._src.core.json_ld import formatted_uid_to_json
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 
@@ -202,7 +202,7 @@ class Source:
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values({
-            self.node_type: versioned_uid_to_json(ctx, self.uuid),
+            self.node_type: formatted_uid_to_json(ctx, self.uuid),
             "extract": self.extract.to_json(),
             "transform": transforms[0] if len(transforms) == 1 else transforms,
         })

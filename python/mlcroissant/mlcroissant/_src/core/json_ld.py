@@ -106,7 +106,8 @@ def remove_empty_values(d: Json) -> Json:
     return {k: v for k, v in d.items() if v}
 
 
-def versioned_uid_to_json(ctx: Context, uuid):
+def formatted_uid_to_json(ctx: Context, uuid):
+    """Return a formatted node's uuid depending on the Croissant version."""
     if ctx.is_v0():
         return uuid
     else:
