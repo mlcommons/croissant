@@ -40,7 +40,6 @@
   "@type": "sc:Dataset",
   "name": "audio_test",
   "description": "This is the basic test case for audio files",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "None",
   "distribution": [
     {
