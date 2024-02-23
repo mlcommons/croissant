@@ -69,10 +69,10 @@
           "description": "These are the sounds.",
           "dataType": "sc:AudioObject",
           "source": {
-            "cr:fileSet": "files",
             "extract": {
               "fileProperty": "content"
-            }
+            },
+            "fileSet": "files"
           }
         }
       ]
