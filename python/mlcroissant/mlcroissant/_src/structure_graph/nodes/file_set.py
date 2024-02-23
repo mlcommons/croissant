@@ -46,7 +46,7 @@ class FileSet(Node):
             contained_in = {"@id": source for source in contained_in}
         return remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
-            "@id": uuid_to_jsonld(self.uuid),
+            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
             "description": self.description,
             "containedIn": contained_in,

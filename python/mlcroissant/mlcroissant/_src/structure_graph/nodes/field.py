@@ -136,7 +136,7 @@ class Field(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
             "@type": f"{prefix}:Field",
-            "@id": uuid_to_jsonld(self.uuid),
+            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,

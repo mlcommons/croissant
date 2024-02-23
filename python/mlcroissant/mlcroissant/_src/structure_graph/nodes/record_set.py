@@ -75,7 +75,7 @@ class RecordSet(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
             "@type": f"{prefix}:RecordSet",
-            "@id": uuid_to_jsonld(self.uuid),
+            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
