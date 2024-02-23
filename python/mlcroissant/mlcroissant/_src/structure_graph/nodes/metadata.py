@@ -171,8 +171,9 @@ class Metadata(Node):
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
 
         context = self.ctx.rdf.context
-        if context["@base"] == constants.BASE_IRI:
-            context.pop("@base")
+        if "@base" in context:
+            if context["@base"] == constants.BASE_IRI:
+                context.pop("@base")
 
         return remove_empty_values({
             "@context": context,
