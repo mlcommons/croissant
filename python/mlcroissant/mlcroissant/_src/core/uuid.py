@@ -1,6 +1,5 @@
 """Module to manipulate UUID."""
 
-from typing import Any
 import uuid
 
 from mlcroissant._src.core.constants import BASE_IRI
@@ -15,7 +14,7 @@ def generate_uuid() -> str:
 def uuid_from_jsonld(uuid: Json) -> str:
     """Retrieves uuid from a JSON-LD fragment. If no uuid, it will generate one."""
     if isinstance(uuid, dict):
-        uuid = uuid.get("@id")  # type: "Any | None"  # type: ignore[no-redef]
+        uuid = uuid.get("@id")  # type: ignore[assignment]
     if isinstance(uuid, str):
         return uuid
     return generate_uuid()

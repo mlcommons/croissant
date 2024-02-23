@@ -5,7 +5,6 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import itertools
-import json
 from typing import Any
 
 from etils import epath

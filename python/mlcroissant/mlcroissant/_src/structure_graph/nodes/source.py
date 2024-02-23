@@ -202,7 +202,9 @@ class Source:
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values({
-            self.node_type: {"@id": uuid_to_jsonld(self.uuid)},  # pytype: disable=wrong-arg-types
+            self.node_type: {
+                "@id": uuid_to_jsonld(self.uuid)
+            },  # pytype: disable=wrong-arg-types
             "extract": self.extract.to_json(),
             "transform": transforms[0] if len(transforms) == 1 else transforms,
         })
