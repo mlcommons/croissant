@@ -85,11 +85,11 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.ML_COMMONS_DATA(ctx): [{"column1": ["value1", "value2"]}],
     }
     record_set = RecordSet.from_jsonld(ctx, jsonld)
-    record_set.name == "foo"
-    record_set.description == "bar"
-    record_set.is_enumeration == True
-    record_set.key == ["key1", "key2"]
-    record_set.data == [{"column1": ["value1", "value2"]}]
+    assert record_set.name == "foo"
+    assert record_set.description == "bar"
+    assert record_set.is_enumeration == True
+    assert record_set.key == ["key1", "key2"]
+    assert record_set.data == [{"column1": ["value1", "value2"]}]
     assert ctx.issues.errors == {
         (
             "[RecordSet(foo)] Line #0 doesn't have the expected columns. Expected:"
