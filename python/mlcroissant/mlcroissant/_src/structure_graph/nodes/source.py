@@ -15,7 +15,6 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import versioned_uid_to_json
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 
 
 def _find_choice(
