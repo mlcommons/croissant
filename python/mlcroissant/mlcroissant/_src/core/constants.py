@@ -66,7 +66,7 @@ ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
 
 # Croissant RAI extension
 # V1.0 namespace
-RAI = rdflib.Namespace("http://mlcommons.org/croissant-RAI/1.0/")
+RAI = rdflib.Namespace("http://mlcommons.org/croissant/RAI/")
 # Attributes
 ML_COMMONS_RAI_DATA_COLLECTION = RAI.dataCollection
 ML_COMMONS_RAI_DATA_COLLECTION_TYPE = RAI.dataCollectionType
