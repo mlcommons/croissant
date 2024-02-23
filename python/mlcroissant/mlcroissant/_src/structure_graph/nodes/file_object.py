@@ -49,10 +49,7 @@ class FileObject(Node):
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
 
-        if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
-            contained_in: str | list[str] | dict = self.contained_in[0]
-        else:
-            contained_in = self.contained_in
+        contained_in = unbox_singleton_list(self.contained_in)
         if not self.ctx.is_v0():
             if isinstance(contained_in, list):
                 contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]  # type: ignore
@@ -66,7 +63,7 @@ class FileObject(Node):
             "description": self.description,
             "contentSize": self.content_size,
             "contentUrl": self.content_url,
-            "containedIn": unbox_singleton_list(self.contained_in),
+            "containedIn": contained_in,
             "encodingFormat": self.encoding_format,
             "md5": self.md5,
             "sameAs": unbox_singleton_list(self.same_as),
@@ -88,11 +85,10 @@ class FileObject(Node):
         name = file_object.get(constants.SCHEMA_ORG_NAME, "")
 
         contained_in = box_singleton_list(
-                file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
-            )
+            file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
+        )
         if contained_in is not None and not ctx.is_v0():
             contained_in = [uuid_from_jsonld(source) for source in contained_in]
-
         content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
@@ -100,9 +96,7 @@ class FileObject(Node):
             ctx=ctx,
             content_url=content_url,
             content_size=content_size,
-            contained_in=box_singleton_list(
-                file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
-            ),
+            contained_in=contained_in,
             description=description,
             encoding_format=encoding_format,
             md5=file_object.get(constants.SCHEMA_ORG_MD5(ctx)),

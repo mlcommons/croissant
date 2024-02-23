@@ -8,6 +8,7 @@ from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.datasets import Dataset
 from mlcroissant._src.tests.versions import parametrize_version
 
+
 # If this test fails, you probably manually updated a dataset in datasets/.
 # Please, use scripts/migrations/migrate.py to migrate datasets.
 @parametrize_version()
