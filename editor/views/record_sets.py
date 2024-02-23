@@ -132,18 +132,18 @@ Join = tuple[LeftOrRight, LeftOrRight]
 
 
 def _find_left_or_right(source: mlc.Source) -> LeftOrRight:
-    uid = source.uid
-    if "/" in uid:
-        parts = uid.split("/")
+    uuid = source.uuid
+    if "/" in uuid:
+        parts = uuid.split("/")
         return (parts[0], parts[1])
     elif source.extract.column:
-        return (uid, source.extract.column)
+        return (uuid, source.extract.column)
     elif source.extract.json_path:
-        return (uid, source.extract.json_path)
+        return (uuid, source.extract.json_path)
     elif source.extract.file_property:
-        return (uid, source.extract.file_property)
+        return (uuid, source.extract.file_property)
     else:
-        return (uid, None)
+        return (uuid, None)
 
 
 def _find_joins(fields: list[Field]) -> set[Join]:
@@ -383,13 +383,11 @@ def _render_left_panel():
                         "⚠️",
                         key=f"idea-{prefix}",
                         on_click=lambda: _generate_data_with_timeout.clear(),
-                        help=textwrap.dedent(
-                            f"""**Error**:
+                        help=textwrap.dedent(f"""**Error**:
 ```
 {exception}
 ```
-"""
-                        ),
+"""),
                     )
                 right.markdown("No preview is possible.")
 

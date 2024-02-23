@@ -223,28 +223,30 @@ class Metadata:
         """Renames a RecordSet by changing all the references to this RecordSet."""
         for i, record_set in enumerate(self.record_sets):
             for j, field in enumerate(record_set.fields):
-                possible_uid = f"{old_name}/"
+                possible_uuid = f"{old_name}/"
                 # Update source
                 source = field.source
                 if (
                     source
-                    and source.uid
-                    and (source.uid.startswith(possible_uid) or source.uid == old_name)
+                    and source.uuid
+                    and (
+                        source.uuid.startswith(possible_uuid) or source.uuid == old_name
+                    )
                 ):
-                    new_uid = source.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.uid = new_uid
+                    new_uuid = source.uuid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.uuid = new_uuid
                 # Update references
                 references = field.references
                 if (
                     references
-                    and references.uid
+                    and references.uuid
                     and (
-                        references.uid.startswith(possible_uid)
-                        or references.uid == old_name
+                        references.uuid.startswith(possible_uuid)
+                        or references.uuid == old_name
                     )
                 ):
-                    new_uid = references.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].references.uid = new_uid
+                    new_uuid = references.uuid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.uuid = new_uuid
 
     def rename_field(self, old_name: str, new_name: str):
         """Renames a field by changing all the references to this field."""
@@ -255,22 +257,22 @@ class Metadata:
                 # The difference with RecordSet is the `.endswith` here:
                 if (
                     source
-                    and source.uid
-                    and "/" in source.uid
-                    and source.uid.endswith(old_name)
+                    and source.uuid
+                    and "/" in source.uuid
+                    and source.uuid.endswith(old_name)
                 ):
-                    new_uid = source.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.uid = new_uid
+                    new_uuid = source.uuid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.uuid = new_uid
                 # Update references
                 references = field.references
                 if (
                     references
-                    and references.uid
-                    and "/" in references.uid
-                    and references.uid.endswith(old_name)
+                    and references.uuid
+                    and "/" in references.uuid
+                    and references.uuid.endswith(old_name)
                 ):
-                    new_uid = references.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].references.uid = new_uid
+                    new_uuid = references.uuid.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.uuid = new_uuid
 
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
         self.distribution.append(distribution)
