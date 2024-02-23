@@ -14,7 +14,7 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 class _EmptyNode(Node):
-    def __post_init__(self, uuid):
+    def __post_init__(self, uuid: str | None = None):
         self._uuid = uuid
 
     @classmethod

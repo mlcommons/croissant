@@ -11,8 +11,8 @@ from jsonpath_rw import lexer
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import formatted_uid_to_json
+from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 
