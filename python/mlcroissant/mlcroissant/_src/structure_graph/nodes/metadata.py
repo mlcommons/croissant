@@ -406,11 +406,11 @@ class Metadata(Node):
         publisher = PersonOrOrganization.from_jsonld(
             metadata.get(constants.SCHEMA_ORG_PUBLISHER)
         )
-        date_collection_timeframe_start = from_str_to_date_time(
+        date_collection_timeframe_start = from_str_to_datetime(
             ctx.issues,
             metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START),
         )
-        date_collection_timeframe_end = from_str_to_date_time(
+        date_collection_timeframe_end = from_str_to_datetime(
             ctx.issues,
             metadata.get(constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END),
         )
