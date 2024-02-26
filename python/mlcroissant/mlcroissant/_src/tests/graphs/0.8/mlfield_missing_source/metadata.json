@@ -2,10 +2,8 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "citeAs": "cr:citeAs",
     "column": "ml:column",
     "conformsTo": "dct:conformsTo",
-    "cr": "http://mlcommons.org/croissant/",
     "data": {
       "@id": "ml:data",
       "@type": "@json"
@@ -20,15 +18,11 @@
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
-    "fileObject": "cr:fileObject",
-    "fileSet": "cr:fileSet",
     "format": "ml:format",
     "includes": "ml:includes",
     "isEnumeration": "ml:isEnumeration",
-    "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "ml:jsonPath",
-    "key": "cr:key",
-    "md5": "cr:md5",
+    "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
     "personalSensitiveInformation": "ml:personalSensitiveInformation",
@@ -40,8 +34,7 @@
     "sc": "https://schema.org/",
     "separator": "ml:separator",
     "subField": "ml:subField",
-    "transform": "ml:transform",
-    "ml": "http://mlcommons.org/schema/"
+    "transform": "ml:transform"
   },
   "@type": "sc:Dataset",
   "name": "mydataset",
