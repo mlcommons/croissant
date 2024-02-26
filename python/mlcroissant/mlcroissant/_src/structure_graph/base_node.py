@@ -37,7 +37,7 @@ class Node(abc.ABC):
     """
 
     ctx: Context = dataclasses.field(default_factory=Context)
-    id: str = "" # JSON-LD @id
+    id: str = ""  # JSON-LD @id
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
 

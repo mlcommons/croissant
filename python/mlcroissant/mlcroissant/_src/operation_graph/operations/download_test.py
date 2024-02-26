@@ -114,7 +114,9 @@ def test_get_download_filepath():
 
     # Without mapping
     ctx.mapping = {}
-    node = FileObject(ctx=ctx, name="foo", id="file-object", content_url="http://foo", sha256="12345")
+    node = FileObject(
+        ctx=ctx, name="foo", id="file-object", content_url="http://foo", sha256="12345"
+    )
     assert os.fspath(get_download_filepath(node)).endswith(
         "download/croissant-0343a8f6b328d44bfe5b69437797bebc36c59c67ac6527fe1f14684142074fff"
     )

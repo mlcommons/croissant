@@ -108,7 +108,7 @@ class Metadata(Node):
     keywords: list[str] | None = None
     license: list[str] | None = None
     name: str = ""
-    id: str | None = None # JSON-LD @id
+    id: str = "" # JSON-LD @id
     publisher: list[PersonOrOrganization] | None = None
     same_as: list[str] | None = None
     url: str | None = ""
@@ -130,10 +130,8 @@ class Metadata(Node):
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""
         # Define parents.
-        print("DEBUG: This is post init metadata", self.id)
         if not self.id:
             self.id = generate_uuid()
-        print("DEBUG: NOW metadata", self.id)
         for node in self.distribution:
             node.parents = [self]
         for record_set in self.record_sets:

@@ -318,7 +318,7 @@ class Source:
         return hash(self) == hash(other)
 
     @property
-    def uuid(self) -> str:
+    def uuid(self) -> str | None:
         """Unique identifier for the source."""
         return self.id
 

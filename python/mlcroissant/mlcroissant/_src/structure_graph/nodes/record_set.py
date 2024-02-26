@@ -22,7 +22,6 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
-    id: str  # JSON-LD @id
     # `data` is passed as a string for the moment, because dicts and lists are not
     # hashable.
     data: list[Json] | None = None
@@ -30,6 +29,7 @@ class RecordSet(Node):
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     name: str = ""
+    id: str = ""  # JSON-LD @id
     fields: list[Field] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):

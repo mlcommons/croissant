@@ -21,7 +21,6 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    id: str  # JSON-LD @id
     content_url: str | None = None
     content_size: str | None = None
     contained_in: list[str] | None = None
@@ -29,6 +28,7 @@ class FileObject(Node):
     encoding_format: str | None = None
     md5: str | None = None
     name: str = ""
+    id: str = ""  # JSON-LD @id
     same_as: list[str] | None = None
     sha256: str | None = None
     source: Source | None = None
@@ -47,7 +47,9 @@ class FileObject(Node):
         contained_in = unbox_singleton_list(self.contained_in)
         if not self.ctx.is_v0():
             if isinstance(contained_in, list):
-                contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]
+                contained_in = [
+                    {"@id": uuid_to_jsonld(source)} for source in contained_in
+                ]
             elif isinstance(contained_in, str):
                 contained_in = {"@id": uuid_to_jsonld(contained_in)}
 

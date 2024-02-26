@@ -20,16 +20,15 @@ from mlcroissant._src.structure_graph.base_node import Node
 class FileSet(Node):
     """Nodes to describe a dataset FileSet (distribution)."""
 
-    id: str  # JSON-LD @id
     contained_in: list[str] | None = None
-
     description: str | None = None
     encoding_format: str | None = None
     excludes: list[str] | None = None
     includes: list[str] | None = None
     name: str = ""
+    id: str = ""  # JSON-LD @id
 
-    def __post_init__(self, uuid: str | None = None):
+    def __post_init__(self):
         """Checks arguments of the node."""
         self.validate_name()
         self.assert_has_mandatory_properties(

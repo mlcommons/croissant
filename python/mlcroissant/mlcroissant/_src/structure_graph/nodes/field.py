@@ -50,7 +50,6 @@ class ParentField:
 class Field(Node):
     """Nodes to describe a dataset Field."""
 
-    id: str  # JSON-LD @id
     description: str | None = None
     # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
     data_types: term.URIRef | list[term.URIRef] = dataclasses.field(  # type: ignore  # https://github.com/python/mypy/issues/11923
@@ -58,6 +57,7 @@ class Field(Node):
     )
     is_enumeration: bool | None = None
     name: str = ""
+    id: str = ""  # JSON-LD @id
     parent_field: ParentField | None = None
     references: Source = dataclasses.field(default_factory=Source)
     repeated: bool | None = None
