@@ -51,10 +51,6 @@
     "Bias 1 in data",
     "Bias 2 in data"
   ],
-  "rai:dataManipulationProtocol": [
-    "Dedupliction: Near-deduplication was implemented...",
-    "Filtering: Applied filtering algorithms..."
-  ],
   "distribution": [
     {
       "@type": "cr:FileObject",
