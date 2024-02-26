@@ -119,11 +119,21 @@ def _data_editor_key(record_set_key: int, record_set: RecordSet) -> str:
 
 def _get_possible_sources(metadata: Metadata) -> list[str]:
     possible_sources: list[str] = []
-    for resource in metadata.distribution:
-        possible_sources.append(resource.name)
-    for record_set in metadata.record_sets:
-        for field in record_set.fields:
-            possible_sources.append(f"{record_set.name}/{field.name}")
+    if metadata.ctx.is_v0():
+        for resource in metadata.distribution:
+            possible_sources.append(resource.name)
+        for record_set in metadata.record_sets:
+            for field in record_set.fields:
+                possible_sources.append(f"{record_set.name}/{field.name}")
+    else:
+        # TODO(marcenacp): This workaround is temporary. We should be able to properly
+        # infer IDs using mlcroissant.
+        get_original_id = lambda id: id.split(mlc.constants.BASE_IRI)[-1]
+        for resource in metadata.distribution:
+            possible_sources.append(get_original_id(resource.id))
+        for record_set in metadata.record_sets:
+            for field in record_set.fields:
+                possible_sources.append(get_original_id(field.id))
     return possible_sources
 
 

@@ -209,14 +209,24 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
         args=(ResourceEvent.CONTAINED_IN, file, key),
     )
     key = f"{prefix}_name"
-    st.text_input(
-        needed_field("Name"),
-        value=file.name,
-        key=key,
-        help=f"The name of the resource. {NAMES_INFO}",
-        on_change=handle_resource_change,
-        args=(ResourceEvent.NAME, file, key),
-    )
+    if file.ctx.is_v0():
+        st.text_input(
+            needed_field("Name"),
+            value=file.name,
+            key=key,
+            help=f"The name of the resource. {NAMES_INFO}",
+            on_change=handle_resource_change,
+            args=(ResourceEvent.NAME, file, key),
+        )
+    else:
+        st.text_input(
+            needed_field("ID"),
+            value=file.name,
+            key=key,
+            help=f"The ID of the resource. {NAMES_INFO}",
+            on_change=handle_resource_change,
+            args=(ResourceEvent.ID, file, key),
+        )
     key = f"{prefix}_description"
     st.text_area(
         "Description",
