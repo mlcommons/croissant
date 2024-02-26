@@ -160,10 +160,10 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str:
     # TODO: rename this function and have better error message.
     node = ctx.node_by_uuid(uuid)
     if node is None:
-        raise ValidationError(
+        ctx.issues.add_error(
             "Found the following 1 error(s) during the validation:\n  -  Node with"
-            f" uuid={uuid_to_jsonld(uuid)} does not exist. This error might have been"
-            " found during a Join operation."
+            f" uuid={uuid_to_jsonld(uuid)} does not exist. This error might have"
+            " been found during a Join operation."
         )
     if isinstance(node, Field):
         if node.parent:

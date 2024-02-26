@@ -96,7 +96,7 @@ class PersonOrOrganization:
 
 @dataclasses.dataclass(eq=False, repr=False)
 class Metadata(Node):
-    """Nodes to d§escribe a dataset metadata."""
+    """Nodes to describe a dataset metadata."""
 
     cite_as: str | None = None
     creators: list[PersonOrOrganization] | None = None

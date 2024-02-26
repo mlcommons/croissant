@@ -11,7 +11,6 @@ from mlcroissant._src.core.types import Json
 def get_context(json_: Json) -> Json:
     """Returns the context and raises an error if it is not a dictionary as expected."""
     context = json_.get("@context", {})
-    # context["@base"] = "cr_base_iri/"
     if not isinstance(context, dict):
         raise ValueError("@context should be a dictionary. Got: {existing_context}")
     return context

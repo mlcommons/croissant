@@ -134,7 +134,6 @@ class Field(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         json_output = remove_empty_values({
             "@type": f"{prefix}:Field",
-            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,
@@ -147,8 +146,10 @@ class Field(Node):
             "source": self.source.to_json(ctx=self.ctx) if self.source else None,
             "subField": [sub_field.to_json() for sub_field in self.sub_fields],
         })
-        if self.ctx.is_v0():
-            json_output.pop("@id")
+        if not self.ctx.is_v0():
+            json_output["@id"] = uuid_to_jsonld(
+                self.uuid
+            )  # pytype: disable=wrong-arg-types
         return json_output
 
     @classmethod
