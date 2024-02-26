@@ -28,7 +28,6 @@ class FileObject(Node):
     encoding_format: str | None = None
     md5: str | None = None
     name: str = ""
-    id: str = ""  # JSON-LD @id
     same_as: list[str] | None = None
     sha256: str | None = None
     source: Source | None = None

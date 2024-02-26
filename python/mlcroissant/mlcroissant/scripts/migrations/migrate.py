@@ -95,7 +95,7 @@ def migrate_test_dataset(dataset: epath.Path, json_ld):
 
     Cannot use mlc.Metadata as test Croissant files may contain errors.
     """
-    json_ld = compact_jsonld(expand_jsonld(json_ld))
+    json_ld = compact_jsonld(expand_jsonld(json_ld, ctx=Context()))
     # Special cases for test datasets without @context
     if "recordset_missing_context_for_datatype" in os.fspath(dataset):
         del json_ld["@context"]["dataType"]

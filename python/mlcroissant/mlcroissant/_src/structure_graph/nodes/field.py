@@ -57,7 +57,6 @@ class Field(Node):
     )
     is_enumeration: bool | None = None
     name: str = ""
-    id: str = ""  # JSON-LD @id
     parent_field: ParentField | None = None
     references: Source = dataclasses.field(default_factory=Source)
     repeated: bool | None = None

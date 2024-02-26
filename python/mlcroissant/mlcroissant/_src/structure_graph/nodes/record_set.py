@@ -29,7 +29,6 @@ class RecordSet(Node):
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     name: str = ""
-    id: str = ""  # JSON-LD @id
     fields: list[Field] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):

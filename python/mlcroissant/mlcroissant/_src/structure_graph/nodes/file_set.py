@@ -26,7 +26,6 @@ class FileSet(Node):
     excludes: list[str] | None = None
     includes: list[str] | None = None
     name: str = ""
-    id: str = ""  # JSON-LD @id
 
     def __post_init__(self):
         """Checks arguments of the node."""

@@ -130,7 +130,8 @@ def _get_possible_sources(metadata: Metadata) -> list[str]:
         # infer IDs using mlcroissant.
         get_original_id = lambda id: id.split(mlc.constants.BASE_IRI)[-1]
         for resource in metadata.distribution:
-            possible_sources.append(get_original_id(resource.id))
+            if resource.id:
+                possible_sources.append(get_original_id(resource.id))
         for record_set in metadata.record_sets:
             for field in record_set.fields:
                 possible_sources.append(get_original_id(field.id))

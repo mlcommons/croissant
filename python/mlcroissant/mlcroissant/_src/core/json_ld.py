@@ -165,7 +165,7 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     return entry_node
 
 
-def expand_jsonld(data: Json) -> Json:
+def expand_jsonld(data: Json, ctx: Context) -> Json:
     """Expands a Croissant JSON to a nested JSON-LD with expanded.
 
     For this we use RDFLib. RDFLib expands the CURIE of the form "rdf:type" into their
@@ -187,9 +187,10 @@ def expand_jsonld(data: Json) -> Json:
     # Find the entry node (schema.org/Dataset). If None found, will raise an error.
     entry_node = next((record for record in nodes if _is_dataset_node(record)), None)
     if entry_node is None:
-        raise ValidationError(
+        ctx.issues.add_error(
             "The current JSON-LD doesn't extend https://schema.org/Dataset."
         )
+        raise ValidationError(ctx.issues.report())
     id_to_node: dict[str, Json] = {}
     for node in nodes:
         node_id = node.get("@id")
