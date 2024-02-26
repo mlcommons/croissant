@@ -8,9 +8,7 @@ def test_find_joins():
         Field(
             id="field1",
             name="field1",
-            source=mlc.Source(
-                id="some_csv", extract=mlc.Extract(column="some_column")
-            ),
+            source=mlc.Source(id="some_csv", extract=mlc.Extract(column="some_column")),
             references=mlc.Source(id="some_record_set/some_field"),
         ),
         Field(id="field2", name="field2", source=mlc.Source(id="foo/bar")),
