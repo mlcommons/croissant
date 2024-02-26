@@ -11,7 +11,6 @@ from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -22,7 +21,7 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    uuid: dataclasses.InitVar[str]
+    id: str  # JSON-LD @id
     content_url: str | None = None
     content_size: str | None = None
     contained_in: list[str] | None = None
@@ -34,13 +33,10 @@ class FileObject(Node):
     sha256: str | None = None
     source: Source | None = None
 
-    def __post_init__(self, uuid: str | None = None):
-        """Checks arguments of the node and sets UUID."""
-        if not uuid:
-            uuid = generate_uuid()
-        self._uuid = uuid
+    def __post_init__(self):
+        """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("encoding_format", "name", "_uuid")
+        self.assert_has_mandatory_properties("encoding_format", "name", "id")
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
             if self.ctx and not self.ctx.is_live_dataset:
@@ -51,13 +47,13 @@ class FileObject(Node):
         contained_in = unbox_singleton_list(self.contained_in)
         if not self.ctx.is_v0():
             if isinstance(contained_in, list):
-                contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]  # type: ignore
+                contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]
             elif isinstance(contained_in, str):
                 contained_in = {"@id": uuid_to_jsonld(contained_in)}
 
         json_output = remove_empty_values({
             "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
-            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
+            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "contentSize": self.content_size,
@@ -106,5 +102,5 @@ class FileObject(Node):
             same_as=box_singleton_list(file_object.get(constants.SCHEMA_ORG_SAME_AS)),
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
-            uuid=uuid_from_jsonld(file_object),
+            id=uuid_from_jsonld(file_object),
         )

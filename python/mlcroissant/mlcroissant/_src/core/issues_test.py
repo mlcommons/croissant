@@ -13,8 +13,8 @@ def test_issues():
     assert not issues.warnings
 
     # With context
-    metadata = Metadata(uuid="abc", name="abc")
-    file_object = FileObject(uuid="xyz", name="xyz")
+    metadata = Metadata(id="abc", name="abc")
+    file_object = FileObject(id="xyz", name="xyz")
     file_object.parents = [metadata]
     issues.add_error("foo", metadata)
     issues.add_warning("bar", file_object)

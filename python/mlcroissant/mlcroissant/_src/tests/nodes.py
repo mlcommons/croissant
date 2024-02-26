@@ -14,8 +14,8 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 class _EmptyNode(Node):
-    def __post_init__(self, uuid: str | None = None):
-        self._uuid = uuid  # type: ignore[assignment]
+    def __post_init__(self):
+        pass
 
     @classmethod
     def from_jsonld(cls):
@@ -29,7 +29,7 @@ def _node_params(**kwargs):
     params = {
         "ctx": Context(folder=epath.Path()),
         "name": "node_name",
-        "uuid": "node_name",
+        "id": "node_name",
     }
     for key, value in kwargs.items():
         params[key] = value
@@ -47,7 +47,7 @@ def create_test_node(cls: type[T], **kwargs) -> T:
     Instead of writing:
     ```python
     node = FileSet(
-        uuid=...,
+        id=...,
         issues=...,
         name=...,
         folder=...,
@@ -64,27 +64,27 @@ def create_test_node(cls: type[T], **kwargs) -> T:
 
 
 create_test_field: Callable[..., Field] = functools.partial(  # type: ignore  # Force mypy types.
-    create_test_node, Field, name="field_name", uuid="field_name"
+    create_test_node, Field, name="field_name", id="field_name"
 )
 create_test_file_object: Callable[..., FileObject] = functools.partial(  # type: ignore  # Force mypy types.
-    create_test_node, FileObject, name="file_object_name", uuid="file_object_name"
+    create_test_node, FileObject, name="file_object_name", id="file_object_name"
 )
 create_test_file_set: Callable[..., FileSet] = functools.partial(  # type: ignore  # Force mypy types.
-    create_test_node, FileSet, name="file_set_name", uuid="file_set_name"
+    create_test_node, FileSet, name="file_set_name", id="file_set_name"
 )
 create_test_record_set: Callable[..., RecordSet] = functools.partial(  # type: ignore  # Force mypy types.
-    create_test_node, RecordSet, name="record_set_name", uuid="record_set_name"
+    create_test_node, RecordSet, name="record_set_name", id="record_set_name"
 )
 
 
-empty_field: Field = create_test_node(Field, name="field_name", uuid="field_name")
+empty_field: Field = create_test_node(Field, name="field_name", id="field_name")
 empty_file_object: FileObject = create_test_node(
-    FileObject, name="file_object_name", uuid="file_object_name"
+    FileObject, name="file_object_name", id="file_object_name"
 )
 empty_file_set: FileSet = create_test_node(
-    FileSet, name="file_set_name", uuid="file_set_name"
+    FileSet, name="file_set_name", id="file_set_name"
 )
 empty_node: Node = create_test_node(_EmptyNode)
 empty_record_set: RecordSet = create_test_node(
-    RecordSet, name="record_set_name", uuid="record_set_name"
+    RecordSet, name="record_set_name", id="record_set_name"
 )

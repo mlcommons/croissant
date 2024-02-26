@@ -14,7 +14,7 @@ def generate_uuid() -> str:
 def uuid_from_jsonld(uuid: Json) -> str:
     """Retrieves uuid from a JSON-LD fragment. If no uuid, it will generate one."""
     if isinstance(uuid, dict):
-        uuid = uuid.get("@id")  # type: ignore[assignment]
+        uuid = uuid.get("@id")
     if isinstance(uuid, str):
         return uuid
     return generate_uuid()

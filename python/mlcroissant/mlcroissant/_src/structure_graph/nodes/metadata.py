@@ -98,7 +98,6 @@ class PersonOrOrganization:
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
-    uuid: dataclasses.InitVar[str]
     cite_as: str | None = None
     creators: list[PersonOrOrganization] | None = None
     date_created: datetime.datetime | None = None
@@ -109,6 +108,7 @@ class Metadata(Node):
     keywords: list[str] | None = None
     license: list[str] | None = None
     name: str = ""
+    id: str = ""  # JSON-LD @id
     publisher: list[PersonOrOrganization] | None = None
     same_as: list[str] | None = None
     url: str | None = ""
@@ -127,12 +127,11 @@ class Metadata(Node):
     # of the datasets.
     personal_sensitive_information: str | None = None
 
-    def __post_init__(self, uuid: str | None = None):
-        """Checks arguments of the node."""
-        del uuid
-        self._uuid = generate_uuid()
-
+    def __post_init__(self):
+        """Checks arguments of the node and setup ID."""
         # Define parents.
+        if not self.id:
+            self.id = generate_uuid()
         for node in self.distribution:
             node.parents = [self]
         for record_set in self.record_sets:
@@ -392,7 +391,7 @@ class Metadata(Node):
             publisher=publisher,
             record_sets=record_sets,
             same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
-            uuid=uuid_from_jsonld(metadata),
+            id=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )

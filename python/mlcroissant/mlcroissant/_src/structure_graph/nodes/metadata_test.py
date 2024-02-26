@@ -134,7 +134,7 @@ def test_issues_in_metadata_are_shared_with_children():
             url="https://mlcommons.org",
             version="1.0.0",
             # We did not specify the RecordSet's name. Hence the exception above:
-            record_sets=[RecordSet(description="description")],
+            record_sets=[RecordSet(id="record-set", description="description")],
         )
 
 

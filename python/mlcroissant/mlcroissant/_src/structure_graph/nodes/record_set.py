@@ -12,7 +12,6 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -23,7 +22,7 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
-    uuid: dataclasses.InitVar[str]
+    id: str  # JSON-LD @id
     # `data` is passed as a string for the moment, because dicts and lists are not
     # hashable.
     data: list[Json] | None = None
@@ -33,13 +32,10 @@ class RecordSet(Node):
     name: str = ""
     fields: list[Field] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self, uuid: str | None = None):
-        """Checks arguments of the node and sets UUID."""
-        if not uuid:
-            uuid = generate_uuid()
-        self._uuid = uuid
+    def __post_init__(self):
+        """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("name", "_uuid")
+        self.assert_has_mandatory_properties("name", "id")
         self.assert_has_optional_properties("description")
 
         if self.data is not None:
@@ -75,7 +71,7 @@ class RecordSet(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         json_output = remove_empty_values({
             "@type": f"{prefix}:RecordSet",
-            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
+            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
@@ -118,7 +114,7 @@ class RecordSet(Node):
             key=key,
             fields=fields,
             name=record_set_name,
-            uuid=uuid_from_jsonld(record_set),
+            id=uuid_from_jsonld(record_set),
         )
 
     def check_joins_in_fields(self):
@@ -170,5 +166,5 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str:
             " found during a Join operation."
         )
     if isinstance(node, Field):
-        return node.parent.uuid  # type: ignore[union-attr]
+        return node.parent.uuid
     return node.uuid

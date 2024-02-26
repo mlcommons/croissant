@@ -11,7 +11,6 @@ from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import generate_uuid
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -21,7 +20,7 @@ from mlcroissant._src.structure_graph.base_node import Node
 class FileSet(Node):
     """Nodes to describe a dataset FileSet (distribution)."""
 
-    uuid: dataclasses.InitVar[str]
+    id: str  # JSON-LD @id
     contained_in: list[str] | None = None
 
     description: str | None = None
@@ -31,13 +30,10 @@ class FileSet(Node):
     name: str = ""
 
     def __post_init__(self, uuid: str | None = None):
-        """Checks arguments of the node and sets UUID."""
-        if not uuid:
-            uuid = generate_uuid()
-        self._uuid = uuid
+        """Checks arguments of the node."""
         self.validate_name()
         self.assert_has_mandatory_properties(
-            "includes", "encoding_format", "name", "_uuid"
+            "includes", "encoding_format", "name", "id"
         )
 
     def to_json(self) -> Json:
@@ -90,5 +86,5 @@ class FileSet(Node):
                 file_set.get(constants.ML_COMMONS_INCLUDES(ctx))
             ),
             name=file_set.get(constants.SCHEMA_ORG_NAME, ""),
-            uuid=uuid_from_jsonld(file_set),
+            id=uuid_from_jsonld(file_set),
         )

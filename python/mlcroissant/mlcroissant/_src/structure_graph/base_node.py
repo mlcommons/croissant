@@ -11,7 +11,6 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import generate_uuid
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -37,17 +36,14 @@ class Node(abc.ABC):
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
     """
 
-    uuid: dataclasses.InitVar[str]
+    id: str  # JSON-LD @id
     ctx: Context = dataclasses.field(default_factory=Context)
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self, uuid: str | None = None):
-        """Checks for common properties between all nodes and sets UUID."""
-        if not uuid:
-            uuid = generate_uuid()
-        self._uuid = uuid
-        self.assert_has_mandatory_properties("name", "uuid")
+    def __post_init__(self):
+        """Checks for common properties between all nodes."""
+        self.assert_has_mandatory_properties("name", "id")
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):
         """Checks a node in the graph for existing properties with constraints.
@@ -133,8 +129,8 @@ class Node(abc.ABC):
         """Prints a simplified string representation of the node: `Node(uuid="xxx")`."""
         return f'{self.__class__.__name__}(uuid="{self.uuid}")'
 
-    @property  # type: ignore
-    def uuid(self) -> str:  # pytype: disable=annotation-type-mismatch
+    @property
+    def uuid(self) -> str:
         """Unique identifier for the node.
 
         For Croissant <=0.8: for fields, the UID is the path from their RecordSet. For other
@@ -146,7 +142,7 @@ class Node(abc.ABC):
                 return self.name
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
-            return self._uuid
+            return self.id
 
     @property
     def parent(self) -> Node | None:
