@@ -134,7 +134,8 @@ def _get_possible_sources(metadata: Metadata) -> list[str]:
                 possible_sources.append(get_original_id(resource.id))
         for record_set in metadata.record_sets:
             for field in record_set.fields:
-                possible_sources.append(get_original_id(field.id))
+                if field.id:
+                    possible_sources.append(get_original_id(field.id))
     return possible_sources
 
 
