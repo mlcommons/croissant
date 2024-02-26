@@ -71,7 +71,6 @@ class RecordSet(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         json_output = remove_empty_values({
             "@type": f"{prefix}:RecordSet",
-            "@id": uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
@@ -79,8 +78,8 @@ class RecordSet(Node):
             "field": [field.to_json() for field in self.fields],
             "data": self.data,
         })
-        if self.ctx.is_v0():
-            json_output.pop("@id")
+        if not self.ctx.is_v0():
+            json_output["@id"] = uuid_to_jsonld(self.uuid)
         return json_output
 
     @classmethod

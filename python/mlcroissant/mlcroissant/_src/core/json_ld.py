@@ -13,6 +13,8 @@ from rdflib import namespace
 from rdflib import plugin
 from rdflib import term
 
+from mlcroissant._src.core.issues import ValidationError
+
 # This is for compatibility with older versions of rdflib/rdflib-jsonld.
 # Indeed, rdflib-jsonld was merged into rdflib from the version 6.0.1.
 if rdflib.__version__ < "6.0.1":
@@ -182,11 +184,12 @@ def expand_jsonld(data: Json) -> Json:
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
     assert nodes, "Found no node in graph"
-    # Find the entry node (schema.org/Dataset). If None found, will use the first node
-    # in the graph.
-    entry_node = next(
-        (record for record in nodes if _is_dataset_node(record)), nodes[0]
-    )
+    # Find the entry node (schema.org/Dataset). If None found, will raise an error.
+    entry_node = next((record for record in nodes if _is_dataset_node(record)), None)
+    if entry_node is None:
+        raise ValidationError(
+            "The current JSON-LD doesn't extend https://schema.org/Dataset."
+        )
     id_to_node: dict[str, Json] = {}
     for node in nodes:
         node_id = node.get("@id")
