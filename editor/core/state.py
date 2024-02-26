@@ -229,9 +229,7 @@ class Metadata:
                 if (
                     source
                     and source.id
-                    and (
-                        source.id.startswith(possible_uuid) or source.id == old_name
-                    )
+                    and (source.id.startswith(possible_uuid) or source.id == old_name)
                 ):
                     new_uuid = source.id.replace(old_name, new_name, 1)
                     self.record_sets[i].fields[j].source.id = new_uuid
