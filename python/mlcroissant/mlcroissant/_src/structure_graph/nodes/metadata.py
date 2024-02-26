@@ -108,7 +108,7 @@ class Metadata(Node):
     keywords: list[str] | None = None
     license: list[str] | None = None
     name: str = ""
-    id: str = "" # JSON-LD @id
+    id: str = ""  # JSON-LD @id
     publisher: list[PersonOrOrganization] | None = None
     same_as: list[str] | None = None
     url: str | None = ""

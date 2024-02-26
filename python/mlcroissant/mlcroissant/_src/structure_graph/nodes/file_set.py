@@ -37,16 +37,17 @@ class FileSet(Node):
 
     def to_json(self) -> Json:
         """Converts the `FileSet` to JSON."""
-        contained_in = unbox_singleton_list(self.contained_in)
+        contained_in = self.contained_in
         if not self.ctx.is_v0():
             if isinstance(contained_in, list):
                 contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]  # type: ignore
             elif isinstance(contained_in, str):
                 contained_in = {"@id": uuid_to_jsonld(contained_in)}
+        contained_in = unbox_singleton_list(contained_in)
 
         json_output = remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
-            "@id": uuid_to_jsonld(self.uuid),  # pytype: disable=wrong-arg-types
+            "@id": None if self.ctx.is_v0() else uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "containedIn": contained_in,
@@ -54,8 +55,6 @@ class FileSet(Node):
             "excludes": unbox_singleton_list(self.excludes),
             "includes": unbox_singleton_list(self.includes),
         })
-        if self.ctx.is_v0():
-            json_output.pop("@id")
         return json_output
 
     @classmethod

@@ -5,6 +5,8 @@ from unittest import mock
 import pytest
 
 from mlcroissant._src.core.constants import BASE_IRI
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 import mlcroissant._src.core.uuid as uuid_lib
 
 
@@ -27,3 +29,16 @@ def test_uuid_from_jsonld_generate_uuid(mock_uuid_lib_generate_uuid):
 )
 def test_uuid_to_jsonld(input, output):
     assert uuid_lib.uuid_to_jsonld(input) == output
+
+
+@pytest.mark.parametrize(
+    ["conforms_to", "uuid", "output"],
+    [
+        [CroissantVersion.V_0_8, "example/uuid", "example/uuid"],
+        [CroissantVersion.V_1_0, "example/uuid", {"@id": "example/uuid"}],
+        [CroissantVersion.V_1_0, "example/cr_base_iri/uuid", {"@id": "uuid"}],
+    ],
+)
+def test_formatted_uuid_to_json(conforms_to, uuid, output):
+    ctx = Context(conforms_to=conforms_to)
+    assert uuid_lib.formatted_uuid_to_json(ctx=ctx, uuid=uuid) == output

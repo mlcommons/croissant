@@ -262,7 +262,7 @@ class Metadata:
                     and source.uuid.endswith(old_name)
                 ):
                     new_uuid = source.uuid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.uuid = new_uid
+                    self.record_sets[i].fields[j].source.uuid = new_uuid
                 # Update references
                 references = field.references
                 if (

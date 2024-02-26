@@ -44,7 +44,7 @@ class FileObject(Node):
 
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
-        contained_in = unbox_singleton_list(self.contained_in)
+        contained_in = self.contained_in
         if not self.ctx.is_v0():
             if isinstance(contained_in, list):
                 contained_in = [
@@ -52,10 +52,11 @@ class FileObject(Node):
                 ]
             elif isinstance(contained_in, str):
                 contained_in = {"@id": uuid_to_jsonld(contained_in)}
+        contained_in = unbox_singleton_list(contained_in)
 
         json_output = remove_empty_values({
             "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
-            "@id": uuid_to_jsonld(self.uuid),
+            "@id": None if self.ctx.is_v0() else uuid_to_jsonld(self.uuid),
             "name": self.name,
             "description": self.description,
             "contentSize": self.content_size,
@@ -67,8 +68,6 @@ class FileObject(Node):
             "sha256": self.sha256,
             "source": self.source.to_json(ctx=self.ctx) if self.source else None,
         })
-        if self.ctx.is_v0():
-            json_output.pop("@id")
         return json_output
 
     @classmethod

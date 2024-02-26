@@ -1,8 +1,10 @@
 """Module to manipulate UUID."""
 
+from typing import Any
 import uuid
 
 from mlcroissant._src.core.constants import BASE_IRI
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.types import Json
 
 
@@ -25,3 +27,13 @@ def uuid_to_jsonld(uuid: str | None) -> str | None:
     if uuid is None:
         return None
     return uuid.split(BASE_IRI)[-1]
+
+
+def formatted_uuid_to_json(
+    ctx: Context, uuid: None | str
+) -> str | None | dict[str, Any]:
+    """Return a formatted node's uuid depending on the Croissant version."""
+    if ctx.is_v0():
+        return uuid
+    else:
+        return {"@id": uuid_to_jsonld(uuid)}

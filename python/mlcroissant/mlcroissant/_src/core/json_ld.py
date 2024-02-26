@@ -27,7 +27,6 @@ from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.rdf import get_context
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 
 _DCTERMS_PREFIX = constants.DCTERMS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
@@ -65,9 +64,7 @@ for conforms_to in CroissantVersion:
 def _is_dataset_node(node: Json) -> bool:
     """Checks if the type of a node is schema.org/Dataset."""
     node_type = node.get("@type")
-    if isinstance(node_type, list) and node_type[0] in constants.SCHEMA_ORG_DATASET:
-        return True
-    return False
+    return isinstance(node_type, list) and node_type[0] in constants.SCHEMA_ORG_DATASET
 
 
 def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
@@ -104,14 +101,6 @@ def _sort_dict(d: Json):
 def remove_empty_values(d: Json) -> Json:
     """Removes empty values in a JSON."""
     return {k: v for k, v in d.items() if v}
-
-
-def formatted_uid_to_json(ctx: Context, uuid):
-    """Return a formatted node's uuid depending on the Croissant version."""
-    if ctx.is_v0():
-        return uuid
-    else:
-        return {"@id": uuid_to_jsonld(uuid)}
 
 
 def unbox_singleton_list(d: Any):
@@ -182,9 +171,8 @@ def expand_jsonld(data: Json) -> Json:
     need to reconstruct the hierarchy.
     """
     context = get_context(data)
-    # TODO: Check here that @base is not already used in the context. If so, use the
-    # user's provided @base.
-    context["@base"] = constants.BASE_IRI
+    if "@base" not in context:
+        context["@base"] = constants.BASE_IRI
     graph = rdflib.Graph()
     graph.parse(
         data=json.dumps(data),

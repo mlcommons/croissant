@@ -4,6 +4,7 @@ from unittest import mock
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.tests.nodes import create_test_node
@@ -29,10 +30,7 @@ def test_checks_are_performed():
 @parametrize_conforms_to()
 def test_from_jsonld(conforms_to):
     ctx = Context(conforms_to=conforms_to)
-    if ctx.is_v0():
-        contained_in = "some.zip"
-    else:
-        contained_in = {"@id": "some.zip"}
+    contained_in = formatted_uuid_to_json(ctx=ctx, uuid="some.zip")
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_SET(ctx),
         "@id": "foo_id",
