@@ -132,10 +132,14 @@ def _get_possible_sources(metadata: Metadata) -> list[str]:
         for resource in metadata.distribution:
             if resource.id:
                 possible_sources.append(get_original_id(resource.id))
+            else:
+                possible_sources.append(resource.name)
         for record_set in metadata.record_sets:
             for field in record_set.fields:
                 if field.id:
                     possible_sources.append(get_original_id(field.id))
+                else:
+                    possible_sources.append(f"{record_set.name}/{field.name}")
     return possible_sources
 
 
