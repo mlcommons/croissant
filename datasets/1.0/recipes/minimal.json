@@ -47,5 +47,6 @@
   "name": "minimal_example",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a very minimal example, with only the required fields.",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://example.com/dataset/minimal/about"
 }

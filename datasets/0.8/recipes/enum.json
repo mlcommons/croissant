@@ -39,6 +39,7 @@
   "@type": "sc:Dataset",
   "name": "enum_example",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://example.com/datasets/enum/about",
   "distribution": [
     {

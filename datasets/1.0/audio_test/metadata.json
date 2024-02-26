@@ -46,8 +46,9 @@
   },
   "@type": "sc:Dataset",
   "name": "audio_test",
-  "description": "This is the basic test case for audio files",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "description": "This is the basic test case for audio files",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "None",
   "distribution": [
     {
@@ -69,10 +70,10 @@
           "description": "These are the sounds.",
           "dataType": "sc:AudioObject",
           "source": {
+            "fileSet": "files",
             "extract": {
               "fileProperty": "content"
-            },
-            "fileSet": "files"
+            }
           }
         }
       ]

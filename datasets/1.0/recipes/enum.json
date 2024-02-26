@@ -47,6 +47,7 @@
   "name": "enum_example",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://example.com/datasets/enum/about",
   "distribution": [
     {

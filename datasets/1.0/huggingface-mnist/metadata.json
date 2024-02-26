@@ -49,6 +49,7 @@
   "description": "The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n",
   "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
   "license": "mit",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://huggingface.co/datasets/mnist",
   "version": "1.0.0",
   "distribution": [

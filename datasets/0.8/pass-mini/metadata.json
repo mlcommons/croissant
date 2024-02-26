@@ -41,6 +41,7 @@
   "description": "Smaller downloadable version of PASS to be used in unit tests.",
   "citation": "None",
   "license": "None",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "None",
   "distribution": [
     {

@@ -66,6 +66,7 @@
   ],
   "license": "other",
   "sameAs": "https://www.bigcode-project.org/docs/about/the-stack/",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://huggingface.co/datasets/bigcode/the-stack",
   "distribution": [
     {

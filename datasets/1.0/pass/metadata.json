@@ -49,6 +49,7 @@
   "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
   "citeAs": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
   "license": "cc-by-4.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "distribution": [
     {

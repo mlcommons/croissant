@@ -47,6 +47,7 @@
   "name": "file_object_in_zip",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Minimal example to read a FileObject contained in a zip.",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {

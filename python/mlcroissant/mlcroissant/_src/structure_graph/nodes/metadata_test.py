@@ -28,7 +28,7 @@ def test_checks_are_performed():
         create_test_node(Metadata, name="field_name")
         mandatory_mock.assert_called_once_with("name")
         optional_mock.assert_called_once_with(
-            "cite_as", "date_published", "license", "version"
+            "cite_as", "date_published", "license", "sd_license", "version"
         )
         validate_name_mock.assert_called_once()
 
@@ -48,6 +48,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         # ...or dates can be datetime.dates.
         constants.SCHEMA_ORG_DATE_PUBLISHED: datetime.date(1990, 2, 3),
         constants.SCHEMA_ORG_LICENSE: "License",
+        constants.SCHEMA_ORG_SD_LICENSE: "SD_License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
         constants.ML_COMMONS_IS_LIVE_DATASET(ctx): False,
@@ -68,6 +69,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     assert metadata.license == ["License"]
     assert metadata.is_live_dataset == False
     assert metadata.personal_sensitive_information == "personal_sensitive_information"
+    assert metadata.sd_license == "SD_License"
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
     assert not ctx.issues.errors

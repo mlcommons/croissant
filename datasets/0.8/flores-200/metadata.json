@@ -45,6 +45,7 @@
     "@inproceedings{twoeval, title={Two New Evaluation Datasets for Low-Resource Machine Translation: Nepali-English and Sinhala-English}, author={Guzm\\'{a}n, Francisco and Chen, Peng-Jen and Ott, Myle and Pino, Juan and Lample, Guillaume and Koehn, Philipp and Chaudhary, Vishrav and Ranzato, Marc'Aurelio}, journal={arXiv preprint arXiv:1902.01382}, year={2019}}"
   ],
   "license": "cc-by-sa-4.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://github.com/facebookresearch/flores",
   "version": "0.0.1",
   "distribution": [

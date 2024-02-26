@@ -49,6 +49,7 @@ def render_jsonld():
                 name=croissant.metadata.name,
                 cite_as=croissant.metadata.cite_as,
                 license=croissant.metadata.license,
+                sd_license=croissant.metadata.sd_license,
                 description=croissant.metadata.description,
                 url=croissant.metadata.url,
                 distribution=distribution,

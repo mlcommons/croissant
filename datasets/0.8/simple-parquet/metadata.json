@@ -40,6 +40,7 @@
   "name": "simple-parquet",
   "description": "Example to read Parquet files.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {
