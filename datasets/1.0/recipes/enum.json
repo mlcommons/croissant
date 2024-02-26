@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -31,7 +29,7 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -48,6 +46,15 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
   "url": "https://example.com/datasets/enum/about",
+  "rai:dataCollection": "This is how data is collected",
+  "rai:dataBiases": [
+    "Bias 1 in data",
+    "Bias 2 in data"
+  ],
+  "rai:dataManipulationProtocol": [
+    "Dedupliction: Near-deduplication was implemented...",
+    "Filtering: Applied filtering algorithms..."
+  ],
   "distribution": [
     {
       "@type": "cr:FileObject",
