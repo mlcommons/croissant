@@ -5,16 +5,17 @@ from rdflib import term
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 
 
-def check_expected_type(issues: Issues, jsonld: Json, expected_type: str):
+def check_expected_type(ctx: Context, jsonld: Json, expected_type: str):
     """Checks that JSON-LD `jsonld` has "@type" == expected_type."""
     node_name = jsonld.get(constants.SCHEMA_ORG_NAME, "<unknown node>")
     node_type = jsonld.get("@type")
     if node_type != expected_type:
-        issues.add_error(
+        ctx.issues.add_error(
             f'"{node_name}" should have an attribute "@type": "{expected_type}". Got'
             f" {node_type} instead."
         )

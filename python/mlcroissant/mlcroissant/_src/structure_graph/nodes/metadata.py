@@ -322,7 +322,7 @@ class Metadata(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, metadata: Json) -> Metadata:
         """Creates a `Metadata` from JSON-LD."""
-        check_expected_type(ctx.issues, metadata, constants.SCHEMA_ORG_DATASET)
+        check_expected_type(ctx, metadata, constants.SCHEMA_ORG_DATASET)
         distribution: list[FileObject | FileSet] = []
         file_set_or_objects = metadata.get(constants.SCHEMA_ORG_DISTRIBUTION, [])
         dataset_name = metadata.get(constants.SCHEMA_ORG_NAME, "")

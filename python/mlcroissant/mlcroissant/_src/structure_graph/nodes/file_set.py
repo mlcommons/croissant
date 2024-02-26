@@ -50,7 +50,7 @@ class FileSet(Node):
         file_set: Json,
     ) -> FileSet:
         """Creates a `FileSet` from JSON-LD."""
-        check_expected_type(ctx.issues, file_set, constants.SCHEMA_ORG_FILE_SET(ctx))
+        check_expected_type(ctx, file_set, constants.SCHEMA_ORG_FILE_SET(ctx))
         return cls(
             ctx=ctx,
             contained_in=box_singleton_list(

@@ -80,9 +80,7 @@ class RecordSet(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, record_set: Json) -> RecordSet:
         """Creates a `RecordSet` from JSON-LD."""
-        check_expected_type(
-            ctx.issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE(ctx)
-        )
+        check_expected_type(ctx, record_set, constants.ML_COMMONS_RECORD_SET_TYPE(ctx))
         record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
         fields = record_set.pop(constants.ML_COMMONS_FIELD(ctx), [])
         if isinstance(fields, dict):

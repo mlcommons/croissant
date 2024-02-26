@@ -3,8 +3,13 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Literal
+
+from rdflib import term
+from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import ML_COMMONS
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import box_singleton_list
@@ -14,6 +19,15 @@ from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
+
+
+@dataclasses.dataclass(kw_only=True)
+class Property:
+    python: str
+    jsonld: term.URIRef
+    cardinality: Literal["ONE", "MANY"]
+    description: str = ""
+    mandatory: bool = False
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -33,57 +47,134 @@ class FileObject(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        # We could do extra validation by going through cls.PROPERTIES.
         self.validate_name()
-        self.assert_has_mandatory_properties("encoding_format", "name")
+        for _property in self.__class__.PROPERTIES(self.ctx):
+            if _property.mandatory:
+                self.assert_has_mandatory_properties(_property.python)
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
             if self.ctx and not self.ctx.is_live_dataset:
                 self.assert_has_exclusive_properties(["md5", "sha256"])
 
+    @classmethod
+    def PROPERTIES(cls, ctx: Context) -> list[Property]:
+        return [
+            Property(
+                description=(
+                    "The name of the file.  As much as possible, the name should"
+                    " reflect the name of the file as downloaded, including the file"
+                    " extension. e.g. “images.zip”."
+                ),
+                python="name",
+                jsonld=SDO.name,
+                cardinality="ONE",
+                mandatory=True,
+            ),
+            Property(python="description", jsonld=SDO.description, cardinality="ONE"),
+            Property(
+                description=(
+                    "File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is"
+                    " not specified."
+                ),
+                python="content_size",
+                jsonld=SDO.contentSize,
+                cardinality="ONE",
+            ),
+            Property(
+                description=(
+                    "Actual bytes of the media object, for example the image file or"
+                    " video file."
+                ),
+                python="content_url",
+                jsonld=SDO.contentUrl,
+                cardinality="ONE",
+            ),
+            Property(
+                description=(
+                    "Another FileObject or FileSet that this one is contained in, e.g.,"
+                    " in the case of a file extracted from an archive. When this"
+                    " property is present, the contentUrl is evaluated as a relative"
+                    " path within the container object"
+                ),
+                python="contained_in",
+                jsonld=SDO.containedIn,
+                cardinality="MANY",
+            ),
+            Property(
+                description="The format of the file, given as a mime type.",
+                python="encoding_format",
+                jsonld=SDO.encodingFormat,
+                cardinality="ONE",
+                mandatory=True,
+            ),
+            Property(
+                python="md5",
+                jsonld=ML_COMMONS(ctx).md5,
+                cardinality="ONE",
+            ),
+            Property(
+                description=(
+                    "URL (or local name) of a FileObject with the same content, but in"
+                    " a different format."
+                ),
+                python="same_as",
+                jsonld=SDO.sameAs,
+                cardinality="MANY",
+            ),
+            Property(
+                description="Checksum for the file contents.",
+                python="sha256",
+                jsonld=SDO.sha256,
+                cardinality="ONE",
+            ),
+            Property(
+                python="source",
+                jsonld=ML_COMMONS(ctx).source,
+                cardinality="ONE",
+            ),
+        ]
+
+    @classmethod
+    def JSONLD_TYPE(cls, ctx: Context):
+        return constants.SCHEMA_ORG_FILE_OBJECT(ctx)
+
+    # This method would move to `Node`, as it's now generic.
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
-        return remove_empty_values({
-            "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
-            "name": self.name,
-            "description": self.description,
-            "contentSize": self.content_size,
-            "contentUrl": self.content_url,
-            "containedIn": unbox_singleton_list(self.contained_in),
-            "encodingFormat": self.encoding_format,
-            "md5": self.md5,
-            "sameAs": unbox_singleton_list(self.same_as),
-            "sha256": self.sha256,
-            "source": self.source.to_json() if self.source else None,
-        })
+        cls = self.__class__
+        jsonld = {
+            "@type": self.ctx.rdf.shorten_value(cls.JSONLD_TYPE(self.ctx)),
+        }
+        for property in cls.PROPERTIES(self.ctx):
+            key = property.jsonld.split("/")[-1]
+            value = getattr(self, property.python)
+            if value and hasattr(value, "to_json"):
+                value = value.to_json()
+            if property.cardinality == "MANY":
+                value = unbox_singleton_list(value)
+            jsonld[key] = value
+        return remove_empty_values(jsonld)
 
+    # This method would move to `Node`, as it's now generic.
     @classmethod
     def from_jsonld(
         cls,
         ctx: Context,
-        file_object: Json,
+        jsonld: Json,
     ) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(
-            ctx.issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT(ctx)
-        )
-        content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
-        name = file_object.get(constants.SCHEMA_ORG_NAME, "")
-        content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
-        description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
-        encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
+        check_expected_type(ctx, jsonld, cls.JSONLD_TYPE(ctx))
+        kwargs = {}
+        for _property in cls.PROPERTIES(ctx):
+            key = _property.python
+            value = jsonld.get(_property.jsonld)
+            if _property.cardinality == "MANY":
+                value = box_singleton_list(value)
+            if value:
+                kwargs[key] = value
         return cls(
             ctx=ctx,
-            content_url=content_url,
-            content_size=content_size,
-            contained_in=box_singleton_list(
-                file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
-            ),
-            description=description,
-            encoding_format=encoding_format,
-            md5=file_object.get(constants.SCHEMA_ORG_MD5(ctx)),
-            name=name,
-            same_as=box_singleton_list(file_object.get(constants.SCHEMA_ORG_SAME_AS)),
-            sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
-            source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
-            uuid=uuid_from_jsonld(file_object),
+            uuid=uuid_from_jsonld(jsonld),
+            **kwargs,
         )

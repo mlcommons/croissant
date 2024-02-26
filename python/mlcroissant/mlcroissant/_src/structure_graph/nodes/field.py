@@ -144,11 +144,7 @@ class Field(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, field: Json) -> Field:
         """Creates a `Field` from JSON-LD."""
-        check_expected_type(
-            ctx.issues,
-            field,
-            constants.ML_COMMONS_FIELD_TYPE(ctx),
-        )
+        check_expected_type(ctx, field, constants.ML_COMMONS_FIELD_TYPE(ctx))
         references_jsonld = field.get(constants.ML_COMMONS_REFERENCES(ctx))
         references = Source.from_jsonld(ctx, references_jsonld)
         source_jsonld = field.get(constants.ML_COMMONS_SOURCE(ctx))
