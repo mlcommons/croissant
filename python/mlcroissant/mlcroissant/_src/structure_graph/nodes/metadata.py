@@ -433,7 +433,7 @@ class Metadata(Node):
                 constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING
             ),
             data_collection_raw=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA
+                constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW
             ),
             data_collection_timeframe_start=date_collection_timeframe_start,
             data_collection_timeframe_end=date_collection_timeframe_end,
@@ -456,7 +456,7 @@ class Metadata(Node):
                 constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS
             ),
             data_annotation_peritem=metadata.get(
-                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PERITEM
+                constants.ML_COMMONS_RAI_DATA_ANNOTATION_PER_ITEM
             ),
             data_annotation_demographics=metadata.get(
                 constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS
@@ -464,8 +464,8 @@ class Metadata(Node):
             data_annotation_tools=metadata.get(
                 constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS
             ),
-            data_biases=metadata.get(constants.ML_COMMONS_RAI_DATA_BIAS),
-            data_usecases=metadata.get(constants.ML_COMMONS_RAI_DATA_USECASES),
+            data_biases=metadata.get(constants.ML_COMMONS_RAI_DATA_BIASES),
+            data_usecases=metadata.get(constants.ML_COMMONS_RAI_DATA_USE_CASES),
             data_limitation=metadata.get(constants.ML_COMMONS_RAI_DATA_LIMITATION),
             data_social_impact=metadata.get(
                 constants.ML_COMMONS_RAI_DATA_SOCIAL_IMPACT
