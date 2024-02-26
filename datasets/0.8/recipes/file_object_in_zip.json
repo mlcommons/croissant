@@ -39,7 +39,7 @@
   "@type": "sc:Dataset",
   "name": "file_object_in_zip",
   "description": "Minimal example to read a FileObject contained in a zip.",
-  "sdLicense": "apache-2.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {

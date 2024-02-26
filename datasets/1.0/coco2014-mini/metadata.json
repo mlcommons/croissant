@@ -50,7 +50,7 @@
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
   "citeAs": "None",
   "license": "cc-by-4.0",
-  "sdLicense": "apache-2.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "None",
   "version": "1.0.0",
   "distribution": [

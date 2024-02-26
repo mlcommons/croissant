@@ -50,7 +50,7 @@
   "citation": "This is a citation.",
   "datePublished": "1990-02-01",
   "license": "This is a license.",
-  "sdLicense": "apache-2.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://www.google.com/dataset",
   "version": "1.0.0",
   "distribution": [

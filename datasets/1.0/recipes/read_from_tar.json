@@ -47,7 +47,7 @@
   "name": "read_from_tar",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Example dataset to read several FileSets from a tar.gz and join them.",
-  "sdLicense": "apache-2.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {

@@ -48,7 +48,7 @@
   "name": "audio_test",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is the basic test case for audio files",
-  "sdLicense": "apache-2.0",
+  "sdLicense": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "None",
   "distribution": [
     {
