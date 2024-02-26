@@ -19,7 +19,7 @@ def test_source_bool():
     empty_source = Source(transforms=[Transform(replace="\\n/<eos>")])
     assert not empty_source
 
-    whole_source = Source(uuid="one/two")
+    whole_source = Source(id="one/two")
     assert whole_source
 
 
@@ -32,7 +32,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
                 {
                     constants.ML_COMMONS_FIELD(ctx): "token-files/content",
                 },
-                Source(uuid="token-files/content", node_type="field"),
+                Source(id="token-files/content", node_type="field"),
             ],
             [
                 {
@@ -43,7 +43,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
                     ],
                 },
                 Source(
-                    uuid="token-files/content",
+                    id="token-files/content",
                     transforms=[
                         Transform(replace="\\n/<eos>"),
                         Transform(separator=" "),
@@ -62,7 +62,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
                     }
                 ],
                 Source(
-                    uuid="token-files/content",
+                    id="token-files/content",
                     transforms=[
                         Transform(replace="\\n/<eos>"),
                         Transform(separator=" "),
@@ -97,7 +97,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
             },
             Source(
                 extract=Extract(column="my-column"),
-                uuid="my-csv",
+                id="my-csv",
                 transforms=[Transform(replace="\\n/<eos>", separator=" ")],
                 node_type="distribution",
             ),
@@ -118,7 +118,7 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
             },
             Source(
                 extract=Extract(column="my-column"),
-                uuid="my-csv",
+                id="my-csv",
                 transforms=[Transform(replace="\\n/<eos>", separator=" ")],
                 node_type="fileObject",
             ),
@@ -241,25 +241,25 @@ def test_declaring_wrong_file_property(conforms_to):
     ["source", "expected_column"],
     [
         [
-            Source(uuid="my-csv", extract=Extract(column="my-csv-column")),
+            Source(id="my-csv", extract=Extract(column="my-csv-column")),
             "my-csv-column",
         ],
         [
             Source(
-                uuid="my-csv",
+                id="my-csv",
                 extract=Extract(file_property=FileProperty.content),
             ),
             FileProperty.content,
         ],
         [
             Source(
-                uuid="my-csv",
+                id="my-csv",
                 extract=Extract(json_path="/some/json/path"),
             ),
             "/some/json/path",
         ],
         [
-            Source(uuid="record_set/field_name"),
+            Source(id="record_set/field_name"),
             "field_name",
         ],
     ],
@@ -278,7 +278,7 @@ def test_is_file_property():
 
 def test_check_source_for_valid_json_path():
     issues = Issues()
-    Source(uuid="uuid", extract=Extract(json_path="*.first.second")).check_source(
+    Source(id="id", extract=Extract(json_path="*.first.second")).check_source(
         issues.add_error
     )
     assert not issues.errors
@@ -286,7 +286,7 @@ def test_check_source_for_valid_json_path():
 
 def test_check_source_for_invalid_json_path():
     issues = Issues()
-    Source(uuid="uuid", extract=Extract(json_path="invalid/json/path")).check_source(
+    Source(id="id", extract=Extract(json_path="invalid/json/path")).check_source(
         issues.add_error
     )
     errors = list(issues.errors)

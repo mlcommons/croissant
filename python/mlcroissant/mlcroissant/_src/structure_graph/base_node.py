@@ -36,8 +36,8 @@ class Node(abc.ABC):
         parents: The parent nodes in the Croissant JSON-LD as a tuple.
     """
 
-    id: str  # JSON-LD @id
     ctx: Context = dataclasses.field(default_factory=Context)
+    id: str = "" # JSON-LD @id
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
 

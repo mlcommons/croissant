@@ -193,7 +193,7 @@ class Source:
 
     extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: list[Transform] = dataclasses.field(default_factory=list)
-    uuid: str | None = None
+    id: str | None = None
     node_type: NodeType = None
 
     def to_json(self, ctx: Context) -> Json:
@@ -202,7 +202,7 @@ class Source:
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values({
-            self.node_type: formatted_uid_to_json(ctx, self.uuid),
+            self.node_type: formatted_uid_to_json(ctx, self.id),
             "extract": self.extract.to_json(),
             "transform": transforms[0] if len(transforms) == 1 else transforms,
         })
@@ -289,7 +289,7 @@ class Source:
                     json_path=json_path,
                 )
                 return Source(
-                    uuid=uuid,
+                    id=uuid,
                     extract=extract,
                     transforms=transforms,
                     node_type=node_type,
@@ -309,13 +309,18 @@ class Source:
 
     def __hash__(self):
         """Hashes all immutable arguments."""
-        return hash((self.extract, tuple(self.transforms), self.uuid, self.node_type))
+        return hash((self.extract, tuple(self.transforms), self.id, self.node_type))
 
     def __eq__(self, other: Any) -> bool:
         """Overwrites the equality between two sources."""
         if not isinstance(other, Source):
             return False
         return hash(self) == hash(other)
+
+    @property
+    def uuid(self) -> str:
+        """Unique identifier for the source."""
+        return self.id
 
     def get_column(self) -> str | FileProperty:
         """Retrieves the name of the column associated to the source."""

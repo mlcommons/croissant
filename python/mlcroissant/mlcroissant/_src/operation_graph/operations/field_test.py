@@ -103,7 +103,7 @@ def test_extract_lines(separator):
         distribution = [
             FileObject(
                 name="file",
-                uuid="file_uuid",
+                id="file_id",
                 content_url=path,
                 sha256="None",
                 encoding_format="text/plain",
@@ -113,20 +113,20 @@ def test_extract_lines(separator):
         fields.append(
             Field(
                 name="line",
-                uuid="main/line",
+                id="main/line",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    uuid="file_uuid", extract=Extract(file_property=FileProperty.lines)
+                    id="file_id", extract=Extract(file_property=FileProperty.lines)
                 ),
             )
         )
         fields.append(
             Field(
                 name="line_number",
-                uuid="main/line_number",
+                id="main/line_number",
                 data_types=[DataType.INTEGER],
                 source=Source(
-                    uuid="file_uuid",
+                    id="file_id",
                     extract=Extract(file_property=FileProperty.lineNumbers),
                 ),
             )
@@ -134,10 +134,10 @@ def test_extract_lines(separator):
         fields.append(
             Field(
                 name="filename",
-                uuid="main/filename",
+                id="main/filename",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    uuid="file_uuid",
+                    id="file_id",
                     extract=Extract(file_property=FileProperty.filepath),
                     transforms=[Transform(regex=".*\\/(\\w*)\\.txt")],
                 ),
@@ -145,7 +145,7 @@ def test_extract_lines(separator):
         )
         with mock.patch.object(RecordSet, "check_joins_in_fields") as mock_check_joins:
             mock_check_joins.return_value = True
-            record_set = RecordSet(name="main", uuid="main", fields=fields)
+            record_set = RecordSet(name="main", id="main", fields=fields)
             record_sets = [record_set]
             ctx = Context(conforms_to=CroissantVersion.V_1_0)
             Metadata(
@@ -205,5 +205,5 @@ def test_extract_lines(separator):
     ],
 )
 def test_apply_transforms_fn(value, source, data_type, expected_value):
-    f = Field(uuid="test", name="test", data_types=data_type, source=source)
+    f = Field(id="test", name="test", data_types=data_type, source=source)
     assert field.apply_transforms_fn(value, f) == expected_value
