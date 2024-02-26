@@ -13,7 +13,7 @@ def generate_uuid() -> str:
     return str(uuid.uuid4())
 
 
-def uuid_from_jsonld(uuid: Json) -> str:
+def uuid_from_jsonld(uuid: Json | None) -> str:
     """Retrieves uuid from a JSON-LD fragment. If no uuid, it will generate one."""
     if isinstance(uuid, dict):
         uuid = uuid.get("@id")

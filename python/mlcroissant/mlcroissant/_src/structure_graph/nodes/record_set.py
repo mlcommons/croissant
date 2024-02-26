@@ -166,5 +166,6 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str:
             " found during a Join operation."
         )
     if isinstance(node, Field):
-        return node.parent.uuid
+        if node.parent:
+            return node.parent.uuid
     return node.uuid
