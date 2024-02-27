@@ -262,3 +262,38 @@ jobs:
 
     - name: PyTest
       run: make pytest
+
+  editor-e2e-test:
+    name: Editor End-to-End Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./editor
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install library
+      run: pip install -r requirements.txt
+
+    - name: Install mlcroissant
+      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
+      working-directory: ./python/mlcroissant
+
+    - uses: cypress-io/github-action@v6
+      with:
+        start: streamlit run app.py
+        wait-on: 'http://localhost:8501'
+        working-directory: ./editor
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+          name: cypress-screenshots
+          path: ./editor/cypress/screenshots
+          retention-days: 1

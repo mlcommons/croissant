@@ -14,6 +14,7 @@ def render_jsonld():
         for file in croissant.distribution:
             distribution.append(
                 mlc.FileObject(
+                    id=file.id,
                     name=file.name,
                     description=file.description,
                     content_url=file.content_url,
@@ -27,6 +28,7 @@ def render_jsonld():
             for _, field in record_set.get("fields", pd.DataFrame()).iterrows():
                 fields.append(
                     mlc.Field(
+                        id=field["id"],
                         name=field["name"],
                         description=field["description"],
                         data_types=field["data_type"],
@@ -39,6 +41,7 @@ def render_jsonld():
                 )
             record_sets.append(
                 mlc.RecordSet(
+                    id=record_set["id"],
                     name=record_set["name"],
                     description=record_set["description"],
                     fields=fields,
@@ -46,6 +49,7 @@ def render_jsonld():
             )
         if croissant.metadata:
             metadata = mlc.Metadata(
+                id=croissant.metadata.id,
                 name=croissant.metadata.name,
                 cite_as=croissant.metadata.cite_as,
                 license=croissant.metadata.license,

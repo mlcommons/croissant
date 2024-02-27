@@ -42,8 +42,7 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
         new_id = value
         if old_id != new_id:
             metadata: Metadata = st.session_state[Metadata]
-            metadata.rename_distribution(old_name=old_id, new_name=new_id)
-        resource.id = value
+            metadata.rename_id(old_id=old_id, new_id=new_id)
     elif event == ResourceEvent.DESCRIPTION:
         resource.description = value
     elif event == ResourceEvent.ENCODING_FORMAT:

@@ -32,7 +32,8 @@ VERSIONS.forEach((version) => {
       cy.contains("annotations (4 fields)");
       cy.contains("split_enums (2 fields)").click();
       cy.contains("Generating the dataset...").should("not.exist");
-      cy.get('input[aria-label="Name:red[*]"][value="split_enums"]')
+      const input = version == "0.8" ? "Name" : "ID"
+      cy.get(`input[aria-label="${input}:red[*]"][value="split_enums"]`)
         .should("be.visible")
         .type("{selectall}{backspace}{enter}");
       cy.wait(2000);
