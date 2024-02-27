@@ -13,7 +13,6 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -46,12 +45,12 @@ class FileObject(Node):
         """Converts the `FileObject` to JSON."""
         contained_in: Any = self.contained_in
         if not self.ctx.is_v0() and contained_in:
-            contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]
+            contained_in = [{"@id": uuid} for uuid in contained_in]
         contained_in = unbox_singleton_list(contained_in)
 
-        json_output = remove_empty_values({
+        return remove_empty_values({
             "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
-            "@id": None if self.ctx.is_v0() else uuid_to_jsonld(self.uuid),
+            "@id": None if self.ctx.is_v0() else self.uuid,
             "name": self.name,
             "description": self.description,
             "contentSize": self.content_size,
@@ -63,7 +62,6 @@ class FileObject(Node):
             "sha256": self.sha256,
             "source": self.source.to_json(ctx=self.ctx) if self.source else None,
         })
-        return json_output
 
     @classmethod
     def from_jsonld(

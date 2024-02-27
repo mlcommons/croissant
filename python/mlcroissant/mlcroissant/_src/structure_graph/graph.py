@@ -25,7 +25,6 @@ import networkx as nx
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
@@ -89,16 +88,14 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
         if isinstance(node, RecordSet) and not node.data:
             for field in node.fields:
                 if not field.source:
-                    uuid = uuid_to_jsonld(field.uuid)
                     field.add_error(
-                        f'Node "{uuid}" is a field and has no source. Please, use'
+                        f'Node "{field.uuid}" is a field and has no source. Please, use'
                         f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
                     )
                 else:
-                    uuid = uuid_to_jsonld(field.source.uuid)
                     field.add_error(
-                        f"Malformed source data: {uuid}. It does not refer to any"
-                        " existing node. Have you used"
+                        f"Malformed source data: {field.source.uuid}. It does not refer"
+                        " to any existing node. Have you used"
                         f" {constants.ML_COMMONS_FIELD(ctx)} or"
                         f" {constants.SCHEMA_ORG_DISTRIBUTION} to indicate the source"
                         " field or the source distribution? If you specified a field,"
@@ -138,10 +135,8 @@ def _add_edge(
 ):
     """Adds an edge in the structure graph."""
     if uuid not in uuid_to_node:
-        uuid = str(uuid_to_jsonld(uuid))
-        node_uuid = str(uuid_to_jsonld(node.uuid))
         node.add_error(
-            f'There is a reference to node with UUID "{uuid}" in node "{node_uuid}",'
+            f'There is a reference to node with UUID "{uuid}" in node "{node.uuid}",'
             " but this node doesn't exist."
         )
         return

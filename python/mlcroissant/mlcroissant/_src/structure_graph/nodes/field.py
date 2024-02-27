@@ -14,7 +14,6 @@ from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -131,8 +130,9 @@ class Field(Node):
             self.parent_field.to_json(ctx=self.ctx) if self.parent_field else None
         )
         prefix = "ml" if self.ctx.is_v0() else "cr"
-        json_output = remove_empty_values({
+        return remove_empty_values({
             "@type": f"{prefix}:Field",
+            "@id": None if self.ctx.is_v0() else self.uuid,
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,
@@ -145,11 +145,6 @@ class Field(Node):
             "source": self.source.to_json(ctx=self.ctx) if self.source else None,
             "subField": [sub_field.to_json() for sub_field in self.sub_fields],
         })
-        if not self.ctx.is_v0():
-            json_output["@id"] = uuid_to_jsonld(
-                self.uuid
-            )  # pytype: disable=wrong-arg-types
-        return json_output
 
     @classmethod
     def from_jsonld(cls, ctx: Context, field: Json) -> Field:

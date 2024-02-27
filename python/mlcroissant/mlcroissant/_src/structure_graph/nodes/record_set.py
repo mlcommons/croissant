@@ -12,7 +12,6 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 
@@ -67,8 +66,9 @@ class RecordSet(Node):
     def to_json(self) -> Json:
         """Converts the `RecordSet` to JSON."""
         prefix = "ml" if self.ctx.is_v0() else "cr"
-        json_output = remove_empty_values({
+        return remove_empty_values({
             "@type": f"{prefix}:RecordSet",
+            "@id": None if self.ctx.is_v0() else self.uuid,
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
@@ -76,9 +76,6 @@ class RecordSet(Node):
             "field": [field.to_json() for field in self.fields],
             "data": self.data,
         })
-        if not self.ctx.is_v0():
-            json_output["@id"] = uuid_to_jsonld(self.uuid)
-        return json_output
 
     @classmethod
     def from_jsonld(cls, ctx: Context, record_set: Json) -> RecordSet:
@@ -141,9 +138,7 @@ class RecordSet(Node):
         for combination in itertools.combinations(sources, 2):
             if combination not in joins:
                 # Sort for reproducibility.
-                ordered_combination = tuple(
-                    sorted([uuid_to_jsonld(source) for source in combination])
-                )
+                ordered_combination = tuple(sorted(combination))
                 self.add_error(
                     f"You try to use the sources with names {ordered_combination} as"
                     " sources, but you didn't declare a join between them. Use"
@@ -154,12 +149,11 @@ class RecordSet(Node):
 
 def get_parent_uuid(ctx: Context, uuid: str) -> str:
     """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
-    # TODO: rename this function and have better error message.
     node = ctx.node_by_uuid(uuid)
     if node is None:
         ctx.issues.add_error(
-            f"Node with uuid={uuid_to_jsonld(uuid)} does not exist. This error might"
-            " have been found during a Join operation."
+            f"Node with uuid={uuid} does not exist. This error might have been found"
+            " during a Join operation."
         )
     if isinstance(node, Field):
         if node.parent:

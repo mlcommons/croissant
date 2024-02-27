@@ -13,7 +13,6 @@ from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-from mlcroissant._src.core.uuid import uuid_to_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 
 
@@ -39,12 +38,12 @@ class FileSet(Node):
         """Converts the `FileSet` to JSON."""
         contained_in: Any = self.contained_in
         if not self.ctx.is_v0() and contained_in:
-            contained_in = [{"@id": uuid_to_jsonld(uuid)} for uuid in contained_in]
+            contained_in = [{"@id": uuid} for uuid in contained_in]
         contained_in = unbox_singleton_list(contained_in)
 
-        json_output = remove_empty_values({
+        return remove_empty_values({
             "@type": "sc:FileSet" if self.ctx.is_v0() else "cr:FileSet",
-            "@id": None if self.ctx.is_v0() else uuid_to_jsonld(self.uuid),
+            "@id": None if self.ctx.is_v0() else self.uuid,
             "name": self.name,
             "description": self.description,
             "containedIn": contained_in,
@@ -52,7 +51,6 @@ class FileSet(Node):
             "excludes": unbox_singleton_list(self.excludes),
             "includes": unbox_singleton_list(self.includes),
         })
-        return json_output
 
     @classmethod
     def from_jsonld(
