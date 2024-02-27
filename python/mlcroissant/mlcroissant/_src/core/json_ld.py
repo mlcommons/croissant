@@ -13,6 +13,8 @@ from rdflib import namespace
 from rdflib import plugin
 from rdflib import term
 
+from mlcroissant._src.core.issues import ValidationError
+
 # This is for compatibility with older versions of rdflib/rdflib-jsonld.
 # Indeed, rdflib-jsonld was merged into rdflib from the version 6.0.1.
 if rdflib.__version__ < "6.0.1":
@@ -63,7 +65,10 @@ for conforms_to in CroissantVersion:
 
 def _is_dataset_node(node: Json) -> bool:
     """Checks if the type of a node is schema.org/Dataset."""
-    return node.get("@type") == [constants.SCHEMA_ORG_DATASET]
+    node_types = node.get("@type")
+    return isinstance(node_types, list) and any(
+        node_type == str(constants.SCHEMA_ORG_DATASET) for node_type in node_types
+    )
 
 
 def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
@@ -146,7 +151,7 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
         else:
             return entry_node
     for key, value in entry_node.copy().items():
-        if key == "@type":
+        if key == "@type" and isinstance(value, list):
             entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
             del entry_node[key]
@@ -162,7 +167,7 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     return entry_node
 
 
-def expand_jsonld(data: Json) -> Json:
+def expand_jsonld(data: Json, ctx: Context) -> Json:
     """Expands a Croissant JSON to a nested JSON-LD with expanded.
 
     For this we use RDFLib. RDFLib expands the CURIE of the form "rdf:type" into their
@@ -170,6 +175,8 @@ def expand_jsonld(data: Json) -> Json:
     need to reconstruct the hierarchy.
     """
     context = get_context(data)
+    if "@base" not in context:
+        context["@base"] = constants.BASE_IRI
     graph = rdflib.Graph()
     graph.parse(
         data=json.dumps(data),
@@ -179,10 +186,13 @@ def expand_jsonld(data: Json) -> Json:
     nodes = graph.serialize(format="json-ld")
     nodes = json.loads(nodes)
     assert nodes, "Found no node in graph"
-    # Find the entry node (schema.org/Dataset).
-    entry_node = next(
-        (record for record in nodes if _is_dataset_node(record)), nodes[0]
-    )
+    # Find the entry node (schema.org/Dataset). If None found, will raise an error.
+    entry_node = next((record for record in nodes if _is_dataset_node(record)), None)
+    if entry_node is None:
+        ctx.issues.add_error(
+            "The current JSON-LD doesn't extend https://schema.org/Dataset."
+        )
+        raise ValidationError(ctx.issues.report())
     id_to_node: dict[str, Json] = {}
     for node in nodes:
         node_id = node.get("@id")

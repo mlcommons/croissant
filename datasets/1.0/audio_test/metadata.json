@@ -41,17 +41,17 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform",
-    "wd": "https://www.wikidata.org/wiki/"
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "audio_test",
-  "description": "This is the basic test case for audio files",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "description": "This is the basic test case for audio files",
   "url": "None",
   "distribution": [
     {
       "@type": "cr:FileSet",
+      "@id": "files",
       "name": "files",
       "encodingFormat": "audio/mpeg",
       "includes": "data/*.mp3"
@@ -60,19 +60,23 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "records",
       "name": "records",
       "description": "These are the records.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "records/audio",
           "name": "audio",
           "description": "These are the sounds.",
           "dataType": "sc:AudioObject",
           "source": {
+            "fileSet": {
+              "@id": "files"
+            },
             "extract": {
               "fileProperty": "content"
-            },
-            "fileSet": "files"
+            }
           }
         }
       ]

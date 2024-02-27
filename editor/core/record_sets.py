@@ -18,7 +18,7 @@ def infer_record_sets(file: FileObject | FileSet, names: set[str]) -> list[Recor
     fields = []
     for column, value in file.df.dtypes.items():
         source = mlc.Source(
-            uid=file.name,
+            id=file.id,
             node_type="distribution",
             extract=mlc.Extract(column=column),
         )

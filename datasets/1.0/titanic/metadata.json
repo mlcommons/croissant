@@ -55,6 +55,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "passengers.csv",
       "name": "passengers.csv",
       "contentSize": "117743 B",
       "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
@@ -63,6 +64,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "genders.csv",
       "name": "genders.csv",
       "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
       "contentSize": "117743 B",
@@ -72,6 +74,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "embarkation_ports.csv",
       "name": "embarkation_ports.csv",
       "description": "Maps Embarkation port initial to labeled values.",
       "contentSize": "117743 B",
@@ -83,6 +86,7 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "genders",
       "name": "genders",
       "description": "Maps gender labels to semantic definitions.",
       "isEnumeration": true,
@@ -90,6 +94,7 @@
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "genders/label",
           "name": "label",
           "description": "One of {\"male\", \"female\"}",
           "dataType": [
@@ -97,7 +102,9 @@
             "sc:name"
           ],
           "source": {
-            "fileObject": "genders.csv",
+            "fileObject": {
+              "@id": "genders.csv"
+            },
             "extract": {
               "column": "label"
             }
@@ -105,6 +112,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "genders/url",
           "name": "url",
           "description": "Corresponding WikiData URL",
           "dataType": [
@@ -112,7 +120,9 @@
             "wd:Q48277"
           ],
           "source": {
-            "fileObject": "genders.csv",
+            "fileObject": {
+              "@id": "genders.csv"
+            },
             "extract": {
               "column": "url"
             }
@@ -122,6 +132,7 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "embarkation_ports",
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "isEnumeration": true,
@@ -129,11 +140,14 @@
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "embarkation_ports/key",
           "name": "key",
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "embarkation_ports.csv",
+            "fileObject": {
+              "@id": "embarkation_ports.csv"
+            },
             "extract": {
               "column": "key"
             }
@@ -141,6 +155,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "embarkation_ports/label",
           "name": "label",
           "description": "Human-readable label",
           "dataType": [
@@ -148,7 +163,9 @@
             "sc:name"
           ],
           "source": {
-            "fileObject": "embarkation_ports.csv",
+            "fileObject": {
+              "@id": "embarkation_ports.csv"
+            },
             "extract": {
               "column": "label"
             }
@@ -156,6 +173,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "embarkation_ports/url",
           "name": "url",
           "description": "Corresponding WikiData URL",
           "dataType": [
@@ -163,7 +181,9 @@
             "wd:Q515"
           ],
           "source": {
-            "fileObject": "embarkation_ports.csv",
+            "fileObject": {
+              "@id": "embarkation_ports.csv"
+            },
             "extract": {
               "column": "url"
             }
@@ -173,16 +193,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "passengers",
       "name": "passengers",
       "description": "The list of passengers. Does not include crew members.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "passengers/name",
           "name": "name",
           "description": "Name of the passenger",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "name"
             }
@@ -190,14 +214,19 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/gender",
           "name": "gender",
           "description": "Gender of passenger (male or female)",
           "dataType": "sc:Text",
           "references": {
-            "field": "genders/label"
+            "field": {
+              "@id": "genders/label"
+            }
           },
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "sex"
             }
@@ -205,11 +234,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/age",
           "name": "age",
           "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "age"
             }
@@ -217,11 +249,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/survived",
           "name": "survived",
           "description": "Survival status of passenger (0: Lost, 1: Saved)",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "survived"
             }
@@ -229,11 +264,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/pclass",
           "name": "pclass",
           "description": "Passenger Class (1st/2nd/3rd)",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "pclass"
             }
@@ -241,11 +279,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/cabin",
           "name": "cabin",
           "description": "Passenger cabin.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "cabin"
             }
@@ -253,14 +294,19 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/embarked",
           "name": "embarked",
           "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
           "dataType": "sc:Text",
           "references": {
-            "field": "embarkation_ports/key"
+            "field": {
+              "@id": "embarkation_ports/key"
+            }
           },
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "embarked"
             }
@@ -268,11 +314,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/fare",
           "name": "fare",
           "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "fare"
             }
@@ -280,11 +329,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/home_destination",
           "name": "home_destination",
           "description": "Home and destination",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "home.dest"
             }
@@ -292,11 +344,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/ticket",
           "name": "ticket",
           "description": "Ticket Number, may include a letter.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "ticket"
             }
@@ -304,11 +359,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/num_parents_children",
           "name": "num_parents_children",
           "description": "Number of Parents/Children Aboard",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "parch"
             }
@@ -316,11 +374,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/num_siblings_spouses",
           "name": "num_siblings_spouses",
           "description": "Number of Siblings/Spouses Aboard",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "sibsp"
             }
@@ -328,11 +389,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/boat",
           "name": "boat",
           "description": "Lifeboat used by passenger",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "boat"
             }
@@ -340,11 +404,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "passengers/body",
           "name": "body",
           "description": "Body Identification Number",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "body"
             }

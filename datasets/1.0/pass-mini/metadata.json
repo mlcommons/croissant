@@ -53,6 +53,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "metadata",
       "name": "metadata",
       "contentUrl": "data/pass_metadata.csv",
       "encodingFormat": "text/csv",
@@ -60,6 +61,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass0",
       "name": "pass0",
       "contentUrl": "data/PASS.0.tar",
       "encodingFormat": "application/x-tar",
@@ -67,6 +69,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass1",
       "name": "pass1",
       "contentUrl": "data/PASS.1.tar",
       "encodingFormat": "application/x-tar",
@@ -74,10 +77,15 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "image-files",
       "name": "image-files",
       "containedIn": [
-        "pass0",
-        "pass1"
+        {
+          "@id": "pass0"
+        },
+        {
+          "@id": "pass1"
+        }
       ],
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
@@ -86,22 +94,28 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "key": "hash",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images/hash",
           "name": "hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
-            "fileObject": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "hash"
             }
           },
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -112,11 +126,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/image_content",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "content"
             }
@@ -124,11 +141,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/creator_uname",
           "name": "creator_uname",
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "unickname"
             }
@@ -136,16 +156,20 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/gps_coordinates",
           "name": "gps_coordinates",
           "description": "GPS coordinates where the image was taken.",
           "dataType": "sc:GeoCoordinates",
           "subField": [
             {
               "@type": "cr:Field",
+              "@id": "images/latitude",
               "name": "latitude",
               "dataType": "sc:Float",
               "source": {
-                "fileObject": "metadata",
+                "fileObject": {
+                  "@id": "metadata"
+                },
                 "extract": {
                   "column": "latitude"
                 }
@@ -153,10 +177,13 @@
             },
             {
               "@type": "cr:Field",
+              "@id": "images/longitude",
               "name": "longitude",
               "dataType": "sc:Float",
               "source": {
-                "fileObject": "metadata",
+                "fileObject": {
+                  "@id": "metadata"
+                },
                 "extract": {
                   "column": "longitude"
                 }
@@ -166,11 +193,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/date_taken",
           "name": "date_taken",
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
-            "fileObject": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "datetaken"
             },

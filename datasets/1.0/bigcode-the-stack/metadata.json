@@ -70,6 +70,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "repo",
       "name": "repo",
       "description": "The Hugging Face git repository.",
       "contentUrl": "https://huggingface.co/datasets/bigcode/the-stack",
@@ -78,8 +79,11 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "parquet-files",
       "name": "parquet-files",
-      "containedIn": "repo",
+      "containedIn": {
+        "@id": "repo"
+      },
       "encodingFormat": "application/x-parquet",
       "includes": "*/*.parquet"
     }
@@ -87,15 +91,19 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "default",
       "name": "default",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "default/content",
           "name": "content",
           "description": "The content of the file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "content"
             }
@@ -103,11 +111,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/language",
           "name": "language",
           "description": "Programming language of the file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "lang"
             }
@@ -115,11 +126,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/hexsha",
           "name": "hexsha",
           "description": "Unique git hash of file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "hexsha"
             }
@@ -127,11 +141,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/size",
           "name": "size",
           "description": "Size of the uncompressed file..",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "size"
             }
@@ -139,11 +156,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/ext",
           "name": "ext",
           "description": "File extension.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "ext"
             }
@@ -151,11 +171,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/lang",
           "name": "lang",
           "description": "Hash of the file.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "lang"
             }
@@ -163,11 +186,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_stars_repo_path",
           "name": "max_stars_repo_path",
           "description": "Path to file in repo containing this file with maximum number of stars.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_stars_repo_path"
             }
@@ -175,11 +201,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_stars_repo_name",
           "name": "max_stars_repo_name",
           "description": "Name of repo containing this file with maximum number of stars.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_stars_repo_name"
             }
@@ -187,11 +216,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_stars_repo_head_hexsha",
           "name": "max_stars_repo_head_hexsha",
           "description": "Hexsha of repository head with the maximum of stars.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_stars_repo_head_hexsha"
             }
@@ -199,11 +231,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_stars_count",
           "name": "max_stars_count",
           "description": "Number of stars in repository.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_stars_count"
             }
@@ -211,11 +246,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_stars_repo_stars_event_min_datetime",
           "name": "max_stars_repo_stars_event_min_datetime",
           "description": "First timestamp of a stars event.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_stars_repo_stars_event_min_datetime"
             }
@@ -223,11 +261,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_stars_repo_stars_event_max_datetime",
           "name": "max_stars_repo_stars_event_max_datetime",
           "description": "Last timestamp of a stars event.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_stars_repo_stars_event_max_datetime"
             }
@@ -235,11 +276,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_issues_repo_path",
           "name": "max_issues_repo_path",
           "description": "Path to file in repo containing this file with maximum number of issues.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_issues_repo_path"
             }
@@ -247,11 +291,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_issues_repo_head_hexsha",
           "name": "max_issues_repo_head_hexsha",
           "description": "Hexsha of repository head with the maximum of issues.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_issues_repo_head_hexsha"
             }
@@ -259,11 +306,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_issues_count",
           "name": "max_issues_count",
           "description": "Number of issues in repository.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_issues_count"
             }
@@ -271,11 +321,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_issues_repo_issues_event_min_datetime",
           "name": "max_issues_repo_issues_event_min_datetime",
           "description": "First timestamp of an issues event.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_issues_repo_issues_event_min_datetime"
             }
@@ -283,11 +336,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_issues_repo_issues_event_max_datetime",
           "name": "max_issues_repo_issues_event_max_datetime",
           "description": "Last timestamp of an issues event.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_issues_repo_issues_event_max_datetime"
             }
@@ -295,11 +351,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_forks_repo_path",
           "name": "max_forks_repo_path",
           "description": "Path to file in repo containing this file with maximum number of forks.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_forks_repo_path"
             }
@@ -307,11 +366,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_forks_repo_name",
           "name": "max_forks_repo_name",
           "description": "Name of repo containing this file with maximum number of forks.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_forks_repo_name"
             }
@@ -319,11 +381,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_forks_repo_head_hexsha",
           "name": "max_forks_repo_head_hexsha",
           "description": "Hexsha of repository head with the maximum of forks.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_forks_repo_head_hexsha"
             }
@@ -331,11 +396,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_forks_count",
           "name": "max_forks_count",
           "description": "Number of forks in repository.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_forks_count"
             }
@@ -343,11 +411,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_forks_repo_forks_event_min_datetime",
           "name": "max_forks_repo_forks_event_min_datetime",
           "description": "First timestamp of a forks event.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_forks_repo_forks_event_min_datetime"
             }
@@ -355,11 +426,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_forks_repo_forks_event_max_datetime",
           "name": "max_forks_repo_forks_event_max_datetime",
           "description": "Last timestamp of a forks event.",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_forks_repo_forks_event_max_datetime"
             }
@@ -367,11 +441,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/avg_line_length",
           "name": "avg_line_length",
           "description": "The average line-length of the file.",
           "dataType": "sc:Float",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "avg_line_length"
             }
@@ -379,11 +456,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/max_line_length",
           "name": "max_line_length",
           "description": "The maximum line-length of the file.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "max_line_length"
             }
@@ -391,11 +471,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/alphanum_fraction",
           "name": "alphanum_fraction",
           "description": "The fraction of characters in the file that are alphabetical or numerical characters.",
           "dataType": "sc:Float",
           "source": {
-            "fileSet": "parquet-files",
+            "fileSet": {
+              "@id": "parquet-files"
+            },
             "extract": {
               "column": "alphanum_fraction"
             }

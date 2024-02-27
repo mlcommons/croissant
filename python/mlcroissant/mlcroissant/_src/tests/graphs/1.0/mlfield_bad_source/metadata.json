@@ -66,10 +66,12 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "a-record-set",
       "name": "a-record-set",
       "description": "This is a record set.",
       "field": [
         {
+          "@id": "a-record-set/first-field",
           "@type": "cr:Field",
           "name": "first-field",
           "dataType": "sc:Integer",
@@ -77,7 +79,9 @@
             "extract": {
               "column": "a-column"
             },
-            "fileObject": "THISDOESNOTEXIST"
+            "fileObject": {
+              "@id": "THISDOESNOTEXIST"
+            }
           }
         }
       ]

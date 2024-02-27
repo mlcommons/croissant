@@ -123,7 +123,7 @@ def render_source(
     prefix = f"source-{record_set.name}-{field.name}"
     col1, col2, col3 = st.columns([1, 1, 1])
     index = (
-        possible_sources.index(source.uid) if source.uid in possible_sources else None
+        possible_sources.index(source.uuid) if source.uuid in possible_sources else None
     )
     options = [s for s in possible_sources if not s.startswith(record_set.name)]
     if index and (index < 0 or index >= len(options)):
@@ -294,8 +294,8 @@ def render_references(
     if references or has_clicked_button:
         col1, col2, col3, col4 = st.columns([4.5, 4, 4, 1])
         index = (
-            possible_sources.index(references.uid)
-            if references.uid in possible_sources
+            possible_sources.index(references.uuid)
+            if references.uuid in possible_sources
             else None
         )
         options = [s for s in possible_sources if not s.startswith(record_set.name)]

@@ -157,7 +157,7 @@ class Read(Operation):
             ):
                 # Read from the local path
                 assert file.filepath.exists(), (
-                    f'In node "{self.node.uid}", file "{self.node.content_url}" is'
+                    f'In node "{self.node.uuid}", file "{self.node.content_url}" is'
                     " either an invalid URL or an invalid path."
                 )
             assert self.node.encoding_format, "Encoding format is not specified."

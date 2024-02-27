@@ -37,11 +37,11 @@ class ParentField:
             source=Source.from_jsonld(ctx, source),
         )
 
-    def to_json(self) -> Json:
+    def to_json(self, ctx: Context) -> Json:
         """Converts the `ParentField` to JSON."""
         return remove_empty_values({
-            "references": self.references.to_json() if self.references else None,
-            "source": self.source.to_json() if self.source else None,
+            "references": self.references.to_json(ctx=ctx) if self.references else None,
+            "source": self.source.to_json(ctx=ctx) if self.source else None,
         })
 
 
@@ -65,7 +65,7 @@ class Field(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("name")
+        self.assert_has_mandatory_properties("name", "id")
         self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
         self._standardize_data_types()
@@ -104,7 +104,7 @@ class Field(Node):
                 ]:
                     return term.URIRef(data_type)
         # The data_type has to be found on the source:
-        source = self.ctx.node_by_uid(self.source.uid)
+        source = self.ctx.node_by_uuid(self.source.uuid)
         if not isinstance(source, Field):
             self.add_error(
                 "The field does not specify a valid"
@@ -126,18 +126,23 @@ class Field(Node):
         data_types = [
             self.ctx.rdf.shorten_value(data_type) for data_type in self.data_types
         ]
-        parent_field = self.parent_field.to_json() if self.parent_field else None
+        parent_field = (
+            self.parent_field.to_json(ctx=self.ctx) if self.parent_field else None
+        )
         prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
             "@type": f"{prefix}:Field",
+            "@id": None if self.ctx.is_v0() else self.uuid,
             "name": self.name,
             "description": self.description,
             "dataType": data_types[0] if len(data_types) == 1 else data_types,
             "isEnumeration": self.is_enumeration,
             "parentField": parent_field,
             "repeated": self.repeated,
-            "references": self.references.to_json() if self.references else None,
-            "source": self.source.to_json() if self.source else None,
+            "references": (
+                self.references.to_json(ctx=self.ctx) if self.references else None
+            ),
+            "source": self.source.to_json(ctx=self.ctx) if self.source else None,
             "subField": [sub_field.to_json() for sub_field in self.sub_fields],
         })
 
@@ -181,5 +186,5 @@ class Field(Node):
             repeated=repeated,
             source=source,
             sub_fields=sub_fields,
-            uuid=uuid_from_jsonld(field),
+            id=uuid_from_jsonld(field),
         )

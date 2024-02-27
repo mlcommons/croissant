@@ -48,7 +48,7 @@ def _add_operations_for_record_set(
         Data(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
         )
-    has_join = any(field for field in record_set.fields if field.references.uid)
+    has_join = any(field for field in record_set.fields if field.references.uuid)
     if has_join:
         Join(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
@@ -162,8 +162,8 @@ def _add_operations_for_field(operations: Operations, node: Field):
         if isinstance(operation, Join) and operation.node == record_set
     ]
     for join in joins:
-        left_node = node.ctx.node_by_uid(node.source.uid)
-        right_node = node.ctx.node_by_uid(node.references.uid)
+        left_node = node.ctx.node_by_uuid(node.source.uuid)
+        right_node = node.ctx.node_by_uuid(node.references.uuid)
         if left_node and right_node:
             join.connect_to_last_operation(left_node)
             join.connect_to_last_operation(right_node)
@@ -211,7 +211,7 @@ class OperationGraph:
             operations.add_edge(init_operation, entry_operation)
         return OperationGraph(issues=ctx.issues, operations=operations)
 
-    def check_graph(self):
+    def check_graph(self, ctx: Context):
         """Checks the operation graph for issues."""
         if not self.operations.is_directed():
             self.issues.add_error("Computation graph is not directed.")
@@ -220,3 +220,6 @@ class OperationGraph:
             self.issues.add_error(
                 f"The following operations refered to themselves: {selfloops}"
             )
+        record_sets = [node for node in ctx.graph.nodes if isinstance(node, RecordSet)]
+        for record_set in record_sets:
+            record_set.check_joins_in_fields()

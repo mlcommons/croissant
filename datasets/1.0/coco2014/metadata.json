@@ -54,6 +54,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "train2014.zip",
       "name": "train2014.zip",
       "contentSize": "13510573713 B",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
@@ -62,6 +63,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "val2014.zip",
       "name": "val2014.zip",
       "contentSize": "6645013297 B",
       "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
@@ -70,6 +72,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "test2014.zip",
       "name": "test2014.zip",
       "contentSize": "6660437059 B",
       "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
@@ -78,17 +81,25 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "image-files",
       "name": "image-files",
       "containedIn": [
-        "train2014.zip",
-        "val2014.zip",
-        "test2014.zip"
+        {
+          "@id": "train2014.zip"
+        },
+        {
+          "@id": "val2014.zip"
+        },
+        {
+          "@id": "test2014.zip"
+        }
       ],
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "annotations_trainval2014.zip",
       "name": "annotations_trainval2014.zip",
       "contentSize": "252872794 B",
       "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
@@ -97,27 +108,37 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "caption_annotations-files",
       "name": "caption_annotations-files",
-      "containedIn": "annotations_trainval2014.zip",
+      "containedIn": {
+        "@id": "annotations_trainval2014.zip"
+      },
       "encodingFormat": "application/json",
       "includes": "annotations/captions_(val|train)2014.json"
     },
     {
       "@type": "cr:FileSet",
+      "@id": "person_keypoints_annotations",
       "name": "person_keypoints_annotations",
-      "containedIn": "annotations_trainval2014.zip",
+      "containedIn": {
+        "@id": "annotations_trainval2014.zip"
+      },
       "encodingFormat": "application/json",
       "includes": "annotations/person_keypoints_(val|train)2014.json"
     },
     {
       "@type": "cr:FileSet",
+      "@id": "instancesperson_keypoints_annotations",
       "name": "instancesperson_keypoints_annotations",
-      "containedIn": "annotations_trainval2014.zip",
+      "containedIn": {
+        "@id": "annotations_trainval2014.zip"
+      },
       "encodingFormat": "application/json",
       "includes": "annotations/instances_(val|train)2014.json"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "image_info_test2014.zip",
       "name": "image_info_test2014.zip",
       "contentSize": "763464 B",
       "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
@@ -126,8 +147,11 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "imageinfo",
       "name": "imageinfo",
-      "containedIn": "image_info_test2014.zip",
+      "containedIn": {
+        "@id": "image_info_test2014.zip"
+      },
       "encodingFormat": "application/json",
       "includes": "annotations/image_info_test.json"
     }
@@ -135,18 +159,21 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
       "key": "name",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "split_enums/name",
           "name": "name",
           "description": "One of: train, val, test.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
+          "@id": "split_enums/url",
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
@@ -172,16 +199,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "key": "image_id",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images/image_id",
           "name": "image_id",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -192,11 +223,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/image_filename",
           "name": "image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "filename"
             }
@@ -204,11 +238,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/image_content",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "content"
             }
@@ -216,16 +253,21 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/split",
           "name": "split",
           "dataType": [
             "sc:Text",
             "wd:Q3985153"
           ],
           "references": {
-            "field": "split_enums/name"
+            "field": {
+              "@id": "split_enums/name"
+            }
           },
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -238,16 +280,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "captions",
       "name": "captions",
       "key": "id",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "captions/id",
           "name": "id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "caption_annotations-files",
+            "fileSet": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "column": "id"
             }
@@ -255,11 +301,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "captions/image_id",
           "name": "image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "caption_annotations-files",
+            "fileSet": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "column": "image_id"
             }
@@ -267,6 +316,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "captions/caption",
           "name": "caption",
           "description": "The caption",
           "dataType": [
@@ -274,7 +324,9 @@
             "wd:Q18585177"
           ],
           "source": {
-            "fileSet": "caption_annotations-files",
+            "fileSet": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "column": "caption"
             }
@@ -282,16 +334,21 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "captions/split",
           "name": "split",
           "dataType": [
             "sc:Text",
             "wd:Q3985153"
           ],
           "references": {
-            "field": "split_enums/name"
+            "field": {
+              "@id": "split_enums/name"
+            }
           },
           "source": {
-            "fileSet": "caption_annotations-files",
+            "fileSet": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -304,17 +361,21 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "categories",
       "name": "categories",
       "isEnumeration": true,
       "key": "id",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "categories/id",
           "name": "id",
           "description": "The ID of the category",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "id"
             }
@@ -322,6 +383,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "categories/name",
           "name": "name",
           "description": "The name of the category.",
           "dataType": [
@@ -329,7 +391,9 @@
             "sc:name"
           ],
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "name"
             }
@@ -337,6 +401,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "categories/supercategory",
           "name": "supercategory",
           "description": "The name of the supercategory.",
           "dataType": [
@@ -345,7 +410,9 @@
           ],
           "isEnumeration": true,
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "supercategory"
             }
@@ -355,16 +422,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "annotations",
       "name": "annotations",
       "key": "id",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "annotations/id",
           "name": "id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "id"
             }
@@ -372,14 +443,19 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "annotations/category_id",
           "name": "category_id",
           "description": "The ID of the category.",
           "dataType": "sc:Integer",
           "references": {
-            "field": "categories/id"
+            "field": {
+              "@id": "categories/id"
+            }
           },
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "category_id"
             }
@@ -387,14 +463,19 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "annotations/image_id",
           "name": "image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
           "references": {
-            "field": "images/image_id"
+            "field": {
+              "@id": "images/image_id"
+            }
           },
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "image_id"
             }
@@ -402,11 +483,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "annotations/bbox",
           "name": "bbox",
           "description": "The bounding box around annotated object[s].",
           "dataType": "cr:BoundingBox",
           "source": {
-            "fileSet": "instancesperson_keypoints_annotations",
+            "fileSet": {
+              "@id": "instancesperson_keypoints_annotations"
+            },
             "extract": {
               "column": "bbox"
             }

@@ -88,9 +88,9 @@ class Context:
         """Whether the JSON-LD conforms to Croissant v0.8 or lower."""
         return self.conforms_to < CroissantVersion.V_1_0
 
-    def node_by_uid(self, uid: str | None):
+    def node_by_uuid(self, uuid: str | None):
         """Retrieves a node in the graph by its UID."""
         for node in self.graph.nodes():
-            if node.uid == uid:
+            if node.uuid == uuid:
                 return node
         return None

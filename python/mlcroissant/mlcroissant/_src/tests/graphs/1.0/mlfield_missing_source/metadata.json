@@ -54,6 +54,7 @@
   "version": "1.0.0",
   "distribution": [
     {
+      "@id": "a-csv-table",
       "@type": "cr:FileObject",
       "name": "a-csv-table",
       "contentSize": "117743 B",
@@ -64,11 +65,13 @@
   ],
   "recordSet": [
     {
+      "@id": "a-record-set",
       "@type": "cr:RecordSet",
       "name": "a-record-set",
       "description": "This is a record set.",
       "field": [
         {
+          "@id": "a-record-set/first-field",
           "@type": "cr:Field",
           "name": "first-field",
           "description": "field description",
@@ -77,7 +80,9 @@
             "extract": {
               "column": "a-column"
             },
-            "fileObject": "a-csv-table"
+            "fileObject": {
+              "@id": "a-csv-table"
+            }
           }
         }
       ]

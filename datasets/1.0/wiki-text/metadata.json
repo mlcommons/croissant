@@ -54,6 +54,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "wikitext-103-v1.zip",
       "name": "wikitext-103-v1.zip",
       "contentUrl": "https://s3.amazonaws.com/research.metamind.io/wikitext/wikitext-103-v1.zip",
       "encodingFormat": "application/zip",
@@ -61,13 +62,17 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "token-files",
       "name": "token-files",
-      "containedIn": "wikitext-103-v1.zip",
+      "containedIn": {
+        "@id": "wikitext-103-v1.zip"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "wikitext-103/*.tokens"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "splits.csv",
       "name": "splits.csv",
       "contentUrl": "data/splits.csv",
       "encodingFormat": "text/csv",
@@ -77,17 +82,21 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
       "key": "name",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "split_enums/name",
           "name": "name",
           "description": "One of: train, valid, test.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "splits.csv",
+            "fileObject": {
+              "@id": "splits.csv"
+            },
             "extract": {
               "column": "name"
             }
@@ -95,6 +104,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "split_enums/url",
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
@@ -102,7 +112,9 @@
             "wd:Q3985153"
           ],
           "source": {
-            "fileObject": "splits.csv",
+            "fileObject": {
+              "@id": "splits.csv"
+            },
             "extract": {
               "column": "url"
             }
@@ -112,17 +124,21 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "words",
       "name": "words",
       "description": "The words of the token files, including their split.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "words/word",
           "name": "word",
           "description": "A word.",
           "dataType": "sc:Text",
           "repeated": "true",
           "source": {
-            "fileSet": "token-files",
+            "fileSet": {
+              "@id": "token-files"
+            },
             "extract": {
               "fileProperty": "content"
             },
@@ -138,6 +154,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "words/split",
           "name": "split",
           "description": "The train, valid or test split.",
           "dataType": [
@@ -145,10 +162,14 @@
             "wd:Q3985153"
           ],
           "references": {
-            "field": "split_enums/name"
+            "field": {
+              "@id": "split_enums/name"
+            }
           },
           "source": {
-            "fileSet": "token-files",
+            "fileSet": {
+              "@id": "token-files"
+            },
             "extract": {
               "fileProperty": "fullpath"
             },

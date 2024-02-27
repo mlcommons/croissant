@@ -13,4 +13,4 @@ class InitOperation(Operation):
     def __call__(self, *args):
         """See class' docstring."""
         del args  # unused
-        logging.info("Setting up generation for dataset: %s", self.node.uid)
+        logging.info("Setting up generation for dataset: %s", self.node.uuid)

@@ -17,6 +17,7 @@ class ResourceEvent(enum.Enum):
     """Event that triggers a resource change."""
 
     NAME = "NAME"
+    ID = "ID"
     DESCRIPTION = "DESCRIPTION"
     ENCODING_FORMAT = "ENCODING_FORMAT"
     INCLUDES = "INCLUDES"
@@ -36,6 +37,13 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
             metadata: Metadata = st.session_state[Metadata]
             metadata.rename_distribution(old_name=old_name, new_name=new_name)
         resource.name = value
+    elif event == ResourceEvent.ID:
+        old_id = resource.id
+        new_id = value
+        if old_id != new_id:
+            metadata: Metadata = st.session_state[Metadata]
+            metadata.rename_distribution(old_name=old_id, new_name=new_id)
+        resource.id = value
     elif event == ResourceEvent.DESCRIPTION:
         resource.description = value
     elif event == ResourceEvent.ENCODING_FORMAT:

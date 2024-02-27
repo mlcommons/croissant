@@ -51,6 +51,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "tar-gz",
       "name": "tar-gz",
       "description": "*.tar.gz containing two folders: training and validation. Each folder contains a list of images (img1.jpg, img2.jpg) with their masks (mask1.jpg, mask2.jpg).",
       "contentUrl": "data/read_from_tar.tar.gz",
@@ -59,15 +60,21 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "source-images",
       "name": "source-images",
-      "containedIn": "tar-gz",
+      "containedIn": {
+        "@id": "tar-gz"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "*/img*.jpg"
     },
     {
       "@type": "cr:FileSet",
+      "@id": "source-annotations",
       "name": "source-annotations",
-      "containedIn": "tar-gz",
+      "containedIn": {
+        "@id": "tar-gz"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "*/mask*.jpg"
     }
@@ -75,15 +82,19 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "description": "The images.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images/id",
           "name": "id",
           "dataType": "sc:Integer",
           "source": {
-            "fileSet": "source-images",
+            "fileSet": {
+              "@id": "source-images"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -94,10 +105,13 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/image",
           "name": "image",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "source-images",
+            "fileSet": {
+              "@id": "source-images"
+            },
             "extract": {
               "fileProperty": "content"
             }
@@ -105,10 +119,13 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/split",
           "name": "split",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "source-images",
+            "fileSet": {
+              "@id": "source-images"
+            },
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -121,14 +138,18 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "annotations",
       "name": "annotations",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "annotations/id",
           "name": "id",
           "dataType": "sc:Integer",
           "source": {
-            "field": "source-annotations",
+            "field": {
+              "@id": "source-annotations"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -139,10 +160,13 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "annotations/annotation",
           "name": "annotation",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "source-annotations",
+            "fileSet": {
+              "@id": "source-annotations"
+            },
             "extract": {
               "fileProperty": "content"
             }
@@ -152,38 +176,53 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "images_with_annotations",
       "name": "images_with_annotations",
       "description": "The images with the mask annotations.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images_with_annotations/split",
           "name": "split",
           "source": {
-            "field": "images/split"
+            "field": {
+              "@id": "images/split"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "images_with_annotations/id",
           "name": "id",
           "references": {
-            "field": "annotations/id"
+            "field": {
+              "@id": "annotations/id"
+            }
           },
           "source": {
-            "field": "images/id"
+            "field": {
+              "@id": "images/id"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "images_with_annotations/image",
           "name": "image",
           "source": {
-            "field": "images/image"
+            "field": {
+              "@id": "images/image"
+            }
           }
         },
         {
           "@type": "cr:Field",
+          "@id": "images_with_annotations/annotation",
           "name": "annotation",
           "source": {
-            "field": "annotations/annotation"
+            "field": {
+              "@id": "annotations/annotation"
+            }
           }
         }
       ]

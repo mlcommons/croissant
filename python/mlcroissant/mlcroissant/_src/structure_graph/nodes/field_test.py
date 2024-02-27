@@ -20,7 +20,7 @@ def test_checks_are_performed():
         Node, "validate_name"
     ) as validate_name_mock:
         create_test_node(Field)
-        mandatory_mock.assert_called_once_with("name")
+        mandatory_mock.assert_called_once_with("name", "id")
         optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 

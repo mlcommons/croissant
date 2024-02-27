@@ -140,7 +140,7 @@ class FileObject:
     sha256: str | None = None
     df: pd.DataFrame | None = None
     folder: epath.PathLike | None = None
-    uuid: str | None = None
+    id: str | None = None
 
 
 @dataclasses.dataclass
@@ -153,7 +153,7 @@ class FileSet:
     encoding_format: str | None = ""
     includes: str | None = ""
     name: str = ""
-    uuid: str | None = None
+    id: str | None = None
 
 
 @dataclasses.dataclass
@@ -166,7 +166,7 @@ class Field:
     data_types: str | list[str] | None = None
     source: mlc.Source | None = None
     references: mlc.Source | None = None
-    uuid: str | None = None
+    id: str | None = None
 
 
 @dataclasses.dataclass
@@ -180,7 +180,7 @@ class RecordSet:
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
-    uuid: str | None = None
+    id: str | None = None
 
 
 @dataclasses.dataclass
@@ -198,7 +198,7 @@ class Metadata:
     date_published: datetime.datetime | None = None
     license: str | None = ""
     personal_sensitive_information: str | None = None
-    uuid: str | None = None
+    id: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
@@ -223,28 +223,28 @@ class Metadata:
         """Renames a RecordSet by changing all the references to this RecordSet."""
         for i, record_set in enumerate(self.record_sets):
             for j, field in enumerate(record_set.fields):
-                possible_uid = f"{old_name}/"
+                possible_uuid = f"{old_name}/"
                 # Update source
                 source = field.source
                 if (
                     source
-                    and source.uid
-                    and (source.uid.startswith(possible_uid) or source.uid == old_name)
+                    and source.id
+                    and (source.id.startswith(possible_uuid) or source.id == old_name)
                 ):
-                    new_uid = source.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.uid = new_uid
+                    new_uuid = source.id.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.id = new_uuid
                 # Update references
                 references = field.references
                 if (
                     references
-                    and references.uid
+                    and references.id
                     and (
-                        references.uid.startswith(possible_uid)
-                        or references.uid == old_name
+                        references.id.startswith(possible_uuid)
+                        or references.id == old_name
                     )
                 ):
-                    new_uid = references.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].references.uid = new_uid
+                    new_uuid = references.id.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.id = new_uuid
 
     def rename_field(self, old_name: str, new_name: str):
         """Renames a field by changing all the references to this field."""
@@ -255,22 +255,22 @@ class Metadata:
                 # The difference with RecordSet is the `.endswith` here:
                 if (
                     source
-                    and source.uid
-                    and "/" in source.uid
-                    and source.uid.endswith(old_name)
+                    and source.id
+                    and "/" in source.id
+                    and source.id.endswith(old_name)
                 ):
-                    new_uid = source.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.uid = new_uid
+                    new_uuid = source.id.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.id = new_uuid
                 # Update references
                 references = field.references
                 if (
                     references
-                    and references.uid
-                    and "/" in references.uid
-                    and references.uid.endswith(old_name)
+                    and references.id
+                    and "/" in references.id
+                    and references.id.endswith(old_name)
                 ):
-                    new_uid = references.uid.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].references.uid = new_uid
+                    new_uuid = references.id.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.id = new_uuid
 
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
         self.distribution.append(distribution)

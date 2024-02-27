@@ -55,21 +55,21 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     # Bind graph to nodes:
     for node in metadata.nodes():
         graph.add_node(node)
-    uid_to_node = _check_no_duplicate(metadata)
+    uuid_to_node = _check_no_duplicate(metadata)
     for node in metadata.distribution:
         if node.contained_in:
-            for uid in node.contained_in:
-                _add_edge(graph, uid_to_node, uid, node)
+            for uuid in node.contained_in:
+                _add_edge(graph, uuid_to_node, uuid, node)
     for record_set in metadata.record_sets:
         for field in record_set.fields:
-            _add_edge(graph, uid_to_node, record_set.uid, field)
+            _add_edge(graph, uuid_to_node, record_set.uuid, field)
             for origin in [field.source, field.references]:
                 if origin:
-                    _add_edge(graph, uid_to_node, origin.uid, record_set)
+                    _add_edge(graph, uuid_to_node, origin.uuid, record_set)
             for sub_field in field.sub_fields:
                 for origin in [sub_field.source, sub_field.references]:
                     if origin:
-                        _add_edge(graph, uid_to_node, origin.uid, record_set)
+                        _add_edge(graph, uuid_to_node, origin.uuid, record_set)
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
@@ -89,14 +89,13 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
             for field in node.fields:
                 if not field.source:
                     field.add_error(
-                        f'Node "{field.uid}" is a field and has no source. Please, use'
+                        f'Node "{field.uuid}" is a field and has no source. Please, use'
                         f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
                     )
                 else:
-                    uid = field.source.uid
                     field.add_error(
-                        f"Malformed source data: {uid}. It does not refer to any"
-                        " existing node. Have you used"
+                        f"Malformed source data: {field.source.uuid}. It does not refer"
+                        " to any existing node. Have you used"
                         f" {constants.ML_COMMONS_FIELD(ctx)} or"
                         f" {constants.SCHEMA_ORG_DISTRIBUTION} to indicate the source"
                         " field or the source distribution? If you specified a field,"
@@ -107,15 +106,16 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
 
 
 def _check_no_duplicate(metadata) -> dict[str, Node]:
-    """Checks that no node has duplicated UID and returns the mapping `uid`->`Node`."""
-    uid_to_node: dict[str, Node] = {}
+    """Checks no node has duplicated UUID and returns the mapping `uuid`->`Node`."""
+    uuid_to_node: dict[str, Node] = {}
     for node in metadata.nodes():
-        if node.uid in uid_to_node:
+        if node.uuid in uuid_to_node:
             node.add_error(
-                f"Duplicate nodes with the same identifier: {uid_to_node[node.uid].uid}"
+                "Duplicate nodes with the same identifier:"
+                f" {uuid_to_node[node.uuid].uuid}"
             )
-        uid_to_node[node.uid] = node
-    return uid_to_node
+        uuid_to_node[node.uuid] = node
+    return uuid_to_node
 
 
 def _add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
@@ -129,15 +129,15 @@ def _add_node_as_entry_node(graph: nx.MultiDiGraph, node: Node):
 
 def _add_edge(
     graph: nx.MultiDiGraph,
-    uid_to_node: dict[str, Node],
-    uid: str,
+    uuid_to_node: dict[str, Node],
+    uuid: str,
     node: Node,
 ):
     """Adds an edge in the structure graph."""
-    if uid not in uid_to_node:
+    if uuid not in uuid_to_node:
         node.add_error(
-            f'There is a reference to node named "{uid}" in node "{node.uid}", but this'
-            " node doesn't exist."
+            f'There is a reference to node with UUID "{uuid}" in node "{node.uuid}",'
+            " but this node doesn't exist."
         )
         return
-    graph.add_edge(uid_to_node[uid], node)
+    graph.add_edge(uuid_to_node[uuid], node)

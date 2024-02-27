@@ -55,6 +55,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "train2014.zip",
       "name": "train2014.zip",
       "contentSize": " B",
       "contentUrl": "data/train2014.zip",
@@ -63,13 +64,17 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "image-files",
       "name": "image-files",
-      "containedIn": "train2014.zip",
+      "containedIn": {
+        "@id": "train2014.zip"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "*.jpg"
     },
     {
       "@type": "cr:FileObject",
+      "@id": "caption_annotations-files",
       "name": "caption_annotations-files",
       "contentSize": " B",
       "contentUrl": "data/captions_train2014.json",
@@ -78,6 +83,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "bbox_annotations-files",
       "name": "bbox_annotations-files",
       "contentUrl": "data/instances_train2014.json",
       "encodingFormat": "application/json",
@@ -87,18 +93,21 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
       "key": "name",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "split_enums/name",
           "name": "name",
           "description": "One of: train, val, test.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
+          "@id": "split_enums/url",
           "name": "url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
@@ -124,16 +133,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "key": "img_id",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images/image_filename",
           "name": "image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "filename"
             }
@@ -141,11 +154,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/image_content",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "content"
             }
@@ -153,16 +169,21 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "images/split",
           "name": "split",
           "dataType": [
             "wd:Q3985153",
             "sc:Text"
           ],
           "references": {
-            "field": "split_enums/name"
+            "field": {
+              "@id": "split_enums/name"
+            }
           },
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "fullpath"
             },
@@ -175,16 +196,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "captions",
       "name": "captions",
       "key": "id",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "captions/id",
           "name": "id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "caption_annotations-files",
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].id"
             }
@@ -192,11 +217,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "captions/image_id",
           "name": "image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "caption_annotations-files",
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].image_id"
             }
@@ -204,6 +232,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "captions/caption",
           "name": "caption",
           "description": "The caption",
           "dataType": [
@@ -211,7 +240,9 @@
             "sc:Text"
           ],
           "source": {
-            "fileObject": "caption_annotations-files",
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].caption"
             }
@@ -219,16 +250,21 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "captions/split",
           "name": "split",
           "dataType": [
             "wd:Q3985153",
             "sc:Text"
           ],
           "references": {
-            "field": "split_enums/name"
+            "field": {
+              "@id": "split_enums/name"
+            }
           },
           "source": {
-            "fileObject": "caption_annotations-files",
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -241,15 +277,19 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "bounding_boxes",
       "name": "bounding_boxes",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "bounding_boxes/id",
           "name": "id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "bbox_annotations-files",
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].id"
             }
@@ -257,11 +297,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "bounding_boxes/image_id",
           "name": "image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "bbox_annotations-files",
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].image_id"
             }
@@ -269,11 +312,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "bounding_boxes/bbox",
           "name": "bbox",
           "description": "The bounding box on the image.",
           "dataType": "cr:BoundingBox",
           "source": {
-            "fileObject": "bbox_annotations-files",
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].bbox"
             }
@@ -281,11 +327,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "bounding_boxes/area",
           "name": "area",
           "description": "The area of the bounding box.",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "bbox_annotations-files",
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
             "extract": {
               "jsonPath": "$.annotations[*].area"
             }

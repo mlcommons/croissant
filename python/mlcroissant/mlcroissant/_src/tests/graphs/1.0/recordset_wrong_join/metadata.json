@@ -55,6 +55,7 @@
   "version": "1.0.0",
   "distribution": [
     {
+      "@id": "a-csv-table",
       "@type": "cr:FileObject",
       "name": "a-csv-table",
       "contentSize": "117743 B",
@@ -63,6 +64,7 @@
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
     },
     {
+      "@id": "another-csv-table",
       "@type": "cr:FileObject",
       "name": "another-csv-table",
       "contentSize": "117743 B",
@@ -78,6 +80,7 @@
       "description": "This is a record set.",
       "field": [
         {
+          "@id": "a-record-set/first-field",
           "@type": "cr:Field",
           "name": "first-field",
           "description": "The first field.",
@@ -86,10 +89,13 @@
             "extract": {
               "column": "a-column"
             },
-            "fileObject": "a-csv-table"
+            "fileObject": {
+              "@id": "a-csv-table"
+            }
           }
         },
         {
+          "@id": "a-record-set/second-field",
           "@type": "cr:Field",
           "name": "second-field",
           "description": "The second field.",
@@ -98,7 +104,9 @@
             "extract": {
               "column": "another-column"
             },
-            "fileObject": "another-csv-table"
+            "fileObject": {
+              "@id": "another-csv-table"
+            }
           }
         }
       ]

@@ -52,6 +52,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "publications",
       "name": "publications",
       "contentUrl": "data/publications.csv",
       "encodingFormat": "text/csv",
@@ -61,17 +62,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "users",
       "name": "users",
       "description": "List of users.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "users/email",
           "name": "email",
           "description": "Email of the author.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
+          "@id": "users/fullname",
           "name": "fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text"
@@ -98,16 +102,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "publications_by_user",
       "name": "publications_by_user",
       "description": "List of publications by user.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "publications_by_user/title",
           "name": "title",
           "description": "Full title of the publication.",
           "dataType": "sc:Text",
           "source": {
-            "fileObject": "publications",
+            "fileObject": {
+              "@id": "publications"
+            },
             "extract": {
               "column": "title"
             }
@@ -115,14 +123,19 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "publications_by_user/author_email",
           "name": "author_email",
           "description": "Email of the author.",
           "dataType": "sc:Text",
           "references": {
-            "field": "users/email"
+            "field": {
+              "@id": "users/email"
+            }
           },
           "source": {
-            "fileObject": "publications",
+            "fileObject": {
+              "@id": "publications"
+            },
             "extract": {
               "column": "by"
             }
@@ -130,11 +143,14 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "publications_by_user/author_fullname",
           "name": "author_fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text",
           "source": {
-            "field": "users/fullname"
+            "field": {
+              "@id": "users/fullname"
+            }
           }
         }
       ]

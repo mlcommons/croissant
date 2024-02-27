@@ -51,6 +51,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "enum.csv",
       "name": "enum.csv",
       "contentUrl": "data/enum.csv",
       "encodingFormat": "text/csv",
@@ -58,6 +59,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "enum_directions.csv",
       "name": "enum_directions.csv",
       "contentUrl": "data/enum_directions.csv",
       "encodingFormat": "text/csv",
@@ -67,17 +69,21 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "direction_enum",
       "name": "direction_enum",
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
       "key": "key",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "direction_enum/key",
           "name": "key",
           "description": "0, 1, 2 or 3",
           "dataType": "sc:Integer",
           "source": {
-            "fileObject": "enum_directions.csv",
+            "fileObject": {
+              "@id": "enum_directions.csv"
+            },
             "extract": {
               "column": "key"
             }
@@ -85,6 +91,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "direction_enum/label",
           "name": "label",
           "description": "North, East, South or West",
           "dataType": [
@@ -92,7 +99,9 @@
             "sc:name"
           ],
           "source": {
-            "fileObject": "enum_directions.csv",
+            "fileObject": {
+              "@id": "enum_directions.csv"
+            },
             "extract": {
               "column": "label"
             }
@@ -102,16 +111,20 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "examples",
       "name": "examples",
       "description": "Records extracted from the examples table, with their schema.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "examples/name",
           "name": "name",
           "description": "The first column contains the name of the object.",
           "dataType": "sc:Text",
           "references": {
-            "fileObject": "enum.csv",
+            "fileObject": {
+              "@id": "enum.csv"
+            },
             "extract": {
               "column": "name"
             }
@@ -119,6 +132,7 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "examples/direction",
           "name": "direction",
           "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "dataType": [
@@ -126,10 +140,14 @@
             "cr:Enum"
           ],
           "references": {
-            "field": "direction_enum/key"
+            "field": {
+              "@id": "direction_enum/key"
+            }
           },
           "source": {
-            "fileObject": "enum.csv",
+            "fileObject": {
+              "@id": "enum.csv"
+            },
             "extract": {
               "column": "direction"
             }

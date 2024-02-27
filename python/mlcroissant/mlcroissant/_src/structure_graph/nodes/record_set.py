@@ -14,7 +14,6 @@ from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.source import get_parent_uid
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -33,9 +32,9 @@ class RecordSet(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("name")
+        self.assert_has_mandatory_properties("name", "id")
         self.assert_has_optional_properties("description")
-        self.check_joins_in_fields(self.fields)
+
         if self.data is not None:
             data = self.data
             if not isinstance(data, list):
@@ -69,6 +68,7 @@ class RecordSet(Node):
         prefix = "ml" if self.ctx.is_v0() else "cr"
         return remove_empty_values({
             "@type": f"{prefix}:RecordSet",
+            "@id": None if self.ctx.is_v0() else self.uuid,
             "name": self.name,
             "description": self.description,
             "isEnumeration": self.is_enumeration,
@@ -108,23 +108,33 @@ class RecordSet(Node):
             key=key,
             fields=fields,
             name=record_set_name,
-            uuid=uuid_from_jsonld(record_set),
+            id=uuid_from_jsonld(record_set),
         )
 
-    def check_joins_in_fields(self, fields: list[Field]):
+    def check_joins_in_fields(self):
         """Checks that all joins are declared when they are consumed."""
         joins: set[tuple[str, str]] = set()
         sources: set[str] = set()
-        for field in fields:
-            source_uid = field.source.uid
-            references_uid = field.references.uid
-            if source_uid:
-                # source_uid is used as a source.
-                sources.add(get_parent_uid(source_uid))
-            if source_uid and references_uid:
+        for field in self.fields:
+            source_uuid = field.source.uuid
+            references_uuid = field.references.uuid
+            if source_uuid:
+                # source_uuid is used as a source.
+                sources.add(get_parent_uuid(self.ctx, source_uuid))
+            if source_uuid and references_uuid:
                 # A join happens because the user specified `source` and `references`.
-                joins.add((get_parent_uid(source_uid), get_parent_uid(references_uid)))
-                joins.add((get_parent_uid(references_uid), get_parent_uid(source_uid)))
+                joins.add(
+                    (
+                        get_parent_uuid(self.ctx, source_uuid),
+                        get_parent_uuid(self.ctx, references_uuid),
+                    )
+                )
+                joins.add(
+                    (
+                        get_parent_uuid(self.ctx, references_uuid),
+                        get_parent_uuid(self.ctx, source_uuid),
+                    )
+                )
         for combination in itertools.combinations(sources, 2):
             if combination not in joins:
                 # Sort for reproducibility.
@@ -135,3 +145,17 @@ class RecordSet(Node):
                     " `ml:references` to declare a join. Please, refer to the"
                     " documentation for more information."
                 )
+
+
+def get_parent_uuid(ctx: Context, uuid: str) -> str:
+    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
+    node = ctx.node_by_uuid(uuid)
+    if node is None:
+        ctx.issues.add_error(
+            f"Node with uuid={uuid} does not exist. This error might have been found"
+            " during a Join operation."
+        )
+    if isinstance(node, Field):
+        if node.parent:
+            return node.parent.uuid
+    return node.uuid

@@ -13,7 +13,7 @@ newer Croissant format.
 ## What you have to do
 
 - If you want to change the `@context` in Croissant files. Then change the context in
-mlcroissant/_src/core/json_ld.py and launch the migration:
+the `make_context` function in mlcroissant/_src/core/rdf.py and launch the migration:
 
 ```bash
 python mlcroissant/scripts/migrations/migrate.py
@@ -95,7 +95,7 @@ def migrate_test_dataset(dataset: epath.Path, json_ld):
 
     Cannot use mlc.Metadata as test Croissant files may contain errors.
     """
-    json_ld = compact_jsonld(expand_jsonld(json_ld))
+    json_ld = compact_jsonld(expand_jsonld(json_ld, ctx=Context()))
     # Special cases for test datasets without @context
     if "recordset_missing_context_for_datatype" in os.fspath(dataset):
         del json_ld["@context"]["dataType"]

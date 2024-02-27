@@ -8,6 +8,8 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.record_set import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_field
 from mlcroissant._src.tests.nodes import create_test_node
@@ -68,7 +70,7 @@ def test_checks_are_performed():
         Node, "validate_name"
     ) as validate_name_mock:
         create_test_node(RecordSet)
-        mandatory_mock.assert_called_once_with("name")
+        mandatory_mock.assert_called_once_with("name", "id")
         optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 
@@ -78,6 +80,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     ctx = Context(conforms_to=conforms_to)
     jsonld = {
         "@type": constants.ML_COMMONS_RECORD_SET_TYPE(ctx),
+        "@id": "foo_id",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.ML_COMMONS_IS_ENUMERATION(ctx): True,
@@ -100,3 +103,18 @@ def test_from_jsonld(conforms_to: CroissantVersion):
             " set(). Got: {'column1'}."
         ),
     }
+
+
+@pytest.mark.parametrize(
+    ["node_type", "uuid", "parent_uuid", "input", "output"],
+    [
+        [RecordSet, "foo", "other", "foo", "foo"],
+        [Field, "foo/bar", "foo", "bar", "foo"],
+    ],
+)
+def test_get_parent_uuid(node_type, uuid, parent_uuid, input, output):
+    mocked_node = mock.Mock(uuid=uuid, spec_set=node_type)
+    mocked_node.parent.uuid = parent_uuid
+    mocked_ctx = Context()
+    mocked_ctx.node_by_uuid = mock.Mock(return_value=mocked_node)
+    assert get_parent_uuid(mocked_ctx, input) == output

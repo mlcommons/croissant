@@ -24,7 +24,7 @@ from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
     """Returns operations from the metadata."""
     operations = OperationGraph.from_nodes(ctx=ctx, metadata=metadata)
-    operations.check_graph()
+    operations.check_graph(ctx=ctx)
     if ctx.issues.errors:
         raise ValidationError(ctx.issues.report())
     elif ctx.issues.warnings:

@@ -51,6 +51,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "compressed_archive.zip",
       "name": "compressed_archive.zip",
       "contentUrl": "data/compressed_archive.zip",
       "encodingFormat": "application/zip",
@@ -58,8 +59,11 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "image-files",
       "name": "image-files",
-      "containedIn": "compressed_archive.zip",
+      "containedIn": {
+        "@id": "compressed_archive.zip"
+      },
       "encodingFormat": "image/jpeg",
       "includes": "*.jpeg"
     }
@@ -67,16 +71,20 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "description": "Records extracted from the image files, with their schema.",
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "images/image_content",
           "name": "image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "fileSet": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "content"
             }

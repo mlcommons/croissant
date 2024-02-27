@@ -119,11 +119,23 @@ def _data_editor_key(record_set_key: int, record_set: RecordSet) -> str:
 
 def _get_possible_sources(metadata: Metadata) -> list[str]:
     possible_sources: list[str] = []
-    for resource in metadata.distribution:
-        possible_sources.append(resource.name)
-    for record_set in metadata.record_sets:
-        for field in record_set.fields:
-            possible_sources.append(f"{record_set.name}/{field.name}")
+    if metadata.ctx.is_v0():
+        for resource in metadata.distribution:
+            possible_sources.append(resource.name)
+        for record_set in metadata.record_sets:
+            for field in record_set.fields:
+                possible_sources.append(f"{record_set.name}/{field.name}")
+    else:
+        # TODO(marcenacp): This workaround is temporary. We should be able to properly
+        # infer IDs using mlcroissant.
+        get_original_id = lambda id: id.split(mlc.constants.BASE_IRI)[-1]
+        for resource in metadata.distribution:
+            if resource.id:
+                possible_sources.append(get_original_id(resource.id))
+        for record_set in metadata.record_sets:
+            for field in record_set.fields:
+                if field.id:
+                    possible_sources.append(get_original_id(field.id))
     return possible_sources
 
 
@@ -132,18 +144,18 @@ Join = tuple[LeftOrRight, LeftOrRight]
 
 
 def _find_left_or_right(source: mlc.Source) -> LeftOrRight:
-    uid = source.uid
-    if "/" in uid:
-        parts = uid.split("/")
+    uuid = source.uuid
+    if "/" in uuid:
+        parts = uuid.split("/")
         return (parts[0], parts[1])
     elif source.extract.column:
-        return (uid, source.extract.column)
+        return (uuid, source.extract.column)
     elif source.extract.json_path:
-        return (uid, source.extract.json_path)
+        return (uuid, source.extract.json_path)
     elif source.extract.file_property:
-        return (uid, source.extract.file_property)
+        return (uuid, source.extract.file_property)
     else:
-        return (uid, None)
+        return (uuid, None)
 
 
 def _find_joins(fields: list[Field]) -> set[Join]:

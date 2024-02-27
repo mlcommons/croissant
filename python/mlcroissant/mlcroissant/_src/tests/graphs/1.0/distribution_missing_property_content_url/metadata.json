@@ -55,6 +55,7 @@
   "version": "1.0.0",
   "distribution": [
     {
+      "@id": "a-csv-table",
       "@type": "cr:FileObject",
       "name": "a-csv-table",
       "contentSize": "117743 B",

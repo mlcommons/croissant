@@ -37,6 +37,7 @@ Here is an extremely simple example of the croissant format, with comments showi
   "distribution": [
     {
       "@type": "sc:FileObject",
+      "@id": "minimal.csv",
       "name": "minimal.csv",
       "contentUrl": "data/minimal.csv",
       "encodingFormat": "text/csv",
@@ -55,7 +56,7 @@ Here is an extremely simple example of the croissant format, with comments showi
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
           "references": {
-            "distribution": "minimal.csv",
+            "fileObject": {"@id": "minimal.csv"},
             "extract": {
               "column": "name"
             }
@@ -67,7 +68,7 @@ Here is an extremely simple example of the croissant format, with comments showi
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
           "references": {
-            "distribution": "minimal.csv",
+            "fileObject": {"@id": "minimal.csv"},
             "extract": {
               "column": "age"
             }

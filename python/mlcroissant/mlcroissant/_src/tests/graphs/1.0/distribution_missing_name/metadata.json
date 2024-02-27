@@ -55,6 +55,7 @@
   "version": "1.0.0",
   "distribution": [
     {
+      "@id": "distribution-id",
       "@type": "cr:FileObject",
       "contentUrl": "ratings.csv",
       "encodingFormat": "text/csv",

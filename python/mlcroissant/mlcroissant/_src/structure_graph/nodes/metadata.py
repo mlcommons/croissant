@@ -126,7 +126,7 @@ class Metadata(Node):
     personal_sensitive_information: str | None = None
 
     def __post_init__(self):
-        """Checks arguments of the node."""
+        """Checks arguments of the node and setup ID."""
         # Define parents.
         for node in self.distribution:
             node.parents = [self]
@@ -165,8 +165,14 @@ class Metadata(Node):
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
+
+        context = self.ctx.rdf.context
+        if "@base" in context:
+            if context["@base"] == constants.BASE_IRI:
+                context.pop("@base")
+
         return remove_empty_values({
-            "@context": self.ctx.rdf.context,
+            "@context": context,
             "@type": "sc:Dataset",
             "name": self.name,
             "conformsTo": conforms_to,
@@ -316,7 +322,7 @@ class Metadata(Node):
     ) -> Metadata:
         """Creates a `Metadata` from JSON."""
         ctx.rdf = Rdf.from_json(ctx, json_)
-        metadata = expand_jsonld(json_)
+        metadata = expand_jsonld(json_, ctx=ctx)
         return cls.from_jsonld(ctx=ctx, metadata=metadata)
 
     @classmethod
@@ -381,7 +387,7 @@ class Metadata(Node):
             publisher=publisher,
             record_sets=record_sets,
             same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
-            uuid=uuid_from_jsonld(metadata),
+            id=uuid_from_jsonld(metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )

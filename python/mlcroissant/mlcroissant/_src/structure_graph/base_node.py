@@ -38,15 +38,13 @@ class Node(abc.ABC):
     """
 
     ctx: Context = dataclasses.field(default_factory=Context)
+    id: str = dataclasses.field(default_factory=generate_uuid)
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
-    # TODO(https://github.com/mlcommons/croissant/discussions/506): During the
-    # implementation of a new reference mechanism, this is deemed to replace `uid`.
-    uuid: str = dataclasses.field(default_factory=generate_uuid)
 
     def __post_init__(self):
-        """Checks for `name` (common property between all nodes)."""
-        self.assert_has_mandatory_properties("name")
+        """Checks for common properties between all nodes."""
+        self.assert_has_mandatory_properties("name", "id")
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):
         """Checks a node in the graph for existing properties with constraints.
@@ -129,19 +127,23 @@ class Node(abc.ABC):
         self.ctx.issues.add_warning(warning, self)
 
     def __repr__(self) -> str:
-        """Prints a simplified string representation of the node: `Node(uid="xxx")`."""
-        return f'{self.__class__.__name__}(uid="{self.uid}")'
+        """Prints a simplified string representation of the node: `Node(uuid="xxx")`."""
+        return f'{self.__class__.__name__}(uuid="{self.uuid}")'
 
     @property
-    def uid(self) -> str:
+    def uuid(self) -> str:
         """Unique identifier for the node.
 
-        For fields, the UID is the path from their RecordSet. For other nodes, it is
-        their names.
+        For Croissant <=0.8: for fields, the UID is the path from their RecordSet. For other
+        nodes, it is their names.
+        For Croissant <=1.0: it corresponds to the node's UUID.
         """
-        if len(self.parents) <= 1:
-            return self.name
-        return f"{self.parents[-1].uid}/{self.name}"
+        if self.ctx.is_v0():
+            if len(self.parents) <= 1:
+                return self.name
+            return f"{self.parents[-1].uuid}/{self.name}"
+        else:
+            return self.id
 
     @property
     def parent(self) -> Node | None:
@@ -213,10 +215,10 @@ class Node(abc.ABC):
         ...
 
     def validate_name(self):
-        """Validates the name (which are used as unique identifiers in Croissant)."""
+        """Validates the name."""
         name = self.name
         if not isinstance(name, str):
-            self.add_error(f"The identifier should be a string. Got: {type(name)}.")
+            self.add_error(f"The name should be a string. Got: {type(name)}.")
             return
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
@@ -224,11 +226,11 @@ class Node(abc.ABC):
             return
         if len(name) > _MAX_ID_LENGTH:
             self.add_error(
-                f'The identifier "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
+                f'The name "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
             )
         regex = re.compile(rf"^{ID_REGEX}$")
         if not regex.match(name):
-            self.add_error(f'The identifier "{name}" contains forbidden characters.')
+            self.add_error(f'The name "{name}" contains forbidden characters.')
 
     def there_exists_at_least_one_property(self, possible_properties: list[str]):
         """Checks for the existence of one of `possible_properties` in `keys`."""

@@ -48,7 +48,7 @@ def get_download_filepath(node: FileObject) -> epath.Path:
             raise ValueError(f"Could not find node folder={ctx.folder}")
         filepath = ctx.folder / url
         assert filepath.exists(), (
-            f'In node "{node.uid}", file "{url}" is either an invalid URL'
+            f'In node "{node.uuid}", file "{url}" is either an invalid URL'
             " or an invalid path."
         )
         # No need to download local files

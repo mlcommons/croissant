@@ -85,6 +85,7 @@ def test_insert_credentials():
 
 def test_get_hash_obj_md5():
     node = FileObject(
+        id="file-object",
         md5="12345",
     )
     hash_algorithm = _get_hash_algorithm(node)
@@ -94,6 +95,7 @@ def test_get_hash_obj_md5():
 
 def test_get_hash_obj_sha256():
     node = FileObject(
+        id="file-object",
         sha256="12345",
     )
     hash_algorithm = _get_hash_algorithm(node)
@@ -105,12 +107,16 @@ def test_get_download_filepath():
     ctx = Context()
     # With mapping
     ctx.mapping = {"foo": epath.Path("/bar/foo")}
-    node = FileObject(ctx=ctx, name="foo", content_url="http://foo", sha256="12345")
+    node = FileObject(
+        ctx=ctx, name="foo", id="file-object", content_url="http://foo", sha256="12345"
+    )
     assert get_download_filepath(node) == epath.Path("/bar/foo")
 
     # Without mapping
     ctx.mapping = {}
-    node = FileObject(ctx=ctx, name="foo", content_url="http://foo", sha256="12345")
+    node = FileObject(
+        ctx=ctx, name="foo", id="file-object", content_url="http://foo", sha256="12345"
+    )
     assert os.fspath(get_download_filepath(node)).endswith(
         "download/croissant-0343a8f6b328d44bfe5b69437797bebc36c59c67ac6527fe1f14684142074fff"
     )
@@ -124,6 +130,7 @@ def test_hashes_do_not_match():
         file_object = create_test_file_object(
             ctx=ctx,
             name="foo",
+            id="file-object",
             content_url=os.fspath(filepath),
             # Hash won't match!
             sha256="12345",
@@ -150,6 +157,7 @@ def test_sha256_hashes_do_match(conforms_to, hash_value):
         metadata = Metadata(ctx=ctx, name="bar")
         file_object = create_test_file_object(
             name="foo",
+            id="file-object",
             content_url=os.fspath(filepath),
             # Hash won't match!
             sha256=hash_value,
@@ -175,6 +183,7 @@ def test_hashes_are_not_checked_for_live_datasets(dummy_ctx):
         file_object = create_test_file_object(
             ctx=dummy_ctx,
             name="foo",
+            id="file-object",
             content_url=os.fspath(filepath),
             # No hash given, no error raised.
             sha256=None,
@@ -219,6 +228,7 @@ def test_md5_hashes_do_match(conforms_to, hash_value):
         metadata = Metadata(ctx=ctx, name="bar")
         file_object = create_test_file_object(
             name="foo",
+            id="file-object",
             content_url=os.fspath(filepath),
             # Hash will match!
             md5=hash_value,
