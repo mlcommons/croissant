@@ -4,7 +4,7 @@ from unittest import mock
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.uuid import formatted_uuid_to_json
+from mlcroissant._src.core.uuid import Uuid
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.tests.nodes import create_test_node
@@ -30,7 +30,9 @@ def test_checks_are_performed():
 @parametrize_conforms_to()
 def test_from_jsonld(conforms_to):
     ctx = Context(conforms_to=conforms_to)
-    contained_in = formatted_uuid_to_json(ctx=ctx, uuid="some.zip")
+    ctx.rdf.context["@base"] = constants.BASE_IRI
+    uuid = Uuid(uuid="some.zip", ctx=ctx)
+    contained_in = uuid.formatted_uuid_to_json()
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_SET(ctx),
         "@id": "foo_id",
@@ -43,9 +45,12 @@ def test_from_jsonld(conforms_to):
     }
     file_set = FileSet.from_jsonld(ctx, jsonld)
     assert file_set.name == "foo"
-    assert file_set.id == "foo_id"
-    assert file_set.description == "bar"
+    if ctx.is_v0():
+        assert file_set.uuid == "foo"
+    else:
+        assert file_set.uuid == "foo_id"
     assert file_set.contained_in == ["some.zip"]
+    assert file_set.description == "bar"
     assert file_set.encoding_format == "application/json"
     assert file_set.excludes == ["*.csv"]
     assert file_set.includes == ["*.json"]

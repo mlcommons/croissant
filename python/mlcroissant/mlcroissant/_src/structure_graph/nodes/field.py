@@ -13,7 +13,7 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import Uuid
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -40,8 +40,8 @@ class ParentField:
     def to_json(self, ctx: Context) -> Json:
         """Converts the `ParentField` to JSON."""
         return remove_empty_values({
-            "references": self.references.to_json(ctx=ctx) if self.references else None,
-            "source": self.source.to_json(ctx=ctx) if self.source else None,
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
         })
 
 
@@ -139,10 +139,8 @@ class Field(Node):
             "isEnumeration": self.is_enumeration,
             "parentField": parent_field,
             "repeated": self.repeated,
-            "references": (
-                self.references.to_json(ctx=self.ctx) if self.references else None
-            ),
-            "source": self.source.to_json(ctx=self.ctx) if self.source else None,
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
             "subField": [sub_field.to_json() for sub_field in self.sub_fields],
         })
 
@@ -186,5 +184,5 @@ class Field(Node):
             repeated=repeated,
             source=source,
             sub_fields=sub_fields,
-            id=uuid_from_jsonld(field),
+            id=Uuid.from_jsonld(field, ctx=ctx),
         )

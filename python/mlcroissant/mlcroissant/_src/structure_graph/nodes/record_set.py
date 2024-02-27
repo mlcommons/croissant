@@ -11,7 +11,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import Uuid
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 
@@ -108,7 +108,7 @@ class RecordSet(Node):
             key=key,
             fields=fields,
             name=record_set_name,
-            id=uuid_from_jsonld(record_set),
+            id=Uuid.from_jsonld(record_set, ctx=ctx),
         )
 
     def check_joins_in_fields(self):

@@ -13,8 +13,7 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import formatted_uuid_to_json
-from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import Uuid
 
 
 def _find_choice(
@@ -191,18 +190,24 @@ class Source:
     ```
     """
 
+    ctx: Context = dataclasses.field(default_factory=Context)
     extract: Extract = dataclasses.field(default_factory=Extract)
     transforms: list[Transform] = dataclasses.field(default_factory=list)
-    id: str | None = None
+    id: str | Uuid | None = None
     node_type: NodeType = None
 
-    def to_json(self, ctx: Context) -> Json:
+    def __post_init__(self):
+        """Converts input string to `self.id` to a `Uuid` object."""
+        if not isinstance(self.id, Uuid):
+            self.id = Uuid(uuid=self.id, ctx=self.ctx)
+
+    def to_json(self) -> Json:
         """Converts the `Source` to JSON."""
         transforms = [transform.to_json() for transform in self.transforms]
         if self.node_type is None:
             raise ValueError("node_type should be `distribution` or `field`. Got: None")
         return remove_empty_values({
-            self.node_type: formatted_uuid_to_json(ctx, self.id),
+            self.node_type: self.id.formatted_uuid_to_json(),  # type: ignore[union-attr]
             "extract": self.extract.to_json(),
             "transform": transforms[0] if len(transforms) == 1 else transforms,
         })
@@ -211,7 +216,7 @@ class Source:
     def from_jsonld(cls, ctx: Context, jsonld: Any) -> Source:
         """Creates a new source from a JSON-LD `field` and populates issues."""
         if jsonld is None:
-            return Source()
+            return Source(ctx=ctx)
         elif isinstance(jsonld, list):
             if len(jsonld) != 1:
                 raise ValueError(f"Field {jsonld} should have one element.")
@@ -248,7 +253,7 @@ class Source:
                     node_types = ["fileObject", "fileSet", "field"]
                 uuid, node_type = _find_choice(uuids, node_types)
                 if isinstance(uuid, dict):
-                    uuid = uuid_from_jsonld(uuid)
+                    uuid = Uuid.from_jsonld(uuid, ctx=ctx)
 
                 if uuid is None or node_type is None:
                     uuid = None
@@ -293,15 +298,16 @@ class Source:
                     extract=extract,
                     transforms=transforms,
                     node_type=node_type,
+                    ctx=ctx,
                 )
             except TypeError as exception:
                 ctx.issues.add_error(
                     f"Malformed `source`: {jsonld}. Got exception: {exception}"
                 )
-                return Source()
+                return Source(ctx=ctx)
         else:
             ctx.issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
-            return Source()
+            return Source(ctx=ctx)
 
     def __bool__(self):
         """Allows to write `if not node.source` / `if node.source`."""
@@ -309,7 +315,7 @@ class Source:
 
     def __hash__(self):
         """Hashes all immutable arguments."""
-        return hash((self.extract, tuple(self.transforms), self.id, self.node_type))
+        return hash((self.extract, tuple(self.transforms), self.uuid, self.node_type))
 
     def __eq__(self, other: Any) -> bool:
         """Overwrites the equality between two sources."""
@@ -320,7 +326,7 @@ class Source:
     @property
     def uuid(self) -> str | None:
         """Unique identifier for the source."""
-        return self.id
+        return self.id.uuid if isinstance(self.id, Uuid) else self.id
 
     def get_column(self) -> str | FileProperty:
         """Retrieves the name of the column associated to the source."""
