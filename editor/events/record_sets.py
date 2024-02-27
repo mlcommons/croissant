@@ -11,6 +11,7 @@ class RecordSetEvent(enum.Enum):
     """Event that triggers a RecordSet change."""
 
     NAME = "NAME"
+    ID = "ID"
     DESCRIPTION = "DESCRIPTION"
     IS_ENUMERATION = "IS_ENUMERATION"
     HAS_DATA = "HAS_DATA"
@@ -26,6 +27,12 @@ def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: 
             metadata: Metadata = st.session_state[Metadata]
             metadata.rename_record_set(old_name=old_name, new_name=new_name)
         record_set.name = value
+    elif event == RecordSetEvent.ID:
+        old_id = record_set.id
+        new_id = value
+        if old_id != new_id:
+            metadata: Metadata = st.session_state[Metadata]
+            metadata.rename_id(old_id=old_id, new_id=new_id)
     elif event == RecordSetEvent.DESCRIPTION:
         record_set.description = value
     elif event == RecordSetEvent.IS_ENUMERATION:

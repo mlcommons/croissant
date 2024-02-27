@@ -183,8 +183,10 @@ def file_from_url(url: str, names: set[str], folder: epath.Path) -> FileObject:
         sha256 = _sha256(file.read())
     file_type = guess_file_type(file_path)
     df = get_dataframe(file_type, file_path)
+    name = find_unique_name(names, url.split("/")[-1])
     return FileObject(
-        name=find_unique_name(names, url.split("/")[-1]),
+        id=name,
+        name=name,
         description="",
         content_url=url,
         encoding_format=file_type.encoding_format,
@@ -206,8 +208,10 @@ def file_from_upload(
         f.write(value)
     file_type = guess_file_type(file_path)
     df = get_dataframe(file_type, file)
+    name = find_unique_name(names, file.name)
     return FileObject(
-        name=find_unique_name(names, file.name),
+        id=name,
+        name=name,
         description="",
         content_url=content_url,
         encoding_format=file_type.encoding_format,
@@ -222,9 +226,11 @@ def file_from_form(
 ) -> FileObject | FileSet:
     """Creates a file based on manually added fields."""
     if type == FILE_OBJECT:
-        return FileObject(name=find_unique_name(names, "file_object"), folder=folder)
+        name = find_unique_name(names, "file_object")
+        return FileObject(id=name, name=name, folder=folder)
     elif type == FILE_SET:
-        return FileSet(name=find_unique_name(names, "file_set"))
+        name = find_unique_name(names, "file_set")
+        return FileSet(id=name, name=name)
     else:
         raise ValueError("type has to be one of FILE_OBJECT, FILE_SET")
 

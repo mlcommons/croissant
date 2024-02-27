@@ -6,6 +6,7 @@ from .resources import _create_instance1_from_instance2
 
 def test_create_instance1_from_instance2():
     file_object = FileObject(
+        id="id",
         name="name",
         description="description",
         contained_in=["foo", "bar"],
@@ -13,6 +14,7 @@ def test_create_instance1_from_instance2():
     )
     file_set = _create_instance1_from_instance2(file_object, FileSet)
     assert isinstance(file_set, FileSet)
+    assert file_set.id == "id"
     assert file_set.name == "name"
     assert file_set.description == "description"
     assert file_set.contained_in == ["foo", "bar"]

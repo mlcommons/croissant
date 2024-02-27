@@ -23,16 +23,19 @@ def infer_record_sets(file: FileObject | FileSet, names: set[str]) -> list[Recor
             extract=mlc.Extract(column=column),
         )
         field = Field(
+            id=column,
             name=column,
             data_types=[convert_dtype(value)],
             source=source,
             references=mlc.Source(),
         )
         fields.append(field)
+    name = find_unique_name(names, file.name + "_record_set")
     return [
         RecordSet(
+            id=name,
             fields=fields,
-            name=find_unique_name(names, file.name + "_record_set"),
+            name=name,
             description="",
         )
     ]

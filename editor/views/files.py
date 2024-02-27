@@ -84,7 +84,7 @@ def _render_resources_panel(files: list[Resource]) -> Resource | None:
     filename_to_file: dict[str, list[Resource]] = {}
     nodes = []
     for file in files:
-        name = file.name
+        name = file.get_name_or_id()
         filename_to_file[name] = file
         type = "FileObject" if isinstance(file, FileObject) else "FileSet"
         if file.contained_in:
@@ -141,7 +141,7 @@ def _render_upload_panel():
             record_sets = infer_record_sets(file, names)
             for record_set in record_sets:
                 st.session_state[Metadata].add_record_set(record_set)
-            st.session_state[SelectedResource] = file.name
+            st.session_state[SelectedResource] = file.get_name_or_id()
 
         st.form_submit_button("Upload", on_click=handle_on_click)
 
@@ -159,7 +159,7 @@ def _render_resource_details(selected_file: Resource):
     """Renders the details of the selected resource."""
     file: FileObject | FileSet
     for i, file in enumerate(st.session_state[Metadata].distribution):
-        if file.name == selected_file.name:
+        if file.get_name_or_id() == selected_file.get_name_or_id():
             is_file_object = isinstance(file, FileObject)
             index = (
                 RESOURCE_TYPES.index(FILE_OBJECT)
@@ -221,7 +221,7 @@ def _render_resource(prefix: int, file: Resource, is_file_object: bool):
     else:
         st.text_input(
             needed_field("ID"),
-            value=file.name,
+            value=file.id,
             key=key,
             help=f"The ID of the resource. {NAMES_INFO}",
             on_change=handle_resource_change,
