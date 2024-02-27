@@ -213,7 +213,8 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
         },
     }
     assert Source.from_jsonld(ctx, json_ld) == Source(
-        extract=Extract(column="csv_column", file_property=None, json_path="json_path"), ctx=ctx
+        extract=Extract(column="csv_column", file_property=None, json_path="json_path"),
+        ctx=ctx,
     )
     assert len(ctx.issues.errors) == 2
     assert any(
