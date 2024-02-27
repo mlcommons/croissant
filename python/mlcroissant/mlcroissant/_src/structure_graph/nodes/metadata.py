@@ -129,8 +129,6 @@ class Metadata(Node):
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""
         # Define parents.
-        if not self.id:
-            self.id = generate_uuid()
         for node in self.distribution:
             node.parents = [self]
         for record_set in self.record_sets:
