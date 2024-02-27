@@ -11,6 +11,7 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import generate_uuid
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -37,7 +38,7 @@ class Node(abc.ABC):
     """
 
     ctx: Context = dataclasses.field(default_factory=Context)
-    id: str = ""  # JSON-LD @id
+    id: str = dataclasses.field(default_factory=generate_uuid)
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
 
