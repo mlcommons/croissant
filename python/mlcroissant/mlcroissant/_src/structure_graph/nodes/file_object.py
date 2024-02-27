@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+from typing import Any
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
@@ -43,7 +44,7 @@ class FileObject(Node):
 
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
-        contained_in = self.contained_in
+        contained_in: Any = self.contained_in
         if not self.ctx.is_v0() and contained_in:
             contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]
         contained_in = unbox_singleton_list(contained_in)
