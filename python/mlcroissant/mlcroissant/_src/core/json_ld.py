@@ -65,8 +65,10 @@ for conforms_to in CroissantVersion:
 
 def _is_dataset_node(node: Json) -> bool:
     """Checks if the type of a node is schema.org/Dataset."""
-    node_type = node.get("@type")
-    return isinstance(node_type, list) and node_type[0] in constants.SCHEMA_ORG_DATASET
+    node_types = node.get("@type")
+    return isinstance(node_types, list) and any(
+        node_type == str(constants.SCHEMA_ORG_DATASET) for node_type in node_types
+    )
 
 
 def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
