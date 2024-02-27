@@ -23,7 +23,7 @@ class FileObject(Node):
 
     content_url: str | None = None
     content_size: str | None = None
-    contained_in: list[str | dict[str, str | None]] | None = None
+    contained_in: list[str] | None = None
     description: str | None = None
     encoding_format: str | None = None
     md5: str | None = None
@@ -44,13 +44,8 @@ class FileObject(Node):
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
         contained_in = self.contained_in
-        if not self.ctx.is_v0():
-            if isinstance(contained_in, list):
-                contained_in = [
-                    {"@id": uuid_to_jsonld(source)} for source in contained_in  # type: ignore[arg-type]
-                ]
-            elif isinstance(contained_in, str):
-                contained_in = {"@id": uuid_to_jsonld(contained_in)}
+        if not self.ctx.is_v0() and contained_in:
+            contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]
         contained_in = unbox_singleton_list(contained_in)
 
         json_output = remove_empty_values({

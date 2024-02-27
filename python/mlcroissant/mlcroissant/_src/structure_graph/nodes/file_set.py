@@ -37,11 +37,8 @@ class FileSet(Node):
     def to_json(self) -> Json:
         """Converts the `FileSet` to JSON."""
         contained_in = self.contained_in
-        if not self.ctx.is_v0():
-            if isinstance(contained_in, list):
-                contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]  # type: ignore
-            elif isinstance(contained_in, str):
-                contained_in = {"@id": uuid_to_jsonld(contained_in)}
+        if not self.ctx.is_v0() and contained_in:
+            contained_in = [{"@id": uuid_to_jsonld(source)} for source in contained_in]
         contained_in = unbox_singleton_list(contained_in)
 
         json_output = remove_empty_values({
