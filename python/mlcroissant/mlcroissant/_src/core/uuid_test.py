@@ -13,7 +13,7 @@ import mlcroissant._src.core.uuid as uuid_lib
 @pytest.mark.parametrize(
     ["input", "output"],
     [
-        [f"aaa{BASE_IRI}bbb", f"bbb"],
+        [f"aaa{BASE_IRI}bbb", "bbb"],
         [f"aaa{BASE_IRI}b{BASE_IRI}bb", f"b{BASE_IRI}bb"],
         [{"@id": "aaa"}, "aaa"],
         ["aaa", "aaa"],
