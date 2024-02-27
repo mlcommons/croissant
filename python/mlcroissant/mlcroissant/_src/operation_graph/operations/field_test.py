@@ -153,7 +153,7 @@ def test_extract_lines(separator):
             record_set = RecordSet(name="main", id="main", fields=fields)
             record_sets = [record_set]
 
-            m = Metadata(
+            Metadata(
                 ctx=ctx,
                 name="metadata",
                 url="url.com",

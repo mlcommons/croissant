@@ -212,14 +212,14 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
             constants.ML_COMMONS_JSON_PATH(ctx): "json_path",
         },
     }
-    # assert Source.from_jsonld(ctx, json_ld) == Source(
-    #     extract=Extract(column="csv_column", file_property=None, json_path="json_path"), ctx=ctx
-    # )
-    # assert len(ctx.issues.errors) == 2
-    # assert any(
-    #     "extract should have one of the following properties" in error
-    #     for error in list(ctx.issues.errors)
-    # )
+    assert Source.from_jsonld(ctx, json_ld) == Source(
+        extract=Extract(column="csv_column", file_property=None, json_path="json_path"), ctx=ctx
+    )
+    assert len(ctx.issues.errors) == 2
+    assert any(
+        "extract should have one of the following properties" in error
+        for error in list(ctx.issues.errors)
+    )
 
 
 @parametrize_conforms_to()
