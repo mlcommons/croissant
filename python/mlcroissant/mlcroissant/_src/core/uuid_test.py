@@ -12,7 +12,14 @@ import mlcroissant._src.core.uuid as uuid_lib
 
 @pytest.mark.parametrize(
     ["input", "output"],
-    [[f"aaa{BASE_IRI}bbb", f"aaa{BASE_IRI}bbb"], [{"@id": "aaa"}, "aaa"]],
+    [
+        [f"aaa{BASE_IRI}bbb", f"bbb"],
+        [f"aaa{BASE_IRI}b{BASE_IRI}bb", f"b{BASE_IRI}bb"],
+        [{"@id": "aaa"}, "aaa"],
+        ["aaa", "aaa"],
+        [f"{BASE_IRI}aaa", "aaa"],
+        [f"aaa{BASE_IRI}", ""],
+    ],
 )
 def test_uuid_from_jsonld(input, output):
     assert uuid_lib.uuid_from_jsonld(input) == output
@@ -36,7 +43,6 @@ def test_uuid_to_jsonld(input, output):
     [
         [CroissantVersion.V_0_8, "example/uuid", "example/uuid"],
         [CroissantVersion.V_1_0, "example/uuid", {"@id": "example/uuid"}],
-        [CroissantVersion.V_1_0, "example/cr_base_iri/uuid", {"@id": "uuid"}],
     ],
 )
 def test_formatted_uuid_to_json(conforms_to, uuid, output):

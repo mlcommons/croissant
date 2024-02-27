@@ -13,12 +13,13 @@ def generate_uuid() -> str:
     return str(uuid.uuid4())
 
 
-def uuid_from_jsonld(uuid: Json | None) -> str:
+def uuid_from_jsonld(jsonld: Json | None) -> str:
     """Retrieves uuid from a JSON-LD fragment. If no uuid, it will generate one."""
-    if isinstance(uuid, dict):
-        uuid = uuid.get("@id")
-    if isinstance(uuid, str):
-        return uuid
+    if isinstance(jsonld, dict):
+        uuid = jsonld.get("@id")
+        return uuid_from_jsonld(uuid)
+    elif isinstance(jsonld, str):
+        return uuid_to_jsonld(jsonld)
     return generate_uuid()
 
 
@@ -26,7 +27,10 @@ def uuid_to_jsonld(uuid: str | None) -> str | None:
     """Removes the base IRI from an expanded @id."""
     if uuid is None:
         return None
-    return uuid.split(BASE_IRI)[-1]
+    split = uuid.split(BASE_IRI)
+    if len(split) == 1:
+        return split[0]
+    return BASE_IRI.join(split[1:])
 
 
 def formatted_uuid_to_json(
@@ -36,4 +40,4 @@ def formatted_uuid_to_json(
     if ctx.is_v0():
         return uuid
     else:
-        return {"@id": uuid_to_jsonld(uuid)}
+        return {"@id": uuid}
