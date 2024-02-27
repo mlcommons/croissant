@@ -102,7 +102,7 @@ class Operation(abc.ABC):
 
     def __repr__(self):
         """Prints a simplified string representation of the operation."""
-        return f"{type(self).__name__}({self.node.name})"
+        return f"{type(self).__name__}({self.node.uuid})"
 
     def __rrshift__(
         self, left_operations: Operation | list[Operation] | None
