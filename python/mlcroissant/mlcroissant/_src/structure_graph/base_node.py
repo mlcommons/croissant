@@ -12,6 +12,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import generate_uuid
+from mlcroissant._src.core.uuid import Uuid
 
 ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_ID_LENGTH = 255
@@ -38,12 +39,14 @@ class Node(abc.ABC):
     """
 
     ctx: Context = dataclasses.field(default_factory=Context)
-    id: str = dataclasses.field(default_factory=generate_uuid)
+    id: str | Uuid = dataclasses.field(default_factory=generate_uuid)
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
         """Checks for common properties between all nodes."""
+        if not isinstance(self.id, Uuid):
+            self.id = Uuid(uuid=self.uuid, ctx=self.ctx)
         self.assert_has_mandatory_properties("name", "id")
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):
@@ -143,7 +146,7 @@ class Node(abc.ABC):
                 return self.name
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
-            return self.id
+            return self.id if isinstance(self.id, str) else self.id.uuid  # type: ignore[return-value]
 
     @property
     def parent(self) -> Node | None:

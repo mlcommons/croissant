@@ -9,6 +9,7 @@ from typing import Any, Mapping
 from etils import epath
 import networkx as nx
 
+from mlcroissant._src.core.constants import BASE_IRI
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.rdf import Rdf
 
@@ -75,10 +76,13 @@ class Context:
     )
     conforms_to: CroissantVersion = CroissantVersion.V_1_0
     is_live_dataset: bool | None = None
+    base_iri: str = BASE_IRI
 
     def __post_init__(self):
         """Standardizes conforms_to."""
         self.conforms_to = CroissantVersion.from_jsonld(self, self.conforms_to)
+        if "@base" in self.rdf.context:
+            self.base_iri = self.rdf.context["@base"]
 
     def copy(self, **changes) -> Context:
         """Copies and replaces all changes."""

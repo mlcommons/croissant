@@ -99,6 +99,7 @@ def test_extract_lines(separator):
         with open(path, "wb") as f:
             f.write(content)
 
+        ctx = Context(conforms_to=CroissantVersion.V_1_0)
         # Create all needed nodes.
         distribution = [
             FileObject(
@@ -116,7 +117,9 @@ def test_extract_lines(separator):
                 id="main/line",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    id="file_id", extract=Extract(file_property=FileProperty.lines)
+                    id="file_id",
+                    extract=Extract(file_property=FileProperty.lines),
+                    ctx=ctx,
                 ),
             )
         )
@@ -128,6 +131,7 @@ def test_extract_lines(separator):
                 source=Source(
                     id="file_id",
                     extract=Extract(file_property=FileProperty.lineNumbers),
+                    ctx=ctx,
                 ),
             )
         )
@@ -140,6 +144,7 @@ def test_extract_lines(separator):
                     id="file_id",
                     extract=Extract(file_property=FileProperty.filepath),
                     transforms=[Transform(regex=".*\\/(\\w*)\\.txt")],
+                    ctx=ctx,
                 ),
             )
         )
@@ -147,8 +152,8 @@ def test_extract_lines(separator):
             mock_check_joins.return_value = True
             record_set = RecordSet(name="main", id="main", fields=fields)
             record_sets = [record_set]
-            ctx = Context(conforms_to=CroissantVersion.V_1_0)
-            Metadata(
+
+            m = Metadata(
                 ctx=ctx,
                 name="metadata",
                 url="url.com",

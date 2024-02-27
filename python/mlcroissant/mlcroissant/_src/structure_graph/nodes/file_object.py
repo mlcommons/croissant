@@ -12,7 +12,7 @@ from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import Uuid
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
@@ -60,7 +60,7 @@ class FileObject(Node):
             "md5": self.md5,
             "sameAs": unbox_singleton_list(self.same_as),
             "sha256": self.sha256,
-            "source": self.source.to_json(ctx=self.ctx) if self.source else None,
+            "source": self.source.to_json() if self.source else None,
         })
 
     @classmethod
@@ -80,7 +80,9 @@ class FileObject(Node):
             file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
         )
         if contained_in is not None and not ctx.is_v0():
-            contained_in = [uuid_from_jsonld(source) for source in contained_in]
+            contained_in = [
+                Uuid.from_jsonld(source, ctx=ctx).uuid for source in contained_in
+            ]
         content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
         encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
@@ -96,5 +98,5 @@ class FileObject(Node):
             same_as=box_singleton_list(file_object.get(constants.SCHEMA_ORG_SAME_AS)),
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
-            id=uuid_from_jsonld(file_object),
+            id=Uuid.from_jsonld(file_object, ctx=ctx),
         )

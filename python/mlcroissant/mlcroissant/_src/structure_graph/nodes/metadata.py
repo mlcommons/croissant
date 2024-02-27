@@ -25,7 +25,7 @@ from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
-from mlcroissant._src.core.uuid import uuid_from_jsonld
+from mlcroissant._src.core.uuid import Uuid
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
@@ -387,7 +387,7 @@ class Metadata(Node):
             publisher=publisher,
             record_sets=record_sets,
             same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
-            id=uuid_from_jsonld(metadata),
+            id=Uuid.from_jsonld(metadata, ctx=ctx),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )
