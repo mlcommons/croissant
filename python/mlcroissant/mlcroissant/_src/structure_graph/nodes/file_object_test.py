@@ -72,7 +72,10 @@ def test_from_jsonld(encoding):
     ctx.mapping = {"file1": epath.Path("~/Downloads/file1.csv")}
     file_object = FileObject.from_jsonld(ctx, jsonld)
     assert file_object.name == "foo"
-    assert file_object.id == "foo_id"
+    if ctx.is_v0():
+        assert file_object.uuid == "foo"
+    else:
+        assert file_object.uuid == "foo_id"
     assert file_object.description == "bar"
     assert file_object.content_url == "https://mlcommons.org"
     assert file_object.encoding_format == encoding
