@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} - Croissant 🥐</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Expected type</th>
+            <th>Cardinality</th>
+            <th>Description</th>
+        </tr>
+    {% for field in fields %}
+        <tr>
+            <td><a href="{{ field.url.url }}">{{ field.url.name }}</a></td>
+            <td>
+                {% for input_type in field.input_types %}
+                <a href="{{ input_type.url }}">{{ input_type.name }}</a>
+                {% endfor %}
+            </td>
+            <td>{{ field.cardinality }}</td>
+            <td>{{ field.description }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
