@@ -146,7 +146,7 @@ class Node(abc.ABC):
                 return self.name
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
-            return self.id if isinstance(self.id, str) else self.id.uuid  # type: ignore[return-value]
+            return self.id.uuid if isinstance(self.id, Uuid) else self.id  # type: ignore[return-value]
 
     @property
     def parent(self) -> Node | None:
