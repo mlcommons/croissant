@@ -113,9 +113,6 @@ class Metadata(Node):
     version: str | None = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
-    # RAI field - Involves understanding the potential risks associated with data usage
-    # and to prevent unintended and potentially harmful consequences that may arise from
-    # using models trained on or evaluated with the respective data.
     data_collection: str | None = None
     data_collection_type: str | None = None
     data_collection_type_others: str | None = None

@@ -6,6 +6,7 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
@@ -29,7 +30,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "rai": "http://mlcommons.org/croissant/RAI/",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
