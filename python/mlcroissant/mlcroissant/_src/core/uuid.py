@@ -18,6 +18,8 @@ def uuid_from_jsonld(jsonld: Json | None) -> str:
     if isinstance(jsonld, dict):
         uuid = jsonld.get("@id")
         return uuid_from_jsonld(uuid)
+    elif isinstance(jsonld, list):
+        return [uuid_from_jsonld(uuid) for uuid in jsonld]
     elif isinstance(jsonld, str):
         return uuid_to_jsonld(jsonld)
     return generate_uuid()
