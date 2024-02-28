@@ -12,15 +12,15 @@ from mlcroissant._src.core.types import Json
 class Uuid:
     """Unique identifiers used in Croissant."""
 
-    uuid: None | str
     ctx: Context
+    uuid: None | str
 
     def __post_init__(self):
         """Cleanup uuid."""
         self.uuid = self.to_jsonld()
 
     @classmethod
-    def from_jsonld(cls, jsonld: Json | None, ctx: Context) -> "Uuid":
+    def from_jsonld(cls, ctx: Context, jsonld: Json | None) -> "Uuid":
         """Retrieves uuid from a JSON-LD fragment. If no uuid, it will generate one."""
         if isinstance(jsonld, dict):
             uuid = jsonld.get("@id")

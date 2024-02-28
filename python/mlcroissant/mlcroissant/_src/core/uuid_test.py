@@ -25,7 +25,7 @@ import mlcroissant._src.core.uuid as uuid_lib
 )
 def test_uuid_from_jsonld(input_uuid, output, base_iri):
     ctx = Context(base_iri=base_iri)
-    uuid = uuid_lib.Uuid.from_jsonld(jsonld=input_uuid, ctx=ctx)
+    uuid = uuid_lib.Uuid.from_jsonld(ctx=ctx, jsonld=input_uuid)
     assert uuid.uuid == output
 
 
@@ -45,7 +45,7 @@ def test_uuid_from_none_jsonld(
     mock_uuid_lib_generate_uuid.return_value = "123456"
     ctx = Context()
     ctx.rdf.context["@base"] = base_iri
-    uuid = uuid_lib.Uuid.from_jsonld(jsonld=input_uuid, ctx=ctx)
+    uuid = uuid_lib.Uuid.from_jsonld(ctx=ctx, jsonld=input_uuid)
     assert uuid.uuid == output
 
 
@@ -55,7 +55,7 @@ def test_uuid_from_none_jsonld(
 def test_uuid_to_jsonld(input_uuid, output):
     ctx = Context()
     ctx.rdf.context["@base"] = BASE_IRI
-    uuid = uuid_lib.Uuid(uuid=input_uuid, ctx=ctx)
+    uuid = uuid_lib.Uuid(ctx=ctx, uuid=input_uuid)
     assert uuid.to_jsonld() == output
 
 
@@ -69,5 +69,5 @@ def test_uuid_to_jsonld(input_uuid, output):
 def test_formatted_uuid_to_json(conforms_to, uuid, output):
     ctx = Context(conforms_to=conforms_to)
     ctx.rdf.context["@base"] = BASE_IRI
-    uuid = uuid_lib.Uuid(uuid=uuid, ctx=ctx)
+    uuid = uuid_lib.Uuid(ctx=ctx, uuid=uuid)
     assert uuid.formatted_uuid_to_json() == output

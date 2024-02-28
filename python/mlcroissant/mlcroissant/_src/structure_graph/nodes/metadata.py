@@ -387,7 +387,7 @@ class Metadata(Node):
             publisher=publisher,
             record_sets=record_sets,
             same_as=box_singleton_list(metadata.get(constants.SCHEMA_ORG_SAME_AS)),
-            id=Uuid.from_jsonld(metadata, ctx=ctx),
+            id=Uuid.from_jsonld(ctx=ctx, jsonld=metadata),
             url=url,
             version=metadata.get(constants.SCHEMA_ORG_VERSION),
         )

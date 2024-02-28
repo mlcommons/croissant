@@ -46,7 +46,7 @@ class Node(abc.ABC):
     def __post_init__(self):
         """Checks for common properties between all nodes."""
         if not isinstance(self.id, Uuid):
-            self.id = Uuid(uuid=self.uuid, ctx=self.ctx)
+            self.id = Uuid(ctx=self.ctx, uuid=self.uuid)
         self.assert_has_mandatory_properties("name", "id")
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):

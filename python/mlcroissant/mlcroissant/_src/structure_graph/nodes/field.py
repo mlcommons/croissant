@@ -184,5 +184,5 @@ class Field(Node):
             repeated=repeated,
             source=source,
             sub_fields=sub_fields,
-            id=Uuid.from_jsonld(field, ctx=ctx),
+            id=Uuid.from_jsonld(ctx=ctx, jsonld=field),
         )

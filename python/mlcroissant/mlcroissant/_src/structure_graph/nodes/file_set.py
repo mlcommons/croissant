@@ -66,7 +66,7 @@ class FileSet(Node):
         )
         if contained_in is not None and not ctx.is_v0():
             contained_in = [
-                Uuid.from_jsonld(source, ctx=ctx).uuid for source in contained_in
+                Uuid.from_jsonld(ctx=ctx, jsonld=source).uuid for source in contained_in
             ]
 
         return cls(
@@ -81,5 +81,5 @@ class FileSet(Node):
                 file_set.get(constants.ML_COMMONS_INCLUDES(ctx))
             ),
             name=file_set.get(constants.SCHEMA_ORG_NAME, ""),
-            id=Uuid.from_jsonld(file_set, ctx=ctx),
+            id=Uuid.from_jsonld(ctx=ctx, jsonld=file_set),
         )

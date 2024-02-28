@@ -31,7 +31,7 @@ def test_checks_are_performed():
 def test_from_jsonld(conforms_to):
     ctx = Context(conforms_to=conforms_to)
     ctx.rdf.context["@base"] = constants.BASE_IRI
-    uuid = Uuid(uuid="some.zip", ctx=ctx)
+    uuid = Uuid(ctx=ctx, uuid="some.zip")
     contained_in = uuid.formatted_uuid_to_json()
     jsonld = {
         "@type": constants.SCHEMA_ORG_FILE_SET(ctx),

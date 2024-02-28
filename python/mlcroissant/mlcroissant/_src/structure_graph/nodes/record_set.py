@@ -108,7 +108,7 @@ class RecordSet(Node):
             key=key,
             fields=fields,
             name=record_set_name,
-            id=Uuid.from_jsonld(record_set, ctx=ctx),
+            id=Uuid.from_jsonld(ctx=ctx, jsonld=record_set),
         )
 
     def check_joins_in_fields(self):

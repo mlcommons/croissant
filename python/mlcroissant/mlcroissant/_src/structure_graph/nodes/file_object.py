@@ -81,7 +81,7 @@ class FileObject(Node):
         )
         if contained_in is not None and not ctx.is_v0():
             contained_in = [
-                Uuid.from_jsonld(source, ctx=ctx).uuid for source in contained_in
+                Uuid.from_jsonld(ctx=ctx, jsonld=source).uuid for source in contained_in
             ]
         content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
         description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
@@ -98,5 +98,5 @@ class FileObject(Node):
             same_as=box_singleton_list(file_object.get(constants.SCHEMA_ORG_SAME_AS)),
             sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
             source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
-            id=Uuid.from_jsonld(file_object, ctx=ctx),
+            id=Uuid.from_jsonld(ctx=ctx, jsonld=file_object),
         )

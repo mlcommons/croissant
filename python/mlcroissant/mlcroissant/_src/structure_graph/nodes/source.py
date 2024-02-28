@@ -199,7 +199,7 @@ class Source:
     def __post_init__(self):
         """Converts input string to `self.id` to a `Uuid` object."""
         if not isinstance(self.id, Uuid):
-            self.id = Uuid(uuid=self.id, ctx=self.ctx)
+            self.id = Uuid(ctx=self.ctx, uuid=self.id)
 
     def to_json(self) -> Json:
         """Converts the `Source` to JSON."""
@@ -253,7 +253,7 @@ class Source:
                     node_types = ["fileObject", "fileSet", "field"]
                 uuid, node_type = _find_choice(uuids, node_types)
                 if isinstance(uuid, dict):
-                    uuid = Uuid.from_jsonld(uuid, ctx=ctx)
+                    uuid = Uuid.from_jsonld(ctx=ctx, jsonld=uuid)
 
                 if uuid is None or node_type is None:
                     uuid = None
