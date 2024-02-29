@@ -10,7 +10,7 @@ from etils import epath
 from rdflib import term
 
 import mlcroissant as mlc
-from mlcroissant._src.structure_graph.nodes.file_object import jsonld_fields
+from mlcroissant._src.core.dataclasses import jsonld_fields
 
 flags.DEFINE_string(
     "output",
@@ -51,7 +51,7 @@ def documentation(output: epath.Path):
     loader = FileSystemLoader(epath.Path(__file__).parent / "templates")
     env = Environment(loader=loader)
     ctx = mlc.Context()
-    for cls in [mlc.FileObject]:
+    for cls in [mlc.FileObject, mlc.FileSet, mlc.RecordSet]:
         fields = []
         for field in jsonld_fields(cls):
             url = field.call_url(ctx)

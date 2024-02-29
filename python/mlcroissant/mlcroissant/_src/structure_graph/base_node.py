@@ -288,7 +288,7 @@ class NodeV2(Node):
             key = url.split("/")[-1]
             value = getattr(self, field.name)
             value = field.call_to_jsonld(self.ctx, value)
-            if field.cardinality == "MANY":
+            if field.cardinality == "MANY" and field.name != "fields":
                 value = unbox_singleton_list(value)
             jsonld[key] = value
         return remove_empty_values(jsonld)
@@ -313,3 +313,8 @@ class NodeV2(Node):
             id=uuid_from_jsonld(jsonld),
             **kwargs,
         )
+
+    @classmethod
+    def _JSONLD_TYPE(cls, ctx: Context):
+        del ctx
+        raise NotImplementedError("Output the right JSON-LD type.")

@@ -22,6 +22,7 @@ dataclasses.Field = JsonldField  # type: ignore
 class FileSet(NodeV2):
     """Nodes to describe a dataset FileSet (distribution)."""
 
+    # pytype: disable=annotation-type-mismatch
     contained_in: list[str] | None = jsonld_field(
         cardinality="MANY",
         default_factory=list,
@@ -74,6 +75,7 @@ class FileSet(NodeV2):
         input_types=[SDO.Text],
         url=SDO.name,
     )
+    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""
