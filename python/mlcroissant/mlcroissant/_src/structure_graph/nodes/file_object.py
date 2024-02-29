@@ -3,34 +3,119 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any
+
+from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.constants import ML_COMMONS
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
+from mlcroissant._src.core.dataclasses import jsonld_field
+from mlcroissant._src.core.dataclasses import jsonld_fields
+from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
+
+OriginalField = dataclasses.Field
+dataclasses.Field = JsonldField  # type: ignore
 
 
 @dataclasses.dataclass(eq=False, repr=False)
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    content_url: str | None = None
-    content_size: str | None = None
-    contained_in: list[str] | None = None
-    description: str | None = None
-    encoding_format: str | None = None
-    md5: str | None = None
-    name: str = ""
-    same_as: list[str] | None = None
-    sha256: str | None = None
-    source: Source | None = None
+    # pytype: disable=annotation-type-mismatch
+    content_url: str | None = jsonld_field(
+        default=None,
+        description=(
+            "Actual bytes of the media object, for example the image file or"
+            " video file."
+        ),
+        input_types=[SDO.URL],
+        url=SDO.contentUrl,
+    )
+    content_size: str | None = jsonld_field(
+        default=None,
+        description=(
+            "File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is"
+            " not specified."
+        ),
+        input_types=[SDO.Text],
+        url=SDO.contentSize,
+    )
+    contained_in: list[str] | None = jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "Another FileObject or FileSet that this one is contained in, e.g.,"
+            " in the case of a file extracted from an archive. When this"
+            " property is present, the contentUrl is evaluated as a relative"
+            " path within the container object"
+        ),
+        from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
+        input_types=[SDO.Text],
+        to_jsonld=lambda ctx, contained_in: [
+            formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
+        ],
+        url=SDO.containedIn,
+    )
+    description: str | None = jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=SDO.description,
+    )
+    encoding_format: str | None = jsonld_field(
+        default=None,
+        description="The format of the file, given as a mime type.",
+        input_types=[SDO.Text],
+        required=True,
+        url=SDO.encodingFormat,
+    )
+    md5: str | None = jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=lambda ctx: ML_COMMONS(ctx).md5,
+    )
+    name: str = jsonld_field(
+        default=None,
+        description=(
+            "The name of the file.  As much as possible, the name should"
+            " reflect the name of the file as downloaded, including the file"
+            " extension. e.g. “images.zip”."
+        ),
+        input_types=[SDO.Text],
+        required=True,
+        url=SDO.name,
+    )
+    same_as: list[str] | None = jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "URL (or local name) of a FileObject with the same content, but in"
+            " a different format."
+        ),
+        input_types=[SDO.URL],
+        url=SDO.sameAs,
+    )
+    sha256: str | None = jsonld_field(
+        cardinality="ONE",
+        default=None,
+        description="Checksum for the file contents.",
+        input_types=[SDO.Text],
+        url=SDO.sha256,
+    )
+    source: Source | None = jsonld_field(
+        default=None,
+        input_types=[Source],
+        url=lambda ctx: ML_COMMONS(ctx).source,
+    )
+    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -41,60 +126,50 @@ class FileObject(Node):
             if self.ctx and not self.ctx.is_live_dataset:
                 self.assert_has_exclusive_properties(["md5", "sha256"])
 
+    @classmethod
+    def _JSONLD_TYPE(cls, ctx: Context):
+        """Gets the class' JSON-LD @type."""
+        return constants.SCHEMA_ORG_FILE_OBJECT(ctx)
+
+    # [Proposal] This method would move to `Node`, as it's now generic.
     def to_json(self) -> Json:
         """Converts the `FileObject` to JSON."""
-        contained_in: Any = self.contained_in
-        if not self.ctx.is_v0() and contained_in:
-            contained_in = [{"@id": uuid} for uuid in contained_in]
-        contained_in = unbox_singleton_list(contained_in)
+        cls = self.__class__
+        jsonld = {
+            "@type": self.ctx.rdf.shorten_value(cls._JSONLD_TYPE(self.ctx)),
+            "@id": None if self.ctx.is_v0() else self.id,
+        }
+        for field in jsonld_fields(self):
+            url = field.call_url(self.ctx)
+            key = url.split("/")[-1]
+            value = getattr(self, field.name)
+            value = field.call_to_jsonld(self.ctx, value)
+            if field.cardinality == "MANY":
+                value = unbox_singleton_list(value)
+            jsonld[key] = value
+        return remove_empty_values(jsonld)
 
-        return remove_empty_values({
-            "@type": "sc:FileObject" if self.ctx.is_v0() else "cr:FileObject",
-            "@id": None if self.ctx.is_v0() else self.uuid,
-            "name": self.name,
-            "description": self.description,
-            "contentSize": self.content_size,
-            "contentUrl": self.content_url,
-            "containedIn": contained_in,
-            "encodingFormat": self.encoding_format,
-            "md5": self.md5,
-            "sameAs": unbox_singleton_list(self.same_as),
-            "sha256": self.sha256,
-            "source": self.source.to_json(ctx=self.ctx) if self.source else None,
-        })
-
+    # [Proposal] This method would move to `Node`, as it's now generic.
     @classmethod
-    def from_jsonld(
-        cls,
-        ctx: Context,
-        file_object: Json,
-    ) -> FileObject:
+    def from_jsonld(cls, ctx: Context, jsonld: Json) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(
-            ctx.issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT(ctx)
-        )
-        content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
-        name = file_object.get(constants.SCHEMA_ORG_NAME, "")
-
-        contained_in = box_singleton_list(
-            file_object.get(constants.SCHEMA_ORG_CONTAINED_IN)
-        )
-        if contained_in is not None and not ctx.is_v0():
-            contained_in = [uuid_from_jsonld(source) for source in contained_in]
-        content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
-        description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
-        encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
+        check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
+        kwargs = {}
+        for field in jsonld_fields(cls):
+            url = field.call_url(ctx)
+            value = jsonld.get(url)
+            value = field.call_from_jsonld(ctx, value)
+            if field.cardinality == "MANY":
+                value = box_singleton_list(value)
+            if value:
+                kwargs[field.name] = value
+        # Normalize name to be at least an empty str:
+        kwargs["name"] = kwargs.get("name", "")
         return cls(
             ctx=ctx,
-            content_url=content_url,
-            content_size=content_size,
-            contained_in=contained_in,
-            description=description,
-            encoding_format=encoding_format,
-            md5=file_object.get(constants.SCHEMA_ORG_MD5(ctx)),
-            name=name,
-            same_as=box_singleton_list(file_object.get(constants.SCHEMA_ORG_SAME_AS)),
-            sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
-            source=file_object.get(constants.ML_COMMONS_SOURCE(ctx)),
-            id=uuid_from_jsonld(file_object),
+            id=uuid_from_jsonld(jsonld),
+            **kwargs,
         )
+
+
+dataclasses.Field = OriginalField  # type: ignore
