@@ -218,12 +218,12 @@ class Node(abc.ABC):
     def validate_name(self):
         """Validates the name."""
         name = self.name
+        if not isinstance(name, str):
+            self.add_error(f"The name should be a string. Got: {type(name)}.")
+            return
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
             # is a mandatory parameter for Croissant 0.8
-            return
-        if not isinstance(name, str):
-            self.add_error(f"The name should be a string. Got: {type(name)}.")
             return
         # For Croissant >= 1.0 compliant datasets, we don't enforce any more constraints
         # on names.
