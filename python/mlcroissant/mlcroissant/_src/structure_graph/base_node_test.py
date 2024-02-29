@@ -4,6 +4,8 @@ import dataclasses
 
 import pytest
 
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph import base_node
 from mlcroissant._src.tests.nodes import create_test_node
 
@@ -33,11 +35,12 @@ def test_there_exists_at_least_one_property():
 
 
 @pytest.mark.parametrize(
-    ["name", "expected_errors"],
+    ["name", "expected_errors", "conforms_to"],
     [
         [
             "a-regular-id",
             [],
+            CroissantVersion.V_0_8,
         ],
         [
             "a" * 256,
@@ -46,25 +49,36 @@ def test_there_exists_at_least_one_property():
                 ' "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"'
                 " is too long (>255 characters)."
             ],
+            CroissantVersion.V_0_8,
         ],
         [
             "this is not valid",
             ['The name "this is not valid" contains forbidden characters.'],
+            CroissantVersion.V_0_8,
         ],
         [
             {"not": {"a": {"string"}}},
             ["The name should be a string. Got: <class 'dict'>."],
+            CroissantVersion.V_1_0,
         ],
     ],
 )
-def test_validate_name(name, expected_errors):
-    node = create_test_node(
-        Node,
-        name=name,
-    )
+def test_validate_name(name, expected_errors, conforms_to):
+    node = create_test_node(Node, name=name, ctx=Context(conforms_to=conforms_to))
     node.validate_name()
     for expected_error, error in zip(expected_errors, node.ctx.issues.errors):
         assert expected_error in error
+
+
+def test_validate_name_1_0():
+    node = create_test_node(
+        Node, name="this is not valid", ctx=Context(conforms_to=CroissantVersion.V_1_0)
+    )
+    node.validate_name()
+    assert (
+        'The name "this is not valid" contains forbidden characters.'
+        not in node.ctx.issues.errors
+    )
 
 
 def test_eq():

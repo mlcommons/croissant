@@ -25,7 +25,8 @@ def test_checks_are_performed():
     ) as optional_mock, mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock:
-        create_test_node(Metadata, name="field_name")
+        ctx = Context(conforms_to=CroissantVersion.V_0_8)
+        create_test_node(Metadata, name="field_name", id="field_id", ctx=ctx)
         mandatory_mock.assert_called_once_with("name")
         optional_mock.assert_called_once_with(
             "cite_as", "date_published", "license", "version"
@@ -128,13 +129,16 @@ def test_valid_version(version, expected_version):
 
 def test_issues_in_metadata_are_shared_with_children():
     with pytest.raises(ValidationError, match="is mandatory, but does not exist"):
+        ctx = Context(conforms_to=CroissantVersion.V_0_8)
         Metadata(
             name="name",
             description="description",
             url="https://mlcommons.org",
             version="1.0.0",
             # We did not specify the RecordSet's name. Hence the exception above:
-            record_sets=[RecordSet(id="record-set", description="description")],
+            record_sets=[
+                RecordSet(id="record-set", description="description", ctx=ctx)
+            ],
         )
 
 
