@@ -15,7 +15,7 @@ from mlcroissant._src.tests.nodes import create_test_node
 
 @pytest.mark.parametrize(
     ["conforms_to", "field_uuid"],
-    [[CroissantVersion.V_0_8, "name"]],  # , [CroissantVersion.V_1_0, "id"]],
+    [[CroissantVersion.V_0_8, "name"], [CroissantVersion.V_1_0, "id"]],
 )
 def test_checks_are_performed(conforms_to, field_uuid):
     with mock.patch.object(
