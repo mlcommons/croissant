@@ -26,6 +26,7 @@ def get_error_msg(folder: epath.Path):
         # Distribution.
         "distribution_bad_contained_in",
         "distribution_bad_type",
+        "distribution_missing_encoding_format",
         "distribution_missing_property_content_url",
         # Metadata.
         "metadata_bad_type",
