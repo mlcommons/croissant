@@ -38,7 +38,7 @@ class Node(abc.ABC):
     """
 
     ctx: Context = dataclasses.field(default_factory=Context)
-    id: str = ""  # dataclasses.field(default_factory=generate_uuid)
+    id: str = dataclasses.field(default_factory=generate_uuid)
     name: str = ""
     parents: list[Node] = dataclasses.field(default_factory=list)
 
