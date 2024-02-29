@@ -182,57 +182,55 @@ class Metadata(Node):
             if context["@base"] == constants.BASE_IRI:
                 context.pop("@base")
 
-        return remove_empty_values(
-            {
-                "@context": self.ctx.rdf.context,
-                "@type": "sc:Dataset",
-                "name": self.name,
-                "conformsTo": conforms_to,
-                "description": self.description,
-                "creator": PersonOrOrganization.to_json(self.creators),
-                "dateCreated": from_datetime_to_str(self.date_created),
-                "dateModified": from_datetime_to_str(self.date_modified),
-                "datePublished": from_datetime_to_str(self.date_published),
-                #  RAI extension
-                "rai:dataCollection": self.data_collection,
-                "rai:dataCollectionType": self.data_collection_type,
-                "rai:dataCollectionTypeOthers": self.data_collection_type_others,
-                "rai:dataCollectionMissing": self.data_collection_missing,
-                "rai:dataCollectionRaw": self.data_collection_raw,
-                "rai:dataCollectionTimeFrameStart": from_datetime_to_str(
-                    self.data_collection_timeframe_start
-                ),
-                "rai:dataCollectionTimeFrameEnd": from_datetime_to_str(
-                    self.data_collection_timeframe_end
-                ),
-                "rai:dataPreprocessingImputation": self.data_preprocessing_imputation,
-                "rai:dataPreprocessingProtocol": self.data_preprocessing_protocol,
-                "rai:dataPreprocessingManipulation": self.data_preprocessing_manipulation,
-                "rai:dataAnnotationProtocol": self.data_annotation_protocol,
-                "rai:dataAnnotationPlatform": self.data_annotation_platform,
-                "rai:dataAnnotationAnalysis": self.data_annotation_analysis,
-                "rai:dataAnnotationPerItem": self.data_annotation_peritem,
-                "rai:dataAnnotationDemographics": self.data_annotation_demographics,
-                "rai:dataAnnotationTools": self.data_annotation_tools,
-                "rai:dataBiases": self.data_biases,
-                "rai:dataUseCases": self.data_usecases,
-                "rai:dataLimitations": self.data_limitation,
-                "rai:dataSocialImpact": self.data_social_impact,
-                "rai:dataSensitive": self.data_sensitive,
-                "rai:dataMaintenance": self.data_maintenance,
-                "citation": self.cite_as if self.ctx.is_v0() else None,
-                "citeAs": None if self.ctx.is_v0() else self.cite_as,
-                "isLiveDataset": self.is_live_dataset,
-                "keywords": unbox_singleton_list(self.keywords),
-                "license": unbox_singleton_list(self.license),
-                "publisher": PersonOrOrganization.to_json(self.publisher),
-                "url": self.url,
-                "sameAs": unbox_singleton_list(self.same_as),
-                "version": self.version,
-                "distribution": [f.to_json() for f in self.distribution],
-                "recordSet": [record_set.to_json() for record_set in self.record_sets],
-            }
-        )
+        return remove_empty_values({
+            "@context": self.ctx.rdf.context,
+            "@type": "sc:Dataset",
+            "name": self.name,
+            "conformsTo": conforms_to,
+            "description": self.description,
+            "creator": PersonOrOrganization.to_json(self.creators),
+            "dateCreated": from_datetime_to_str(self.date_created),
+            "dateModified": from_datetime_to_str(self.date_modified),
+            "datePublished": from_datetime_to_str(self.date_published),
+            #  RAI extension
+            "rai:dataCollection": self.data_collection,
+            "rai:dataCollectionType": self.data_collection_type,
+            "rai:dataCollectionTypeOthers": self.data_collection_type_others,
+            "rai:dataCollectionMissing": self.data_collection_missing,
+            "rai:dataCollectionRaw": self.data_collection_raw,
+            "rai:dataCollectionTimeFrameStart": from_datetime_to_str(
+                self.data_collection_timeframe_start
+            ),
+            "rai:dataCollectionTimeFrameEnd": from_datetime_to_str(
+                self.data_collection_timeframe_end
+            ),
+            "rai:dataPreprocessingImputation": self.data_preprocessing_imputation,
+            "rai:dataPreprocessingProtocol": self.data_preprocessing_protocol,
+            "rai:dataPreprocessingManipulation": self.data_preprocessing_manipulation,
+            "rai:dataAnnotationProtocol": self.data_annotation_protocol,
+            "rai:dataAnnotationPlatform": self.data_annotation_platform,
+            "rai:dataAnnotationAnalysis": self.data_annotation_analysis,
+            "rai:dataAnnotationPerItem": self.data_annotation_peritem,
+            "rai:dataAnnotationDemographics": self.data_annotation_demographics,
+            "rai:dataAnnotationTools": self.data_annotation_tools,
+            "rai:dataBiases": self.data_biases,
+            "rai:dataUseCases": self.data_usecases,
+            "rai:dataLimitations": self.data_limitation,
+            "rai:dataSocialImpact": self.data_social_impact,
+            "rai:dataSensitive": self.data_sensitive,
+            "rai:dataMaintenance": self.data_maintenance,
+            "citation": self.cite_as if self.ctx.is_v0() else None,
+            "citeAs": None if self.ctx.is_v0() else self.cite_as,
+            "isLiveDataset": self.is_live_dataset,
+            "keywords": unbox_singleton_list(self.keywords),
+            "license": unbox_singleton_list(self.license),
+            "publisher": PersonOrOrganization.to_json(self.publisher),
+            "url": self.url,
+            "sameAs": unbox_singleton_list(self.same_as),
+            "version": self.version,
+            "distribution": [f.to_json() for f in self.distribution],
+            "recordSet": [record_set.to_json() for record_set in self.record_sets],
+        })
 
     @property
     def file_objects(self) -> list[FileObject]:
