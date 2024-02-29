@@ -183,7 +183,7 @@ class Metadata(Node):
                 context.pop("@base")
 
         return remove_empty_values({
-            "@context": self.ctx.rdf.context,
+            "@context": context,
             "@type": "sc:Dataset",
             "name": self.name,
             "conformsTo": conforms_to,
