@@ -66,6 +66,7 @@ def test_there_exists_at_least_one_property():
 def test_validate_name(name, expected_errors, conforms_to):
     node = create_test_node(Node, name=name, ctx=Context(conforms_to=conforms_to))
     node.validate_name()
+    assert node.ctx.issues.errors
     for expected_error, error in zip(expected_errors, node.ctx.issues.errors):
         assert expected_error in error
 
@@ -75,10 +76,7 @@ def test_validate_name_1_0():
         Node, name="this is not valid", ctx=Context(conforms_to=CroissantVersion.V_1_0)
     )
     node.validate_name()
-    assert (
-        'The name "this is not valid" contains forbidden characters.'
-        not in node.ctx.issues.errors
-    )
+    assert not node.ctx.issues.errors
 
 
 def test_eq():
