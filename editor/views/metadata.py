@@ -17,6 +17,7 @@ def render_metadata():
     with col2.expander("", expanded=True):
         st.info("**Instructions to fill metadata attributes**.")
 
+
 def _render_generic_metadata(metadata: Metadata):
     """Renders all non-RAI generic metadata."""
     index = find_license_index(metadata.license)
