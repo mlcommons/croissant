@@ -59,7 +59,7 @@
       "contentSize": "13510573713 B",
       "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": "sha256"
+      "sha256": "247c711a14321253a4f48a9d55b41f3edd86d036dbe2e16204b52097404f035f"
     },
     {
       "@type": "cr:FileObject",
@@ -68,7 +68,7 @@
       "contentSize": "6645013297 B",
       "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": "sha256"
+      "sha256": "75b1f410f3f97018dcad8125dda2ed6fb29b3b7f93bb1572ce5c06b978cedbe1"
     },
     {
       "@type": "cr:FileObject",
@@ -77,7 +77,7 @@
       "contentSize": "6660437059 B",
       "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
       "encodingFormat": "application/zip",
-      "sha256": "sha256"
+      "sha256": "5a50903f84047d7f7fd194bec59f84e67aa9ef0e5ff28b2014659e5b08a5a14a"
     },
     {
       "@type": "cr:FileSet",
