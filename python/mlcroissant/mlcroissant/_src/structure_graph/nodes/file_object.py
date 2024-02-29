@@ -23,13 +23,14 @@ from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 OriginalField = dataclasses.Field
-dataclasses.Field = JsonldField
+dataclasses.Field = JsonldField  # type: ignore
 
 
 @dataclasses.dataclass(eq=False, repr=False)
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
+    # pytype: disable=annotation-type-mismatch
     content_url: str | None = jsonld_field(
         default=None,
         description=(
@@ -114,6 +115,7 @@ class FileObject(Node):
         input_types=[Source],
         url=lambda ctx: ML_COMMONS(ctx).source,
     )
+    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -151,7 +153,7 @@ class FileObject(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Json) -> FileObject:
         """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(ctx, jsonld, cls._JSONLD_TYPE(ctx))
+        check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
         kwargs = {}
         for field in jsonld_fields(cls):
             url = field.call_url(ctx)
@@ -170,4 +172,4 @@ class FileObject(Node):
         )
 
 
-dataclasses.Field = OriginalField
+dataclasses.Field = OriginalField  # type: ignore

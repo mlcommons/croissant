@@ -1,6 +1,5 @@
 """Generates the dataset and yields the first example."""
 
-import dataclasses
 import datetime
 from typing import TypedDict
 
@@ -12,9 +11,6 @@ from rdflib import term
 
 import mlcroissant as mlc
 from mlcroissant._src.structure_graph.nodes.file_object import jsonld_fields
-from mlcroissant._src.structure_graph.nodes.file_object import JsonldField
-
-dataclasses.Field = JsonldField
 
 flags.DEFINE_string(
     "output",

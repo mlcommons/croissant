@@ -23,7 +23,7 @@ class JsonldField(dataclasses.Field):
         input_types: list[Any],
         to_jsonld: Callable[[Context, Json], Any] | None,
         required: bool,
-        url: term.URIRef | Callable[[Context], term.URIRef] | None,
+        url: term.URIRef | Callable[[Context], term.URIRef],
     ):
         """Sets all args and kwargs."""
         super().__init__(*args)
@@ -44,7 +44,7 @@ class JsonldField(dataclasses.Field):
 
     def call_to_jsonld(self, ctx: Context, value: Any):
         """Calls `to_jsonld` in the field."""
-        if value and self.from_jsonld:
+        if value and self.to_jsonld:
             return self.to_jsonld(ctx, value)
         else:
             return value
@@ -52,9 +52,7 @@ class JsonldField(dataclasses.Field):
     def call_url(self, ctx: Context) -> term.URIRef:
         """Calls `jsonld` in the field."""
         url = self.url
-        if url is None:
-            return None
-        elif isinstance(url, term.URIRef):
+        if isinstance(url, term.URIRef):
             return url
         else:
             return url(ctx)
@@ -85,6 +83,8 @@ def jsonld_field(
         raise ValueError("cannot specify both default and default_factory")
     if not input_types or not isinstance(input_types, list):
         raise ValueError(f"input type should be a non-empty list. Got: {input_types}")
+    if not url:
+        raise ValueError(f"Provide a url. Got: {url}")
     return JsonldField(
         default,
         default_factory,
