@@ -4,12 +4,11 @@ A simple visual croissant explorer to find and discover datasets from the croiss
 
 Starting with openml as a reference example using the the data from the health crawl dump.
 
+A maybe (; running live demo can be found here http://3.71.4.61:8050/
+
 In the notebook we show how to prepare croissant metadata for projection into an embedding space which can then be visually explored as in the video below
 
 [Screencast from 02-29-2024 05:01:31 PM.webm](https://github.com/luisoala/croissant/assets/26168435/5a9856e0-2089-4118-9652-bd46f2406824)
-
-A maybe (; running live demo can be found here http://3.71.4.61:8050/
-
 
 The main steps involve:
 
