@@ -6,6 +6,7 @@ The main functions are:
 """
 
 import json
+import re
 from typing import Any
 
 import rdflib
@@ -14,6 +15,7 @@ from rdflib import plugin
 from rdflib import term
 
 from mlcroissant._src.core.issues import ValidationError
+from mlcroissant._src.core.issues import WRONG_ID_MSG
 
 # This is for compatibility with older versions of rdflib/rdflib-jsonld.
 # Indeed, rdflib-jsonld was merged into rdflib from the version 6.0.1.
@@ -167,6 +169,21 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     return entry_node
 
 
+def check_valid_ids(data, ctx: Context):
+    if hasattr(data, "items"):
+        for k, v in data.items():
+            if k == "@id" and re.match(r".*\s+.*", k):
+                ctx.issues.add_error(
+                    f"The dataset contains a wrong `@id`: {v}."
+                )
+                return False
+            if isinstance(v, dict):
+                check_valid_ids(v, ctx)
+            elif isinstance(v, list):
+                for d in v:
+                    check_valid_ids(d, ctx)
+
+
 def expand_jsonld(data: Json, ctx: Context) -> Json:
     """Expands a Croissant JSON to a nested JSON-LD with expanded.
 
@@ -174,6 +191,9 @@ def expand_jsonld(data: Json, ctx: Context) -> Json:
     full expression, but RDFLib also flattens the JSON-LD in a list of nodes. We then
     need to reconstruct the hierarchy.
     """
+    if not check_valid_ids(data=data, ctx=ctx):
+        ctx.issues.add_error(f"There are wrong ids in this dataset. {WRONG_ID_MSG}")
+        raise ValidationError(ctx.issues.report())
     context = get_context(data)
     if "@base" not in context:
         context["@base"] = constants.BASE_IRI
