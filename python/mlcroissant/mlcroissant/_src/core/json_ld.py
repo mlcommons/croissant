@@ -169,19 +169,19 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     return entry_node
 
 
-def check_valid_ids(data, ctx: Context):
+def check_valid_ids(data: Json, ctx: Context) -> bool:
+    """Checks that the given json contains valid `@id`s."""
     if hasattr(data, "items"):
         for k, v in data.items():
-            if k == "@id" and re.match(r".*\s+.*", k):
-                ctx.issues.add_error(
-                    f"The dataset contains a wrong `@id`: {v}."
-                )
+            if k == "@id" and re.match(r".*\s+.*", v):
+                ctx.issues.add_error(f"The dataset contains a wrong `@id`: {v}.")
                 return False
             if isinstance(v, dict):
                 check_valid_ids(v, ctx)
             elif isinstance(v, list):
                 for d in v:
                     check_valid_ids(d, ctx)
+    return True
 
 
 def expand_jsonld(data: Json, ctx: Context) -> Json:
