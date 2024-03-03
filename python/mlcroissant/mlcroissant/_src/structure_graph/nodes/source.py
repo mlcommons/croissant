@@ -11,6 +11,7 @@ from jsonpath_rw import lexer
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.issues import WRONG_ID_MSG
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
@@ -266,7 +267,8 @@ class Source:
                         ]
                     ctx.issues.add_error(
                         f"Every {constants.ML_COMMONS_SOURCE(ctx)} should declare"
-                        f" either {' or '.join(mandatory_fields_in_source)}"
+                        f" either {' or '.join(mandatory_fields_in_source)}. Sometimes,"
+                        f" this can be due to a badly formatted `@id`. {WRONG_ID_MSG}"
                     )
                 # Safely access and check "file_property" from JSON-LD.
                 file_property = data_extraction.get(

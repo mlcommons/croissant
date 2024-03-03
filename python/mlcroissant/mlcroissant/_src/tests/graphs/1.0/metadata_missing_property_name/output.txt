@@ -1,2 +1,4 @@
 Found the following 1 error(s) during the validation:
   -  [Metadata()] Property "https://schema.org/name" is mandatory, but does not exist.
+Found the following 1 warning(s) during the validation:
+  -  `distribution` is empty for this dataset. If this is not expected, this might be because of bad `@id`s in the jsonld. Note that valid `@id`s cannot contain any whitespace characters to be successfully parsed by the rdflib.

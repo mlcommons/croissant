@@ -51,6 +51,20 @@ def test_static_analysis(version, folder):
     assert str(error_info.value) == get_error_msg(base_path / folder)
 
 
+# Tests for 1.0-datasets only.
+@pytest.mark.parametrize(
+    "folder",
+    [
+        "distribution_bad_id",
+    ],
+)
+def test_static_analysis_1_0(folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs/1.0"
+    with pytest.raises(ValidationError) as error_info:
+        datasets.Dataset(base_path / f"{folder}/metadata.json")
+    assert str(error_info.value) == get_error_msg(base_path / folder)
+
+
 def load_records_and_test_equality(
     version: str, dataset_name: str, record_set_name: str, num_records: int
 ):
