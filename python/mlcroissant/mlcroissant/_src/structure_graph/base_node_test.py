@@ -8,7 +8,6 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph import base_node
 from mlcroissant._src.tests.nodes import create_test_node
-from mlcroissant._src.tests.versions import parametrize_version
 
 
 @dataclasses.dataclass(eq=False, repr=False)
