@@ -12,7 +12,6 @@ import networkx as nx
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
 from mlcroissant._src.core.issues import ValidationError
-from mlcroissant._src.core.issues import WRONG_ID_MSG
 from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
@@ -93,10 +92,7 @@ class Dataset:
             names = [record_set.name for record_set in self.metadata.record_sets]
             error_msg = f"did not find any record set with the name `{record_set}`. "
             if not names:
-                error_msg += (
-                    "This dataset declares no record sets. If this is not expected:"
-                    f" {WRONG_ID_MSG}"
-                )
+                error_msg += "This dataset declares no record sets."
             else:
                 error_msg += f"Possible RecordSets: {names}"
             raise ValueError(error_msg)

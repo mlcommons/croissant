@@ -18,7 +18,6 @@ from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dates import from_datetime_to_str
 from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
-from mlcroissant._src.core.issues import WRONG_ID_MSG
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -393,10 +392,7 @@ class Metadata(Node):
                     f" {distribution_type} instead."
                 )
         if not distribution:
-            ctx.issues.add_warning(
-                "`distribution` is empty for this dataset. If this is not expected,"
-                f" this might be because of bad `@id`s in the jsonld. {WRONG_ID_MSG}"
-            )
+            ctx.issues.add_warning("`distribution` is empty for this dataset.")
         record_sets = [
             RecordSet.from_jsonld(ctx, record_set)
             for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET(ctx), [])

@@ -4,8 +4,8 @@ import dataclasses
 from typing import Any
 
 WRONG_ID_MSG = (
-    "Note that valid `@id`s cannot contain any whitespace characters to be successfully"
-    " parsed by the rdflib."
+    "Note that `@id`s should be valid URIs. If you wish to use reserved characters in"
+    " your `@id`s, you should URL-encode them."
 )
 
 

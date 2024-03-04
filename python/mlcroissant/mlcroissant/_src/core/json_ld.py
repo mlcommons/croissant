@@ -15,7 +15,6 @@ from rdflib import plugin
 from rdflib import term
 
 from mlcroissant._src.core.issues import ValidationError
-from mlcroissant._src.core.issues import WRONG_ID_MSG
 
 # This is for compatibility with older versions of rdflib/rdflib-jsonld.
 # Indeed, rdflib-jsonld was merged into rdflib from the version 6.0.1.
@@ -175,7 +174,11 @@ def check_valid_ids(data: Json, ctx: Context) -> bool:
     if hasattr(data, "items"):
         for k, v in data.items():
             if k == "@id" and re.match(_ID_REGEX, v):
-                ctx.issues.add_error(f"The dataset contains a wrong `@id`: '{v}'.")
+                ctx.issues.add_error(
+                    f"The dataset contains a wrong `@id`: '{v}'. Note that currently we"
+                    " do not support `@id`s containing whitespaces (not even"
+                    " URL-escaped)."
+                )
                 return False
             if isinstance(v, dict):
                 check_valid_ids(v, ctx)
@@ -193,7 +196,7 @@ def expand_jsonld(data: Json, ctx: Context) -> Json:
     need to reconstruct the hierarchy.
     """
     if not check_valid_ids(data=data, ctx=ctx):
-        ctx.issues.add_error(f"There are wrong ids in this dataset. {WRONG_ID_MSG}")
+        ctx.issues.add_error("There are wrong ids in this dataset.")
     context = get_context(data)
     if "@base" not in context:
         context["@base"] = constants.BASE_IRI

@@ -1,4 +1,4 @@
 Found the following 1 error(s) during the validation:
   -  "a-csv-table" should have an attribute "@type": "http://mlcommons.org/croissant/FileObject" or "@type": "http://mlcommons.org/croissant/FileSet". Got https://schema.org/WRONG_TYPE_HERE instead.
 Found the following 1 warning(s) during the validation:
-  -  `distribution` is empty for this dataset. If this is not expected, this might be because of bad `@id`s in the jsonld. Note that valid `@id`s cannot contain any whitespace characters to be successfully parsed by the rdflib.
+  -  `distribution` is empty for this dataset.
