@@ -32,6 +32,8 @@ from mlcroissant._src.core.rdf import get_context
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.types import Json
 
+
+_ID_REGEX = re.compile(r".*\s+.*")
 _DCTERMS_PREFIX = constants.DCTERMS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
 _WD_PREFIX = "https://www.wikidata.org/wiki/"
@@ -173,7 +175,7 @@ def check_valid_ids(data: Json, ctx: Context) -> bool:
     """Checks that the given json contains valid `@id`s."""
     if hasattr(data, "items"):
         for k, v in data.items():
-            if k == "@id" and re.match(r".*\s+.*", v):
+            if k == "@id" and re.match(_ID_REGEX, v):
                 ctx.issues.add_error(f"The dataset contains a wrong `@id`: '{v}'.")
                 return False
             if isinstance(v, dict):
