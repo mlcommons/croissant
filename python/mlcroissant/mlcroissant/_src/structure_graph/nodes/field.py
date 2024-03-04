@@ -150,6 +150,8 @@ class Field(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, field: Json) -> Field:
         """Creates a `Field` from JSON-LD."""
+        if isinstance(field, list):
+            return [cls.from_jsonld(ctx, f) for f in field]
         check_expected_type(
             ctx.issues,
             field,
