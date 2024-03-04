@@ -32,7 +32,6 @@ from mlcroissant._src.core.rdf import get_context
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.types import Json
 
-
 _ID_REGEX = re.compile(r".*\s+.*")
 _DCTERMS_PREFIX = constants.DCTERMS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
