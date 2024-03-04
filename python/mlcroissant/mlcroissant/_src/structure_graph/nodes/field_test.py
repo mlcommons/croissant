@@ -2,16 +2,23 @@
 
 from unittest import mock
 
+import pytest
 from rdflib import term
 
 from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.tests.nodes import create_test_field
 from mlcroissant._src.tests.nodes import create_test_node
 
 
-def test_checks_are_performed():
+@pytest.mark.parametrize(
+    ["conforms_to", "field_uuid"],
+    [[CroissantVersion.V_0_8, "name"], [CroissantVersion.V_1_0, "id"]],
+)
+def test_checks_are_performed(conforms_to, field_uuid):
     with mock.patch.object(
         Node, "assert_has_mandatory_properties"
     ) as mandatory_mock, mock.patch.object(
@@ -19,8 +26,9 @@ def test_checks_are_performed():
     ) as optional_mock, mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock:
-        create_test_node(Field)
-        mandatory_mock.assert_called_once_with("name", "id")
+        ctx = Context(conforms_to=conforms_to)
+        create_test_node(Field, ctx=ctx)
+        mandatory_mock.assert_called_once_with(field_uuid)
         optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 

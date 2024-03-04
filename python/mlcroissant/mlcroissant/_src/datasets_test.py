@@ -26,26 +26,39 @@ def get_error_msg(folder: epath.Path):
         # Distribution.
         "distribution_bad_contained_in",
         "distribution_bad_type",
-        # When the name is missing, the context should still appear without the name.
-        "distribution_missing_name",
+        "distribution_missing_encoding_format",
         "distribution_missing_property_content_url",
         # Metadata.
         "metadata_bad_type",
-        "metadata_missing_property_name",
         # ML field.
         "mlfield_bad_source",
         "mlfield_bad_type",
-        "mlfield_missing_property_name",
         "mlfield_missing_source",
         # Record set.
         "recordset_bad_type",
         "recordset_missing_context_for_datatype",
-        "recordset_missing_property_name",
         "recordset_wrong_join",
     ],
 )
 def test_static_analysis(version, folder):
     base_path = epath.Path(__file__).parent / "tests/graphs" / version
+    with pytest.raises(ValidationError) as error_info:
+        datasets.Dataset(base_path / f"{folder}/metadata.json")
+    assert str(error_info.value) == get_error_msg(base_path / folder)
+
+
+# These tests refer to properties which were mandatory for Croissant 0.8, but not 1.0.
+@pytest.mark.parametrize(
+    "folder",
+    [
+        "distribution_missing_name",
+        "metadata_missing_property_name",
+        "mlfield_missing_property_name",
+        "recordset_missing_property_name",
+    ],
+)
+def test_static_analysis_0_8(folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs" / "0.8"
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
@@ -63,7 +76,6 @@ def test_static_analysis_1_0(folder):
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
-
 
 def load_records_and_test_equality(
     version: str, dataset_name: str, record_set_name: str, num_records: int

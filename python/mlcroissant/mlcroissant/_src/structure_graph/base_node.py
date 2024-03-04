@@ -9,12 +9,18 @@ from typing import Any
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.data_types import check_expected_type
+from mlcroissant._src.core.dataclasses import jsonld_fields
 from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.json_ld import box_singleton_list
+from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import generate_uuid
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 
-ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
-_MAX_ID_LENGTH = 255
+NAME_REGEX = "[a-zA-Z0-9\\-_\\.]+"
+_MAX_NAME_LENGTH = 255
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -44,7 +50,8 @@ class Node(abc.ABC):
 
     def __post_init__(self):
         """Checks for common properties between all nodes."""
-        self.assert_has_mandatory_properties("name", "id")
+        uuid_field = "name" if self.ctx.is_v0() else "id"
+        self.assert_has_mandatory_properties(uuid_field)
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):
         """Checks a node in the graph for existing properties with constraints.
@@ -222,13 +229,17 @@ class Node(abc.ABC):
             return
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
-            # is a mandatory parameter.
+            # is a mandatory parameter for Croissant 0.8
             return
-        if len(name) > _MAX_ID_LENGTH:
+        # For Croissant >= 1.0 compliant datasets, we don't enforce any more constraints
+        # on names.
+        if not self.ctx.is_v0():
+            return
+        if len(name) > _MAX_NAME_LENGTH:
             self.add_error(
-                f'The name "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
+                f'The name "{name}" is too long (>{_MAX_NAME_LENGTH} characters).'
             )
-        regex = re.compile(rf"^{ID_REGEX}$")
+        regex = re.compile(rf"^{NAME_REGEX}$")
         if not regex.match(name):
             self.add_error(f'The name "{name}" contains forbidden characters.')
 
@@ -265,3 +276,50 @@ class Node(abc.ABC):
         copy = self.__class__(**kwargs)  # pytype: disable=not-instantiable
         memo[id(self)] = copy
         return copy
+
+
+class NodeV2(Node):
+    """Extends Node. When the migration is complete, merge `Node` and `NodeV2`."""
+
+    def to_json(self) -> Json:
+        """Converts the Python class to JSON."""
+        cls = self.__class__
+        jsonld = {
+            "@type": self.ctx.rdf.shorten_value(cls._JSONLD_TYPE(self.ctx)),
+            "@id": None if self.ctx.is_v0() else self.id,
+        }
+        for field in jsonld_fields(self):
+            url = field.call_url(self.ctx)
+            key = url.split("/")[-1]
+            value = getattr(self, field.name)
+            value = field.call_to_jsonld(self.ctx, value)
+            if field.cardinality == "MANY" and field.name != "fields":
+                value = unbox_singleton_list(value)
+            jsonld[key] = value
+        return remove_empty_values(jsonld)
+
+    @classmethod
+    def from_jsonld(cls, ctx: Context, jsonld: Json):
+        """Creates a Python class from JSON-LD."""
+        check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
+        kwargs = {}
+        for field in jsonld_fields(cls):
+            url = field.call_url(ctx)
+            value = jsonld.get(url)
+            value = field.call_from_jsonld(ctx, value)
+            if field.cardinality == "MANY":
+                value = box_singleton_list(value)
+            if value:
+                kwargs[field.name] = value
+        # Normalize name to be at least an empty str:
+        kwargs["name"] = kwargs.get("name", "")
+        return cls(
+            ctx=ctx,
+            id=uuid_from_jsonld(jsonld),
+            **kwargs,
+        )
+
+    @classmethod
+    def _JSONLD_TYPE(cls, ctx: Context):
+        del ctx
+        raise NotImplementedError("Output the right JSON-LD type.")

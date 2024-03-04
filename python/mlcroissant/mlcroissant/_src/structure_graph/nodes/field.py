@@ -64,8 +64,9 @@ class Field(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
-        self.assert_has_mandatory_properties("name", "id")
+        self.assert_has_mandatory_properties(uuid_field)
         self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
         self._standardize_data_types()
@@ -149,6 +150,8 @@ class Field(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, field: Json) -> Field:
         """Creates a `Field` from JSON-LD."""
+        if isinstance(field, list):
+            return [cls.from_jsonld(ctx, f) for f in field]
         check_expected_type(
             ctx.issues,
             field,
