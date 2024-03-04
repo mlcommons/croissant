@@ -120,7 +120,9 @@ class FileObject(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         self.validate_name()
-        self.assert_has_mandatory_properties("encoding_format", "name", "id")
+        uuid_field = "name" if self.ctx.is_v0() else "id"
+        self.assert_has_mandatory_properties("encoding_format", uuid_field)
+
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
             if self.ctx and not self.ctx.is_live_dataset:

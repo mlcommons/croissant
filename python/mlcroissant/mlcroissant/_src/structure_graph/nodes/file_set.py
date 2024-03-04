@@ -29,10 +29,9 @@ class FileSet(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
-        self.assert_has_mandatory_properties(
-            "includes", "encoding_format", "name", "id"
-        )
+        self.assert_has_mandatory_properties("includes", "encoding_format", uuid_field)
 
     def to_json(self) -> Json:
         """Converts the `FileSet` to JSON."""

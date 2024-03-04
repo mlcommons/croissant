@@ -13,8 +13,8 @@ from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import generate_uuid
 
-ID_REGEX = "[a-zA-Z0-9\\-_\\.]+"
-_MAX_ID_LENGTH = 255
+NAME_REGEX = "[a-zA-Z0-9\\-_\\.]+"
+_MAX_NAME_LENGTH = 255
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -44,7 +44,8 @@ class Node(abc.ABC):
 
     def __post_init__(self):
         """Checks for common properties between all nodes."""
-        self.assert_has_mandatory_properties("name", "id")
+        uuid_field = "name" if self.ctx.is_v0() else "id"
+        self.assert_has_mandatory_properties(uuid_field)
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):
         """Checks a node in the graph for existing properties with constraints.
@@ -222,13 +223,17 @@ class Node(abc.ABC):
             return
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
-            # is a mandatory parameter.
+            # is a mandatory parameter for Croissant 0.8
             return
-        if len(name) > _MAX_ID_LENGTH:
+        # For Croissant >= 1.0 compliant datasets, we don't enforce any more constraints
+        # on names.
+        if not self.ctx.is_v0():
+            return
+        if len(name) > _MAX_NAME_LENGTH:
             self.add_error(
-                f'The name "{name}" is too long (>{_MAX_ID_LENGTH} characters).'
+                f'The name "{name}" is too long (>{_MAX_NAME_LENGTH} characters).'
             )
-        regex = re.compile(rf"^{ID_REGEX}$")
+        regex = re.compile(rf"^{NAME_REGEX}$")
         if not regex.match(name):
             self.add_error(f'The name "{name}" contains forbidden characters.')
 

@@ -31,8 +31,9 @@ class RecordSet(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
-        self.assert_has_mandatory_properties("name", "id")
+        self.assert_has_mandatory_properties(uuid_field)
         self.assert_has_optional_properties("description")
 
         if self.data is not None:

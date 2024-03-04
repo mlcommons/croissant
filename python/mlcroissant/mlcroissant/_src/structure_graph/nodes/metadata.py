@@ -159,7 +159,8 @@ class Metadata(Node):
         self.date_created = self.validate_date(self.date_created)
         self.date_modified = self.validate_date(self.date_modified)
         self.date_published = self.validate_date(self.date_published)
-        self.assert_has_mandatory_properties("name")
+        if self.ctx.is_v0():
+            self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties(
             "cite_as", "date_published", "license", "version"
         )
