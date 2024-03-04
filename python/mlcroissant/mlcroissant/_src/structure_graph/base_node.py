@@ -11,6 +11,7 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dataclasses import jsonld_fields
+from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -301,6 +302,8 @@ class NodeV2(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Json):
         """Creates a Python class from JSON-LD."""
+        if isinstance(jsonld, list):
+            return [cls.from_jsonld(ctx, el) for el in jsonld]
         check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
         kwargs = {}
         for field in jsonld_fields(cls):
@@ -311,8 +314,6 @@ class NodeV2(Node):
                 value = box_singleton_list(value)
             if value:
                 kwargs[field.name] = value
-        # Normalize name to be at least an empty str:
-        kwargs["name"] = kwargs.get("name", "")
         return cls(
             ctx=ctx,
             id=uuid_from_jsonld(jsonld),
