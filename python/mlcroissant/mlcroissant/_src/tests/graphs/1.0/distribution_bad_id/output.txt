@@ -1,6 +1,6 @@
 Found the following 3 error(s) during the validation:
   -  Every http://mlcommons.org/croissant/source should declare either http://mlcommons.org/croissant/field or http://mlcommons.org/croissant/fileObject or http://mlcommons.org/croissant/fileSet. Sometimes, this can be due to a badly formatted `@id`. Note that valid `@id`s cannot contain any whitespace characters to be successfully parsed by the rdflib.
-  -  The dataset contains a wrong `@id`: distribution id.
+  -  The dataset contains a wrong `@id`: 'ids should not contain spaces'.
   -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] Node "a-record-set/first-field" is a field and has no source. Please, use http://mlcommons.org/croissant/source to specify the source.
 Found the following 2 warning(s) during the validation:
   -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] Property "https://schema.org/description" is recommended, but does not exist.

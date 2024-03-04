@@ -174,7 +174,7 @@ def check_valid_ids(data: Json, ctx: Context) -> bool:
     if hasattr(data, "items"):
         for k, v in data.items():
             if k == "@id" and re.match(r".*\s+.*", v):
-                ctx.issues.add_error(f"The dataset contains a wrong `@id`: {v}.")
+                ctx.issues.add_error(f"The dataset contains a wrong `@id`: '{v}'.")
                 return False
             if isinstance(v, dict):
                 check_valid_ids(v, ctx)
@@ -193,7 +193,6 @@ def expand_jsonld(data: Json, ctx: Context) -> Json:
     """
     if not check_valid_ids(data=data, ctx=ctx):
         ctx.issues.add_error(f"There are wrong ids in this dataset. {WRONG_ID_MSG}")
-        raise ValidationError(ctx.issues.report())
     context = get_context(data)
     if "@base" not in context:
         context["@base"] = constants.BASE_IRI

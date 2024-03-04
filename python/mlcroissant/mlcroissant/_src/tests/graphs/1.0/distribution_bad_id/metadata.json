@@ -56,7 +56,7 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
-      "@id": "distribution id",
+      "@id": "ids should not contain spaces",
       "name": "distribution name",
       "contentSize": "117743 B",
       "contentUrl": "https://www.google.com/data.csv",
@@ -81,7 +81,7 @@
               "column": "a-column"
             },
             "fileObject": {
-              "@id": "distribution id"
+              "@id": "ids should not contain spaces"
             }
           }
         }
