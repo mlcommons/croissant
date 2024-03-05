@@ -4,8 +4,9 @@ Status: Version 1.0
 
 Published: 2024/03/01
 
-Authors: 
+http://mlcommons.org/croissant/1.0
 
+Authors: 
 - Omar Benjelloun (Google), 
 - Elena Simperl (King’s College London & ODI), 
 - Pierre Marcenac (Google), 
@@ -84,8 +85,7 @@ Croissant metadata is encoded in JSON-LD.
 {
   "@context": {
     "@language": "en",
-    "@vocab": "https://schema.org/",
-    ...
+    "@vocab": "https://schema.org/"
   },
   "@type": "sc:Dataset",
   "name": "simple-pass",
@@ -306,7 +306,7 @@ A "foreign key" reference on column "movie\_id" from a "ratings" table to a "mov
        "name": "Movie id",
        "dataType": "sc:Integer",
        "references": {"@id": "movies/movie_id"}
-     }, ...
+     },
   ]
 }
 ```
@@ -1681,7 +1681,7 @@ For example, the `ratings` `RecordSet` below has a `movie_id` field that referen
         "extract": {"column": "movieId"}
       }
       "references": {"@id": "movies/movie_id"}
-    }, ...
+    }
   ]
 }
 ```
@@ -1715,7 +1715,7 @@ Expanding the example above, the ratings `RecordSet` can have a movie\_title Fie
       "source": {
         "@id": "movies/movie_title"
       }
-    }, ...
+    }
   ]
 }
 ```
@@ -1906,8 +1906,7 @@ For example, the [COCO](https://cocodataset.org/#format-data) dataset defines ca
   }],
   "data": [
     {"supercategories/name": "animal"},
-    {"supercategories/name": "person"},
-	...
+    {"supercategories/name": "person"}
   ]
 }
 ```
@@ -2004,7 +2003,6 @@ Once a datasets splits have been defined, any `RecordSet` can refer to those usi
   "@id": "images",
   "@type": "cr:RecordSet", 
   "field": [
-	  ...,
     {
       "@id": "images/split",
       "@type": "cr:Field",
@@ -2034,7 +2032,7 @@ Most ML workflows use label data. In Croissant, we identify label data using the
   "@type": "cr:RecordSet",
   "@id": "images",
   "field": [
-    {"@type": "cr:Field", "@id": "images/image", ... },
+    {"@type": "cr:Field", "@id": "images/image"},
     {"@type": "cr:Field", "@id": "images/label", 
       "dataType": ["sc:Text", "cr:Label"]}
   ]
@@ -2048,9 +2046,9 @@ The `cr:Label` data type can also be applied to a complex Field, e.g., a nested 
   "@id": "images",
   "key": {"@id": "images/image_id"},
   "field": [
-    {"@type": "cr:Field", "@id": "images/image_id", ... },
+    {"@type": "cr:Field", "@id": "images/image_id"},
     {"@type": "cr:Field", "@id": "images/image_content", 
-      "dataType": "sc:ImageObject", ...},
+      "dataType": "sc:ImageObject"},
     {
       "@type": "cr:Field",
       "@id": "images/annotations",
@@ -2058,13 +2056,13 @@ The `cr:Label` data type can also be applied to a complex Field, e.g., a nested 
       "parentField": {
           "@type": "cr:Field", 
           "@id": "images/annotations/image_id",
-          "references": {"@id": "images/image_id"}, ...
+          "references": {"@id": "images/image_id"}
       },
       "subField": [
-        {"@type": "cr:Field", "@id": "images/annotations/id", ...},
-        {"@type": "cr:Field", "@id": "images/annotations/category_id", ...},
+        {"@type": "cr:Field", "@id": "images/annotations/id"},
+        {"@type": "cr:Field", "@id": "images/annotations/category_id"},
         {"@type": "cr:Field", "@id": "images/annotations/bbox",
-          "dataType": "cr:BoundingBox", ...}
+          "dataType": "cr:BoundingBox"}
       ]
     }
   ]
@@ -2091,8 +2089,9 @@ Bounding boxes are common annotations in computer vision. They describe imaginar
 
 Segmentation masks are common annotations in computer vision. They describe pixel-perfect zones that outline objects or groups of objects in images or videos. Croissant defines `cr:SegmentationMask` with two manners to describe them:
 
+Segmentation mask as a polygon:
+
 ```json
-// Segmentation mask as a polygon
 {
   "@type": "cr:Field",
   "@id": "images/annotation/mask",
@@ -2100,14 +2099,14 @@ Segmentation masks are common annotations in computer vision. They describe pixe
   "dataType": ["cr:SegmentationMask", "sc:GeoShape"],
   "source": {
     "fileSet": {"@id": "instancesperson_keypoints_annotations"},
-    "extract": {
-        regex: "\w+\s(.*)"  // Get rid of the class ID
-      }
-    "format": "X Y" // Format of each individual data point
+    "extract": {"regex": "\w+\s(.*)"}
+    "format": "X Y"
   }
 }
+```
 
-// Segmentation mask as an image
+Segmentation mask as an image:
+```json
 {
   "@type": "cr:Field",
   "@id": "images/annotation/mask",
@@ -2120,7 +2119,6 @@ Segmentation masks are common annotations in computer vision. They describe pixe
 }
 ```
 
-
 *   `sc:GeoShape` describes segmentation masks as a sequence of coordinates (polygon).
 *   `sc:ImageObject` describes segmentation masks as image overlays (with pixel = 0 outside of the mask and pixel = 1 inside the mask).
 
@@ -2129,38 +2127,38 @@ Segmentation masks are common annotations in computer vision. They describe pixe
 
 ```json
 "@context": {
-    "@language": "en",
-    "@vocab": "https://schema.org/",
-    "column": "cr:column",
-    "data": {
-      "@id": "cr:data",
-      "@type": "@json"
-    },
-    "dataType": {
-      "@id": "cr:dataType",
-      "@type": "@vocab"
-    },
-    "extract": "cr:extract",
-    "field": "cr:field",
-    "fileProperty": "cr:fileProperty",
-    "format": "cr:format",
-    "includes": "cr:includes",
-    "isEnumeration": "cr:isEnumeration",
-    "jsonPath": "cr:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "cr:parentField",
-    "path": "cr:path",
-    "recordSet": "cr:recordSet",
-    "references": "cr:references",
-    "regex": "cr:regex",
-    "repeated": "cr:repeated",
-    "replace": "cr:replace",
-    "sc": "https://schema.org/",
-    "separator": "cr:separator",
-    "source": "cr:source",
-    "subField": "cr:subField",
-    "transform": "cr:transform"
+  "@language": "en",
+  "@vocab": "https://schema.org/",
+  "column": "cr:column",
+  "data": {
+    "@id": "cr:data",
+    "@type": "@json"
   },
+  "dataType": {
+    "@id": "cr:dataType",
+    "@type": "@vocab"
+  },
+  "extract": "cr:extract",
+  "field": "cr:field",
+  "fileProperty": "cr:fileProperty",
+  "format": "cr:format",
+  "includes": "cr:includes",
+  "isEnumeration": "cr:isEnumeration",
+  "jsonPath": "cr:jsonPath",
+  "ml": "http://mlcommons.org/schema/",
+  "parentField": "cr:parentField",
+  "path": "cr:path",
+  "recordSet": "cr:recordSet",
+  "references": "cr:references",
+  "regex": "cr:regex",
+  "repeated": "cr:repeated",
+  "replace": "cr:replace",
+  "sc": "https://schema.org/",
+  "separator": "cr:separator",
+  "source": "cr:source",
+  "subField": "cr:subField",
+  "transform": "cr:transform"
+},
 ```
 
 <!-- Footnotes themselves at the bottom. -->
