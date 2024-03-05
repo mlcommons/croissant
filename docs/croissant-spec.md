@@ -1,10 +1,11 @@
 # Croissant Format Specification
 
-Status: Version 1.0
+Version 1.0
 
 Published: 2024/03/01
 
 http://mlcommons.org/croissant/1.0
+
 
 Authors: 
 - Omar Benjelloun (Google), 
@@ -68,12 +69,11 @@ Croissant is designed to be modular and extensible. One such extension is the Cr
 
 **Dataset**: A collection of data points or items reflecting the results of such activities as measuring, reporting, collecting, analyzing, or observing.
 
-**Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally[^1] contain the actual data of the dataset. The data itself is contained in separate files, referenced in the Croissant dataset description.
+**Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
 
 **Data record**: A granular part of a dataset, such as an image, text file, or a row in a table.
 
 **Recordset**: A set of homogeneous data records, such as a collection of images, text files, or all the rows in a table.
-
 
 # Format Example
 
@@ -96,7 +96,7 @@ Croissant metadata is encoded in JSON-LD.
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
 ```
 
-The beginning of the Croissant description contains general information about the dataset such as name, short description, license and URL. Most of these attributes are from [schema.org](http://schema.org), with a few additions described in the [Dataset-level information](?tab=t.0#heading=h.3pk4k9jobvly) section.
+The beginning of the Croissant description contains general information about the dataset such as name, short description, license and URL. Most of these attributes are from [schema.org](http://schema.org), with a few additions described in the [Dataset-level information](#dataset-level-information) section.
 
 ```json
   "distribution": [
@@ -129,7 +129,7 @@ The distribution property contains a description of the resources contained in t
 *   files, represented using the `FileObject` class. This dataset contains one CSV file and one archive file. 
 *   Directory & archive contents, represented using the `FileSet` class. In this dataset, the archive contains a set of jpeg image files.
 
-See the [Resources](?tab=t.0#heading=h.if3uiif22bhw) section for a complete description.
+See the [Resources](#resources) section for a complete description.
 
 ```json
   "recordSet": [
@@ -184,7 +184,7 @@ Furthermore, we can describe the structure and the data types in the data using 
 *   the hash of the image, extracted from its filename
 *   the date the image was taken, extracted from the metadata CSV file
 
-The [RecordSets](?tab=t.0#heading=h.4o1ap838u4u8) section explains how to define recordsets and fields, as well as extract, transform and join their data.
+The [RecordSets](#recordsets) section explains how to define recordsets and fields, as well as extract, transform and join their data.
 
 
 # Prerequisites
@@ -209,12 +209,12 @@ In addition, Croissant relies on the following namespaces:
 
 <table>
   <tr>
-   <td>Prefix
-   </td>
-   <td>IRI
-   </td>
-   <td>Description
-   </td>
+   <th>Prefix
+   </th>
+   <th>IRI
+   </th>
+   <th>Description
+   </th>
   </tr>
   <tr>
    <td>sc
@@ -260,11 +260,11 @@ Note that while the Croissant specification is versioned, the Croissant namespac
 
 In Croissant datasets, various elements need to be connected to each other. For instance, a `FileObject` may be extracted from another `FileObject`, or a column of a table may reference another table. We therefore need a mechanism to define **identifiers** for parts of a dataset,  and to reference them in other places.
 
-We use the standard JSON-LD mechanism for IDs and references, which relies on using the special `@id` property. References to objects are also specified using the `@id` property. They can be differenciated from ID definitions by the fact that no other properties are specified within the same object, e.g., **<code>{"@id": "flores200_dataset.tar.gz"}</code></strong> is a reference<strong><code>.</code></strong>
+We use the standard JSON-LD mechanism for IDs and references, which relies on using the special `@id` property. References to objects are also specified using the `@id` property. They can be differenciated from ID definitions by the fact that no other properties are specified within the same object, e.g., `{"@id": "flores200_dataset.tar.gz"}` is a reference.
 
-IDs may be specified as short strings, but they are interpreted as IRIs. The "base" IRI is either the URL of the document (when accessed on the Web), or is specified explicitly in the context, via the @base property (see [JSON-LD specification](https://www.w3.org/TR/json-ld11/#base-iri)).
+IDs may be specified as short strings, but they are interpreted as IRIs. The "base" IRI is either the URL of the document (when accessed on the Web), or is specified explicitly in the context, via the `@base` property (see [JSON-LD specification](https://www.w3.org/TR/json-ld11/#base-iri)).
 
-As a consequence, IDs must be unique within a Croissant dataset. This is fairly natural for "top-level" objects, like instances of `FileObject`, `FileSet` or `RecordSet`. For nested objects, such as `field`s in `RecordSet`s, we recommend prefixing their IDs with the ID of the containing object, with a '/' separator. For example the "date taken" `field` of an "images" `RecordSet` should have ID "images/date\_taken".
+As a consequence, IDs must be unique within a Croissant dataset. This is fairly natural for "top-level" objects, like instances of `FileObject`, `FileSet` or `RecordSet`. For nested objects, such as `field`s in `RecordSet`s, we recommend prefixing their IDs with the ID of the containing object, with a '/' separator. For example the "date taken" `field` of an "images" `RecordSet` should have ID `images/date_taken`.
 
 Here are some examples of IDs and references to them.
 
@@ -316,7 +316,7 @@ In the above example, the `@id` of a `field` is prefixed by the `@id` of the cor
 
 ## Croissant in Web Pages
 
-Because Croissant builds on [schema.org](http://schema.org), a vocabulary for adding structured information to web pages, any Croissant JSON-LD metadata needs to be embedded inside a web page in order to be indexed and crawled by search engines. You can see an example of how schema.org metadata is embedded in a web page in the schema.org [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
+Because Croissant builds on [schema.org](http://schema.org), a vocabulary for adding structured information to web pages, Croissant JSON-LD metadata needs to be embedded inside a web page in order to be indexed and crawled by search engines. You can see an example of how schema.org metadata is embedded in a web page in the schema.org [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
 
 In the rest of this document, we only describe the actual JSON-LD of Croissant metadata, and omit the wrapping HTML.
 
@@ -338,41 +338,38 @@ The following list of properties from [schema.org](http://schema.org) must be sp
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Comments</strong>
-   </td>
+   <th>Property
+   </th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Comments</th>
   </tr>
   <tr>
-   <td style="background-color: null">@context
+   <td>@context
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/URL">URL</a>
+   <td><a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: #ffffff">ONE
+   <td>ONE
    </td>
    <td>A set of JSON-LD context definitions that make the rest of the Croissant description less verbose. See the recommended JSON-LD context in Appendix 1. 
    </td>
   </tr>
   <tr>
-   <td style="background-color: null">@type
+   <td>@type
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/Text">Text</a>
+   <td><a href="http://schema.org/Text">Text</a>
    </td>
-   <td style="background-color: #ffffff">ONE
+   <td>ONE
    </td>
    <td>The type of a croissant dataset must be <a href="http://schema.org/Dataset">schema.org/Dataset</a>.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">@dct:conformsTo</a>
+   <td><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">@dct:conformsTo</a>
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/URL">URL</a>
+   <td><a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: #ffffff">ONE
+   <td>ONE
    </td>
    <td>Croissant datasets must declare that they conform to the versioned schema:
 <p>
@@ -380,67 +377,67 @@ The following list of properties from [schema.org](http://schema.org) must be sp
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/description">description</a>
+   <td><a href="http://schema.org/description">description</a>
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/Text">Text</a>
+   <td><a href="http://schema.org/Text">Text</a>
    </td>
-   <td style="background-color: #ffffff">ONE
+   <td>ONE
    </td>
    <td>Description of the dataset.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/license">license</a>
+   <td><a href="http://schema.org/license">license</a>
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/CreativeWork">CreativeWork</a>
+   <td><a href="http://schema.org/CreativeWork">CreativeWork</a>
 <p>
 <a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: #ffffff">MANY
+   <td>MANY
    </td>
    <td>The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at <a href="https://spdx.org/licenses/">https://spdx.org/licenses/</a>.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/name">name</a>
+   <td><a href="http://schema.org/name">name</a>
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/Text">Text</a>
+   <td><a href="http://schema.org/Text">Text</a>
    </td>
-   <td style="background-color: #ffffff">ONE
+   <td>ONE
    </td>
    <td>The name of the dataset. 
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/url">url</a>
+   <td><a href="http://schema.org/url">url</a>
    </td>
-   <td style="background-color: #ffffff"><a href="http://schema.org/URL">URL</a>
+   <td><a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: #ffffff">ONE
+   <td>ONE
    </td>
    <td>The URL of the dataset. This generally corresponds to the Web page for the dataset.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/creator">creator</a>
+   <td><a href="http://schema.org/creator">creator</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Organization">Organization</a>
+   <td><a href="http://schema.org/Organization">Organization</a>
 <p>
 <a href="http://schema.org/Person">Person</a>
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
    <td>The creator(s) of the dataset.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/datePublished">datePublished</a>
+   <td><a href="http://schema.org/datePublished">datePublished</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Date">Date</a>
+   <td><a href="http://schema.org/Date">Date</a>
 <p>
 <a href="http://schema.org/DateTime">DateTime</a>
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
    <td>The date the dataset was published.
    </td>
@@ -456,107 +453,103 @@ These [schema.org](http://schema.org) properties are recommended for every Crois
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Comments</strong>
-   </td>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Comments</th>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/keywords">keywords</a>
+   <td><a href="http://schema.org/keywords">keywords</a>
    </td>
-   <td style="background-color: #ffffff"><a href="https://schema.org/DefinedTerm">DefinedTerm</a>
+   <td><a href="https://schema.org/DefinedTerm">DefinedTerm</a>
 <p>
 <a href="http://schema.org/Text">Text</a>
 <p>
 <a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: #ffffff">MANY
+   <td>MANY
    </td>
    <td>A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/publisher">publisher</a>
+   <td><a href="http://schema.org/publisher">publisher</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Organization">Organization</a>
+   <td><a href="http://schema.org/Organization">Organization</a>
 <p>
 <a href="http://schema.org/Person">Person</a>
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
    <td>The publisher of the dataset, which may be distinct from its creator.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/version">version</a>
+   <td><a href="http://schema.org/version">version</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Number">Number</a>
+   <td><a href="http://schema.org/Number">Number</a>
 <p>
 <a href="http://schema.org/Text">Text</a>
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
    <td>The version of the dataset following the requirements below.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/dateCreated">dateCreated</a>
+   <td><a href="http://schema.org/dateCreated">dateCreated</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Date">Date</a>
+   <td><a href="http://schema.org/Date">Date</a>
 <p>
 <a href="http://schema.org/DateTime">DateTime</a>
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
    <td>The date the dataset was initially created.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/dateModified">dateModified</a>
+   <td><a href="http://schema.org/dateModified">dateModified</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Date">Date</a>
+   <td><a href="http://schema.org/Date">Date</a>
 <p>
 <a href="http://schema.org/DateTime">DateTime</a>
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
    <td>The date the dataset was last modified.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/sameAs">sameAs</a>
+   <td><a href="http://schema.org/sameAs">sameAs</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/URL">URL</a>
+   <td><a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
    <td>The URL of another Web resource that represents the same dataset as this one.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/sdLicense">sdLicence</a>
+   <td><a href="http://schema.org/sdLicense">sdLicence</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/CreativeWork">CreativeWork</a>
+   <td><a href="http://schema.org/CreativeWork">CreativeWork</a>
 <p>
 <a href="http://schema.org/URL">URL</a>
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
    <td>A license document that applies to this structured data, typically indicated by URL.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/inLanguage">inLanguage</a>
+   <td><a href="http://schema.org/inLanguage">inLanguage</a>
    </td>
-   <td style="background-color: null"><a href="https://schema.org/Language">Language</a>
+   <td><a href="https://schema.org/Language">Language</a>
 <p>
 <a href="https://schema.org/Text">Text</a>
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
    <td>The language(s) of the content of the dataset. 
    </td>
@@ -577,23 +570,19 @@ Croissant modifies the meaning of one [schema.org](http://schema.org) property, 
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Comments</strong>
-   </td>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Comments</th>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://schema.org/distribution">distribution</a>
+   <td><a href="http://schema.org/distribution">distribution</a>
    </td>
-   <td style="background-color: null"><a href="https://docs.google.com/document/d/11E1x2rIKo_9C2Hh7pMpHtTE30iizVCWUMQ9rDysBoeA/edit?resourcekey=0-drT2urhsv5QnaBr57G0coQ#bookmark=id.gcwjbmdlofws">FileObject</a>
+   <td><a href="#fileobject">FileObject</a>
 <p>
-<a href="https://docs.google.com/document/d/11E1x2rIKo_9C2Hh7pMpHtTE30iizVCWUMQ9rDysBoeA/edit?resourcekey=0-drT2urhsv5QnaBr57G0coQ#bookmark=id.tca3dm5ygbqf">FileSet</a>
+<a href="#fileset">FileSet</a>
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
    <td>By contrast with <a href="http://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type FileObject or FileSet.
    </td>
@@ -605,31 +594,27 @@ The Croissant vocabulary also defines the following optional attributes:
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Comments</strong>
-   </td>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Comments</th>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="?tab=t.0#heading=h.t7okrv8eq4vh">isLiveDataset</a>
+   <td><a href="#live-datasets">isLiveDataset</a>
    </td>
-   <td style="background-color: null"><a href="http://schema.org/Boolean">Boolean</a>
+   <td><a href="http://schema.org/Boolean">Boolean</a>
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
    <td>Whether the dataset is a live dataset.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null">citeAs
+   <td>citeAs
    </td>
-   <td style="background-color: null">Text
+   <td>Text
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
    <td>A citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.
 <p>
@@ -656,9 +641,9 @@ Croissant datasets are versioned using the `version` property defined in [schema
 
 ### Checksums
 
-Each one of the <code>[FileObject](#bookmark=id.gcwjbmdlofws)</code> in a Croissant file may provide a checksum using the [sha256](https://schema.org/sha256) property, which contains the hash of the content of the file.
+Each one of the `FileObject`s in a Croissant file may provide a checksum using the [sha256](https://schema.org/sha256) property, which contains the hash of the content of the file.
 
-In versioned datasets, it is strongly recommended to record such checksums for all used `FileObjects`, as it allows for robustly checking whether the downloaded files correspond to the ones which are declared in the Croissant definition.
+In versioned datasets, it is strongly recommended to record such checksums for all used `FileObject`s, as it allows for robustly checking whether the downloaded files correspond to the ones which are declared in the Croissant definition.
 
 
 ### Live Datasets
@@ -724,98 +709,90 @@ Most of the important properties needed to describe a `FileObject` are defined i
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Description</th>
+  </tr>
+  <tr>
+   <td><a href="https://schema.org/name">sc:name</a>
    </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
+   <td>Text
    </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
+   <td>ONE
    </td>
-   <td style="background-color: #d9d9d9"><strong>Description</strong>
+   <td>The name of the file.  As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. “images.zip”.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/name">sc:name</a>
+   <td><a href="https://schema.org/contentUrl">sc:contentUrl</a>
    </td>
-   <td style="background-color: null">Text
+   <td>Url
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
-   <td style="background-color: null">The name of the file.  As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. “images.zip”.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://schema.org/contentUrl">sc:contentUrl</a>
-   </td>
-   <td style="background-color: null">Url
-   </td>
-   <td style="background-color: null">ONE
-   </td>
-   <td style="background-color: null">Actual bytes of the media object, for example the image file or video file.
+   <td>Actual bytes of the media object, for example the image file or video file.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/contentSize">sc:contentSize</a>
+   <td><a href="https://schema.org/contentSize">sc:contentSize</a>
    </td>
-   <td style="background-color: null">Text
+   <td>Text
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
-   <td style="background-color: null">File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is not specified.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://schema.org/encodingFormat">sc:encodingFormat</a>
-   </td>
-   <td style="background-color: null">Text
-   </td>
-   <td style="background-color: null">ONE
-   </td>
-   <td style="background-color: null">The format of the file, given as a mime type.
+   <td>File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is not specified.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/sameAs">sc:sameAs</a>
+   <td><a href="https://schema.org/encodingFormat">sc:encodingFormat</a>
    </td>
-   <td style="background-color: null">URL
+   <td>Text
    </td>
-   <td style="background-color: null">MANY
+   <td>ONE
    </td>
-   <td style="background-color: null">URL (or local name) of a FileObject with the same content, but in a different format.
+   <td>The format of the file, given as a mime type.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/sha256">sc:sha256</a>
+   <td><a href="https://schema.org/sameAs">sc:sameAs</a>
    </td>
-   <td style="background-color: null">Text
+   <td>URL
    </td>
-   <td style="background-color: null">ONE
+   <td>MANY
    </td>
-   <td style="background-color: null">Checksum for the file contents.
+   <td>URL (or local name) of a FileObject with the same content, but in a different format.
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://schema.org/sha256">sc:sha256</a>
+   </td>
+   <td>Text
+   </td>
+   <td>ONE
+   </td>
+   <td>Checksum for the file contents.
    </td>
   </tr>
 </table>
 
-In addition, `FileObject` defines the following properties:
+In addition, `FileObject` defines the following property:
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
-   </td>
-   <td style="background-color: #d9d9d9"><strong>Description</strong>
-   </td>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Description</th>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#containedin">containedIn</a>
+   <td>containedIn
    </td>
-   <td style="background-color: null">Text
+   <td>Text
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
-   <td style="background-color: null">Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object
+   <td>Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object
    </td>
   </tr>
 </table>
@@ -872,43 +849,39 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Description</th>
+  </tr>
+  <tr>
+   <td>containedIn
    </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
+   <td>Reference
    </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
+   <td>MANY
    </td>
-   <td style="background-color: #d9d9d9"><strong>Description</strong>
+   <td>The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#containedin">containedIn</a>
+   <td>includes
    </td>
-   <td style="background-color: null">Reference
+   <td>Text
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
-   <td style="background-color: null">The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#includes">includes</a>
-   </td>
-   <td style="background-color: null">Text
-   </td>
-   <td style="background-color: null">MANY
-   </td>
-   <td style="background-color: null">A glob pattern that specifies the files to include.
+   <td>A glob pattern that specifies the files to include.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#excudes">excludes</a>
+   <td>excludes
    </td>
-   <td style="background-color: null">Text
+   <td>Text
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
-   <td style="background-color: null">A glob pattern that specifies the files to exclude.
+   <td>A glob pattern that specifies the files to exclude.
    </td>
   </tr>
 </table>
@@ -1003,55 +976,51 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Description</th>
+  </tr>
+  <tr>
+   <td>field
    </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
+   <td>Field
    </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
+   <td>MANY
    </td>
-   <td style="background-color: #d9d9d9"><strong>Description</strong>
+   <td>A data element that appears in the records of the <code>RecordSet</code> (e.g., one column of a table).
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#field">field</a>
+   <td>key
    </td>
-   <td style="background-color: null">Field
+   <td>Text
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
-   <td style="background-color: null">A data element that appears in the records of the <code>RecordSet</code> (e.g., one column of a table).
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#key">key</a>
-   </td>
-   <td style="background-color: null">Text
-   </td>
-   <td style="background-color: null">MANY
-   </td>
-   <td style="background-color: null">One or more fields whose values uniquely identify each record in the <code>RecordSet</code>. (See example below.)
+   <td>One or more fields whose values uniquely identify each record in the <code>RecordSet</code>. (See example below.)
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#data">data</a>
+   <td>data
    </td>
-   <td style="background-color: null">JSON
+   <td>JSON
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
-   <td style="background-color: null">One or more records that constitute the data of the <code>RecordSet</code>.
+   <td>One or more records that constitute the data of the <code>RecordSet</code>.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#examples">examples</a>
+   <td>examples
    </td>
-   <td style="background-color: null">JSON
+   <td>JSON
 <p>
 URL
    </td>
-   <td style="background-color: null">MANY
+   <td>MANY
    </td>
-   <td style="background-color: null">One or more records provided as example content of the  <code>RecordSet</code>, or a reference to data source that contains examples.
+   <td>One or more records provided as example content of the  <code>RecordSet</code>, or a reference to data source that contains examples.
    </td>
   </tr>
 </table>
@@ -1064,83 +1033,79 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Description</th>
+  </tr>
+  <tr>
+   <td>source
    </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
+   <td>DataSource or URL
    </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
+   <td>ONE
    </td>
-   <td style="background-color: #d9d9d9"><strong>Description</strong>
+   <td>The data source of the field. This will generally reference a <code>FileObject</code> or <code>FileSet</code>'s contents (e.g., a specific column of a table).
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#source">source</a> 
+   <td>dataType
    </td>
-   <td style="background-color: null">DataSource or URL
+   <td>DataType
    </td>
-   <td style="background-color: null">
+   <td>MANY
    </td>
-   <td style="background-color: null">The data source of the field. This will generally reference a <code>FileObject</code> or <code>FileSet</code>'s contents (e.g., a specific column of a table).
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#datatype">dataType</a>
-   </td>
-   <td style="background-color: null">DataType
-   </td>
-   <td style="background-color: null">
-   </td>
-   <td style="background-color: null">The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, <code>sc:Integer</code>) or a semantic type (e.g., <code>sc:GeoLocation</code>).
+   <td>The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, <code>sc:Integer</code>) or a semantic type (e.g., <code>sc:GeoLocation</code>).
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#repeated">repeated</a>
+   <td>repeated
    </td>
-   <td style="background-color: null">Boolean
+   <td>Boolean
    </td>
-   <td style="background-color: null">
+   <td>ONE
    </td>
-   <td style="background-color: null">If true, then the Field is a list of values of type dataType.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null">equivalentProperty
-   </td>
-   <td style="background-color: null">URL
-   </td>
-   <td style="background-color: null">
-   </td>
-   <td style="background-color: null">A property that is equivalent to this Field. Used in the case a dataType is specified on the RecordSet to map specific fields to specific properties associated with that dataType.
+   <td>If true, then the Field is a list of values of type dataType.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#references">references</a>
+   <td>equivalentProperty
    </td>
-   <td style="background-color: null">Reference
+   <td>URL
    </td>
-   <td style="background-color: null">
+   <td>MANY
    </td>
-   <td style="background-color: null">Another <code>Field</code> of another <code>RecordSet</code> that this field references. This is the equivalent of a foreign key reference in a relational database.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#subfield">subField</a>
-   </td>
-   <td style="background-color: null">Field
-   </td>
-   <td style="background-color: null">
-   </td>
-   <td style="background-color: null">Another <code>Field</code> that is nested inside this one.
+   <td>A property that is equivalent to this Field. Used in the case a dataType is specified on the RecordSet to map specific fields to specific properties associated with that dataType.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#parentfield">parentField</a>
+   <td>references
    </td>
-   <td style="background-color: null">Reference
+   <td>Reference
    </td>
-   <td style="background-color: null">
+   <td>MANY
    </td>
-   <td style="background-color: null">A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.
+   <td>Another <code>Field</code> of another <code>RecordSet</code> that this field references. This is the equivalent of a foreign key reference in a relational database.
+   </td>
+  </tr>
+  <tr>
+   <td>subField
+   </td>
+   <td>Field
+   </td>
+   <td>MANY
+   </td>
+   <td>Another <code>Field</code> that is nested inside this one.
+   </td>
+  </tr>
+  <tr>
+   <td>parentField
+   </td>
+   <td>Reference
+   </td>
+   <td>MANY
+   </td>
+   <td>A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.
    </td>
   </tr>
 </table>
@@ -1227,73 +1192,69 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
 
 <table>
   <tr>
-   <td style="background-color: #d9d9d9"><strong>Property</strong>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Cardinality</th>
+   <th>Description</th>
+  </tr>
+  <tr>
+   <td>fileObject
    </td>
-   <td style="background-color: #d9d9d9"><strong>ExpectedType</strong>
+   <td>Reference
    </td>
-   <td style="background-color: #d9d9d9"><strong>Cardinality</strong>
+   <td>ONE
    </td>
-   <td style="background-color: #d9d9d9"><strong>Description</strong>
+   <td>The name of the referenced <code>FileObject</code> source of the data.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null">fileObject
+   <td>fileSet
    </td>
-   <td style="background-color: null">Reference
+   <td>Reference
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
-   <td style="background-color: null">The name of the referenced <code>FileObject</code> source of the data.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null">fileSet
-   </td>
-   <td style="background-color: null">Reference
-   </td>
-   <td style="background-color: null">ONE
-   </td>
-   <td style="background-color: null">The name of the referenced <code>FileSet</code> source of the data.
+   <td>The name of the referenced <code>FileSet</code> source of the data.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#recordset">recordSet</a>
+   <td>recordSet
    </td>
-   <td style="background-color: null">Reference
+   <td>Reference
    </td>
-   <td style="background-color: null">ONE
+   <td>ONE
    </td>
-   <td style="background-color: null">The name of the referenced <code>RecordSet</code> source.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#extract">extract</a>
-   </td>
-   <td style="background-color: null">Extract
-   </td>
-   <td style="background-color: null">
-   </td>
-   <td style="background-color: null">The extraction method from the provided source.
+   <td>The name of the referenced <code>RecordSet</code> source.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://github.com/mlcommons/croissant/blob/main/docs/croissant-spec.md#transform">transform</a>
+   <td>extract
    </td>
-   <td style="background-color: null">Transform
+   <td>Extract
    </td>
-   <td style="background-color: null">
+   <td>ONE
    </td>
-   <td style="background-color: null"> A transformation to apply on source data on top of the extracted method as specified through <code>extract</code>, e.g., a regular expression or JSON query.
+   <td>The extraction method from the provided source.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null">format
+   <td>transform
    </td>
-   <td style="background-color: null">Format
+   <td>Transform
    </td>
-   <td style="background-color: null">
+   <td>MANY
    </td>
-   <td style="background-color: null">A format to parse the values of the data from text, e.g., a date format or number format.
+   <td> A transformation to apply on source data on top of the extracted method as specified through <code>extract</code>, e.g., a regular expression or JSON query.
+   </td>
+  </tr>
+  <tr>
+   <td>format
+   </td>
+   <td>Format
+   </td>
+   <td>ONE
+   </td>
+   <td>A format to parse the values of the data from text, e.g., a date format or number format.
    </td>
   </tr>
 </table>
@@ -1309,14 +1270,14 @@ Sometimes, not all the data from the source is needed, but only a subset. The `E
 
 <table>
   <tr>
-   <td>Source type
-   </td>
-   <td>Extract property
-   </td>
-   <td>Expected property value
-   </td>
-   <td>Result
-   </td>
+   <th>Source type
+   </th>
+   <th>Property
+   </th>
+   <th>Expected property value
+   </th>
+   <th>Result
+   </th>
   </tr>
   <tr>
    <td>FileObject or FileSet
@@ -1389,12 +1350,12 @@ Here are some formats that can be used in Croissant:
 
 <table>
   <tr>
-   <td>Data types
-   </td>
-   <td>Format
-   </td>
-   <td>Example
-   </td>
+   <th>Data types
+   </th>
+   <th>Format
+   </th>
+   <th>Example
+   </th>
   </tr>
   <tr>
    <td><a href="http://schema.org/Date">sc:Date</a>, <a href="http://schema.org/DateTime">sc:DateTime</a>
@@ -1422,9 +1383,7 @@ Here are some formats that can be used in Croissant:
   </tr>
 </table>
 
-
 Note that this list is not exhaustive, and not all Croissant implementations will support all formats.
-
 
 ## Data Types
 
@@ -1451,39 +1410,37 @@ Commonly used atomic data types:
 
 <table>
   <tr>
-   <td style="background-color: null"><strong>dataType</strong>
+   <th>dataType</th>
+   <th>Usage</th>
+  </tr>
+  <tr>
+   <td><a href="https://schema.org/Boolean">sc:Boolean</a>
    </td>
-   <td style="background-color: null"><strong>Usage</strong>
+   <td>Describes a boolean.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/Boolean">sc:Boolean</a>
+   <td><a href="https://schema.org/Date">sc:Date</a>
    </td>
-   <td style="background-color: null">Describes a boolean.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://schema.org/Date">sc:Date</a>
-   </td>
-   <td style="background-color: null">Describes a date.
+   <td>Describes a date.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/Float">sc:Float</a>
+   <td><a href="https://schema.org/Float">sc:Float</a>
    </td>
-   <td style="background-color: null">Describes a float.
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="https://schema.org/Integer">sc:Integer</a>
-   </td>
-   <td style="background-color: null">Describes an integer.
+   <td>Describes a float.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/Text">sc:Text</a>
+   <td><a href="https://schema.org/Integer">sc:Integer</a>
    </td>
-   <td style="background-color: null">Describes a string.
+   <td>Describes an integer.
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://schema.org/Text">sc:Text</a>
+   </td>
+   <td>Describes a string.
    </td>
   </tr>
 </table>
@@ -1491,30 +1448,27 @@ Commonly used atomic data types:
 
 Other data types commonly used in ML datasets:
 
-
 <table>
   <tr>
-   <td style="background-color: null"><strong>dataType</strong>
+   <th>dataType</th>
+   <th>Usage</th>
+  </tr>
+  <tr>
+   <td><a href="https://schema.org/ImageObject">sc:ImageObject</a>
    </td>
-   <td style="background-color: null"><strong>Usage</strong>
+   <td>Describes a field containing the content of an image (pixels).
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://schema.org/ImageObject">sc:ImageObject</a>
+   <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a>
    </td>
-   <td style="background-color: null">Describes a field containing the content of an image (pixels).
-   </td>
-  </tr>
-  <tr>
-   <td style="background-color: null"><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a>
-   </td>
-   <td style="background-color: null">Describes the coordinates of a bounding box (4-number array). Refer to the section “ML-specific features > Bounding boxes.
+   <td>Describes the coordinates of a bounding box (4-number array). Refer to the section “ML-specific features > Bounding boxes.
    </td>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="http://mlcommons.org/schema/Split">cr:Split</a>
+   <td><a href="http://mlcommons.org/schema/Split">cr:Split</a>
    </td>
-   <td style="background-color: null">Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section “ML-specific features > Splits”.
+   <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section “ML-specific features > Splits”.
    </td>
   </tr>
 </table>
@@ -1526,17 +1480,15 @@ Croissant datasets can use data types from other vocabularies, such as Wikidata.
 
 <table>
   <tr>
-   <td style="background-color: null"><strong>dataType</strong>
-   </td>
-   <td style="background-color: null"><strong>Usage</strong>
-   </td>
+   <th>dataType</th>
+   <th>Usage</th>
   </tr>
   <tr>
-   <td style="background-color: null"><a href="https://www.wikidata.org/wiki/Q48277">wd:Q48277</a>
+   <td><a href="https://www.wikidata.org/wiki/Q48277">wd:Q48277</a>
 <p>
 (gender)
    </td>
-   <td style="background-color: null">Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="https://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="https://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the “Typed RecordSets > Enumerations” section for an example.
+   <td>Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="https://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="https://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the “Typed RecordSets > Enumerations” section for an example.
    </td>
   </tr>
 </table>
@@ -1625,11 +1577,8 @@ Note that, just like for `Field`, a RecordSet might specify multiple `dataType`s
 
 While `RecordSet`s generally describe data that is stored in separate files, it is sometimes useful to include the data of a `RecordSet` directly in the Croissant dataset definition:
 
-
-
 *   **Enumerations**: Some `RecordSet`s represent small enumerations of values that are referenced by fields in other `RecordSet`s. Creating a separate data file for them would be too much of an overhead.
 *   **Examples**: It is often useful to include a few examples of data in `RecordSet`s, so that users can get an idea of their contents without downloading the corresponding data files. This is particularly important if the dataset is not available for free, or requires access credentials.
-
 
 ### Data
 
@@ -1659,7 +1608,6 @@ In the JSON list of the value of the property, each element corresponds to a rec
 For providing examples, `RecordSet` provides an `examples` property. The value of the `examples` property is similar to that of the `data` property. The main difference is that examples are only a (small) subset of the values of the `RecordSet`, while data contains all the records of the corresponding `RecordSet`.
 
 If the example values cannot easily be provided directly within the Croissant description, e.g., in the case of images, the examples property can point to another data source. This may be a FileObject or FileSet for simple cases, or another RecordSet for more complex cases.
-
 
 ## Joins
 
@@ -1818,7 +1766,7 @@ Croissant `RecordSet`s provide two mechanisms to represent hierarchical data:
 
 Note that the values of these fields may still come from a "flat" source, such as two separate columns of a table, as in the example above.
 
-Furthermore the field ids "gps\_coordinates/latitude" and "gps\_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](?tab=t.0#heading=h.iruur4vre3o6).
+Furthermore the field ids "gps\_coordinates/latitude" and "gps\_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
 
 
 ### Nested Records
@@ -2160,9 +2108,3 @@ Segmentation mask as an image:
   "transform": "cr:transform"
 },
 ```
-
-<!-- Footnotes themselves at the bottom. -->
-## Notes
-
-[^1]:
-     With the exception of small examples or enumerations, which can be inlined in the Croissant definition.
