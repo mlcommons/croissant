@@ -2,7 +2,7 @@
 
 A simple visual croissant explorer to find and discover datasets from the croissant universe.
 
-Starting with openml as a reference example using the the data from the health crawl dump.
+Starting with openml as a reference example using the data from the health crawl dump.
 
 A maybe (; running live demo can be found here http://3.71.4.61:8050/
 
