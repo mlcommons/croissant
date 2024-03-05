@@ -45,11 +45,10 @@ def documentation(output: epath.Path):
         logging.info(f"Path {output} already exists")
         output = output / datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     output.mkdir(parents=True)
-    from jinja2 import Environment
-    from jinja2 import FileSystemLoader
+    import jinja2
 
-    loader = FileSystemLoader(epath.Path(__file__).parent / "templates")
-    env = Environment(loader=loader)
+    loader = jinja2.FileSystemLoader(epath.Path(__file__).parent / "templates")
+    env = jinja2.Environment(loader=loader, autoescape=jinja2.select_autoescape())
     ctx = mlc.Context()
     for cls in [mlc.Field, mlc.FileObject, mlc.FileSet, mlc.RecordSet]:
         fields = []
