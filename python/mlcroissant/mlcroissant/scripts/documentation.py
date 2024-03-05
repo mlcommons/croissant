@@ -50,7 +50,7 @@ def documentation(output: epath.Path):
     loader = jinja2.FileSystemLoader(epath.Path(__file__).parent / "templates")
     env = jinja2.Environment(loader=loader, autoescape=jinja2.select_autoescape())
     ctx = mlc.Context()
-    for cls in [mlc.Field, mlc.FileObject, mlc.FileSet, mlc.RecordSet]:
+    for cls in [mlc.Field, mlc.FileObject, mlc.FileSet, mlc.Metadata, mlc.RecordSet]:
         fields = []
         for field in jsonld_fields(cls):
             url = field.call_url(ctx)
@@ -72,6 +72,7 @@ def documentation(output: epath.Path):
             fields.append(details)
         data = {
             "title": cls.__name__,
+            "documentation": cls.__doc__,
             "fields": fields,
         }
         template = env.get_template("node.html")

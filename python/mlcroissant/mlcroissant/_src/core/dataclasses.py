@@ -118,6 +118,7 @@ dataclasses.Field = JsonldField  # type: ignore
 
 
 def dataclass(cls):
+    """Overloads the built-in dataclass with JsonldFields instead of Fields."""
     return dataclasses.dataclass(cls, eq=False, repr=False)
 
 
