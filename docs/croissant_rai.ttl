@@ -80,7 +80,7 @@ schema:rangeIncludes schema:Text .
 
 rai:dataAnnotationAnalysis a rdf:Property ;
 rdfs:label "dataAnnotationAnalysis" ;
-rdfs:comment "Considerations related to the process of converting the “raw” annotations into the labels that are ultimately packaged in a dataset - Uncertainty or disagreement between annotations on each instance as a signal in the dataset, analysis of systematic disagreements between annotators of different socio demographic group,  how the final dataset annotations will relate to individual annotator responses." ;
+rdfs:comment "Considerations related to the process of converting the \"raw\" annotations into the labels that are ultimately packaged in a dataset - Uncertainty or disagreement between annotations on each instance as a signal in the dataset, analysis of systematic disagreements between annotators of different socio demographic group,  how the final dataset annotations will relate to individual annotator responses." ;
 schema:domainIncludes schema:Dataset ;
 schema:rangeIncludes schema:Text .
 
@@ -98,7 +98,7 @@ schema:rangeIncludes schema:Text .
 
 rai:machineAnnotationTools a rdf:Property ;
 rdfs:label "machineAnnotationTools" ;
-rdfs:comment "List of software used for data annotation ( e.g. concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)." ;
+rdfs:comment "List of software used for data annotation (e.g., concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)." ;
 schema:domainIncludes schema:Dataset ;
 schema:rangeIncludes schema:Text .
 
