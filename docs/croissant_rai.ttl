@@ -1,0 +1,127 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix croissant: <http://mlcommons.org/croissant/> .
+@prefix rai: <http://mlcommons.org/croissant/RAI/> .
+
+# Dataset level properties
+
+rai:dataCollection a rdf:Property ;
+rdfs:label "dataCollection" ;
+rdfs:comment "Description of the data collection process." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataCollectionType a rdf:Property ;
+rdfs:label "dataCollectionType" ;
+rdfs:comment "Define the data collection type. Recommended values: Surveys, Secondary Data analysis, Physical data collection, Direct measurement, Document analysis, Manual Human Curator, Software Collection, Experiments, Web Scraping, Web API, Focus groups, Self-reporting, Customer feedback data, User-generated content data, Passive Data Collection, Others." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataCollectionMissingData a rdf:Property ;
+rdfs:label "dataCollectionMissingData" ;
+rdfs:comment "Description of missing data in structured/unstructured form." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataCollectionRawData a rdf:Property ;
+rdfs:label "dataCollectionRawData" ;
+rdfs:comment "Description of the raw data i.e. source of the data." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataCollectionTimeframe a rdf:Property ;
+rdfs:label "dataCollectionTimeframe" ;
+rdfs:comment "Timeframe in terms of start and end date of the collection process, that it described as a DateTime indicating a time period in <a href="https://en.wikipedia.org/wiki/ISO_8601#Time_intervals">ISO 8601 time interval format</a>. For example, a collection time frame ranging from 2020 - 2022 can be indicated in ISO 8601 interval format via "2020/2022"." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:DateTime .
+
+rai:dataPreprocessingProtocol a rdf:Property ;
+rdfs:label "dataPreprocessingProtocol" ;
+rdfs:comment "Description of the steps that were required to bring collected data to a state that can be processed by an ML model/algorithm, e.g. filtering out incomplete entries etc, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataImputationProtocol a rdf:Property ;
+rdfs:label "dataImputationProtocol" ;
+rdfs:comment "Description of data imputation process, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataManipulationProtocol a rdf:Property ;
+rdfs:label "dataManipulationProtocol" ;
+rdfs:comment "Description of data manipulation process, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataReleaseMaintenancePlan a rdf:Property ;
+rdfs:label "dataReleaseMaintenancePlan" ;
+rdfs:comment "Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:personalSensitiveInformation a rdf:Property ;
+rdfs:label "personalSensitiveInformation" ;
+rdfs:comment "Sensitive Human Attribute(s)- Gender, Socio-economic status, Geography, Language, Age, Culture, Experience or Seniority, Others (please specify), if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataAnnotationProtocol a rdf:Property ;
+rdfs:label "dataAnnotationProtocol" ;
+rdfs:comment "Description of annotations (labels, ratings) produced, including how these were created or authored -  Annotation Workforce Type, Annotation Characteristic(s), Annotation Description(s), Annotation Task(s), Annotation Distribution(s)." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataAnnotationPlatform a rdf:Property ;
+rdfs:label "dataAnnotationPlatform" ;
+rdfs:comment "Platform, tool, or library used to collect annotations by human annotators, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataAnnotationAnalysis a rdf:Property ;
+rdfs:label "dataAnnotationAnalysis" ;
+rdfs:comment "Considerations related to the process of converting the \"raw\" annotations into the labels that are ultimately packaged in a dataset - Uncertainty or disagreement between annotations on each instance as a signal in the dataset, analysis of systematic disagreements between annotators of different socio demographic group,  how the final dataset annotations will relate to individual annotator responses." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:annotationsPerItem a rdf:Property ;
+rdfs:label "annotationsPerItem" ;
+rdfs:comment "Number of human labels per dataset item, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:annotatorDemographics a rdf:Property ;
+rdfs:label "annotatorDemographics" ;
+rdfs:comment "List of demographics specifications about the annotators, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:machineAnnotationTools a rdf:Property ;
+rdfs:label "machineAnnotationTools" ;
+rdfs:comment "List of software used for data annotation (e.g., concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataSocialImpact a rdf:Property ;
+rdfs:label "dataSocialImpact" ;
+rdfs:comment "Discussion of social impact, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataBiases a rdf:Property ;
+rdfs:label "dataBiases" ;
+rdfs:comment "Description of biases in dataset, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataLimitations a rdf:Property ;
+rdfs:label "dataLimitations" ;
+rdfs:comment "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses, if applicable." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
+
+rai:dataUseCases a rdf:Property ;
+rdfs:label "dataUseCases" ;
+rdfs:comment "Dataset Use(s) - Training, Testing, Validation, Development or Production Use, Fine Tuning, Others (please specify), Usage Guidelines. Recommended uses." ;
+schema:domainIncludes schema:Dataset ;
+schema:rangeIncludes schema:Text .
