@@ -51,7 +51,7 @@ def documentation(output: epath.Path):
     loader = FileSystemLoader(epath.Path(__file__).parent / "templates")
     env = Environment(loader=loader)
     ctx = mlc.Context()
-    for cls in [mlc.FileObject, mlc.FileSet, mlc.RecordSet]:
+    for cls in [mlc.Field, mlc.FileObject, mlc.FileSet, mlc.RecordSet]:
         fields = []
         for field in jsonld_fields(cls):
             url = field.call_url(ctx)
