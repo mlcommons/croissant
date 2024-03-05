@@ -11,7 +11,6 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dataclasses import jsonld_fields
-from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values

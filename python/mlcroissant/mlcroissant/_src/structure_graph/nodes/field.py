@@ -70,6 +70,7 @@ dataclasses.Field = JsonldField  # type: ignore
 class Field(NodeV2):
     """Nodes to describe a dataset Field."""
 
+    # pytype: disable=annotation-type-mismatch
     description: str | None = jsonld_field(
         default=None,
         input_types=[SDO.Text],
@@ -147,6 +148,7 @@ class Field(NodeV2):
         to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
         url=constants.ML_COMMONS_SUB_FIELD,
     )
+    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""
