@@ -328,7 +328,7 @@ Croissant builds on the [schema.org/Dataset](http://schema.org/Dataset) vocabula
 
 [Schema.org](http://Schema.org) properties are known to be very flexible in terms of the types of values they accept. We list below the main properties of the vocabulary and their expected type.To facilitate more consistent use of these properties we provide additional constraints on their usage in the context of Croissant datasets. We also specify cardinalities to clarify if a property can take one or many values.
 
-We organize [schema.org](http://schema.org) properties in three categories: Required, recommended and other properties. The properties starting with the symbol @ are defined in JSON-LD, which is our RDF syntax of choice for Croissant.
+We organize [schema.org](http://schema.org) properties in three categories: Required, recommended and other properties. The properties starting with the symbol `@` are defined in JSON-LD, which is our RDF syntax of choice for Croissant.
 
 
 ### Required
@@ -351,7 +351,7 @@ The following list of properties from [schema.org](http://schema.org) must be sp
    </td>
    <td>ONE
    </td>
-   <td>A set of JSON-LD context definitions that make the rest of the Croissant description less verbose. See the recommended JSON-LD context in Appendix 1. 
+   <td>A set of JSON-LD context definitions that make the rest of the Croissant description less verbose. See the recommended JSON-LD context in [Appendix 1](#appendix-1-json-ld-context). 
    </td>
   </tr>
   <tr>
@@ -962,7 +962,7 @@ While `FileObject` and `FileSet` describe the resources contained in a dataset, 
 
 A key challenge is that ML data comes in many different formats, including unstructured formats such as text, audio and video, and structured ones such as CSV and JSON. All these formats, no matter their level of machine-readable structuredness, need to be loaded into a common representation for ML purposes, and sometimes combined despite their heterogeneity.
 
-`RecordSet` provides a common structure description that can be used across different modalities, in terms of records_ _that may contain multiple fields_._ Unstructured content, like text and images, is represented as single-field records. Tabular data yields one record per row in the table, with fields for each column. Tree-structured data can be described with nested and repeated fields.
+`RecordSet` provides a common structure description that can be used across different modalities, in terms of records that may contain multiple fields. Unstructured content, like text and images, is represented as single-field records. Tabular data yields one record per row in the table, with fields for each column. Tree-structured data can be described with nested and repeated fields.
 
 Let's introduce the relevant classes first, before illustrating how they are used through examples.
 
@@ -1835,7 +1835,7 @@ We now introduce a number of features that are useful in the context of ML data.
 
 ## Categorical Data
 
-In machine learning applications, it's often useful to know that some of the data is categorical in nature, and has a finite set of values that can be used, say, for classification. Croissant represents that information by using the [sc:Enumeration](schema.org/Enumeration) class from [schema.org](Schema.org), as a `dataType` on `RecordSet`s that hold categorical data.
+In machine learning applications, it's often useful to know that some of the data is categorical in nature, and has a finite set of values that can be used, say, for classification. Croissant represents that information by using the [sc:Enumeration](https://schema.org/Enumeration) class from [schema.org](https://schema.org), as a `dataType` on `RecordSet`s that hold categorical data.
 
 These RecordSets must define a `name` field conforming with the [sc:name](https://schema.org/name) definition, i.e. a human-readable text naming the item. They must also specify a key to identify each possible instance. Enumerations should have a `url` field, which can also be used to uniquely refer to each instance.
 
