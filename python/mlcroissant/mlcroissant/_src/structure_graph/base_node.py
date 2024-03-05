@@ -9,6 +9,7 @@ from typing import Any
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.dataclasses import jsonld_fields
 from mlcroissant._src.core.issues import Issues
@@ -21,6 +22,8 @@ from mlcroissant._src.core.uuid import uuid_from_jsonld
 
 NAME_REGEX = "[a-zA-Z0-9\\-_\\.]+"
 _MAX_NAME_LENGTH = 255
+# This could also be an attribute of JsonldField:
+_LIST_FIELDS = {"distribution", "fields", "record_sets"}
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -290,10 +293,11 @@ class NodeV2(Node):
         }
         for field in jsonld_fields(self):
             url = field.call_url(self.ctx)
-            key = url.split("/")[-1]
+            key = self.ctx.rdf.shorten_key(url)
             value = getattr(self, field.name)
             value = field.call_to_jsonld(self.ctx, value)
-            if field.cardinality == "MANY" and field.name != "fields":
+            # fields in _LIST_FIELDS are always lists, so we don't unbox them.
+            if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
             jsonld[key] = value
         return remove_empty_values(jsonld)
@@ -301,6 +305,11 @@ class NodeV2(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Json):
         """Creates a Python class from JSON-LD."""
+        if cls._JSONLD_TYPE(ctx) == constants.SCHEMA_ORG_DATASET:
+            # For `Metadata` node, insert the conforms_to in the context:
+            ctx.conforms_to = CroissantVersion.from_jsonld(
+                ctx, jsonld.get(constants.DCTERMS_CONFORMS_TO)
+            )
         if isinstance(jsonld, list):
             return [cls.from_jsonld(ctx, el) for el in jsonld]
         check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
@@ -311,7 +320,7 @@ class NodeV2(Node):
             value = field.call_from_jsonld(ctx, value)
             if field.cardinality == "MANY":
                 value = box_singleton_list(value)
-            if value:
+            if value is not None:
                 kwargs[field.name] = value
         return cls(
             ctx=ctx,

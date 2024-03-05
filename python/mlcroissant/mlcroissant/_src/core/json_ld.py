@@ -104,6 +104,7 @@ def _sort_dict(d: Json):
 
 def remove_empty_values(d: Json) -> Json:
     """Removes empty values in a JSON."""
+    # TODO: if v n'apparait si v=False...
     return {k: v for k, v in d.items() if v}
 
 

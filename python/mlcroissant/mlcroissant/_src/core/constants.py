@@ -26,7 +26,9 @@ def ML_COMMONS(ctx) -> rdflib.Namespace:
         return ML_COMMONS_V_1_0
 
 
-ML_COMMONS_CITE_AS = lambda ctx: ML_COMMONS(ctx).citeAs
+ML_COMMONS_CITE_AS = lambda ctx: (
+    SCHEMA_ORG_CITATION if ctx.is_v0() else ML_COMMONS(ctx).citeAs
+)
 ML_COMMONS_COLUMN = lambda ctx: ML_COMMONS(ctx).column
 ML_COMMONS_DATA = lambda ctx: ML_COMMONS(ctx).data
 ML_COMMONS_DATA_BIASES = lambda ctx: ML_COMMONS(ctx).dataBiases
@@ -160,7 +162,6 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_SOURCE(ctx): "source",
     ML_COMMONS_TRANSFORM(ctx): "transforms",
     DCTERMS_CONFORMS_TO: "conforms_to",
-    SCHEMA_ORG_CITATION: "citation",
     SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",
     SCHEMA_ORG_CONTENT_URL: "content_url",
