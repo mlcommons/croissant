@@ -2,22 +2,17 @@
 
 from __future__ import annotations
 
-import dataclasses
 import itertools
 import json
 
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.dataclasses import jsonld_field
-from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import NodeV2
 from mlcroissant._src.structure_graph.nodes.field import Field
-
-OriginalField = dataclasses.Field
-dataclasses.Field = JsonldField  # type: ignore
 
 
 def data_from_jsonld(ctx: Context, data) -> Json | None:
@@ -32,12 +27,12 @@ def data_from_jsonld(ctx: Context, data) -> Json | None:
     return None
 
 
-@dataclasses.dataclass(eq=False, repr=False)
+@mlc_dataclasses.dataclass
 class RecordSet(NodeV2):
     """Nodes to describe a dataset RecordSet."""
 
     # pytype: disable=annotation-type-mismatch
-    data: list[Json] | None = jsonld_field(
+    data: list[Json] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description="One or more records that constitute the data of the `RecordSet`.",
@@ -45,17 +40,17 @@ class RecordSet(NodeV2):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_DATA,
     )
-    description: str | None = jsonld_field(
+    description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
     )
-    is_enumeration: bool | None = jsonld_field(
+    is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_IS_ENUMERATION,
     )
-    key: str | list[str] | None = jsonld_field(
+    key: str | list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description=(
@@ -65,12 +60,12 @@ class RecordSet(NodeV2):
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_KEY,
     )
-    name: str = jsonld_field(
+    name: str = mlc_dataclasses.jsonld_field(
         default="",
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_NAME,
     )
-    fields: list[Field] = jsonld_field(
+    fields: list[Field] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
@@ -172,6 +167,3 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str:
         if node.parent:
             return node.parent.uuid
     return node.uuid
-
-
-dataclasses.Field = OriginalField  # type: ignore

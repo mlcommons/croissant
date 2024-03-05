@@ -2,28 +2,22 @@
 
 from __future__ import annotations
 
-import dataclasses
-
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.dataclasses import jsonld_field
-from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import NodeV2
 
-OriginalField = dataclasses.Field
-dataclasses.Field = JsonldField  # type: ignore
 
-
-@dataclasses.dataclass(eq=False, repr=False)
+@mlc_dataclasses.dataclass
 class FileSet(NodeV2):
     """Nodes to describe a dataset FileSet (distribution)."""
 
     # pytype: disable=annotation-type-mismatch
-    contained_in: list[str] | None = jsonld_field(
+    contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
@@ -39,33 +33,33 @@ class FileSet(NodeV2):
         ],
         url=SDO.containedIn,
     )
-    description: str | None = jsonld_field(
+    description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
         url=SDO.description,
     )
-    encoding_format: str | None = jsonld_field(
+    encoding_format: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description="The format of the file, given as a mime type.",
         input_types=[SDO.Text],
         required=True,
         url=SDO.encodingFormat,
     )
-    excludes: list[str] | None = jsonld_field(
+    excludes: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description="A glob pattern that specifies the files to exclude.",
         input_types=[SDO.Text],
         url=lambda ctx: constants.ML_COMMONS_EXCLUDES(ctx),
     )
-    includes: list[str] | None = jsonld_field(
+    includes: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description="A glob pattern that specifies the files to include.",
         input_types=[SDO.Text],
         url=lambda ctx: constants.ML_COMMONS_INCLUDES(ctx),
     )
-    name: str = jsonld_field(
+    name: str = mlc_dataclasses.jsonld_field(
         default="",
         description=(
             "The name of the file.  As much as possible, the name should reflect the"
@@ -87,6 +81,3 @@ class FileSet(NodeV2):
     def _JSONLD_TYPE(cls, ctx: Context):
         """Gets the class' JSON-LD @type."""
         return constants.SCHEMA_ORG_FILE_SET(ctx)
-
-
-dataclasses.Field = OriginalField  # type: ignore

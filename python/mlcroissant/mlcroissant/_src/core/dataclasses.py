@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import dataclasses
 from typing import Any, Callable, Literal
 
@@ -111,3 +112,14 @@ def jsonld_fields(cls_or_instance) -> list[JsonldField]:
         for field in dataclasses.fields(cls_or_instance)
         if isinstance(field, JsonldField)
     ]
+
+
+OriginalField = dataclasses.Field
+dataclasses.Field = JsonldField  # type: ignore
+
+
+def dataclass(cls):
+    return dataclasses.dataclass(cls, eq=False, repr=False)
+
+
+dataclasses.Field = OriginalField  # type: ignore
