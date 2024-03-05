@@ -391,8 +391,6 @@ class Metadata(Node):
                     f' "{constants.SCHEMA_ORG_FILE_SET(ctx)}". Got'
                     f" {distribution_type} instead."
                 )
-        if not distribution:
-            ctx.issues.add_warning("`distribution` is empty for this dataset.")
         record_sets = [
             RecordSet.from_jsonld(ctx, record_set)
             for record_set in metadata.get(constants.ML_COMMONS_RECORD_SET(ctx), [])
