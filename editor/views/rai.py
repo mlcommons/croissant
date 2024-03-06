@@ -60,7 +60,7 @@ def render_rai_metadata():
                 st.text_area(
                     label=("**Type**. If others, define the data collection type"),
                     key="metadata-data-collection-type-others",
-                    value=metadata.data_collection_type_others,
+                    value=metadata.data_collection_type,
                     on_change=handle_rai_change,
                     args=(RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS, metadata, key),
                 )
@@ -69,7 +69,7 @@ def render_rai_metadata():
                 label=("**Missing Data**. "),
                 key="metadata-data-collection-missing",
                 placeholder="Description of missing data in structured/unstructured form",
-                value=metadata.data_collection_missing,
+                value=metadata.data_collection_missing_data,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA, metadata, key),
             )
@@ -78,30 +78,10 @@ def render_rai_metadata():
                 label=("**Raw Data**. "),
                 key="metadata-data-collection-raw",
                 placeholder="Description of the raw data i.e. source of the data ",
-                value=metadata.data_collection_raw,
+                value=metadata.data_collection_raw_data,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION_RAW, metadata, key),
             )
-            with st.expander(
-                "Data collection timeframe in terms of start and end the collection process",
-                expanded=True,
-            ):
-                key = "metadata-data-collection-timeframe-start"
-                st.date_input(
-                    label=("Start: **range** https://schema.org/DateTime "),
-                    key="metadata-data-collection-timeframe-start",
-                    value=metadata.data_collection_timeframe_start,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_START, metadata, key),
-                )
-                key = "metadata-data-collection-timeframe-end"
-                st.date_input(
-                    label=("End **range**: https://schema.org/DateTime "),
-                    key="metadata-data-collection-timeframe-end",
-                    value=metadata.data_collection_timeframe_end,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_END, metadata, key),
-                )
         with st.expander("**Data Annotation**", expanded=False):
             key = "metadata-data-annotation-protocol"
             st.text_area(
@@ -139,7 +119,7 @@ def render_rai_metadata():
                     "**Demographics**. List of demographics specifications about the annotators "
                 ),
                 key="metadata-data-annotation-demographics",
-                value=metadata.data_annotation_demographics,
+                value=metadata.annotator_demographics,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_ANNOTATION_DEMOGRAPHICS, metadata, key),
             )
@@ -149,7 +129,7 @@ def render_rai_metadata():
                     "**Tools**. List of software used for data annotation ( e.g. concept extraction, NER, and additional characteristics of the tools used for annotation to allow for replication or extension)  "
                 ),
                 key="metadata-data-annotation-tools",
-                value=metadata.data_annotation_tools,
+                value=metadata.machine_annotation_tools,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_ANNOTATION_TOOLS, metadata, key),
             )
@@ -159,7 +139,7 @@ def render_rai_metadata():
                     "**Annotation per item**. Number of human labels per dataset item  "
                 ),
                 key="metadata-data-annotation-per-item",
-                value=metadata.data_annotation_per_item,
+                value=metadata.annotation_per_item,
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_ANNOTATION_PER_ITEM, metadata, key),
             )
@@ -363,9 +343,11 @@ def render_rai_metadata():
                         metadata.data_biases.pop()
                         st.rerun()
         with st.expander("**Personal and sensitive information**", expanded=True):
-            if metadata.data_sensitive:
-                if type(metadata.data_sensitive) is list:
-                    for index, protocol in enumerate(metadata.data_sensitive):
+            if metadata.personal_sensitive_information:
+                if type(metadata.personal_sensitive_information) is list:
+                    for index, protocol in enumerate(
+                        metadata.personal_sensitive_information
+                    ):
                         key = "metadata-personal-sensitive-information_" + str(index)
                         st.text_area(
                             label=(
@@ -379,7 +361,9 @@ def render_rai_metadata():
                             args=(RaiEvent.RAI_SENSITIVE, metadata, key),
                         )
                 else:
-                    metadata.data_sensitive = [metadata.data_sensitive]
+                    metadata.personal_sensitive_information = [
+                        metadata.personal_sensitive_information
+                    ]
                     key = "metadata-personal-sensitive-information_" + "0"
                     st.text_area(
                         label=(
@@ -388,7 +372,7 @@ def render_rai_metadata():
                             " mitigation of any risks and the responsible use of the datasets."
                         ),
                         key=key,
-                        value=metadata.data_sensitive,
+                        value=metadata.personal_sensitive_information,
                         on_change=handle_rai_change,
                         args=(RaiEvent.RAI_SENSITIVE, metadata, key),
                     )
@@ -407,17 +391,17 @@ def render_rai_metadata():
             add, remove = st.columns(2)
             with add:
                 if st.button("+ add sensitive"):
-                    if metadata.data_sensitive:
-                        metadata.data_sensitive.append("")
+                    if metadata.personal_sensitive_information:
+                        metadata.personal_sensitive_information.append("")
                         st.rerun()
                     else:
-                        metadata.data_sensitive = []
-                        metadata.data_sensitive.append("")
+                        metadata.personal_sensitive_information = []
+                        metadata.personal_sensitive_information.append("")
                         st.rerun()
             with remove:
                 if st.button("- remove sensitive"):
-                    if metadata.data_sensitive:
-                        metadata.data_sensitive.pop()
+                    if metadata.personal_sensitive_information:
+                        metadata.personal_sensitive_information.pop()
                         st.rerun()
 
         key = "metadata-social-impact"
@@ -429,9 +413,9 @@ def render_rai_metadata():
             args=(RaiEvent.RAI_DATA_SOCIAL_IMPACT, metadata, key),
         )
         with st.expander("**Data limitations**", expanded=True):
-            if metadata.data_limitation:
-                if type(metadata.data_limitation) is list:
-                    for index, protocol in enumerate(metadata.data_limitation):
+            if metadata.data_limitations:
+                if type(metadata.data_limitations) is list:
+                    for index, protocol in enumerate(metadata.data_limitations):
                         key = "metadata-data-limitations_" + str(index)
                         st.text_area(
                             label=(
@@ -443,14 +427,14 @@ def render_rai_metadata():
                             args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
                         )
                 else:
-                    metadata.data_limitation = [metadata.data_limitation]
+                    metadata.data_limitations = [metadata.data_limitations]
                     key = "metadata-data-limitations_" + "0"
                     st.text_area(
                         label=(
                             "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
                         ),
                         key=key,
-                        value=metadata.data_limitation,
+                        value=metadata.data_limitations,
                         on_change=handle_rai_change,
                         args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
                     )
@@ -468,17 +452,17 @@ def render_rai_metadata():
             add, remove = st.columns(2)
             with add:
                 if st.button("+ add limitations"):
-                    if metadata.data_limitation:
-                        metadata.data_limitation.append("")
+                    if metadata.data_limitations:
+                        metadata.data_limitations.append("")
                         st.rerun()
                     else:
-                        metadata.data_limitation = []
-                        metadata.data_limitation.append("")
+                        metadata.data_limitations = []
+                        metadata.data_limitations.append("")
                         st.rerun()
             with remove:
                 if st.button("- remove limitations"):
-                    if metadata.data_limitation:
-                        metadata.data_limitation.pop()
+                    if metadata.data_limitations:
+                        metadata.data_limitations.pop()
                         st.rerun()
         key = "metadata-data-maintenance"
         st.text_area(
@@ -486,7 +470,7 @@ def render_rai_metadata():
                 "**Data release maintenance**. Versioning information in terms of the updating timeframe, the maintainers, and the deprecation policies. "
             ),
             key=key,
-            value=metadata.data_maintenance,
+            value=metadata.data_release_maintenance_plan,
             on_change=handle_rai_change,
             args=(RaiEvent.RAI_MAINTENANCE, metadata, key),
         )

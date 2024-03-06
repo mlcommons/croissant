@@ -16,8 +16,7 @@ class RaiEvent(enum.Enum):
     RAI_DATA_COLLECTION_TYPE_OTHERS = "RAI_DATA_COLLECTION_TYPE_OTHERS"
     RAI_DATA_COLLECTION_MISSING_DATA = "RAI_DATA_COLLECTION_MISSING_DATA"
     RAI_DATA_COLLECTION_RAW = "RAI_DATA_COLLECTION_RAW"
-    RAI_DATA_COLLECTION_TIMEFRAME_START = "RAI_DATA_COLLECTION_TIMEFRAME_START"
-    RAI_DATA_COLLECTION_TIMEFRAME_END = "RAI_DATA_COLLECTION_TIMEFRAME_END"
+    RAI_DATA_COLLECTION_TIMEFRAME = "RAI_DATA_COLLECTION_TIMEFRAME"
     RAI_DATA_PREPROCESSING_IMPUTATION = "RAI_DATA_PREPROCESSING_IMPUTATION"
     RAI_DATA_PREPROCESSING_PROTOCOL = " RAI_DATA_PREPROCESSING_PROTOCOL"
     RAI_DATA_PREPROCESSING_MANIPULATION = "RAI_DATA_PREPROCESSING_MANIPULATIO"
@@ -41,19 +40,15 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
         Metadata.data_collection_type = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS:
-        Metadata.data_collection_type_others = st.session_state[key]
+        ## To implement
+        pass
     if event == RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA:
-        Metadata.data_collection_missing = st.session_state[key]
+        Metadata.data_collection_missing_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_RAW:
-        Metadata.data_collection_raw = st.session_state[key]
-    if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_START:
+        Metadata.data_collection_raw_data = st.session_state[key]
+    if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME:
         date = st.session_state[key]
-        Metadata.data_collection_timeframe_start = datetime.datetime(
-            date.year, date.month, date.day
-        )
-    if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME_END:
-        date = st.session_state[key]
-        Metadata.data_collection_timeframe_end = datetime.datetime(
+        Metadata.data_collection_timeframe = datetime.datetime(
             date.year, date.month, date.day
         )
     if event == RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION:
@@ -75,11 +70,11 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
     if event == RaiEvent.RAI_DATA_ANNOTATION_ANALYSIS:
         Metadata.data_annotation_analysis = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PER_ITEM:
-        Metadata.data_annotation_per_item = st.session_state[key]
+        Metadata.annotation_per_item = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_DEMOGRAPHICS:
-        Metadata.data_annotation_demographics = st.session_state[key]
+        Metadata.annotator_demographics = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_TOOLS:
-        Metadata.data_annotation_tools = st.session_state[key]
+        Metadata.machine_annotation_tools = st.session_state[key]
     if event == RaiEvent.RAI_DATA_USE_CASES:
 
         if Metadata.data_use_cases:
@@ -99,21 +94,21 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
             Metadata.data_biases.append(st.session_state[key])
 
     if event == RaiEvent.RAI_DATA_LIMITATION:
-        if Metadata.data_limitation:
+        if Metadata.data_limitations:
             index = key.split("_")[-1]
-            Metadata.data_limitation[int(index)] = st.session_state[key]
+            Metadata.data_limitations[int(index)] = st.session_state[key]
         else:
-            Metadata.data_limitation = []
-            Metadata.data_limitation.append(st.session_state[key])
+            Metadata.data_limitations = []
+            Metadata.data_limitations.append(st.session_state[key])
     if event == RaiEvent.RAI_DATA_SOCIAL_IMPACT:
         Metadata.data_social_impact = st.session_state[key]
     if event == RaiEvent.RAI_SENSITIVE:
 
-        if Metadata.data_sensitive:
+        if Metadata.personal_sensitive_information:
             index = key.split("_")[-1]
-            Metadata.data_sensitive[int(index)] = st.session_state[key]
+            Metadata.personal_sensitive_information[int(index)] = st.session_state[key]
         else:
-            Metadata.data_sensitive = []
-            Metadata.data_sensitive.append(st.session_state[key])
+            Metadata.personal_sensitive_information = []
+            Metadata.personal_sensitive_information.append(st.session_state[key])
     if event == RaiEvent.RAI_MAINTENANCE:
-        Metadata.data_maintenance = st.session_state[key]
+        Metadata.data_release_maintenance_plan = st.session_state[key]
