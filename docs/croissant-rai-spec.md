@@ -763,12 +763,12 @@ As the size of language models continues to increase, there is a growing demand 
 
 # **References**
 
-[1] Mittal, Surbhi, Kartik Thakral, Richa Singh, Mayank Vatsa, Tamar Glaser, Cristian Canton Ferrer, and Tal Hassner. "On Responsible Machine Learning Datasets with Fairness, Privacy, and Regulatory Norms." arXiv preprint arXiv:2310.15848 (2023).
+[1] Surbhi Mittal, Kartik Thakral, Richa Singh, Mayank Vatsa, Tamar Glaser, Cristian Canton-Ferrer, Tal Hassner: On Responsible Machine Learning Datasets with Fairness, Privacy, and Regulatory Norms. CoRR abs/2310.15848 (2023)
 
-[2] Phillips, C., Roy, S., Ankur, K., Ramachandran, R.: HLS Foundation Burnscars Dataset (Aug 2023). [https://doi.org/10.57967/hf/0956](https://doi.org/10.57967/hf/0956),https://huggingface.co/ibm-nasa-geospatial/hlsburnscars
+[2] Christopher Phillips and Sujit Roy and Kumar Ankur, Rahul Ramachandran:HLS Foundation Burnscars Dataset. [https://doi.org/10.57967/hf/0956](https://doi.org/10.57967/hf/0956) (Aug 2023)
 
-[3] Aroyo, Lora, Alex Taylor, Mark Diaz, Christopher Homan, Alicia Parrish, Gregory Serapio-García, Vinodkumar Prabhakaran, and Ding Wang. "Dices dataset: Diversity in conversational ai evaluation for safety." Advances in Neural Information Processing Systems 36 (2024).
+[3] Lora Aroyo, Alex S. Taylor, Mark Díaz, Christopher Homan, Alicia Parrish, Gregory Serapio-García, Vinodkumar Prabhakaran, Ding Wang: DICES Dataset: Diversity in Conversational AI Evaluation for Safety. NeurIPS 2023
 
-[4] Laurençon, Hugo, Lucile Saulnier, Thomas Wang, Christopher Akiki, Albert Villanova del Moral, Teven Le Scao, Leandro Von Werra et al. "The bigscience roots corpus: A 1.6 tb composite multilingual dataset." Advances in Neural Information Processing Systems 35 (2022): 31809-31826.
+[4] Hugo Laurençon, Lucile Saulnier, Thomas Wang, Christopher Akiki, Albert Villanova del Moral, Teven Le Scao, Leandro von Werra, Chenghao Mou, Eduardo González Ponferrada, Huu Nguyen, Jörg Frohberg, Mario Sasko, Quentin Lhoest, Angelina McMillan-Major, Gérard Dupont, Stella Biderman, Anna Rogers, Loubna Ben Allal, Francesco De Toni, Giada Pistilli, Olivier Nguyen, Somaieh Nikpoor, Maraim Masoud, Pierre Colombo, Javier de la Rosa, Paulo Villegas, Tristan Thrush, Shayne Longpre, Sebastian Nagel, Leon Weber, Manuel Muñoz, Jian Zhu, Daniel van Strien, Zaid Alyafeai, Khalid Almubarak, Minh Chien Vu, Itziar Gonzalez-Dios, Aitor Soroa, Kyle Lo, Manan Dey, Pedro Ortiz Suarez, Aaron Gokaslan, Shamik Bose, David Ifeoluwa Adelani, Long Phan, Hieu Tran, Ian Yu, Suhas Pai, Jenny Chim, Violette Lepercq, Suzana Ilic, Margaret Mitchell, Sasha Luccioni, Yacine Jernite: The BigScience ROOTS Corpus: A 1.6TB Composite Multilingual Dataset. CoRR abs/2303.03915 (2023)
 
-[5] Gebru, Timnit, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman Vaughan, Hanna Wallach, Hal Daumé Iii, and Kate Crawford. "Datasheets for datasets." Communications of the ACM 64, no. 12 (2021): 86-92.
+[5] Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman Vaughan, Hanna M. Wallach, Hal Daumé III, Kate Crawford: Datasheets for datasets. Commun. ACM 64(12): 86-92 (2021)
