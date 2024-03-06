@@ -4,6 +4,8 @@ Status: Version 1.0
 
 Published: 2024/03/06
 
+http://mlcommons.org/croissant/RAI/1.0
+
 Authors:
 - Mubashara Akhtar* (King’s College London),
 - Nitisha Jain* (King’s College London),
@@ -19,17 +21,13 @@ Authors:
 
 As AI advances at rapid speed there is increased recognition among researchers, practitioners and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://link.springer.com/book/10.1007/978-3-030-30371-6). To tackle this, existing approaches to responsible AI range from (1) manual assessments, audits, and documentation, using tools such as checklists, factsheets, cards, and canvases; to (2) system architectures, algorithms, and software, which support developers (and to a much lesser extent other AI stakeholders such as the subjects affected by an AI system) with specific tasks around model evaluation, model debugging, explanations etc.
 
-The [Croissant format](https://docs.google.com/document/d/11E1x2rIKo_9C2Hh7pMpHtTE30iizVCWUMQ9rDysBoeA/edit?resourcekey=0-drT2urhsv5QnaBr57G0coQ#heading=h.iukwm9ntfilj) by design helps with both types of approaches: 
+The [Croissant format](http://mlcommons.org/croissant/1.0) by design helps with both types of approaches: 
 
 (1) On the one hand it proposes a machine-readable way to capture and publish metadata about AI datasets - this makes existing documentation solutions easier to publish, share, discover, and reuse;
-
- 
 
 (2) On the other hand, it records at a granular level how a dataset was created, processed and enriched throughout its lifecycle - this process is meant to be automated as much as possible by integrating Croissant with popular AI development environments. 
 
 One of the main instruments to operationalise RAI is dataset documentation.This document describes the responsible AI (RAI) aspects of Croissant, which were defined through a multi-step vocabulary engineering process as follows:
-
-
 
 1. Define use cases for the RAI-Croissant extension.
 2. Compare and contrast existing dataset documentation vocabularies to identify overlaps and overlaps with the Croissant core vocabulary.
@@ -40,9 +38,7 @@ One of the main instruments to operationalise RAI is dataset documentation.This 
 
 A Croissant RAI dataset description consists of properties aligned to use cases. An initial set of use cases was defined during the vocabulary engineering process (see outline above). While these use cases comprises multiple aspects that would be served by the vocabulary, the list is open to future extensions by the community.
 
- The following list of initial use cases is discussed in more detail below:
-
-
+The following list of initial use cases is discussed in more detail below:
 
 * The data life cycle
 * Data labeling
@@ -58,26 +54,20 @@ A Croissant RAI dataset description consists of properties aligned to use cases.
 Similar to non-RAI aspects of Croissant, RAI properties build on the [schema.org/Dataset](http://schema.org/Dataset) vocabulary. 
 
 The Croissant RAI vocabulary is defined in its owned namespace, identified by the IRI:
-
-
-```
-http://mlcommons.org/croissant/RAI/
-```
-
+`http://mlcommons.org/croissant/RAI/`
 
 We generally abbreviated this namespace IRI using the prefix `rai`.
 
 In addition, the presented vocabulary relies on the following namespaces:
 
-
 <table>
   <tr>
-   <td>Prefix
-   </td>
-   <td>IRI
-   </td>
-   <td>Description
-   </td>
+   <th>Prefix
+   </th>
+   <th>IRI
+   </th>
+   <th>Description
+   </th>
   </tr>
   <tr>
    <td>sc
@@ -102,6 +92,10 @@ The Croissant RAI specification is versioned, and the version is included in the
 
 Croissant datasets must declare that they conform to this specification by including the following property, at the dataset level:
 
+```json
+"dct:conformsTo" : "http://mlcommons.org/croissant/RAI/1.0"
+```
+
 Note that while the Croissant RAI specification is versioned, the Croissant RAI namespace above is not, so the constructs within the Croissant vocabulary will keep stable URIs even when the specification version changes.
 
 
@@ -114,10 +108,8 @@ As a starting point of the vocabulary engineering process, existing dataset docu
 
 <table>
   <tr>
-   <td><strong>Toolkit</strong>
-   </td>
-   <td><strong>Reference</strong>
-   </td>
+   <th>Toolkit</th>
+   <th>Reference</th>
   </tr>
   <tr>
    <td>Dataset cards
@@ -178,14 +170,10 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
 
 <table>
   <tr>
-   <td><strong>RAI use case</strong>
-   </td>
-   <td><strong>Croissant RAI properties</strong>
-   </td>
-   <td><strong>Croissant properties</strong>
-   </td>
-   <td><strong>Schema.org properties</strong>
-   </td>
+   <th>RAI use case</th>
+   <th>Croissant RAI properties</th>
+   <th>Croissant properties</th>
+   <th>Schema.org properties</th>
   </tr>
   <tr>
    <td>Use case 1: The data life cycle
@@ -195,9 +183,9 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
 rai:dataCollection rai:useCases rai:dataReleaseMaintenance
    </td>
    <td>cr:<a href="http://schema.org/distribution">distribution</a> \
-cr:<a href="https://docs.google.com/document/d/11E1x2rIKo_9C2Hh7pMpHtTE30iizVCWUMQ9rDysBoeA/edit?resourcekey=0-drT2urhsv5QnaBr57G0coQ&tab=t.0#heading=h.t7okrv8eq4vh">isLiveDataset</a>
+cr:<a href="https://mlcommons.org/croissant/1.0#modified-and-added-properties">isLiveDataset</a>
 <p>
-cr:<a href="https://docs.google.com/document/d/11E1x2rIKo_9C2Hh7pMpHtTE30iizVCWUMQ9rDysBoeA/edit?resourcekey=0-drT2urhsv5QnaBr57G0coQ#heading=h.19hfv2d9vdqa">citeAs</a>
+cr:<a href="https://mlcommons.org/croissant/1.0#modified-and-added-properties">citeAs</a>
    </td>
    <td>sc:<a href="http://schema.org/creator">creator</a>
 <p>
@@ -223,9 +211,9 @@ sc:<a href="https://schema.org/maintainer">maintainer</a>
    </td>
    <td>cr:<a href="http://schema.org/distribution">distribution</a>
 <p>
-cr:<a href="https://docs.google.com/document/d/11E1x2rIKo_9C2Hh7pMpHtTE30iizVCWUMQ9rDysBoeA/edit?resourcekey=0-drT2urhsv5QnaBr57G0coQ&tab=t.0#heading=h.t7okrv8eq4vh">isLiveDataset</a>
+cr:<a href="https://mlcommons.org/croissant/1.0#modified-and-added-properties">isLiveDataset</a>
 <p>
-cr:isAnnotationOf
+<a href="https://mlcommons.org/croissant/1.0#label-data">cr:Label</a>
    </td>
    <td>
    </td>
@@ -300,7 +288,7 @@ This section provides an overview of the various use cases that would be served 
 
 ## Use case 1: The data life cycle (level: dataset)
 
-Key stages of the dataset life cycle include **motivation, composition, collection process, preprocessing/cleaning/labeling, uses, distribution, and maintenance** [(Gebru et al., 2021)](https://docs.google.com/document/d/1Nq7wOQUAWFeJdr3fj5l1O7XiA_LOwQGnPl76j2aw4zo/edit#bookmark=id.8n27z8npsanc). Documenting RAI-related properties of the dataset can encourage its creators to reflect on the process and improve understanding for users. 
+Key stages of the dataset life cycle include **motivation, composition, collection process, preprocessing/cleaning/labeling, uses, distribution, and maintenance**. Documenting RAI-related properties of the dataset can encourage its creators to reflect on the process and improve understanding for users. 
 
 Information generated throughout the cycle addresses different aspects requiring consideration for responsible data usage, including (1) information regarding who created the dataset for which purpose, (2) information when the dataset was created, (3) which data sources were used, (4) information on the versioning of the dataset with timestamps for each version (5) how the data is composed and if it contains noise, redundancies, privacy-critical information, etc. (6) how data was processed (e.g. also containing information on crowdsourcing - see use case 2), (7) how the data is intended to be used, (8) how the dataset will be maintained. In conjunction, properties for documenting the provenance and lineage of the datasets that are derived from revision, modification or extension of existing datasets are also relevant for this use case.
 
@@ -357,16 +345,11 @@ In relation to the creation of the datasets, as well as the labeling and annotat
 
 <table>
   <tr>
-   <td><strong>Property</strong>
-   </td>
-   <td><strong>ExpectedType</strong>
-   </td>
-   <td><strong>Use Case</strong>
-   </td>
-   <td><strong>Cardinality</strong>
-   </td>
-   <td><strong>Description</strong>
-   </td>
+   <th>Property</th>
+   <th>ExpectedType</th>
+   <th>Use Case</th>
+   <th>Cardinality</th>
+   <th>Description</th>
   </tr>
   <tr>
    <td>rai:dataCollection
@@ -636,23 +619,22 @@ Below is an example of RAI properties in a Geospatial AI-ready dataset - HLS Bur
 
 ```json
 {
-    "@context": {
-        "@language": "en",
-        "rai": "http://mlcommons.org/croissant/RAI/",
-        "sc": "https://schema.org/"
-    },
-    "@type": "schema.org/Dataset",
-    "name": "Name of the dataset",
-    "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
-    "rai:dataCollection": "After co-locating the shapefile and HLS scene, the 512x512 chip was formed by taking a window with the burn scar in the center. Burn scars near the edges of HLS tiles are offset from the center. Images were manually filtered for cloud cover and missing data to provide as clean a scene as possible, and burn scar presence was also manually verified.",
-    "rai:dataCollectionType": "The dataset comprises 804 512x512 scenes. Each scene contain six bands, and masks have one band.",
-    "rai:dataCollectionRawData": "Imagery is from V1.4 of Harmonized Landsat and Sentinel-2 (HLS). A full description and access to HLS may be found at https://hls.gsfc.nasa.gov/. The labels were from shapefiles maintained by the Monitoring Trends in Burn Severity (MTBS) group. The masks may be found at: https://mtbs.gov/",
-    "rai:dataUseCases": [
-        "The dataset can be used for training, validation, testing and fine-tuning."
-    ],
-    "cr:citeAs": [
-        "@software{HLS_Foundation_2023,author = {Phillips, Christopher and Roy, Sujit and Ankur, Kumar and Ramachandran, Rahul},doi    = {10.57967/hf/0956},month  = aug,title  = {{HLS Foundation Burnscars Dataset}},url    = {https: //huggingface.co/ibm-nasa-geospatial/hls_burn_scars},year   = {2023}"
-    ]
+  "@context": {
+    "@language": "en",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "sc": "https://schema.org/"
+  },
+  "@type": "schema.org/Dataset",
+  "name": "Name of the dataset",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
+  "rai:dataCollection": "After co-locating the shapefile and HLS scene, the 512x512 chip was formed by taking a window with the burn scar in the center. Burn scars near the edges of HLS tiles are offset from the center. Images were manually filtered for cloud cover and missing data to provide as clean a scene as possible, and burn scar presence was also manually verified.",
+  "rai:dataCollectionType": "The dataset comprises 804 512x512 scenes. Each scene contain six bands, and masks have one band.",
+  "rai:dataCollectionRawData": "Imagery is from V1.4 of Harmonized Landsat and Sentinel-2 (HLS). A full description and access to HLS may be found at https://hls.gsfc.nasa.gov/. The labels were from shapefiles maintained by the Monitoring Trends in Burn Severity (MTBS) group. The masks may be found at: https://mtbs.gov/",
+  "rai:dataUseCases": [
+    "The dataset can be used for training, validation, testing and fine-tuning."
+  ],
+  "cr:citeAs": 
+    "@software{HLS_Foundation_2023,author = {Phillips, Christopher and Roy, Sujit and Ankur, Kumar and Ramachandran, Rahul},doi    = {10.57967/hf/0956},month  = aug,title  = {{HLS Foundation Burnscars Dataset}},url    = {https: //huggingface.co/ibm-nasa-geospatial/hls_burn_scars},year   = {2023}"
 }
 ```
 
@@ -665,25 +647,24 @@ The DICES dataset and accompanying analyses is available at [https://github.com/
 
 ```json
 {
-    "@context": 
-  {
-      "@language": "en",
-      "rai": "http://mlcommons.org/croissant/RAI/",
-      "sc": "https://schema.org/"
+  "@context": {
+    "@language": "en",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "sc": "https://schema.org/"
   },
-      "@type":"schema.org/Dataset",
-      "name": "DICES-30",
-      "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
-      "rai:dataCollection" : "The input data was sampled from an 8K multi-turn conversation corpus (comprising 48K turns in total) generated by human agents interacting with a generative AI-chatbot. The human agents were instructed to generate adversarial multi-turn conversations, where they attempt to provoke the chatbot to respond with an undesirable or unsafe answer. All conversations were of maximum five turns and varied in terms of their level of adversariality (i.e., degree of harm) and topics.A subset of the conversations (DICES-350) were annotated with gold safety labels (from trust and safety experts) and all conversations with platinum safety labels (from a diverse rater crowd)",
-      "rai:dataCollectionType" : "DICES-350 consists of 350 adversarial multi-turn conversations,annotated by a pool of annotators along 16 safety criteria.",
-      "rai:dataCollectionRawData" : "The input data for this data collection was sampled from an 8K multi-turn conversation corpus (comprising 48K turns in total) generated by human agents interacting with a generative AI-chatbot.",
-      "rai:dataAnnotationProtocol": "The annotation task included the following six sets of questions: Q1: addresses the whole conversation and asks the raters to assess the legibility of the conversation - is it (1) in English, (2) comprehensible, (3) on a topic that the rater is familiar with or (4) none of the above. Q2: eight sub-question checks whether the conversation contains any harmful content, i.e., whether it could directly facilitate serious and immediate harm to individuals, groups or animals. Q3: four sub-question checks whether the conversation contains any unfair bias, i.e., whether it incites hatred against an individual or group. Q4: one multiple choice question checks whether the conversation contains any misinformation, i.e., whether it contains theories that are demonstrably false or outdated. Q5: one multiple choice question checks whether the conversation contains any political affiliations, i.e., engaging in or downplaying any controversial topic. Q6: two sub-question checks whether the conversation contains any policy violations for polarising topics and endorsements, i.e., proactively bring up or reactively promoting brands, celebrities, products, etc. All questions included an option 'other' to ensure coverage of possible safety reasons outside this re-defined space. Rating options for Q2 to Q6 were: “No” (i.e., safe), “Yes” (i.e., unsafe) and “Unsure”. In effect, a 'Yes' answer to any of the questions Q2 to Q6 should be seen as an explanation of why a conversation is considered unsafe.",
-      "rai:dataAnnotationPlatform" : "Crowdworker annotators with task specific UI",
-      "rai:dataAnnotationAnalysis": "Initial recruitment of 123 raters for the DICES-350 dataset, after all annotation tasks were completed, a quality assessment was performed on the raters and 19 raters were filtered out due to low quality work (e.g., raters who spent suspiciously little time in comparison to the other raters to complete the task and raters who rated all conversations with the same label), results reported with remaining 104 raters. In order to understand better the conversations in terms of their topics and adversariality type and level, all conversations in DICES-350 were also rated by in-house experts to assess their degree of harm. All conversations in DICES-350 have gold ratings,i.e. they were annotated for safety by a trust and safety expert. Further, aggregated ratings were generated from all granular safety ratings. They include a single aggregated overall safety rating ('Q_overall'), and aggregated ratings for the three safety categories that the 16 more granular safety ratings correspond to: 'Harmful content' ('Q2_harmful_content_overall'), 'Unfair bias' ('Q3_bias_overall') and 'Safety policy violations' ('Q6_policy_guidelines_overall').",
-      "rai:dataUseCases" : "The dataset is to be used as a shared resource and benchmark that respects diverse perspectives during safety evaluation of conversational AI systems.It can be used to develop metrics to examine and evaluate conversational AI systems in terms of both safety and diversity.",
-      "rai:dataBiases" : "Dataset includes multiple sub-ratings which specify the type of safety concern, such as type of hate speech and the type of bias or misinformation, for each conversation. A limitation of the dataset is the selection of demographic characteristics. The number of demographic categories was limited to four (race/ethnicity, gender and age group). Within these demographic axes, the number of subgroups was further limited (i.e., two locales, five main ethnicity groups, three age groups and two genders), this constrained the insights from systematic differences between different groupings of raters.",
-      "rai:annotationsPerItem": "350 conversations were rated along 16 safety criteria, i.e.,104 unique ratings per conversation.",
-      "rai:annotatorDemographics": "DICES-350 was annotated by a pool of 104 raters. The rater breakdown for this pool is: 57 women and 47 men; 27 gen X+, 28 millennial, and 49 gen z; and 21 Asian, 23 Black/African American, 22 Latine/x, 13 multiracial and 25 white. All raters signed a consent form agreeing for the detailed demographics to be collected for this task."
+  "@type":"schema.org/Dataset",
+  "name": "DICES-30",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
+  "rai:dataCollection" : "The input data was sampled from an 8K multi-turn conversation corpus (comprising 48K turns in total) generated by human agents interacting with a generative AI-chatbot. The human agents were instructed to generate adversarial multi-turn conversations, where they attempt to provoke the chatbot to respond with an undesirable or unsafe answer. All conversations were of maximum five turns and varied in terms of their level of adversariality (i.e., degree of harm) and topics.A subset of the conversations (DICES-350) were annotated with gold safety labels (from trust and safety experts) and all conversations with platinum safety labels (from a diverse rater crowd)",
+  "rai:dataCollectionType" : "DICES-350 consists of 350 adversarial multi-turn conversations,annotated by a pool of annotators along 16 safety criteria.",
+  "rai:dataCollectionRawData" : "The input data for this data collection was sampled from an 8K multi-turn conversation corpus (comprising 48K turns in total) generated by human agents interacting with a generative AI-chatbot.",
+  "rai:dataAnnotationProtocol": "The annotation task included the following six sets of questions: Q1: addresses the whole conversation and asks the raters to assess the legibility of the conversation - is it (1) in English, (2) comprehensible, (3) on a topic that the rater is familiar with or (4) none of the above. Q2: eight sub-question checks whether the conversation contains any harmful content, i.e., whether it could directly facilitate serious and immediate harm to individuals, groups or animals. Q3: four sub-question checks whether the conversation contains any unfair bias, i.e., whether it incites hatred against an individual or group. Q4: one multiple choice question checks whether the conversation contains any misinformation, i.e., whether it contains theories that are demonstrably false or outdated. Q5: one multiple choice question checks whether the conversation contains any political affiliations, i.e., engaging in or downplaying any controversial topic. Q6: two sub-question checks whether the conversation contains any policy violations for polarising topics and endorsements, i.e., proactively bring up or reactively promoting brands, celebrities, products, etc. All questions included an option 'other' to ensure coverage of possible safety reasons outside this re-defined space. Rating options for Q2 to Q6 were: “No” (i.e., safe), “Yes” (i.e., unsafe) and “Unsure”. In effect, a 'Yes' answer to any of the questions Q2 to Q6 should be seen as an explanation of why a conversation is considered unsafe.",
+  "rai:dataAnnotationPlatform" : "Crowdworker annotators with task specific UI",
+  "rai:dataAnnotationAnalysis": "Initial recruitment of 123 raters for the DICES-350 dataset, after all annotation tasks were completed, a quality assessment was performed on the raters and 19 raters were filtered out due to low quality work (e.g., raters who spent suspiciously little time in comparison to the other raters to complete the task and raters who rated all conversations with the same label), results reported with remaining 104 raters. In order to understand better the conversations in terms of their topics and adversariality type and level, all conversations in DICES-350 were also rated by in-house experts to assess their degree of harm. All conversations in DICES-350 have gold ratings,i.e. they were annotated for safety by a trust and safety expert. Further, aggregated ratings were generated from all granular safety ratings. They include a single aggregated overall safety rating ('Q_overall'), and aggregated ratings for the three safety categories that the 16 more granular safety ratings correspond to: 'Harmful content' ('Q2_harmful_content_overall'), 'Unfair bias' ('Q3_bias_overall') and 'Safety policy violations' ('Q6_policy_guidelines_overall').",
+  "rai:dataUseCases" : "The dataset is to be used as a shared resource and benchmark that respects diverse perspectives during safety evaluation of conversational AI systems.It can be used to develop metrics to examine and evaluate conversational AI systems in terms of both safety and diversity.",
+  "rai:dataBiases" : "Dataset includes multiple sub-ratings which specify the type of safety concern, such as type of hate speech and the type of bias or misinformation, for each conversation. A limitation of the dataset is the selection of demographic characteristics. The number of demographic categories was limited to four (race/ethnicity, gender and age group). Within these demographic axes, the number of subgroups was further limited (i.e., two locales, five main ethnicity groups, three age groups and two genders), this constrained the insights from systematic differences between different groupings of raters.",
+  "rai:annotationsPerItem": "350 conversations were rated along 16 safety criteria, i.e.,104 unique ratings per conversation.",
+  "rai:annotatorDemographics": "DICES-350 was annotated by a pool of 104 raters. The rater breakdown for this pool is: 57 women and 47 men; 27 gen X+, 28 millennial, and 49 gen z; and 21 Asian, 23 Black/African American, 22 Latine/x, 13 multiracial and 25 white. All raters signed a consent form agreeing for the detailed demographics to be collected for this task."
 }
 ```
 
@@ -695,37 +676,36 @@ As the size of language models continues to increase, there is a growing demand 
 
 ```json
 {
-    "@context": {
-      "@language": "en",
-      "rai": "http://mlcommons.org/croissant/RAI/",
-      "sc": "https://schema.org/"
-    }, 
-    "@type": "schema.org/Dataset",
-    "name": "BigScience Root Corpus", 
-    "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
-    "rai:dataCollection": "The first part of the corpus, accounting for 62% of the final dataset size (in bytes), is made up of a collection of monolingual and multilingual language resources that were selected and documented collaboratively through various efforts of the BigScience Data Sourcing working group. The 38& remaining is get from the OSCAR version 21.09, based on the Common Crawl snapshot of February.",
-    "rai:dataCollectionType": ["Web Scraping", "Secondary Data Analysis", "Manual Human Curation", "Software Collection"],
-    "rai:dataUseCases": [
-        "A comprehensive and multilingual corpus designed to support the training of large language models (LLMs)  ",  
-        "It may also be of particular interest for research aimed at improving the linguistic and cultural inclusiveness of language technologies"
-        ],
-    "rai:dataLimitations":
-        [
-        "Crawled content also over-represents pornographic text across languages, especially in the form of spam ads. Finally, it contains personal information that may constitute a privacy risk. The present section outlines our approach to mitigating those issues",  
-        "The preprocessing removes some categories of PII but is still far from exhaustive, and the nature of crawled datasets makes it next to impossible to identify individual contributors and ask for their consent.",  
-         "The reliance on medium to large sources of digitized content still over-represents privileged voices and language varieties."  
-        ],
-    "rai:dataBiases": "Dataset includes multiple sub-ratings which specify the type of safety concern, such as type of hate speech and the type of bias or misinformation, for each conversation. A limitation of the dataset is the selection of demographic characteristics. The number of demographic categories was limited to four (race/ethnicity, gender and age group). Within these demographic axes, the number of subgroups was further limited (i.e., two locales, five main ethnicity groups, three age groups and two genders), this constrained the insights from systematic differences between different groupings of raters.",
-    "rai:personalSensitiveInformation": "We used a rule-based approach leveraging regular expressions (Appendix C). The elements redacted were instances of KEY (numeric & alphanumeric identifiers such as phone numbers, credit card numbers, hexadecimal hashes and the like, while skipping instances of years and simple numbers), EMAIL (email addresses), USER (a social media handle) and IP_ADDRESS (an IPv4 or IPv6 address).“,",
-    "rai:dataSocialImpact": "The authors emphasized that the BigScience Research Workshop, under which the dataset was developed, was conceived as a collaborative and value-driven endeavor from the beginning. This approach significantly influenced the project's decisions, leading to numerous discussions aimed at aligning the project’s core values with those of the data contributors, as well as considering the social impact on individuals directly and indirectly impacted by the project. These discussions and the project's governance strategy highlighted the importance of: Centre human selection of the data, suggesting a conscientious approach to choosing what data to include in the corpus based on ethical considerations and the potential social impact. Data release and governance strategies that would responsibly manage the distribution and use of the data. Although the document does not explicitly list specific potential social impacts, the emphasis on value-driven efforts, ethical considerations, and the human-centered approach to data selection suggests a keen awareness and proactive stance on mitigating negative impacts while enhancing positive social outcomes through responsible data collection and usage practices",
-    "rai:dataManipulationProtocol": 
-    ["Pseudocode to recreate the text structure from the HTML code. The HTML code of a web page provides information about the structure of the text. The final structure of a web page is, however, the one produced by the rendering engine of the web browser and any CSS instructions. The latter two elements, which can vary enormously from one situation to another, always use the tag types for their rendering rules. Therefore, we have used a 20 fairly simple heuristic on tag types to reconstruct the structure of the text extracted from an HTML code. To reconstruct the text, the HTML DOM, which can be represented as a tree is traversed with a depth-first search algorithm. The text is initially empty and each time a new node with textual content is reached its content is concatenated according to the rules presented in the Algorithm 1 of the accompanying paper.",
-      "Data cleaning and filtering: documents were filtered with:• Too high character repetition or word repetition as a measure of repetitive content.• Too high ratios of special characters to remove page code or crawling artifacts.• Insufficient ratios of closed class words to filter out SEO pages.• Too high ratios of flagged words to filter out pornographic spam. We asked contributors to tailor the word list in their language to this criterion (as opposed to generic terms related to sexuality) and to err on the side of high precision. • Too high perplexity values to filter out non-natural language. • Insufficient number of words, as LLM training requires extensive context sizes.",  
-      "Deduplication: we applied substring deduplication (Lee et al., 2022) based on Suffix Array (Manber and Myers, 1993) as a complementary method that clusters documents sharing a long substring, for documents with more than 6000 characters. We found on average 21.67% (10.61% ⇠ 32.30%) of the data (in bytes) being duplicated."
-    ]
+  "@context": {
+    "@language": "en",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "sc": "https://schema.org/"
+  }, 
+  "@type": "schema.org/Dataset",
+  "name": "BigScience Root Corpus", 
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
+  "rai:dataCollection": "The first part of the corpus, accounting for 62% of the final dataset size (in bytes), is made up of a collection of monolingual and multilingual language resources that were selected and documented collaboratively through various efforts of the BigScience Data Sourcing working group. The 38& remaining is get from the OSCAR version 21.09, based on the Common Crawl snapshot of February.",
+  "rai:dataCollectionType": ["Web Scraping", "Secondary Data Analysis", "Manual Human Curation", "Software Collection"],
+  "rai:dataUseCases": [
+      "A comprehensive and multilingual corpus designed to support the training of large language models (LLMs)  ",  
+      "It may also be of particular interest for research aimed at improving the linguistic and cultural inclusiveness of language technologies"
+      ],
+  "rai:dataLimitations":
+      [
+      "Crawled content also over-represents pornographic text across languages, especially in the form of spam ads. Finally, it contains personal information that may constitute a privacy risk. The present section outlines our approach to mitigating those issues",  
+      "The preprocessing removes some categories of PII but is still far from exhaustive, and the nature of crawled datasets makes it next to impossible to identify individual contributors and ask for their consent.",  
+        "The reliance on medium to large sources of digitized content still over-represents privileged voices and language varieties."  
+      ],
+  "rai:dataBiases": "Dataset includes multiple sub-ratings which specify the type of safety concern, such as type of hate speech and the type of bias or misinformation, for each conversation. A limitation of the dataset is the selection of demographic characteristics. The number of demographic categories was limited to four (race/ethnicity, gender and age group). Within these demographic axes, the number of subgroups was further limited (i.e., two locales, five main ethnicity groups, three age groups and two genders), this constrained the insights from systematic differences between different groupings of raters.",
+  "rai:personalSensitiveInformation": "We used a rule-based approach leveraging regular expressions (Appendix C). The elements redacted were instances of KEY (numeric & alphanumeric identifiers such as phone numbers, credit card numbers, hexadecimal hashes and the like, while skipping instances of years and simple numbers), EMAIL (email addresses), USER (a social media handle) and IP_ADDRESS (an IPv4 or IPv6 address).“,",
+  "rai:dataSocialImpact": "The authors emphasized that the BigScience Research Workshop, under which the dataset was developed, was conceived as a collaborative and value-driven endeavor from the beginning. This approach significantly influenced the project's decisions, leading to numerous discussions aimed at aligning the project’s core values with those of the data contributors, as well as considering the social impact on individuals directly and indirectly impacted by the project. These discussions and the project's governance strategy highlighted the importance of: Centre human selection of the data, suggesting a conscientious approach to choosing what data to include in the corpus based on ethical considerations and the potential social impact. Data release and governance strategies that would responsibly manage the distribution and use of the data. Although the document does not explicitly list specific potential social impacts, the emphasis on value-driven efforts, ethical considerations, and the human-centered approach to data selection suggests a keen awareness and proactive stance on mitigating negative impacts while enhancing positive social outcomes through responsible data collection and usage practices",
+  "rai:dataManipulationProtocol": 
+  ["Pseudocode to recreate the text structure from the HTML code. The HTML code of a web page provides information about the structure of the text. The final structure of a web page is, however, the one produced by the rendering engine of the web browser and any CSS instructions. The latter two elements, which can vary enormously from one situation to another, always use the tag types for their rendering rules. Therefore, we have used a 20 fairly simple heuristic on tag types to reconstruct the structure of the text extracted from an HTML code. To reconstruct the text, the HTML DOM, which can be represented as a tree is traversed with a depth-first search algorithm. The text is initially empty and each time a new node with textual content is reached its content is concatenated according to the rules presented in the Algorithm 1 of the accompanying paper.",
+    "Data cleaning and filtering: documents were filtered with:• Too high character repetition or word repetition as a measure of repetitive content.• Too high ratios of special characters to remove page code or crawling artifacts.• Insufficient ratios of closed class words to filter out SEO pages.• Too high ratios of flagged words to filter out pornographic spam. We asked contributors to tailor the word list in their language to this criterion (as opposed to generic terms related to sexuality) and to err on the side of high precision. • Too high perplexity values to filter out non-natural language. • Insufficient number of words, as LLM training requires extensive context sizes.",  
+    "Deduplication: we applied substring deduplication (Lee et al., 2022) based on Suffix Array (Manber and Myers, 1993) as a complementary method that clusters documents sharing a long substring, for documents with more than 6000 characters. We found on average 21.67% (10.61% ⇠ 32.30%) of the data (in bytes) being duplicated."
+  ]
 }
 ```
-
 
 ## RAI properties for the BigCode - The stack dataset
 
@@ -733,51 +713,51 @@ As the size of language models continues to increase, there is a growing demand 
 
 ```json
 {
-    "@context": {
-      "@language": "en",
-      "rai": "http://mlcommons.org/croissant/RAI/",
-      "sc": "https://schema.org/"
-    }, 
-    "@type": "schema.org/Dataset",
-    "name": "BigScience - The Stack", 
-    "dct:conformsTo": "http://mlcommons.org/croissant-RAI/1.0", 
-    "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB", 
-    "rai:dataCollectionType": "Web Scraping", 
-    "rai:dataCollectionRaw": "Files containing code data.", 
-    "rai:dataCollectionTimeFrameStart": {
-        "@value": "2015-01-01T00:00:00",
-        "dataType": "sc:Date"
+  "@context": {
+    "@language": "en",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "sc": "https://schema.org/"
+  }, 
+  "@type": "schema.org/Dataset",
+  "name": "BigScience - The Stack", 
+  "dct:conformsTo": "http://mlcommons.org/croissant-RAI/1.0", 
+  "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB", 
+  "rai:dataCollectionType": "Web Scraping", 
+  "rai:dataCollectionRaw": "Files containing code data.", 
+  "rai:dataCollectionTimeFrameStart": {
+    "@value": "2015-01-01T00:00:00",
+    "dataType": "sc:Date"
+  },
+  "rai:dataCollectionTimeFrameEnd": {
+    "@value": "2022-12-31T00:00:00",
+    "dataType": "sc:Date"
     },
-    "rai:dataCollectionTimeFrameEnd": {
-        "@value": "2022-12-31T00:00:00",
-        "dataType": "sc:Date"
-      },
-    "rai:dataUseCases": 
-    [
-        "The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling)."
-    ],
-    "rai:dataLimitations": 
-    [
-        "One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues.",
-        "The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware.",
-        "Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information."
-    ],
-    "rai:dataBiases": 
-    [
-        "Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer",
-        "Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset",
-        "The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models."
-    ],
-    "rai:personalSensitiveInformation": 
-    [
-        "The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/."
-    ],
-    "rai:dataSocialImpact": "The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.",
-    "rai:dataPreprocessingProtocol": 
-    [
-        "Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.",
-        "Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset."
-    ]
+  "rai:dataUseCases": 
+  [
+    "The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling)."
+  ],
+  "rai:dataLimitations": 
+  [
+    "One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues.",
+    "The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware.",
+    "Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information."
+  ],
+  "rai:dataBiases": 
+  [
+    "Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer",
+    "Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset",
+    "The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models."
+  ],
+  "rai:personalSensitiveInformation": 
+  [
+    "The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/."
+  ],
+  "rai:dataSocialImpact": "The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.",
+  "rai:dataPreprocessingProtocol": 
+  [
+    "Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.",
+    "Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset."
+  ]
 }
 ```
 
