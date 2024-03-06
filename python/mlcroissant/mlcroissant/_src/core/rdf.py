@@ -101,7 +101,6 @@ class Rdf:
                 add_mapping(k, v)
             elif isinstance(v, dict):
                 add_mapping(k, v.get("@id"))
-        print(reversed_context)
         return reversed_context
 
     @functools.cache

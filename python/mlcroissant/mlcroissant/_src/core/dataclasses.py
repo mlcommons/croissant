@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import contextlib
 import dataclasses
 from typing import Any, Callable, Literal
 
 from rdflib import term
+from typing_extensions import dataclass_transform
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.types import Json
@@ -113,13 +115,20 @@ def jsonld_fields(cls_or_instance) -> list[JsonldField]:
     ]
 
 
-OriginalField = dataclasses.Field
-dataclasses.Field = JsonldField  # type: ignore
+@contextlib.contextmanager
+def _swap_field():
+    OriginalField = dataclasses.Field
+    dataclasses.Field = JsonldField  # type: ignore
+    yield
+    dataclasses.Field = OriginalField  # type: ignore
 
 
+@dataclass_transform(
+    field_specifiers=(jsonld_field,)
+)  # pytype: disable=not-supported-yet
 def dataclass(cls):
     """Overloads the built-in dataclass with JsonldFields instead of Fields."""
-    return dataclasses.dataclass(cls, eq=False, repr=False)
-
-
-dataclasses.Field = OriginalField  # type: ignore
+    with _swap_field():
+        return dataclasses.dataclass(
+            cls, eq=False, repr=False
+        )  # pytype: disable=wrong-keyword-args

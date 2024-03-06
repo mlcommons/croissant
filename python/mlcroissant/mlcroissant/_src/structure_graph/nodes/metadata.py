@@ -16,7 +16,6 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.core.dates import from_datetime_to_str
 from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
@@ -92,7 +91,9 @@ class PersonOrOrganization:
             return unbox_singleton_list(creators)
 
 
-def _distribution_from_jsonld(ctx: Context, jsonld: Json) -> list[FileObject | FileSet]:
+def _distribution_from_jsonld(
+    ctx: Context, jsonld: list[Json]
+) -> list[FileObject | FileSet]:
     distribution: list[FileObject | FileSet] = []
     for set_or_object in jsonld:
         name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
@@ -112,22 +113,15 @@ def _distribution_from_jsonld(ctx: Context, jsonld: Json) -> list[FileObject | F
 
 
 def _distribution_to_json(ctx: Context, distribution: list[FileObject | FileSet]):
-    return [resource.to_json() for resource in distribution]
-
-
-def _date_from_jsonld(ctx: Context, jsonld: Json):
-    return from_str_to_datetime(ctx.issues, jsonld)
-
-
-def _date_to_jsonld(ctx: Context, date: datetime.datetime):
     del ctx
-    return from_datetime_to_str(date)
+    return [resource.to_json() for resource in distribution]
 
 
 @mlc_dataclasses.dataclass
 class Metadata(NodeV2):
     """Nodes to describe a dataset metadata."""
 
+    # pytype: disable=annotation-type-mismatch
     cite_as: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
@@ -235,9 +229,8 @@ class Metadata(NodeV2):
         input_types=[SDO.URL],
         url=constants.SCHEMA_ORG_URL,
     )
-    # TODO: remove this default?
     version: str | None = mlc_dataclasses.jsonld_field(
-        default="",
+        default=None,
         description="The version of the dataset following the requirements below.",
         input_types=[SDO.Number, SDO.Text],
         url=constants.SCHEMA_ORG_VERSION,
@@ -290,18 +283,14 @@ class Metadata(NodeV2):
     data_collection_timeframe_start: datetime.datetime | None = (
         mlc_dataclasses.jsonld_field(
             default=None,
-            from_jsonld=_date_from_jsonld,
             input_types=[SDO.Date, SDO.DateTime],
-            to_jsonld=_date_to_jsonld,
             url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_START,
         )
     )
     data_collection_timeframe_end: datetime.datetime | None = (
         mlc_dataclasses.jsonld_field(
             default=None,
-            from_jsonld=_date_from_jsonld,
             input_types=[SDO.Date, SDO.DateTime],
-            to_jsonld=_date_to_jsonld,
             url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME_END,
         )
     )
@@ -380,6 +369,7 @@ class Metadata(NodeV2):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_MAINTENANCE,
     )
+    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""

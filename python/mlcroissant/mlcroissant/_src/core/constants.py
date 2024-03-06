@@ -7,6 +7,7 @@ import os
 from etils import epath
 import rdflib
 from rdflib import namespace
+from rdflib import term
 
 # MLCommons-defined URIs.
 ML_COMMONS_V_0_8 = rdflib.Namespace("http://mlcommons.org/schema/")
@@ -102,7 +103,7 @@ DCTERMS = "http://purl.org/dc/terms/"
 DCTERMS_CONFORMS_TO = namespace.DCTERMS.conformsTo
 
 # Schema.org standard URIs.
-SCHEMA_ORG_CITATION = namespace.SDO.citation
+SCHEMA_ORG_CITATION: term.URIRef = namespace.SDO.citation
 SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
 SCHEMA_ORG_CONTENT_SIZE = namespace.SDO.contentSize
 SCHEMA_ORG_CONTENT_URL = namespace.SDO.contentUrl
