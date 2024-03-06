@@ -45,46 +45,20 @@
   },
   "@type": "sc:Dataset",
   "name": "mydataset",
-  "description": "This is a description.",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "description": "This is a description.",
   "@language": "en",
-  "citeAs": "This is a citation.",
+  "citation": "This is a citation.",
   "datePublished": "1990-02-01",
   "license": "This is a license.",
   "url": "https://www.google.com/dataset",
   "version": "1.0.0",
   "distribution": [
     {
-      "@id": "a-csv-table",
-      "@type": "cr:FileObject",
-      "name": "a-csv-table",
-      "contentSize": "117743 B",
-      "contentUrl": "https://www.google.com/data.csv",
-      "encodingFormat": "text/csv",
+      "@type": "cr:FileSet",
+      "name": "a-file-set",
+      "includes": "data/*.mp3",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
-    }
-  ],
-  "recordSet": [
-    {
-      "@id": "a-record-set",
-      "@type": "cr:RecordSet",
-      "description": "This is a record set.",
-      "field": [
-        {
-          "@id": "a-record-set/first-field",
-          "@type": "cr:Field",
-          "name": "first-field",
-          "dataType": "sc:Integer",
-          "source": {
-            "extract": {
-              "column": "a-column"
-            },
-            "fileObject": {
-              "@id": "a-csv-table"
-            }
-          }
-        }
-      ]
     }
   ]
 }

@@ -25,7 +25,8 @@ def test_checks_are_performed():
     ) as optional_mock, mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock:
-        create_test_node(Metadata, name="field_name")
+        ctx = Context(conforms_to=CroissantVersion.V_0_8)
+        create_test_node(Metadata, name="field_name", id="field_id", ctx=ctx)
         mandatory_mock.assert_called_once_with("name")
         optional_mock.assert_called_once_with(
             "cite_as", "date_published", "license", "version"
@@ -51,23 +52,15 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: "1.0.0",
         constants.ML_COMMONS_IS_LIVE_DATASET(ctx): False,
-        constants.ML_COMMONS_DATA_BIASES(ctx): "data_biases",
-        constants.ML_COMMONS_DATA_COLLECTION(ctx): "data_collection",
-        constants.ML_COMMONS_PERSONAL_SENSITVE_INFORMATION(
-            ctx
-        ): "personal_sensitive_information",
     }
     metadata = Metadata.from_jsonld(ctx, jsonld)
     assert metadata.name == "foo"
     assert metadata.description == "bar"
-    assert metadata.data_biases == "data_biases"
-    assert metadata.data_collection == "data_collection"
     assert metadata.date_created == datetime.datetime(1990, 2, 1, 0, 0)
     assert metadata.date_modified == datetime.datetime(1990, 2, 2, 0, 0)
     assert metadata.date_published == datetime.datetime(1990, 2, 3, 0, 0)
     assert metadata.license == ["License"]
     assert metadata.is_live_dataset == False
-    assert metadata.personal_sensitive_information == "personal_sensitive_information"
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
     assert not ctx.issues.errors
@@ -128,13 +121,16 @@ def test_valid_version(version, expected_version):
 
 def test_issues_in_metadata_are_shared_with_children():
     with pytest.raises(ValidationError, match="is mandatory, but does not exist"):
+        ctx = Context(conforms_to=CroissantVersion.V_0_8)
         Metadata(
             name="name",
             description="description",
             url="https://mlcommons.org",
             version="1.0.0",
             # We did not specify the RecordSet's name. Hence the exception above:
-            record_sets=[RecordSet(id="record-set", description="description")],
+            record_sets=[
+                RecordSet(id="record-set", description="description", ctx=ctx)
+            ],
         )
 
 
