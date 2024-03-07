@@ -58,6 +58,7 @@ class FieldEvent(enum.Enum):
     """Event that triggers a field change."""
 
     NAME = "NAME"
+    ID = "ID"
     DESCRIPTION = "DESCRIPTION"
     DATA_TYPE = "DATA_TYPE"
     SOURCE = "SOURCE"
@@ -86,6 +87,12 @@ def handle_field_change(
             metadata: Metadata = st.session_state[Metadata]
             metadata.rename_field(old_name=old_name, new_name=new_name)
         field.name = value
+    elif change == FieldEvent.ID:
+        old_id = field.id
+        new_id = value
+        if old_id != new_id:
+            metadata: Metadata = st.session_state[Metadata]
+            metadata.rename_id(old_id=old_id, new_id=new_id)
     elif change == FieldEvent.DESCRIPTION:
         field.description = value
     elif change == FieldEvent.DATA_TYPE:

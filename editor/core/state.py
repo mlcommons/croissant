@@ -9,6 +9,7 @@ import base64
 import dataclasses
 import datetime
 from typing import Any
+import uuid
 
 from etils import epath
 import pandas as pd
@@ -33,9 +34,6 @@ def create_class(mlc_class: type, instance: Any, **kwargs) -> Any:
         name = field.name
         if hasattr(instance, name) and name not in kwargs:
             params[name] = getattr(instance, name)
-    if "uuid" in params and params.get("uuid") is None:
-        # Let mlcroissant handle the default value
-        del params["uuid"]
     return mlc_class(**params, **kwargs)
 
 
@@ -127,11 +125,22 @@ class SelectedRecordSet:
 
 
 @dataclasses.dataclass
-class FileObject:
+class Node:
+    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
+    id: str | None = None
+    name: str | None = None
+
+    def get_name_or_id(self):
+        if self.ctx.is_v0():
+            return self.name
+        else:
+            return self.id
+
+
+@dataclasses.dataclass
+class FileObject(Node):
     """FileObject analogue for editor"""
 
-    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
-    name: str | None = None
     description: str | None = None
     contained_in: list[str] | None = dataclasses.field(default_factory=list)
     content_size: str | None = None
@@ -140,65 +149,51 @@ class FileObject:
     sha256: str | None = None
     df: pd.DataFrame | None = None
     folder: epath.PathLike | None = None
-    id: str | None = None
 
 
 @dataclasses.dataclass
-class FileSet:
+class FileSet(Node):
     """FileSet analogue for editor"""
 
-    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     contained_in: list[str] = dataclasses.field(default_factory=list)
     description: str | None = None
     encoding_format: str | None = ""
     includes: str | None = ""
-    name: str = ""
-    id: str | None = None
 
 
 @dataclasses.dataclass
-class Field:
+class Field(Node):
     """Field analogue for editor"""
 
-    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
-    name: str | None = None
     description: str | None = None
     data_types: str | list[str] | None = None
     source: mlc.Source | None = None
     references: mlc.Source | None = None
-    id: str | None = None
 
 
 @dataclasses.dataclass
-class RecordSet:
+class RecordSet(Node):
     """Record Set analogue for editor"""
 
-    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
-    name: str = ""
     data: list[Any] | None = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
-    id: str | None = None
 
 
 @dataclasses.dataclass
-class Metadata:
+class Metadata(Node):
     """main croissant data object, helper functions exist to load and unload this into the mlcroissant version"""
 
-    name: str = ""
     description: str | None = None
     cite_as: str | None = None
-    context: dict = dataclasses.field(default_factory=dict)
     creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
-    ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     data_biases: str | None = None
     data_collection: str | None = None
     date_published: datetime.datetime | None = None
     license: str | None = ""
     personal_sensitive_information: str | None = None
-    id: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
@@ -271,6 +266,25 @@ class Metadata:
                 ):
                     new_uuid = references.id.replace(old_name, new_name, 1)
                     self.record_sets[i].fields[j].references.id = new_uuid
+
+    def rename_id(self, old_id: str, new_id: str):
+        for resource in self.distribution:
+            if resource.id == old_id:
+                resource.id = new_id
+            if resource.contained_in and old_id in resource.contained_in:
+                resource.contained_in = [
+                    new_id if uuid == old_id else uuid for uuid in resource.contained_in
+                ]
+        for record_set in self.record_sets:
+            if record_set.id == old_id:
+                record_set.id = new_id
+            for field in record_set.fields:
+                if field.id == old_id:
+                    field.id = new_id
+                if field.source and field.source.id == old_id:
+                    field.source.id = new_id
+                if field.references and field.references.id == old_id:
+                    field.references.id = new_id
 
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
         self.distribution.append(distribution)
@@ -352,8 +366,16 @@ class Metadata:
         )
 
     def names(self) -> set[str]:
-        nodes = self.distribution + self.record_sets
-        return set([node.name for node in nodes])
+        distribution = set()
+        record_sets = set()
+        fields = set()
+        for resource in self.distribution:
+            distribution.add(resource.get_name_or_id())
+        for record_set in self.record_sets:
+            record_sets.add(record_set.get_name_or_id())
+            for field in record_set.fields:
+                fields.add(field.get_name_or_id())
+        return distribution.union(record_sets).union(fields)
 
 
 class OpenTab:

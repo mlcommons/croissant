@@ -126,16 +126,11 @@ def _get_possible_sources(metadata: Metadata) -> list[str]:
             for field in record_set.fields:
                 possible_sources.append(f"{record_set.name}/{field.name}")
     else:
-        # TODO(marcenacp): This workaround is temporary. We should be able to properly
-        # infer IDs using mlcroissant.
-        get_original_id = lambda id: id.split(mlc.constants.BASE_IRI)[-1]
         for resource in metadata.distribution:
-            if resource.id:
-                possible_sources.append(get_original_id(resource.id))
+            possible_sources.append(resource.id)
         for record_set in metadata.record_sets:
             for field in record_set.fields:
-                if field.id:
-                    possible_sources.append(get_original_id(field.id))
+                possible_sources.append(field.id)
     return possible_sources
 
 
@@ -171,7 +166,8 @@ def _find_joins(fields: list[Field]) -> set[Join]:
 
 def _handle_create_record_set():
     metadata: Metadata = st.session_state[Metadata]
-    metadata.add_record_set(RecordSet(name="new-record-set", description=""))
+    name = "new-record-set"
+    metadata.add_record_set(RecordSet(id=name, name=name, description=""))
 
 
 def _handle_remove_record_set(record_set_key: int):
@@ -200,6 +196,7 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
     for added_row in result["added_rows"]:
         data_type = str_to_mlc_data_type(added_row.get(FieldDataFrame.DATA_TYPE))
         field = Field(
+            id=added_row.get(FieldDataFrame.NAME),
             name=added_row.get(FieldDataFrame.NAME),
             description=added_row.get(FieldDataFrame.DESCRIPTION),
             data_types=[data_type],
@@ -247,15 +244,26 @@ def _render_left_panel():
         with st.expander(title, expanded=is_record_set_expanded(record_set)):
             col1, col2 = st.columns([1, 3])
             key = f"{prefix}-name"
-            col1.text_input(
-                needed_field("Name"),
-                placeholder="Name without special character.",
-                key=key,
-                help=f"The name of the RecordSet. {NAMES_INFO}",
-                value=record_set.name,
-                on_change=handle_record_set_change,
-                args=(RecordSetEvent.NAME, record_set, key),
-            )
+            if record_set.ctx.is_v0():
+                col1.text_input(
+                    needed_field("Name"),
+                    placeholder="Name without special character.",
+                    key=key,
+                    help=f"The name of the RecordSet. {NAMES_INFO}",
+                    value=record_set.name,
+                    on_change=handle_record_set_change,
+                    args=(RecordSetEvent.NAME, record_set, key),
+                )
+            else:
+                col1.text_input(
+                    needed_field("ID"),
+                    placeholder="ID without special character.",
+                    key=key,
+                    help=f"The ID of the resource. {NAMES_INFO}",
+                    value=record_set.name,
+                    on_change=handle_record_set_change,
+                    args=(RecordSetEvent.ID, record_set, key),
+                )
             key = f"{prefix}-description"
             col2.text_input(
                 "Description",
@@ -464,15 +472,26 @@ def _render_right_panel():
                 col1, col2, col3 = st.columns([1, 1, 1])
 
                 key = f"{prefix}-name"
-                col1.text_input(
-                    needed_field("Name"),
-                    placeholder="Name without special character.",
-                    key=key,
-                    help=f"The name of the field. {NAMES_INFO}",
-                    value=field.name,
-                    on_change=handle_field_change,
-                    args=(FieldEvent.NAME, field, key),
-                )
+                if field.ctx.is_v0():
+                    col1.text_input(
+                        needed_field("Name"),
+                        placeholder="Name without special character.",
+                        key=key,
+                        help=f"The name of the field. {NAMES_INFO}",
+                        value=field.name,
+                        on_change=handle_field_change,
+                        args=(FieldEvent.NAME, field, key),
+                    )
+                else:
+                    col1.text_input(
+                        needed_field("ID"),
+                        placeholder="ID without special character.",
+                        key=key,
+                        help=f"The ID of the field. {NAMES_INFO}",
+                        value=field.id,
+                        on_change=handle_field_change,
+                        args=(FieldEvent.ID, field, key),
+                    )
                 key = f"{prefix}-description"
                 col2.text_input(
                     "Description",

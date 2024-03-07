@@ -61,7 +61,11 @@ def test_invalid_data(data, error):
     assert error in ctx.issues.errors
 
 
-def test_checks_are_performed():
+@pytest.mark.parametrize(
+    ["conforms_to", "field_uuid"],
+    [[CroissantVersion.V_0_8, "name"], [CroissantVersion.V_1_0, "id"]],
+)
+def test_checks_are_performed(conforms_to, field_uuid):
     with mock.patch.object(
         Node, "assert_has_mandatory_properties"
     ) as mandatory_mock, mock.patch.object(
@@ -69,8 +73,9 @@ def test_checks_are_performed():
     ) as optional_mock, mock.patch.object(
         Node, "validate_name"
     ) as validate_name_mock:
-        create_test_node(RecordSet)
-        mandatory_mock.assert_called_once_with("name", "id")
+        ctx = Context(conforms_to=conforms_to)
+        create_test_node(RecordSet, ctx=ctx)
+        mandatory_mock.assert_called_once_with(field_uuid)
         optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 
@@ -85,7 +90,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.ML_COMMONS_IS_ENUMERATION(ctx): True,
         constants.SCHEMA_ORG_KEY(ctx): ["key1", "key2"],
-        constants.ML_COMMONS_DATA(ctx): [{"column1": ["value1", "value2"]}],
+        constants.ML_COMMONS_DATA(ctx): '[{"column1": ["value1", "value2"]}]',
     }
     record_set = RecordSet.from_jsonld(ctx, jsonld)
     assert record_set.name == "foo"

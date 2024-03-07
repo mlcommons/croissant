@@ -23,8 +23,9 @@ from views.record_sets import render_record_sets
 def _export_json() -> str | None:
     metadata: Metadata = st.session_state[Metadata]
     try:
+        name = metadata.name or "metadata"
         return {
-            "name": f"croissant-{metadata.name.lower()}.json",
+            "name": f"croissant-{name.lower()}.json",
             "content": json.dumps(metadata.to_canonical().to_json()),
         }
     except mlc.ValidationError as exception:
