@@ -6,6 +6,7 @@ from typing import Callable, TypeVar
 from etils import epath
 
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import Issues
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
@@ -88,3 +89,17 @@ empty_node: Node = create_test_node(_EmptyNode)
 empty_record_set: RecordSet = create_test_node(
     RecordSet, name="record_set_name", id="record_set_name"
 )
+
+
+def assert_contain_error(issues: Issues, error_msg: str):
+    """Assert whether one of the errors in issues contains a message."""
+    assert any(
+        error_msg in error for error in issues.errors
+    ), f'Could not find error "{error_msg}" in {list(issues.errors)}'
+
+
+def assert_contain_warning(issues: Issues, error_msg: str):
+    """Assert whether one of the warnings in issues contains a message."""
+    assert any(
+        error_msg in error for error in issues.warnings
+    ), f'Could not find warning "{error_msg}" in {list(issues.warnings)}'

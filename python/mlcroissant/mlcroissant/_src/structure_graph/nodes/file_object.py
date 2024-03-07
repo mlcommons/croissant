@@ -45,7 +45,6 @@ class FileObject(Node):
             " object"
         ),
         from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
-        input_types=[SDO.Text],
         to_jsonld=lambda ctx, contained_in: [
             formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
         ],
@@ -60,7 +59,6 @@ class FileObject(Node):
         default=None,
         description="The format of the file, given as a mime type.",
         input_types=[SDO.Text],
-        required=True,
         url=SDO.encodingFormat,
     )
     md5: str | None = mlc_dataclasses.jsonld_field(
@@ -76,7 +74,6 @@ class FileObject(Node):
             ' "images.zip".'
         ),
         input_types=[SDO.Text],
-        required=True,
         url=SDO.name,
     )
     same_as: list[str] | None = mlc_dataclasses.jsonld_field(
@@ -96,8 +93,8 @@ class FileObject(Node):
         input_types=[SDO.Text],
         url=SDO.sha256,
     )
-    source: Source | None = mlc_dataclasses.jsonld_field(
-        default=None,
+    source: Source = mlc_dataclasses.jsonld_field(
+        default_factory=Source,
         input_types=[Source],
         url=lambda ctx: ML_COMMONS(ctx).source,
     )

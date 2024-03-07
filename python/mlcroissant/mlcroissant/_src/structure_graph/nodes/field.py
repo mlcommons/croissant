@@ -55,9 +55,10 @@ class ParentField:
 
     def to_json(self, ctx: Context) -> Json:
         """Converts the `ParentField` to JSON."""
+        del ctx
         return remove_empty_values({
-            "references": self.references.to_json(ctx=ctx) if self.references else None,
-            "source": self.source.to_json(ctx=ctx) if self.source else None,
+            "references": self.references.to_json() if self.references else None,
+            "source": self.source.to_json() if self.source else None,
         })
 
 
@@ -80,7 +81,6 @@ class Field(Node):
             " semantic type (e.g., `sc:GeoLocation`)."
         ),
         from_jsonld=_data_types_from_jsonld,
-        input_types=[SDO.URL],
         to_jsonld=_data_types_to_jsonld,
         url=constants.ML_COMMONS_DATA_TYPE,
     )
@@ -101,7 +101,6 @@ class Field(Node):
             " `Field` that already appears in the `RecordSet`."
         ),
         from_jsonld=ParentField.from_jsonld,
-        input_types=[ParentField],
         to_jsonld=lambda ctx, parent_field: parent_field.to_json(ctx),
         url=constants.ML_COMMONS_PARENT_FIELD,
     )
@@ -111,9 +110,8 @@ class Field(Node):
             "Another `Field` of another `RecordSet` that this field references. This is"
             " the equivalent of a foreign key reference in a relational database."
         ),
-        from_jsonld=Source.from_jsonld,
         input_types=[Source],
-        to_jsonld=lambda ctx, source: source.to_json(ctx),
+        to_jsonld=lambda ctx, source: source.to_json(),
         url=constants.ML_COMMONS_REFERENCES,
     )
     repeated: bool | None = mlc_dataclasses.jsonld_field(
@@ -128,9 +126,8 @@ class Field(Node):
             "The data source of the field. This will generally reference a `FileObject`"
             " or `FileSet`'s contents (e.g., a specific column of a table)."
         ),
-        from_jsonld=Source.from_jsonld,
         input_types=[Source],
-        to_jsonld=lambda ctx, source: source.to_json(ctx),
+        to_jsonld=lambda ctx, source: source.to_json(),
         url=constants.ML_COMMONS_SOURCE,
     )
     sub_fields: list[Field] = mlc_dataclasses.jsonld_field(
@@ -138,7 +135,6 @@ class Field(Node):
         default_factory=list,
         description="Another `Field` that is nested inside this one.",
         from_jsonld=lambda ctx, fields: Field.from_jsonld(ctx, fields),
-        input_types=["Field"],
         to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
         url=constants.ML_COMMONS_SUB_FIELD,
     )

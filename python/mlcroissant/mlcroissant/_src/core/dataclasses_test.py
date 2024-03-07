@@ -5,6 +5,7 @@ from rdflib.namespace import SDO
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
+from mlcroissant._src.structure_graph.base_node import Node
 
 
 def test_dataclass():
@@ -12,7 +13,10 @@ def test_dataclass():
 
     @mlc_dataclasses.dataclass
     class SomeNode:
-        field1: int = mlc_dataclasses.jsonld_field(description="The first field")
+        field1: int = mlc_dataclasses.jsonld_field(
+            description="The first field",
+            input_types=[SDO.Integer],
+        )
         field2: str = mlc_dataclasses.jsonld_field(
             cardinality="MANY",
             description="The second field",
@@ -30,7 +34,7 @@ def test_dataclass():
         assert field1.cardinality == "ONE"
         assert field1.description == "The first field"
         assert field1.from_jsonld == None
-        assert field1.input_types == []
+        assert field1.input_types == [SDO.Integer]
         assert field1.to_jsonld == None
         assert field1.required == False
         assert field1.url == None
@@ -52,3 +56,24 @@ def test_dataclass():
             field2.call_url(Context(conforms_to=CroissantVersion.V_1_0))
             == "http://bar.org"
         )
+
+
+def test_jsonld_fields():
+    @mlc_dataclasses.dataclass
+    class SomeNode(Node):
+        field1: int = mlc_dataclasses.jsonld_field(
+            default=0,
+            description="The first field",
+            input_types=[SDO.Integer],
+            versions=[CroissantVersion.V_0_8],
+        )
+        field2: str = mlc_dataclasses.jsonld_field(
+            default="",
+            description="The second field",
+            input_types=[SDO.Text],
+        )
+
+    node = SomeNode(ctx=Context(conforms_to=CroissantVersion.V_1_0))
+    fields = list(mlc_dataclasses.jsonld_fields(node))
+    assert len(fields) == 1
+    assert fields[0].name == "field2"

@@ -36,7 +36,6 @@ class RecordSet(Node):
         default=None,
         description="One or more records that constitute the data of the `RecordSet`.",
         from_jsonld=data_from_jsonld,
-        input_types=[SDO.Text],
         url=constants.ML_COMMONS_DATA,
     )
     description: str | None = mlc_dataclasses.jsonld_field(
@@ -72,7 +71,6 @@ class RecordSet(Node):
             " column of a table)."
         ),
         from_jsonld=Field.from_jsonld,
-        input_types=[Field],
         to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
         url=constants.ML_COMMONS_FIELD,
     )

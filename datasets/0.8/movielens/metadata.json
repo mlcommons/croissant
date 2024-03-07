@@ -125,7 +125,7 @@
           "name": "genre",
           "description": "A sequence of genres to which the rated movie belongs.",
           "dataType": "sc:Text",
-          "repeated": "true",
+          "repeated": true,
           "source": {
             "distribution": "movies-table",
             "extract": {

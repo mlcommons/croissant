@@ -12,6 +12,7 @@ from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import is_file_property
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
+from mlcroissant._src.tests.nodes import assert_contain_error
 from mlcroissant._src.tests.versions import parametrize_conforms_to
 
 
@@ -19,63 +20,8 @@ def test_source_bool():
     empty_source = Source(transforms=[Transform(replace="\\n/<eos>")])
     assert not empty_source
 
-    whole_source = Source(id="one/two")
+    whole_source = Source(field="one/two")
     assert whole_source
-
-
-for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion]:
-
-    @pytest.mark.parametrize(
-        ["json_ld", "expected_source"],
-        [
-            [
-                {
-                    constants.ML_COMMONS_FIELD(ctx): "token-files/content",
-                },
-                Source(id="token-files/content", node_type="field"),
-            ],
-            [
-                {
-                    constants.ML_COMMONS_FIELD(ctx): "token-files/content",
-                    constants.ML_COMMONS_TRANSFORM(ctx): [
-                        {constants.ML_COMMONS_REPLACE(ctx): "\\n/<eos>"},
-                        {constants.ML_COMMONS_SEPARATOR(ctx): " "},
-                    ],
-                },
-                Source(
-                    id="token-files/content",
-                    transforms=[
-                        Transform(replace="\\n/<eos>"),
-                        Transform(separator=" "),
-                    ],
-                    node_type="field",
-                ),
-            ],
-            [
-                [
-                    {
-                        constants.ML_COMMONS_FIELD(ctx): "token-files/content",
-                        constants.ML_COMMONS_TRANSFORM(ctx): [
-                            {constants.ML_COMMONS_REPLACE(ctx): "\\n/<eos>"},
-                            {constants.ML_COMMONS_SEPARATOR(ctx): " "},
-                        ],
-                    }
-                ],
-                Source(
-                    id="token-files/content",
-                    transforms=[
-                        Transform(replace="\\n/<eos>"),
-                        Transform(separator=" "),
-                    ],
-                    node_type="field",
-                ),
-            ],
-        ],
-    )
-    def test_source_parses_list(json_ld, expected_source):
-        assert Source.from_jsonld(ctx, json_ld) == expected_source
-        assert not ctx.issues.errors
-        assert not ctx.issues.warnings
 
 
 @pytest.mark.parametrize(
@@ -84,12 +30,11 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
         [
             CroissantVersion.V_0_8,
             {
+                "@id": "source",
                 constants.SCHEMA_ORG_DISTRIBUTION: "my-csv",
                 URIRef("http://mlcommons.org/schema/transform"): [
-                    {
-                        URIRef("http://mlcommons.org/schema/replace"): "\\n/<eos>",
-                        URIRef("http://mlcommons.org/schema/separator"): " ",
-                    }
+                    {URIRef("http://mlcommons.org/schema/replace"): "\\n/<eos>"},
+                    {URIRef("http://mlcommons.org/schema/separator"): " "},
                 ],
                 URIRef("http://mlcommons.org/schema/extract"): {
                     URIRef("http://mlcommons.org/schema/column"): "my-column"
@@ -97,20 +42,19 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
             },
             Source(
                 extract=Extract(column="my-column"),
-                id="my-csv",
-                transforms=[Transform(replace="\\n/<eos>", separator=" ")],
-                node_type="distribution",
+                id="source",
+                transforms=[Transform(replace="\\n/<eos>"), Transform(separator=" ")],
+                distribution="my-csv",
             ),
         ],
         [
             CroissantVersion.V_1_0,
             {
+                "@id": "source",
                 URIRef("http://mlcommons.org/croissant/fileObject"): "my-csv",
                 URIRef("http://mlcommons.org/croissant/transform"): [
-                    {
-                        URIRef("http://mlcommons.org/croissant/replace"): "\\n/<eos>",
-                        URIRef("http://mlcommons.org/croissant/separator"): " ",
-                    }
+                    {URIRef("http://mlcommons.org/croissant/replace"): "\\n/<eos>"},
+                    {URIRef("http://mlcommons.org/croissant/separator"): " "},
                 ],
                 URIRef("http://mlcommons.org/croissant/extract"): {
                     URIRef("http://mlcommons.org/croissant/column"): "my-column"
@@ -118,15 +62,16 @@ for ctx in [Context(conforms_to=conforms_to) for conforms_to in CroissantVersion
             },
             Source(
                 extract=Extract(column="my-column"),
-                id="my-csv",
-                transforms=[Transform(replace="\\n/<eos>", separator=" ")],
-                node_type="fileObject",
+                id="source",
+                transforms=[Transform(replace="\\n/<eos>"), Transform(separator=" ")],
+                file_object="my-csv",
             ),
         ],
     ],
 )
-def test_source_parses_list_with_node_type(conforms_to, json_ld, expected_source):
+def test_source_parses_list(conforms_to, json_ld, expected_source):
     ctx = Context(conforms_to=conforms_to)
+    expected_source.ctx = ctx
     assert Source.from_jsonld(ctx, json_ld) == expected_source
     assert not ctx.issues.errors
     assert not ctx.issues.warnings
@@ -138,14 +83,11 @@ def test_source_parses_list_with_node_type(conforms_to, json_ld, expected_source
     [
         [
             "this is not a list",
-            'Transform "this is not a list" should be a dict with the keys',
+            "Transform should be a dict with keys",
         ],
         [
             [{"not": "the right keys"}],
-            (
-                "Transform \"{'not': 'the right keys'}\" should be a dict with at"
-                " least one key in"
-            ),
+            "Transform should have one of the following properties",
         ],
     ],
 )
@@ -153,7 +95,7 @@ def test_transformations_with_errors(conforms_to, jsonld, expected_error):
     ctx = Context(conforms_to=conforms_to)
     Transform.from_jsonld(ctx=ctx, jsonld=jsonld)
     assert len(ctx.issues.errors) == 1
-    assert expected_error in list(ctx.issues.errors)[0]
+    assert_contain_error(ctx.issues, expected_error)
 
 
 @pytest.mark.parametrize(
@@ -195,9 +137,9 @@ def test_transformations_with_errors(conforms_to, jsonld, expected_error):
 )
 def test_declaring_multiple_sources_in_one(conforms_to, json_ld):
     ctx = Context(conforms_to=conforms_to)
-    assert Source.from_jsonld(ctx, json_ld) == Source()
+    Source.from_jsonld(ctx, json_ld)
     assert len(ctx.issues.errors) == 1
-    assert "source should declare either" in list(ctx.issues.errors)[0]
+    assert_contain_error(ctx.issues, "Source should have one of the following properti")
 
 
 @parametrize_conforms_to()
@@ -213,10 +155,9 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
     assert Source.from_jsonld(ctx, json_ld) == Source(
         extract=Extract(column="csv_column", json_path="json_path"),
     )
-    assert len(ctx.issues.errors) == 2
-    assert any(
-        "extract should have one of the following properties" in error
-        for error in list(ctx.issues.errors)
+    assert len(ctx.issues.errors) == 1
+    assert_contain_error(
+        ctx.issues, "Source should have one of the following properties"
     )
 
 
@@ -229,11 +170,10 @@ def test_declaring_wrong_file_property(conforms_to):
         },
     }
     Source.from_jsonld(ctx, json_ld)
-    assert any(
+    assert_contain_error(
+        ctx.issues,
         "fileProperty can only have values in"
-        " `fullpath`, `filepath` and `content`. Got: foo"
-        in error
-        for error in ctx.issues.errors
+        " `fullpath`, `filepath` and `content`. Got: foo",
     )
 
 
@@ -241,25 +181,25 @@ def test_declaring_wrong_file_property(conforms_to):
     ["source", "expected_column"],
     [
         [
-            Source(id="my-csv", extract=Extract(column="my-csv-column")),
+            Source(file_object="my-csv", extract=Extract(column="my-csv-column")),
             "my-csv-column",
         ],
         [
             Source(
-                id="my-csv",
+                file_object="my-csv",
                 extract=Extract(file_property=FileProperty.content),
             ),
             FileProperty.content,
         ],
         [
             Source(
-                id="my-csv",
+                file_object="my-csv",
                 extract=Extract(json_path="/some/json/path"),
             ),
             "/some/json/path",
         ],
         [
-            Source(id="record_set/field_name"),
+            Source(field="record_set/field_name"),
             "field_name",
         ],
     ],

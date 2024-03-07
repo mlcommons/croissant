@@ -21,6 +21,7 @@ def test_expand_and_reduce_json_ld(version):
     paths = [path for path in dataset_folder.glob("*/*.json")]
     assert paths, f"Warning: Checking an empty list of paths: {dataset_folder}"
     for path in paths:
+        print(f"Test for {path}")
         with path.open() as f:
             expected = json.load(f)
         dataset = Dataset(path)

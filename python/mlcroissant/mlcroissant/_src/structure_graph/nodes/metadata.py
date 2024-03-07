@@ -133,11 +133,10 @@ class Metadata(Node):
         url=constants.ML_COMMONS_CITE_AS,
     )
     creators: list[PersonOrOrganization] | None = mlc_dataclasses.jsonld_field(
-        cardinality="ONE",
+        cardinality="MANY",
         default_factory=list,
         description="The creator(s) of the dataset.",
         from_jsonld=PersonOrOrganization.from_jsonld,
-        input_types=[PersonOrOrganization],
         to_jsonld=lambda ctx, person: PersonOrOrganization.to_json(person),
         url=constants.SCHEMA_ORG_CREATOR,
     )
@@ -205,7 +204,6 @@ class Metadata(Node):
             "The publisher of the dataset, which may be distinct from its creator."
         ),
         from_jsonld=PersonOrOrganization.from_jsonld,
-        input_types=[PersonOrOrganization],
         to_jsonld=lambda ctx, person: PersonOrOrganization.to_json(person),
         url=constants.SCHEMA_ORG_PUBLISHER,
     )
@@ -238,7 +236,6 @@ class Metadata(Node):
         cardinality="MANY",
         default_factory=list,
         from_jsonld=_distribution_from_jsonld,
-        input_types=[FileObject, FileSet],
         to_jsonld=_distribution_to_json,
         url=constants.SCHEMA_ORG_DISTRIBUTION,
     )
@@ -248,7 +245,6 @@ class Metadata(Node):
         from_jsonld=lambda ctx, record_sets: [
             RecordSet.from_jsonld(ctx, record_set) for record_set in record_sets
         ],
-        input_types=[RecordSet],
         to_jsonld=lambda ctx, record_sets: [
             record_set.to_json() for record_set in record_sets
         ],
@@ -338,7 +334,8 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS,
     )
-    data_biases: str | None = mlc_dataclasses.jsonld_field(
+    data_biases: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_BIASES,

@@ -1,12 +1,18 @@
 """base_node_test module."""
 
+from __future__ import annotations
+
 import dataclasses
 
 import pytest
+from rdflib.namespace import SDO
 
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph import base_node
+from mlcroissant._src.tests.nodes import assert_contain_error
+from mlcroissant._src.tests.nodes import assert_contain_warning
 from mlcroissant._src.tests.nodes import create_test_node
 
 
@@ -93,3 +99,187 @@ def test_eq():
     assert node1 == node1_doppelganger
     # Different ID.
     assert node1 != node2
+
+
+def test_custom_node_with_cardinality_one():
+    @mlc_dataclasses.dataclass
+    class CustomNode(base_node.Node):
+        JSONLD_TYPE = "foo.org/CustomNode"
+
+        property1: int | None = mlc_dataclasses.jsonld_field(
+            cardinality="ONE",
+            default=None,
+            input_types=[SDO.Integer],
+            url="foo.org/property1",
+        )
+
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+            "foo.org/property1": 42,
+        },
+    )
+    assert node.property1 == 42
+    assert not node.ctx.issues.errors
+    assert node.to_json() == {
+        "@id": "foo",
+        "@type": "foo.org/CustomNode",
+        "foo.org/property1": 42,
+    }
+
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+            "foo.org/property1": [42, 43],
+        },
+    )
+    assert node.property1 == 42
+    assert_contain_warning(
+        node.ctx.issues, "`property1` has cardinality `ONE`, but got a list"
+    )
+
+
+def test_custom_node_with_cardinality_many():
+    @mlc_dataclasses.dataclass
+    class CustomNode(base_node.Node):
+        JSONLD_TYPE = "foo.org/CustomNode"
+
+        property1: list[int] = mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            default_factory=list,
+            input_types=[SDO.Integer],
+            url="foo.org/property1",
+        )
+
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+            "foo.org/property1": [42, 43],
+        },
+    )
+    assert node.property1 == [42, 43]
+    assert not node.ctx.issues.errors
+    assert node.to_json() == {
+        "@id": "foo",
+        "@type": "foo.org/CustomNode",
+        "foo.org/property1": [42, 43],
+    }
+
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+            "foo.org/property1": 42,
+        },
+    )
+    assert node.property1 == [42]
+
+
+def test_custom_node_with_required():
+    @mlc_dataclasses.dataclass
+    class CustomNode(base_node.Node):
+        JSONLD_TYPE = "foo.org/CustomNode"
+
+        property1: str | None = mlc_dataclasses.jsonld_field(
+            default="default property1",
+            input_types=[SDO.Text],
+            required=True,
+            url="foo.org/property1",
+        )
+        property2: str | None = mlc_dataclasses.jsonld_field(
+            default="default property2",
+            input_types=[SDO.Text],
+            required=False,
+            url="foo.org/property2",
+        )
+
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+        },
+    )
+    assert node.property1 == "default property1"
+    assert node.property2 == "default property2"
+    assert_contain_warning(node.ctx.issues, "`property1` is required, but got None")
+
+
+def test_custom_node_with_input_types():
+    @mlc_dataclasses.dataclass
+    class ChildNode(base_node.Node):
+        JSONLD_TYPE = "foo.org/ChildNode"
+
+        child: str | None = mlc_dataclasses.jsonld_field(
+            default=None,
+            input_types=[SDO.Text],
+            url="foo.org/child",
+        )
+
+    @mlc_dataclasses.dataclass
+    class CustomNode(base_node.Node):
+        JSONLD_TYPE = "foo.org/CustomNode"
+
+        property1: int | None = mlc_dataclasses.jsonld_field(
+            default=None,
+            input_types=[SDO.Integer],
+            url="foo.org/property1",
+        )
+        # pytype: disable=invalid-annotation, disable=name-error
+        property2: list[ChildNode] = mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            default_factory=list,
+            input_types=[ChildNode],
+            url="foo.org/property2",
+        )
+        # pytype: enable=invalid-annotation, enable=name-error
+
+    # When from_jsonld succeeds:
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+            "foo.org/property1": 42,
+            "foo.org/property2": [
+                {
+                    "@type": "foo.org/ChildNode",
+                    "@id": "child",
+                    "foo.org/child": "this is the child",
+                }
+            ],
+        },
+    )
+    assert node.property1 == 42
+    assert len(node.property2) == 1
+    assert node.property2[0].id == "child"
+    assert node.property2[0].child == "this is the child"
+    assert not node.ctx.issues.errors
+    assert not node.ctx.issues.warnings
+
+    # When from_jsonld fails:
+    node = CustomNode.from_jsonld(
+        Context(),
+        {
+            "@type": "foo.org/CustomNode",
+            "@id": "foo",
+            "foo.org/property1": "this should be int",
+            "foo.org/property2": ["this should be child node"],
+        },
+    )
+    assert node.property1 == None
+    assert node.property2 == []
+    assert_contain_error(
+        node.ctx.issues,
+        "`property1` should have type https://schema.org/Integer, but got str",
+    )
+    assert_contain_error(
+        node.ctx.issues, "`property2` should have type ChildNode, but got str"
+    )
