@@ -6,6 +6,7 @@ The main functions are:
 """
 
 import json
+import re
 from typing import Any
 
 import rdflib
@@ -30,6 +31,7 @@ from mlcroissant._src.core.rdf import get_context
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.types import Json
 
+_ID_REGEX = re.compile(r".*\s+.*")
 _DCTERMS_PREFIX = constants.DCTERMS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
 _WD_PREFIX = "https://www.wikidata.org/wiki/"
@@ -168,6 +170,23 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     return entry_node
 
 
+def check_valid_ids(data: Json, ctx: Context) -> None:
+    """Checks that the given json contains valid `@id`s."""
+    if isinstance(data, dict):
+        for k, v in data.items():
+            if k == "@id" and re.match(_ID_REGEX, v):
+                ctx.issues.add_error(
+                    f"The dataset contains a wrong `@id`: '{v}'. Note that currently we"
+                    " do not support `@id`s containing whitespaces (not even if"
+                    " URL-escaped)."
+                )
+            if isinstance(v, dict):
+                check_valid_ids(v, ctx)
+            elif isinstance(v, list):
+                for d in v:
+                    check_valid_ids(d, ctx)
+
+
 def expand_jsonld(data: Json, ctx: Context) -> Json:
     """Expands a Croissant JSON to a nested JSON-LD with expanded.
 
@@ -175,6 +194,7 @@ def expand_jsonld(data: Json, ctx: Context) -> Json:
     full expression, but RDFLib also flattens the JSON-LD in a list of nodes. We then
     need to reconstruct the hierarchy.
     """
+    check_valid_ids(data=data, ctx=ctx)
     context = get_context(data)
     if "@base" not in context:
         context["@base"] = constants.BASE_IRI

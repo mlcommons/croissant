@@ -266,7 +266,7 @@ class Source:
                         ]
                     ctx.issues.add_error(
                         f"Every {constants.ML_COMMONS_SOURCE(ctx)} should declare"
-                        f" either {' or '.join(mandatory_fields_in_source)}"
+                        f" either {' or '.join(mandatory_fields_in_source)}."
                     )
                 # Safely access and check "file_property" from JSON-LD.
                 file_property = data_extraction.get(
