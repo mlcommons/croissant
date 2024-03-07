@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-import abc
 import dataclasses
 import re
-from typing import Any
+from typing import Any, Callable
+
+from rdflib import term
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
@@ -27,7 +28,7 @@ _LIST_FIELDS = {"distribution", "fields", "record_sets"}
 
 
 @dataclasses.dataclass(eq=False, repr=False)
-class Node(abc.ABC):
+class Node:
     """Structure node in Croissant.
 
     This generic class will be inherited by the actual Croissant nodes:
@@ -213,17 +214,6 @@ class Node(abc.ABC):
         """Shortcut to access issues in node."""
         return self.ctx.issues
 
-    @abc.abstractmethod
-    def to_json(self) -> Json:
-        """Converts the node to JSON."""
-        ...
-
-    @classmethod
-    @abc.abstractmethod
-    def from_jsonld(cls, *args, **kwargs) -> Any:
-        """Creates a node from JSON-LD."""
-        ...
-
     def validate_name(self):
         """Validates the name."""
         name = self.name
@@ -280,15 +270,11 @@ class Node(abc.ABC):
         memo[id(self)] = copy
         return copy
 
-
-class NodeV2(Node):
-    """Extends Node. When the migration is complete, merge `Node` and `NodeV2`."""
-
     def to_json(self) -> Json:
         """Converts the Python class to JSON."""
         cls = self.__class__
         jsonld = {
-            "@type": self.ctx.rdf.shorten_value(cls._JSONLD_TYPE(self.ctx)),
+            "@type": self.ctx.rdf.shorten_value(cls._jsonld_type(self.ctx)),
             "@id": None if self.ctx.is_v0() else self.id,
         }
         for field in mlc_dataclasses.jsonld_fields(self):
@@ -305,14 +291,14 @@ class NodeV2(Node):
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Json):
         """Creates a Python class from JSON-LD."""
-        if cls._JSONLD_TYPE(ctx) == constants.SCHEMA_ORG_DATASET:
+        if cls._jsonld_type(ctx) == constants.SCHEMA_ORG_DATASET:
             # For `Metadata` node, insert the conforms_to in the context:
             ctx.conforms_to = CroissantVersion.from_jsonld(
                 ctx, jsonld.get(constants.DCTERMS_CONFORMS_TO)
             )
         if isinstance(jsonld, list):
             return [cls.from_jsonld(ctx, el) for el in jsonld]
-        check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
+        check_expected_type(ctx.issues, jsonld, cls._jsonld_type(ctx))
         kwargs = {}
         for field in mlc_dataclasses.jsonld_fields(cls):
             url = field.call_url(ctx)
@@ -328,7 +314,14 @@ class NodeV2(Node):
             **kwargs,
         )
 
+    JSONLD_TYPE: Callable[[Context], term.URIRef] | term.URIRef | None = None
+
     @classmethod
-    def _JSONLD_TYPE(cls, ctx: Context):
-        del ctx
-        raise NotImplementedError("Output the right JSON-LD type.")
+    def _jsonld_type(cls, ctx: Context):
+        """Get the actual JSON-LD type according the the ctx."""
+        if cls.JSONLD_TYPE is None:
+            raise NotImplementedError("Output the right JSON-LD type.")
+        elif callable(cls.JSONLD_TYPE):
+            return cls.JSONLD_TYPE(ctx)
+        else:
+            return cls.JSONLD_TYPE

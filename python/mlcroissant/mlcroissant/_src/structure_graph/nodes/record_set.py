@@ -11,7 +11,7 @@ from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.structure_graph.base_node import NodeV2
+from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
@@ -28,7 +28,7 @@ def data_from_jsonld(ctx: Context, data) -> Json | None:
 
 
 @mlc_dataclasses.dataclass
-class RecordSet(NodeV2):
+class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
     data: list[Json] | None = mlc_dataclasses.jsonld_field(
@@ -147,10 +147,7 @@ class RecordSet(NodeV2):
                     " documentation for more information."
                 )
 
-    @classmethod
-    def _JSONLD_TYPE(cls, ctx: Context):
-        """Gets the class' JSON-LD @type."""
-        return constants.ML_COMMONS_RECORD_SET_TYPE(ctx)
+    JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
 
 
 def get_parent_uuid(ctx: Context, uuid: str) -> str:
