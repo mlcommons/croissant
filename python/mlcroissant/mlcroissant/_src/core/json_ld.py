@@ -104,7 +104,8 @@ def _sort_dict(d: Json):
 
 def remove_empty_values(d: Json) -> Json:
     """Removes empty values in a JSON."""
-    return {k: v for k, v in d.items() if v}
+    # Either v exists or v is a bool (to account for False values)
+    return {k: v for k, v in d.items() if v or isinstance(v, bool)}
 
 
 def unbox_singleton_list(d: Any):

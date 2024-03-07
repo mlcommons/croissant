@@ -1,39 +1,74 @@
-"""Utils to overload Python built-in dataclasses."""
+"""Utils to overload Python built-in dataclasses.
+
+This module implements https://peps.python.org/pep-0681.
+"""
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 import dataclasses
-from typing import Any, Callable, Literal
+from typing import Any, Callable, Literal, TypedDict
 
 from rdflib import term
+from typing_extensions import dataclass_transform
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.types import Json
 
 
-class JsonldField(dataclasses.Field):
+class Metadata(TypedDict):
+    """Interface for the metadata mapping."""
+
+    cardinality: Literal["ONE", "MANY"]
+    description: str
+    from_jsonld: Callable[[Context, Json], Any] | None
+    input_types: list[Any]
+    to_jsonld: Callable[[Context, Json], Any] | None
+    required: bool
+    url: term.URIRef | Callable[[Context], term.URIRef]
+
+
+@dataclasses.dataclass
+class JsonldField:
     """Overloads dataclasses.Field with JSON-LD-specific attributes."""
 
-    def __init__(
-        self,
-        *args,
-        cardinality: Literal["ONE", "MANY"],
-        description: str,
-        from_jsonld: Callable[[Context, Json], Any] | None,
-        input_types: list[Any],
-        to_jsonld: Callable[[Context, Json], Any] | None,
-        required: bool,
-        url: term.URIRef | Callable[[Context], term.URIRef],
-    ):
-        """Sets all args and kwargs."""
-        super().__init__(*args)
-        self.cardinality = cardinality
-        self.description = description
-        self.from_jsonld = from_jsonld
-        self.input_types = input_types
-        self.to_jsonld = to_jsonld
-        self.required = required
-        self.url = url
+    name: str
+    metadata: Metadata
+
+    @property
+    def cardinality(self):
+        """Getter for cardinality."""
+        return self.metadata.get("cardinality")
+
+    @property
+    def description(self):
+        """Getter for description."""
+        return self.metadata.get("description")
+
+    @property
+    def from_jsonld(self):
+        """Getter for from_jsonld."""
+        return self.metadata.get("from_jsonld")
+
+    @property
+    def input_types(self):
+        """Getter for input_types."""
+        return self.metadata.get("input_types", [])
+
+    @property
+    def to_jsonld(self):
+        """Getter for to_jsonld."""
+        return self.metadata.get("to_jsonld")
+
+    @property
+    def required(self):
+        """Getter for required."""
+        return self.metadata.get("required")
+
+    @property
+    def url(self):
+        """Getter for url."""
+        return self.metadata.get("url")
 
     def call_from_jsonld(self, ctx: Context, value: Any):
         """Calls `from_jsonld` in the field."""
@@ -59,14 +94,6 @@ class JsonldField(dataclasses.Field):
 
 
 def jsonld_field(
-    default=dataclasses.MISSING,
-    default_factory=dataclasses.MISSING,
-    init=True,
-    repr=True,
-    hash=None,
-    compare=True,
-    metadata=None,
-    kw_only=dataclasses.MISSING,
     cardinality="ONE",
     description="",
     from_jsonld=None,
@@ -74,40 +101,35 @@ def jsonld_field(
     to_jsonld=None,
     required=False,
     url=None,
+    **kwargs,
 ):
     """Overloads dataclasses.field with specific attributes."""
-    if (
-        default is not dataclasses.MISSING
-        and default_factory is not dataclasses.MISSING
-    ):
-        raise ValueError("cannot specify both default and default_factory")
-    if not input_types or not isinstance(input_types, list):
-        raise ValueError(f"input type should be a non-empty list. Got: {input_types}")
-    if not url:
-        raise ValueError(f"Provide a url. Got: {url}")
-    return JsonldField(
-        default,
-        default_factory,
-        init,
-        repr,
-        hash,
-        compare,
-        metadata,
-        kw_only,
-        cardinality=cardinality,
-        description=description,
-        from_jsonld=from_jsonld,
-        input_types=input_types,
-        to_jsonld=to_jsonld,
-        required=required,
-        url=url,
+    if input_types is None:
+        input_types = []
+    return dataclasses.field(
+        metadata=Metadata(
+            cardinality=cardinality,
+            description=description,
+            from_jsonld=from_jsonld,
+            input_types=input_types,
+            to_jsonld=to_jsonld,
+            required=required,
+            url=url,
+        ),
+        **kwargs,
     )
 
 
-def jsonld_fields(cls_or_instance) -> list[JsonldField]:
+def jsonld_fields(cls_or_instance) -> Iterator[JsonldField]:
     """Filters the JSON-LD fields."""
-    return [
-        field
-        for field in dataclasses.fields(cls_or_instance)
-        if isinstance(field, JsonldField)
-    ]
+    for field in dataclasses.fields(cls_or_instance):
+        if field.metadata:
+            yield JsonldField(name=field.name, metadata=field.metadata)  # type: ignore
+
+
+@dataclass_transform(
+    field_specifiers=(jsonld_field,)
+)  # pytype: disable=not-supported-yet
+def dataclass(cls):
+    """Overloads the built-in dataclass with JsonldFields instead of Fields."""
+    return dataclasses.dataclass(eq=False, repr=False)(cls)

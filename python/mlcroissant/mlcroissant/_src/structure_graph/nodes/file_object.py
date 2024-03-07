@@ -2,30 +2,23 @@
 
 from __future__ import annotations
 
-import dataclasses
-
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import ML_COMMONS
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.dataclasses import jsonld_field
-from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import NodeV2
 from mlcroissant._src.structure_graph.nodes.source import Source
 
-OriginalField = dataclasses.Field
-dataclasses.Field = JsonldField  # type: ignore
 
-
-@dataclasses.dataclass(eq=False, repr=False)
+@mlc_dataclasses.dataclass
 class FileObject(NodeV2):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    # pytype: disable=annotation-type-mismatch
-    content_url: str | None = jsonld_field(
+    content_url: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
             "Actual bytes of the media object, for example the image file or video"
@@ -34,7 +27,7 @@ class FileObject(NodeV2):
         input_types=[SDO.URL],
         url=SDO.contentUrl,
     )
-    content_size: str | None = jsonld_field(
+    content_size: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
             "File size in (mega/kilo/...)bytes. Defaults to bytes if a unit is not"
@@ -43,7 +36,7 @@ class FileObject(NodeV2):
         input_types=[SDO.Text],
         url=SDO.contentSize,
     )
-    contained_in: list[str] | None = jsonld_field(
+    contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
@@ -59,24 +52,24 @@ class FileObject(NodeV2):
         ],
         url=SDO.containedIn,
     )
-    description: str | None = jsonld_field(
+    description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
         url=SDO.description,
     )
-    encoding_format: str | None = jsonld_field(
+    encoding_format: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description="The format of the file, given as a mime type.",
         input_types=[SDO.Text],
         required=True,
         url=SDO.encodingFormat,
     )
-    md5: str | None = jsonld_field(
+    md5: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
         url=lambda ctx: ML_COMMONS(ctx).md5,
     )
-    name: str = jsonld_field(
+    name: str = mlc_dataclasses.jsonld_field(
         default="",
         description=(
             "The name of the file.  As much as possible, the name should reflect the"
@@ -87,7 +80,7 @@ class FileObject(NodeV2):
         required=True,
         url=SDO.name,
     )
-    same_as: list[str] | None = jsonld_field(
+    same_as: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
@@ -97,19 +90,18 @@ class FileObject(NodeV2):
         input_types=[SDO.URL],
         url=SDO.sameAs,
     )
-    sha256: str | None = jsonld_field(
+    sha256: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
         default=None,
         description="Checksum for the file contents.",
         input_types=[SDO.Text],
         url=SDO.sha256,
     )
-    source: Source | None = jsonld_field(
+    source: Source | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[Source],
         url=lambda ctx: ML_COMMONS(ctx).source,
     )
-    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -126,6 +118,3 @@ class FileObject(NodeV2):
     def _JSONLD_TYPE(cls, ctx: Context):
         """Gets the class' JSON-LD @type."""
         return constants.SCHEMA_ORG_FILE_OBJECT(ctx)
-
-
-dataclasses.Field = OriginalField  # type: ignore

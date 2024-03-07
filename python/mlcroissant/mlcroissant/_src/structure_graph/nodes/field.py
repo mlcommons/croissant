@@ -8,11 +8,10 @@ from rdflib import term
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.dataclasses import jsonld_field
-from mlcroissant._src.core.dataclasses import JsonldField
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import NodeV2
@@ -62,22 +61,17 @@ class ParentField:
         })
 
 
-OriginalField = dataclasses.Field
-dataclasses.Field = JsonldField  # type: ignore
-
-
-@dataclasses.dataclass(eq=False, repr=False)
+@mlc_dataclasses.dataclass
 class Field(NodeV2):
     """Nodes to describe a dataset Field."""
 
-    # pytype: disable=annotation-type-mismatch
-    description: str | None = jsonld_field(
+    description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
     )
     # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
-    data_types: list[term.URIRef] | None = jsonld_field(
+    data_types: list[term.URIRef] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
@@ -90,17 +84,17 @@ class Field(NodeV2):
         to_jsonld=_data_types_to_jsonld,
         url=constants.ML_COMMONS_DATA_TYPE,
     )
-    is_enumeration: bool | None = jsonld_field(
+    is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_IS_ENUMERATION,
     )
-    name: str = jsonld_field(
+    name: str = mlc_dataclasses.jsonld_field(
         default="",
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_NAME,
     )
-    parent_field: ParentField | None = jsonld_field(
+    parent_field: ParentField | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
             "A special case of `SubField` that should be hidden because it references a"
@@ -111,7 +105,7 @@ class Field(NodeV2):
         to_jsonld=lambda ctx, parent_field: parent_field.to_json(ctx),
         url=constants.ML_COMMONS_PARENT_FIELD,
     )
-    references: Source = jsonld_field(
+    references: Source = mlc_dataclasses.jsonld_field(
         default_factory=Source,
         description=(
             "Another `Field` of another `RecordSet` that this field references. This is"
@@ -122,13 +116,13 @@ class Field(NodeV2):
         to_jsonld=lambda ctx, source: source.to_json(ctx),
         url=constants.ML_COMMONS_REFERENCES,
     )
-    repeated: bool | None = jsonld_field(
+    repeated: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
         description="If true, then the Field is a list of values of type dataType.",
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_REPEATED,
     )
-    source: Source = jsonld_field(
+    source: Source = mlc_dataclasses.jsonld_field(
         default_factory=Source,
         description=(
             "The data source of the field. This will generally reference a `FileObject`"
@@ -139,7 +133,7 @@ class Field(NodeV2):
         to_jsonld=lambda ctx, source: source.to_json(ctx),
         url=constants.ML_COMMONS_SOURCE,
     )
-    sub_fields: list[Field] = jsonld_field(
+    sub_fields: list[Field] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description="Another `Field` that is nested inside this one.",
@@ -148,7 +142,6 @@ class Field(NodeV2):
         to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
         url=constants.ML_COMMONS_SUB_FIELD,
     )
-    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -214,6 +207,3 @@ class Field(NodeV2):
         if hasattr(self.parent, "data"):
             return getattr(self.parent, "data")
         return None
-
-
-dataclasses.Field = OriginalField  # type: ignore
