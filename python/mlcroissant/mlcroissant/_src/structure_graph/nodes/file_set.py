@@ -16,7 +16,6 @@ from mlcroissant._src.structure_graph.base_node import NodeV2
 class FileSet(NodeV2):
     """Nodes to describe a dataset FileSet (distribution)."""
 
-    # pytype: disable=annotation-type-mismatch
     contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
@@ -69,7 +68,6 @@ class FileSet(NodeV2):
         input_types=[SDO.Text],
         url=SDO.name,
     )
-    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""

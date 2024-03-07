@@ -18,7 +18,6 @@ from mlcroissant._src.structure_graph.nodes.source import Source
 class FileObject(NodeV2):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    # pytype: disable=annotation-type-mismatch
     content_url: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
@@ -103,7 +102,6 @@ class FileObject(NodeV2):
         input_types=[Source],
         url=lambda ctx: ML_COMMONS(ctx).source,
     )
-    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""

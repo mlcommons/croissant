@@ -31,7 +31,6 @@ def data_from_jsonld(ctx: Context, data) -> Json | None:
 class RecordSet(NodeV2):
     """Nodes to describe a dataset RecordSet."""
 
-    # pytype: disable=annotation-type-mismatch
     data: list[Json] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
@@ -77,7 +76,6 @@ class RecordSet(NodeV2):
         to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
         url=constants.ML_COMMONS_FIELD,
     )
-    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node."""

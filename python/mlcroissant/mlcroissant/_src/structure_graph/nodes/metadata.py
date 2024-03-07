@@ -121,7 +121,6 @@ def _distribution_to_json(ctx: Context, distribution: list[FileObject | FileSet]
 class Metadata(NodeV2):
     """Nodes to describe a dataset metadata."""
 
-    # pytype: disable=annotation-type-mismatch
     cite_as: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
@@ -369,7 +368,6 @@ class Metadata(NodeV2):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_MAINTENANCE,
     )
-    # pytype: enable=annotation-type-mismatch
 
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""

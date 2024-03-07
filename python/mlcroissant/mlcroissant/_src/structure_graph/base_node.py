@@ -8,10 +8,10 @@ import re
 from typing import Any
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.dataclasses import jsonld_fields
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -291,7 +291,7 @@ class NodeV2(Node):
             "@type": self.ctx.rdf.shorten_value(cls._JSONLD_TYPE(self.ctx)),
             "@id": None if self.ctx.is_v0() else self.id,
         }
-        for field in jsonld_fields(self):
+        for field in mlc_dataclasses.jsonld_fields(self):
             url = field.call_url(self.ctx)
             key = self.ctx.rdf.shorten_key(url)
             value = getattr(self, field.name)
@@ -314,7 +314,7 @@ class NodeV2(Node):
             return [cls.from_jsonld(ctx, el) for el in jsonld]
         check_expected_type(ctx.issues, jsonld, cls._JSONLD_TYPE(ctx))
         kwargs = {}
-        for field in jsonld_fields(cls):
+        for field in mlc_dataclasses.jsonld_fields(cls):
             url = field.call_url(ctx)
             value = jsonld.get(url)
             value = field.call_from_jsonld(ctx, value)
