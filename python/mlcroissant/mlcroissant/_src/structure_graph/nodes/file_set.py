@@ -6,14 +6,13 @@ from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
-from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-from mlcroissant._src.structure_graph.base_node import NodeV2
+from mlcroissant._src.structure_graph.base_node import Node
 
 
 @mlc_dataclasses.dataclass
-class FileSet(NodeV2):
+class FileSet(Node):
     """Nodes to describe a dataset FileSet (distribution)."""
 
     contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
@@ -75,7 +74,4 @@ class FileSet(NodeV2):
         self.validate_name()
         self.assert_has_mandatory_properties("includes", "encoding_format", uuid_field)
 
-    @classmethod
-    def _JSONLD_TYPE(cls, ctx: Context):
-        """Gets the class' JSON-LD @type."""
-        return constants.SCHEMA_ORG_FILE_SET(ctx)
+    JSONLD_TYPE = constants.SCHEMA_ORG_FILE_SET

@@ -23,7 +23,7 @@ class Metadata(TypedDict):
     description: str
     from_jsonld: Callable[[Context, Json], Any] | None
     input_types: list[Any]
-    to_jsonld: Callable[[Context, Json], Any] | None
+    to_jsonld: Callable[[Context, Any], Json] | None
     required: bool
     url: term.URIRef | Callable[[Context], term.URIRef]
 

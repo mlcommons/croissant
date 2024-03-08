@@ -24,7 +24,7 @@ from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
-from mlcroissant._src.structure_graph.base_node import NodeV2
+from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -118,7 +118,7 @@ def _distribution_to_json(ctx: Context, distribution: list[FileObject | FileSet]
 
 
 @mlc_dataclasses.dataclass
-class Metadata(NodeV2):
+class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
     cite_as: str | None = mlc_dataclasses.jsonld_field(
@@ -407,10 +407,7 @@ class Metadata(NodeV2):
             self.ctx, self.ctx.conforms_to
         )
 
-    @classmethod
-    def _JSONLD_TYPE(cls, ctx: Context):
-        del ctx
-        return constants.SCHEMA_ORG_DATASET
+    JSONLD_TYPE = constants.SCHEMA_ORG_DATASET
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
@@ -441,9 +438,9 @@ class Metadata(NodeV2):
             file_set for file_set in self.distribution if isinstance(file_set, FileSet)
         ]
 
-    def nodes(self) -> list[NodeV2]:
+    def nodes(self) -> list[Node]:
         """List all nodes in metadata."""
-        nodes: list[NodeV2] = [self]
+        nodes: list[Node] = [self]
         nodes.extend(self.distribution)
         nodes.extend(self.record_sets)
         for record_set in self.record_sets:

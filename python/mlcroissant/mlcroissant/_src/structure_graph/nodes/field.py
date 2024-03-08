@@ -14,7 +14,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
-from mlcroissant._src.structure_graph.base_node import NodeV2
+from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -62,7 +62,7 @@ class ParentField:
 
 
 @mlc_dataclasses.dataclass
-class Field(NodeV2):
+class Field(Node):
     """Nodes to describe a dataset Field."""
 
     description: str | None = mlc_dataclasses.jsonld_field(
@@ -152,9 +152,7 @@ class Field(NodeV2):
         self.source.check_source(self.add_error)
         self._standardize_data_types()
 
-    @classmethod
-    def _JSONLD_TYPE(cls, ctx: Context):
-        return constants.ML_COMMONS_FIELD_TYPE(ctx)
+    JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
     def _standardize_data_types(self):
         """Converts data_types to a list of rdflib.URIRef."""
