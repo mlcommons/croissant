@@ -130,16 +130,16 @@ def handle_metadata_change(event: MetadataEvent, metadata: Metadata, key: str):
         date = st.session_state[key]
         metadata.date_published = datetime.datetime(date.year, date.month, date.day)
     elif event == MetadataEvent.CREATOR_ADD:
-        metadata.creators = [mlc.PersonOrOrganization()]
+        metadata.creators = [mlc.Person()]
     elif event == MetadataEvent.CREATOR_REMOVE:
         metadata.creators = []
     elif event == MetadataEvent.CREATOR_NAME:
         if metadata.creators:
             metadata.creators[0].name = st.session_state[key]
         else:
-            metadata.creators = [mlc.PersonOrOrganization(name=st.session_state[key])]
+            metadata.creators = [mlc.Person(name=st.session_state[key])]
     elif event == MetadataEvent.CREATOR_URL:
         if metadata.creators:
             metadata.creators[0].url = st.session_state[key]
         else:
-            metadata.creators = [mlc.PersonOrOrganization(url=st.session_state[key])]
+            metadata.creators = [mlc.Person(url=st.session_state[key])]

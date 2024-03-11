@@ -188,7 +188,7 @@ class Metadata(Node):
 
     description: str | None = None
     cite_as: str | None = None
-    creators: list[mlc.PersonOrOrganization] = dataclasses.field(default_factory=list)
+    creators: list[mlc.Person] = dataclasses.field(default_factory=list)
     data_biases: str | None = None
     data_collection: str | None = None
     date_published: datetime.datetime | None = None

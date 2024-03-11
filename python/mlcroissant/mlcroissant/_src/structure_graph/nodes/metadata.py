@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-import dataclasses
 import datetime
-import itertools
-from typing import Any, Literal
+from typing import Any
 
 from etils import epath
-from rdflib import namespace
 from rdflib.namespace import SDO
 import requests
 
@@ -20,7 +17,6 @@ from mlcroissant._src.core.dates import from_str_to_datetime
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
-from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
@@ -30,65 +26,9 @@ from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
+from mlcroissant._src.structure_graph.nodes.organization import Organization
+from mlcroissant._src.structure_graph.nodes.person import Person
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-
-
-@dataclasses.dataclass(eq=False, repr=False)
-class PersonOrOrganization:
-    """Representing either https://schema.org/Person or /Organization."""
-
-    name: str | None = None
-    description: str | None = None
-    email: str | None = None
-    type: (
-        Literal["https://schema.org/Person", "https://schema.org/Organization"] | None
-    ) = None
-    url: str | None = None
-
-    @classmethod
-    def from_jsonld(cls, ctx: Context, jsonld: Any) -> list[PersonOrOrganization]:
-        """Builds the class from the JSON-LD."""
-        if jsonld is None:
-            return []
-        elif isinstance(jsonld, list):
-            persons_or_organizations: itertools.chain[PersonOrOrganization] = (
-                itertools.chain.from_iterable([
-                    cls.from_jsonld(ctx, element) for element in jsonld
-                ])
-            )
-            return list(persons_or_organizations)
-        else:
-            return [
-                cls(
-                    name=jsonld.get(constants.SCHEMA_ORG_NAME),
-                    description=jsonld.get(constants.SCHEMA_ORG_DESCRIPTION),
-                    email=jsonld.get(constants.SCHEMA_ORG_EMAIL),
-                    type=jsonld.get("@type"),
-                    url=jsonld.get(constants.SCHEMA_ORG_URL),
-                )
-            ]
-
-    @classmethod
-    def to_json(cls, creator: list[PersonOrOrganization] | None) -> Any:
-        """Serializes back to JSON-LD."""
-        if creator is None:
-            return None
-        else:
-            creators = [
-                remove_empty_values({
-                    "@type": (
-                        "Person"
-                        if element.type == namespace.SDO.Person
-                        else "Organization"
-                    ),
-                    "email": element.email,
-                    "name": element.name,
-                    "description": element.description,
-                    "url": element.url,
-                })
-                for element in creator
-            ]
-            return unbox_singleton_list(creators)
 
 
 def _distribution_from_jsonld(
@@ -132,12 +72,11 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_CITE_AS,
     )
-    creators: list[PersonOrOrganization] | None = mlc_dataclasses.jsonld_field(
+    creators: list[Organization, Person] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description="The creator(s) of the dataset.",
-        from_jsonld=PersonOrOrganization.from_jsonld,
-        to_jsonld=lambda ctx, person: PersonOrOrganization.to_json(person),
+        input_types=[Organization, Person],
         url=constants.SCHEMA_ORG_CREATOR,
     )
     date_created: datetime.datetime | None = mlc_dataclasses.jsonld_field(
@@ -197,14 +136,13 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_NAME,
     )
-    publisher: list[PersonOrOrganization] | None = mlc_dataclasses.jsonld_field(
+    publisher: list[Organization | Person] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
             "The publisher of the dataset, which may be distinct from its creator."
         ),
-        from_jsonld=PersonOrOrganization.from_jsonld,
-        to_jsonld=lambda ctx, person: PersonOrOrganization.to_json(person),
+        input_types=[Organization, Person],
         url=constants.SCHEMA_ORG_PUBLISHER,
     )
     same_as: list[str] | None = mlc_dataclasses.jsonld_field(

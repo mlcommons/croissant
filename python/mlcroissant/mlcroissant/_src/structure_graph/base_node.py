@@ -308,7 +308,14 @@ class Node:
             url = field.call_url(self.ctx)
             key = self.ctx.rdf.shorten_key(url)
             value = getattr(self, field.name)
-            value = field.call_to_jsonld(self.ctx, value)
+            if field.to_jsonld:
+                # We explicitly set `to_jsonld`, so use it:
+                value = field.call_to_jsonld(self.ctx, value)
+            else:
+                if isinstance(value, list):
+                    value = [_value_to_jsonld(v) for v in value]
+                else:
+                    value = _value_to_jsonld(value)
             # fields in _LIST_FIELDS are always lists, so we don't unbox them.
             if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
@@ -375,6 +382,14 @@ class Node:
             return cls.JSONLD_TYPE(ctx)
         else:
             return cls.JSONLD_TYPE
+
+
+def _value_to_jsonld(value: Any) -> Any:
+    """Applies `to_json` to Nodes."""
+    if isinstance(value, Node):
+        return value.to_json()
+    else:
+        return value
 
 
 def _value_from_input_types(
