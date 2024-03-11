@@ -33,8 +33,7 @@ def render_jsonld():
                         description=field["description"],
                         data_types=field["data_type"],
                         source=mlc.Source(
-                            uid=file.name,
-                            node_type="distribution",
+                            distribution=file.name,
                             extract=mlc.Extract(column=field["name"]),
                         ),
                     )

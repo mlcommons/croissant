@@ -140,7 +140,7 @@ def render_source(
         on_change=handle_field_change,
         args=(FieldEvent.SOURCE, field, key),
     )
-    if source.node_type == "distribution":
+    if source.distribution or source.file_object or source.file_set:
         extract = col2.selectbox(
             needed_field("Extract"),
             index=_get_extract_index(source),
@@ -310,7 +310,7 @@ def render_references(
             on_change=handle_field_change,
             args=(FieldEvent.REFERENCE, field, key),
         )
-        if references.node_type == "distribution":
+        if references.distribution or references.file_object or references.file_set:
             key = f"{key}-extract-references"
             extract = col2.selectbox(
                 needed_field("Extract the reference"),
