@@ -196,12 +196,10 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW,
     )
-    data_collection_timeframe: datetime.datetime | None = (
-        mlc_dataclasses.jsonld_field(
-            default=None,
-            input_types=[SDO.Date, SDO.DateTime],
-            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME,
-        )
+    data_collection_timeframe: datetime.datetime | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Date, SDO.DateTime],
+        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME,
     )
     data_preprocessing_imputation: str | None = mlc_dataclasses.jsonld_field(
         default=None,
