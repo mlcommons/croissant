@@ -212,7 +212,6 @@ class Source(Node):
         default_factory=Extract,
         description="",
         input_types=[Extract],
-        to_jsonld=lambda ctx, extract: extract.to_json(),
         url=constants.ML_COMMONS_EXTRACT,
     )
     transforms: list[Transform] = mlc_dataclasses.jsonld_field(
@@ -220,7 +219,6 @@ class Source(Node):
         default_factory=list,
         description="",
         input_types=[Transform],
-        to_jsonld=lambda ctx, transforms: [t.to_json() for t in transforms],
         url=constants.ML_COMMONS_TRANSFORM,
     )
 

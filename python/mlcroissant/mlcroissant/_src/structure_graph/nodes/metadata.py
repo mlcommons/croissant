@@ -173,19 +173,13 @@ class Metadata(Node):
     distribution: list[FileObject | FileSet] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
-        from_jsonld=_distribution_from_jsonld,
-        to_jsonld=_distribution_to_json,
+        input_types=[FileObject, FileSet],
         url=constants.SCHEMA_ORG_DISTRIBUTION,
     )
     record_sets: list[RecordSet] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
-        from_jsonld=lambda ctx, record_sets: [
-            RecordSet.from_jsonld(ctx, record_set) for record_set in record_sets
-        ],
-        to_jsonld=lambda ctx, record_sets: [
-            record_set.to_json() for record_set in record_sets
-        ],
+        input_types=[RecordSet],
         url=constants.ML_COMMONS_RECORD_SET,
     )
     data_collection: str | None = mlc_dataclasses.jsonld_field(

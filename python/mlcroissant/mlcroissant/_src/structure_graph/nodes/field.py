@@ -100,7 +100,6 @@ class Field(Node):
             " the equivalent of a foreign key reference in a relational database."
         ),
         input_types=[Source],
-        to_jsonld=lambda ctx, source: source.to_json(),
         url=constants.ML_COMMONS_REFERENCES,
     )
     repeated: bool | None = mlc_dataclasses.jsonld_field(
@@ -116,7 +115,6 @@ class Field(Node):
             " or `FileSet`'s contents (e.g., a specific column of a table)."
         ),
         input_types=[Source],
-        to_jsonld=lambda ctx, source: source.to_json(),
         url=constants.ML_COMMONS_SOURCE,
     )
     sub_fields: list[Field] = mlc_dataclasses.jsonld_field(
