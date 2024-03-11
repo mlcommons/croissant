@@ -52,7 +52,7 @@ class Node:
 
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
-    name: str = ""
+    name: str | None = None
     parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 
@@ -175,7 +175,7 @@ class Node:
         """
         if self.ctx.is_v0():
             if len(self.parents) <= 1:
-                return self.name
+                return self.name or ""
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
             return self.id

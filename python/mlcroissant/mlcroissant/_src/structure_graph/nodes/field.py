@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import dataclasses
-
 from rdflib import term
 from rdflib.namespace import SDO
 
@@ -12,7 +10,6 @@ from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source

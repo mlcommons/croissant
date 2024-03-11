@@ -72,7 +72,7 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_CITE_AS,
     )
-    creators: list[Organization, Person] | None = mlc_dataclasses.jsonld_field(
+    creators: list[Organization | Person] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description="The creator(s) of the dataset.",
