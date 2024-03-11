@@ -296,5 +296,5 @@ def test_custom_node_with_input_types():
         "`property1` should have type https://schema.org/Integer, but got str",
     )
     assert_contain_error(
-        node.ctx.issues, "`property2` should have type ChildNode, but got str"
+        node.ctx.issues, "`property2` should have type foo.org/ChildNode, but got str"
     )

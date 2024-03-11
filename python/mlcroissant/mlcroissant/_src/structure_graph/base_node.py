@@ -406,7 +406,8 @@ def _value_from_input_types(
         # Either the input_type is a Node...
         if isinstance(value, dict) and _is_a_node(input_type):
             jsonld_type = input_type._jsonld_type(ctx)
-            if value.get("@type") == jsonld_type:
+            actual_jsonld_type = value.get("@type")
+            if actual_jsonld_type == jsonld_type:
                 return input_type.from_jsonld(ctx, value)
         # ...or it's a basic int/str/bool/etc type
         else:
@@ -424,13 +425,27 @@ def _value_from_input_types(
             if type(value) is matching_type:
                 return value
     types = [
-        input_type.__name__ if _is_a_node(input_type) else str(input_type)
+        input_type._jsonld_type(ctx) if _is_a_node(input_type) else str(input_type)
         for input_type in input_types
     ]
-    actual_type = type(value).__name__
-    ctx.issues.add_error(
-        f"`{field.name}` should have type {' or '.join(types)}, but got {actual_type}`"
-    )
+    if isinstance(value, dict):
+        jsonld_type = input_type._jsonld_type(ctx)
+        actual_jsonld_type = value.get("@type")
+        posible_attributes = " or ".join([f'"@type": "{type}"' for type in types])
+        if ctx.is_v0():
+            uuid = value.get(constants.SCHEMA_ORG_NAME)
+        else:
+            uuid = uuid_from_jsonld(value)
+        ctx.issues.add_error(
+            f'"{uuid}" should have an attribute {posible_attributes}. Got'
+            f" {actual_jsonld_type} instead."
+        )
+    else:
+        actual_type = type(value).__name__
+        ctx.issues.add_error(
+            f"`{field.name}` should have type {' or '.join(types)}, but got"
+            f" {actual_type}"
+        )
     if field.default != dataclasses.MISSING:
         # If the validation failed, we return the default value:
         return field.default
