@@ -206,6 +206,8 @@ class Metadata(Node):
         """Renames a resource by changing all the references to this resource."""
         # Update other resources:
         for i, resource in enumerate(self.distribution):
+            if resource.id == old_name:
+                self.distribution[i].id = new_name
             contained_in = resource.contained_in
             if contained_in and old_name in contained_in:
                 self.distribution[i].contained_in = [
@@ -217,55 +219,69 @@ class Metadata(Node):
     def rename_record_set(self, old_name: str, new_name: str):
         """Renames a RecordSet by changing all the references to this RecordSet."""
         for i, record_set in enumerate(self.record_sets):
+            if record_set.id == old_name:
+                self.record_sets[i].id = new_name
             for j, field in enumerate(record_set.fields):
                 possible_uuid = f"{old_name}/"
                 # Update source
                 source = field.source
-                if (
-                    source
-                    and source.id
-                    and (source.id.startswith(possible_uuid) or source.id == old_name)
-                ):
-                    new_uuid = source.id.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.id = new_uuid
+                if source and source.field and source.field.startswith(possible_uuid):
+                    new_uuid = source.field.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.field = new_uuid
+                if source and source.file_object and source.file_object == old_name:
+                    self.record_sets[i].fields[j].source.file_object = new_name
+                if source and source.file_set and source.file_set == old_name:
+                    self.record_sets[i].fields[j].source.file_set = new_name
+                if source and source.distribution and source.distribution == old_name:
+                    self.record_sets[i].fields[j].source.distribution = new_name
                 # Update references
                 references = field.references
                 if (
                     references
-                    and references.id
-                    and (
-                        references.id.startswith(possible_uuid)
-                        or references.id == old_name
-                    )
+                    and references.field
+                    and references.field.startswith(possible_uuid)
                 ):
-                    new_uuid = references.id.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].references.id = new_uuid
+                    new_uuid = references.field.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.field = new_uuid
+                if (
+                    references
+                    and references.file_object
+                    and references.file_object == old_name
+                ):
+                    self.record_sets[i].fields[j].references.file_object = new_name
+                if (
+                    references
+                    and references.file_set
+                    and references.file_set == old_name
+                ):
+                    self.record_sets[i].fields[j].references.file_set = new_name
+                if (
+                    references
+                    and references.distribution
+                    and references.distribution == old_name
+                ):
+                    self.record_sets[i].fields[j].references.distribution = new_name
 
     def rename_field(self, old_name: str, new_name: str):
         """Renames a field by changing all the references to this field."""
         for i, record_set in enumerate(self.record_sets):
             for j, field in enumerate(record_set.fields):
+                possible_uuid = f"/{old_name}"
                 # Update source
                 source = field.source
                 # The difference with RecordSet is the `.endswith` here:
-                if (
-                    source
-                    and source.id
-                    and "/" in source.id
-                    and source.id.endswith(old_name)
-                ):
-                    new_uuid = source.id.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].source.id = new_uuid
+                if source and source.field and source.field.endswith(possible_uuid):
+                    new_uuid = source.field.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].source.field = new_uuid
                 # Update references
                 references = field.references
                 if (
                     references
-                    and references.id
-                    and "/" in references.id
-                    and references.id.endswith(old_name)
+                    and references.field
+                    and references.field.endswith(possible_uuid)
                 ):
-                    new_uuid = references.id.replace(old_name, new_name, 1)
-                    self.record_sets[i].fields[j].references.id = new_uuid
+                    new_uuid = references.field.replace(old_name, new_name, 1)
+                    self.record_sets[i].fields[j].references.field = new_uuid
 
     def rename_id(self, old_id: str, new_id: str):
         for resource in self.distribution:
@@ -281,10 +297,11 @@ class Metadata(Node):
             for field in record_set.fields:
                 if field.id == old_id:
                     field.id = new_id
-                if field.source and field.source.id == old_id:
-                    field.source.id = new_id
-                if field.references and field.references.id == old_id:
-                    field.references.id = new_id
+                for p in ["distribution", "field", "file_object", "file_set"]:
+                    if field.source and getattr(field.source, p) == old_id:
+                        setattr(field.source, p, new_id)
+                    if field.references and getattr(field.references, p) == old_id:
+                        setattr(field.references, p, new_id)
 
     def add_distribution(self, distribution: FileSet | FileObject) -> None:
         self.distribution.append(distribution)

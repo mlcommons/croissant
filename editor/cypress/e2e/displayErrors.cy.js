@@ -16,7 +16,7 @@ VERSIONS.forEach((version) => {
           fileName: fixture,
           mimeType: "text/json",
         };
-        cy.get("[data-testid='stFileUploadDropzone']").attachFile(file, {
+        cy.get("[data-testid='stFileUploader']").attachFile(file, {
           force: true,
           subjectType: "drag-n-drop",
           events: ["dragenter", "drop"],

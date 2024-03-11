@@ -2,33 +2,19 @@
 
 from __future__ import annotations
 
-import dataclasses
 import enum
-from typing import Any, Literal
+from typing import Any
 
 import jsonpath_rw
 from jsonpath_rw import lexer
+from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.json_ld import remove_empty_values
-from mlcroissant._src.core.types import Json
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
-
-
-def _find_choice(
-    uuids: list[Any], node_types: list[NodeType]
-) -> tuple[Any, NodeType | None]:
-    """Returns (None, None) if the inputs don't contain exactly 1 non-null value."""
-    choices = [
-        (uuid, node_type)
-        for uuid, node_type in zip(uuids, node_types)
-        if uuid is not None
-    ]
-    if len(choices) != 1:
-        return None, None
-    return choices[0]
+from mlcroissant._src.structure_graph.base_node import Node
 
 
 class FileProperty(enum.IntEnum):
@@ -63,8 +49,8 @@ def is_file_property(file_property: str):
     return False
 
 
-@dataclasses.dataclass(frozen=True)
-class Extract:
+@mlc_dataclasses.dataclass
+class Extract(Node):
     """Container for possible ways of extracting the data.
 
     Args:
@@ -73,21 +59,41 @@ class Extract:
         json_path: The JSON path if the source is a JSON.
     """
 
-    column: str | None = None
-    file_property: FileProperty | None = None
-    json_path: str | None = None
+    JSONLD_TYPE = None
 
-    def to_json(self) -> Json:
-        """Converts the `Extract` to JSON."""
-        return remove_empty_values({
-            "column": self.column,
-            "fileProperty": self.file_property.name if self.file_property else None,
-            "jsonPath": self.json_path,
-        })
+    column: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        exclusive_with=["json_path"],
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_COLUMN,
+    )
+    file_property: FileProperty | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        to_jsonld=lambda ctx, fp: fp.name if isinstance(fp, FileProperty) else fp,
+        url=constants.ML_COMMONS_FILE_PROPERTY,
+    )
+    json_path: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_JSON_PATH,
+    )
+
+    def __post_init__(self):
+        """Standardizes `self.file_property: FileProperty`."""
+        ctx = self.ctx
+        if isinstance(self.file_property, str) and is_file_property(self.file_property):
+            self.file_property = FileProperty[self.file_property]
+        elif self.file_property is not None:
+            ctx.issues.add_error(
+                f"Property {constants.ML_COMMONS_FILE_PROPERTY(ctx)} can only"
+                " have values in `fullpath`, `filepath` and `content`. Got:"
+                f" {self.file_property}"
+            )
 
 
-@dataclasses.dataclass(frozen=True)
-class Transform:
+@mlc_dataclasses.dataclass
+class Transform(Node):
     """Container for transformation.
 
     Args:
@@ -99,59 +105,38 @@ class Transform:
         separator: A separator in a string to yield a list.
     """
 
-    format: str | None = None
-    json_path: str | None = None
-    regex: str | None = None
-    replace: str | None = None
-    separator: str | None = None
+    JSONLD_TYPE = None
 
-    def to_json(self) -> Json:
-        """Converts the `Transform` to JSON."""
-        return remove_empty_values({
-            "format": self.format,
-            "jsonPath": self.json_path,
-            "regex": self.regex,
-            "replace": self.replace,
-            "separator": self.separator,
-        })
-
-    @classmethod
-    def from_jsonld(cls, ctx: Context, jsonld: Json | list[Json]) -> list[Transform]:
-        """Creates a list of `Transform` from JSON-LD."""
-        transforms: list[Transform] = []
-        if not isinstance(jsonld, list):
-            jsonld = [jsonld]
-        for transform in jsonld:
-            keys = [
-                constants.ML_COMMONS_FORMAT(ctx),
-                constants.ML_COMMONS_JSON_PATH(ctx),
-                constants.ML_COMMONS_REGEX(ctx),
-                constants.ML_COMMONS_REPLACE(ctx),
-                constants.ML_COMMONS_SEPARATOR(ctx),
-            ]
-            if not isinstance(transform, dict):
-                ctx.issues.add_error(
-                    f'Transform "{transform}" should be a dict with the keys'
-                    f' {", ".join(keys)}'
-                )
-                continue
-            kwargs = {constants.TO_CROISSANT(ctx)[k]: transform.get(k) for k in keys}
-            all_values_are_none = all(v is None for v in kwargs.values())
-            if all_values_are_none:
-                ctx.issues.add_error(
-                    f'Transform "{transform}" should be a dict with at least one key in'
-                    f' {", ".join(keys)}'
-                )
-                continue
-            transforms.append(Transform(**kwargs))
-        return transforms
+    format: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        exclusive_with=["json_path", "regex", "replace", "separator"],
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_FORMAT,
+    )
+    json_path: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_JSON_PATH,
+    )
+    regex: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_REGEX,
+    )
+    replace: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_REPLACE,
+    )
+    separator: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_SEPARATOR,
+    )
 
 
-NodeType = Literal["distribution", "field", "fileObject", "fileSet"] | None
-
-
-@dataclasses.dataclass(eq=False)
-class Source:
+@mlc_dataclasses.dataclass
+class Source(Node):
     r"""Python representation of sources and references.
 
     Croissant accepts several manners to declare sources:
@@ -191,136 +176,67 @@ class Source:
     ```
     """
 
-    extract: Extract = dataclasses.field(default_factory=Extract)
-    transforms: list[Transform] = dataclasses.field(default_factory=list)
-    id: str | None = None
-    node_type: NodeType = None
+    JSONLD_TYPE = None
 
-    def to_json(self, ctx: Context) -> Json:
-        """Converts the `Source` to JSON."""
-        transforms = [transform.to_json() for transform in self.transforms]
-        if self.node_type is None:
-            raise ValueError("node_type should be `distribution` or `field`. Got: None")
-        return remove_empty_values({
-            self.node_type: formatted_uuid_to_json(ctx, self.id),
-            "extract": self.extract.to_json(),
-            "transform": transforms[0] if len(transforms) == 1 else transforms,
-        })
-
-    @classmethod
-    def from_jsonld(cls, ctx: Context, jsonld: Any) -> Source:
-        """Creates a new source from a JSON-LD `field` and populates issues."""
-        if jsonld is None:
-            return Source()
-        elif isinstance(jsonld, list):
-            if len(jsonld) != 1:
-                raise ValueError(f"Field {jsonld} should have one element.")
-            return Source.from_jsonld(ctx, jsonld[0])
-        elif isinstance(jsonld, dict):
-            try:
-                transforms = Transform.from_jsonld(
-                    ctx, jsonld.get(constants.ML_COMMONS_TRANSFORM(ctx), [])
-                )
-                # Safely access and check "data_extraction" from JSON-LD.
-                data_extraction = jsonld.get(constants.ML_COMMONS_EXTRACT(ctx), {})
-                if isinstance(data_extraction, list) and data_extraction:
-                    data_extraction = data_extraction[0]
-                # Remove the JSON-LD @id property if it exists:
-                data_extraction.pop("@id", None)
-                if len(data_extraction) > 1:
-                    ctx.issues.add_error(
-                        f"{constants.ML_COMMONS_EXTRACT(ctx)} should have one of the"
-                        f" following properties: {constants.ML_COMMONS_FORMAT(ctx)},"
-                        f" {constants.ML_COMMONS_REGEX(ctx)},"
-                        f" {constants.ML_COMMONS_REPLACE(ctx)} or"
-                        f" {constants.ML_COMMONS_SEPARATOR(ctx)}"
-                    )
-                # Safely access and check "uuid" from JSON-LD.
-                distribution = jsonld.get(constants.SCHEMA_ORG_DISTRIBUTION)
-                file_object = jsonld.get(constants.ML_COMMONS_FILE_OBJECT(ctx))
-                file_set = jsonld.get(constants.ML_COMMONS_FILE_SET(ctx))
-                field = jsonld.get(constants.ML_COMMONS_FIELD(ctx))
-                if ctx.is_v0():
-                    uuids = [distribution, field]
-                    node_types: list[NodeType] = ["distribution", "field"]
-                else:
-                    uuids = [file_object, file_set, field]
-                    node_types = ["fileObject", "fileSet", "field"]
-                uuid, node_type = _find_choice(uuids, node_types)
-                if isinstance(uuid, dict):
-                    uuid = uuid_from_jsonld(uuid)
-
-                if uuid is None or node_type is None:
-                    uuid = None
-                    node_type = None
-                    if ctx.is_v0():
-                        mandatory_fields_in_source = [
-                            constants.ML_COMMONS_FIELD(ctx),
-                            constants.SCHEMA_ORG_DISTRIBUTION,
-                        ]
-                    else:
-                        mandatory_fields_in_source = [
-                            constants.ML_COMMONS_FIELD(ctx),
-                            constants.ML_COMMONS_FILE_OBJECT(ctx),
-                            constants.ML_COMMONS_FILE_SET(ctx),
-                        ]
-                    ctx.issues.add_error(
-                        f"Every {constants.ML_COMMONS_SOURCE(ctx)} should declare"
-                        f" either {' or '.join(mandatory_fields_in_source)}."
-                    )
-                # Safely access and check "file_property" from JSON-LD.
-                file_property = data_extraction.get(
-                    constants.ML_COMMONS_FILE_PROPERTY(ctx)
-                )
-                if is_file_property(file_property):
-                    file_property = FileProperty[file_property]
-                elif file_property is not None:
-                    ctx.issues.add_error(
-                        f"Property {constants.ML_COMMONS_FILE_PROPERTY(ctx)} can only"
-                        " have values in `fullpath`, `filepath` and `content`. Got:"
-                        f" {file_property}"
-                    )
-                # Build the source.
-                json_path = data_extraction.get(constants.ML_COMMONS_JSON_PATH(ctx))
-                csv_column = data_extraction.get(constants.ML_COMMONS_COLUMN(ctx))
-                extract = Extract(
-                    column=csv_column,
-                    file_property=file_property,
-                    json_path=json_path,
-                )
-                return Source(
-                    id=uuid,
-                    extract=extract,
-                    transforms=transforms,
-                    node_type=node_type,
-                )
-            except TypeError as exception:
-                ctx.issues.add_error(
-                    f"Malformed `source`: {jsonld}. Got exception: {exception}"
-                )
-                return Source()
-        else:
-            ctx.issues.add_error(f"`source` has wrong type: {type(jsonld)} ({jsonld})")
-            return Source()
+    distribution: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="",
+        from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        to_jsonld=formatted_uuid_to_json,
+        url=constants.SCHEMA_ORG_DISTRIBUTION,
+        versions=[CroissantVersion.V_0_8],
+    )
+    field: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="",
+        exclusive_with=["file_object", "file_set", "distribution"],
+        from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        to_jsonld=formatted_uuid_to_json,
+        url=constants.ML_COMMONS_FIELD,
+    )
+    file_object: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="",
+        from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        to_jsonld=formatted_uuid_to_json,
+        url=constants.ML_COMMONS_FILE_OBJECT,
+    )
+    file_set: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="",
+        from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        to_jsonld=formatted_uuid_to_json,
+        url=constants.ML_COMMONS_FILE_SET,
+    )
+    extract: Extract = mlc_dataclasses.jsonld_field(
+        default_factory=Extract,
+        description="",
+        input_types=[Extract],
+        to_jsonld=lambda ctx, extract: extract.to_json(),
+        url=constants.ML_COMMONS_EXTRACT,
+    )
+    transforms: list[Transform] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="",
+        input_types=[Transform],
+        to_jsonld=lambda ctx, transforms: [t.to_json() for t in transforms],
+        url=constants.ML_COMMONS_TRANSFORM,
+    )
 
     def __bool__(self):
         """Allows to write `if not node.source` / `if node.source`."""
         return self.uuid is not None
 
-    def __hash__(self):
-        """Hashes all immutable arguments."""
-        return hash((self.extract, tuple(self.transforms), self.id, self.node_type))
-
-    def __eq__(self, other: Any) -> bool:
-        """Overwrites the equality between two sources."""
-        if not isinstance(other, Source):
-            return False
-        return hash(self) == hash(other)
-
+    # TODO(https://github.com/mlcommons/croissant/issues/591): fix typing by having
+    # `target_uuid` instead of overriding `Node.uuid`.
     @property
-    def uuid(self) -> str | None:
+    def uuid(self) -> str | None:  # type: ignore
         """Unique identifier for the source."""
-        return self.id
+        if self.ctx.is_v0():
+            return self.field or self.distribution
+        else:
+            return self.field or self.file_object or self.file_set
 
     def get_column(self) -> str | FileProperty:
         """Retrieves the name of the column associated to the source."""

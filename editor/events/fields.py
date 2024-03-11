@@ -98,8 +98,9 @@ def handle_field_change(
     elif change == FieldEvent.DATA_TYPE:
         field.data_types = [str_to_mlc_data_type(value)]
     elif change == FieldEvent.SOURCE:
-        node_type = "field" if "/" in value else "distribution"
-        source = mlc.Source(uid=value, node_type=node_type)
+        source = (
+            mlc.Source(field=value) if "/" in value else mlc.Source(file_object=value)
+        )
         field.source = source
     elif change == FieldEvent.SOURCE_EXTRACT:
         source = field.source
@@ -138,8 +139,9 @@ def handle_field_change(
         if number is not None and number < len(field.source.transforms):
             field.source.transforms[number] = mlc.Transform(separator=value)
     elif change == FieldEvent.REFERENCE:
-        node_type = "field" if "/" in value else "distribution"
-        source = mlc.Source(uid=value, node_type=node_type)
+        source = (
+            mlc.Source(field=value) if "/" in value else mlc.Source(file_object=value)
+        )
         field.references = source
     elif change == FieldEvent.REFERENCE_EXTRACT:
         source = field.references

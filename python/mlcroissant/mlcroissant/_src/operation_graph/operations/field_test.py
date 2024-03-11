@@ -116,7 +116,8 @@ def test_extract_lines(separator):
                 id="main/line",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    id="file_id", extract=Extract(file_property=FileProperty.lines)
+                    file_object="file_id",
+                    extract=Extract(file_property=FileProperty.lines),
                 ),
             )
         )
@@ -126,7 +127,7 @@ def test_extract_lines(separator):
                 id="main/line_number",
                 data_types=[DataType.INTEGER],
                 source=Source(
-                    id="file_id",
+                    file_object="file_id",
                     extract=Extract(file_property=FileProperty.lineNumbers),
                 ),
             )
@@ -137,7 +138,7 @@ def test_extract_lines(separator):
                 id="main/filename",
                 data_types=[DataType.TEXT],
                 source=Source(
-                    id="file_id",
+                    file_object="file_id",
                     extract=Extract(file_property=FileProperty.filepath),
                     transforms=[Transform(regex=".*\\/(\\w*)\\.txt")],
                 ),

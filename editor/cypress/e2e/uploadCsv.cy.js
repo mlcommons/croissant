@@ -26,14 +26,14 @@ describe('Editor loads a local CSV as a resource', () => {
         fileName: 'base.csv', mimeType: 'text/csv',
       }
       cy.get(
-        "[data-testid='stFileUploadDropzone']",
+        "[data-testid='stFileUploader']",
       ).attachFile(file, {
         force: true,
         subjectType: "drag-n-drop",
         events: ["dragenter", "drop"],
       })
     })
-    cy.get('.uploadedFileData').contains('base.csv')
+    cy.get('.stFileUploaderFileData').contains('base.csv')
     cy.get('button').contains('Upload').click()
     // The file is uploaded, so we can click on it to see the details.
     // Waiting a few seconds to wait for the resource to download.

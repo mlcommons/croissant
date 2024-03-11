@@ -1,7 +1,9 @@
+current_dir := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+
 black:
-	black \
+	docker run --rm --volume $(current_dir):/src --workdir /src pyfound/black:24.2.0 black \
 		--line-length 88 \
-		--preview \
+		--exclude '.*\/node_modules\/' \
 	.
 
 isort:

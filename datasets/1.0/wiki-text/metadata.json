@@ -134,7 +134,7 @@
           "name": "word",
           "description": "A word.",
           "dataType": "sc:Text",
-          "repeated": "true",
+          "repeated": true,
           "source": {
             "fileSet": {
               "@id": "token-files"

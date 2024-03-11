@@ -25,7 +25,6 @@ class FileSet(Node):
             " object"
         ),
         from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
-        input_types=[SDO.Text],
         to_jsonld=lambda ctx, contained_in: [
             formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
         ],
@@ -40,7 +39,6 @@ class FileSet(Node):
         default=None,
         description="The format of the file, given as a mime type.",
         input_types=[SDO.Text],
-        required=True,
         url=SDO.encodingFormat,
     )
     excludes: list[str] | None = mlc_dataclasses.jsonld_field(
