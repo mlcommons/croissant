@@ -112,7 +112,7 @@ class RecordSet(Node):
     def check_joins_in_fields(self):
         """Checks that all joins are declared when they are consumed."""
         joins: set[tuple[str, str]] = set()
-        sources: set[str] = set()
+        sources: set[str | None] = set()
         for field in self.fields:
             source_uuid = field.source.uuid
             references_uuid = field.references.uuid
@@ -147,7 +147,7 @@ class RecordSet(Node):
     JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
 
 
-def get_parent_uuid(ctx: Context, uuid: str) -> str:
+def get_parent_uuid(ctx: Context, uuid: str) -> str | None:
     """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
     node = ctx.node_by_uuid(uuid)
     if node is None:
@@ -155,6 +155,7 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str:
             f"Node with uuid={uuid} does not exist. This error might have been found"
             " during a Join operation."
         )
+        return None
     if isinstance(node, Field):
         if node.parent:
             return node.parent.uuid

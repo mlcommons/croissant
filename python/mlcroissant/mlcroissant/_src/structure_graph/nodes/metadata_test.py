@@ -2,6 +2,7 @@
 
 import copy
 import datetime
+from typing import Any
 from unittest import mock
 
 import pytest
@@ -35,12 +36,14 @@ def test_checks_are_performed():
 
 
 @parametrize_conforms_to()
-def test_from_jsonld(conforms_to: CroissantVersion):
+@pytest.mark.parametrize("version", [1, 1.0, "1.0.0"])
+def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
     ctx = Context(conforms_to=conforms_to)
     jsonld = {
         "@type": constants.SCHEMA_ORG_DATASET,
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.ML_COMMONS_CITE_AS(ctx): "bixtex: citation",
         constants.DCTERMS_CONFORMS_TO: conforms_to.value,
         # Dates can be datetimes...
         constants.SCHEMA_ORG_DATE_CREATED: "1990-02-01",
@@ -50,7 +53,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
         constants.SCHEMA_ORG_DATE_PUBLISHED: "1990-02-03",
         constants.SCHEMA_ORG_LICENSE: "License",
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
-        constants.SCHEMA_ORG_VERSION: "1.0.0",
+        constants.SCHEMA_ORG_VERSION: version,
         constants.ML_COMMONS_IS_LIVE_DATASET(ctx): False,
     }
     metadata = Metadata.from_jsonld(ctx, jsonld)
@@ -64,6 +67,7 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
     assert not ctx.issues.errors
+    assert not ctx.issues.warnings
 
 
 @pytest.mark.parametrize(
