@@ -229,7 +229,7 @@ class Metadata(Node):
     version: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description="The version of the dataset following the requirements below.",
-        input_types=[SDO.Number, SDO.Text],
+        input_types=[SDO.Integer, SDO.Number, SDO.Text],
         url=constants.SCHEMA_ORG_VERSION,
     )
     distribution: list[FileObject | FileSet] = mlc_dataclasses.jsonld_field(
