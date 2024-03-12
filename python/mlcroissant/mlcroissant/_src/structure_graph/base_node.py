@@ -190,7 +190,7 @@ class Node:
     @property
     def predecessors(self) -> set[Node]:
         """Predecessors in the structure graph."""
-        return set(self.ctx.graph.predecessors(self))
+        return set(self.ctx.graph.predecessors(self))  # pytype: disable=bad-return-type
 
     @property
     def recursive_predecessors(self) -> set[Node]:
@@ -206,7 +206,9 @@ class Node:
         """First predecessor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
-        return next(self.ctx.graph.predecessors(self), None)
+        return next(
+            self.ctx.graph.predecessors(self), None
+        )  # pytype: disable=bad-return-type
 
     @property
     def successors(self) -> tuple[Node, ...]:
@@ -215,7 +217,7 @@ class Node:
             return ()
         # We use tuples in order to have a hashable data structure to be put in input of
         # operations.
-        return tuple(self.ctx.graph.successors(self))
+        return tuple(self.ctx.graph.successors(self))  # pytype: disable=bad-return-type
 
     @property
     def recursive_successors(self) -> set[Node]:
@@ -231,7 +233,9 @@ class Node:
         """Direct successor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
-        return next(self.ctx.graph.successors(self), None)
+        return next(
+            self.ctx.graph.successors(self), None
+        )  # pytype: disable=bad-return-type
 
     @property
     def issues(self) -> Issues:

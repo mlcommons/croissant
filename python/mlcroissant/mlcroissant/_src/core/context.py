@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import dataclasses
 import enum
+import typing
 from typing import Any, Mapping
 
 from etils import epath
@@ -11,6 +12,9 @@ import networkx as nx
 
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.rdf import Rdf
+
+if typing.TYPE_CHECKING:
+    from mlcroissant._src.structure_graph.base_node import Node
 
 
 class CroissantVersion(enum.Enum):
@@ -88,9 +92,9 @@ class Context:
         """Whether the JSON-LD conforms to Croissant v0.8 or lower."""
         return self.conforms_to < CroissantVersion.V_1_0
 
-    def node_by_uuid(self, uuid: str | None):
+    def node_by_uuid(self, uuid: str | None) -> Node | None:
         """Retrieves a node in the graph by its UID."""
         for node in self.graph.nodes():
-            if node.uuid == uuid:
-                return node
+            if node.uuid == uuid:  # pytype: disable=attribute-error
+                return node  # pytype: disable=bad-return-type
         return None

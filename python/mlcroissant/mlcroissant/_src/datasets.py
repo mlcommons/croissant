@@ -13,6 +13,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.operation_graph import OperationGraph
+from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
@@ -140,7 +141,7 @@ class Records:
                 record_set=self.record_set, operations=operations
             )
 
-    def _filter_interesting_operations(self) -> nx.DiGraph:
+    def _filter_interesting_operations(self) -> Operations:
         """Filters connected operations to `ReadFields(self.record_set)`."""
         operations = self.dataset.operations.operations
         source = next(
@@ -156,4 +157,4 @@ class Records:
         )
         paths = nx.all_simple_paths(operations, source=source, target=target)
         interesting_nodes = {node for path in paths for node in path}
-        return operations.subgraph(interesting_nodes)
+        return operations.subgraph(interesting_nodes)  # pytype: disable=bad-return-type

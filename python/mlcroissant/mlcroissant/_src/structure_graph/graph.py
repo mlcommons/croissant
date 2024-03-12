@@ -81,7 +81,7 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
     entry_nodes: list[Node] = []
     for node, indegree in graph.in_degree(graph.nodes()):
         if indegree == 0:
-            entry_nodes.append(node)
+            entry_nodes.append(node)  # pytype: disable=container-type-mismatch
     # Fields should usually not be entry nodes, except if they have subFields. So we
     # check for this:
     for node in entry_nodes:
@@ -102,7 +102,7 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
                         " it should contain all the names from the RecordSet separated"
                         ' by `/`, e.g.: "record_set_name/field_name"'
                     )
-    return entry_nodes
+    return entry_nodes  # pytype: disable=bad-return-type
 
 
 def _check_no_duplicate(metadata) -> dict[str, Node]:

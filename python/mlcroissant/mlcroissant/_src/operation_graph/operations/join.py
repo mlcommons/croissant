@@ -22,7 +22,7 @@ class Join(Operation):
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
-        predecessors: list[str] = [
+        predecessors: list[str | None] = [
             operation.node.uuid for operation in self.operations.predecessors(self)
         ]
         if len(predecessors) != len(args):
