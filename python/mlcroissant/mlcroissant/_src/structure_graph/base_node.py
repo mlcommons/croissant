@@ -433,7 +433,6 @@ def _value_from_input_types(
         for input_type in input_types
     ]
     if isinstance(value, dict):
-        jsonld_type = input_type._jsonld_type(ctx)
         actual_jsonld_type = value.get("@type")
         posible_attributes = " or ".join([f'"@type": "{type}"' for type in types])
         if ctx.is_v0():
