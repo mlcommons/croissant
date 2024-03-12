@@ -11,6 +11,7 @@ from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.datasets import Dataset
 from mlcroissant._src.datasets import Records
+from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
@@ -37,6 +38,7 @@ __all__ = [
     "GenerationError",
     "Issues",
     "Metadata",
+    "Node",
     "Organization",
     "Person",
     "Rdf",

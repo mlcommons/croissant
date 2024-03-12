@@ -8,27 +8,12 @@ from rdflib.namespace import SDO
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import DataType
-from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
+from mlcroissant._src.core.data_types import data_types_from_jsonld
+from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
-
-
-def _data_types_from_jsonld(ctx: Context, data_types: Json):
-    if isinstance(data_types, dict):
-        return data_types.get("@id")
-    elif isinstance(data_types, (str, term.URIRef)):
-        return term.URIRef(data_types)
-    elif isinstance(data_types, list):
-        return [_data_types_from_jsonld(ctx, d) for d in data_types]
-    return []
-
-
-def _data_types_to_jsonld(ctx: Context, data_types: list[term.URIRef] | None):
-    if data_types:
-        return [ctx.rdf.shorten_value(data_type) for data_type in data_types]
-    return None
 
 
 @mlc_dataclasses.dataclass
@@ -67,17 +52,30 @@ class Field(Node):
             " class. It could be either an atomic type (e.g, `sc:Integer`) or a"
             " semantic type (e.g., `sc:GeoLocation`)."
         ),
-        from_jsonld=_data_types_from_jsonld,
-        to_jsonld=_data_types_to_jsonld,
+        from_jsonld=data_types_from_jsonld,
+        to_jsonld=data_types_to_jsonld,
         url=constants.ML_COMMONS_DATA_TYPE,
+    )
+    equivalentProperty: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "A property that is equivalent to this Field. Used in the case a dataType"
+            " is specified on the RecordSet to map specific fields to specific"
+            " properties associated with that dataType."
+        ),
+        input_types=[SDO.URL],
+        url=constants.ML_COMMONS_EQUIVALENT_PROPERTY,
     )
     is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_IS_ENUMERATION,
+        versions=[CroissantVersion.V_0_8],
     )
     name: str = mlc_dataclasses.jsonld_field(
         default="",
+        description="The name of the Field.",
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_NAME,
     )

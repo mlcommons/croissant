@@ -24,7 +24,6 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isEnumeration": "cr:isEnumeration",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -88,8 +87,8 @@
       "@type": "cr:RecordSet",
       "@id": "genders",
       "name": "genders",
+      "dataType": "sc:Enumeration",
       "description": "Maps gender labels to semantic definitions.",
-      "isEnumeration": true,
       "key": "label",
       "field": [
         {
@@ -135,7 +134,7 @@
       "@id": "embarkation_ports",
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
-      "isEnumeration": true,
+      "dataType": "sc:Enumeration",
       "key": "key",
       "field": [
         {

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<html>
+<head>
+    <title>Field - Croissant &#129360</title>
+</head>
+<header>
+    <nav>
+        <a href="./Metadata.html">Metadata</a>
+        <a href="./FileObject.html">FileObject</a>
+        <a href="./FileSet.html">FileSet</a>
+        <a href="./RecordSet.html">RecordSet</a>
+        <a href="./Field.html">Field</a>
+    </nav>
+    <h1>Croissant &#129360</h1>
+    Croissant specifications as implemented by <code><a href="https://pypi.org/project/mlcroissant">mlcroissant</a></code>.
+    <br>
+    For the actual specifications, please refer to the <a href="https://mlcommons.org/croissant/1.0">Croissant 1.0 standard.</a>.
+</header>
+<body>
+    <h3>Field</h3>
+    <span>Nodes to describe a dataset Field.</span>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Expected type</th>
+            <th>Cardinality</th>
+            <th>Description</th>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/name">sc:name</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The name of the Field.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/description">sc:description</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/dataType">cr:dataType</a></td>
+            <td>
+                
+            </td>
+            <td>MANY</td>
+            <td>The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, `sc:Integer`) or a semantic type (e.g., `sc:GeoLocation`).</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/equivalentProperty">cr:equivalentProperty</a></td>
+            <td>
+                
+                <a href="https://schema.org/URL">sc:URL</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>A property that is equivalent to this Field. Used in the case a dataType is specified on the RecordSet to map specific fields to specific properties associated with that dataType.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/isEnumeration">cr:isEnumeration</a></td>
+            <td>
+                
+                <a href="https://schema.org/Boolean">sc:Boolean</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/parentField">cr:parentField</a></td>
+            <td>
+                
+                <a href="">ParentField</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>A special case of `SubField` that should be hidden because it references a `Field` that already appears in the `RecordSet`.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/references">cr:references</a></td>
+            <td>
+                
+                <a href="">Source</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>Another `Field` of another `RecordSet` that this field references. This is the equivalent of a foreign key reference in a relational database.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/repeated">cr:repeated</a></td>
+            <td>
+                
+                <a href="https://schema.org/Boolean">sc:Boolean</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>If true, then the Field is a list of values of type dataType.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/source">cr:source</a></td>
+            <td>
+                
+                <a href="">Source</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The data source of the field. This will generally reference a `FileObject` or `FileSet`&#39;s contents (e.g., a specific column of a table).</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/subField">cr:subField</a></td>
+            <td>
+                
+            </td>
+            <td>MANY</td>
+            <td>Another `Field` that is nested inside this one.</td>
+        </tr>
+    
+    </table>
+</body>
+</html>

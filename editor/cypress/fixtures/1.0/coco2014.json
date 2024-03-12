@@ -24,7 +24,6 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isEnumeration": "cr:isEnumeration",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -363,7 +362,7 @@
       "@type": "cr:RecordSet",
       "@id": "categories",
       "name": "categories",
-      "isEnumeration": true,
+      "dataType": "sc:Enumeration",
       "key": "id",
       "field": [
         {
@@ -405,10 +404,10 @@
           "name": "supercategory",
           "description": "The name of the supercategory.",
           "dataType": [
+            "sc:Enumeration",
             "sc:Text",
             "sc:name"
           ],
-          "isEnumeration": true,
           "source": {
             "fileSet": {
               "@id": "instancesperson_keypoints_annotations"
