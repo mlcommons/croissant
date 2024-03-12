@@ -23,38 +23,13 @@ from mlcroissant._src.core.url import is_url
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
+from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.organization import Organization
 from mlcroissant._src.structure_graph.nodes.person import Person
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
-
-
-def _distribution_from_jsonld(
-    ctx: Context, jsonld: list[Json]
-) -> list[FileObject | FileSet]:
-    distribution: list[FileObject | FileSet] = []
-    for set_or_object in jsonld:
-        name = set_or_object.get(constants.SCHEMA_ORG_NAME, "")
-        distribution_type = set_or_object.get("@type")
-        if distribution_type == constants.SCHEMA_ORG_FILE_OBJECT(ctx):
-            distribution.append(FileObject.from_jsonld(ctx, set_or_object))
-        elif distribution_type == constants.SCHEMA_ORG_FILE_SET(ctx):
-            distribution.append(FileSet.from_jsonld(ctx, set_or_object))
-        else:
-            ctx.issues.add_error(
-                f'"{name}" should have an attribute "@type":'
-                f' "{constants.SCHEMA_ORG_FILE_OBJECT(ctx)}" or "@type":'
-                f' "{constants.SCHEMA_ORG_FILE_SET(ctx)}". Got'
-                f" {distribution_type} instead."
-            )
-    return distribution
-
-
-def _distribution_to_json(ctx: Context, distribution: list[FileObject | FileSet]):
-    del ctx
-    return [resource.to_json() for resource in distribution]
 
 
 @mlc_dataclasses.dataclass
@@ -119,7 +94,7 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_KEYWORDS,
     )
-    license: list[str] | None = mlc_dataclasses.jsonld_field(
+    license: list[str | CreativeWork] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description=(
@@ -127,7 +102,7 @@ class Metadata(Node):
             " known license, e.g., one of the licenses listed at"
             " https://spdx.org/licenses/."
         ),
-        input_types=[SDO.URL],
+        input_types=[CreativeWork, SDO.URL],
         url=constants.SCHEMA_ORG_LICENSE,
     )
     name: str = mlc_dataclasses.jsonld_field(
@@ -409,20 +384,25 @@ class Metadata(Node):
             )
             return None
 
-    def validate_license(self) -> list[str] | None:
+    def validate_license(self) -> list[str | CreativeWork] | None:
         """Validates the license as a list of strings."""
         license = self.license
+        input_types = (str, CreativeWork)
         if license is None:
             return None
         elif isinstance(license, list):
-            if any(not isinstance(el, str) for el in license):
-                self.add_error(f"License should be a list of str. Got: {license}")
+            if any(not isinstance(el, input_types) for el in license):
+                self.add_error(
+                    f"License should be a list of str or CreativeWork. Got: {license}"
+                )
                 return None
             return license
-        elif isinstance(license, str):
+        elif isinstance(license, input_types):
             return [license]
         else:
-            self.add_error(f"License should be a list of str. Got: {license}")
+            self.add_error(
+                f"License should be a list of str or CreativeWork. Got: {license}"
+            )
             return None
 
     def validate_date(self, date: Any) -> datetime.datetime | None:
