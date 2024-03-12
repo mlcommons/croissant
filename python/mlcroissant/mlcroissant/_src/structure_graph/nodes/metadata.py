@@ -94,6 +94,13 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_KEYWORDS,
     )
+    in_language: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description="The language(s) of the content of the dataset.",
+        input_types=[SDO.Language, SDO.Text],
+        url=SDO.inLanguage,
+    )
     license: list[str | CreativeWork] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
@@ -102,7 +109,7 @@ class Metadata(Node):
             " known license, e.g., one of the licenses listed at"
             " https://spdx.org/licenses/."
         ),
-        input_types=[CreativeWork, SDO.URL],
+        input_types=[CreativeWork, SDO.Text, SDO.URL],
         url=constants.SCHEMA_ORG_LICENSE,
     )
     name: str = mlc_dataclasses.jsonld_field(
@@ -129,6 +136,16 @@ class Metadata(Node):
         ),
         input_types=[SDO.URL],
         url=constants.SCHEMA_ORG_SAME_AS,
+    )
+    sd_licence: list[str | CreativeWork] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "A license document that applies to this structured data, typically"
+            " indicated by URL."
+        ),
+        input_types=[CreativeWork, SDO.Text, SDO.URL],
+        url=SDO.sdLicense,
     )
     url: str | None = mlc_dataclasses.jsonld_field(
         default=None,

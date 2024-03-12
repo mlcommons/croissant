@@ -5,17 +5,20 @@ from __future__ import annotations
 import itertools
 import json
 
+from rdflib import term
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.data_types import data_types_from_jsonld
+from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
-def data_from_jsonld(ctx: Context, data) -> Json | None:
+def json_from_jsonld(ctx: Context, data) -> Json | None:
     """Creates `data` from a JSON-LD fragment."""
     if isinstance(data, str):
         try:
@@ -35,13 +38,33 @@ class RecordSet(Node):
         cardinality="MANY",
         default=None,
         description="One or more records that constitute the data of the `RecordSet`.",
-        from_jsonld=data_from_jsonld,
+        from_jsonld=json_from_jsonld,
         url=constants.ML_COMMONS_DATA,
+    )
+    data_types: list[term.URIRef] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "The data type of the RecordSet. Mainly used to specify: `sc:Enumeration`."
+        ),
+        from_jsonld=data_types_from_jsonld,
+        to_jsonld=data_types_to_jsonld,
+        url=constants.ML_COMMONS_DATA_TYPE,
     )
     description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
+    )
+    examples: list[Json] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "One or more records provided as example content of the `RecordSet`, or a"
+            " reference to data source that contains examples."
+        ),
+        from_jsonld=json_from_jsonld,
+        url=constants.ML_COMMONS_EXAMPLES,
     )
     is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
@@ -60,6 +83,7 @@ class RecordSet(Node):
     )
     name: str = mlc_dataclasses.jsonld_field(
         default="",
+        description="The name of the RecordSet.",
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_NAME,
     )

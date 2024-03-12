@@ -61,6 +61,17 @@ def documentation(output: epath.Path):
                     input_types.append(
                         Url(url=str(input_type), name=ctx.rdf.shorten_value(input_type))
                     )
+                elif issubclass(input_type, mlc.Node):
+                    jsonld_type = input_type._jsonld_type(ctx)
+                    if isinstance(jsonld_type, term.URIRef):
+                        input_types.append(
+                            Url(
+                                url=str(jsonld_type),
+                                name=ctx.rdf.shorten_value(jsonld_type),
+                            )
+                        )
+                    else:
+                        input_types.append(Url(url="", name=input_type.__name__))
                 else:
                     input_types.append(Url(url=str(input_type), name=""))
             details = {

@@ -176,6 +176,7 @@ class RecordSet(Node):
     """Record Set analogue for editor"""
 
     data: list[Any] | None = None
+    data_types: list[str] | None = None
     description: str | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
