@@ -70,8 +70,7 @@ class RecordSet(Node):
             "A data element that appears in the records of the RecordSet (e.g., one"
             " column of a table)."
         ),
-        from_jsonld=Field.from_jsonld,
-        to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
+        input_types=[Field],
         url=constants.ML_COMMONS_FIELD,
     )
 

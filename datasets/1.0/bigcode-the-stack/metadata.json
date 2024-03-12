@@ -50,12 +50,12 @@
   "citeAs": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Mu\u00f1oz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
   "creator": [
     {
-      "@type": "Person",
+      "@type": "sc:Person",
       "name": "Harm de Vries",
       "email": "harm.devries@servicenow.com"
     },
     {
-      "@type": "Person",
+      "@type": "sc:Person",
       "name": "Leandro von Werra",
       "email": "leandro@huggingface.co"
     }

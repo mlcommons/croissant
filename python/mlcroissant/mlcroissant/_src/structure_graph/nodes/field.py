@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import dataclasses
-
 from rdflib import term
 from rdflib.namespace import SDO
 
@@ -12,7 +10,6 @@ from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
@@ -34,32 +31,22 @@ def _data_types_to_jsonld(ctx: Context, data_types: list[term.URIRef] | None):
     return None
 
 
-@dataclasses.dataclass(frozen=True, repr=False)
-class ParentField:
+@mlc_dataclasses.dataclass
+class ParentField(Node):
     """Class for the `parentField` property."""
 
-    references: Source | None = None
-    source: Source | None = None
+    JSONLD_TYPE = None
 
-    @classmethod
-    def from_jsonld(cls, ctx: Context, json_) -> ParentField | None:
-        """Creates a `ParentField` from JSON-LD."""
-        if json_ is None:
-            return None
-        references = json_.get(constants.ML_COMMONS_REFERENCES(ctx))
-        source = json_.get(constants.ML_COMMONS_SOURCE(ctx))
-        return cls(
-            references=Source.from_jsonld(ctx, references),
-            source=Source.from_jsonld(ctx, source),
-        )
-
-    def to_json(self, ctx: Context) -> Json:
-        """Converts the `ParentField` to JSON."""
-        del ctx
-        return remove_empty_values({
-            "references": self.references.to_json() if self.references else None,
-            "source": self.source.to_json() if self.source else None,
-        })
+    references: Source | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[Source],
+        url=constants.ML_COMMONS_REFERENCES,
+    )
+    source: Source | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[Source],
+        url=constants.ML_COMMONS_SOURCE,
+    )
 
 
 @mlc_dataclasses.dataclass
@@ -100,8 +87,7 @@ class Field(Node):
             "A special case of `SubField` that should be hidden because it references a"
             " `Field` that already appears in the `RecordSet`."
         ),
-        from_jsonld=ParentField.from_jsonld,
-        to_jsonld=lambda ctx, parent_field: parent_field.to_json(ctx),
+        input_types=[ParentField],
         url=constants.ML_COMMONS_PARENT_FIELD,
     )
     references: Source = mlc_dataclasses.jsonld_field(
@@ -111,7 +97,6 @@ class Field(Node):
             " the equivalent of a foreign key reference in a relational database."
         ),
         input_types=[Source],
-        to_jsonld=lambda ctx, source: source.to_json(),
         url=constants.ML_COMMONS_REFERENCES,
     )
     repeated: bool | None = mlc_dataclasses.jsonld_field(
@@ -127,7 +112,6 @@ class Field(Node):
             " or `FileSet`'s contents (e.g., a specific column of a table)."
         ),
         input_types=[Source],
-        to_jsonld=lambda ctx, source: source.to_json(),
         url=constants.ML_COMMONS_SOURCE,
     )
     sub_fields: list[Field] = mlc_dataclasses.jsonld_field(
@@ -135,7 +119,6 @@ class Field(Node):
         default_factory=list,
         description="Another `Field` that is nested inside this one.",
         from_jsonld=lambda ctx, fields: Field.from_jsonld(ctx, fields),
-        to_jsonld=lambda ctx, fields: [field.to_json() for field in fields],
         url=constants.ML_COMMONS_SUB_FIELD,
     )
 

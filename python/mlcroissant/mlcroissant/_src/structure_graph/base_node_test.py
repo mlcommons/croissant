@@ -180,6 +180,11 @@ def test_custom_node_with_cardinality_many():
         },
     )
     assert node.property1 == [42]
+    assert node.to_json() == {
+        "@id": "foo",
+        "@type": "foo.org/CustomNode",
+        "foo.org/property1": 42,
+    }
 
 
 def test_custom_node_with_required():
@@ -263,6 +268,16 @@ def test_custom_node_with_input_types():
     assert node.property2[0].child == "this is the child"
     assert not node.ctx.issues.errors
     assert not node.ctx.issues.warnings
+    assert node.to_json() == {
+        "@type": "foo.org/CustomNode",
+        "@id": "foo",
+        "foo.org/property1": 42,
+        "foo.org/property2": {
+            "@type": "foo.org/ChildNode",
+            "@id": "child",
+            "foo.org/child": "this is the child",
+        },
+    }
 
     # When from_jsonld fails:
     node = CustomNode.from_jsonld(
@@ -281,5 +296,5 @@ def test_custom_node_with_input_types():
         "`property1` should have type https://schema.org/Integer, but got str",
     )
     assert_contain_error(
-        node.ctx.issues, "`property2` should have type ChildNode, but got str"
+        node.ctx.issues, "`property2` should have type foo.org/ChildNode, but got str"
     )

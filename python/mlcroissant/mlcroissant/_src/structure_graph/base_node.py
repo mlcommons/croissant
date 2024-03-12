@@ -52,7 +52,7 @@ class Node:
 
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
-    name: str = ""
+    name: str | None = None
     parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 
@@ -175,7 +175,7 @@ class Node:
         """
         if self.ctx.is_v0():
             if len(self.parents) <= 1:
-                return self.name
+                return self.name or ""
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
             return self.id
@@ -308,7 +308,14 @@ class Node:
             url = field.call_url(self.ctx)
             key = self.ctx.rdf.shorten_key(url)
             value = getattr(self, field.name)
-            value = field.call_to_jsonld(self.ctx, value)
+            if field.to_jsonld:
+                # We explicitly set `to_jsonld`, so use it:
+                value = field.call_to_jsonld(self.ctx, value)
+            else:
+                if isinstance(value, list):
+                    value = [_value_to_jsonld(v) for v in value]
+                else:
+                    value = _value_to_jsonld(value)
             # fields in _LIST_FIELDS are always lists, so we don't unbox them.
             if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
@@ -377,6 +384,14 @@ class Node:
             return cls.JSONLD_TYPE
 
 
+def _value_to_jsonld(value: Any) -> Any:
+    """Applies `to_json` to Nodes."""
+    if isinstance(value, Node):
+        return value.to_json()
+    else:
+        return value
+
+
 def _value_from_input_types(
     ctx: Context, value: Any, field: mlc_dataclasses.JsonldField
 ) -> Any:
@@ -391,7 +406,8 @@ def _value_from_input_types(
         # Either the input_type is a Node...
         if isinstance(value, dict) and _is_a_node(input_type):
             jsonld_type = input_type._jsonld_type(ctx)
-            if value.get("@type") == jsonld_type:
+            actual_jsonld_type = value.get("@type")
+            if actual_jsonld_type == jsonld_type:
                 return input_type.from_jsonld(ctx, value)
         # ...or it's a basic int/str/bool/etc type
         else:
@@ -409,13 +425,27 @@ def _value_from_input_types(
             if type(value) is matching_type:
                 return value
     types = [
-        input_type.__name__ if _is_a_node(input_type) else str(input_type)
+        input_type._jsonld_type(ctx) if _is_a_node(input_type) else str(input_type)
         for input_type in input_types
     ]
-    actual_type = type(value).__name__
-    ctx.issues.add_error(
-        f"`{field.name}` should have type {' or '.join(types)}, but got {actual_type}`"
-    )
+    if isinstance(value, dict):
+        jsonld_type = input_type._jsonld_type(ctx)
+        actual_jsonld_type = value.get("@type")
+        posible_attributes = " or ".join([f'"@type": "{type}"' for type in types])
+        if ctx.is_v0():
+            uuid = value.get(constants.SCHEMA_ORG_NAME)
+        else:
+            uuid = uuid_from_jsonld(value)
+        ctx.issues.add_error(
+            f'"{uuid}" should have an attribute {posible_attributes}. Got'
+            f" {actual_jsonld_type} instead."
+        )
+    else:
+        actual_type = type(value).__name__
+        ctx.issues.add_error(
+            f"`{field.name}` should have type {' or '.join(types)}, but got"
+            f" {actual_type}"
+        )
     if field.default != dataclasses.MISSING:
         # If the validation failed, we return the default value:
         return field.default

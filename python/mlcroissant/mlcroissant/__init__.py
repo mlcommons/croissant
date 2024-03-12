@@ -15,7 +15,8 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
-from mlcroissant._src.structure_graph.nodes.metadata import PersonOrOrganization
+from mlcroissant._src.structure_graph.nodes.organization import Organization
+from mlcroissant._src.structure_graph.nodes.person import Person
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
@@ -36,7 +37,8 @@ __all__ = [
     "GenerationError",
     "Issues",
     "Metadata",
-    "PersonOrOrganization",
+    "Organization",
+    "Person",
     "Rdf",
     "Records",
     "RecordSet",
