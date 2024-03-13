@@ -9,7 +9,26 @@ Croissant 🥐 is a high-level format for machine learning datasets that combine
 
 Croissant builds on [schema.org](https://schema.org/), and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable.
 
-Croissant is currently under development by the community.
+
+## Trying It Out
+Croissant is currently under development by the community. You can try the Croissant implementation, `mlcroissant`:
+
+Installation (requires Python 3.10+):
+```bash
+pip install mlcroissant
+```
+
+Loading an example dataset:
+```python3
+import mlcroissant as mlc
+ds = mlc.Dataset("https://raw.githubusercontent.com/mlcommons/croissant/main/datasets/1.0/gpt-3/metadata.json")
+metadata = ds.metadata.to_json()
+print(f"{metadata['name']}: {metadata['description']}")
+for x in ds.records(record_set="default"):
+    print(x)
+```
+
+Please see the [notebook recipes](python/mlcroissant/recipes) for more examples.
 
 ## Why a standard format for ML datasets?
 
@@ -23,9 +42,9 @@ Croissant 🥐 is a high-level format for machine learning datasets. Croissant b
 * Structure: how the raw data is combined and arranged into data structures for use
 * ML semantics: how the data is most often used in an ML context
 
-## Simple Example
+## Simple Format Example
 
-Here is an extremely simple example of the croissant format, with comments showing the four layers:
+Here is an extremely simple example of the Croissant format, with comments showing the four layers:
 
 ```json
 {
@@ -132,6 +151,6 @@ The Task Force is open to anyone (as is the parent [Datasets working group](http
 The Task Force is co-chaired by [Omar Benjelloun](mailto:benjello@google.com) and [Elena Simperl](mailto:elena.simperl@kcl.ac.uk).
 
 ## Contributors
-Albert Villanova (Hugging Face), Andrew Zaldivar (Google), Baishan Guo (Meta), Carole Jean-Wu (Meta), Ce Zhang (ETH Zurich), Costanza Conforti (Google), D. Sculley (Kaggle), Dan Brickley (Schema.Org), Eduardo Arino de la Rubia (Meta), Edward Lockhart (Deepmind), Elena Simperl (King's College London), Goeff Thomas (Kaggle), Joan Giner-Miguelez (UOC), Joaquin Vanschoren (TU/Eindhoven, OpenML), Jos van der Velde (TU/Eindhoven, OpenML), Julien Chaumond (Hugging Face), Kurt Bollacker (MLCommons), Lora Aroyo (Google), Luis Oala (Dotphoton), Meg Risdal (Kaggle), Natasha Noy (Google), Newsha Ardalani (Meta), Omar Benjelloun (Google), Peter Mattson (MLCommons), Pierre Marcenac (Google), Pierre Ruyssen (Google), Pieter Gijsbers (TU/Eindhoven, OpenML), Prabhant Singh (TU/Eindhoven, OpenML), Quentin Lhoest (Hugging Face), Steffen Vogler (Bayer), Taniya Das (TU/Eindhoven, OpenML)
+Albert Villanova (Hugging Face), Andrew Zaldivar (Google), Baishan Guo (Meta), Carole Jean-Wu (Meta), Ce Zhang (ETH Zurich), Costanza Conforti (Google), D. Sculley (Kaggle), Dan Brickley (Schema.Org), Eduardo Arino de la Rubia (Meta), Edward Lockhart (Deepmind), Elena Simperl (King's College London), Goeff Thomas (Kaggle), Joan Giner-Miguelez (UOC), Joaquin Vanschoren (TU/Eindhoven, OpenML), Jos van der Velde (TU/Eindhoven, OpenML), Julien Chaumond (Hugging Face), Kurt Bollacker (MLCommons), Lora Aroyo (Google), Luis Oala (Dotphoton), Meg Risdal (Kaggle), Natasha Noy (Google), Newsha Ardalani (Meta), Omar Benjelloun (Google), Peter Mattson (MLCommons), Pierre Marcenac (Google), Pierre Ruyssen (Google), Pieter Gijsbers (TU/Eindhoven, OpenML), Prabhant Singh (TU/Eindhoven, OpenML), Quentin Lhoest (Hugging Face), Steffen Vogler (Bayer), Taniya Das (TU/Eindhoven, OpenML), Michael Kuchnik (Meta)
 
 Thank you for supporting Croissant! 🙂
