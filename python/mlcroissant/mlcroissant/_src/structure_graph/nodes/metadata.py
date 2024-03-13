@@ -36,6 +36,8 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
 
+    JSONLD_TYPE = constants.SCHEMA_ORG_DATASET
+
     cite_as: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
@@ -327,8 +329,6 @@ class Metadata(Node):
         self.ctx.conforms_to = CroissantVersion.from_jsonld(
             self.ctx, self.ctx.conforms_to
         )
-
-    JSONLD_TYPE = constants.SCHEMA_ORG_DATASET
 
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
