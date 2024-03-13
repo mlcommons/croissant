@@ -68,7 +68,7 @@ croissant:FilePropertyEnumeration a rdf:Class ;
 
 schema:distribution a rdf:Property ;
   rdfs:label "distribution" ;
-  rdfs:comment "By contrast with schema.org\/Dataset, Croissant requires the distribution property to have values of type FileObject or FileSet." ;
+  rdfs:comment "By contrast with schema.org/Dataset, Croissant requires the distribution property to have values of type FileObject or FileSet." ;
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes croissant:FileObject, croissant:FileSet .
 
@@ -80,7 +80,7 @@ croissant:isLiveDataset a rdf:Property ;
 
 croissant:citeAs a rdf:Property ;
   rdfs:label "citeAs" ;
-  rdfs:comment "A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org\/citation, which is used to make a citation to another publication from this dataset." ; 
+  rdfs:comment "A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset." ; 
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes schema:Text .
 
@@ -94,7 +94,7 @@ croissant:containedIn a rdf:Property ;
   
 croissant:includes a rdf:Property ; # Should this be named includePattern instead?
   rdfs:label "includes" ;
-  rdfs:comment "A glob pattern that specifies the files to include, e.g., \".jpg\", \"\/foo\/pic*.jpg\". The pattern is evaluated from the root of the containedIn contents." ;
+  rdfs:comment "A glob pattern that specifies the files to include, e.g., \".jpg\", \"/foo/pic*.jpg\". The pattern is evaluated from the root of the containedIn contents." ;
   schema:domainIncludes croissant:FileSet ;
   schema:rangeIncludes schema:Text .
 
