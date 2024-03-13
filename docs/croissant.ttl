@@ -90,7 +90,7 @@ croissant:containedIn a rdf:Property ;
   rdfs:label "containedIn" ;
   rdfs:comment "Another FileObject or FileSet that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the contentUrl is evaluated as a relative path within the container object." ;
   schema:domainIncludes croissant:FileObject, croissant:FileSet ;
- schema:rangeIncludes croissant:FileObject, croissant:FileSet .
+  schema:rangeIncludes croissant:FileObject, croissant:FileSet .
   
 croissant:includes a rdf:Property ; # Should this be named includePattern instead?
   rdfs:label "includes" ;
