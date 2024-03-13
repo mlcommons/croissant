@@ -34,6 +34,8 @@ def json_from_jsonld(ctx: Context, data) -> Json | None:
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
+    JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
+
     data: list[Json] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
@@ -167,8 +169,6 @@ class RecordSet(Node):
                     " `ml:references` to declare a join. Please, refer to the"
                     " documentation for more information."
                 )
-
-    JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
 
 
 def get_parent_uuid(ctx: Context, uuid: str) -> str | None:

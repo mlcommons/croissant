@@ -38,6 +38,8 @@ class ParentField(Node):
 class Field(Node):
     """Nodes to describe a dataset Field."""
 
+    JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
+
     description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
@@ -128,8 +130,6 @@ class Field(Node):
         self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
         self._standardize_data_types()
-
-    JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
     def _standardize_data_types(self):
         """Converts data_types to a list of rdflib.URIRef."""

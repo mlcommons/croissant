@@ -15,6 +15,8 @@ from mlcroissant._src.structure_graph.base_node import Node
 class FileSet(Node):
     """Nodes to describe a dataset FileSet (distribution)."""
 
+    JSONLD_TYPE = constants.SCHEMA_ORG_FILE_SET
+
     contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
@@ -71,5 +73,3 @@ class FileSet(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties("includes", "encoding_format", uuid_field)
-
-    JSONLD_TYPE = constants.SCHEMA_ORG_FILE_SET
