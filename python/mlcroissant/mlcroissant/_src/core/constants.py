@@ -208,6 +208,7 @@ class EncodingFormat:
     """
 
     CSV = "text/csv"
+    DIR = "application/x-dir"
     GIT = "git+https"
     JPG = "image/jpeg"
     JSON = "application/json"
