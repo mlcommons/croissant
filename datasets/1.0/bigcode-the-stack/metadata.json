@@ -44,6 +44,7 @@
   "name": "bigcode-the-stack",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.",
+  "citeAs": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Mu\u00f1oz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
   "creator": [
     {
       "@type": "sc:Person",
@@ -82,7 +83,6 @@
   ],
   "rai:dataSocialImpact": "The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.",
   "rai:personalSensitiveInformation": "The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/.",
-  "citeAs": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Mu\u00f1oz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
   "license": "other",
   "sameAs": "https://www.bigcode-project.org/docs/about/the-stack/",
   "url": "https://huggingface.co/datasets/bigcode/the-stack",

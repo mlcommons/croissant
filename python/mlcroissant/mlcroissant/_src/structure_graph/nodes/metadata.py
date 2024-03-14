@@ -200,28 +200,31 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW,
     )
-    data_collection_timeframe: list[datetime.datetime] | None = mlc_dataclasses.jsonld_field(
-        cardinality="MANY",
-        default=None,
-        input_types=[SDO.Date, SDO.DateTime],
-        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME,
+    data_collection_timeframe: list[datetime.datetime] | None = (
+        mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            default=None,
+            input_types=[SDO.Date, SDO.DateTime],
+            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME,
+        )
     )
-    data_preprocessing_imputation: str | None = mlc_dataclasses.jsonld_field(
+    data_imputation_protocol: str | None = mlc_dataclasses.jsonld_field(
+        cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_PREPROCESSING_IMPUTATION,
+        url=constants.ML_COMMONS_RAI_DATA_IMPUTATION_PROTOCOL,
     )
-    data_preprocessing_protocol: str | None = mlc_dataclasses.jsonld_field(
-        cardinality="ONE",
+    data_preprocessing_protocol: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="Many",
         default=None,
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL,
     )
-    data_preprocessing_manipulation: str | None = mlc_dataclasses.jsonld_field(
+    data_manipulation_protocol: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_PREPROCESSING_MANIPULATION,
+        url=constants.ML_COMMONS_RAI_DATA_MANIPULATION_PROTOCOL,
     )
     data_annotation_protocol: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
