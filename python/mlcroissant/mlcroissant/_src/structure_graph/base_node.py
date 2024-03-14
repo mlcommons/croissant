@@ -1,7 +1,5 @@
 """Base node module."""
 
-from __future__ import annotations
-
 import dataclasses
 import inspect
 import re
@@ -16,6 +14,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.data_types import check_expected_type
 from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.issues import WarningException
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.json_ld import unbox_singleton_list
@@ -28,6 +27,16 @@ _MAX_NAME_LENGTH = 255
 # This could also be an attribute of JsonldField:
 _LIST_FIELDS = {"distribution", "fields", "record_sets"}
 _MISSING_JSONLD_TYPE = "__MISSING_JSONLD_TYPE__"
+MATCHING_TYPES = {
+    SDO.Boolean: bool,
+    SDO.Date: str,
+    SDO.DateTime: str,
+    SDO.Integer: int,
+    SDO.Number: float,
+    SDO.Text: str,
+    SDO.Time: str,
+    SDO.URL: str,
+}
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -53,12 +62,26 @@ class Node:
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
     name: str | None = None
-    parents: list[Node] = dataclasses.field(default_factory=list)
+    parents: list["Node"] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 
     def __post_init__(self):
         """Checks exclusive properties."""
+        self._cast_fields()
         self._check_exclusive_properties()
+
+    def _cast_fields(self):
+        """Applies all `field.cast_fn`."""
+        for field in mlc_dataclasses.jsonld_fields(self):
+            if field.cast_fn:
+                try:
+                    value = getattr(self, field.name)
+                    new_value = field.cast_fn(value)
+                    setattr(self, field.name, new_value)
+                except WarningException as e:
+                    self.add_warning(repr(e))
+                except Exception as e:
+                    self.add_error(repr(e))
 
     def assert_has_mandatory_properties(self, *mandatory_properties: str):
         """Checks a node in the graph for existing properties with constraints.
@@ -181,19 +204,19 @@ class Node:
             return self.id
 
     @property
-    def parent(self) -> Node | None:
+    def parent(self) -> "Node | None":
         """Direct parent of the node or None if no parent."""
         if not self.parents:
             return None
         return self.parents[-1]
 
     @property
-    def predecessors(self) -> set[Node]:
+    def predecessors(self) -> set["Node"]:
         """Predecessors in the structure graph."""
         return set(self.ctx.graph.predecessors(self))  # pytype: disable=bad-return-type
 
     @property
-    def recursive_predecessors(self) -> set[Node]:
+    def recursive_predecessors(self) -> set["Node"]:
         """Predecessors and predecessors of predecessors in the structure graph."""
         predecessors = set()
         for predecessor in self.predecessors:
@@ -202,7 +225,7 @@ class Node:
         return predecessors
 
     @property
-    def predecessor(self) -> Node | None:
+    def predecessor(self) -> "Node | None":
         """First predecessor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
@@ -211,7 +234,7 @@ class Node:
         )  # pytype: disable=bad-return-type
 
     @property
-    def successors(self) -> tuple[Node, ...]:
+    def successors(self) -> tuple["Node", ...]:
         """Successors in the structure graph."""
         if self not in self.ctx.graph:
             return ()
@@ -220,7 +243,7 @@ class Node:
         return tuple(self.ctx.graph.successors(self))  # pytype: disable=bad-return-type
 
     @property
-    def recursive_successors(self) -> set[Node]:
+    def recursive_successors(self) -> set["Node"]:
         """Successors and successors of successors in the structure graph."""
         successors = set()
         for successor in self.successors:
@@ -229,7 +252,7 @@ class Node:
         return successors
 
     @property
-    def successor(self) -> Node | None:
+    def successor(self) -> "Node | None":
         """Direct successor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
@@ -361,10 +384,7 @@ class Node:
                 value = value[0] if value else None
                 warning = f"`{field.name}` has cardinality `ONE`, but got a list"
                 ctx.issues.add_warning(warning)
-            if value is None:
-                if field.required:
-                    ctx.issues.add_warning(f"`{field.name}` is required, but got None")
-            else:
+            if value is not None:
                 kwargs[field.name] = value
         return cls(
             ctx=ctx,
@@ -415,17 +435,7 @@ def _value_from_input_types(
                 return input_type.from_jsonld(ctx, value)
         # ...or it's a basic int/str/bool/etc type
         else:
-            matching_types = {
-                SDO.Boolean: bool,
-                SDO.Date: str,
-                SDO.DateTime: str,
-                SDO.Integer: int,
-                SDO.Number: float,
-                SDO.Text: str,
-                SDO.Time: str,
-                SDO.URL: str,
-            }
-            matching_type = matching_types.get(input_type)
+            matching_type = MATCHING_TYPES.get(input_type)
             if type(value) is matching_type:
                 return value
     types = [

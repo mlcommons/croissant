@@ -1,7 +1,5 @@
 """base_node_test module."""
 
-from __future__ import annotations
-
 import dataclasses
 
 import pytest
@@ -187,36 +185,6 @@ def test_custom_node_with_cardinality_many():
     }
 
 
-def test_custom_node_with_required():
-    @mlc_dataclasses.dataclass
-    class CustomNode(base_node.Node):
-        JSONLD_TYPE = "foo.org/CustomNode"
-
-        property1: str | None = mlc_dataclasses.jsonld_field(
-            default="default property1",
-            input_types=[SDO.Text],
-            required=True,
-            url="foo.org/property1",
-        )
-        property2: str | None = mlc_dataclasses.jsonld_field(
-            default="default property2",
-            input_types=[SDO.Text],
-            required=False,
-            url="foo.org/property2",
-        )
-
-    node = CustomNode.from_jsonld(
-        Context(),
-        {
-            "@type": "foo.org/CustomNode",
-            "@id": "foo",
-        },
-    )
-    assert node.property1 == "default property1"
-    assert node.property2 == "default property2"
-    assert_contain_warning(node.ctx.issues, "`property1` is required, but got None")
-
-
 def test_custom_node_with_input_types():
     @mlc_dataclasses.dataclass
     class ChildNode(base_node.Node):
@@ -298,3 +266,34 @@ def test_custom_node_with_input_types():
     assert_contain_error(
         node.ctx.issues, "`property2` should have type foo.org/ChildNode, but got str"
     )
+
+
+def test_cast_fn():
+    def node(cast_fn):
+        @mlc_dataclasses.dataclass
+        class Node(base_node.Node):
+            JSONLD_TYPE = None
+
+            field: int | None = mlc_dataclasses.jsonld_field(
+                default=None,
+                cast_fn=cast_fn,
+                input_types=[SDO.Text],
+                url="foo.org/property1",
+            )
+
+        return Node
+
+    def cast_fn(value) -> int | None:
+        del value
+        return 42
+
+    Node = node(cast_fn)
+    assert Node(field="field").field == 42
+
+    def cast_fn(value) -> int | None:
+        del value
+        raise ValueError("bad value")
+
+    Node = node(cast_fn)
+    assert Node(field="field").field == "field"
+    assert_contain_error(Node(field="field").issues, "bad value")

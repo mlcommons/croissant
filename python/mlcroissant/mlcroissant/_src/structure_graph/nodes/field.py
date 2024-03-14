@@ -1,9 +1,8 @@
 """Field module."""
 
-from __future__ import annotations
-
 from rdflib import term
 from rdflib.namespace import SDO
+from typing_extensions import Self
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
@@ -114,7 +113,7 @@ class Field(Node):
         input_types=[Source],
         url=constants.ML_COMMONS_SOURCE,
     )
-    sub_fields: list[Field] = mlc_dataclasses.jsonld_field(
+    sub_fields: list[Self] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description="Another `Field` that is nested inside this one.",
@@ -124,6 +123,7 @@ class Field(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)

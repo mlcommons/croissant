@@ -1,6 +1,7 @@
 """Utils to manipulate dates/date times."""
 
 import datetime
+from typing import Any
 
 import dateutil.parser
 
@@ -34,3 +35,18 @@ def from_datetime_to_str(date: datetime.datetime | None) -> str | None:
     elif date.time() == datetime.time.min:
         return date.strftime("%Y-%m-%d")
     return date.isoformat()
+
+
+def cast_date(date: Any) -> datetime.datetime | None:
+    """Casts dates as a datetime for any input."""
+    if date is None or isinstance(date, datetime.datetime):
+        return date
+    elif isinstance(date, str):
+        issues = Issues()
+        date = from_str_to_datetime(issues, date)
+        if issues.errors:
+            raise ValueError(issues.errors)
+        return date
+    elif isinstance(date, datetime.date):
+        return datetime.datetime.combine(date, datetime.time.min)
+    raise ValueError(f"Wrong type for a date. Expected Date or Datetime. Got: {date}")
