@@ -542,7 +542,7 @@ For live datasets, the Croissant boolean property `isLiveDataset` should be set 
 
 ##### Example 1: Daily refreshes
 
-A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historicallyorganized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format “stock\_data\_&lt;YEAR>.csv”, where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
+A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historicallyorganized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock\_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
 
 ```text
 stock_data_2000.csv
@@ -554,11 +554,11 @@ stock_data_2022.csv
 stock_data_2023.csv
 ```
 
-Because the dataset is updated continuously, the dataset should set the isLiveDataset to`true`. Assuming the year is 2023, it is safe to add a checksum for files corresponding to years 2000 to 2022 (inclusive). However, Croissant does not recommend setting the checksum for 2023 until the year is 2024 to avoid mismatches between a prior checksum and the current file. Finally, all files corresponding to prior years should trigger a version update if they are changed (e.g., to reflect a bug fix), since the semantics of the dataset have changed (i.e., history was “rewritten”). However, the current year is understood to be incomplete, so appending new data to the data in the current year should not trigger a version update.
+Because the dataset is updated continuously, the dataset should set the isLiveDataset to`true`. Assuming the year is 2023, it is safe to add a checksum for files corresponding to years 2000 to 2022 (inclusive). However, Croissant does not recommend setting the checksum for 2023 until the year is 2024 to avoid mismatches between a prior checksum and the current file. Finally, all files corresponding to prior years should trigger a version update if they are changed (e.g., to reflect a bug fix), since the semantics of the dataset have changed (i.e., history was "rewritten"). However, the current year is understood to be incomplete, so appending new data to the data in the current year should not trigger a version update.
 
 ##### Example 2: Daily snapshots
 
-The same data from Example 1 is exported at a finer granularity to match the daily refresh of the dataset. Accordingly, the data is “snapshotted” into files of the form “stock\_data\_&lt;MONTH>\_&lt;DAY>\_&lt;YEAR>.csv” to reflect the month, day, and year of the data in the file. Each file is only written once—when all data from that date is finalized at the end of day.
+The same data from Example 1 is exported at a finer granularity to match the daily refresh of the dataset. Accordingly, the data is "snapshotted" into files of the form "stock\_data\_&lt;MONTH>\_&lt;DAY>\_&lt;YEAR>.csv" to reflect the month, day, and year of the data in the file. Each file is only written once—when all data from that date is finalized at the end of day.
 
 ```text
 stock_data_1_1_2000.csv
@@ -602,7 +602,7 @@ Most of the important properties needed to describe a `FileObject` are defined i
     <td><a href="https://schema.org/name">sc:name</a></td>
     <td>Text</td>
     <td>ONE</td>
-    <td>The name of the file. As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. “images.zip”.</td>
+    <td>The name of the file. As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. "images.zip".</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/contentUrl">sc:contentUrl</a></td>
@@ -1192,11 +1192,11 @@ Other data types commonly used in ML datasets:
   </tr>
   <tr>
     <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
-    <td>Describes the coordinates of a bounding box (4-number array). Refer to the section “ML-specific features > Bounding boxes.</td>
+    <td>Describes the coordinates of a bounding box (4-number array). Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
   <tr>
     <td><a href="http://mlcommons.org/schema/Split">cr:Split</a></td>
-    <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section “ML-specific features > Splits”.</td>
+    <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section "ML-specific features > Splits".</td>
   </tr>
 </table>
 
@@ -1214,7 +1214,7 @@ Croissant datasets can use data types from other vocabularies, such as Wikidata.
       <a href="https://www.wikidata.org/wiki/Q48277">wd:Q48277</a><br>
       (gender)
     </td>
-    <td>Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="https://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="https://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the “Typed RecordSets > Enumerations” section for an example.</td>
+    <td>Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="https://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="https://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the "Typed RecordSets > Enumerations" section for an example.</td>
   </tr>
 </table>
 
@@ -1644,7 +1644,7 @@ The Croissant format allows for the data to be split arbitrarily into one or mul
 1. defining the `cr:Split` semantic `dataType`; and by
 2. referring to those split definitions from the partitioned `RecordSet`(s).
 
-For example, the following `RecordSet` defines the “train”, “val” and “test” splits as defined by the COCO dataset authors.
+For example, the following `RecordSet` defines the "train", "val" and "test" splits as defined by the COCO dataset authors.
 
 ```json
 {
@@ -1664,7 +1664,7 @@ For example, the following `RecordSet` defines the “train”, “val” and �
 }
  ```
 
-The example above illustrates the benefit of the `url` field, used to disambiguate the meaning of names possibly designing the same concept (e.g. “train” and “training”).
+The example above illustrates the benefit of the `url` field, used to disambiguate the meaning of names possibly designing the same concept (e.g. "train" and "training").
 
 Once a datasets splits have been defined, any `RecordSet` can refer to those using a regular field, as done in the following example, also extracted from the COCO dataset croissant definition:
 
@@ -1689,7 +1689,7 @@ Once a datasets splits have been defined, any `RecordSet` can refer to those usi
 }
 ```
 
-Note that the field here is named “split”, but doesn’t need to: the information of this being a ML split comes from the `dataType` of the `RecordSet` it refers to. As one would expect, tools working with the Croissant config format can infer the data files needed for each split. So if a user requests loading only the validation split of the COCO 2014 dataset, the tool working with Croissant knows to download the file “val2014.zip”, but not “train2014.zip” and “test2014.zip”.
+Note that the field here is named "split", but doesn’t need to: the information of this being a ML split comes from the `dataType` of the `RecordSet` it refers to. As one would expect, tools working with the Croissant config format can infer the data files needed for each split. So if a user requests loading only the validation split of the COCO 2014 dataset, the tool working with Croissant knows to download the file "val2014.zip", but not "train2014.zip" and "test2014.zip".
 
 ### Label Data
 
