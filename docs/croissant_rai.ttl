@@ -68,7 +68,7 @@ rai:personalSensitiveInformation a rdf:Property ;
 
 rai:dataAnnotationProtocol a rdf:Property ;
   rdfs:label "dataAnnotationProtocol" ;
-  rdfs:comment "Description of annotations (labels, ratings) produced, including how these were created or authored -  Annotation Workforce Type, Annotation Characteristic(s), Annotation Description(s), Annotation Task(s), Annotation Distribution(s)." ;
+  rdfs:comment "Description of annotations (labels, ratings) produced, including how these were created or authored - Annotation Workforce Type, Annotation Characteristic(s), Annotation Description(s), Annotation Task(s), Annotation Distribution(s)." ;
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes schema:Text .
 
