@@ -24,12 +24,12 @@ croissant:RecordSet a rdf:Class ;
 
 croissant:DataType a rdf:Class ;
   rdfs:label "DataType" ;
-  rdfs:comment "The data type of values expected for a Field in a RecordSet.  This class is inspired by the Datatype class in CSVW. In addition to simple atomic types, types can be semantic types, such as schema.org classes, as well types defined in other vocabularies." ;
+  rdfs:comment "The data type of values expected for a Field in a RecordSet. This class is inspired by the Datatype class in CSVW. In addition to simple atomic types, types can be semantic types, such as schema.org classes, as well types defined in other vocabularies." ;
   rdfs:subClassOf schema:URL .
 
 croissant:Format a rdf:Class ;
   rdfs:label "Format" ;
-  rdfs:comment "Specifies how to parse the format of the data from a string representation. For example, format may hold a date format string, a number format, or a bounding box format." ; 
+  rdfs:comment "Specifies how to parse the format of the data from a string representation. For example, format may hold a date format string, a number format, or a bounding box format." ;
   rdfs:subClassOf schema:Text .
 
 croissant:Field a rdf:Class ;
@@ -68,7 +68,7 @@ croissant:FilePropertyEnumeration a rdf:Class ;
 
 schema:distribution a rdf:Property ;
   rdfs:label "distribution" ;
-  rdfs:comment "By contrast with schema.org\/Dataset, Croissant requires the distribution property to have values of type FileObject or FileSet." ;
+  rdfs:comment "By contrast with schema.org/Dataset, Croissant requires the distribution property to have values of type FileObject or FileSet." ;
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes croissant:FileObject, croissant:FileSet .
 
@@ -80,7 +80,7 @@ croissant:isLiveDataset a rdf:Property ;
 
 croissant:citeAs a rdf:Property ;
   rdfs:label "citeAs" ;
-  rdfs:comment "A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org\/citation, which is used to make a citation to another publication from this dataset." ; 
+  rdfs:comment "A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset." ;
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes schema:Text .
 
@@ -90,16 +90,16 @@ croissant:containedIn a rdf:Property ;
   rdfs:label "containedIn" ;
   rdfs:comment "Another FileObject or FileSet that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the contentUrl is evaluated as a relative path within the container object." ;
   schema:domainIncludes croissant:FileObject, croissant:FileSet ;
- schema:rangeIncludes croissant:FileObject, croissant:FileSet .
-  
+  schema:rangeIncludes croissant:FileObject, croissant:FileSet .
+
 croissant:includes a rdf:Property ; # Should this be named includePattern instead?
   rdfs:label "includes" ;
-  rdfs:comment "A glob pattern that specifies the files to include, e.g., \".jpg\", \"\/foo\/pic*.jpg\". The pattern is evaluated from the root of the containedIn contents." ;
+  rdfs:comment "A glob pattern that specifies the files to include, e.g., \".jpg\", \"/foo/pic*.jpg\". The pattern is evaluated from the root of the containedIn contents." ;
   schema:domainIncludes croissant:FileSet ;
   schema:rangeIncludes schema:Text .
 
 croissant:excludes a rdf:Property ; # Should this be named excludePattern instead?
-  rdfs:label "excludes" ;  
+  rdfs:label "excludes" ;
   rdfs:comment "A glob pattern that specifies the files to exclude. The pattern is evaluated from the root of the containedIn contents, after the includes patterns have been evaluated." ;
   schema:domainIncludes croissant:FileSet ;
   schema:rangeIncludes schema:Text .
@@ -126,7 +126,7 @@ croissant:data a rdf:Property ;
 
 croissant:examples a rdf:Property ;
   rdfs:label "examples" ;
-  rdfs:comment "One more inlined records provided as example content of the  RecordSet." ;
+  rdfs:comment "One more inlined records provided as example content of the RecordSet." ;
   schema:domainIncludes croissant:RecordSet ;
   schema:rangeIncludes rdf:JSON .
 
@@ -165,7 +165,7 @@ croissant:parentField a rdf:Property ;
 # DataSource properties
 
 croissant:fileObject a rdf:Property ;
-  rdfs:label "fileObject" ; 
+  rdfs:label "fileObject" ;
   rdfs:comment "The id of a FileObject that is the source of the data." ;
   schema:domainIncludes croissant:DataSource ;
   schema:rangeIncludes croissant:FileObject .
