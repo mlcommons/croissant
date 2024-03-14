@@ -46,7 +46,7 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The DICES (Diversity In Conversational AI Evaluation for Safety) dataset [3] addresses the need for nuanced safety evaluation in language modeling, emphasizing diverse perspectives in model training and assessment. It introduces several key features, including a focus on rater diversity, where differences in opinions are viewed in terms of diversity rather than bias. The dataset ensures balanced demographic representation among raters and assesses safety across five categories, offering detailed evaluations of harm, bias, misinformation, politics, and safety policy violations. With two sets of annotated conversations (DICES-990 and DICES-350), each containing a high number of annotations per conversation, DICES enables robust statistical analysis, particularly regarding demographic diversity among annotators. Additionally, it facilitates the development of metrics for evaluating conversational AI systems' safety and diversity, allowing for comparisons of inter-rater reliability between demographic subgroups. \nThe DICES dataset and accompanying analyses is available at https://github.com/google-research-datasets/dices-dataset/. ",
   "creator": {
-    "@type": "Organization",
+    "@type": "sc:Organization",
     "name": "Lora Aroyo",
     "url": "https://github.com/google-research-datasets/dices-dataset/"
   },
