@@ -97,21 +97,21 @@ The beginning of the Croissant description contains general information about th
 ```json
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "@id": "metadata.csv",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
       "encodingFormat": "text/csv",
       "sha256": "0b033707ea49365a5ffdd14615825511"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "@id": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
       "encodingFormat": "application/x-tar",
       "sha256": "f4f87af4327fd1a66dd7944b9f59cbcc"
     },
     {
-      "@type": "sc:FileSet",
+      "@type": "cr:FileSet",
       "@id": "image-files",
       "containedIn": { "@id": "pass9" },
       "encodingFormat": "image/jpeg",
@@ -130,12 +130,12 @@ See the [Resources](#resources) section for a complete description.
 ```json
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "@id": "images",
       "key": { "@id": "hash" },
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "@id": "images/image_content",
           "description": "The image content.",
           "dataType": "sc:ImageObject",
@@ -147,7 +147,7 @@ See the [Resources](#resources) section for a complete description.
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "@id": "images/hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
@@ -163,7 +163,7 @@ See the [Resources](#resources) section for a complete description.
           "references": { "@id": "metadata/hash" },
         }
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "@id": "images/date_taken",
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
