@@ -13,6 +13,7 @@ from mlcroissant._src.core.data_types import data_types_from_jsonld
 from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
@@ -172,7 +173,7 @@ class RecordSet(Node):
 
 def get_parent_uuid(ctx: Context, uuid: str) -> str | None:
     """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
-    node = ctx.node_by_uuid(uuid)
+    node = node_by_uuid(ctx, uuid)
     if node is None:
         ctx.issues.add_error(
             f"Node with uuid={uuid} does not exist. This error might have been found"

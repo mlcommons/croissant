@@ -470,3 +470,11 @@ def _value_from_input_types(
 
 def _is_a_node(input_type: Any) -> bool:
     return inspect.isclass(input_type) and issubclass(input_type, Node)
+
+
+def node_by_uuid(ctx: Context, uuid: str | None) -> Node | None:
+    """Retrieves a node in the graph by its UID."""
+    for node in ctx.graph.nodes():
+        if node.uuid == uuid:  # pytype: disable=attribute-error
+            return node  # pytype: disable=bad-return-type
+    return None

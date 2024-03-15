@@ -114,12 +114,12 @@ def test_from_jsonld(conforms_to: CroissantVersion):
     ["node_type", "uuid", "parent_uuid", "input", "output"],
     [
         [RecordSet, "foo", "other", "foo", "foo"],
-        [Field, "foo/bar", "foo", "bar", "foo"],
+        [Field, "foo/bar", "foo", "foo/bar", "foo"],
     ],
 )
 def test_get_parent_uuid(node_type, uuid, parent_uuid, input, output):
     mocked_node = mock.Mock(uuid=uuid, spec_set=node_type)
     mocked_node.parent.uuid = parent_uuid
     mocked_ctx = Context()
-    mocked_ctx.node_by_uuid = mock.Mock(return_value=mocked_node)
+    mocked_ctx.graph.nodes = lambda: [mocked_node]
     assert get_parent_uuid(mocked_ctx, input) == output

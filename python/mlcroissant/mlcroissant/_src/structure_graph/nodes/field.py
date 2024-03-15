@@ -12,6 +12,7 @@ from mlcroissant._src.core.data_types import data_types_from_jsonld
 from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -166,7 +167,7 @@ class Field(Node):
             ]:
                 return term.URIRef(data_type)
         # The data_type has to be found on the source:
-        source = self.ctx.node_by_uuid(self.source.uuid)
+        source = node_by_uuid(self.ctx, self.source.uuid)
         if not isinstance(source, Field):
             self.add_error(
                 "The field does not specify a valid"
