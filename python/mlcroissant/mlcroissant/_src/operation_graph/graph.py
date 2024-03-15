@@ -22,6 +22,7 @@ from mlcroissant._src.operation_graph.operations import Read
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.extract import should_extract
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
@@ -162,8 +163,8 @@ def _add_operations_for_field(operations: Operations, node: Field):
         if isinstance(operation, Join) and operation.node == record_set
     ]
     for join in joins:
-        left_node = node.ctx.node_by_uuid(node.source.uuid)
-        right_node = node.ctx.node_by_uuid(node.references.uuid)
+        left_node = node_by_uuid(node.ctx, node.source.uuid)
+        right_node = node_by_uuid(node.ctx, node.references.uuid)
         if left_node and right_node:
             join.connect_to_last_operation(left_node)
             join.connect_to_last_operation(right_node)
