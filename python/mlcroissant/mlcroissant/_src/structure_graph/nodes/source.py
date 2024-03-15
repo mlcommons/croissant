@@ -1,7 +1,5 @@
 """Source module."""
 
-from __future__ import annotations
-
 import enum
 from typing import Any
 
@@ -49,6 +47,17 @@ def is_file_property(file_property: str):
     return False
 
 
+def _cast_file_property(file_property: Any) -> FileProperty | None:
+    if file_property is None:
+        return None
+    elif isinstance(file_property, str) and is_file_property(file_property):
+        return FileProperty[file_property]
+    raise ValueError(
+        "Property fileProperty can only have values in `fullpath`, `filepath` and"
+        f" `content`. Got: {file_property}"
+    )
+
+
 @mlc_dataclasses.dataclass
 class Extract(Node):
     """Container for possible ways of extracting the data.
@@ -63,11 +72,12 @@ class Extract(Node):
 
     column: str | None = mlc_dataclasses.jsonld_field(
         default=None,
-        exclusive_with=["json_path"],
+        exclusive_with=["file_property", "json_path"],
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_COLUMN,
     )
     file_property: FileProperty | None = mlc_dataclasses.jsonld_field(
+        cast_fn=_cast_file_property,
         default=None,
         input_types=[SDO.Text],
         to_jsonld=lambda ctx, fp: fp.name if isinstance(fp, FileProperty) else fp,
@@ -78,18 +88,6 @@ class Extract(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_JSON_PATH,
     )
-
-    def __post_init__(self):
-        """Standardizes `self.file_property: FileProperty`."""
-        ctx = self.ctx
-        if isinstance(self.file_property, str) and is_file_property(self.file_property):
-            self.file_property = FileProperty[self.file_property]
-        elif self.file_property is not None:
-            ctx.issues.add_error(
-                f"Property {constants.ML_COMMONS_FILE_PROPERTY(ctx)} can only"
-                " have values in `fullpath`, `filepath` and `content`. Got:"
-                f" {self.file_property}"
-            )
 
 
 @mlc_dataclasses.dataclass

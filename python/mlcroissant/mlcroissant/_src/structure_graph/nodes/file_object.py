@@ -1,7 +1,5 @@
 """FileObject module."""
 
-from __future__ import annotations
-
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
@@ -78,7 +76,7 @@ class FileObject(Node):
     )
     same_as: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
-        default_factory=list,
+        default=None,
         description=(
             "URL (or local name) of a FileObject with the same content, but in a"
             " different format."
@@ -101,6 +99,7 @@ class FileObject(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         self.validate_name()
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.assert_has_mandatory_properties("encoding_format", uuid_field)

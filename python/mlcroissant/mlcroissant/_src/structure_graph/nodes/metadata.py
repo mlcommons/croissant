@@ -1,25 +1,25 @@
 """Metadata module."""
 
-from __future__ import annotations
-
 import datetime
-from typing import Any
 
 from etils import epath
 from rdflib.namespace import SDO
 import requests
+from typing_extensions import Self
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.core.dates import from_str_to_datetime
+from mlcroissant._src.core.dates import cast_date
+from mlcroissant._src.core.dates import cast_dates
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
+from mlcroissant._src.core.versions import cast_version
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.graph import from_file_to_json
 from mlcroissant._src.structure_graph.graph import from_nodes_to_graph
@@ -57,18 +57,21 @@ class Metadata(Node):
         url=constants.SCHEMA_ORG_CREATOR,
     )
     date_created: datetime.datetime | None = mlc_dataclasses.jsonld_field(
+        cast_fn=cast_date,
         default=None,
         description="The date the dataset was initially created.",
         input_types=[SDO.Date, SDO.DateTime],
         url=constants.SCHEMA_ORG_DATE_CREATED,
     )
     date_modified: datetime.datetime | None = mlc_dataclasses.jsonld_field(
+        cast_fn=cast_date,
         default=None,
         description="The date the dataset was last modified.",
         input_types=[SDO.Date, SDO.DateTime],
         url=constants.SCHEMA_ORG_DATE_MODIFIED,
     )
     date_published: datetime.datetime | None = mlc_dataclasses.jsonld_field(
+        cast_fn=cast_date,
         default=None,
         description="The date the dataset was published.",
         input_types=[SDO.Date, SDO.DateTime],
@@ -88,7 +91,7 @@ class Metadata(Node):
     )
     keywords: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
-        default_factory=list,
+        default=None,
         description=(
             "A set of keywords associated with the dataset, either as free text, or"
             " a DefinedTerm with a formal definition."
@@ -131,7 +134,7 @@ class Metadata(Node):
     )
     same_as: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
-        default_factory=list,
+        default=None,
         description=(
             "The URL of another Web resource that represents the same dataset as this"
             " one."
@@ -159,6 +162,7 @@ class Metadata(Node):
         url=constants.SCHEMA_ORG_URL,
     )
     version: str | None = mlc_dataclasses.jsonld_field(
+        cast_fn=cast_version,
         default=None,
         description="The version of the dataset following the requirements below.",
         input_types=[SDO.Integer, SDO.Number, SDO.Text],
@@ -192,7 +196,7 @@ class Metadata(Node):
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING,
+        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA,
     )
     data_collection_raw_data: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
@@ -203,9 +207,10 @@ class Metadata(Node):
     data_collection_timeframe: list[datetime.datetime] | None = (
         mlc_dataclasses.jsonld_field(
             cardinality="MANY",
+            cast_fn=cast_dates,
             default=None,
             input_types=[SDO.Date, SDO.DateTime],
-            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME,
+            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
         )
     )
     data_imputation_protocol: str | None = mlc_dataclasses.jsonld_field(
@@ -215,7 +220,7 @@ class Metadata(Node):
         url=constants.ML_COMMONS_RAI_DATA_IMPUTATION_PROTOCOL,
     )
     data_preprocessing_protocol: list[str] | None = mlc_dataclasses.jsonld_field(
-        cardinality="Many",
+        cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL,
@@ -224,7 +229,7 @@ class Metadata(Node):
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_MANIPULATION_PROTOCOL,
+        url=constants.ML_COMMONS_RAI_DATA_DATA_MANIPULATION_PROTOCOL,
     )
     data_annotation_protocol: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -244,11 +249,11 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS,
     )
-    annotation_per_item: str | None = mlc_dataclasses.jsonld_field(
+    annotations_per_item: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_PER_ITEM,
+        url=constants.ML_COMMONS_RAI_ANNOTATIONS_PER_ITEM,
     )
     annotator_demographics: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -260,7 +265,7 @@ class Metadata(Node):
         cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS,
+        url=constants.ML_COMMONS_RAI_MACHINE_ANNOTATION_TOOLS,
     )
     data_biases: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -278,7 +283,7 @@ class Metadata(Node):
         cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_LIMITATION,
+        url=constants.ML_COMMONS_RAI_DATA_LIMITATIONS,
     )
     data_social_impact: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
@@ -301,6 +306,7 @@ class Metadata(Node):
 
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""
+        Node.__post_init__(self)
         # Define parents.
         for node in self.distribution:
             node.parents = [self]
@@ -317,11 +323,7 @@ class Metadata(Node):
 
         # Check properties.
         self.validate_name()
-        self.version = self.validate_version()
         self.license = self.validate_license()
-        self.date_created = self.validate_date(self.date_created)
-        self.date_modified = self.validate_date(self.date_modified)
-        self.date_published = self.validate_date(self.date_published)
         if self.ctx.is_v0():
             self.assert_has_mandatory_properties("name")
         self.assert_has_optional_properties(
@@ -377,37 +379,6 @@ class Metadata(Node):
                 nodes.extend(field.sub_fields)
         return nodes
 
-    def validate_version(self) -> str | None:
-        """Validates the given version and returns a normalized string version.
-
-        A valid version follows Semantic Versioning 2.0.0 `MAJOR.MINOR.PATCH`.
-        For more information: https://semver.org/spec/v2.0.0.html.
-        """
-        version = self.version
-
-        # Version is a recommended but not mandatory attribute.
-        if version is None:
-            return None
-
-        if isinstance(version, str):
-            numbers = version.split(".")
-            are_not_all_numbers = any(not number.isnumeric() for number in numbers)
-            if len(numbers) != 3 or are_not_all_numbers:
-                self.add_warning(
-                    f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
-                    " information refer to: https://semver.org/spec/v2.0.0.html"
-                )
-            return version
-        elif isinstance(version, int):
-            return f"{version}.0.0"
-        elif isinstance(version, float):
-            return f"{version}.0"
-        else:
-            self.add_error(
-                f"The version should be a string or a number. Got: {type(version)}."
-            )
-            return None
-
     def validate_license(self) -> list[str | CreativeWork] | None:
         """Validates the license as a list of strings."""
         license = self.license
@@ -429,19 +400,6 @@ class Metadata(Node):
             )
             return None
 
-    def validate_date(self, date: Any) -> datetime.datetime | None:
-        """Validates dates as a datetime for any input."""
-        if date is None:
-            return None
-        elif isinstance(date, str):
-            return from_str_to_datetime(self.ctx.issues, date)
-        elif isinstance(date, datetime.datetime):
-            return date
-        elif isinstance(date, datetime.date):
-            return datetime.datetime.combine(date, datetime.time.min)
-        self.add_error(f"Wrong type for a date. Expected Date or Datetime. Got: {date}")
-        return None
-
     def check_graph(self):
         """Checks the integrity of the structure graph.
 
@@ -462,7 +420,7 @@ class Metadata(Node):
             field.data_type
 
     @classmethod
-    def from_file(cls, ctx: Context, file: epath.PathLike) -> Metadata:
+    def from_file(cls, ctx: Context, file: epath.PathLike) -> Self:
         """Creates the Metadata from a Croissant file."""
         if is_url(file):
             response = requests.get(file)
@@ -477,7 +435,7 @@ class Metadata(Node):
         cls,
         ctx: Context,
         json_: Json,
-    ) -> Metadata:
+    ) -> Self:
         """Creates a `Metadata` from JSON."""
         ctx.rdf = Rdf.from_json(ctx, json_)
         jsonld = expand_jsonld(json_, ctx=ctx)

@@ -1,7 +1,5 @@
 """RecordSet module."""
 
-from __future__ import annotations
-
 import itertools
 import json
 
@@ -73,7 +71,7 @@ class RecordSet(Node):
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_IS_ENUMERATION,
     )
-    key: str | list[str] | None = mlc_dataclasses.jsonld_field(
+    key: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description=(
@@ -102,6 +100,7 @@ class RecordSet(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)

@@ -17,6 +17,14 @@ class GenerationError(Exception):
     """Error during the generation of the dataset."""
 
 
+class WarningException(Exception):
+    """Exception triggering a warning."""
+
+
+class ErrorException(Exception):
+    """Exception triggering an error."""
+
+
 @dataclasses.dataclass(frozen=True)
 class Issues:
     """Issues during the validation of the format.
