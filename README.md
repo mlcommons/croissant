@@ -58,7 +58,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
   "url": "https://example.com/dataset/recipes/minimal-recommended",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "@id": "minimal.csv",
       "name": "minimal.csv",
       "contentUrl": "data/minimal.csv",
@@ -68,12 +68,12 @@ Here is an extremely simple example of the Croissant format, with comments showi
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
       "name": "examples",
       "description": "Records extracted from the example table, with their schema.",
       "field": [
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "name",
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
@@ -85,7 +85,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
           }
         },
         {
-          "@type": "ml:Field",
+          "@type": "cr:Field",
           "name": "age",
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
