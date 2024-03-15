@@ -29,7 +29,7 @@ def render_rai_metadata():
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION, metadata, key),
             )
-            #with st.expander("Data Collection Type", expanded=True):
+            # with st.expander("Data Collection Type", expanded=True):
             #    key = "metadata-data-collection-type"
             #    st.multiselect(
             #        label=("Define the data collection type."),
@@ -57,7 +57,9 @@ def render_rai_metadata():
             #    )
             key = "metadata-data-collection-type"
             st.text_area(
-                label=("Define the data collection type. Recommended values Recommended values: Surveys, Secondary Data analysis, Physical data collection, Direct measurement, Document analysis, Manual Human Curator, Software Collection, Experiments, Web Scraping, Web API, Focus groups, Self-reporting, Customer feedback data, User-generated content data, Passive Data Collection, Others"),
+                label=(
+                    "Define the data collection type. Recommended values Recommended values: Surveys, Secondary Data analysis, Physical data collection, Direct measurement, Document analysis, Manual Human Curator, Software Collection, Experiments, Web Scraping, Web API, Focus groups, Self-reporting, Customer feedback data, User-generated content data, Passive Data Collection, Others"
+                ),
                 key="metadata-data-collection-type",
                 value=metadata.data_collection_type,
                 on_change=handle_rai_change,
