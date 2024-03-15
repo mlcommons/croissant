@@ -198,7 +198,7 @@ class Metadata(Node):
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW,
+        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA,
     )
     data_collection_timeframe: list[datetime.datetime] | None = (
         mlc_dataclasses.jsonld_field(
@@ -254,7 +254,7 @@ class Metadata(Node):
         cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_DEMOGRAPHICS,
+        url=constants.ML_COMMONS_RAI_ANNOTATOR_DEMOGRAPHICS,
     )
     machine_annotation_tools: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -296,7 +296,7 @@ class Metadata(Node):
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_MAINTENANCE,
+        url=constants.ML_COMMONS_RAI_DATA_RELEASE_MAINTENANCE_PLAN,
     )
 
     def __post_init__(self):
