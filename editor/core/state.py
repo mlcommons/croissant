@@ -198,9 +198,9 @@ class Metadata(Node):
     data_collection_missing_data: str | None = None
     data_collection_raw_data: str | None = None
     data_collection_timeframe: datetime.datetime | None = None
-    data_preprocessing_imputation: str | None = None
+    data_imputation_protocol: str | None = None
     data_preprocessing_protocol: list[str] = None
-    data_preprocessing_manipulation: str | None = None
+    data_manipulation_protocol: str | None = None
     data_annotation_protocol: str | None = None
     data_annotation_platform: str | None = None
     data_annotation_analysis: str | None = None

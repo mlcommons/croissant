@@ -29,41 +29,40 @@ def render_rai_metadata():
                 on_change=handle_rai_change,
                 args=(RaiEvent.RAI_DATA_COLLECTION, metadata, key),
             )
-            with st.expander("Data Collection Type", expanded=True):
-                key = "metadata-data-collection-type"
-                st.multiselect(
-                    label=("Define the data collection type."),
-                    options=[
-                        "Surveys",
-                        "Secondary Data analysis",
-                        "Physical data collection",
-                        "Direct measurement",
-                        "Document analysis",
-                        "Manual Human Curator",
-                        "Software Collection",
-                        "Experiments",
-                        "Web Scraping",
-                        "Web API",
-                        "Focus groups",
-                        "Self-reporting",
-                        "Customer feedback data",
-                        "User-generated content data",
-                        "Passive Data Collection",
-                        "Others",
-                    ],
-                    key="metadata-data-collection-type",
-                    default=metadata.data_collection_type,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_COLLECTION_TYPE, metadata, key),
-                )
-                key = "metadata-data-collection-type-others"
-                st.text_area(
-                    label=("**Type**. If others, define the data collection type"),
-                    key="metadata-data-collection-type-others",
-                    value=metadata.data_collection_type,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS, metadata, key),
-                )
+            #with st.expander("Data Collection Type", expanded=True):
+            #    key = "metadata-data-collection-type"
+            #    st.multiselect(
+            #        label=("Define the data collection type."),
+            #        options=[
+            #            "Surveys",
+            #            "Secondary Data analysis",
+            #            "Physical data collection",
+            #            "Direct measurement",
+            #            "Document analysis",
+            #            "Manual Human Curator",
+            #            "Software Collection",
+            #            "Experiments",
+            #            "Web Scraping",
+            #            "Web API",
+            #            "Focus groups",
+            #           "Self-reporting",
+            #            "Customer feedback data",
+            #            "User-generated content data",
+            #            "Passive Data Collection",
+            #            "Others",
+            #        ],
+            #        key="metadata-data-collection-type",
+            #        on_change=handle_rai_change,
+            #        args=(RaiEvent.RAI_DATA_COLLECTION_TYPE, metadata, key),
+            #    )
+            key = "metadata-data-collection-type"
+            st.text_area(
+                label=("Define the data collection type. Recommended values Recommended values: Surveys, Secondary Data analysis, Physical data collection, Direct measurement, Document analysis, Manual Human Curator, Software Collection, Experiments, Web Scraping, Web API, Focus groups, Self-reporting, Customer feedback data, User-generated content data, Passive Data Collection, Others"),
+                key="metadata-data-collection-type",
+                value=metadata.data_collection_type,
+                on_change=handle_rai_change,
+                args=(RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS, metadata, key),
+            )
             key = "metadata-data-collection-missing"
             st.text_area(
                 label=("**Missing Data**. "),
@@ -209,25 +208,25 @@ def render_rai_metadata():
                             metadata.data_preprocessing_protocol.pop()
                             st.rerun()
 
-            key = "metadata-data-preprocessing-manipulation"
+            key = "metadata-data-manipulation-protocol"
             st.text_area(
                 label=(
                     "**Manipulation**. Description of data manipulation process if applicable    "
                 ),
-                key="metadata-data-preprocessing-manipulation",
-                value=metadata.data_preprocessing_manipulation,
+                key=key,
+                value=metadata.data_manipulation_protocol,
                 on_change=handle_rai_change,
-                args=(RaiEvent.RAI_DATA_PREPROCESSING_MANIPULATION, metadata, key),
+                args=(RaiEvent.RAI_DATA_MANIPULATION_PROTOCOL, metadata, key),
             )
-            key = "metadata-data-preprocessing-imputation"
+            key = "metadata-data-imputation-protocol"
             st.text_area(
                 label=(
                     "**Imputation**. Description of data imputation process if applicable  "
                 ),
-                key="metadata-data-preprocessing-imputation",
-                value=metadata.data_preprocessing_imputation,
+                key=key,
+                value=metadata.data_imputation_protocol,
                 on_change=handle_rai_change,
-                args=(RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION, metadata, key),
+                args=(RaiEvent.RAI_DATA_IMPUTATION_PROTOCOL, metadata, key),
             )
 
     with col2.expander("**Data uses and social impact**", expanded=True):

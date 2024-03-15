@@ -17,9 +17,9 @@ class RaiEvent(enum.Enum):
     RAI_DATA_COLLECTION_MISSING_DATA = "RAI_DATA_COLLECTION_MISSING_DATA"
     RAI_DATA_COLLECTION_RAW = "RAI_DATA_COLLECTION_RAW"
     RAI_DATA_COLLECTION_TIMEFRAME = "RAI_DATA_COLLECTION_TIMEFRAME"
-    RAI_DATA_PREPROCESSING_IMPUTATION = "RAI_DATA_PREPROCESSING_IMPUTATION"
+    RAI_DATA_IMPUTATION_PROTOCOL = "RAI_DATA_IMPUTATION_PROTOCOL"
     RAI_DATA_PREPROCESSING_PROTOCOL = " RAI_DATA_PREPROCESSING_PROTOCOL"
-    RAI_DATA_PREPROCESSING_MANIPULATION = "RAI_DATA_PREPROCESSING_MANIPULATIO"
+    RAI_DATA_MANIPULATION_PROTOCOL = "RAI_DATA_MANIPULATION_PROTOCOL"
     RAI_DATA_ANNOTATION_PROTOCOL = "RAI_DATA_ANNOTATION_PROTOCOL"
     RAI_DATA_ANNOTATION_PLATFORM = "RAI_DATA_ANNOTATION_PLATFORM"
     RAI_DATA_ANNOTATION_ANALYSIS = "RAI_DATA_ANNOTATION_ANALYSIS"
@@ -39,20 +39,15 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
         Metadata.data_collection = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
         Metadata.data_collection_type = st.session_state[key]
-    if event == RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS:
-        ## To implement
-        pass
     if event == RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA:
         Metadata.data_collection_missing_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_RAW:
         Metadata.data_collection_raw_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME:
-        date = st.session_state[key]
-        Metadata.data_collection_timeframe = datetime.datetime(
-            date.year, date.month, date.day
-        )
-    if event == RaiEvent.RAI_DATA_PREPROCESSING_IMPUTATION:
-        Metadata.data_preprocessing_imputation = st.session_state[key]
+        # To do
+        pass
+    if event == RaiEvent.RAI_DATA_IMPUTATION_PROTOCOL:
+        Metadata.data_imputation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL:
         if Metadata.data_preprocessing_protocol:
             index = key.split("_")[-1]
@@ -60,8 +55,8 @@ def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
         else:
             Metadata.data_preprocessing_protocol = []
             Metadata.data_preprocessing_protocol.append(st.session_state[key])
-    if event == RaiEvent.RAI_DATA_PREPROCESSING_MANIPULATION:
-        Metadata.data_preprocessing_manipulation = st.session_state[key]
+    if event == RaiEvent.RAI_DATA_MANIPULATION_PROTOCOL:
+        Metadata.data_manipulation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PROTOCOL:
 
         Metadata.data_annotation_protocol = st.session_state[key]
