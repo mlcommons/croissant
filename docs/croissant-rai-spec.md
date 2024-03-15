@@ -260,7 +260,7 @@ sc:<a href="https://schema.org/inLanguage">inLanguage</a>
    <td>Use case 6: Regulatory compliance
    </td>
    <td>rai:personalSensitiveInformation \
-rai:useCases rai:dataReleaseMaintenance rai:dataManipulationProtocol rai:dataManipulationProtocol rai:dataSharingAgreements rai:dataGovernanceProtocol 
+rai:useCases rai:dataReleaseMaintenance rai:dataManipulationProtocol rai:dataManipulationProtocol
    </td>
    <td>
    </td>
