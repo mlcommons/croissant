@@ -7,7 +7,7 @@ from mlcroissant._src.core.issues import WarningException
 
 
 def cast_version(version: Any) -> str | None:
-    """Casts the given version and returns a normalized string version.
+    """Casts the dataset version and returns a normalized string version.
 
     A valid version follows Semantic Versioning 2.0.0 `MAJOR.MINOR.PATCH`.
     For more information: https://semver.org/spec/v2.0.0.html.
