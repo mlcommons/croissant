@@ -4,7 +4,7 @@ Version 1.0
 
 Published: 2024/03/01
 
-<http://mlcommons.org/croissant/1.0>
+<https://mlcommons.org/croissant/1.0>
 
 Authors:
 
@@ -85,14 +85,14 @@ Croissant metadata is encoded in JSON-LD.
   },
   "@type": "sc:Dataset",
   "name": "simple-pass",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "https://mlcommons.org/croissant/1.0",
   "description": "PASS is a large-scale image dataset that does not include any humans ...",
   "citeAs": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and ...",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
 ```
 
-The beginning of the Croissant description contains general information about the dataset such as name, short description, license and URL. Most of these attributes are from [schema.org](http://schema.org), with a few additions described in the [Dataset-level information](#dataset-level-information) section.
+The beginning of the Croissant description contains general information about the dataset such as name, short description, license and URL. Most of these attributes are from [schema.org](https://schema.org), with a few additions described in the [Dataset-level information](#dataset-level-information) section.
 
 ```json
   "distribution": [
@@ -191,7 +191,7 @@ Before jumping into the main components of a Croissant dataset, we describe some
 The Croissant vocabulary is defined in its owned namespace, identified by the IRI:
 
 ```text
-http://mlcommons.org/croissant/
+https://mlcommons.org/croissant/
 ```
 
 We generally abbreviated this namespace IRI using the prefix `cr`.
@@ -206,29 +206,29 @@ In addition, Croissant relies on the following namespaces:
   </thead>
   <tr>
     <td>sc</td>
-    <td>http://schema.org/</td>
-    <td>The <a href="http://schema.org">schema.org</a> namespace.</td>
+    <td>https://schema.org/</td>
+    <td>The <a href="https://schema.org">schema.org</a> namespace.</td>
   </tr>
   <tr>
     <td>dct</td>
-    <td>http://purl.org/dc/terms/</td>
+    <td>https://purl.org/dc/terms/</td>
     <td>Dublin Core terms.</td>
   </tr>
   <tr>
     <td>wd</td>
-    <td>http://www.wikidata.org/wiki/</td>
+    <td>https://www.wikidata.org/wiki/</td>
     <td>Wikidata namespace</td>
   </tr>
 </table>
 
-Because Croissant builds on [schema.org](http://schema.org), we use that as the default namespace in all examples. Croissant terms should be prefixed with `cr`. We use the JSON-LD context mechanism to define aliases for these terms, so that specifying a prefix is not necessary.
+Because Croissant builds on [schema.org](https://schema.org), we use that as the default namespace in all examples. Croissant terms should be prefixed with `cr`. We use the JSON-LD context mechanism to define aliases for these terms, so that specifying a prefix is not necessary.
 
-The Croissant specification is versioned, and the version is included in the URI of this Croissant specification: `http://mlcommons.org/croissant/1.0`
+The Croissant specification is versioned, and the version is included in the URI of this Croissant specification: `https://mlcommons.org/croissant/1.0`
 
 Croissant datasets must declare that they conform to this specification by including the following property, at the dataset level:
 
 ```json
-"dct:conformsTo" : "http://mlcommons.org/croissant/1.0"
+"dct:conformsTo" : "https://mlcommons.org/croissant/1.0"
 ```
 
 Note that while the Croissant specification is versioned, the Croissant namespace above is not, so the constructs within the Croissant vocabulary will keep stable URIs even when the specification version changes.
@@ -292,7 +292,7 @@ In the above example, the `@id` of a `field` is prefixed by the `@id` of the cor
 
 ### Croissant in Web Pages
 
-Because Croissant builds on [schema.org](http://schema.org), a vocabulary for adding structured information to web pages, Croissant JSON-LD metadata needs to be embedded inside a web page in order to be indexed and crawled by search engines. You can see an example of how schema.org metadata is embedded in a web page in the schema.org [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
+Because Croissant builds on [schema.org](https://schema.org), a vocabulary for adding structured information to web pages, Croissant JSON-LD metadata needs to be embedded inside a web page in order to be indexed and crawled by search engines. You can see an example of how schema.org metadata is embedded in a web page in the schema.org [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
 
 In the rest of this document, we only describe the actual JSON-LD of Croissant metadata, and omit the wrapping HTML.
 
@@ -300,15 +300,15 @@ In the rest of this document, we only describe the actual JSON-LD of Croissant m
 
 ### schema.org/Dataset
 
-Croissant builds on the [schema.org/Dataset](http://schema.org/Dataset) vocabulary, which is widely adopted by datasets on the web. An introduction to describing datasets with this vocabulary can be found [here](https://developers.google.com/search/docs/appearance/structured-data/dataset).
+Croissant builds on the [schema.org/Dataset](https://schema.org/Dataset) vocabulary, which is widely adopted by datasets on the web. An introduction to describing datasets with this vocabulary can be found [here](https://developers.google.com/search/docs/appearance/structured-data/dataset).
 
-[Schema.org](http://Schema.org) properties are known to be very flexible in terms of the types of values they accept. We list below the main properties of the vocabulary and their expected type.To facilitate more consistent use of these properties we provide additional constraints on their usage in the context of Croissant datasets. We also specify cardinalities to clarify if a property can take one or many values.
+[Schema.org](https://Schema.org) properties are known to be very flexible in terms of the types of values they accept. We list below the main properties of the vocabulary and their expected type.To facilitate more consistent use of these properties we provide additional constraints on their usage in the context of Croissant datasets. We also specify cardinalities to clarify if a property can take one or many values.
 
-We organize [schema.org](http://schema.org) properties in three categories: Required, recommended and other properties. The properties starting with the symbol `@` are defined in JSON-LD, which is our RDF syntax of choice for Croissant.
+We organize [schema.org](https://schema.org) properties in three categories: Required, recommended and other properties. The properties starting with the symbol `@` are defined in JSON-LD, which is our RDF syntax of choice for Croissant.
 
 #### Required
 
-The following list of properties from [schema.org](http://schema.org) must be specified for every Croissant dataset.
+The following list of properties from [schema.org](https://schema.org) must be specified for every Croissant dataset.
 
 <table>
   <thead>
@@ -319,63 +319,63 @@ The following list of properties from [schema.org](http://schema.org) must be sp
   </thead>
   <tr>
     <td>@context</td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>ONE</td>
     <td>A set of JSON-LD context definitions that make the rest of the Croissant description less verbose. See the recommended JSON-LD context in <a href="#appendix-1-json-ld-context">Appendix 1</a>.</td>
   </tr>
   <tr>
     <td>@type</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
-    <td>The type of a croissant dataset must be <a href="http://schema.org/Dataset">schema.org/Dataset</a>.</td>
+    <td>The type of a croissant dataset must be <a href="https://schema.org/Dataset">schema.org/Dataset</a>.</td>
   </tr>
   <tr>
     <td><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">@dct:conformsTo</a></td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>ONE</td>
-    <td>Croissant datasets must declare that they conform to the versioned schema: <a href="http://mlcommons.org/croissant/1.0">http://mlcommons.org/croissant/1.0</a></td>
+    <td>Croissant datasets must declare that they conform to the versioned schema: <a href="https://mlcommons.org/croissant/1.0">https://mlcommons.org/croissant/1.0</a></td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/description">description</a></td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/description">description</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>Description of the dataset.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/license">license</a></td>
+    <td><a href="https://schema.org/license">license</a></td>
     <td>
-      <a href="http://schema.org/CreativeWork">CreativeWork</a><br>
-      <a href="http://schema.org/URL">URL</a>
+      <a href="https://schema.org/CreativeWork">CreativeWork</a><br>
+      <a href="https://schema.org/URL">URL</a>
     </td>
     <td>MANY</td>
     <td>The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at <a href="https://spdx.org/licenses/">https://spdx.org/licenses/</a>.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/name">name</a></td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/name">name</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>The name of the dataset.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/url">url</a></td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/url">url</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>ONE</td>
     <td>The URL of the dataset. This generally corresponds to the Web page for the dataset.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/creator">creator</a></td>
+    <td><a href="https://schema.org/creator">creator</a></td>
     <td>
-      <a href="http://schema.org/Organization">Organization</a><br>
-      <a href="http://schema.org/Person">Person</a>
+      <a href="https://schema.org/Organization">Organization</a><br>
+      <a href="https://schema.org/Person">Person</a>
     </td>
     <td>MANY</td>
     <td>The creator(s) of the dataset.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/datePublished">datePublished</a></td>
+    <td><a href="https://schema.org/datePublished">datePublished</a></td>
     <td>
-      <a href="http://schema.org/Date">Date</a><br>
-      <a href="http://schema.org/DateTime">DateTime</a>
+      <a href="https://schema.org/Date">Date</a><br>
+      <a href="https://schema.org/DateTime">DateTime</a>
     </td>
     <td>ONE</td>
     <td>The date the dataset was published.</td>
@@ -384,7 +384,7 @@ The following list of properties from [schema.org](http://schema.org) must be sp
 
 #### Recommended
 
-These [schema.org](http://schema.org) properties are recommended for every Croissant dataset.
+These [schema.org](https://schema.org) properties are recommended for every Croissant dataset.
 
 <table>
   <thead>
@@ -394,68 +394,68 @@ These [schema.org](http://schema.org) properties are recommended for every Crois
     <th>Comments</th>
   </thead>
   <tr>
-    <td><a href="http://schema.org/keywords">keywords</a></td>
+    <td><a href="https://schema.org/keywords">keywords</a></td>
     <td>
       <a href="https://schema.org/DefinedTerm">DefinedTerm</a><br>
-      <a href="http://schema.org/Text">Text</a><br>
-      <a href="http://schema.org/URL">URL</a>
+      <a href="https://schema.org/Text">Text</a><br>
+      <a href="https://schema.org/URL">URL</a>
     </td>
     <td>MANY</td>
     <td>A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/publisher">publisher</a></td>
+    <td><a href="https://schema.org/publisher">publisher</a></td>
     <td>
-      <a href="http://schema.org/Organization">Organization</a><br>
-      <a href="http://schema.org/Person">Person</a>
+      <a href="https://schema.org/Organization">Organization</a><br>
+      <a href="https://schema.org/Person">Person</a>
     </td>
     <td>MANY</td>
     <td>The publisher of the dataset, which may be distinct from its creator.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/version">version</a></td>
+    <td><a href="https://schema.org/version">version</a></td>
     <td>
-      <a href="http://schema.org/Number">Number</a><br>
-      <a href="http://schema.org/Text">Text</a>
+      <a href="https://schema.org/Number">Number</a><br>
+      <a href="https://schema.org/Text">Text</a>
     </td>
     <td>ONE</td>
     <td>The version of the dataset following the requirements below.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/dateCreated">dateCreated</a></td>
+    <td><a href="https://schema.org/dateCreated">dateCreated</a></td>
     <td>
-      <a href="http://schema.org/Date">Date</a>
-      <a href="http://schema.org/DateTime">DateTime</a>
+      <a href="https://schema.org/Date">Date</a>
+      <a href="https://schema.org/DateTime">DateTime</a>
     </td>
     <td>ONE</td>
     <td>The date the dataset was initially created.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/dateModified">dateModified</a></td>
+    <td><a href="https://schema.org/dateModified">dateModified</a></td>
     <td>
-      <a href="http://schema.org/Date">Date</a>
-      <a href="http://schema.org/DateTime">DateTime</a>
+      <a href="https://schema.org/Date">Date</a>
+      <a href="https://schema.org/DateTime">DateTime</a>
     </td>
     <td>ONE</td>
     <td>The date the dataset was last modified.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/sameAs">sameAs</a></td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/sameAs">sameAs</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>The URL of another Web resource that represents the same dataset as this one.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/sdLicense">sdLicence</a></td>
+    <td><a href="https://schema.org/sdLicense">sdLicence</a></td>
     <td>
-      <a href="http://schema.org/CreativeWork">CreativeWork</a><br>
-      <a href="http://schema.org/URL">URL</a>
+      <a href="https://schema.org/CreativeWork">CreativeWork</a><br>
+      <a href="https://schema.org/URL">URL</a>
     </td>
     <td>MANY</td>
     <td>A license document that applies to this structured data, typically indicated by URL.</td>
   </tr>
   <tr>
-    <td><a href="http://schema.org/inLanguage">inLanguage</a></td>
+    <td><a href="https://schema.org/inLanguage">inLanguage</a></td>
     <td>
       <a href="https://schema.org/Language">Language</a><br>
       <a href="https://schema.org/Text">Text</a>
@@ -467,11 +467,11 @@ These [schema.org](http://schema.org) properties are recommended for every Crois
 
 #### Other schema.org Properties
 
-Other properties from [schema.org/Dataset](http://schema.org/Dataset) or its parent classes can also be specified for Croissant datasets. Dataset authors should decide whether they are useful for their datasets or not.
+Other properties from [schema.org/Dataset](https://schema.org/Dataset) or its parent classes can also be specified for Croissant datasets. Dataset authors should decide whether they are useful for their datasets or not.
 
 ### Modified and Added Properties
 
-Croissant modifies the meaning of one [schema.org](http://schema.org) property, and requires its presence:
+Croissant modifies the meaning of one [schema.org](https://schema.org) property, and requires its presence:
 
 <table>
   <thead>
@@ -481,13 +481,13 @@ Croissant modifies the meaning of one [schema.org](http://schema.org) property, 
     <th>Comments</th>
   </thead>
   <tr>
-    <td><a href="http://schema.org/distribution">distribution</a></td>
+    <td><a href="https://schema.org/distribution">distribution</a></td>
     <td>
       <a href="#fileobject">FileObject</a><br>
       <a href="#fileset">FileSet</a>
     </td>
     <td>MANY</td>
-    <td>By contrast with <a href="http://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type FileObject or FileSet.</td>
+    <td>By contrast with <a href="https://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type FileObject or FileSet.</td>
   </tr>
 </table>
 
@@ -502,16 +502,16 @@ The Croissant vocabulary also defines the following optional attributes:
   </thead>
   <tr>
     <td><a href="#live-datasets">isLiveDataset</a></td>
-    <td><a href="http://schema.org/Boolean">Boolean</a></td>
+    <td><a href="https://schema.org/Boolean">Boolean</a></td>
     <td>ONE</td>
     <td>Whether the dataset is a live dataset.</td>
   </tr>
   <tr>
     <td>citeAs</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>A citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
-    Note that this is different from <a href="http://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
+    Note that this is different from <a href="https://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
     </td>
   </tr>
 </table>
@@ -522,7 +522,7 @@ Datasets may change over time. Versioning is hence important to enable reproduci
 
 #### Version
 
-Croissant datasets are versioned using the `version` property defined in [schema.org](http://schema.org). The recommended versioning scheme to use for datasets is`MAJOR.MINOR.PATCH`, following [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). More specifically:
+Croissant datasets are versioned using the `version` property defined in [schema.org](https://schema.org). The recommended versioning scheme to use for datasets is`MAJOR.MINOR.PATCH`, following [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). More specifically:
 
 - If the `PATCH` version is incremented, the data remains the same, although it might be serialized differently or is packaged using different file formats.
 - If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as it: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old recordSets can still be retrieved (eg: the new records are added to a different Split).
@@ -579,7 +579,7 @@ Croissant datasets contain data. Resources describe how that data is organized. 
 - `FileObject` for individual files that are part of a dataset.
 - `FileSet` for homogeneous sets of files that are part of the dataset (e.g., a directory of images).
 
-While [schema.org/Dataset](http://schema.org/Dataset) defines a `distribution` property, it's insufficient to adequately represent the contents of a dataset, as each distribution corresponds to a single downloadable form of the dataset. In practice, datasets often use `distribution` to represent separate files that are part of the dataset, but that is technically not a correct use of the property, and is still insufficient to describe datasets with a more complex layout, which is often the case of ML datasets.
+While [schema.org/Dataset](https://schema.org/Dataset) defines a `distribution` property, it's insufficient to adequately represent the contents of a dataset, as each distribution corresponds to a single downloadable form of the dataset. In practice, datasets often use `distribution` to represent separate files that are part of the dataset, but that is technically not a correct use of the property, and is still insufficient to describe datasets with a more complex layout, which is often the case of ML datasets.
 
 In Croissant, the `distribution` property contains one or more `FileObject` or `FileSet` instead of schema.org's `DataDownload.`
 
@@ -587,7 +587,7 @@ In Croissant, the `distribution` property contains one or more `FileObject` or `
 
 `FileObject` is the Croissant class used to represent individual files that are part of a dataset.
 
-`FileObject` is a general purpose class that inherits from [Schema.org](http://Schema.org) `CreativeWork`, and can be used to represent instances of more specific types of content like `DigitalDocument` and `MediaObject`.
+`FileObject` is a general purpose class that inherits from [Schema.org](https://Schema.org) `CreativeWork`, and can be used to represent instances of more specific types of content like `DigitalDocument` and `MediaObject`.
 
 Most of the important properties needed to describe a `FileObject` are defined in the classes it inherits from:
 
@@ -600,37 +600,37 @@ Most of the important properties needed to describe a `FileObject` are defined i
   </thead>
   <tr>
     <td><a href="https://schema.org/name">sc:name</a></td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>The name of the file. As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. "images.zip".</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/contentUrl">sc:contentUrl</a></td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>ONE</td>
     <td>Actual bytes of the media object, for example the image file or video file.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/contentSize">sc:contentSize</a></td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is not specified.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/encodingFormat">sc:encodingFormat</a></td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>The format of the file, given as a mime type.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/sameAs">sc:sameAs</a></td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>URL (or local name) of a FileObject with the same content, but in a different format.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/sha256">sc:sha256</a></td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>Checksum for the file contents.</td>
   </tr>
@@ -647,7 +647,7 @@ In addition, `FileObject` defines the following property:
   </thead>
   <tr>
     <td>containedIn</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object.</td>
   </tr>
@@ -716,13 +716,13 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </tr>
   <tr>
     <td>includes</td>
-    <td><a href="http://schema.org/Text"></a>Text</td>
+    <td><a href="https://schema.org/Text"></a>Text</td>
     <td>MANY</td>
     <td>A glob pattern that specifies the files to include.</td>
   </tr>
   <tr>
     <td>excludes</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>A glob pattern that specifies the files to exclude.</td>
   </tr>
@@ -739,7 +739,7 @@ A zip file containing images:
   "@type": "cr:FileObject",
   "@id": "train2014.zip",
   "contentSize": "13510573713 B",
-  "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
+  "contentUrl": "https://images.cocodataset.org/zips/train2014.zip",
   "encodingFormat": "application/zip",
   "sha256": "sha256"
 },
@@ -831,7 +831,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
   </tr>
   <tr>
     <td>key</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td><a href="https://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>One or more fields whose values uniquely identify each record in the <code>RecordSet</code>. (See example below.)</td>
   </tr>
@@ -845,7 +845,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
     <td>examples</td>
     <td>
       JSON<br>
-      <a href="http://schema.org/URL">URL</a>
+      <a href="https://schema.org/URL">URL</a>
     </td>
     <td>MANY</td>
     <td>One or more records provided as example content of the <code>RecordSet</code>, or a reference to data source that contains examples.</td>
@@ -869,7 +869,7 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>source</td>
     <td>
       DataSource<br>
-      <a href="http://schema.org/URL">URL</a>
+      <a href="https://schema.org/URL">URL</a>
     </td>
     <td>ONE</td>
     <td>The data source of the field. This will generally reference a <code>FileObject</code> or <code>FileSet</code>'s contents (e.g., a specific column of a table).</td>
@@ -882,13 +882,13 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </tr>
   <tr>
     <td>repeated</td>
-    <td><a href="http://schema.org/Boolean">Boolean</a></td>
+    <td><a href="https://schema.org/Boolean">Boolean</a></td>
     <td>ONE</td>
     <td>If true, then the Field is a list of values of type dataType.</td>
   </tr>
   <tr>
     <td>equivalentProperty</td>
-    <td><a href="http://schema.org/URL">URL</a></td>
+    <td><a href="https://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>A property that is equivalent to this Field. Used in the case a dataType is specified on the RecordSet to map specific fields to specific properties associated with that dataType.</td>
   </tr>
@@ -1110,17 +1110,17 @@ Here are some formats that can be used in Croissant:
   </thead>
   <tr>
     <td>
-      <a href="http://schema.org/Date">sc:Date</a><br>
-      <a href="http://schema.org/DateTime">sc:DateTime</a>
+      <a href="https://schema.org/Date">sc:Date</a><br>
+      <a href="https://schema.org/DateTime">sc:DateTime</a>
     </td>
     <td><a href="https://cldr.unicode.org/translation/date-time/date-time-patterns">CLDR Date/Time Patterns</a></td>
     <td>MM/dd/yyyy</td>
   </tr>
   <tr>
     <td>
-      <a href="http://schema.org/Number">sc:Number</a><br>
-      <a href="http://schema.org/Float">sc:Float</a><br>
-      <a href="http://schema.org/Integer">sc:Integer</a>
+      <a href="https://schema.org/Number">sc:Number</a><br>
+      <a href="https://schema.org/Float">sc:Float</a><br>
+      <a href="https://schema.org/Integer">sc:Integer</a>
     </td>
     <td><a href="https://cldr.unicode.org/translation/number-currency-formats/number-and-currency-patterns">CLDR Number and Currency patterns</a></td>
     <td>0.##E0 (scientific notation with max 2 decimals).</td>
@@ -1192,11 +1192,11 @@ Other data types commonly used in ML datasets:
     <td>Describes a field containing the content of an image (pixels).</td>
   </tr>
   <tr>
-    <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
+    <td><a href="https://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
     <td>Describes the coordinates of a bounding box (4-number array). Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
   <tr>
-    <td><a href="http://mlcommons.org/schema/Split">cr:Split</a></td>
+    <td><a href="https://mlcommons.org/schema/Split">cr:Split</a></td>
     <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section "ML-specific features > Splits".</td>
   </tr>
 </table>
@@ -1241,11 +1241,11 @@ In the following example, the `url` field is expected to be a URL, whose semanti
 
 #### Typing RecordSets
 
-As mentioned above, Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
+As mentioned above, Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](https://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
 
 More generally, when a `RecordSet`is assigned a `dataType`, some or all of its fields must be mapped to properties associated with the data type. These can be done in two ways:
 
-- Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](http://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates).
+- Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](https://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](https://schema.org/GeoCoordinates).
 - Or there is an explicit mapping specified on the Field, via the property `equivalentProperty`.
 
 When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the rang of the property (e.g., require the values of latitude and longitude to be of type Float).
@@ -1488,7 +1488,7 @@ Croissant `RecordSet`s provide two mechanisms to represent hierarchical data:
 
 Note that the values of these fields may still come from a "flat" source, such as two separate columns of a table, as in the example above.
 
-Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
+Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](https://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
 
 #### Nested Records
 
@@ -1839,7 +1839,7 @@ Segmentation mask as an image:
   "includes": "cr:includes",
   "isEnumeration": "cr:isEnumeration",
   "jsonPath": "cr:jsonPath",
-  "ml": "http://mlcommons.org/schema/",
+  "ml": "https://mlcommons.org/schema/",
   "parentField": "cr:parentField",
   "path": "cr:path",
   "recordSet": "cr:recordSet",
