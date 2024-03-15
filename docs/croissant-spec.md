@@ -31,7 +31,7 @@ The Croissant metadata format simplifies how data is used by ML models. It provi
 
 Once a dataset has Croissant metadata attached to it, dataset search engines can parse this metadata, allowing users to find and use the datasets they need no matter where these datasets have been published (**Figure 1**). For dataset creators, it means their data is discoverable no matter where it is made available online, as long as they use the format.
 
-![alt_text](images/consumers.png "Croissant for dataset consumers")
+![Croissant for dataset consumers](images/consumers.png "Croissant for dataset consumers")
 
 **Figure 1:** A user can search for datasets from a dataset repository or a dataset search engine. Upon finding a dataset that matches user goals, it can be seamlessly loaded into an ML data loader.
 
@@ -39,13 +39,13 @@ Once a dataset has Croissant metadata attached to it, dataset search engines can
 
 Croissant provides sufficient information for an ML tool to load a dataset, allowing users to incorporate Croissant datasets in the training and evaluation of a model with just a few lines of code (**Figure 2**). Croissant can easily be added to any tools e.g., for data preprocessing, analysis and visualization, or labeling. Since the format is standardized, any Croissant-compliant tool will have an identical interpretation of the data. Furthermore, the information stored in a Croissant record attached to a dataset helps people understand its content and context and compare it with other datasets. All this leads to increased portability and reproducibility in the entire ML ecosystem.
 
-![alt_text](images/cross-product.png "Croissant interoperability")
+![Croissant interoperability](images/cross-product.png "Croissant interoperability")
 
 **Figure 2:** Croissant metadata helps loading ML datasets into different ML frameworks
 
 Creating or changing the metadata is straightforward. A dataset repository can infer it from existing documentation such as a data card; beyond that, editing Croissant dataset descriptions is also supported through a visual editor and a Python library (**Figure 3**).
 
-![alt_text](images/creators.png "Croissant for dataset creators")
+![Croissant for dataset creatorst](images/creators.png "Croissant for dataset creators")
 
 **Figure 3:** Croissant benefits dataset creators by providing a standardized representation to edit and catalog datasets, supported by an editor and Python library. Once a dataset is published with the associated metadata, it can be found by dataset search engines.
 
@@ -160,8 +160,8 @@ See the [Resources](#resources) section for a complete description.
               "regex": "([^\\/]*)\\.jpg"
             }
           }
-          "references": { "@id": "metadata/hash" },
-        }
+          "references": { "@id": "metadata/hash" }
+        },
         {
           "@type": "cr:Field",
           "@id": "images/date_taken",
@@ -283,7 +283,7 @@ A "foreign key" reference on column "movie\_id" from a "ratings" table to a "mov
        "name": "Movie id",
        "dataType": "sc:Integer",
        "references": { "@id": "movies/movie_id" }
-     },
+     }
   ]
 }
 ```
@@ -508,7 +508,7 @@ The Croissant vocabulary also defines the following optional attributes:
   </tr>
   <tr>
     <td>citeAs</td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>A citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
     Note that this is different from <a href="http://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
@@ -600,37 +600,37 @@ Most of the important properties needed to describe a `FileObject` are defined i
   </thead>
   <tr>
     <td><a href="https://schema.org/name">sc:name</a></td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>The name of the file. As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. "images.zip".</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/contentUrl">sc:contentUrl</a></td>
-    <td>Url</td>
+    <td><a href="http://schema.org/URL">URL</a></td>
     <td>ONE</td>
     <td>Actual bytes of the media object, for example the image file or video file.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/contentSize">sc:contentSize</a></td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is not specified.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/encodingFormat">sc:encodingFormat</a></td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>The format of the file, given as a mime type.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/sameAs">sc:sameAs</a></td>
-    <td>URL</td>
+    <td><a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>URL (or local name) of a FileObject with the same content, but in a different format.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/sha256">sc:sha256</a></td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>Checksum for the file contents.</td>
   </tr>
@@ -647,7 +647,7 @@ In addition, `FileObject` defines the following property:
   </thead>
   <tr>
     <td>containedIn</td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object.</td>
   </tr>
@@ -716,13 +716,13 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </tr>
   <tr>
     <td>includes</td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text"></a>Text</td>
     <td>MANY</td>
     <td>A glob pattern that specifies the files to include.</td>
   </tr>
   <tr>
     <td>excludes</td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>A glob pattern that specifies the files to exclude.</td>
   </tr>
@@ -831,7 +831,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
   </tr>
   <tr>
     <td>key</td>
-    <td>Text</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>One or more fields whose values uniquely identify each record in the <code>RecordSet</code>. (See example below.)</td>
   </tr>
@@ -845,7 +845,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
     <td>examples</td>
     <td>
       JSON<br>
-      URL
+      <a href="http://schema.org/URL">URL</a>
     </td>
     <td>MANY</td>
     <td>One or more records provided as example content of the <code>RecordSet</code>, or a reference to data source that contains examples.</td>
@@ -867,7 +867,10 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </thead>
   <tr>
     <td>source</td>
-    <td>DataSource or URL</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>ONE</td>
     <td>The data source of the field. This will generally reference a <code>FileObject</code> or <code>FileSet</code>'s contents (e.g., a specific column of a table).</td>
   </tr>
@@ -879,13 +882,13 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </tr>
   <tr>
     <td>repeated</td>
-    <td>Boolean</td>
+    <td><a href="http://schema.org/Boolean">Boolean</a></td>
     <td>ONE</td>
     <td>If true, then the Field is a list of values of type dataType.</td>
   </tr>
   <tr>
     <td>equivalentProperty</td>
-    <td>URL</td>
+    <td><a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>A property that is equivalent to this Field. Used in the case a dataType is specified on the RecordSet to map specific fields to specific properties associated with that dataType.</td>
   </tr>
@@ -941,7 +944,6 @@ Let's see a simple example: The ratings `RecordSet` below defines the fields use
       "@type": "cr:Field",
       "@id": "ratings/movie_id",
       "dataType": "sc:Integer",
-
       "source": {
         "fileObject": { "@id": "ratings-table" },
         "extract": {
@@ -1085,7 +1087,9 @@ For example, to extract information from a filename using a regular expression, 
 
 ```json
 {
-  "fileSet": { "@id": "files" },
+  "fileSet": {
+    "@id": "files"
+  },
   "extract": {
     "fileProperty": "filename"
   },
@@ -1224,11 +1228,11 @@ In the following example, `color_sample` is a field containing an image, but wit
 {
   "@id": "images/color_sample",
   "@type": "cr:Field",
-  "dataType": "sc:ImageObject",
+  "dataType": "sc:ImageObject"
 }
 ```
 
-In the following example, the `url` field is expected to be a URL, whose semantic type is [City](https://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: <https://www.wikidata.org/wiki/Q90>).
+In the following example, the `url` field is expected to be a URL, whose semantic type is [City](https://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: "<https://www.wikidata.org/wiki/Q90>").
 
 ```json
 {
@@ -1258,16 +1262,16 @@ A cities `RecordSet` with fields implicitly mapped to latitude and longitude:
 {
   "@id": "cities",
   "@type": "cr:RecordSet",
-  "dataType": "sc:GeoCoordinates"
+  "dataType": "sc:GeoCoordinates",
   "field": [
-   {
-     "@id": "cities/latitude",
-     "@type": "cr:Field"
-   },
-   {
-     "@id": "cities/longitude",
-     "@type": "cr:Field"
-   },
+    {
+      "@id": "cities/latitude",
+      "@type": "cr:Field"
+    },
+    {
+      "@id": "cities/longitude",
+      "@type": "cr:Field"
+    }
   ]
 }
 ```
@@ -1278,18 +1282,18 @@ A cities `RecordSet` with fields explicitly mapped to latitude and longitude:
 {
   "@id": "cities",
   "@type": "cr:RecordSet",
-  "dataType": "sc:GeoCoordinates"
+  "dataType": "sc:GeoCoordinates",
   "field": [
-   {
-     "@id": "cities/lat",
-     "@type": "cr:Field",
-     "equivalentProperty": "sc:latitude"
-   },
-   {
-     "@id": "cities/long",
-     "@type": "cr:Field",
-     "equivalentProperty": "sc:longitude"
-   },
+    {
+      "@id": "cities/lat",
+      "@type": "cr:Field",
+      "equivalentProperty": "sc:latitude"
+    },
+    {
+      "@id": "cities/long",
+      "@type": "cr:Field",
+      "equivalentProperty": "sc:longitude"
+    }
   ]
 }
 ```
@@ -1350,7 +1354,7 @@ For example, the `ratings` `RecordSet` below has a `movie_id` field that referen
       "source": {
         "fileObject": { "@id": "ratings-table" },
         "extract": { "column": "movieId" }
-      }
+      },
       "references": { "@id": "movies/movie_id" }
     }
   ]
@@ -1375,7 +1379,7 @@ Expanding the example above, the ratings `RecordSet` can have a movie\_title Fie
         "extract": {
           "column": "movieId"
         }
-      }
+      },
       "references": {
         "@id": "movies/movie_id"
       }
