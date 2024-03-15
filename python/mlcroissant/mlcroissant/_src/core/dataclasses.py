@@ -153,6 +153,8 @@ def jsonld_field(
     **kwargs,
 ):
     """Overloads dataclasses.field with specific attributes."""
+    if cardinality not in ["ONE", "MANY"]:
+        raise ValueError(f"cardinality should be ONE or MANY. Got {cardinality}")
     if input_types is None:
         input_types = []
     if exclusive_with is None:

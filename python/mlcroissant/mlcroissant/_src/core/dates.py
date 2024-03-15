@@ -38,7 +38,7 @@ def from_datetime_to_str(date: datetime.datetime | None) -> str | None:
 
 
 def cast_date(date: Any) -> datetime.datetime | None:
-    """Casts dates as a datetime for any input."""
+    """Casts date as a datetime for any input."""
     if date is None or isinstance(date, datetime.datetime):
         return date
     elif isinstance(date, str):
@@ -50,3 +50,17 @@ def cast_date(date: Any) -> datetime.datetime | None:
     elif isinstance(date, datetime.date):
         return datetime.datetime.combine(date, datetime.time.min)
     raise ValueError(f"Wrong type for a date. Expected Date or Datetime. Got: {date}")
+
+
+def cast_dates(value: Any) -> list[datetime.datetime] | None:
+    """Casts dates as datetimes for any input."""
+    if isinstance(value, list):
+        dates = []
+        for v in value:
+            date = cast_date(v)
+            if date is None:
+                return None
+            else:
+                dates.append(date)
+        return dates
+    return cast_dates([value])

@@ -12,6 +12,7 @@ from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.dates import cast_date
+from mlcroissant._src.core.dates import cast_dates
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -195,7 +196,7 @@ class Metadata(Node):
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING,
+        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_MISSING_DATA,
     )
     data_collection_raw_data: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
@@ -206,9 +207,10 @@ class Metadata(Node):
     data_collection_timeframe: list[datetime.datetime] | None = (
         mlc_dataclasses.jsonld_field(
             cardinality="MANY",
+            cast_fn=cast_dates,
             default=None,
             input_types=[SDO.Date, SDO.DateTime],
-            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIMEFRAME,
+            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
         )
     )
     data_imputation_protocol: str | None = mlc_dataclasses.jsonld_field(
@@ -218,7 +220,7 @@ class Metadata(Node):
         url=constants.ML_COMMONS_RAI_DATA_IMPUTATION_PROTOCOL,
     )
     data_preprocessing_protocol: list[str] | None = mlc_dataclasses.jsonld_field(
-        cardinality="Many",
+        cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_PREPROCESSING_PROTOCOL,
@@ -227,7 +229,7 @@ class Metadata(Node):
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_MANIPULATION_PROTOCOL,
+        url=constants.ML_COMMONS_RAI_DATA_DATA_MANIPULATION_PROTOCOL,
     )
     data_annotation_protocol: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -247,11 +249,11 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_ANALYSIS,
     )
-    annotation_per_item: str | None = mlc_dataclasses.jsonld_field(
+    annotations_per_item: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_PER_ITEM,
+        url=constants.ML_COMMONS_RAI_ANNOTATIONS_PER_ITEM,
     )
     annotator_demographics: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -263,7 +265,7 @@ class Metadata(Node):
         cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_ANNOTATION_TOOLS,
+        url=constants.ML_COMMONS_RAI_MACHINE_ANNOTATION_TOOLS,
     )
     data_biases: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -281,7 +283,7 @@ class Metadata(Node):
         cardinality="MANY",
         default=None,
         input_types=[SDO.Text],
-        url=constants.ML_COMMONS_RAI_DATA_LIMITATION,
+        url=constants.ML_COMMONS_RAI_DATA_LIMITATIONS,
     )
     data_social_impact: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
