@@ -31,7 +31,7 @@ The Croissant metadata format simplifies how data is used by ML models. It provi
 
 Once a dataset has Croissant metadata attached to it, dataset search engines can parse this metadata, allowing users to find and use the datasets they need no matter where these datasets have been published (**Figure 1**). For dataset creators, it means their data is discoverable no matter where it is made available online, as long as they use the format.
 
-![Croissant for dataset consumers](images/consumers.png "Croissant for dataset consumers")
+![Croissant for dataset consumers](images/consumers.png 'Croissant for dataset consumers')
 
 **Figure 1:** A user can search for datasets from a dataset repository or a dataset search engine. Upon finding a dataset that matches user goals, it can be seamlessly loaded into an ML data loader.
 
@@ -39,13 +39,13 @@ Once a dataset has Croissant metadata attached to it, dataset search engines can
 
 Croissant provides sufficient information for an ML tool to load a dataset, allowing users to incorporate Croissant datasets in the training and evaluation of a model with just a few lines of code (**Figure 2**). Croissant can easily be added to any tools e.g., for data preprocessing, analysis and visualization, or labeling. Since the format is standardized, any Croissant-compliant tool will have an identical interpretation of the data. Furthermore, the information stored in a Croissant record attached to a dataset helps people understand its content and context and compare it with other datasets. All this leads to increased portability and reproducibility in the entire ML ecosystem.
 
-![Croissant interoperability](images/cross-product.png "Croissant interoperability")
+![Croissant interoperability](images/cross-product.png 'Croissant interoperability')
 
 **Figure 2:** Croissant metadata helps loading ML datasets into different ML frameworks
 
 Creating or changing the metadata is straightforward. A dataset repository can infer it from existing documentation such as a data card; beyond that, editing Croissant dataset descriptions is also supported through a visual editor and a Python library (**Figure 3**).
 
-![Croissant for dataset creatorst](images/creators.png "Croissant for dataset creators")
+![Croissant for dataset creatorst](images/creators.png 'Croissant for dataset creators')
 
 **Figure 3:** Croissant benefits dataset creators by providing a standardized representation to edit and catalog datasets, supported by an editor and Python library. Once a dataset is published with the associated metadata, it can be found by dataset search engines.
 
@@ -269,7 +269,7 @@ A set of JSON files included in a tar archive:
 }
 ```
 
-A "foreign key" reference on column "movie\_id" from a "ratings" table to a "movies" table:
+A "foreign key" reference on column "movie_id" from a "ratings" table to a "movies" table:
 
 ```json
 {
@@ -277,18 +277,18 @@ A "foreign key" reference on column "movie\_id" from a "ratings" table to a "mov
   "@id": "ratings",
   "name": "IMDB ratings",
   "field": [
-     {
-       "@type": "cr:Field",
-       "@id": "ratings/movie_id",
-       "name": "Movie id",
-       "dataType": "sc:Integer",
-       "references": { "@id": "movies/movie_id" }
-     }
+    {
+      "@type": "cr:Field",
+      "@id": "ratings/movie_id",
+      "name": "Movie id",
+      "dataType": "sc:Integer",
+      "references": { "@id": "movies/movie_id" }
+    }
   ]
 }
 ```
 
-In the above example, the `@id` of a `field` is prefixed by the `@id` of the corresponding `RecordSet`. This ensures the uniqueness, and makes it possible to disambiguate between `field`s of the same name in different `RecordSet`s. In this example, both the ratings and movies `RecordSet`s have a movie\_id `field`.
+In the above example, the `@id` of a `field` is prefixed by the `@id` of the corresponding `RecordSet`. This ensures the uniqueness, and makes it possible to disambiguate between `field`s of the same name in different `RecordSet`s. In this example, both the ratings and movies `RecordSet`s have a movie_id `field`.
 
 ### Croissant in Web Pages
 
@@ -542,7 +542,7 @@ For live datasets, the Croissant boolean property `isLiveDataset` should be set 
 
 ##### Example 1: Daily refreshes
 
-A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historicallyorganized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock\_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
+A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historicallyorganized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
 
 ```text
 stock_data_2000.csv
@@ -558,7 +558,7 @@ Because the dataset is updated continuously, the dataset should set the isLiveDa
 
 ##### Example 2: Daily snapshots
 
-The same data from Example 1 is exported at a finer granularity to match the daily refresh of the dataset. Accordingly, the data is "snapshotted" into files of the form "stock\_data\_&lt;MONTH>\_&lt;DAY>\_&lt;YEAR>.csv" to reflect the month, day, and year of the data in the file. Each file is only written once—when all data from that date is finalized at the end of day.
+The same data from Example 1 is exported at a finer granularity to match the daily refresh of the dataset. Accordingly, the data is "snapshotted" into files of the form "stock_data\_&lt;MONTH>\_&lt;DAY>\_&lt;YEAR>.csv" to reflect the month, day, and year of the data in the file. Each file is only written once—when all data from that date is finalized at the end of day.
 
 ```text
 stock_data_1_1_2000.csv
@@ -728,7 +728,7 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </tr>
 </table>
 
-The properties `includes` and `excludes` are used to filter the content that should be part of the FileSet. They both use [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)), a common mechanism to specify a set of files along a path, like ".jpg" for all jpg images, or "/foo/pic.jpg" for all jpg images under the "foo" directory whose filename starts with "pic". To get the set of FileObjects included in the FileSet, the include pattern(s) are evaluated first. If multiple `includes` are specified, the union of their results is taken. Then all the files corresponding to the `excludes` patterns are removed from that set. `includes` and `excludes` patterns are evaluated from the root of the `containedIn` contents (e.g., the top level directory extracted from an archive).
+The properties `includes` and `excludes` are used to filter the content that should be part of the FileSet. They both use [glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>), a common mechanism to specify a set of files along a path, like ".jpg" for all jpg images, or "/foo/pic.jpg" for all jpg images under the "foo" directory whose filename starts with "pic". To get the set of FileObjects included in the FileSet, the include pattern(s) are evaluated first. If multiple `includes` are specified, the union of their results is taken. Then all the files corresponding to the `excludes` patterns are removed from that set. `includes` and `excludes` patterns are evaluated from the root of the `containedIn` contents (e.g., the top level directory extracted from an archive).
 
 Let's now see some examples of how `FileSet` is used:
 
@@ -918,16 +918,13 @@ Each field has a `name`, which is its unique identifier within the `RecordSet`, 
 
 A `Field` may reference another `Field` in another `RecordSet`, similarly to foreign keys in relational databases, so that they can be joined together.
 
-Let's see a simple example: The ratings `RecordSet` below defines the fields user\_id, movie\_id, rating and timestamp. The movie\_id field is a reference to another `RecordSet`, movies.
+Let's see a simple example: The ratings `RecordSet` below defines the fields user_id, movie_id, rating and timestamp. The movie_id field is a reference to another `RecordSet`, movies.
 
 ```json
 {
   "@type": "cr:RecordSet",
   "@id": "ratings",
-  "key": [
-    { "@id": "ratings/user_id" },
-    { "@id": "ratings/movie_id" }
-  ],
+  "key": [{ "@id": "ratings/user_id" }, { "@id": "ratings/movie_id" }],
   "field": [
     {
       "@type": "cr:Field",
@@ -950,7 +947,7 @@ Let's see a simple example: The ratings `RecordSet` below defines the fields use
           "column": "movieId"
         }
       },
-   "references": {
+      "references": {
         "@idfield": "movies/movie_id"
       }
     },
@@ -1238,10 +1235,7 @@ In the following example, the `url` field is expected to be a URL, whose semanti
 {
   "@id": "cities/url",
   "@type": "cr:Field",
-  "dataType": [
-    "https://schema.org/URL",
-    "https://www.wikidata.org/wiki/Q515"
-  ]
+  "dataType": ["https://schema.org/URL", "https://www.wikidata.org/wiki/Q515"]
 }
 ```
 
@@ -1363,7 +1357,7 @@ For example, the `ratings` `RecordSet` below has a `movie_id` field that referen
 
 Once a reference is defined, Croissant supports joining `RecordSet`s by "bringing in" properties from the referenced `RecordSet`.
 
-Expanding the example above, the ratings `RecordSet` can have a movie\_title Field that comes from the movies `RecordSet`:
+Expanding the example above, the ratings `RecordSet` can have a movie_title Field that comes from the movies `RecordSet`:
 
 ```json
 {
@@ -1375,7 +1369,7 @@ Expanding the example above, the ratings `RecordSet` can have a movie\_title Fie
       "@id": "ratings/movie_id",
       "dataType": "sc:Integer",
       "source": {
-        "fileObject": { "@id" : "ratings-table" },
+        "fileObject": { "@id": "ratings-table" },
         "extract": {
           "column": "movieId"
         }
@@ -1494,7 +1488,7 @@ Croissant `RecordSet`s provide two mechanisms to represent hierarchical data:
 
 Note that the values of these fields may still come from a "flat" source, such as two separate columns of a table, as in the example above.
 
-Furthermore the field ids "gps\_coordinates/latitude" and "gps\_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
+Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
 
 #### Nested Records
 
@@ -1552,7 +1546,7 @@ This is achieved in a few steps:
 
 - Creating a "container" field of type `cr:RecordSet`,
 - Creating subFields for the structure of the nested records
-- In case a join between multiple sources is needed, `parentField` can be used to make sure the join field does not appear in the child records (here, the movie\_id from the ratings table, which is has the same value as movie\_id in parent records)
+- In case a join between multiple sources is needed, `parentField` can be used to make sure the join field does not appear in the child records (here, the movie_id from the ratings table, which is has the same value as movie_id in parent records)
 
 ## ML-specific Features
 
@@ -1572,11 +1566,13 @@ For example, the [COCO](https://cocodataset.org/#format-data) dataset defines ca
   "@type": "cr:RecordSet",
   "dataType": "sc:Enumeration",
   "key": { "@id": "supercategories/name" },
-  "field": [{
-    "@id": "supercategories/name",
-    "@type": "cr:Field",
-    "dataType": "sc:Text"
-  }],
+  "field": [
+    {
+      "@id": "supercategories/name",
+      "@type": "cr:Field",
+      "dataType": "sc:Text"
+    }
+  ],
   "data": [
     { "supercategories/name": "animal" },
     { "supercategories/name": "person" }
@@ -1614,7 +1610,9 @@ As other `RecordSet`s data, `sc:Enumeration` values can be defined inline (above
       "@type": "cr:Field",
       "dataType": "sc:Text",
       "references": { "@id": "supercategories/name" },
-      "source": { "@id": "instancesperson_annotations/categories/supercategory" }
+      "source": {
+        "@id": "instancesperson_annotations/categories/supercategory"
+      }
     }
   ]
 }
@@ -1666,7 +1664,7 @@ For example, the following `RecordSet` defines the "train", "val" and "test" spl
     { "splits/name": "test", "splits/url": "cr:TestSplit" }
   ]
 }
- ```
+```
 
 The example above illustrates the benefit of the `url` field, used to disambiguate the meaning of names possibly designing the same concept (e.g. "train" and "training").
 
@@ -1682,7 +1680,7 @@ Once a datasets splits have been defined, any `RecordSet` can refer to those usi
       "@type": "cr:Field",
       "source": {
         "fileSet": { "@id": "image-files" },
-        "extract" : { "fileProperty": "fullpath" },
+        "extract": { "fileProperty": "fullpath" },
         "transform": {
           "regex": "^(train|val|test)2014.zip/.+2014/.*\\.jpg$"
         }
@@ -1739,9 +1737,9 @@ The `cr:Label` data type can also be applied to a complex Field, e.g., a nested 
       "@id": "images/annotations",
       "dataType": ["cr:RecordSet", "cr:Label"],
       "parentField": {
-          "@type": "cr:Field",
-          "@id": "images/annotations/image_id",
-          "references": { "@id": "images/image_id" }
+        "@type": "cr:Field",
+        "@id": "images/annotations/image_id",
+        "references": { "@id": "images/image_id" }
       },
       "subField": [
         {
@@ -1795,7 +1793,7 @@ Segmentation mask as a polygon:
   "dataType": ["cr:SegmentationMask", "sc:GeoShape"],
   "source": {
     "fileSet": { "@id": "instancesperson_keypoints_annotations" },
-    "extract": { "regex": "\w+\s(.*)" },
+    "extract": { "regex": "w+s(.*)" },
     "format": "X Y"
   }
 }
