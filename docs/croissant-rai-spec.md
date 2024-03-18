@@ -4,7 +4,7 @@ Version 1.0
 
 Published: 2024/03/06
 
-<https://mlcommons.org/croissant/RAI/1.0>
+<http://mlcommons.org/croissant/RAI/1.0>
 
 Authors:
 
@@ -21,7 +21,7 @@ Authors:
 
 As AI advances at rapid speed there is increased recognition among researchers, practitioners and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://link.springer.com/book/10.1007/978-3-030-30371-6). To tackle this, existing approaches to responsible AI range from (1) manual assessments, audits, and documentation, using tools such as checklists, factsheets, cards, and canvases; to (2) system architectures, algorithms, and software, which support developers (and to a much lesser extent other AI stakeholders such as the subjects affected by an AI system) with specific tasks around model evaluation, model debugging, explanations etc.
 
-The [Croissant format](https://mlcommons.org/croissant/1.0) by design helps with both types of approaches:
+The [Croissant format](http://mlcommons.org/croissant/1.0) by design helps with both types of approaches:
 
 1. On the one hand it proposes a machine-readable way to capture and publish metadata about AI datasets - this makes existing documentation solutions easier to publish, share, discover, and reuse;
 
@@ -50,10 +50,10 @@ The following list of initial use cases is discussed in more detail below:
 
 ## Prerequisites
 
-Similar to non-RAI aspects of Croissant, RAI properties build on the [schema.org/Dataset](https://schema.org/Dataset) vocabulary.
+Similar to non-RAI aspects of Croissant, RAI properties build on the [schema.org/Dataset](http://schema.org/Dataset) vocabulary.
 
 The Croissant RAI vocabulary is defined in its owned namespace, identified by the IRI:
-`https://mlcommons.org/croissant/RAI/`
+`http://mlcommons.org/croissant/RAI/`
 
 We generally abbreviated this namespace IRI using the prefix `rai`.
 
@@ -67,22 +67,22 @@ In addition, the presented vocabulary relies on the following namespaces:
   </thead>
   <tr>
     <td>sc</td>
-    <td>https://schema.org/</td>
-    <td>The <a href="https://schema.org">schema.org</a> namespace</td>
+    <td>http://schema.org/</td>
+    <td>The <a href="http://schema.org">schema.org</a> namespace</td>
   </tr>
   <tr>
     <td>cr</td>
-    <td>https://mlcommons.org/croissant/</td>
+    <td>http://mlcommons.org/croissant/</td>
     <td>MLCommons Croissant namespace</td>
   </tr>
 </table>
 
-The Croissant RAI specification is versioned, and the version is included in the URI of this Croissant specification: `https://mlcommons.org/croissant/RAI/1.0`
+The Croissant RAI specification is versioned, and the version is included in the URI of this Croissant specification: `http://mlcommons.org/croissant/RAI/1.0`
 
 Croissant datasets must declare that they conform to this specification by including the following property, at the dataset level:
 
 ```json
-"dct:conformsTo" : "https://mlcommons.org/croissant/RAI/1.0"
+"dct:conformsTo" : "http://mlcommons.org/croissant/RAI/1.0"
 ```
 
 Note that while the Croissant RAI specification is versioned, the Croissant RAI namespace above is not, so the constructs within the Croissant vocabulary will keep stable URIs even when the specification version changes.
@@ -152,18 +152,18 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
       rai:dataReleaseMaintenance
     </td>
     <td>
-      cr:<a href="https://schema.org/distribution">distribution</a><br>
+      cr:<a href="http://schema.org/distribution">distribution</a><br>
       cr:<a href="https://mlcommons.org/croissant/1.0#modified-and-added-properties">isLiveDataset</a><br>
       cr:<a href="https://mlcommons.org/croissant/1.0#modified-and-added-properties">citeAs</a>
     </td>
     <td>
-      sc:<a href="https://schema.org/creator">creator</a><br>
-      sc:<a href="https://schema.org/publisher">publisher</a><br>
-      sc:<a href="https://schema.org/datePublished">datePublished</a><br>
-      sc:<a href="https://schema.org/dateCreated">dateCreated</a><br>
-      sc:<a href="https://schema.org/dateModified">dateModified</a><br>
-      sc:<a href="https://schema.org/version">version</a><br>
-      sc:<a href="https://schema.org/license">license</a><br>
+      sc:<a href="http://schema.org/creator">creator</a><br>
+      sc:<a href="http://schema.org/publisher">publisher</a><br>
+      sc:<a href="http://schema.org/datePublished">datePublished</a><br>
+      sc:<a href="http://schema.org/dateCreated">dateCreated</a><br>
+      sc:<a href="http://schema.org/dateModified">dateModified</a><br>
+      sc:<a href="http://schema.org/version">version</a><br>
+      sc:<a href="http://schema.org/license">license</a><br>
       sc:<a href="https://schema.org/maintainer">maintainer</a>
     </td>
   </tr>
@@ -176,7 +176,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
       rai:machineAnnotationTools
     </td>
     <td>
-      cr:<a href="https://schema.org/distribution">distribution</a><br>
+      cr:<a href="http://schema.org/distribution">distribution</a><br>
       cr:<a href="https://mlcommons.org/croissant/1.0#modified-and-added-properties">isLiveDataset</a><br>
       <a href="https://mlcommons.org/croissant/1.0#label-data">cr:Label</a>
     </td>
@@ -460,12 +460,12 @@ Below is an example of RAI properties in a Geospatial AI-ready dataset - HLS Bur
 {
   "@context": {
     "@language": "en",
-    "rai": "https://mlcommons.org/croissant/RAI/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "sc": "https://schema.org/"
   },
   "@type": "schema.org/Dataset",
   "name": "Name of the dataset",
-  "dct:conformsTo": "https://mlcommons.org/croissant/RAI/1.0",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
   "rai:dataCollection": "After co-locating the shapefile and HLS scene, the 512x512 chip was formed by taking a window with the burn scar in the center. Burn scars near the edges of HLS tiles are offset from the center. Images were manually filtered for cloud cover and missing data to provide as clean a scene as possible, and burn scar presence was also manually verified.",
   "rai:dataCollectionType": "The dataset comprises 804 512x512 scenes. Each scene contain six bands, and masks have one band.",
   "rai:dataCollectionRawData": "Imagery is from V1.4 of Harmonized Landsat and Sentinel-2 (HLS). A full description and access to HLS may be found at https://hls.gsfc.nasa.gov/. The labels were from shapefiles maintained by the Monitoring Trends in Burn Severity (MTBS) group. The masks may be found at: https://mtbs.gov/",
@@ -486,12 +486,12 @@ The DICES dataset and accompanying analyses is available at [https://github.com/
 {
   "@context": {
     "@language": "en",
-    "rai": "https://mlcommons.org/croissant/RAI/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "sc": "https://schema.org/"
   },
   "@type": "schema.org/Dataset",
   "name": "DICES-30",
-  "dct:conformsTo": "https://mlcommons.org/croissant/RAI/1.0",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
   "rai:dataCollection": "The input data was sampled from an 8K multi-turn conversation corpus (comprising 48K turns in total) generated by human agents interacting with a generative AI-chatbot. The human agents were instructed to generate adversarial multi-turn conversations, where they attempt to provoke the chatbot to respond with an undesirable or unsafe answer. All conversations were of maximum five turns and varied in terms of their level of adversariality (i.e., degree of harm) and topics.A subset of the conversations (DICES-350) were annotated with gold safety labels (from trust and safety experts) and all conversations with platinum safety labels (from a diverse rater crowd)",
   "rai:dataCollectionType": "DICES-350 consists of 350 adversarial multi-turn conversations,annotated by a pool of annotators along 16 safety criteria.",
   "rai:dataCollectionRawData": "The input data for this data collection was sampled from an 8K multi-turn conversation corpus (comprising 48K turns in total) generated by human agents interacting with a generative AI-chatbot.",
@@ -515,12 +515,12 @@ As the size of language models continues to increase, there is a growing demand 
 {
   "@context": {
     "@language": "en",
-    "rai": "https://mlcommons.org/croissant/RAI/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "sc": "https://schema.org/"
   },
   "@type": "schema.org/Dataset",
   "name": "BigScience Root Corpus",
-  "dct:conformsTo": "https://mlcommons.org/croissant/RAI/1.0",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
   "rai:dataCollection": "The first part of the corpus, accounting for 62% of the final dataset size (in bytes), is made up of a collection of monolingual and multilingual language resources that were selected and documented collaboratively through various efforts of the BigScience Data Sourcing working group. The 38& remaining is get from the OSCAR version 21.09, based on the Common Crawl snapshot of February.",
   "rai:dataCollectionType": [
     "Web Scraping",
@@ -556,12 +556,12 @@ As the size of language models continues to increase, there is a growing demand 
 {
   "@context": {
     "@language": "en",
-    "rai": "https://mlcommons.org/croissant/RAI/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "sc": "https://schema.org/"
   },
   "@type": "schema.org/Dataset",
   "name": "BigScience - The Stack",
-  "dct:conformsTo": "https://mlcommons.org/croissant-RAI/1.0",
+  "dct:conformsTo": "http://mlcommons.org/croissant-RAI/1.0",
   "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
   "rai:dataCollectionType": "Web Scraping",
   "rai:dataCollectionRaw": "Files containing code data.",
