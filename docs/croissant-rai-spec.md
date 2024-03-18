@@ -222,9 +222,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
       rai:useCases<br>
       rai:dataReleaseMaintenance<br>
       rai:dataManipulationProtocol<br>
-      rai:dataManipulationProtocol<br>
-      rai:dataSharingAgreements<br>
-      rai:dataGovernanceProtocol
+      rai:dataManipulationProtocol
     </td>
     <td></td>
     <td></td>

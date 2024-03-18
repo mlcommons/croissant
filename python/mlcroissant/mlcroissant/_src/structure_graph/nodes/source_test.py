@@ -155,7 +155,7 @@ def test_declaring_multiple_data_extraction_in_one(conforms_to):
     assert Source.from_jsonld(ctx, json_ld) == Source(
         extract=Extract(column="csv_column", json_path="json_path"),
     )
-    assert len(ctx.issues.errors) == 1
+    assert len(ctx.issues.errors) == 2
     assert_contain_error(
         ctx.issues, "Source should have one of the following properties"
     )

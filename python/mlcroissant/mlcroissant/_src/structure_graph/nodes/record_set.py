@@ -1,7 +1,5 @@
 """RecordSet module."""
 
-from __future__ import annotations
-
 import itertools
 import json
 
@@ -15,6 +13,7 @@ from mlcroissant._src.core.data_types import data_types_from_jsonld
 from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
@@ -73,7 +72,7 @@ class RecordSet(Node):
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_IS_ENUMERATION,
     )
-    key: str | list[str] | None = mlc_dataclasses.jsonld_field(
+    key: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description=(
@@ -102,6 +101,7 @@ class RecordSet(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
@@ -173,7 +173,7 @@ class RecordSet(Node):
 
 def get_parent_uuid(ctx: Context, uuid: str) -> str | None:
     """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
-    node = ctx.node_by_uuid(uuid)
+    node = node_by_uuid(ctx, uuid)
     if node is None:
         ctx.issues.add_error(
             f"Node with uuid={uuid} does not exist. This error might have been found"

@@ -1,9 +1,8 @@
 """Field module."""
 
-from __future__ import annotations
-
 from rdflib import term
 from rdflib.namespace import SDO
+from typing_extensions import Self
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
@@ -13,6 +12,7 @@ from mlcroissant._src.core.data_types import data_types_from_jsonld
 from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -114,7 +114,7 @@ class Field(Node):
         input_types=[Source],
         url=constants.ML_COMMONS_SOURCE,
     )
-    sub_fields: list[Field] = mlc_dataclasses.jsonld_field(
+    sub_fields: list[Self] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description="Another `Field` that is nested inside this one.",
@@ -124,6 +124,7 @@ class Field(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
@@ -166,7 +167,7 @@ class Field(Node):
             ]:
                 return term.URIRef(data_type)
         # The data_type has to be found on the source:
-        source = self.ctx.node_by_uuid(self.source.uuid)
+        source = node_by_uuid(self.ctx, self.source.uuid)
         if not isinstance(source, Field):
             self.add_error(
                 "The field does not specify a valid"

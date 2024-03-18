@@ -127,6 +127,19 @@ class RecordSet(Node):
     )
 ```
 
+**Example 3**: specify a version (by default all versions):
+
+```python
+@mlc_dataclasses.dataclass
+class Field(Node):
+    is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_IS_ENUMERATION,
+        versions=[CroissantVersion.V_0_8],   # `is_enumeration` is only valid for v0.8, not v1.0
+    )
+```
+
 ## Run tests
 
 All tests can be run from the Makefile:

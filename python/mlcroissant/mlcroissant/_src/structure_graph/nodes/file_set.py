@@ -1,7 +1,5 @@
 """FileSet module."""
 
-from __future__ import annotations
-
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
@@ -70,6 +68,7 @@ class FileSet(Node):
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties("includes", "encoding_format", uuid_field)
