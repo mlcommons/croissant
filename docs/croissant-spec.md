@@ -330,7 +330,7 @@ The following list of properties from [schema.org](http://schema.org) must be sp
     <td>The type of a croissant dataset must be <a href="http://schema.org/Dataset">schema.org/Dataset</a>.</td>
   </tr>
   <tr>
-    <td><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">@dct:conformsTo</a></td>
+    <td><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">dct:conformsTo</a></td>
     <td><a href="http://schema.org/URL">URL</a></td>
     <td>ONE</td>
     <td>Croissant datasets must declare that they conform to the versioned schema: <a href="http://mlcommons.org/croissant/1.0">http://mlcommons.org/croissant/1.0</a></td>
