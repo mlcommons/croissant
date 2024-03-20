@@ -684,7 +684,7 @@ stock_data_6_9_2023.csv
 stock_data_6_10_2023.csv
 ```
 
-Because the dataset is updated continuously, the dataset should set the `isLiveDataset`` property to true. Since all files are written only once, checksums can be included without risk of synchronization issues. The dataset version should only be updated if a backwards-incompatible change is made (e.g., a bug fix to a file), since it is expected that a new file will be added every day.
+Because the dataset is updated continuously, the dataset should set the `isLiveDataset` property to true. Since all files are written only once, checksums can be included without risk of synchronization issues. The dataset version should only be updated if a backwards-incompatible change is made (e.g., a bug fix to a file), since it is expected that a new file will be added every day.
 
 # Resources
 
