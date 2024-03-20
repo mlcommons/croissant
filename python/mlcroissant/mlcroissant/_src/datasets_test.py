@@ -181,8 +181,8 @@ def test_load_from_huggingface():
     dataset = datasets.Dataset(url)
     has_one_record = False
     for record in dataset.records(record_set="record_set_mnist"):
-        assert record["label"] == 7
-        assert isinstance(record["image"], deps.PIL_Image.Image)
+        assert record["record_set_mnist/label"] == 7
+        assert isinstance(record["record_set_mnist/image"], deps.PIL_Image.Image)
         has_one_record = True
         break
     assert has_one_record, (

@@ -2091,7 +2091,6 @@ Segmentation mask as an image:
   "fileProperty": "cr:fileProperty",
   "format": "cr:format",
   "includes": "cr:includes",
-  "isEnumeration": "cr:isEnumeration",
   "jsonPath": "cr:jsonPath",
   "ml": "http://mlcommons.org/schema/",
   "parentField": "cr:parentField",
