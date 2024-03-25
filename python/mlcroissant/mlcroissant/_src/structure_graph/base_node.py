@@ -357,10 +357,11 @@ class Node:
             ctx.issues.add_error(f'{name} should be a dict with keys. Got "{jsonld}"')
             return None
         if cls._jsonld_type(ctx) == constants.SCHEMA_ORG_DATASET:
-            # For `Metadata` node, insert the conforms_to in the context:
+            # For `Metadata` node, insert conforms_to/is_live_dataset in the context:
             ctx.conforms_to = CroissantVersion.from_jsonld(
                 ctx, jsonld.get(constants.DCTERMS_CONFORMS_TO)
             )
+            ctx.is_live_dataset = jsonld.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx))
         if isinstance(jsonld, list):
             return [cls.from_jsonld(ctx, el) for el in jsonld]
         check_expected_type(ctx.issues, jsonld, cls._jsonld_type(ctx))
