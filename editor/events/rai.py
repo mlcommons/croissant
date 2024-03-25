@@ -72,8 +72,7 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str):
     if event == RaiEvent.RAI_DATA_ANNOTATION_TOOLS:
         metadata.machine_annotation_tools = st.session_state[key]
     if event == RaiEvent.RAI_DATA_USE_CASES:
-        print(index)
-        print(st.session_state[key])
+
         if metadata.data_use_cases:
             metadata.data_use_cases[int(index)] = st.session_state[key]
         else:
@@ -105,6 +104,7 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str):
             metadata.personal_sensitive_information.append(st.session_state[key])
     if event == RaiEvent.RAI_MAINTENANCE:
         metadata.data_release_maintenance_plan = st.session_state[key]
+
 
 def get_widget_cadinality(key: str):
     return key.split("_")[-1]

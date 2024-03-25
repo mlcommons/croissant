@@ -234,7 +234,7 @@ def render_rai_metadata():
     with col2.expander("**Data uses and social impact**", expanded=True):
         with st.expander("**Use cases**", expanded=True):
             if metadata.data_use_cases:
-                if isinstance(metadata.data_use_cases,list) :
+                if isinstance(metadata.data_use_cases, list):
                     for index, use_case in enumerate(metadata.data_use_cases):
                         key = "metadata-data-use-cases_" + str(index)
                         st.text_area(
