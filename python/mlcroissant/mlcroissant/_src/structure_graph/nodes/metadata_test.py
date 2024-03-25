@@ -76,7 +76,7 @@ def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
     assert metadata.license[0].name == "U.S. Government Works"
     assert metadata.license[0].url == "https://www.usa.gov/government-works/"
     assert metadata.license[1] == "License"
-    assert metadata.is_live_dataset == False
+    assert metadata.ctx.is_live_dataset == False
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
     assert not ctx.issues.errors

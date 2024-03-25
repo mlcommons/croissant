@@ -83,12 +83,6 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
     )
-    is_live_dataset: bool | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Whether the dataset is a live dataset.",
-        input_types=[SDO.Boolean],
-        url=constants.ML_COMMONS_IS_LIVE_DATASET,
-    )
     keywords: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
@@ -350,6 +344,8 @@ class Metadata(Node):
         jsonld["@context"] = context
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
         jsonld["conformsTo"] = conforms_to
+        if self.ctx.is_live_dataset:
+            jsonld["isLiveDataset"] = self.ctx.is_live_dataset
         return remove_empty_values(jsonld)
 
     @property

@@ -106,7 +106,7 @@ class FileObject(Node):
 
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")
-            if self.ctx and not self.ctx.is_live_dataset:
+            if not self.ctx.is_live_dataset:
                 self.assert_has_exclusive_properties(["md5", "sha256"])
 
     JSONLD_TYPE = constants.SCHEMA_ORG_FILE_OBJECT
