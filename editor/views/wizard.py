@@ -9,6 +9,7 @@ from core.constants import OVERVIEW
 from core.constants import RECORD_SETS
 from core.constants import RESOURCES
 from core.constants import TABS
+from core.constants import RAI
 from core.past_projects import save_current_project
 from core.state import get_tab
 from core.state import Metadata
@@ -18,6 +19,7 @@ from views.files import render_files
 from views.metadata import render_metadata
 from views.overview import render_overview
 from views.record_sets import render_record_sets
+from views.rai import render_rai_metadata
 
 
 def _export_json() -> str | None:
@@ -49,5 +51,7 @@ def render_editor():
         render_files()
     elif tab == RECORD_SETS:
         render_record_sets()
+    elif tab == RAI:
+        render_rai_metadata()
     save_current_project()
     set_tab(tab)
