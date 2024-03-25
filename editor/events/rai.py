@@ -34,76 +34,77 @@ class RaiEvent(enum.Enum):
     RAI_MAINTENANCE = "RAI_MAINTENANCE"
 
 
-def handle_rai_change(event: RaiEvent, Metadata: Metadata, key: str):
+def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str):
+    ## If widget is 1-to-many we first get the index to proper update them
+    index = get_widget_cadinality(key)
     if event == RaiEvent.RAI_DATA_COLLECTION:
-        Metadata.data_collection = st.session_state[key]
+        metadata.data_collection = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
-        Metadata.data_collection_type = st.session_state[key]
+        metadata.data_collection_type = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_MISSING_DATA:
-        Metadata.data_collection_missing_data = st.session_state[key]
+        metadata.data_collection_missing_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_RAW:
-        Metadata.data_collection_raw_data = st.session_state[key]
+        metadata.data_collection_raw_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME:
         # To do
         pass
     if event == RaiEvent.RAI_DATA_IMPUTATION_PROTOCOL:
-        Metadata.data_imputation_protocol = st.session_state[key]
+        metadata.data_imputation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL:
-        if Metadata.data_preprocessing_protocol:
-            index = key.split("_")[-1]
-            Metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
+        if metadata.data_preprocessing_protocol:
+            metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
         else:
-            Metadata.data_preprocessing_protocol = []
-            Metadata.data_preprocessing_protocol.append(st.session_state[key])
+            metadata.data_preprocessing_protocol = []
+            metadata.data_preprocessing_protocol.append(st.session_state[key])
     if event == RaiEvent.RAI_DATA_MANIPULATION_PROTOCOL:
-        Metadata.data_manipulation_protocol = st.session_state[key]
+        metadata.data_manipulation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PROTOCOL:
 
-        Metadata.data_annotation_protocol = st.session_state[key]
+        metadata.data_annotation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PLATFORM:
-        Metadata.data_annotation_platform = st.session_state[key]
+        metadata.data_annotation_platform = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_ANALYSIS:
-        Metadata.data_annotation_analysis = st.session_state[key]
+        metadata.data_annotation_analysis = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PER_ITEM:
-        Metadata.annotation_per_item = st.session_state[key]
+        metadata.annotation_per_item = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_DEMOGRAPHICS:
-        Metadata.annotator_demographics = st.session_state[key]
+        metadata.annotator_demographics = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_TOOLS:
-        Metadata.machine_annotation_tools = st.session_state[key]
+        metadata.machine_annotation_tools = st.session_state[key]
     if event == RaiEvent.RAI_DATA_USE_CASES:
-
-        if Metadata.data_use_cases:
-            index = key.split("_")[-1]
-            Metadata.data_use_cases[int(index)] = st.session_state[key]
+        print(index)
+        print(st.session_state[key])
+        if metadata.data_use_cases:
+            metadata.data_use_cases[int(index)] = st.session_state[key]
         else:
-            Metadata.data_use_cases = []
-            Metadata.data_use_cases.append(st.session_state[key])
+            metadata.data_use_cases = []
+            metadata.data_use_cases.append(st.session_state[key])
 
     if event == RaiEvent.RAI_DATA_BIAS:
 
-        if Metadata.data_biases:
-            index = key.split("_")[-1]
-            Metadata.data_biases[int(index)] = st.session_state[key]
+        if metadata.data_biases:
+            metadata.data_biases[int(index)] = st.session_state[key]
         else:
-            Metadata.data_biases = []
-            Metadata.data_biases.append(st.session_state[key])
+            metadata.data_biases = []
+            metadata.data_biases.append(st.session_state[key])
 
     if event == RaiEvent.RAI_DATA_LIMITATION:
-        if Metadata.data_limitations:
-            index = key.split("_")[-1]
-            Metadata.data_limitations[int(index)] = st.session_state[key]
+        if metadata.data_limitations:
+            metadata.data_limitations[int(index)] = st.session_state[key]
         else:
-            Metadata.data_limitations = []
-            Metadata.data_limitations.append(st.session_state[key])
+            metadata.data_limitations = []
+            metadata.data_limitations.append(st.session_state[key])
     if event == RaiEvent.RAI_DATA_SOCIAL_IMPACT:
-        Metadata.data_social_impact = st.session_state[key]
+        metadata.data_social_impact = st.session_state[key]
     if event == RaiEvent.RAI_SENSITIVE:
 
-        if Metadata.personal_sensitive_information:
-            index = key.split("_")[-1]
-            Metadata.personal_sensitive_information[int(index)] = st.session_state[key]
+        if metadata.personal_sensitive_information:
+            metadata.personal_sensitive_information[int(index)] = st.session_state[key]
         else:
-            Metadata.personal_sensitive_information = []
-            Metadata.personal_sensitive_information.append(st.session_state[key])
+            metadata.personal_sensitive_information = []
+            metadata.personal_sensitive_information.append(st.session_state[key])
     if event == RaiEvent.RAI_MAINTENANCE:
-        Metadata.data_release_maintenance_plan = st.session_state[key]
+        metadata.data_release_maintenance_plan = st.session_state[key]
+
+def get_widget_cadinality(key: str):
+    return key.split("_")[-1]
