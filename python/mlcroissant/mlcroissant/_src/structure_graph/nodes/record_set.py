@@ -105,7 +105,6 @@ class RecordSet(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
-        self.assert_has_optional_properties("description")
 
         if self.data is not None:
             data = self.data
