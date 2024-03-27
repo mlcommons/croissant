@@ -1,4 +1,2 @@
 Found the following 1 error(s) during the validation:
   -  [Metadata(mydataset) > RecordSet()] Property "https://schema.org/name" is mandatory, but does not exist.
-Found the following 1 warning(s) during the validation:
-  -  [Metadata(mydataset) > RecordSet() > Field(first-field)] Property "https://schema.org/description" is recommended, but does not exist.

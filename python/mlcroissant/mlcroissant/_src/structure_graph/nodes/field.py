@@ -128,7 +128,6 @@ class Field(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
-        self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
         self._standardize_data_types()
 

@@ -21,15 +21,10 @@ from mlcroissant._src.tests.nodes import create_test_node
 def test_checks_are_performed(conforms_to, field_uuid):
     with mock.patch.object(
         Node, "assert_has_mandatory_properties"
-    ) as mandatory_mock, mock.patch.object(
-        Node, "assert_has_optional_properties"
-    ) as optional_mock, mock.patch.object(
-        Node, "validate_name"
-    ) as validate_name_mock:
+    ) as mandatory_mock, mock.patch.object(Node, "validate_name") as validate_name_mock:
         ctx = Context(conforms_to=conforms_to)
         create_test_node(Field, ctx=ctx)
         mandatory_mock.assert_called_once_with(field_uuid)
-        optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 
 
