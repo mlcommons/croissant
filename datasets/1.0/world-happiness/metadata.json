@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "World-Happiness-Report",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Happiness scored according to economic production, social support, etc.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "None",
   "license": "cc0-1.0",
   "url": "https://www.kaggle.com/datasets/unsdsn/world-happiness",
@@ -65,10 +62,10 @@
       "@id": "2015.csv",
       "name": "2015.csv",
       "description": "Happiness rank and scores by country, 2015",
-      "contentUrl": "2015.csv",
       "containedIn": {
         "@id": "archive.zip"
       },
+      "contentUrl": "2015.csv",
       "encodingFormat": "text/csv"
     },
     {
@@ -76,10 +73,10 @@
       "@id": "2016.csv",
       "name": "2016.csv",
       "description": "Happiness rank and scores by country, 2016",
-      "contentUrl": "2016.csv",
       "containedIn": {
         "@id": "archive.zip"
       },
+      "contentUrl": "2016.csv",
       "encodingFormat": "text/csv"
     },
     {
@@ -87,10 +84,10 @@
       "@id": "2017.csv",
       "name": "2017.csv",
       "description": "Happiness rank and scores by country, 2017",
-      "contentUrl": "2017.csv",
       "containedIn": {
         "@id": "archive.zip"
       },
+      "contentUrl": "2017.csv",
       "encodingFormat": "text/csv"
     },
     {
@@ -98,10 +95,10 @@
       "@id": "2018.csv",
       "name": "2018.csv",
       "description": "Happiness rank and scores by country, 2018",
-      "contentUrl": "2018.csv",
       "containedIn": {
         "@id": "archive.zip"
       },
+      "contentUrl": "2018.csv",
       "encodingFormat": "text/csv"
     },
     {
@@ -109,10 +106,10 @@
       "@id": "2019.csv",
       "name": "2019.csv",
       "description": "Happiness rank and scores by country, 2019",
-      "contentUrl": "2019.csv",
       "containedIn": {
         "@id": "archive.zip"
       },
+      "contentUrl": "2019.csv",
       "encodingFormat": "text/csv"
     }
   ],

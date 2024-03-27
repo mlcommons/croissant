@@ -81,8 +81,16 @@ def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     are at the end.
     """
     items = sorted(jsonld.items())
-    start_keys = ["@context", "@type", "name", "description", "conformsTo"]
-    end_keys = ["distribution", "field", "data", "recordSet", "subField"]
+    start_keys = ["@context", "@type", "@id", "name", "description", "conformsTo"]
+    end_keys = [
+        "distribution",
+        "field",
+        "data",
+        "recordSet",
+        "subField",
+        "extract",
+        "transform",
+    ]
     sorted_items = []
     for key in start_keys:
         if key in jsonld:
@@ -96,10 +104,10 @@ def _sort_items(jsonld: Json) -> list[tuple[str, Any]]:
     return sorted_items
 
 
-def _sort_dict(d: Json):
+def sort_dict(d: Json):
     """Sorts the keys of a nested dict."""
     return {
-        k: _sort_dict(v) if isinstance(v, dict) and k != "@context" else v
+        k: sort_dict(v) if isinstance(v, dict) and k != "@context" else v
         for k, v in _sort_items(d)
     }
 
@@ -276,4 +284,4 @@ def compact_jsonld(json_: Any) -> Any:
             json_[new_key] = value
         else:
             json_[key] = new_value
-    return _sort_dict(json_)
+    return sort_dict(json_)

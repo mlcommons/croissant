@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "Movielens-25M",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "https://grouplens.org/datasets/movielens/25m/",
   "distribution": [
     {
@@ -60,60 +57,60 @@
       "@type": "cr:FileObject",
       "@id": "ratings-table",
       "name": "ratings-table",
-      "contentUrl": "ml-25m/ratings.csv",
       "containedIn": {
         "@id": "ml-25m-archive"
       },
+      "contentUrl": "ml-25m/ratings.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "movies-table",
       "name": "movies-table",
-      "contentUrl": "ml-25m/movies.csv",
       "containedIn": {
         "@id": "ml-25m-archive"
       },
+      "contentUrl": "ml-25m/movies.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "tags-table",
       "name": "tags-table",
-      "contentUrl": "ml-25m/tags.csv",
       "containedIn": {
         "@id": "ml-25m-archive"
       },
+      "contentUrl": "ml-25m/tags.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "links-table",
       "name": "links-table",
-      "contentUrl": "ml-25m/links.csv",
       "containedIn": {
         "@id": "ml-25m-archive"
       },
+      "contentUrl": "ml-25m/links.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "genome-scores-table",
       "name": "genome-scores-table",
-      "contentUrl": "ml-25m/genome-scores.csv",
       "containedIn": {
         "@id": "ml-25m-archive"
       },
+      "contentUrl": "ml-25m/genome-scores.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "genome-tags-table",
       "name": "genome-tags-table",
-      "contentUrl": "ml-25m/genome-tags.csv",
       "containedIn": {
         "@id": "ml-25m-archive"
       },
+      "contentUrl": "ml-25m/genome-tags.csv",
       "encodingFormat": "text/csv"
     }
   ],

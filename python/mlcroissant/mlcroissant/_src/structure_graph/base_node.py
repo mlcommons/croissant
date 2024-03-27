@@ -17,6 +17,7 @@ from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import WarningException
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import sort_dict
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import generate_uuid
@@ -347,7 +348,8 @@ class Node:
             if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
             jsonld[key] = value
-        return remove_empty_values(jsonld)
+        jsonld = remove_empty_values(jsonld)
+        return sort_dict(jsonld)
 
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Json):

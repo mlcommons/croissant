@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "file_object_in_zip",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Minimal example to read a FileObject contained in a zip.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {
@@ -60,20 +57,20 @@
       "@type": "cr:FileObject",
       "@id": "csv2_in_zip",
       "name": "csv2_in_zip",
-      "contentUrl": "csv2_in_zip.csv",
       "containedIn": {
         "@id": "zip_with_csv"
       },
+      "contentUrl": "csv2_in_zip.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "csv1_in_zip",
       "name": "csv1_in_zip",
-      "contentUrl": "csv1_in_zip.csv",
       "containedIn": {
         "@id": "zip_with_csv"
       },
+      "contentUrl": "csv1_in_zip.csv",
       "encodingFormat": "text/csv"
     }
   ],
