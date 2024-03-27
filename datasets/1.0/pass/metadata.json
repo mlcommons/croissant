@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "PASS",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
   "license": "cc-by-4.0",
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",

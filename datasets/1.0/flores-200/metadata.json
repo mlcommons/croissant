@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "FLORES-200",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "FLORES-200 is an evaluation benchmark for low-resource and multilingual machine translation",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@inproceedings{flores101, title={The FLORES-101  Evaluation Benchmark for Low-Resource and Multilingual Machine Translation}, author={Goyal, Naman and Gao, Cynthia and Chaudhary, Vishrav and Chen, Peng-Jen and Wenzek, Guillaume and Ju, Da and Krishnan, Sanjana and Ranzato, Marc'Aurelio and Guzm\\'{a}n, Francisco and Fan, Angela}, year={2021}}",
   "license": "cc-by-sa-4.0",
   "url": "https://github.com/facebookresearch/flores",
@@ -77,10 +74,10 @@
       "@id": "metadata-dev",
       "name": "metadata-dev",
       "description": "Contains labels for the records in each line in the dev files.",
-      "contentUrl": "flores200_dataset/metadata_dev.tsv",
       "containedIn": {
         "@id": "tinyurl-repository"
       },
+      "contentUrl": "flores200_dataset/metadata_dev.tsv",
       "encodingFormat": "text/tab-separated-values"
     },
     {
@@ -88,10 +85,10 @@
       "@id": "metadata-devtest",
       "name": "metadata-devtest",
       "description": "Contains labels for the records in each line in the devtest files.",
-      "contentUrl": "flores200_dataset/metadata_devtest.tsv",
       "containedIn": {
         "@id": "tinyurl-repository"
       },
+      "contentUrl": "flores200_dataset/metadata_devtest.tsv",
       "encodingFormat": "text/tab-separated-values"
     },
     {

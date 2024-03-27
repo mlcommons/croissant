@@ -42,14 +42,14 @@
   },
   "@type": "sc:Dataset",
   "name": "enum_example",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
-  "url": "https://example.com/datasets/enum/about",
-  "rai:dataCollection": "This is how data is collected",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "rai:dataBiases": [
     "Bias 1 in data",
     "Bias 2 in data"
   ],
+  "rai:dataCollection": "This is how data is collected",
+  "url": "https://example.com/datasets/enum/about",
   "distribution": [
     {
       "@type": "cr:FileObject",

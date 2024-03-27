@@ -16,6 +16,7 @@ from mlcroissant._src.core.dates import cast_dates
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import sort_dict
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
@@ -346,7 +347,8 @@ class Metadata(Node):
         jsonld["conformsTo"] = conforms_to
         if self.ctx.is_live_dataset:
             jsonld["isLiveDataset"] = self.ctx.is_live_dataset
-        return remove_empty_values(jsonld)
+        jsonld = remove_empty_values(jsonld)
+        return sort_dict(jsonld)
 
     @property
     def file_objects(self) -> list[FileObject]:

@@ -95,7 +95,11 @@ def migrate_test_dataset(dataset: epath.Path, json_ld):
 
     Cannot use mlc.Metadata as test Croissant files may contain errors.
     """
-    json_ld = compact_jsonld(expand_jsonld(json_ld, ctx=Context()))
+    try:
+        json_ld = compact_jsonld(expand_jsonld(json_ld, ctx=Context()))
+    except mlc.ValidationError:
+        pass
+    del json_ld["@context"]["@base"]
     # Special cases for test datasets without @context
     if "recordset_missing_context_for_datatype" in os.fspath(dataset):
         del json_ld["@context"]["dataType"]
@@ -128,11 +132,11 @@ def main(argv):
         if not os.fspath(p).endswith("recordset_bad_type/metadata.json")
     ]
     assert test_datasets, f"No dataset found in {test_path}"
+    up = get_migration_fn(FLAGS.migration)
     for dataset in datasets:
         print(f"Converting {dataset}...")
         with dataset.open("r") as f:
             json_ld = json.load(f)
-            up = get_migration_fn(FLAGS.migration)
             json_ld = up(json_ld)
         json_ld = migrate_dataset(json_ld)
         with dataset.open("w") as f:
@@ -142,9 +146,13 @@ def main(argv):
         print(f"Converting test dataset {dataset}...")
         with dataset.open("r") as f:
             json_ld = json.load(f)
-            up = get_migration_fn(FLAGS.migration)
             json_ld = up(json_ld)
-        json_ld = migrate_test_dataset(dataset, json_ld)
+        # Here you can use migrate_test_dataset as such:
+        # ```
+        # json_ld = migrate_test_dataset(dataset, json_ld)
+        # ```
+        # But this behaviour is still bugged, so for now you have to perform all
+        # transformations in the up migration function.
         with dataset.open("w") as f:
             json.dump(json_ld, f, indent="  ")
             f.write("\n")

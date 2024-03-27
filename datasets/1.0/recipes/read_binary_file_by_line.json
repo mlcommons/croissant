@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "read_binary_file_by_line",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a recipe illustrating how to read files line by line.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {

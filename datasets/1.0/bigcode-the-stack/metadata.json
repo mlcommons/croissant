@@ -42,8 +42,8 @@
   },
   "@type": "sc:Dataset",
   "name": "bigcode-the-stack",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Mu\u00f1oz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
   "creator": [
     {
@@ -61,29 +61,30 @@
     "crowdsourced",
     "expert-generated"
   ],
-  "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub \u2013 others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
-  "rai:dataCollectionType": [
-    "Web Scraping", "Others"
-  ],
-  "rai:dataCollectionRawData": "Files containing code data.",
-  "rai:dataPreprocessingProtocol": [
-    "Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.",
-    "Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset."
-  ],
+  "license": "other",
   "rai:dataBiases": [
     "Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer",
     "Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset",
     "The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models."
   ],
-  "rai:dataUseCases": "The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling).",
+  "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub \u2013 others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
+  "rai:dataCollectionRawData": "Files containing code data.",
+  "rai:dataCollectionType": [
+    "Web Scraping",
+    "Others"
+  ],
   "rai:dataLimitations": [
     "One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues.",
     "The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware.",
     "Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information."
   ],
+  "rai:dataPreprocessingProtocol": [
+    "Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.",
+    "Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset."
+  ],
   "rai:dataSocialImpact": "The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.",
+  "rai:dataUseCases": "The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling).",
   "rai:personalSensitiveInformation": "The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/.",
-  "license": "other",
   "sameAs": "https://www.bigcode-project.org/docs/about/the-stack/",
   "url": "https://huggingface.co/datasets/bigcode/the-stack",
   "distribution": [

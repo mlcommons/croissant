@@ -10,8 +10,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,7 +28,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +41,8 @@
   },
   "@type": "sc:Dataset",
   "name": "audio_test",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is the basic test case for audio files",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "None",
   "distribution": [
     {
