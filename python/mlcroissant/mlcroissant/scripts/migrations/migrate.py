@@ -41,8 +41,7 @@ from etils import epath
 
 import mlcroissant as mlc
 from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.json_ld import compact_jsonld
-from mlcroissant._src.core.json_ld import expand_jsonld
+from mlcroissant._src.core.rdf import make_context
 
 _PREVIOUS_MIGRATIONS_FOLDER = "previous"
 
@@ -95,16 +94,32 @@ def migrate_test_dataset(dataset: epath.Path, json_ld):
 
     Cannot use mlc.Metadata as test Croissant files may contain errors.
     """
-    try:
-        json_ld = compact_jsonld(expand_jsonld(json_ld, ctx=Context()))
-    except mlc.ValidationError:
-        pass
-    del json_ld["@context"]["@base"]
+    # Here you can process json_ld as such:
+    # ```
+    # from mlcroissant._src.core.json_ld import compact_jsonld
+    # from mlcroissant._src.core.json_ld import expand_jsonld
+    # try:
+    #     json_ld = compact_jsonld(expand_jsonld(json_ld, ctx=Context()))
+    # except mlc.ValidationError:
+    #     pass
+    # ```
+    # But this behaviour is still bugged, so for now you have to perform all
+    # transformations in the up migration function.
+    if "@base" in json_ld["@context"]:
+        del json_ld["@context"]["@base"]
     # Special cases for test datasets without @context
     if "recordset_missing_context_for_datatype" in os.fspath(dataset):
         del json_ld["@context"]["dataType"]
     if "mlfield_missing_source" in os.fspath(dataset):
         del json_ld["@context"]["source"]
+    return json_ld
+
+
+def standardize_context(json_ld):
+    """Standardizes the @context by merging it with the actual context."""
+    existing_context = json_ld["@context"]
+    context = make_context() | existing_context
+    json_ld["@context"] = context
     return json_ld
 
 
@@ -139,6 +154,7 @@ def main(argv):
             json_ld = json.load(f)
             json_ld = up(json_ld)
         json_ld = migrate_dataset(json_ld)
+        json_ld = standardize_context(json_ld)
         with dataset.open("w") as f:
             json.dump(json_ld, f, indent="  ")
             f.write("\n")
@@ -147,12 +163,8 @@ def main(argv):
         with dataset.open("r") as f:
             json_ld = json.load(f)
             json_ld = up(json_ld)
-        # Here you can use migrate_test_dataset as such:
-        # ```
-        # json_ld = migrate_test_dataset(dataset, json_ld)
-        # ```
-        # But this behaviour is still bugged, so for now you have to perform all
-        # transformations in the up migration function.
+        json_ld = standardize_context(json_ld)
+        json_ld = migrate_test_dataset(dataset, json_ld)
         with dataset.open("w") as f:
             json.dump(json_ld, f, indent="  ")
             f.write("\n")
