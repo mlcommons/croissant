@@ -9,6 +9,53 @@ Croissant 🥐 is a high-level format for machine learning datasets that combine
 
 Croissant builds on [schema.org](https://schema.org/), and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable.
 
+|Try it out| Croissant at a glance|
+|---|---|
+|
+```python3
+# 1. Point to a local or remote Croissant JSON file
+import mlcroissant as mlc
+url = "https://datasets-server.huggingface.co/croissant?dataset=fashion_mnist"
+# 2. Inspect metadata
+print(mlc.Dataset(url).metadata.to_json())
+# 3. Use Croissant dataset in your ML workload
+import tensorflow_datasets as tfds
+builder = tfds.core.dataset_builders.CroissantBuilder(
+    jsonld=url)
+# 4. Split for training/testing
+train, test = builder.as_data_source(split=['default[:80%]', 'default[80%:]'])
+```
+| <img src='/docs/images/croissant-summary.png' width='500'> |
+
+<table>
+    <tr>
+        <th>Content</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>Code block</td>
+        <td>
+            <pre><code>
+# 1. Point to a local or remote Croissant JSON file
+import mlcroissant as mlc
+url = "https://datasets-server.huggingface.co/croissant?dataset=fashion_mnist"
+# 2. Inspect metadata
+print(mlc.Dataset(url).metadata.to_json())
+# 3. Use Croissant dataset in your ML workload
+import tensorflow_datasets as tfds
+builder = tfds.core.dataset_builders.CroissantBuilder(
+    jsonld=url)
+# 4. Split for training/testing
+train, test = builder.as_data_source(split=['default[:80%]', 'default[80%:]'])
+            </code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Image</td>
+        <td> <img src='/docs/images/croissant-summary.png' width='500'></td>
+    </tr>
+</table>
+
 ## Trying It Out
 
 Croissant is currently under development by the community. You can try the Croissant implementation, `mlcroissant`:
