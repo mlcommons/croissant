@@ -14,7 +14,7 @@
                 <br>
                 <br>
                 <pre lang="bash"><code> pip install mlcroissant </code></pre> 
-                <pre lang="python"><code># 1. Point to a local or remote Croissant JSON file
+                <pre lang="python"><code># 1. Point to a local or remote Croissant file
 import mlcroissant as mlc
 url = "https://datasets-server.huggingface.co/ \
     croissant?dataset=fashion_mnist"
@@ -22,8 +22,9 @@ url = "https://datasets-server.huggingface.co/ \
 print(mlc.Dataset(url).metadata.to_json())
 # 3. Use Croissant dataset in your ML workload
 import tensorflow_datasets as tfds
-builder = tfds.core.dataset_builders.CroissantBuilder(
-    jsonld=url)
+builder = tfds.core.dataset_builders.
+                      CroissantBuilder(
+                      jsonld=url)
 # 4. Split for training/testing
 train, test = builder.as_data_source(split=
                     ['default[:80%]', 
