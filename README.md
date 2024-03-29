@@ -5,7 +5,7 @@
 
 ## Summary
 
-Croissant 🥐 is a high-level format for machine learning datasets that combines metadata, resource file descriptions, data structure, and default ML semantics into a single file; it works with existing datasets to make them easier to find, use, and support with tools. Croissant builds on <a href="https://schema.org/">schema.org</a>, and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable.
+Croissant 🥐 is a high-level format for machine learning datasets that combines metadata, resource file descriptions, data structure, and default ML semantics into a single file; it works with existing datasets to make them easier to find, use, and support with tools. Croissant builds on <a href="https://schema.org/">schema.org</a>, and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable. You can find a gentle introduction in the companion paper [Croissant: A Metadata Format for ML-Ready Datasets](https://arxiv.org/abs/2403.19546).
 
 <img src='/docs/images/croissant-summary.png' width='500'>
 
@@ -170,3 +170,16 @@ The Task Force is co-chaired by [Omar Benjelloun](mailto:benjello@google.com) an
 Albert Villanova (Hugging Face), Andrew Zaldivar (Google), Baishan Guo (Meta), Carole Jean-Wu (Meta), Ce Zhang (ETH Zurich), Costanza Conforti (Google), D. Sculley (Kaggle), Dan Brickley (Schema.Org), Eduardo Arino de la Rubia (Meta), Edward Lockhart (Deepmind), Elena Simperl (King's College London), Goeff Thomas (Kaggle), Joan Giner-Miguelez (UOC), Joaquin Vanschoren (TU/Eindhoven, OpenML), Jos van der Velde (TU/Eindhoven, OpenML), Julien Chaumond (Hugging Face), Kurt Bollacker (MLCommons), Lora Aroyo (Google), Luis Oala (Dotphoton), Meg Risdal (Kaggle), Natasha Noy (Google), Newsha Ardalani (Meta), Omar Benjelloun (Google), Peter Mattson (MLCommons), Pierre Marcenac (Google), Pierre Ruyssen (Google), Pieter Gijsbers (TU/Eindhoven, OpenML), Prabhant Singh (TU/Eindhoven, OpenML), Quentin Lhoest (Hugging Face), Steffen Vogler (Bayer), Taniya Das (TU/Eindhoven, OpenML), Michael Kuchnik (Meta)
 
 Thank you for supporting Croissant! 🙂
+
+## Citation
+
+```
+@misc{akhtar2024croissant,
+      title={Croissant: A Metadata Format for ML-Ready Datasets}, 
+      author={Mubashara Akhtar and Omar Benjelloun and Costanza Conforti and Joan Giner-Miguelez and Nitisha Jain and Michael Kuchnik and Quentin Lhoest and Pierre Marcenac and Manil Maskey and Peter Mattson and Luis Oala and Pierre Ruyssen and Rajat Shinde and Elena Simperl and Goeffry Thomas and Slava Tykhonov and Joaquin Vanschoren and Steffen Vogler and Carole-Jean Wu},
+      year={2024},
+      eprint={2403.19546},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
