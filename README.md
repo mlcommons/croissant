@@ -30,7 +30,7 @@ train, test = builder.as_data_source(split=
                     'default[80%:]']) </code></pre> 
           </td>
           <td>
-              <img src='/docs/images/croissant-summary.png'>
+              <img src='/docs/images/croissant-summary.png' width='500'>
           </td>
       </tr>
 </table>
