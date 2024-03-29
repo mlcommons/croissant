@@ -8,30 +8,12 @@
 
 <table>
       <tr>
-          <td width="30%">
+          <td width="40%">
                 Croissant 🥐 is a high-level format for machine learning datasets that combines metadata, resource file descriptions, data structure, and default ML semantics into a single file; it works with existing datasets to make them easier to find, use, and support with tools.
                 Croissant builds on <a href="https://schema.org/">schema.org</a>, and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable.
-                <br>
-                <br>
-                <pre lang="bash"><code> pip install mlcroissant </code></pre> 
-                <pre lang="python"><code># 1. Point to a local or remote Croissant file
-import mlcroissant as mlc
-url = "https://datasets-server.huggingface.co/ \
-    croissant?dataset=fashion_mnist"
-# 2. Inspect metadata
-print(mlc.Dataset(url).metadata.to_json())
-# 3. Use Croissant dataset in your ML workload
-import tensorflow_datasets as tfds
-builder = tfds.core.dataset_builders.
-                      CroissantBuilder(
-                      jsonld=url)
-# 4. Split for training/testing
-train, test = builder.as_data_source(split=
-                    ['default[:80%]', 
-                    'default[80%:]']) </code></pre> 
           </td>
           <td>
-              <img src='/docs/images/croissant-summary.png' width='999'>
+              <img src='/docs/images/croissant-summary.png'>
           </td>
       </tr>
 </table>
@@ -55,6 +37,21 @@ metadata = ds.metadata.to_json()
 print(f"{metadata['name']}: {metadata['description']}")
 for x in ds.records(record_set="default"):
     print(x)
+```
+
+Use it in your ML workflow:
+
+```python3
+# 1. Point to a local or remote Croissant file
+import mlcroissant as mlc
+url = "https://datasets-server.huggingface.co/croissant?dataset=fashion_mnist"
+# 2. Inspect metadata
+print(mlc.Dataset(url).metadata.to_json())
+# 3. Use Croissant dataset in your ML workload
+import tensorflow_datasets as tfds
+builder = tfds.core.dataset_builders.CroissantBuilder(jsonld=url)
+# 4. Split for training/testing
+train, test = builder.as_data_source(split=['default[:80%]', 'default[80%:]'])
 ```
 
 Please see the [notebook recipes](python/mlcroissant/recipes) for more examples.
