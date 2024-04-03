@@ -123,7 +123,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
 
 ## Getting involved
 
-- [Join](https://groups.google.com/a/mlcommons.org/g/croissant) the mailing list
+- [Join](https://mlcommons.org/community/subscribe/) the mailing list
 - Attend Croissant meetings (please joint the list to automatically receive the invite)
 - [File issues for](https://github.com/mlcommons/croissant) bugs for feature requests
 - [Contribute code](https://github.com/mlcommons/croissant) (please sign the MLCommons Association CLA first!)
