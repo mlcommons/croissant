@@ -28,4 +28,4 @@ class HuggingfaceSpider(BaseSpider):
 
     def get_url(self, dataset_id: str):
         """See base class."""
-        return f"https://datasets-server.huggingface.co/croissant?dataset={dataset_id}"
+        return f"https://huggingface.co/api/datasets/{dataset_id}/croissant"
