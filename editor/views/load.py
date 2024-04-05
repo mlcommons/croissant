@@ -16,7 +16,7 @@ HTML.
 - [OpenML](https://www.openml.org/search?type=data) offers a 🥐 button on all of their
 datasets.
 - [Hugging Face](https://huggingface.co/) offers an
-[API endpoint](https://datasets-server.huggingface.co/croissant?dataset=${dataset_id) to
+[API endpoint](https://huggingface.co/docs/datasets-server/croissant) to
 build a Croissant JSON-LD."""
 
 
