@@ -26,7 +26,7 @@ def execute_downloads(operations: Operations):
 
 
 def _order_relevant_operations(
-    operations: Operations, record_set_name: str
+    operations: Operations, record_set_id: str
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
     # ReadFields linked to the `record_set_name`.
@@ -35,7 +35,7 @@ def _order_relevant_operations(
             operation
             for operation in operations.nodes
             if isinstance(operation, ReadFields)
-            and operation.node.name == record_set_name
+            and operation.node.uuid == record_set_id
         )
     )
     ancestors = set(nx.ancestors(operations, group_record_set))
