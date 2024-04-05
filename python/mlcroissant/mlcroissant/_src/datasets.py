@@ -87,14 +87,14 @@ class Dataset:
         return dataset
 
     def records(self, record_set: str) -> Records:
-        """Accesses all records in `record_set` if it exists."""
-        if not any(rs for rs in self.metadata.record_sets if rs.name == record_set):
-            names = [record_set.name for record_set in self.metadata.record_sets]
+        """Accesses all records with @id==record_set if it exists."""
+        if not any(rs for rs in self.metadata.record_sets if rs.uuid == record_set):
+            ids = [record_set.uuid for record_set in self.metadata.record_sets]
             error_msg = f"did not find any record set with the name `{record_set}`. "
-            if not names:
+            if not ids:
                 error_msg += "This dataset declares no record sets."
             else:
-                error_msg += f"Possible RecordSets: {names}"
+                error_msg += f"Possible RecordSets: {ids}"
             raise ValueError(error_msg)
         return Records(self, record_set, debug=self.debug)
 
@@ -152,7 +152,7 @@ class Records:
             operation
             for operation in operations.nodes
             if isinstance(operation, ReadFields)
-            and operation.node.name == self.record_set
+            and operation.node.uuid == self.record_set
         )
         paths = nx.all_simple_paths(operations, source=source, target=target)
         interesting_nodes = {node for path in paths for node in path}

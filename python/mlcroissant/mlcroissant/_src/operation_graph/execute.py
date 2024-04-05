@@ -26,7 +26,7 @@ def execute_downloads(operations: Operations):
 
 
 def _order_relevant_operations(
-    operations: Operations, record_set_name: str
+    operations: Operations, record_set_id: str
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
     # ReadFields linked to the `record_set_name`.
@@ -35,7 +35,7 @@ def _order_relevant_operations(
             operation
             for operation in operations.nodes
             if isinstance(operation, ReadFields)
-            and operation.node.name == record_set_name
+            and operation.node.uuid == record_set_id
         )
     )
     ancestors = set(nx.ancestors(operations, group_record_set))
@@ -61,7 +61,7 @@ def execute_operations_sequentially(record_set: str, operations: Operations):
             logging.info("Executing %s", operation)
             results[operation] = operation(*previous_results)
             if isinstance(operation, ReadFields):
-                if operation.node.name != record_set:
+                if operation.node.uuid != record_set:
                     # The RecordSet will be used later in the graph by another RecordSet
                     # This could be multi-threaded to build the pd.DataFrame faster.
                     results[operation] = pd.DataFrame(list(results[operation]))
@@ -92,7 +92,7 @@ def execute_operations_in_streaming(
     for i, operation in enumerate(list_of_operations):
         try:
             if isinstance(operation, ReadFields):
-                if operation.node.name != record_set:
+                if operation.node.uuid != record_set:
                     continue
                 yield from operation(result)
                 return
