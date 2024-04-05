@@ -40,7 +40,7 @@ def test_execute_downloads():
 def test_only_execute_needed_operations():
     operations = Operations()
     node = create_test_file_object()
-    record_set = create_test_record_set(name="my-record-set")
+    record_set = create_test_record_set(id="my-record-set")
     init = InitOperation(operations=operations, node=node)
     (
         init
@@ -67,7 +67,7 @@ def test_raises_with_an_explicit_mlcroissant_exception():
     with mock.patch.object(Download, "__call__", side_effect=ValueError):
         operations = Operations()
         node = create_test_file_object()
-        record_set = create_test_record_set(name="my-record-set")
+        record_set = create_test_record_set(id="my-record-set")
         (
             InitOperation(operations=operations, node=node)
             >> Download(operations=operations, node=node)
