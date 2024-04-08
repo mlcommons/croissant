@@ -133,13 +133,13 @@ croissant:examples a rdf:Property ;
 croissant:source a rdf:Property ;
   rdfs:label "source" ;
   rdfs:comment "The data source of the field. This will generally reference a FileObject or FileSet's contents (e.g., a specific column of a table)." ;
-  schema:domainIncludes croissant:RecordSet croissant:Field ;
-  schema:rangeIncludes croissant:DataSource croissant:FileObject croissant:FileSet croissant:RecordSet .
+  schema:domainIncludes croissant:RecordSet, croissant:Field ;
+  schema:rangeIncludes croissant:DataSource, croissant:FileObject, croissant:FileSet, croissant:RecordSet .
 
 croissant:dataType a rdf:Property ;
   rdfs:label "dataType" ;
   rdfs:comment "The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, sc:Integer) or a semantic type (e.g., sc:GeoLocation)." ;
-  schema:domainIncludes croissant:RecordSet croissant:Field ;
+  schema:domainIncludes croissant:RecordSet, croissant:Field ;
   schema:rangeIncludes croissant:DataType .
 
 croissant:repeated a rdf:Property ;
