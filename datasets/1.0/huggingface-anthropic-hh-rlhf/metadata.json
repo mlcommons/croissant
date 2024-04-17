@@ -84,7 +84,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/transcript",
           "name": "red-team-attempts/transcript",
-          "description": "Transcript.",
+          "description": "A text transcript of a conversation between a human adversary (red team member) and an AI assistant.",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
@@ -99,7 +99,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/is_upworker",
           "name": "red-team-attempts/is_upworker",
-          "description": "Is upworker.",
+          "description": "A binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk.",
           "dataType": "sc:Boolean",
           "source": {
             "fileObject": {
@@ -114,7 +114,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/min_harmlessness_score_transcript",
           "name": "red-team-attempts/min_harmlessness_score_transcript",
-          "description": "Min harmlessness score transcript.",
+          "description": "A real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model.",
           "dataType": "sc:Float",
           "source": {
             "fileObject": {
@@ -129,7 +129,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/task_descripton_harmlessness_score",
           "name": "red-team-attempts/task_descripton_harmlessness_score",
-          "description": "Task description harmlessness score.",
+          "description": "A real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model.",
           "dataType": "sc:Float",
           "source": {
             "fileObject": {
@@ -144,7 +144,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/red_team_member_id",
           "name": "red-team-attempts/red_team_member_id",
-          "description": "Red team member id.",
+          "description": "An arbitrary identifier of the red team member. one red team member can generate multiple red team attacks.",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
@@ -159,7 +159,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/rating",
           "name": "red-team-attempts/rating",
-          "description": "Rating.",
+          "description": "The red team member's rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful).",
           "dataType": "sc:Float",
           "source": {
             "fileObject": {
@@ -174,7 +174,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/num_params",
           "name": "red-team-attempts/num_params",
-          "description": "Num params.",
+          "description": "Number of parameters in the language model powering the AI assistant.",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
@@ -189,7 +189,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/model_type",
           "name": "red-team-attempts/model_type",
-          "description": "Model type.",
+          "description": "Type of model powering the AI assistant.",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
@@ -204,7 +204,7 @@
           "@type": "cr:Field",
           "@id": "red-team-attempts/task_description",
           "name": "red-team-attempts/task_description",
-          "description": "Task description.",
+          "description": "A short text description written by the red team member about how they tried to red team the AI assistant.",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
