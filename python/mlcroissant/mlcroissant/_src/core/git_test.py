@@ -6,10 +6,14 @@ from unittest import mock
 
 from etils import epath
 
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
+from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.tests.nodes import create_test_node
 
 _GIT_LFS_CONTENT = lambda: """version https://git-lfs.github.com/spec/v1
 oid sha256:5e2785fcd9098567a49d6e62e328923d955b307b6dcd0492f6234e96e670772a
@@ -50,6 +54,22 @@ def test_download_git_lfs_file():
     with mock.patch.object(git, "Git", autospec=True) as git_mock:
         download_git_lfs_file(file)
         git_mock.assert_called_once_with("/tmp/full/")
+        git_mock.return_value.execute.assert_called_once_with([
+            "git", "lfs", "pull", "--include", "path.json"
+        ])
+
+
+def test_download_git_lfs_file_object():
+    file = Path(
+        filepath=epath.Path("/download/croissant-08sc/path.json"),
+        fullpath=pathlib.PurePath("croissant-08sc/path.json"),
+    )
+    ctx = Context(is_live_dataset=True, conforms_to=CroissantVersion.V_1_0)
+    file_object = create_test_node(FileObject, ctx=ctx)
+    git = deps.git
+    with mock.patch.object(git, "Git", autospec=True) as git_mock:
+        download_git_lfs_file(file, node=file_object)
+        git_mock.assert_called_once_with("/download/croissant-08sc/")
         git_mock.return_value.execute.assert_called_once_with([
             "git", "lfs", "pull", "--include", "path.json"
         ])

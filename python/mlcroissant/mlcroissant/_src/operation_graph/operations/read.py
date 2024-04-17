@@ -2,6 +2,7 @@
 
 import dataclasses
 import enum
+import gzip
 import json
 
 from etils import epath
@@ -84,9 +85,14 @@ class Read(Operation):
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
-            download_git_lfs_file(file)
+            download_git_lfs_file(file, node=self.node)
         reading_method = _reading_method(self.node, self.fields)
-        with filepath.open("rb") as file:
+        file = filepath.open("rb")
+        # TODO(https://github.com/mlcommons/croissant/issues/635).
+        if str(filepath).endswith(".gz"):
+            file = gzip.open(file, "rt", newline="")
+
+        with file:
             if encoding_format == EncodingFormat.CSV:
                 return pd.read_csv(file)
             elif encoding_format == EncodingFormat.TSV:
