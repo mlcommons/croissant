@@ -8,11 +8,11 @@ from etils import epath
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.tests.nodes import create_test_node
 
 _GIT_LFS_CONTENT = lambda: """version https://git-lfs.github.com/spec/v1

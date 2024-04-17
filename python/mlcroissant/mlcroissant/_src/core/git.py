@@ -33,7 +33,7 @@ def download_git_lfs_file(file: Path, node: FileObject | FileSet | None = None):
     fullpath = os.fspath(file.fullpath)
     if isinstance(node, FileObject):
         # Strip the `f"croissant-{hashed_url}/"` prefix which is added to the fullpath
-        # when downloading the GitHub repo. 
+        # when downloading the GitHub repo.
         if fullpath.startswith("croissant-"):
             fullpath = "/".join(fullpath.split("/")[1:])
 
