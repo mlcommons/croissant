@@ -87,12 +87,11 @@ class Read(Operation):
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file, node=self.node)
         reading_method = _reading_method(self.node, self.fields)
-        file = filepath.open("rb")
-        # TODO(https://github.com/mlcommons/croissant/issues/635).
-        if str(filepath).endswith(".gz"):
-            file = gzip.open(file, "rt", newline="")
 
-        with file:
+        with filepath.open("rb") as file:
+            # TODO(https://github.com/mlcommons/croissant/issues/635).
+            if str(filepath).endswith(".gz"):
+                file = gzip.open(file, "rt", newline="")
             if encoding_format == EncodingFormat.CSV:
                 return pd.read_csv(file)
             elif encoding_format == EncodingFormat.TSV:
