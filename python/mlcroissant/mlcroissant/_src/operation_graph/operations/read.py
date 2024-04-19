@@ -7,6 +7,7 @@ import json
 
 from etils import epath
 import pandas as pd
+import pathlib
 
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
@@ -85,7 +86,7 @@ class Read(Operation):
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
-            download_git_lfs_file(file, node=self.node)
+            download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
 
         with filepath.open("rb") as file:
@@ -152,7 +153,7 @@ class Read(Operation):
                 content_url = self.node.content_url
                 file = Path(
                     filepath=file.filepath / content_url,
-                    fullpath=file.fullpath / content_url,
+                    fullpath=pathlib.PurePath(content_url),
                 )
             # The FileObject comes from disk:
             elif (

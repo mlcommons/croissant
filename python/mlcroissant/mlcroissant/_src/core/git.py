@@ -7,8 +7,6 @@ from etils import epath
 
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
-from mlcroissant._src.structure_graph.nodes.file_object import FileObject
-from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 
 
 def is_git_lfs_file(filepath: epath.Path) -> bool:
@@ -26,16 +24,11 @@ def is_git_lfs_file(filepath: epath.Path) -> bool:
     return False
 
 
-def download_git_lfs_file(file: Path, node: FileObject | FileSet | None = None):
+def download_git_lfs_file(file: Path):
     """Downloads a specific git-lfs file within its repo."""
     # Path(filepath="/tmp/full/path.json", fullpath="path.json")
     # => working_dir = "/tmp/full"
     fullpath = os.fspath(file.fullpath)
-    if isinstance(node, FileObject):
-        # Strip the `f"croissant-{hashed_url}/"` prefix which is added to the fullpath
-        # when downloading the GitHub repo.
-        fullpath = "/".join(fullpath.split("/")[1:])
-
     working_dir = os.fspath(file.filepath).rsplit(fullpath)[0]
     repo = deps.git.Git(working_dir)
     logging.info(
