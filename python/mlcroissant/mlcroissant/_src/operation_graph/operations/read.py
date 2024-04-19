@@ -91,7 +91,7 @@ class Read(Operation):
 
         with filepath.open("rb") as file:
             # TODO(https://github.com/mlcommons/croissant/issues/635).
-            if str(filepath).endswith(".gz"):
+            if filepath.suffix == ".gz":
                 file = gzip.open(file, "rt", newline="")
             if encoding_format == EncodingFormat.CSV:
                 return pd.read_csv(file)
