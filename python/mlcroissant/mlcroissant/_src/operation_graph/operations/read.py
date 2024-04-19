@@ -4,10 +4,10 @@ import dataclasses
 import enum
 import gzip
 import json
+import pathlib
 
 from etils import epath
 import pandas as pd
-import pathlib
 
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
