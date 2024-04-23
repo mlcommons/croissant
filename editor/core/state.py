@@ -213,7 +213,6 @@ class Metadata(Node):
     data_social_impact: str | None = None
     personal_sensitive_information: list[str] = None
     data_release_maintenance_plan: str | None = None
-    uuid: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
