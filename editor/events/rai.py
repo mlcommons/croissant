@@ -35,7 +35,7 @@ class RaiEvent(enum.Enum):
 
 def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int = 0):
     ## If widget is 1-to-many we first get the index to proper update them
-    #index = get_widget_cadinality(key)
+    # index = get_widget_cadinality(key)
     if event == RaiEvent.RAI_DATA_COLLECTION:
         metadata.data_collection = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
