@@ -161,7 +161,7 @@ def render_rai_metadata():
 
         one_to_many_property(
             title="**Data biases**",
-            metadata= metadata,
+            metadata=metadata,
             attributes=metadata.data_biases,
             key="metadata-data-biases_",
             label="**Data biases**. Involves understanding the potential risks associated  with data usage and to prevent unintended and potentially harmful consequences that may arise from using models trained on or evaluated with the respective data",
@@ -213,7 +213,7 @@ def one_to_many_property(
     """Generates a one to many cardinality property. Attributes should be empty, have one element or being a list of elements"""
     with st.expander(title, expanded=True):
         if attributes:
-            if not isinstance(attributes, list):  
+            if not isinstance(attributes, list):
                 attributes = [attributes]
             for index, single_attribute in enumerate(attributes):
                 key = key + str(index)
