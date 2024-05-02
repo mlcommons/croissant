@@ -119,71 +119,14 @@ def render_rai_metadata():
                 args=(RaiEvent.RAI_DATA_ANNOTATION_PER_ITEM, metadata, key),
             )
         with st.expander("**Data Preprocessing**", expanded=False):
-            with st.expander("Protocols", expanded=True):
-                if metadata.data_preprocessing_protocol:
-                    if isinstance(metadata.data_preprocessing_protocol, list):
-                        for index, protocol in enumerate(
-                            metadata.data_preprocessing_protocol
-                        ):
-                            key = "metadata-data-preprocessing-protocol_" + str(index)
-                            st.text_area(
-                                label=(
-                                    "Description of data manipulation process if applicable   "
-                                ),
-                                key=key,
-                                value=protocol,
-                                on_change=handle_rai_change,
-                                args=(
-                                    RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
-                                    metadata,
-                                    key,
-                                    index
-                                ),
-                            )
-                    else:
-                        metadata.data_preprocessing_protocol = [
-                            metadata.data_preprocessing_protocol
-                        ]
-                        key = "metadata-data-preprocessing-protocol_" + "0"
-                        st.text_area(
-                            label=(
-                                "Description of data manipulation process if applicable   "
-                            ),
-                            key=key,
-                            value=metadata.data_preprocessing_protocol,
-                            on_change=handle_rai_change,
-                            args=(
-                                RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
-                                metadata,
-                                key,
-                            ),
-                        )
-
-                else:
-                    key = "metadata-data-preprocessing-protocol_" + "0"
-                    st.text_area(
-                        label=(
-                            "Description of data manipulation process if applicable   "
-                        ),
-                        key=key,
-                        on_change=handle_rai_change,
-                        args=(RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL, metadata, key),
-                    )
-                add, remove = st.columns(2)
-                with add:
-                    if st.button("+ add protocol"):
-                        if metadata.data_preprocessing_protocol:
-                            metadata.data_preprocessing_protocol.append("")
-                            st.rerun()
-                        else:
-                            metadata.data_preprocessing_protocol = []
-                            metadata.data_preprocessing_protocol.append("")
-                            st.rerun()
-                with remove:
-                    if st.button("- remove protocol"):
-                        if metadata.data_preprocessing_protocol:
-                            metadata.data_preprocessing_protocol.pop()
-                            st.rerun()
+            oneToManyProperty(
+                "**Protocols**",
+                metadata,
+                metadata.data_preprocessing_protocol,
+                "metadata-data-preprocessing-protocol_",
+                "Description of data manipulation process if applicable ",
+                RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
+            )
 
             key = "metadata-data-manipulation-protocol"
             st.text_area(
@@ -207,178 +150,35 @@ def render_rai_metadata():
             )
 
     with col2.expander("**Data uses and social impact**", expanded=True):
-        with st.expander("**Use cases**", expanded=True):
-            if metadata.data_use_cases:
-                if isinstance(metadata.data_use_cases, list):
-                    for index, use_case in enumerate(metadata.data_use_cases):
-                        key = "metadata-data-use-cases_" + str(index)
-                        st.text_area(
-                            label=(
-                                "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
-                            ),
-                            key=key,
-                            value=use_case,
-                            on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_DATA_USE_CASES, metadata, key, index),
-                        )
-                else:
-                    metadata.data_use_cases = [metadata.data_use_cases]
-                    key = "metadata-data-use-cases_" + "0"
-                    st.text_area(
-                        label=(
-                            "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
-                        ),
-                        key=key,
-                        value=metadata.data_use_cases,
-                        on_change=handle_rai_change,
-                        args=(RaiEvent.RAI_DATA_USE_CASES, metadata, key),
-                    )
-            else:
-                key = "metadata-data-use-cases_" + "0"
-                st.text_area(
-                    label=(
-                        "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc."
-                    ),
-                    key=key,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_USE_CASES, metadata, key),
-                )
-            add, remove = st.columns(2)
-            with add:
-                if st.button("+ add use case"):
-                    if metadata.data_use_cases:
-                        metadata.data_use_cases.append("")
-                        st.rerun()
-                    else:
-                        metadata.data_use_cases = []
-                        metadata.data_use_cases.append("")
-                        st.rerun()
-            with remove:
-                if st.button("- remove use case"):
-                    if metadata.data_use_cases:
-                        metadata.data_use_cases.pop()
-                        st.rerun()
-        with st.expander("**Data biases**", expanded=True):
-            if metadata.data_biases:
-                if isinstance(metadata.data_biases, list):
-                    for index, protocol in enumerate(metadata.data_biases):
-                        key = "metadata-data-biases_" + str(index)
-                        st.text_area(
-                            label=(
-                                "**Data biases**. Involves understanding the potential risks associated"
-                                " with data usage and to prevent unintended and potentially harmful"
-                                " consequences that may arise from using models trained on or evaluated"
-                                " with the respective data."
-                            ),
-                            key=key,
-                            value=protocol,
-                            on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_DATA_BIAS, metadata, key, index),
-                        )
-                else:
-                    metadata.data_biases = [metadata.data_biases]
-                    key = "metadata-data-biases_" + "0"
-                    st.text_area(
-                        label=(
-                            "**Data biases**. Involves understanding the potential risks associated"
-                            " with data usage and to prevent unintended and potentially harmful"
-                            " consequences that may arise from using models trained on or evaluated"
-                            " with the respective data."
-                        ),
-                        key=key,
-                        value=metadata.data_biases,
-                        on_change=handle_rai_change,
-                        args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
-                    )
-            else:
-                key = "metadata-data-biases_" + "0"
-                st.text_area(
-                    label=(
-                        "Involves understanding the potential risks associated"
-                        " with data usage and to prevent unintended and potentially harmful"
-                        " consequences that may arise from using models trained on or evaluated"
-                        " with the respective data."
-                    ),
-                    key=key,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
-                )
-            add, remove = st.columns(2)
-            with add:
-                if st.button("+ add bias"):
-                    if metadata.data_biases:
-                        metadata.data_biases.append("")
-                        st.rerun()
-                    else:
-                        metadata.data_biases = []
-                        metadata.data_biases.append("")
-                        st.rerun()
-            with remove:
-                if st.button("- remove bias"):
-                    if metadata.data_biases:
-                        metadata.data_biases.pop()
-                        st.rerun()
-        with st.expander("**Personal and sensitive information**", expanded=True):
-            if metadata.personal_sensitive_information:
-                if isinstance(metadata.personal_sensitive_information, list):
-                    for index, protocol in enumerate(
-                        metadata.personal_sensitive_information
-                    ):
-                        key = "metadata-personal-sensitive-information_" + str(index)
-                        st.text_area(
-                            label=(
-                                "Personal and sensitive information, if"
-                                " contained within the dataset, can play an important role in the"
-                                " mitigation of any risks and the responsible use of the datasets."
-                            ),
-                            key=key,
-                            value=protocol,
-                            on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_SENSITIVE, metadata, key, index),
-                        )
-                else:
-                    metadata.personal_sensitive_information = [
-                        metadata.personal_sensitive_information
-                    ]
-                    key = "metadata-personal-sensitive-information_" + "0"
-                    st.text_area(
-                        label=(
-                            "Personal and sensitive information, if"
-                            " contained within the dataset, can play an important role in the"
-                            " mitigation of any risks and the responsible use of the datasets."
-                        ),
-                        key=key,
-                        value=metadata.personal_sensitive_information,
-                        on_change=handle_rai_change,
-                        args=(RaiEvent.RAI_SENSITIVE, metadata, key),
-                    )
-            else:
-                key = "metadata-personal-sensitive-information_" + "0"
-                st.text_area(
-                    label=(
-                        "if"
-                        " contained within the dataset, can play an important role in the"
-                        " mitigation of any risks and the responsible use of the datasets."
-                    ),
-                    key=key,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_SENSITIVE, metadata, key),
-                )
-            add, remove = st.columns(2)
-            with add:
-                if st.button("+ add sensitive"):
-                    if metadata.personal_sensitive_information:
-                        metadata.personal_sensitive_information.append("")
-                        st.rerun()
-                    else:
-                        metadata.personal_sensitive_information = []
-                        metadata.personal_sensitive_information.append("")
-                        st.rerun()
-            with remove:
-                if st.button("- remove sensitive"):
-                    if metadata.personal_sensitive_information:
-                        metadata.personal_sensitive_information.pop()
-                        st.rerun()
+        # Data use cases
+        oneToManyProperty(
+            "**Use cases**",
+            metadata,
+            metadata.data_use_cases,
+            "metadata-data-use-cases_",
+            "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc.",
+            RaiEvent.RAI_DATA_USE_CASES,
+        )
+
+        # Data biases
+        oneToManyProperty(
+            "**Data biases**",
+            metadata,
+            metadata.data_biases,
+            "metadata-data-biases_",
+            "**Data biases**. Involves understanding the potential risks associated  with data usage and to prevent unintended and potentially harmful consequences that may arise from using models trained on or evaluated with the respective data",
+            RaiEvent.RAI_DATA_BIAS,
+        )
+
+        # Data sensitive
+        oneToManyProperty(
+            "**Personal and sensitive information**",
+            metadata,
+            metadata.personal_sensitive_information,
+            "metadata-personal-sensitive-information_",
+            "Personal and sensitive information, if contained within the dataset, can play an important role in the mitigation of any risks and the responsible use of the datasets",
+            RaiEvent.RAI_SENSITIVE,
+        )
 
         key = "metadata-social-impact"
         st.text_area(
@@ -388,58 +188,17 @@ def render_rai_metadata():
             on_change=handle_rai_change,
             args=(RaiEvent.RAI_DATA_SOCIAL_IMPACT, metadata, key),
         )
-        with st.expander("**Data limitations**", expanded=True):
-            if metadata.data_limitations:
-                if isinstance(metadata.data_limitations, list):
-                    for index, protocol in enumerate(metadata.data_limitations):
-                        key = "metadata-data-limitations_" + str(index)
-                        st.text_area(
-                            label=(
-                                "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
-                            ),
-                            key=key,
-                            value=protocol,
-                            on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key, index),
-                        )
-                else:
-                    metadata.data_limitations = [metadata.data_limitations]
-                    key = "metadata-data-limitations_" + "0"
-                    st.text_area(
-                        label=(
-                            "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
-                        ),
-                        key=key,
-                        value=metadata.data_limitations,
-                        on_change=handle_rai_change,
-                        args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
-                    )
 
-            else:
-                key = "metadata-data-limitations_" + "0"
-                st.text_area(
-                    label=(
-                        "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses."
-                    ),
-                    key=key,
-                    on_change=handle_rai_change,
-                    args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
-                )
-            add, remove = st.columns(2)
-            with add:
-                if st.button("+ add limitations"):
-                    if metadata.data_limitations:
-                        metadata.data_limitations.append("")
-                        st.rerun()
-                    else:
-                        metadata.data_limitations = []
-                        metadata.data_limitations.append("")
-                        st.rerun()
-            with remove:
-                if st.button("- remove limitations"):
-                    if metadata.data_limitations:
-                        metadata.data_limitations.pop()
-                        st.rerun()
+        # Data Limitations
+        oneToManyProperty(
+            "**Data limitations**",
+            metadata,
+            metadata.data_limitations,
+            "metadata-data-limitations_",
+            "Known limitations - Data generalization limits (e.g related to data distribution, data quality issues, or data sources) and on-recommended uses.",
+            RaiEvent.RAI_DATA_LIMITATION,
+        )
+
         key = "metadata-data-maintenance"
         st.text_area(
             label=(
@@ -450,3 +209,54 @@ def render_rai_metadata():
             on_change=handle_rai_change,
             args=(RaiEvent.RAI_MAINTENANCE, metadata, key),
         )
+
+
+def oneToManyProperty(
+    wrapperTitle: str, metadata: Metadata, attribute, key: str, label: str, event: str
+):
+    with st.expander(wrapperTitle, expanded=True):
+        if attribute:
+            if isinstance(attribute, list):
+                for index, singleAttribute in enumerate(attribute):
+                    key = key + str(index)
+                    st.text_area(
+                        label=(label),
+                        key=key,
+                        value=singleAttribute,
+                        on_change=handle_rai_change,
+                        args=(event, metadata, key, index),
+                    )
+            else:
+                attribute = [attribute]
+                key = key + "0"
+                st.text_area(
+                    label=(label),
+                    key=key,
+                    value=attribute,
+                    on_change=handle_rai_change,
+                    args=(event, metadata, key),
+                )
+
+        else:
+            key = key + "0"
+            st.text_area(
+                label=(label),
+                key=key,
+                on_change=handle_rai_change,
+                args=(event, metadata, key),
+            )
+        add, remove = st.columns(2)
+        with add:
+            if st.button("+ add", key=key + "add"):
+                if attribute:
+                    attribute.append("")
+                    st.rerun()
+                else:
+                    attribute = []
+                    attribute.append("")
+                    st.rerun()
+        with remove:
+            if st.button("- remove", key=key + "remove"):
+                if attribute:
+                    attribute.pop()
+                    st.rerun()
