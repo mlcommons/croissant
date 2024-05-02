@@ -35,12 +35,17 @@ Use it in your ML workflow:
 ```python3
 # 1. Point to a local or remote Croissant file
 import mlcroissant as mlc
-url = "https://datasets-server.huggingface.co/croissant?dataset=fashion_mnist"
+url = "https://huggingface.co/api/datasets/fashion_mnist/croissant"
 # 2. Inspect metadata
 print(mlc.Dataset(url).metadata.to_json())
 # 3. Use Croissant dataset in your ML workload
 import tensorflow_datasets as tfds
-builder = tfds.core.dataset_builders.CroissantBuilder(jsonld=url)
+builder = tfds.core.dataset_builders.CroissantBuilder(
+    jsonld=url,
+    record_set_ids=["record_set_fashion_mnist"],
+    file_format='array_record',
+)
+builder.download_and_prepare()
 # 4. Split for training/testing
 train, test = builder.as_data_source(split=['default[:80%]', 'default[80%:]'])
 ```
