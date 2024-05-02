@@ -119,13 +119,13 @@ def render_rai_metadata():
                 args=(RaiEvent.RAI_DATA_ANNOTATION_PER_ITEM, metadata, key),
             )
         with st.expander("**Data Preprocessing**", expanded=False):
-            oneToManyProperty(
-                "**Protocols**",
-                metadata,
-                metadata.data_preprocessing_protocol,
-                "metadata-data-preprocessing-protocol_",
-                "Description of data manipulation process if applicable ",
-                RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
+            one_to_many_property(
+                title="**Protocols**",
+                metadata=metadata,
+                attributes=metadata.data_preprocessing_protocol,
+                key="metadata-data-preprocessing-protocol_",
+                label="Description of data manipulation process if applicable ",
+                event=RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
             )
 
             key = "metadata-data-manipulation-protocol"
@@ -150,34 +150,31 @@ def render_rai_metadata():
             )
 
     with col2.expander("**Data uses and social impact**", expanded=True):
-        # Data use cases
-        oneToManyProperty(
-            "**Use cases**",
-            metadata,
-            metadata.data_use_cases,
-            "metadata-data-use-cases_",
-            "Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc.",
-            RaiEvent.RAI_DATA_USE_CASES,
+        one_to_many_property(
+            title="**Use cases**",
+            metadata=metadata,
+            attributes=metadata.data_use_cases,
+            key="metadata-data-use-cases_",
+            label="Dataset use case - training, testing, validation, development or production use, fine tuning, others (please specify), usage guidelines, recommended uses, etc.",
+            event=RaiEvent.RAI_DATA_USE_CASES,
         )
 
-        # Data biases
-        oneToManyProperty(
-            "**Data biases**",
-            metadata,
-            metadata.data_biases,
-            "metadata-data-biases_",
-            "**Data biases**. Involves understanding the potential risks associated  with data usage and to prevent unintended and potentially harmful consequences that may arise from using models trained on or evaluated with the respective data",
-            RaiEvent.RAI_DATA_BIAS,
+        one_to_many_property(
+            title="**Data biases**",
+            metadata= metadata,
+            attributes=metadata.data_biases,
+            key="metadata-data-biases_",
+            label="**Data biases**. Involves understanding the potential risks associated  with data usage and to prevent unintended and potentially harmful consequences that may arise from using models trained on or evaluated with the respective data",
+            event=RaiEvent.RAI_DATA_BIAS,
         )
 
-        # Data sensitive
-        oneToManyProperty(
-            "**Personal and sensitive information**",
-            metadata,
-            metadata.personal_sensitive_information,
-            "metadata-personal-sensitive-information_",
-            "Personal and sensitive information, if contained within the dataset, can play an important role in the mitigation of any risks and the responsible use of the datasets",
-            RaiEvent.RAI_SENSITIVE,
+        one_to_many_property(
+            title="**Personal and sensitive information**",
+            metadata=metadata,
+            attributes=metadata.personal_sensitive_information,
+            key="metadata-personal-sensitive-information_",
+            label="Personal and sensitive information, if contained within the dataset, can play an important role in the mitigation of any risks and the responsible use of the datasets",
+            event=RaiEvent.RAI_SENSITIVE,
         )
 
         key = "metadata-social-impact"
@@ -189,8 +186,7 @@ def render_rai_metadata():
             args=(RaiEvent.RAI_DATA_SOCIAL_IMPACT, metadata, key),
         )
 
-        # Data Limitations
-        oneToManyProperty(
+        one_to_many_property(
             "**Data limitations**",
             metadata,
             metadata.data_limitations,
@@ -211,32 +207,23 @@ def render_rai_metadata():
         )
 
 
-def oneToManyProperty(
-    wrapperTitle: str, metadata: Metadata, attribute, key: str, label: str, event: str
+def one_to_many_property(
+    title: str, metadata: Metadata, attributes, key: str, label: str, event: str
 ):
-    with st.expander(wrapperTitle, expanded=True):
-        if attribute:
-            if isinstance(attribute, list):
-                for index, singleAttribute in enumerate(attribute):
-                    key = key + str(index)
-                    st.text_area(
-                        label=(label),
-                        key=key,
-                        value=singleAttribute,
-                        on_change=handle_rai_change,
-                        args=(event, metadata, key, index),
-                    )
-            else:
-                attribute = [attribute]
-                key = key + "0"
+    """Generates a one to many cardinality property. Attributes should be empty, have one element or being a list of elements"""
+    with st.expander(title, expanded=True):
+        if attributes:
+            if not isinstance(attributes, list):  
+                attributes = [attributes]
+            for index, single_attribute in enumerate(attributes):
+                key = key + str(index)
                 st.text_area(
                     label=(label),
                     key=key,
-                    value=attribute,
+                    value=single_attribute,
                     on_change=handle_rai_change,
-                    args=(event, metadata, key),
+                    args=(event, metadata, key, index),
                 )
-
         else:
             key = key + "0"
             st.text_area(
@@ -248,15 +235,15 @@ def oneToManyProperty(
         add, remove = st.columns(2)
         with add:
             if st.button("+ add", key=key + "add"):
-                if attribute:
-                    attribute.append("")
+                if attributes:
+                    attributes.append("")
                     st.rerun()
                 else:
-                    attribute = []
-                    attribute.append("")
+                    attributes = []
+                    attributes.append("")
                     st.rerun()
         with remove:
             if st.button("- remove", key=key + "remove"):
-                if attribute:
-                    attribute.pop()
+                if attributes:
+                    attributes.pop()
                     st.rerun()
