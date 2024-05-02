@@ -37,7 +37,7 @@ def render_rai_metadata():
                 key=key,
                 value=metadata.data_collection_type,
                 on_change=handle_rai_change,
-                args=(RaiEvent.RAI_DATA_COLLECTION_TYPE_OTHERS, metadata, key),
+                args=(RaiEvent.RAI_DATA_COLLECTION_TYPE, metadata, key),
             )
             key = "metadata-data-collection-missing"
             st.text_area(
@@ -137,6 +137,7 @@ def render_rai_metadata():
                                     RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL,
                                     metadata,
                                     key,
+                                    index
                                 ),
                             )
                     else:
@@ -218,7 +219,7 @@ def render_rai_metadata():
                             key=key,
                             value=use_case,
                             on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_DATA_USE_CASES, metadata, key),
+                            args=(RaiEvent.RAI_DATA_USE_CASES, metadata, key, index),
                         )
                 else:
                     metadata.data_use_cases = [metadata.data_use_cases]
@@ -272,7 +273,7 @@ def render_rai_metadata():
                             key=key,
                             value=protocol,
                             on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_DATA_BIAS, metadata, key),
+                            args=(RaiEvent.RAI_DATA_BIAS, metadata, key, index),
                         )
                 else:
                     metadata.data_biases = [metadata.data_biases]
@@ -333,7 +334,7 @@ def render_rai_metadata():
                             key=key,
                             value=protocol,
                             on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_SENSITIVE, metadata, key),
+                            args=(RaiEvent.RAI_SENSITIVE, metadata, key, index),
                         )
                 else:
                     metadata.personal_sensitive_information = [
@@ -399,7 +400,7 @@ def render_rai_metadata():
                             key=key,
                             value=protocol,
                             on_change=handle_rai_change,
-                            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key),
+                            args=(RaiEvent.RAI_DATA_LIMITATION, metadata, key, index),
                         )
                 else:
                     metadata.data_limitations = [metadata.data_limitations]

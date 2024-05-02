@@ -13,7 +13,6 @@ class RaiEvent(enum.Enum):
 
     RAI_DATA_COLLECTION = "RAI_DATA_COLLECTION"
     RAI_DATA_COLLECTION_TYPE = "RAI_DATA_COLLECTION_TYPE"
-    RAI_DATA_COLLECTION_TYPE_OTHERS = "RAI_DATA_COLLECTION_TYPE_OTHERS"
     RAI_DATA_COLLECTION_MISSING_DATA = "RAI_DATA_COLLECTION_MISSING_DATA"
     RAI_DATA_COLLECTION_RAW = "RAI_DATA_COLLECTION_RAW"
     RAI_DATA_COLLECTION_TIMEFRAME = "RAI_DATA_COLLECTION_TIMEFRAME"
@@ -34,9 +33,9 @@ class RaiEvent(enum.Enum):
     RAI_MAINTENANCE = "RAI_MAINTENANCE"
 
 
-def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str):
+def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int = 0):
     ## If widget is 1-to-many we first get the index to proper update them
-    index = get_widget_cadinality(key)
+    #index = get_widget_cadinality(key)
     if event == RaiEvent.RAI_DATA_COLLECTION:
         metadata.data_collection = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
@@ -52,7 +51,7 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str):
         metadata.data_imputation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_PREPROCESSING_PROTOCOL:
         if metadata.data_preprocessing_protocol:
-            metadata.data_preprocessing_protocol[int(index)] = st.session_state[key]
+            metadata.data_preprocessing_protocol[index] = st.session_state[key]
         else:
             metadata.data_preprocessing_protocol = []
             metadata.data_preprocessing_protocol.append(st.session_state[key])
