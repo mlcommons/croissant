@@ -175,7 +175,12 @@ class ReadFields(Operation):
                 )
                 value = row[column]
                 value = apply_transforms_fn(value, field=field)
-                value = _cast_value(self.node.ctx, value, field.data_type)
+                if field.repeated:
+                    value = [
+                        _cast_value(self.node.ctx, v, field.data_type) for v in value
+                    ]
+                else:
+                    value = _cast_value(self.node.ctx, value, field.data_type)
                 result[field.name] = value
             return result
 
