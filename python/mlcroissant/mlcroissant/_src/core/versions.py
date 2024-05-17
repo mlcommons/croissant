@@ -20,7 +20,9 @@ def cast_version(version: Any) -> str | None:
         numbers = version.split(".")
         are_not_all_numbers = any(not number.isnumeric() for number in numbers)
         if are_not_all_numbers:
-            raise ErrorException(f"Version contains non-numeric characters: {version}.")
+            raise WarningException(
+                f"Version contains non-numeric characters: {version}."
+            )
         return version
     elif isinstance(version, int):
         return f"{version}.0.0"
