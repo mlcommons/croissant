@@ -35,6 +35,12 @@ flags.DEFINE_bool(
     "Whether to print debug hints.",
 )
 
+flags.DEFINE_bool(
+    "ignore_warnings",
+    False,
+    "Whether to ignore warnings.",
+)
+
 flags.mark_flag_as_required("jsonld")
 
 
@@ -48,8 +54,9 @@ def main(argv):
         logging.warning("--file is deprecated. Please, use --jsonld with a path or URL")
     jsonld = FLAGS.jsonld or FLAGS.file
     debug = FLAGS.debug
+    ignore_warnings = FLAGS.ignore_warnings
     try:
-        mlc.Dataset(jsonld, debug=debug)
+        mlc.Dataset(jsonld, debug=debug, ignore_warnings=ignore_warnings)
         logging.info("Done.")
     except mlc.ValidationError as exception:
         logging.error(exception)

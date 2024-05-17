@@ -34,6 +34,7 @@ class Issues:
     We use sets to represent errors and warnings to avoid repeated strings.
     """
 
+    ignore_warnings: bool = False
     _errors: set[tuple[str, Any]] = dataclasses.field(default_factory=set, hash=False)
     _warnings: set[tuple[str, Any]] = dataclasses.field(default_factory=set, hash=False)
 
@@ -78,10 +79,11 @@ class Issues:
         """Reports errors and warnings in a string."""
         message = ""
         # Sort before printing because sets are not ordered.
-        for issues, issue_type in [
-            (sorted(self.errors), "error(s)"),
-            (sorted(self.warnings), "warning(s)"),
-        ]:
+        reported_issues = [(sorted(self.errors), "error(s)")]
+        if not self.ignore_warnings:
+            reported_issues.append((sorted(self.warnings), "warning(s)"))
+
+        for issues, issue_type in reported_issues:
             num_issues = len(issues)
             if num_issues:
                 message += (
