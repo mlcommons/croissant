@@ -19,11 +19,8 @@ def cast_version(version: Any) -> str | None:
     if isinstance(version, str):
         numbers = version.split(".")
         are_not_all_numbers = any(not number.isnumeric() for number in numbers)
-        if len(numbers) != 3 or are_not_all_numbers:
-            raise WarningException(
-                f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
-                " information refer to: https://semver.org/spec/v2.0.0.html"
-            )
+        if are_not_all_numbers:
+            raise ErrorException(f"Version contains non-numeric characters: {version}.")
         return version
     elif isinstance(version, int):
         return f"{version}.0.0"

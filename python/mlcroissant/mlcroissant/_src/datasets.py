@@ -11,7 +11,6 @@ import networkx as nx
 
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
-from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.base_operation import Operations
@@ -61,14 +60,10 @@ class Dataset:
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
     mapping: Mapping[str, epath.PathLike] | None = None
-    ignore_warnings: bool = False
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
-        ctx = Context(
-            mapping=_expand_mapping(self.mapping),
-            issues=Issues(ignore_warnings=self.ignore_warnings),
-        )
+        ctx = Context(mapping=_expand_mapping(self.mapping))
         if isinstance(self.jsonld, dict):
             self.metadata = Metadata.from_json(ctx=ctx, json_=self.jsonld)
         elif self.jsonld is not None:
