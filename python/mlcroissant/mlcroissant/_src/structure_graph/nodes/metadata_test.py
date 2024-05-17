@@ -102,16 +102,8 @@ def test_invalid_version(version, expected_error):
     ["version", "expected_warning"],
     [
         [
-            "1.2.x",
-            "Version doesn't follow MAJOR.MINOR.PATCH: 1.2.x.",
-        ],
-        [
-            "...123",
-            "Version doesn't follow MAJOR.MINOR.PATCH: ...123.",
-        ],
-        [
             "a.b.c",
-            "Version doesn't follow MAJOR.MINOR.PATCH: a.b.c",
+            "Version contains non-numeric characters: a.b.c",
         ],
     ],
 )
