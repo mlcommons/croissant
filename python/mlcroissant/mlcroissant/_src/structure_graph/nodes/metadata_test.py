@@ -124,7 +124,10 @@ def test_warning_version(version, expected_warning):
 @pytest.mark.parametrize(
     ["version", "expected_version"],
     [
+        ["1", "1"],
+        ["1.2", "1.2"],
         ["1.2.3", "1.2.3"],
+        ["1.2.3-foo+bar", "1.2.3-foo+bar"],
         [1, "1.0.0"],
         [1.2, "1.2.0"],
         ["thisisanarbitraryversion", "thisisanarbitraryversion"],
