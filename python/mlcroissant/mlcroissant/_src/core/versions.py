@@ -6,7 +6,6 @@ from typing import Any
 from mlcroissant._src.core.issues import ErrorException
 from mlcroissant._src.core.issues import WarningException
 
-
 # Adapted from https://pypi.org/project/semver.
 VERSION_PATTERN_REGEX = re.compile(
     r"""
