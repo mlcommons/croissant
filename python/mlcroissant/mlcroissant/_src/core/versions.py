@@ -1,9 +1,37 @@
 """Versions module."""
 
+import re
 from typing import Any
 
 from mlcroissant._src.core.issues import ErrorException
 from mlcroissant._src.core.issues import WarningException
+
+
+# Adapted from https://pypi.org/project/semver.
+VERSION_PATTERN_REGEX = re.compile(
+    r"""
+        ^
+        (?P<major>0|[1-9]\d*)
+        (
+          \.
+          (?P<minor>0|[1-9]\d*)
+          (
+            \.
+            (?P<patch>0|[1-9]\d*)
+            (?:-(?P<prerelease>
+                (?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)
+                (?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*
+            ))?
+            (?:\+(?P<build>
+                [0-9a-zA-Z-]+
+                (?:\.[0-9a-zA-Z-]+)*
+            ))?
+          )?
+        )?
+        $
+    """,
+    re.VERBOSE,
+)
 
 
 def cast_version(version: Any) -> str | None:
@@ -17,11 +45,10 @@ def cast_version(version: Any) -> str | None:
         return None
 
     if isinstance(version, str):
-        numbers = version.split(".")
-        are_not_all_numbers = any(not number.isnumeric() for number in numbers)
-        if are_not_all_numbers:
+        if not VERSION_PATTERN_REGEX.match(version):
             raise WarningException(
-                f"Version contains non-numeric characters: {version}."
+                f"Version doesn't follow MAJOR.MINOR.PATCH: {version}. For more"
+                " information refer to: https://semver.org/spec/v2.0.0.html"
             )
         return version
     elif isinstance(version, int):
