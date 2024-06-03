@@ -510,7 +510,7 @@ The Croissant vocabulary also defines the following optional attributes:
     <td>citeAs</td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
-    <td>A citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
+    <td>"A citation to the dataset itself, or a citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
     Note that this is different from <a href="http://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
     </td>
   </tr>
