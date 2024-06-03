@@ -1820,36 +1820,49 @@ Segmentation mask as an image:
 ## Appendix 1: JSON-LD context
 
 ```json
-"@context": {
-  "@language": "en",
-  "@vocab": "https://schema.org/",
-  "column": "cr:column",
-  "data": {
-    "@id": "cr:data",
-    "@type": "@json"
-  },
-  "dataType": {
-    "@id": "cr:dataType",
-    "@type": "@vocab"
-  },
-  "extract": "cr:extract",
-  "field": "cr:field",
-  "fileProperty": "cr:fileProperty",
-  "format": "cr:format",
-  "includes": "cr:includes",
-  "jsonPath": "cr:jsonPath",
-  "ml": "http://mlcommons.org/schema/",
-  "parentField": "cr:parentField",
-  "path": "cr:path",
-  "recordSet": "cr:recordSet",
-  "references": "cr:references",
-  "regex": "cr:regex",
-  "repeated": "cr:repeated",
-  "replace": "cr:replace",
-  "sc": "https://schema.org/",
-  "separator": "cr:separator",
-  "source": "cr:source",
-  "subField": "cr:subField",
-  "transform": "cr:transform"
-}
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  }
 ```
