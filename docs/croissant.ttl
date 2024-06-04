@@ -57,12 +57,12 @@ croissant:Transform a rdf:Class ;
 croissant:ContentExtractionEnumeration a rdf:Class ;
   rdfs:label "ContexExtractionEnumeration" ;
   rdfs:comment "Specifies which content to extract from a file. One of \"all\", \"lines\", or \"lineNumbers\"." ;
-  rdfs:subClassOf schema:Enumerations .
+  rdfs:subClassOf schema:Enumeration .
 
 croissant:FilePropertyEnumeration a rdf:Class ;
   rdfs:label "FilePropertyEnumeration" ;
   rdfs:comment "Specifies a property of a FileObject. One of \"fullPath\" or \"fileName\"." ;
-  rdfs:subClassOf schema:Enumerations .
+  rdfs:subClassOf schema:Enumeration .
 
 # Dataset level properies
 
@@ -261,7 +261,7 @@ croissant:jsonQuery a rdf:Property ;
 croissant:Split a rdf:class ;
   rdfs:label "Split" ;
   rdfs:comment "Splits for training a machine learning, typically test, train and validation." ;
-  rdfs:subClassOf schema:enumeration .
+  rdfs:subClassOf schema:Enumeration .
 
 croissant:TrainSplit a croissant:Split ;
   rdfs:label "TrainSplit" ;
