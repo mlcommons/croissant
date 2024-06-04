@@ -115,7 +115,7 @@ def _add_operations_for_git(
     for successor in node.successors:
         if isinstance(successor, FileSet):
             fields = tuple(
-                field for field in node.recursive_successors if isinstance(field, Field)
+                field for field in successor.recursive_successors if isinstance(field, Field)
             )
             (
                 operation
