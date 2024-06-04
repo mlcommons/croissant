@@ -121,6 +121,42 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "split_enums",
+      "name": "split_enums",
+      "dataType": "cr:Split",
+      "key": "name",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/name",
+          "name": "name",
+          "description": "One of train or test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/url",
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:URL"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "name": "train",
+          "url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "name": "test",
+          "url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
       "@id": "red-team-attempts",
       "name": "red-team-attempts",
       "field": [
@@ -266,6 +302,31 @@
       "@id": "harmless-base",
       "name": "harmless-base",
       "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "harmless-base/split",
+          "name": "harmless-base/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
         {
           "@type": "cr:Field",
           "@id": "harmless-base/chosen",
