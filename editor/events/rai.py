@@ -45,7 +45,9 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int 
         metadata.data_collection_raw_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME:
         # To do
-        raise NotImplementedError("Data collectiom timeframe range still not implemented")
+        raise NotImplementedError(
+            "Data collectiom timeframe range still not implemented"
+        )
         pass
     if event == RaiEvent.RAI_DATA_IMPUTATION_PROTOCOL:
         metadata.data_imputation_protocol = st.session_state[key]
