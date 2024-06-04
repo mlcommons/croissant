@@ -72,6 +72,50 @@
       },
       "contentUrl": "red-team-attempts/red_team_attempts.jsonl.gz",
       "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "harmless-base-files",
+      "name": "harmless-base-files",
+      "description": "The files for harmless-base",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "harmless-base/*.jsonl.gz"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "helpful-base-files",
+      "name": "helpful-base-files",
+      "description": "The files for helpful-base",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "helpful-base/*.jsonl.gz"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "helpful-online-files",
+      "name": "helpful-online-files",
+      "description": "The files for helpful-online",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "helpful-online/*.jsonl.gz"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "helpful-rejection-sampled-files",
+      "name": "helpful-rejection-sampled-files",
+      "description": "The files for helpful-rejection-sampled",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "helpful-rejection-sampled/*.jsonl.gz"
     }
   ],
   "recordSet": [
@@ -212,6 +256,154 @@
             },
             "extract": {
               "jsonPath": "$..task_description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "harmless-base",
+      "name": "harmless-base",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "harmless-base/chosen",
+          "name": "harmless-base/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "harmless-base/rejected",
+          "name": "harmless-base/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "helpful-base",
+      "name": "helpful-base",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-base/chosen",
+          "name": "helpful-base/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-base-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-base/rejected",
+          "name": "helpful-base/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-base-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "helpful-online",
+      "name": "helpful-online",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-online/chosen",
+          "name": "helpful-online/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-online-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-online/rejected",
+          "name": "helpful-online/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-online-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "helpful-rejection-sampled",
+      "name": "helpful-rejection-sampled",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-rejection-sampled/chosen",
+          "name": "helpful-rejection-sampled/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-rejection-sampled-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-rejection-sampled/rejected",
+          "name": "helpful-rejection-sampled/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-rejection-sampled-files"
+            },
+            "extract": {
+              "column": "rejected"
             }
           }
         }
