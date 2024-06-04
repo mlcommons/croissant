@@ -20,4 +20,6 @@ class OpenmlSpider(BaseSpider):
 
     def get_url(self, dataset_id: str):
         """See base class."""
-        return f"https://openml1.win.tue.nl/dataset{dataset_id}/croissant.json"
+        return (
+            f"https://openml1.win.tue.nl/{dataset_id // 10000:04d}/{dataset_id:04d}/dataset_{dataset_id}_croissant.json"
+        )
