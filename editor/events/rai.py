@@ -35,7 +35,6 @@ class RaiEvent(enum.Enum):
 
 def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int = 0):
     ## If widget is 1-to-many we first get the index to proper update them
-    # index = get_widget_cadinality(key)
     if event == RaiEvent.RAI_DATA_COLLECTION:
         metadata.data_collection = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TYPE:
@@ -46,6 +45,7 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int 
         metadata.data_collection_raw_data = st.session_state[key]
     if event == RaiEvent.RAI_DATA_COLLECTION_TIMEFRAME:
         # To do
+        raise NotImplementedError("Data collectiom timeframe range still not implemented")
         pass
     if event == RaiEvent.RAI_DATA_IMPUTATION_PROTOCOL:
         metadata.data_imputation_protocol = st.session_state[key]
