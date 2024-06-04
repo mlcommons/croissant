@@ -59,7 +59,7 @@ This is how Croissant helps address RAI:
 
 2. It records at a granular level how a dataset was created, processed and enriched throughout its lifecycle – this process is meant to be automated as much as possible by integrating Croissant with popular ML frameworks. By allowing the metadata to be loaded automatically, Croissant also enables developers to compute RAI metrics automatically and systematically, identifying potential data quality issues to be fixed.
 
-Croissant is designed to be modular and extensible. One such extension is the Croissant RAI vocabulary, which addresses 7 specific use cases, starting with the data life cycle, data labeling, and participatory scenarios to AI safety and fairness evaluation, traceability, regulatory compliance and inclusion. More details are available in the . We welcome additional extensions from the community to meet the needs of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
+Croissant is designed to be modular and extensible. One such extension is the Croissant RAI vocabulary, which addresses 7 specific use cases, starting with the data life cycle, data labeling, and participatory scenarios to AI safety and fairness evaluation, traceability, regulatory compliance and inclusion. More details are available in the [Croissant RAI specification](http://mlcommons.org/croissant/RAI/1.0). We welcome additional extensions from the community to meet the needs of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
 
 ## Terminology
 
@@ -510,7 +510,7 @@ The Croissant vocabulary also defines the following optional attributes:
     <td>citeAs</td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
-    <td>A citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
+    <td>"A citation to the dataset itself, or a citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
     Note that this is different from <a href="http://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
     </td>
   </tr>
@@ -1820,36 +1820,49 @@ Segmentation mask as an image:
 ## Appendix 1: JSON-LD context
 
 ```json
-"@context": {
-  "@language": "en",
-  "@vocab": "https://schema.org/",
-  "column": "cr:column",
-  "data": {
-    "@id": "cr:data",
-    "@type": "@json"
-  },
-  "dataType": {
-    "@id": "cr:dataType",
-    "@type": "@vocab"
-  },
-  "extract": "cr:extract",
-  "field": "cr:field",
-  "fileProperty": "cr:fileProperty",
-  "format": "cr:format",
-  "includes": "cr:includes",
-  "jsonPath": "cr:jsonPath",
-  "ml": "http://mlcommons.org/schema/",
-  "parentField": "cr:parentField",
-  "path": "cr:path",
-  "recordSet": "cr:recordSet",
-  "references": "cr:references",
-  "regex": "cr:regex",
-  "repeated": "cr:repeated",
-  "replace": "cr:replace",
-  "sc": "https://schema.org/",
-  "separator": "cr:separator",
-  "source": "cr:source",
-  "subField": "cr:subField",
-  "transform": "cr:transform"
-}
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  }
 ```
