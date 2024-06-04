@@ -190,11 +190,29 @@ class Metadata(Node):
     description: str | None = None
     cite_as: str | None = None
     creators: list[mlc.Person] = dataclasses.field(default_factory=list)
-    data_biases: str | None = None
-    data_collection: str | None = None
     date_published: datetime.datetime | None = None
     license: str | None = ""
-    personal_sensitive_information: str | None = None
+    #  RAI extension attributes
+    data_collection: str | None = None
+    data_collection_type: str | None = None
+    data_collection_missing_data: str | None = None
+    data_collection_raw_data: str | None = None
+    data_collection_timeframe: datetime.datetime | None = None
+    data_imputation_protocol: str | None = None
+    data_preprocessing_protocol: list[str] = None
+    data_manipulation_protocol: str | None = None
+    data_annotation_protocol: str | None = None
+    data_annotation_platform: str | None = None
+    data_annotation_analysis: str | None = None
+    annotation_per_item: str | None = None
+    annotator_demographics: str | None = None
+    machine_annotation_tools: str | None = None
+    data_biases: list[str] = None
+    data_use_cases: list[str] = None
+    data_limitations: list[str] = None
+    data_social_impact: str | None = None
+    personal_sensitive_information: list[str] = None
+    data_release_maintenance_plan: str | None = None
     url: str = ""
     distribution: list[FileObject | FileSet] = dataclasses.field(default_factory=list)
     record_sets: list[RecordSet] = dataclasses.field(default_factory=list)
