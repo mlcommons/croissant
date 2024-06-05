@@ -193,9 +193,9 @@ def test_load_from_huggingface():
     url = "https://huggingface.co/api/datasets/mnist/croissant"
     dataset = datasets.Dataset(url)
     has_one_record = False
-    for record in dataset.records(record_set="record_set_mnist"):
-        assert record["record_set_mnist/label"] == 7
-        assert isinstance(record["record_set_mnist/image"], deps.PIL_Image.Image)
+    for record in dataset.records(record_set="mnist"):
+        assert record["mnist/label"] == 7
+        assert isinstance(record["mnist/image"], deps.PIL_Image.Image)
         has_one_record = True
         break
     assert has_one_record, (
