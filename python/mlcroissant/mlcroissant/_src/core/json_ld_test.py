@@ -66,5 +66,6 @@ def test_make_context():
         "source": "cr:source",
         "subField": "cr:subField",
         "transform": "cr:transform",
+        "wd": "https://www.wikidata.org/wiki/",
         "foo": "bar",
     }

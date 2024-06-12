@@ -41,7 +41,8 @@
     "sc": "https://schema.org/",
     "separator": "cr:separator",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "mydataset",
