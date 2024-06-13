@@ -57,7 +57,6 @@ def make_context(ctx=None, **kwargs):
         "source": "cr:source",
         "subField": "cr:subField",
         "transform": "cr:transform",
-        "wd": "https://www.wikidata.org/wiki/",
         **kwargs,
     }
     return {key: value for key, value in context.items() if value is not None}
