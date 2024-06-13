@@ -4,8 +4,8 @@ import dataclasses
 import functools
 import io
 import logging
-import pathlib
 import os
+import pathlib
 import re
 from typing import Any, Iterator
 

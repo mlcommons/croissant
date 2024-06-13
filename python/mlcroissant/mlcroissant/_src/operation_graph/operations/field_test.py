@@ -1,9 +1,9 @@
 """field_test module."""
 
-from etils import epath
 import tempfile
 from unittest import mock
 
+from etils import epath
 import numpy as np
 import pandas as pd
 from PIL import Image
