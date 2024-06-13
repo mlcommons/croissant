@@ -1,6 +1,6 @@
 """field_test module."""
 
-import pathlib
+from etils import epath
 import tempfile
 from unittest import mock
 
@@ -180,8 +180,8 @@ def test_extract_lines(separator):
             "train",
         ],
         [
-            pathlib.PurePath("train1234"),
-            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            epath.Path("path/to/train1234"),
+            Source(transforms=[Transform(regex=".*/(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "train",
         ],
