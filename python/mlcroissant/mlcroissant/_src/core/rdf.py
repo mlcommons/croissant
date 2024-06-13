@@ -126,18 +126,9 @@ class Rdf:
     @functools.cache
     def shorten_value(self, value: str) -> str:
         """Shortens a value according to the context if possible."""
-        print("DO NOT SUBMIT DEBUG shorten_value", value)
         for abbreviation, url in self.abbreviations().items():
-            print(
-                "DO NTO SUBMIT DEBUG self.abbreviations().items()",
-                self.abbreviations().items(),
-            )
             if value.startswith(url):
-                print("DO NOT SUBMIT DEBUG shortened_value", value)
-                print("=====")
                 return value.replace(url, f"{abbreviation}:")
-        print("DO NOT SUBMIT DEBUG shortened_value", value)
-        print("=====")
         return value
 
     @functools.cache
