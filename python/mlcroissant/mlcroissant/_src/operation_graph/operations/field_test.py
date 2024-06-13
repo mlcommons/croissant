@@ -2,6 +2,7 @@
 
 import tempfile
 from unittest import mock
+import pathlib
 
 import numpy as np
 import pandas as pd
@@ -184,6 +185,13 @@ def test_extract_lines(separator):
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "foo1234",
+        ],
+        # Regex match on pathlib.PurePath as if from FileProperty.fullpath
+        [
+            pathlib.PurePath("train1234"),
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
+            "train",
         ],
         [
             {"one": {"two": "expected_value"}, "three": "non_expected_value"},
