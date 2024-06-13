@@ -236,11 +236,9 @@ def compact_jsonld(json_: Any) -> Any:
 
     For example: "http://schema.org/Dataset" -> "sc:Dataset".
     """
-    print("DO NOT SUBMIT DEBUG json_ is: ", json_)
     if isinstance(json_, list):
         return [compact_jsonld(element) for element in json_]
     elif not isinstance(json_, dict):
-        print("DO NOT SUBMIT DEBUG json_ is: ", json_)
         if isinstance(json_, str) and _SCHEMA_ORG_PREFIX in json_:
             return json_.replace(_SCHEMA_ORG_PREFIX, "sc:")
         elif isinstance(json_, str) and constants.ML_COMMONS_V_0_8 in json_:
