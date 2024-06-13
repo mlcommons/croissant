@@ -1,5 +1,6 @@
 """field_test module."""
 
+import pathlib
 import tempfile
 from unittest import mock
 
@@ -174,6 +175,12 @@ def test_extract_lines(separator):
         # Capturing group
         [
             "train1234",
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
+            "train",
+        ],
+        [
+            pathlib.PurePath("train1234"),
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "train",
