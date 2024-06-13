@@ -35,7 +35,7 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
-        if type(value) == pathlib.PurePosixPath:
+        if isinstance(value, pathlib.PurePosixPath):
             value = str(value)
         match = source_regex.match(value)
         if match is None:
