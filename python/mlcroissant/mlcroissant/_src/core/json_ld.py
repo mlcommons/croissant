@@ -34,7 +34,7 @@ from mlcroissant._src.core.types import Json
 _ID_REGEX = re.compile(r".*\s+.*")
 _DCTERMS_PREFIX = constants.DCTERMS
 _SCHEMA_ORG_PREFIX = constants.SCHEMA_ORG
-_WD_PREFIX = "https://www.wikidata.org/wiki/"
+_WD_PREFIX = constants.WIKIDATA
 # Mapping for non-trivial conversion:
 _DATA = set()
 for conforms_to in CroissantVersion:
@@ -281,6 +281,9 @@ def compact_jsonld(json_: Any) -> Any:
             json_[new_key] = new_value
         elif _DCTERMS_PREFIX in key:
             new_key = key.replace(_DCTERMS_PREFIX, "")
+            json_[new_key] = value
+        elif _WD_PREFIX in key:
+            new_key = key.replace(_WD_PREFIX, "")
             json_[new_key] = value
         else:
             json_[key] = new_value

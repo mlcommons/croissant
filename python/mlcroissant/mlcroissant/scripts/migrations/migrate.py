@@ -7,7 +7,7 @@ newer Croissant format.
 
 - Read the current file.
 - Possibly apply a custom `up` function.
-- Add the `@context` defined in `mlcroissant/_src/core/json_ld.py`.
+- Add the `@context` defined in `mlcroissant/_src/core/rdf.py`.
 - Re-compacting back the Croissant file.
 
 ## What you have to do

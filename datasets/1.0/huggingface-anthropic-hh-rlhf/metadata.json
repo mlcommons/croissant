@@ -42,7 +42,8 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "Anthropic/hh-rlhf",
@@ -119,6 +120,42 @@
     }
   ],
   "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "split_enums",
+      "name": "split_enums",
+      "dataType": "cr:Split",
+      "key": "name",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/name",
+          "name": "name",
+          "description": "One of train or test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/url",
+          "name": "url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:URL"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "name": "train",
+          "url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "name": "test",
+          "url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
     {
       "@type": "cr:RecordSet",
       "@id": "red-team-attempts",
@@ -268,6 +305,31 @@
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "harmless-base/split",
+          "name": "harmless-base/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
           "@id": "harmless-base/chosen",
           "name": "harmless-base/chosen",
           "description": "Chosen text.",
@@ -303,6 +365,31 @@
       "@id": "helpful-base",
       "name": "helpful-base",
       "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-base/split",
+          "name": "helpful-base/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "helpful-base-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
         {
           "@type": "cr:Field",
           "@id": "helpful-base/chosen",
@@ -342,6 +429,31 @@
       "field": [
         {
           "@type": "cr:Field",
+          "@id": "helpful-online/split",
+          "name": "helpful-online/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "helpful-online-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
           "@id": "helpful-online/chosen",
           "name": "helpful-online/chosen",
           "description": "Chosen text.",
@@ -377,6 +489,31 @@
       "@id": "helpful-rejection-sampled",
       "name": "helpful-rejection-sampled",
       "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-rejection-sampled/split",
+          "name": "helpful-rejection-sampled/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "helpful-rejection-sampled-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
         {
           "@type": "cr:Field",
           "@id": "helpful-rejection-sampled/chosen",

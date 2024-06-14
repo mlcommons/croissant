@@ -4,6 +4,8 @@ import dataclasses
 import functools
 import io
 import logging
+import os
+import pathlib
 import re
 from typing import Any, Iterator
 
@@ -34,6 +36,8 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
+        if isinstance(value, pathlib.PurePath):
+            value = os.fspath(value)
         match = source_regex.match(value)
         if match is None:
             logging.warning(f"Could not match {source_regex} in {value}")

@@ -3,6 +3,7 @@
 import tempfile
 from unittest import mock
 
+from etils import epath
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -175,6 +176,12 @@ def test_extract_lines(separator):
         [
             "train1234",
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
+            "train",
+        ],
+        [
+            epath.Path("path/to/train1234"),
+            Source(transforms=[Transform(regex=".*/(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "train",
         ],

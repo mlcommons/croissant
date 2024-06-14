@@ -102,6 +102,9 @@ RDF_TYPE = namespace.RDF.type
 DCTERMS = "http://purl.org/dc/terms/"
 DCTERMS_CONFORMS_TO = namespace.DCTERMS.conformsTo
 
+# Wikidata standard URIs.
+WIKIDATA = rdflib.Namespace("https://www.wikidata.org/wiki/")
+
 # Schema.org standard URIs.
 SCHEMA_ORG_CITATION: term.URIRef = namespace.SDO.citation
 SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
