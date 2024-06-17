@@ -5,7 +5,7 @@
 
 ## Summary
 
-Croissant 🥐 is a high-level format for machine learning datasets that combines metadata, resource file descriptions, data structure, and default ML semantics into a single file; it works with existing datasets to make them easier to find, use, and support with tools. Croissant builds on <a href="https://schema.org/">schema.org</a>, and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable. You can find a gentle introduction in the companion paper [Croissant: A Metadata Format for ML-Ready Datasets](https://arxiv.org/abs/2403.19546).
+Croissant 🥐 is a high-level format for machine learning datasets that combines metadata, resource file descriptions, data structure, and default ML semantics into a single file; it works with existing datasets to make them easier to find, use, and support with tools. Croissant builds on <a href="https://schema.org/">schema.org</a>, and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable. You can find a gentle introduction in the companion paper [Croissant: A Metadata Format for ML-Ready Datasets](https://doi.org/10.1145/3650203.3663326).
 
 <img src='/docs/images/croissant-summary.png' width='500'>
 
