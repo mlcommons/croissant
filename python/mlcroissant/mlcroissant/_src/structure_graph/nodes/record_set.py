@@ -30,6 +30,7 @@ def json_from_jsonld(ctx: Context, data) -> list[Json] | None:
     # This is for compatibility with older versions of rdflib/rdflib-jsonld,
     # which parses jsonld differently.
     elif rdflib.__version__ < "6.0.1" and isinstance(data, list):
+
         def _clean_expanded_data(d: dict) -> dict:
             new_d = {}
             for key in d.keys():
@@ -37,6 +38,7 @@ def json_from_jsonld(ctx: Context, data) -> list[Json] | None:
                     continue
                 new_d[ctx.rdf.shorten_key(key)] = d[key]
             return new_d
+
         return [_clean_expanded_data(d) for d in data]
     return None
 
