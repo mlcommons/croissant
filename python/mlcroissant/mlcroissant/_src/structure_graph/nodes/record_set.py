@@ -3,6 +3,7 @@
 import itertools
 import json
 
+import rdflib
 from rdflib import term
 from rdflib.namespace import SDO
 
@@ -17,7 +18,7 @@ from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
 
 
-def json_from_jsonld(ctx: Context, data) -> Json | None:
+def json_from_jsonld(ctx: Context, data) -> list[Json] | None:
     """Creates `data` from a JSON-LD fragment."""
     if isinstance(data, str):
         try:
@@ -26,6 +27,17 @@ def json_from_jsonld(ctx: Context, data) -> Json | None:
             ctx.issues.add_error(
                 f"{constants.ML_COMMONS_DATA(ctx)} is not a proper list of JSON: {data}"
             )
+    # This is for compatibility with older versions of rdflib/rdflib-jsonld,
+    # which parses jsonld differently.
+    elif rdflib.__version__ < "6.0.1" and isinstance(data, list):
+        def _clean_expanded_data(d: dict) -> dict:
+            new_d = {}
+            for key in d.keys():
+                if key == "@id" and d["@id"].startswith("_:"):
+                    continue
+                new_d[ctx.rdf.shorten_key(key)] = d[key]
+            return new_d
+        return [_clean_expanded_data(d) for d in data]
     return None
 
 
