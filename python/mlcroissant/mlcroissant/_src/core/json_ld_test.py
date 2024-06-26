@@ -3,8 +3,11 @@
 import json
 
 from etils import epath
+import pytest
 
+from mlcroissant._src.core.json_ld import recursively_populate_jsonld
 from mlcroissant._src.core.rdf import make_context
+from mlcroissant._src.core.types import Json
 from mlcroissant._src.datasets import Dataset
 from mlcroissant._src.tests.versions import parametrize_version
 
@@ -68,3 +71,16 @@ def test_make_context():
         "transform": "cr:transform",
         "foo": "bar",
     }
+
+
+@pytest.mark.parametrize(
+    ["data"],
+    [
+        [{}],
+        [{"value": 3}],
+        [{"singelton_array": ["a"]}],
+        [{"array": ["a", "b", "c"]}],
+    ],
+)
+def test_sanity_recursively_populate_jsonld(data: Json) -> None:
+    recursively_populate_jsonld(data, {})
