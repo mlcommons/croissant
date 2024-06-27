@@ -231,5 +231,6 @@ class DataType:
     FLOAT = namespace.SDO.Float
     IMAGE_OBJECT = namespace.SDO.ImageObject
     INTEGER = namespace.SDO.Integer
+    SPLIT = lambda ctx: ML_COMMONS(ctx).Split
     TEXT = namespace.SDO.Text
     URL = namespace.SDO.URL
