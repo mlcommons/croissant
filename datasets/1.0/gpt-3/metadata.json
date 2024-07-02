@@ -82,7 +82,7 @@
           "@type": "cr:Field",
           "@id": "default/context",
           "name": "context",
-          "description": "The context in the promt.",
+          "description": "The context in the prompt.",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -97,7 +97,7 @@
           "@type": "cr:Field",
           "@id": "default/completion",
           "name": "completion",
-          "description": "The expected completion of the promt.",
+          "description": "The expected completion of the prompt.",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
