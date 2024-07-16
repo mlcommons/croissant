@@ -334,6 +334,10 @@ class Metadata(Node):
             self.ctx, self.ctx.conforms_to
         )
 
+        # Share the structure graph in the context
+        for node in self.nodes():
+            node.ctx.graph = self.ctx.graph
+
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
         context = self.ctx.rdf.context

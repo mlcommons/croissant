@@ -14,6 +14,7 @@ from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_node
@@ -175,3 +176,18 @@ def test_validate_license():
     ]
     with pytest.raises(ValidationError, match="License should be a list of str"):
         Metadata(name="foo", license=42)  # pytype: disable=wrong-arg-types
+
+
+def test_predecessors_are_propagated():
+    field = Field(
+        id="records/name",
+        name="name",
+        data_types=constants.DataType.TEXT,
+    )
+    record_set = RecordSet(
+        id="records",
+        fields=[field],
+        data=[{"name": "train"}, {"name": "test"}],
+    )
+    Metadata(name="dummy", record_sets=[record_set])
+    assert field.predecessors == {record_set}
