@@ -214,7 +214,15 @@ class Node:
     @property
     def predecessors(self) -> set["Node"]:
         """Predecessors in the structure graph."""
-        return set(self.ctx.graph.predecessors(self))  # pytype: disable=bad-return-type
+        try:
+            predecessors = self.ctx.graph.predecessors(self)
+            return set(predecessors)  # pytype: disable=bad-return-type
+        except KeyError as e:
+            raise KeyError(
+                f"Could not find node '{self.id}' in the graph. Make sure to build a"
+                " full mlcroissant metadata object (mlc.Metadata) wrapping all the"
+                " FileSets/FileObjects/RecordSets/Fields."
+            )
 
     @property
     def recursive_predecessors(self) -> set["Node"]:
