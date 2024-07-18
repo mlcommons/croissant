@@ -34,7 +34,7 @@ EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
 def data_types_from_jsonld(ctx: Context, data_types: Json):
     """Extracts DataType from its JSON-LD."""
     if isinstance(data_types, dict):
-        return data_types.get("@id")
+        return term.URIRef(data_types.get("@id"))
     elif isinstance(data_types, (str, term.URIRef)):
         return term.URIRef(data_types)
     elif isinstance(data_types, list):
