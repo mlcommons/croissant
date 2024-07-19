@@ -1,6 +1,7 @@
 """datasets_test module."""
 
 import json
+from typing import Any
 
 from etils import epath
 import pytest
@@ -79,7 +80,11 @@ def test_static_analysis_1_0(folder):
 
 
 def load_records_and_test_equality(
-    version: str, dataset_name: str, record_set_name: str, num_records: int
+    version: str,
+    dataset_name: str,
+    record_set_name: str,
+    num_records: int,
+    filters: dict[str, Any] | None = None,
 ):
     print(
         "If this test fails, update JSONL with: `mlcroissant load"
@@ -96,7 +101,7 @@ def load_records_and_test_equality(
     with output_file.open("rb") as f:
         lines = f.readlines()
         expected_records = [json.loads(line) for line in lines]
-    dataset = datasets.Dataset(config)
+    dataset = datasets.Dataset(config, filters=filters)
     records = dataset.records(record_set_name)
     records = iter(records)
     length = 0
@@ -142,6 +147,19 @@ def load_records_and_test_equality(
 )
 def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
+
+
+# Hermetic test cases for croissant >=1.0 only.
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records", "filters"],
+    [
+        ["simple-split/metadata.json", "data", -1, {"data/split": "train"}],
+    ],
+)
+def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
+    load_records_and_test_equality(
+        "1.0", dataset_name, record_set_name, num_records, filters
+    )
 
 
 # Non-hermetic test cases (data from the internet).
@@ -238,3 +256,20 @@ def test_cypress_fixtures(version):
             f"If this test fails, you probably have to copy the content of {dataset} to"
             f" {fixture}. Launch the command `cp {dataset} {fixture}`"
         )
+
+
+@pytest.mark.parametrize(
+    ["filters", "raises"],
+    [
+        [{}, False],
+        [{"split": "test"}, False],
+        [{"split": ["train", "test"]}, True],
+        [{"split": 1}, True],
+    ],
+)
+def test_validate_filters(filters, raises):
+    if raises:
+        with pytest.raises(ValueError):
+            datasets._validate_filters(filters)
+    else:
+        datasets._validate_filters(filters)

@@ -222,7 +222,7 @@ class Node:
                 f"Could not find node '{self.id}' in the graph. Make sure to build a"
                 " full mlcroissant metadata object (mlc.Metadata) wrapping all the"
                 " FileSets/FileObjects/RecordSets/Fields."
-            )
+            ) from e
 
     @property
     def recursive_predecessors(self) -> set["Node"]:
