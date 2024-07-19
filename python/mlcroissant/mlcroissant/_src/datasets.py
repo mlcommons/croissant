@@ -198,7 +198,7 @@ def _find_data_field_to_filter(
     for operation in operations:
         if isinstance(operation, ReadFields):
             for field in operation.node.fields:
-                if field.id in filters:
+                if field.uuid in filters:
                     return field, filters[field.id]
     raise ValueError(
         f"Filters ({filters}) do not apply to the fields. `filters` must be a"
@@ -208,13 +208,21 @@ def _find_data_field_to_filter(
 
 
 def _regex_to_glob(regex: str) -> str:
-    """Converts a regular expression to a blob pattern by unescaping regex syntax."""
+    """Converts a regular expression to a blob pattern by unescaping regex syntax.
+
+    Warning: this is based on manual heuristics to convert a regular expression to a
+    glob expression.
+    """
     # Remove starting ^
     regex = re.sub(r"^\^", "", regex)
     # Remove trailing $
     regex = re.sub(r"\$$", "", regex)
     # Interpret \. as .
     regex = re.sub(r"\\\.", ".", regex)
+    # Interpret .* as *
+    regex = re.sub(r"\.\*", "*", regex)
+    # Interpret .+ as *
+    regex = re.sub(r"\.\+", "*", regex)
     return regex
 
 
@@ -268,7 +276,7 @@ def _propagate_includes(field: Field, operations: nx.Graph[Operation], new_regex
     for operation in operations:
         if isinstance(operation, FilterFiles):
             node = operation.node
-            if node.id == source_uuid and new_regex:
+            if node.uuid == source_uuid and new_regex:
                 includes = node.includes or []
                 if source_type == FileProperty.filename:
                     new_includes = []
@@ -281,7 +289,7 @@ def _propagate_includes(field: Field, operations: nx.Graph[Operation], new_regex
                         new_includes.append("/".join(new_pattern))
                     node.includes = new_includes
                 elif source_type == FileProperty.fullpath:
-                    node.includes = [_regex_to_glob(pattern) for pattern in includes]
+                    node.includes = [_regex_to_glob(new_regex) for _ in includes]
                 else:
                     raise NotImplementedError(error)
 
