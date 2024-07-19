@@ -32,6 +32,11 @@ dependencies = [
 ]
 readme = "README.md"
 
+[urls]
+github = "https://github.com/mlcommons/croissant"
+documentation = "https://mlcommons.org/working-groups/data/croissant/"
+"bug tracker" = "https://github.com/mlcommons/croissant/issues"
+
 [project.optional-dependencies]
 # Development deps (linting, formatting,...)
 # Installed through `pip install -e .[dev]`
