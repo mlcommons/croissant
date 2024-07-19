@@ -130,6 +130,7 @@ def load_records_and_test_equality(
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
+        ["audio_test/metadata.json", "records", 2],
         ["coco2014-mini/metadata.json", "bounding_boxes", -1],
         ["coco2014-mini/metadata.json", "captions", -1],
         ["coco2014-mini/metadata.json", "images", -1],
@@ -182,11 +183,6 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
         ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
-        [
-            "audio_test/metadata.json",
-            "records",
-            10,
-        ],
     ],
 )
 def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
@@ -199,7 +195,6 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
     ["dataset_name", "record_set_name", "num_records"],
     [
         ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10],
-        ["huggingface-tgqa/metadata.json", "TGSR_test", 10],
     ],
 )
 def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records):

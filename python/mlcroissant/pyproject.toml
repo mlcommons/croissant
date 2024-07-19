@@ -56,7 +56,11 @@ dev = [
   "pytype",
   "torchdata",
 ]
-audio = ["librosa"]
+# Fix following https://github.com/librosa/librosa/issues/1831#issuecomment-2176274560
+audio = [
+  "librosa",
+  "soxr==0.4.0b1",
+]
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
