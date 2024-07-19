@@ -256,3 +256,20 @@ def test_cypress_fixtures(version):
             f"If this test fails, you probably have to copy the content of {dataset} to"
             f" {fixture}. Launch the command `cp {dataset} {fixture}`"
         )
+
+
+@pytest.mark.parametrize(
+    ["filters", "raises"],
+    [
+        [{}, False],
+        [{"split": "test"}, False],
+        [{"split": ["train", "test"]}, True],
+        [{"split": 1}, True],
+    ],
+)
+def test_validate_filters(filters, raises):
+    if raises:
+        with pytest.raises(ValueError):
+            datasets._validate_filters(filters)
+    else:
+        datasets._validate_filters(filters)

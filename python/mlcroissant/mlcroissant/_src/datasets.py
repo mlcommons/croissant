@@ -90,6 +90,8 @@ class Dataset:
         # Draw the operations graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
+        if self.filters:
+            _validate_filters(self.filters)
 
     @classmethod
     def from_metadata(cls, metadata: Metadata) -> Dataset:
@@ -283,3 +285,15 @@ def _propagate_includes(field: Field, operations: Sequence[Operation], new_regex
                     node.includes = [_regex_to_glob(pattern) for pattern in includes]
                 else:
                     raise NotImplementedError(error)
+
+
+def _validate_filters(filters: Filters):
+    if isinstance(filters, Mapping):
+        if all(isinstance(value, str) for value in filters.values()):
+            return
+    raise ValueError(
+        "Filters should be a mapping from a field's ID to the value we want to"
+        " filter in. For example, when writing {'data/split': 'train'}, we want"
+        " to keep all records whose field `data/split` takes the value `train`."
+        f" Instead, we got: {filters=}"
+    )
