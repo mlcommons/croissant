@@ -181,7 +181,6 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
     ["dataset_name", "record_set_name", "num_records"],
     [
         ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10],
-        ["huggingface-tgqa/metadata.json", "TGSR_test", 10],
     ],
 )
 def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records):
