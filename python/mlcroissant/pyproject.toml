@@ -49,10 +49,12 @@ dev = [
   "pylint",
   "pytest",
   "pytype",
-  "soxr==0.4.0b1",
   "torchdata",
 ]
-audio = ["librosa"]
+audio = [
+  "librosa",
+  "soxr==0.4.0b1",
+]
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
