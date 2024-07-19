@@ -67,7 +67,9 @@
       "@id": "parquet-files",
       "name": "parquet-files",
       "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
-      "containedIn": "repo",
+      "containedIn": {
+        "@id": "repo"
+      },
       "encodingFormat": "application/x-parquet",
       "includes": "*/*/*.parquet"
     }
