@@ -180,7 +180,6 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
             10,
         ],
         ["gpt-3/metadata.json", "default", 10],
-        ["huggingface-c4/metadata.json", "en", 1],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
     ],
@@ -192,13 +191,16 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
 # Non-hermetic test cases for croissant >=1.0 only (data from the internet).
 @pytest.mark.nonhermetic
 @pytest.mark.parametrize(
-    ["dataset_name", "record_set_name", "num_records"],
+    ["dataset_name", "record_set_name", "num_records", "filters"],
     [
-        ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10],
+        ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10, None],
+        ["huggingface-c4/metadata.json", "data", 1, {"variant": "en"}],
     ],
 )
-def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records):
-    load_records_and_test_equality("1.0", dataset_name, record_set_name, num_records)
+def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
+    load_records_and_test_equality(
+        "1.0", dataset_name, record_set_name, num_records, filters
+    )
 
 
 @pytest.mark.nonhermetic
@@ -258,6 +260,7 @@ def test_cypress_fixtures(version):
     [
         [{}, False],
         [{"split": "test"}, False],
+        [{"split": "test", "other_filter": "foo"}, True],
         [{"split": ["train", "test"]}, True],
         [{"split": 1}, True],
     ],
