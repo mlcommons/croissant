@@ -295,7 +295,7 @@ def _propagate_includes(field: Field, operations: nx.Graph[Operation], new_regex
 
 
 def _validate_filters(filters: Filters):
-    if isinstance(filters, Mapping):
+    if isinstance(filters, Mapping) and len(filters) <= 1:
         if all(isinstance(value, str) for value in filters.values()):
             return
     raise ValueError(

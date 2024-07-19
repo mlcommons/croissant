@@ -260,6 +260,7 @@ def test_cypress_fixtures(version):
     [
         [{}, False],
         [{"split": "test"}, False],
+        [{"split": "test", "other_filter": "foo"}, True],
         [{"split": ["train", "test"]}, True],
         [{"split": 1}, True],
     ],
