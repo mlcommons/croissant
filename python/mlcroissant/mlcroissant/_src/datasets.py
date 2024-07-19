@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from collections.abc import Sequence
 import dataclasses
 import re
 from typing import Any
@@ -194,7 +193,7 @@ class Records:
 
 
 def _find_data_field_to_filter(
-    filters: Filters, operations: Sequence[Operation]
+    filters: Filters, operations: nx.Graph[Operation]
 ) -> tuple[Field, Any]:
     for operation in operations:
         if isinstance(operation, ReadFields):
@@ -244,7 +243,7 @@ def _regex_from_value(field: Field, value: Any):
     raise NotImplementedError(error)
 
 
-def _propagate_includes(field: Field, operations: Sequence[Operation], new_regex: str):
+def _propagate_includes(field: Field, operations: nx.Graph[Operation], new_regex: str):
     """Propagates the new_regex back to the source includes.
 
     Warning: the following lines are a heuristic to inject the regex in the glob
