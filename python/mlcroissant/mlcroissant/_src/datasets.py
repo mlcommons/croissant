@@ -61,9 +61,6 @@ class Dataset:
             downloads. If `document.csv` is the FileObject and you downloaded it to
             `~/Downloads/document.csv`, you can specify `mapping={"document.csv":
             "~/Downloads/document.csv"}`.
-        filters: A dictionary mapping a field ID to the value we want to filter in. For
-            example, when writing {'data/split': 'train'}, we want to keep all records
-            whose field `data/split` takes the value `train`.
     """
 
     jsonld: epath.PathLike | str | dict[str, Any] | None
@@ -71,7 +68,6 @@ class Dataset:
     metadata: Metadata = dataclasses.field(init=False)
     debug: bool = False
     mapping: Mapping[str, epath.PathLike] | None = None
-    filters: Filters | None = None
 
     def __post_init__(self):
         """Runs the static analysis of `file`."""
@@ -89,8 +85,6 @@ class Dataset:
         # Draw the operations graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
-        if self.filters:
-            _validate_filters(self.filters)
 
     @classmethod
     def from_metadata(cls, metadata: Metadata) -> Dataset:
@@ -100,8 +94,17 @@ class Dataset:
         dataset.operations = get_operations(metadata.ctx, metadata)
         return dataset
 
-    def records(self, record_set: str) -> Records:
-        """Accesses all records with @id==record_set if it exists."""
+    def records(self, record_set: str, filters: Filters | None = None) -> Records:
+        """Accesses all records with @id==record_set if it exists.
+
+        record_set: The name of the record set to access.
+        filters: A dictionary mapping a field ID to the value we want to filter in. For
+            example, when writing {'data/split': 'train'}, we want to keep all records
+            whose field `data/split` takes the value `train`.
+        """
+        if filters:
+            _validate_filters(filters)
+
         if not any(rs for rs in self.metadata.record_sets if rs.uuid == record_set):
             ids = [record_set.uuid for record_set in self.metadata.record_sets]
             error_msg = f"did not find any record set with the name `{record_set}`. "
@@ -113,7 +116,7 @@ class Dataset:
         return Records(
             dataset=self,
             record_set=record_set,
-            filters=self.filters,
+            filters=filters,
             debug=self.debug,
         )
 
