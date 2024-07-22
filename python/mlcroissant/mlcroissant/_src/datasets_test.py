@@ -101,8 +101,8 @@ def load_records_and_test_equality(
     with output_file.open("rb") as f:
         lines = f.readlines()
         expected_records = [json.loads(line) for line in lines]
-    dataset = datasets.Dataset(config, filters=filters)
-    records = dataset.records(record_set_name)
+    dataset = datasets.Dataset(config)
+    records = dataset.records(record_set_name, filters=filters)
     records = iter(records)
     length = 0
     for i, record in enumerate(records):
