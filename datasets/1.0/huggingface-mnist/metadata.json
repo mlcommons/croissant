@@ -77,10 +77,51 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": "mnist_splits/name",
+      "@id": "mnist_splits",
+      "name": "mnist_splits",
+      "description": "Splits for the mnist config.",
+      "field": {
+        "@type": "cr:Field",
+        "@id": "mnist_splits/name",
+        "name": "mnist_splits/name",
+        "description": "The name of the split.",
+        "dataType": "sc:Text"
+      },
+      "data": [
+        {
+          "mnist_splits/name": "train"
+        },
+        {
+          "mnist_splits/name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
       "@id": "default",
       "name": "default",
       "description": "The default set of records in the dataset.",
       "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mnist/split",
+          "name": "mnist/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mnist/(train|test)/.+parquet$"
+            }
+          }
+        },
         {
           "@type": "cr:Field",
           "@id": "default/image",
