@@ -78,23 +78,23 @@
     {
       "@type": "cr:RecordSet",
       "dataType": "cr:Split",
-      "key": "mnist_splits/name",
+      "key": "name",
       "@id": "mnist_splits",
       "name": "mnist_splits",
       "description": "Splits for the mnist config.",
       "field": {
         "@type": "cr:Field",
         "@id": "mnist_splits/name",
-        "name": "mnist_splits/name",
+        "name": "name",
         "description": "The name of the split.",
         "dataType": "sc:Text"
       },
       "data": [
         {
-          "mnist_splits/name": "train"
+          "name": "train"
         },
         {
-          "mnist_splits/name": "test"
+          "name": "test"
         }
       ]
     },
@@ -106,8 +106,8 @@
       "field": [
         {
           "@type": "cr:Field",
-          "@id": "mnist/split",
-          "name": "mnist/split",
+          "@id": "default/split",
+          "name": "default/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
           "source": {
@@ -119,6 +119,11 @@
             },
             "transform": {
               "regex": "mnist/(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mnist_splits/name"
             }
           }
         },
