@@ -18,7 +18,8 @@ def test_should_raise_when_no_record_set(version):
         / "metadata.json"
     )
     with pytest.raises(
-        ValueError, match="--record_set flag should have a value in `default`"
+        ValueError,
+        match="--record_set flag should have a value in `mnist_splits`, `default`",
     ):
         load_lib.load(jsonld=file, record_set=None)
 
