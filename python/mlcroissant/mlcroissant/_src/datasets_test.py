@@ -181,7 +181,6 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
         ],
         ["gpt-3/metadata.json", "default", 10],
         ["huggingface-mnist/metadata.json", "default", 10],
-        ["huggingface-levanti/metadata.json", "levanti_train", 10],
         ["titanic/metadata.json", "passengers", -1],
     ],
 )
@@ -196,6 +195,7 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
     [
         ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10, None],
         ["huggingface-c4/metadata.json", "data", 1, {"variant": "en"}],
+        ["huggingface-levanti/metadata.json", "levanti_train", 10, None],
     ],
 )
 def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
