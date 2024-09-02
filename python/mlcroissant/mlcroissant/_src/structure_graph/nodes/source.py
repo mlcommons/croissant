@@ -1,6 +1,7 @@
 """Source module."""
 
 import enum
+import functools
 from typing import Any
 
 import jsonpath_rw
@@ -234,6 +235,7 @@ class Source(Node):
         else:
             return self.field or self.file_object or self.file_set
 
+    # @functools.cache
     def get_column(self) -> str | FileProperty:
         """Retrieves the name of the column associated to the source."""
         if self.uuid is None:

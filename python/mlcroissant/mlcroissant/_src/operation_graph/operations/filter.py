@@ -6,6 +6,7 @@ import functools
 import os
 import pathlib
 import re
+import time
 
 from etils import epath
 
@@ -40,6 +41,7 @@ class FilterFiles(Operation):
 
     def __call__(self, *paths: Path) -> list[Path]:
         """See class' docstring."""
+        start = time.time()
         if self.node.includes is None:
             raise ValueError("cannot filter files without `includes`.")
         included_files: list[Path] = []
@@ -59,4 +61,6 @@ class FilterFiles(Operation):
                         )
         # We need to sort `files` to have a deterministic/reproducible order.
         included_files.sort()
-        return sorted(included_files)
+        result = sorted(included_files)
+        print(f"FilterFiles took {(time.time() - start):.2f} seconds")
+        return result

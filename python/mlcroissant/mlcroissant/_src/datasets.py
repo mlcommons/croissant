@@ -148,6 +148,7 @@ class Records:
             graphs_utils.pretty_print_graph(operations)
         # Downloads can be parallelized, so we execute them in priority.
         execute_downloads(operations)
+
         # We can stream the dataset iff the operation graph is a path graph (meaning
         # that all operations lie on a single straight line, i.e. have an
         # in-degree of 0 or 1. That means that the operation graph is a single line

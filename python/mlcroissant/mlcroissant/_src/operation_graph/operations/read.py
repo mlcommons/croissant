@@ -5,6 +5,7 @@ import enum
 import gzip
 import json
 import pathlib
+import time
 
 from etils import epath
 import pandas as pd
@@ -86,7 +87,9 @@ class Read(Operation):
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
+            start = time.time()
             download_git_lfs_file(file)
+            print(f"DownloadGitLfs {(time.time() - start):.2f} seconds")
         reading_method = _reading_method(self.node, self.fields)
 
         with filepath.open("rb") as file:
@@ -140,6 +143,7 @@ class Read(Operation):
 
     def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
+        start = time.time()
         if isinstance(files, Path):
             files = [files]
         file_contents = []
@@ -174,4 +178,5 @@ class Read(Operation):
             file_content[FileProperty.filename] = file.filename
             file_content[FileProperty.fullpath] = file.fullpath
             file_contents.append(file_content)
+        print(f"Read took {(time.time() - start):.2f} seconds")
         return pd.concat(file_contents)

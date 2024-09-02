@@ -1,5 +1,7 @@
 """Field operation module."""
 
+import collections
+from concurrent.futures import ThreadPoolExecutor
 import dataclasses
 import functools
 import io
@@ -7,6 +9,7 @@ import logging
 import os
 import pathlib
 import re
+import time
 from typing import Any, Iterator
 
 from etils import epath
@@ -145,6 +148,9 @@ class ReadFields(Operation):
     """
 
     node: RecordSet
+    _thread_pool: ThreadPoolExecutor = dataclasses.field(
+        default_factory=lambda: ThreadPoolExecutor(max_workers=20)
+    )
 
     def _fields(self) -> list[Field]:
         """Extracts all fields (i.e., direct fields without subFields and subFields)."""
@@ -159,6 +165,7 @@ class ReadFields(Operation):
 
     def __call__(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
+        start = time.time()
         if self.node.data:
             # The RecordSet has `data`, so we directly yield from the dataframe.
             for _, row in df.iterrows():
@@ -177,7 +184,7 @@ class ReadFields(Operation):
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
-                value = row[column]
+                value = getattr(row, column)
                 value = apply_transforms_fn(value, field=field)
                 if field.repeated:
                     value = [
@@ -188,6 +195,4 @@ class ReadFields(Operation):
                 result[field.name] = value
             return result
 
-        chunk_size = 100
-        for i in range(0, len(df), chunk_size):
-            yield from df[i : i + chunk_size].apply(_get_result, axis=1)
+        yield from self._thread_pool.map(_get_result, df.itertuples())
