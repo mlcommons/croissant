@@ -1,6 +1,8 @@
 """Module to execute operations."""
 
+import collections
 import concurrent.futures
+import pickle
 from typing import Any
 
 from absl import logging
@@ -8,8 +10,10 @@ import networkx as nx
 import pandas as pd
 
 from mlcroissant._src.core.issues import GenerationError
+from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
+from mlcroissant._src.operation_graph.operations import FilterFiles
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -124,3 +128,29 @@ def execute_operations_in_streaming(
                 "An error occured during the streaming generation of the dataset, more"
                 f" specifically during the operation {operation}"
             ) from e
+
+
+def execute_operations_in_beam(record_set: str, operations: Operations):
+    """Executes operations in Beam.
+
+    This is only possible for streamable datasets, i.e. datasets that result from
+    executing a linear sequence of operations. If there are branches we'd need a more
+    complex Beam pipeline.
+    """
+    import apache_beam as beam
+
+    list_of_operations = _order_relevant_operations(operations, record_set)
+    queue_of_operations = collections.deque(list_of_operations)
+    files = None
+    operation = None
+    while queue_of_operations:
+        operation = queue_of_operations.popleft()
+        files = operation(files)
+        if isinstance(operation, FilterFiles):
+            break
+    with beam.Pipeline() as pipeline:
+        pipeline = pipeline | "Shard by files" >> beam.Create(files)
+        while queue_of_operations:
+            operation = queue_of_operations.popleft()
+            pipeline |= beam.ParDo(operation)
+        return pipeline

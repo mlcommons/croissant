@@ -102,6 +102,7 @@ class FileObject(Node):
         Node.__post_init__(self)
         self.validate_name()
         uuid_field = "name" if self.ctx.is_v0() else "id"
+        # TODO(marcenacp): Commenting this makes the class pickable. Why?
         self.assert_has_mandatory_properties("encoding_format", uuid_field)
 
         if not self.contained_in:

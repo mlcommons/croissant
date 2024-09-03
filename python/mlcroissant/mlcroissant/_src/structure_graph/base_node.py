@@ -1,7 +1,9 @@
 """Base node module."""
 
 import dataclasses
+import functools
 import inspect
+import random
 import re
 from typing import Any, Callable
 
@@ -303,9 +305,15 @@ class Node:
                 return True
         return False
 
+    # This is a hack. DON'T COMMIT.
+    # Instead implement __reduce__ and __setstate__.
+    @functools.cached_property
+    def _hash(self):
+        return random.randint(0, 100_000)
+
     def __hash__(self):
         """Hashes all immutable arguments."""
-        return hash(self.uuid)
+        return self._hash
 
     def __eq__(self, other: Any) -> bool:
         """Compares two Nodes given their arguments."""

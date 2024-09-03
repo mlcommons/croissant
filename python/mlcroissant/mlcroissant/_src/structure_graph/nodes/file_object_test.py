@@ -1,5 +1,6 @@
 """Tests for FileObjects."""
 
+import pickle
 from unittest import mock
 
 from etils import epath
@@ -91,3 +92,10 @@ def test_from_jsonld(encoding):
         == "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
     )
     assert not ctx.issues.errors
+
+
+def test_pickable():
+    ctx = Context()
+    file_object = create_test_node(FileObject, ctx=ctx)
+    file_object = pickle.loads(pickle.dumps(file_object))
+    # assert file_object.ctx.conforms_to.value == "slkdj"

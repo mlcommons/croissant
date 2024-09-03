@@ -18,6 +18,7 @@ from mlcroissant._src.operation_graph import OperationGraph
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
+from mlcroissant._src.operation_graph.execute import execute_operations_in_beam
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
 from mlcroissant._src.operation_graph.operations import FilterFiles
@@ -135,6 +136,17 @@ class Records:
     record_set: str
     filters: Filters | None
     debug: bool
+
+    def sink(self):
+        operations = self._filter_interesting_operations(self.filters)
+        execute_downloads(operations)
+        can_stream_dataset = all(d == 1 or d == 2 for _, d in operations.degree())
+        if not can_stream_dataset:
+            raise ValueError("only streamable datasets can be used with Beam.")
+        return execute_operations_in_beam(
+            record_set=self.record_set,
+            operations=operations,
+        )
 
     def __iter__(self):
         """Executes all operations, runs dynamic analysis and yields examples.

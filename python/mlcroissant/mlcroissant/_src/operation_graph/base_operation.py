@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import abc
 import dataclasses
+import functools
+import pickle
+import random
 from typing import Iterable
 
 import networkx as nx
@@ -23,24 +26,24 @@ class Operations(nx.DiGraph):
         super().__init__(self)
         self.last_operations: dict[Node, Operation] = {}
 
-    def add_node(self, operation: Operation) -> None:
-        """Overloads nx.add_node to keep track of the last operations."""
-        if not self.has_node(operation):
-            super().add_node(operation)
+    # def add_node(self, operation: Operation) -> None:
+    #     """Overloads nx.add_node to keep track of the last operations."""
+    #     if not self.has_node(operation):
+    #         super().add_node(operation)
 
-    def add_edge(self, operation1: Operation, operation2: Operation) -> None:
-        """Overloads nx.add_node to keep track of the last operations."""
-        if not self.has_edge(operation1, operation2):
-            super().add_edge(operation1, operation2)
+    # def add_edge(self, operation1: Operation, operation2: Operation) -> None:
+    #     """Overloads nx.add_node to keep track of the last operations."""
+    #     if not self.has_edge(operation1, operation2):
+    #         super().add_edge(operation1, operation2)
 
-    @property
-    def nodes(self) -> Iterable[Operation]:
-        """Overloads nx.nodes to return an interator of operations."""
-        return super().nodes()
+    # @property
+    # def nodes(self) -> Iterable[Operation]:
+    #     """Overloads nx.nodes to return an interator of operations."""
+    #     return super().nodes()
 
-    def is_leaf(self, operation: Operation | None) -> bool:
-        """Tests whether an operation is a leaf in the graph."""
-        return self.out_degree(operation) == 0
+    # def is_leaf(self, operation: Operation | None) -> bool:
+    #     """Tests whether an operation is a leaf in the graph."""
+    #     return self.out_degree(operation) == 0
 
     def entry_operations(self) -> list[Operation]:
         """Lists all operations without a parent in the graph of operations."""
@@ -116,3 +119,20 @@ class Operation(abc.ABC):
         for left_operation in left_operations:
             self.operations.add_edge(left_operation, right_operation)
         return right_operation
+
+    def __reduce__(self):
+        state = self.__getstate__()
+        return (
+            self.__class__,
+            tuple(state.values()),
+            state,
+        )
+
+    def __getstate__(self):
+        state = {}
+        for field in dataclasses.fields(self):
+            state[field.name] = getattr(self, field.name)
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
