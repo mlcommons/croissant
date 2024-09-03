@@ -1,6 +1,10 @@
 """Module to execute operations."""
 
+from __future__ import annotations
+
+import collections
 import concurrent.futures
+import typing
 from typing import Any
 
 from absl import logging
@@ -10,9 +14,13 @@ import pandas as pd
 from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
+from mlcroissant._src.operation_graph.operations import FilterFiles
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
+
+if typing.TYPE_CHECKING:
+    import apache_beam as beam
 
 
 def execute_downloads(operations: Operations):
@@ -124,3 +132,29 @@ def execute_operations_in_streaming(
                 "An error occured during the streaming generation of the dataset, more"
                 f" specifically during the operation {operation}"
             ) from e
+
+
+def execute_operations_in_beam(
+    pipeline: beam.Pipeline, record_set: str, operations: Operations
+):
+    """See beam_reader docstring."""
+    import apache_beam as beam
+
+    list_of_operations = _order_relevant_operations(operations, record_set)
+    queue_of_operations = collections.deque(list_of_operations)
+    files = None
+    operation = None
+    while queue_of_operations:
+        operation = queue_of_operations.popleft()
+        files = operation(files)
+        if isinstance(operation, FilterFiles):
+            break
+    pipeline = pipeline | "Shard by files" >> beam.Create(files)
+    while queue_of_operations:
+        operation = queue_of_operations.popleft()
+        if isinstance(operation, ReadFields):
+            beam_operation = beam.ParDo(operation)
+        else:
+            beam_operation = beam.Map(operation)
+        pipeline |= beam_operation
+    return pipeline

@@ -3,6 +3,9 @@
 import json
 from typing import Any
 
+from apache_beam.testing import test_pipeline
+from apache_beam.testing.util import assert_that
+from apache_beam.testing.util import BeamAssertException
 from etils import epath
 import pytest
 
@@ -114,6 +117,46 @@ def load_records_and_test_equality(
     assert len(expected_records) == length
 
 
+def _equal_to_set(expected):
+    """Checks whether 2 beam.PCollections are equal as sets."""
+
+    def matcher_fn(actual):
+        expected_set = set([
+            json.dumps(record_to_python(element)) for element in list(expected)
+        ])
+        actual_set = set([
+            json.dumps(record_to_python(element)) for element in list(actual)
+        ])
+        if expected_set != actual_set:
+            raise BeamAssertException(
+                f"sets are not equal: {expected_set - actual_set}"
+            )
+
+    return matcher_fn
+
+
+def load_records_with_beam_and_test_equality(
+    version: str,
+    dataset_name: str,
+    record_set_name: str,
+):
+    config = (
+        epath.Path(__file__).parent.parent.parent.parent.parent
+        / "datasets"
+        / version
+        / dataset_name
+    )
+    output_file = config.parent / "output" / f"{record_set_name}.jsonl"
+    with output_file.open("rb") as f:
+        lines = f.readlines()
+        expected_records = [json.loads(line) for line in lines]
+    dataset = datasets.Dataset(config)
+
+    with test_pipeline.TestPipeline() as pipeline:
+        result = dataset.records(record_set_name).beam_reader(pipeline=pipeline)
+        assert_that(result, _equal_to_set(expected_records))
+
+
 # IF (NON)-HERMETIC TESTS FAIL, OR A NEW DATASET IS ADDED:
 # You can regenerate .pkl files by launching
 # ```bash
@@ -148,6 +191,17 @@ def load_records_and_test_equality(
 )
 def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
+
+
+@parametrize_version()
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name"],
+    [
+        ["simple-parquet/metadata.json", "persons"],
+    ],
+)
+def test_beam_hermetic_loading(version, dataset_name, record_set_name):
+    load_records_with_beam_and_test_equality(version, dataset_name, record_set_name)
 
 
 # Hermetic test cases for croissant >=1.0 only.

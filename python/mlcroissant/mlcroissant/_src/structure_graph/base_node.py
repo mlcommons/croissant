@@ -344,7 +344,9 @@ class Node:
         state = {}
         for field in dataclasses.fields(self):
             if field.name == "ctx":
-                state[field.name] = Context()
+                ctx = Context()
+                ctx.graph = self.ctx.graph
+                state[field.name] = ctx
             else:
                 state[field.name] = getattr(self, field.name)
         return state
