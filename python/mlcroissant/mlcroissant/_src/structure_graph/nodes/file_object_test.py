@@ -1,5 +1,6 @@
 """Tests for FileObjects."""
 
+import pickle
 from unittest import mock
 
 from etils import epath
@@ -91,3 +92,15 @@ def test_from_jsonld(encoding):
         == "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
     )
     assert not ctx.issues.errors
+
+
+@pytest.mark.parametrize(
+    ["conforms_to"],
+    [[CroissantVersion.V_0_8], [CroissantVersion.V_1_0]],
+)
+def test_pickable(conforms_to):
+    ctx = Context(conforms_to=conforms_to)
+    file_object = create_test_node(FileObject, ctx=ctx)
+    file_object = pickle.loads(pickle.dumps(file_object))
+    # Test that the context was successfully restored:
+    assert file_object.ctx.conforms_to == conforms_to

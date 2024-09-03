@@ -330,6 +330,29 @@ class Node:
         memo[id(self)] = copy
         return copy
 
+    def __reduce__(self):
+        """Allows pickling the node.
+
+        `self.ctx` is stored separately in the state because it's not pickable directly.
+        """
+        state = self.__getstate__()
+        args = tuple(state.values())
+        return (self.__class__, args, {"ctx": self.ctx})
+
+    def __getstate__(self):
+        """Overwrites __getstate__ for pickling."""
+        state = {}
+        for field in dataclasses.fields(self):
+            if field.name == "ctx":
+                state[field.name] = Context()
+            else:
+                state[field.name] = getattr(self, field.name)
+        return state
+
+    def __setstate__(self, state):
+        """Overwrites __setstate__ for pickling."""
+        self.ctx = state["ctx"]
+
     def to_json(self) -> Json:
         """Converts the Python class to JSON."""
         cls = self.__class__
