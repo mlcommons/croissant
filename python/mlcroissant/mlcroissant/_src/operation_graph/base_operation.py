@@ -38,10 +38,6 @@ class Operations(nx.DiGraph):
         """Overloads nx.nodes to return an interator of operations."""
         return super().nodes()
 
-    def is_leaf(self, operation: Operation | None) -> bool:
-        """Tests whether an operation is a leaf in the graph."""
-        return self.out_degree(operation) == 0
-
     def entry_operations(self) -> list[Operation]:
         """Lists all operations without a parent in the graph of operations."""
         return [
@@ -116,3 +112,33 @@ class Operation(abc.ABC):
         for left_operation in left_operations:
             self.operations.add_edge(left_operation, right_operation)
         return right_operation
+
+    def __reduce__(self):
+        """Allows pickling the operation.
+
+        `self.operations` is stored separately in the state to break the cyclic
+        reference between Operation and Operations. We could refactor the codebase to
+        not have this dependency, but it would be a bigger change and it's convenient
+        to be able to reference all operations from a single operation.
+        """
+        state = self.__getstate__()
+        args = tuple(state.values())
+        return (
+            self.__class__,
+            args,
+            {"operations": self.operations},
+        )
+
+    def __getstate__(self):
+        """Overwrites __getstate__ for pickling."""
+        state = {}
+        for field in dataclasses.fields(self):
+            if field.name == "operations":
+                state[field.name] = Operations()
+            else:
+                state[field.name] = getattr(self, field.name)
+        return state
+
+    def __setstate__(self, state):
+        """Overwrites __setstate__ for pickling."""
+        object.__setattr__(self, "operations", state["operations"])
