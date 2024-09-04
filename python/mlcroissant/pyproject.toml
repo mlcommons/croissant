@@ -42,16 +42,15 @@ documentation = "https://mlcommons.org/working-groups/data/croissant/"
 # Installed through `pip install -e .[dev]`
 dev = [
   "black==23.11.0",
-  "datasets",
   "flake8-docstrings",
   "mlcroissant[audio]",
+  "mlcroissant[beam]",
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
   "mypy",
   "pyflakes",
   "pygraphviz",
-  "pylint",
   "pytest",
   "pytype",
   "torchdata",
@@ -60,6 +59,9 @@ dev = [
 audio = [
   "librosa",
   "soxr==0.4.0b1",
+]
+beam = [
+  "apache-beam",
 ]
 git = ["GitPython"]
 image = ["Pillow"]
@@ -89,7 +91,7 @@ disable_error_code = "attr-defined"
 [[tool.mypy.overrides]]
 module = [
   "absl",
-  "datasets",
+  "apache-beam",
   "etils.*",
   "jsonpath_rw",
   "librosa",

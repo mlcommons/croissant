@@ -25,7 +25,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -34,6 +34,11 @@ jobs:
 
     - name: PyTest
       run: make pytest
+
+    # Pylint is not compatible with Apache Beam in Python 3.11:
+    # https://github.com/pylint-dev/pylint/blob/02616372282fd84862636d58071e6f3c62b53559/pyproject.toml#L38
+    - name: Install Pylint separately.
+      run: pip install pylint
 
     - name: PyLint
       run: make pylint
@@ -62,7 +67,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -117,14 +122,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
     - name: Install dependencies except mlcroissant itself
       run: >
         pip install absl-py \
-          datasets \
+          apache-beam \
           etils[epath] \
           GitPython \
           jsonpath_rw \
@@ -152,14 +157,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
     - name: Install dependencies except mlcroissant itself
       run: >
           pip install absl-py \
-            datasets \
+            apache-beam \
             etils[epath] \
             GitPython \
             jsonpath_rw \
@@ -188,7 +193,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -217,7 +222,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -240,7 +245,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -264,7 +269,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
