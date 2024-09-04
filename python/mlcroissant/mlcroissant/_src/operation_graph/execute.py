@@ -12,6 +12,7 @@ import networkx as nx
 import pandas as pd
 
 from mlcroissant._src.core.issues import GenerationError
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import FilterFiles
@@ -137,7 +138,7 @@ def execute_operations_in_streaming(
 def execute_operations_in_beam(
     pipeline: beam.Pipeline, record_set: str, operations: Operations
 ):
-    """See beam_reader docstring."""
+    """See ReadFromCroissant docstring."""
     import apache_beam as beam
 
     list_of_operations = _order_relevant_operations(operations, record_set)
