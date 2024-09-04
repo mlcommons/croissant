@@ -3,16 +3,18 @@
 from __future__ import annotations
 
 import collections
+from collections.abc import Iterable
 import concurrent.futures
+import functools
+import sys
 import typing
-from typing import Any
+from typing import Any, Generator
 
 from absl import logging
 import networkx as nx
 import pandas as pd
 
 from mlcroissant._src.core.issues import GenerationError
-from mlcroissant._src.core.optional import deps
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.operations import FilterFiles
@@ -22,6 +24,8 @@ from mlcroissant._src.operation_graph.operations.read import Read
 
 if typing.TYPE_CHECKING:
     import apache_beam as beam
+
+ElementWithIndex = tuple[int, Any]
 
 
 def execute_downloads(operations: Operations):
@@ -150,12 +154,69 @@ def execute_operations_in_beam(
         files = operation(files)
         if isinstance(operation, FilterFiles):
             break
-    pipeline = pipeline | "Shard by files" >> beam.Create(files)
+    if not isinstance(files, Iterable):
+        raise ValueError("Could not filter files.")
+    files = list(files)  # even for large datasets, this can be handled in RAM.
+
+    # We first shard by file and assign a shard_index.
+    pipeline = pipeline | "Shard by files with index" >> beam.Create(enumerate(files))
+    num_shards = len(files)
+
+    # We don't know in advance the number of records per shards. So we just allocate the
+    # maximum number which is `sys.maxsize // num_shards`. For a large evenly
+    # distributed dataset, we have:
+
+    # num_shards = number of Parquet files per config on Hugging Face < 10 billion files
+    # max_shard_size ~ 1 billion records per Parquet files
+
+    # So it seems we can run with this trick without too many problems. We still trigger
+    # a ValueError below if the error arises, and we ask the user to open a bug. A real
+    # solution to this problem would be to compute the shard_sizes in parallel of
+    # generating the records.
+    # TODO(marcenacp): compute shard_sizes explicitly instead of relying on
+    # max_shard_size.
+    max_shard_size = sys.maxsize // num_shards
     while queue_of_operations:
         operation = queue_of_operations.popleft()
         if isinstance(operation, ReadFields):
-            beam_operation = beam.ParDo(operation)
+            beam_operation = beam.ParDo(
+                functools.partial(
+                    _add_global_index,
+                    operation=operation,
+                    max_shard_size=max_shard_size,
+                )
+            )
         else:
-            beam_operation = beam.Map(operation)
+            beam_operation = beam.Map(
+                functools.partial(_pass_index, operation=operation)
+            )
         pipeline |= beam_operation
     return pipeline
+
+
+def _add_global_index(
+    element_with_index: ElementWithIndex,
+    operation: Operation,
+    max_shard_size: int,
+) -> Generator[ElementWithIndex, None, None]:
+    """Computes the global index given the shard size."""
+    shard_index, element = element_with_index
+    for index_in_shard, result in enumerate(operation(element)):
+        if index_in_shard >= max_shard_size:
+            raise ValueError(
+                "WARNING: This was very unlikely, but it seems we just hit this limit"
+                " in the code. Find another way to optimize execute_operations_in_beam."
+                " Please, open a PR on GitHub to make the maintainers aware of this"
+                " issue. An actual easy fix is to compute the actual shard_sizes rather"
+                " than relying on a heuristic."
+            )
+        new_index = max_shard_size * shard_index + index_in_shard
+        yield (new_index, result)
+
+
+def _pass_index(
+    element_with_index: tuple[int, Any], operation: Operation
+) -> ElementWithIndex:
+    """Passes the index to the next operation while executing the operation."""
+    index, element = element_with_index
+    return (index, operation(element))

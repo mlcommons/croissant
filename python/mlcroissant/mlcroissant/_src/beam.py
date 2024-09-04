@@ -34,7 +34,7 @@ def ReadFromCroissant(
 
     options = pipeline_options.PipelineOptions()
     with beam.Pipeline(options=options) as pipeline:
-        ReadFromCroissant(
+        mlc.ReadFromCroissant(
             pipeline=pipeline,
             jsonld=jsonld,
             record_set="default",
@@ -59,7 +59,9 @@ def ReadFromCroissant(
             "~/Downloads/document.csv"}`.
 
     Returns:
-        A Beam PCollection with all the records.
+        A Beam PCollection with all the records where each element contains a tuple with
+            a) a global index, and
+            b) the content of the record.
 
     Raises:
         A ValueError if the dataset is not streamable.
