@@ -304,7 +304,7 @@ class Node:
         return False
 
     def __hash__(self):
-        """Re-uses parent's hash function."""
+        """Re-uses parent's hash function (i.e., object)."""
         return super().__hash__()
 
     def __eq__(self, other: Any) -> bool:

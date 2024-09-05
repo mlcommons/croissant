@@ -163,8 +163,8 @@ def execute_operations_in_beam(
     num_shards = len(files)
 
     # We don't know in advance the number of records per shards. So we just allocate the
-    # maximum number which is `sys.maxsize // num_shards`. For a large evenly
-    # distributed dataset, we have:
+    # maximum number which is `sys.maxsize // num_shards`. Taking the practical case of
+    # large evenly distributed datasets on HuggingFace, we can compute the following:
 
     # num_shards = number of Parquet files per config on Hugging Face < 10 billion files
     # max_shard_size ~ 1 billion records per Parquet files
@@ -173,8 +173,8 @@ def execute_operations_in_beam(
     # a ValueError below if the error arises, and we ask the user to open a bug. A real
     # solution to this problem would be to compute the shard_sizes in parallel of
     # generating the records.
-    # TODO(marcenacp): compute shard_sizes explicitly instead of relying on
-    # max_shard_size.
+    # TODO(https://github.com/mlcommons/croissant/issues/732): Compute shard_sizes
+    # explicitly instead of relying on max_shard_size.
     max_shard_size = sys.maxsize // num_shards
     while queue_of_operations:
         operation = queue_of_operations.popleft()
@@ -207,8 +207,8 @@ def _add_global_index(
                 "WARNING: This was very unlikely, but it seems we just hit this limit"
                 " in the code. Find another way to optimize execute_operations_in_beam."
                 " Please, open a PR on GitHub to make the maintainers aware of this"
-                " issue. An actual easy fix is to compute the actual shard_sizes rather"
-                " than relying on a heuristic."
+                " issue. A fix is to compute the actual shard_sizes rather than relying"
+                " on a heuristic (see comments above in code)."
             )
         new_index = max_shard_size * shard_index + index_in_shard
         yield (new_index, result)

@@ -46,6 +46,8 @@ def ReadFromCroissant(
     example. This is the case for Hugging Face datasets. If there are branches, we'd
     need a more complex Beam pipeline.
 
+    TODO(https://github.com/mlcommons/croissant/issues/733): handle branches.
+
     The sharding is done on the filtered files. This is currently optimized for Hugging
     Face datasets, so it raises an error if the dataset is not a Hugging Face dataset.
 
