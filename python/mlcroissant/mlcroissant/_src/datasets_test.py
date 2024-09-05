@@ -10,6 +10,7 @@ from etils import epath
 import pytest
 
 from mlcroissant._src import datasets
+from mlcroissant._src.beam import ReadFromCroissant
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.tests.records import record_to_python
@@ -142,20 +143,19 @@ def load_records_with_beam_and_test_equality(
     dataset_name: str,
     record_set_name: str,
 ):
-    config = (
+    jsonld = (
         epath.Path(__file__).parent.parent.parent.parent.parent
         / "datasets"
         / version
         / dataset_name
     )
-    output_file = config.parent / "output" / f"{record_set_name}.jsonl"
+    output_file = jsonld.parent / "output" / f"{record_set_name}.jsonl"
     with output_file.open("rb") as f:
         lines = f.readlines()
         expected_records = [json.loads(line) for line in lines]
-    dataset = datasets.Dataset(config)
 
     with test_pipeline.TestPipeline() as pipeline:
-        result = dataset.records(record_set_name).beam_reader(pipeline=pipeline)
+        result = pipeline | ReadFromCroissant(jsonld=jsonld, record_set=record_set_name)
         assert_that(result, _equal_to_set(expected_records))
 
 
