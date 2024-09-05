@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+import functools
 import typing
-from typing import Any
+from typing import Any, Callable
 
 from etils import epath
 
@@ -14,9 +15,27 @@ if typing.TYPE_CHECKING:
     import apache_beam as beam
 
 
+def _beam_ptransform_fn(fn: Callable[..., Any]) -> Callable[..., Any]:
+    """Lazy version of `@beam.ptransform_fn` in case Beam is not installed."""
+    lazy_decorated_fn = None
+
+    @functools.wraps(fn)
+    def decorated(*args, **kwargs):
+        nonlocal lazy_decorated_fn
+        # Actually decorate the function only the first time it is called
+        if lazy_decorated_fn is None:
+            import apache_beam as beam
+
+            lazy_decorated_fn = beam.ptransform_fn(fn)
+        return lazy_decorated_fn(*args, **kwargs)
+
+    return decorated
+
+
+@_beam_ptransform_fn
 def ReadFromCroissant(
-    *,
     pipeline: beam.Pipeline,
+    *,
     jsonld: epath.PathLike | Mapping[str, Any],
     record_set: str,
     mapping: Mapping[str, epath.PathLike] | None = None,
@@ -34,8 +53,7 @@ def ReadFromCroissant(
 
     options = pipeline_options.PipelineOptions()
     with beam.Pipeline(options=options) as pipeline:
-        mlc.ReadFromCroissant(
-            pipeline=pipeline,
+        _ = pipeline | mlc.ReadFromCroissant(
             jsonld=jsonld,
             record_set="default",
         )
@@ -52,7 +70,7 @@ def ReadFromCroissant(
     Face datasets, so it raises an error if the dataset is not a Hugging Face dataset.
 
     Args:
-        pipeline: A Beam pipeline.
+        pipeline: A Beam pipeline (automatically set).
         jsonld: A JSON object or a path to a Croissant file (URL, str or pathlib.Path).
         record_set: The name of the record set to generate.
         mapping: Mapping filename->filepath as a Python dict[str, str] to handle manual
