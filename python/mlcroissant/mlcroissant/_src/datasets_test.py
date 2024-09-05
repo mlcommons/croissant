@@ -121,6 +121,8 @@ def _equal_to_set(expected):
     """Checks whether 2 beam.PCollections are equal as sets."""
 
     def matcher_fn(actual):
+        # Sort by index, then remove the index from the PCollection returned by Beam:
+        actual = [element for _, element in sorted(list(actual))]
         expected_set = set([
             json.dumps(record_to_python(element)) for element in list(expected)
         ])

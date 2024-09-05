@@ -304,8 +304,8 @@ class Node:
         return False
 
     def __hash__(self):
-        """Hashes all immutable arguments."""
-        return hash(self.uuid)
+        """Re-uses parent's hash function (i.e., object)."""
+        return super().__hash__()
 
     def __eq__(self, other: Any) -> bool:
         """Compares two Nodes given their arguments."""
@@ -329,31 +329,6 @@ class Node:
         copy = self.__class__(**kwargs)  # pytype: disable=not-instantiable
         memo[id(self)] = copy
         return copy
-
-    def __reduce__(self):
-        """Allows pickling the node.
-
-        `self.ctx` is stored separately in the state because it's not pickable directly.
-        """
-        state = self.__getstate__()
-        args = tuple(state.values())
-        return (self.__class__, args, {"ctx": self.ctx})
-
-    def __getstate__(self):
-        """Overwrites __getstate__ for pickling."""
-        state = {}
-        for field in dataclasses.fields(self):
-            if field.name == "ctx":
-                ctx = Context()
-                ctx.graph = self.ctx.graph
-                state[field.name] = ctx
-            else:
-                state[field.name] = getattr(self, field.name)
-        return state
-
-    def __setstate__(self, state):
-        """Overwrites __setstate__ for pickling."""
-        self.ctx = state["ctx"]
 
     def to_json(self) -> Json:
         """Converts the Python class to JSON."""
