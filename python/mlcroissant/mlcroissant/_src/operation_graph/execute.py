@@ -12,7 +12,6 @@ from typing import Any, Generator
 
 from absl import logging
 import networkx as nx
-import pandas as pd
 
 from mlcroissant._src.core.issues import GenerationError
 from mlcroissant._src.operation_graph.base_operation import Operation
@@ -43,7 +42,7 @@ def _order_relevant_operations(
 ) -> list[Operation]:
     """Orders all relevant operations for the RecordSet."""
     # ReadFields linked to the `record_set_name`.
-    group_record_set = next(
+    read_fields_operation = next(
         (
             operation
             for operation in operations.nodes
@@ -51,36 +50,28 @@ def _order_relevant_operations(
             and operation.node.uuid == record_set_id
         )
     )
-    ancestors = set(nx.ancestors(operations, group_record_set))
-    # Return ReadField and all its ancestors
+    ancestors = set(nx.ancestors(operations, read_fields_operation))
+    # Return ReadFields and all its ancestors
     return [
         operation
         for operation in nx.topological_sort(operations)
         # If the operation is not a needed operation to compute `record_set`, skip it:
-        if operation in ancestors or operation == group_record_set
+        if operation in ancestors or operation == read_fields_operation
     ]
 
 
 def execute_operations_sequentially(record_set: str, operations: Operations):
     """Executes operation and yields results according to the graph of operations."""
-    results: dict[Operation, Any] = {}
     for operation in _order_relevant_operations(operations, record_set):
         try:
-            previous_results = [
-                results[previous_operation]
-                for previous_operation in operations.predecessors(operation)
-                if previous_operation in results
-            ]
             logging.info("Executing %s", operation)
-            results[operation] = operation(*previous_results)
-            if isinstance(operation, ReadFields):
-                if operation.node.uuid != record_set:
-                    # The RecordSet will be used later in the graph by another RecordSet
-                    # This could be multi-threaded to build the pd.DataFrame faster.
-                    results[operation] = pd.DataFrame(list(results[operation]))
-                else:
-                    # This is the target RecordSet, so we can yield records.
-                    yield from results[operation]
+            if isinstance(operation, ReadFields) and record_set == operation.node.uuid:
+                # This is the target RecordSet, so we can yield records. We don't keep
+                # the output in memory, so that we can yield from bigger-than-memory
+                # generators.
+                yield from operation(set_output_in_memory=False)
+            else:
+                operation(set_output_in_memory=True)
         except Exception as e:
             raise GenerationError(
                 "An error occured during the sequential generation of the dataset, more"
@@ -107,7 +98,7 @@ def execute_operations_in_streaming(
             if isinstance(operation, ReadFields):
                 if operation.node.uuid != record_set:
                     continue
-                yield from operation(result)
+                yield from operation.call(result)
                 return
             elif isinstance(operation, Read):
                 # At this stage `result` can be either a Path or a list of Paths.
@@ -122,16 +113,14 @@ def execute_operations_in_streaming(
                             record_set=record_set,
                             operations=operations,
                             list_of_operations=list_of_operations[i + 1 :],
-                            result=operation(file),
+                            result=operation.call(file),
                         )
 
                 yield from read_all_files()
                 return
             else:
                 logging.info("Executing %s", operation)
-                if isinstance(operation, ReadFields):
-                    continue
-                result = operation(result)
+                result = operation.call(result)
         except Exception as e:
             raise GenerationError(
                 "An error occured during the streaming generation of the dataset, more"
@@ -151,7 +140,7 @@ def execute_operations_in_beam(
     operation = None
     while queue_of_operations:
         operation = queue_of_operations.popleft()
-        files = operation(files)
+        files = operation.call(files)
         if isinstance(operation, FilterFiles):
             break
     if not isinstance(files, Iterable):
@@ -187,7 +176,7 @@ def execute_operations_in_beam(
                 )
             )
         else:
-            beam_operation = beam.Map(
+            beam_operation = beam.MapTuple(
                 functools.partial(_pass_index, operation=operation)
             )
         pipeline |= beam_operation
@@ -201,7 +190,7 @@ def _add_global_index(
 ) -> Generator[ElementWithIndex, None, None]:
     """Computes the global index given the shard size."""
     shard_index, element = element_with_index
-    for index_in_shard, result in enumerate(operation(element)):
+    for index_in_shard, result in enumerate(operation.call(element)):
         if index_in_shard >= max_shard_size:
             raise ValueError(
                 "WARNING: This was very unlikely, but it seems we just hit this limit"
@@ -214,9 +203,6 @@ def _add_global_index(
         yield (new_index, result)
 
 
-def _pass_index(
-    element_with_index: tuple[int, Any], operation: Operation
-) -> ElementWithIndex:
+def _pass_index(index: int, element: Any, operation: Operation) -> ElementWithIndex:
     """Passes the index to the next operation while executing the operation."""
-    index, element = element_with_index
-    return (index, operation(element))
+    return (index, operation.call(element))

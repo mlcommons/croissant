@@ -165,7 +165,7 @@ def test_extract_lines(separator):
                 {"line_number": 2, "line": b" h\xc3\xa9llo ", "filename": b"file"},
                 {"line_number": 3, "line": b"hallo ", "filename": b"file"},
             ]
-            result = list(read_field(df))
+            result = list(read_field.call(df))
             assert result == expected
 
 
