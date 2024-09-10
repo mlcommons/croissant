@@ -138,7 +138,7 @@ class Read(Operation):
                     f"Unsupported encoding format for file: {encoding_format}"
                 )
 
-    def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
+    def call(self, files: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
         if isinstance(files, Path):
             files = [files]

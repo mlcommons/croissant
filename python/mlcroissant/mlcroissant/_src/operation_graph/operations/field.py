@@ -157,7 +157,7 @@ class ReadFields(Operation):
                 fields.append(field)
         return fields
 
-    def __call__(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
+    def call(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
         if self.node.data:
             # The RecordSet has `data`, so we directly yield from the dataframe.
