@@ -85,11 +85,11 @@ class Dataset:
             return
         # Draw the structure graph for debugging purposes.
         if self.debug:
-            graphs_utils.pretty_print_graph(ctx.graph, simplify=True)
+            graphs_utils.pretty_print_graph(ctx.graph)
         self.operations = get_operations(ctx, self.metadata)
         # Draw the operations graph for debugging purposes.
         if self.debug:
-            graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
+            graphs_utils.pretty_print_graph(self.operations.operations)
 
     @classmethod
     def from_metadata(cls, metadata: Metadata) -> Dataset:
@@ -149,8 +149,6 @@ class Records:
         """
         # We only consider the operations that are useful to produce the `ReadFields`.
         operations = self._filter_interesting_operations(self.filters)
-        if self.debug:
-            graphs_utils.pretty_print_graph(operations)
         # Downloads can be parallelized, so we execute them in priority.
         execute_downloads(operations)
         # We can stream the dataset iff the operation graph is a path graph (meaning

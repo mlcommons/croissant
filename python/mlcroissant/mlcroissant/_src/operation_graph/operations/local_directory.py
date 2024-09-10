@@ -16,9 +16,9 @@ class LocalDirectory(Operation):
     node: FileSet
     folder: epath.Path
 
-    def __call__(self, *args):
+    def call(self, *args):
         """See class' docstring."""
-        del args
+        del args  # unused
         return Path(
             filepath=self.folder,
             fullpath=self.folder,

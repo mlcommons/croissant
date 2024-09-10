@@ -38,7 +38,7 @@ class FilterFiles(Operation):
 
     node: FileSet
 
-    def __call__(self, *paths: Path) -> list[Path]:
+    def call(self, *paths: Path) -> list[Path]:
         """See class' docstring."""
         if self.node.includes is None:
             raise ValueError("cannot filter files without `includes`.")

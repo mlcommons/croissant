@@ -91,8 +91,12 @@ class Operation(abc.ABC):
             if previous_operation != self:
                 self.operations.add_edge(previous_operation, self)
 
-    @abc.abstractmethod
     def __call__(self, *args, **kwargs):
+        """Syntactic sugar around self.call to write `operation()`."""
+        return self.call(*args, **kwargs)
+
+    @abc.abstractmethod
+    def call(self, *args, **kwargs):
         """Abstract method to implement when an operation is called."""
         raise NotImplementedError
 

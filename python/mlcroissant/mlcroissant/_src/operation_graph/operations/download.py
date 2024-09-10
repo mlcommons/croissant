@@ -218,7 +218,7 @@ class Download(Operation):
             repo.remote().fetch(f"{refs}:{branch_name}")
             repo.branches[branch_name].checkout()
 
-    def __call__(self, *args) -> Path:
+    def call(self, *args) -> Path:
         """See class' docstring."""
         del args  # unused
         filepath = get_download_filepath(self.node)
