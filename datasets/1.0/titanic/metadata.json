@@ -91,12 +91,14 @@
       "name": "genders",
       "description": "Maps gender labels to semantic definitions.",
       "dataType": "sc:Enumeration",
-      "key": "label",
+      "key": {
+        "@id": "genders/label"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "genders/label",
-          "name": "label",
+          "name": "genders/label",
           "description": "One of {\"male\", \"female\"}",
           "dataType": [
             "sc:Text",
