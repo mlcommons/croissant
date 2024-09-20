@@ -92,7 +92,7 @@
       "description": "Maps gender labels to semantic definitions.",
       "dataType": "sc:Enumeration",
       "key": {
-        "@id": "label"
+        "@id": "genders/label"
       },
       "field": [
         {
@@ -109,7 +109,7 @@
               "@id": "genders.csv"
             },
             "extract": {
-              "column": "label"
+              "column": "genders/label"
             }
           }
         },
@@ -139,12 +139,14 @@
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "dataType": "sc:Enumeration",
-      "key": "key",
+      "key": {
+        "@id": "embarkation_ports/key"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "embarkation_ports/key",
-          "name": "key",
+          "name": "embarkation_ports/key",
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
           "source": {
@@ -152,7 +154,7 @@
               "@id": "embarkation_ports.csv"
             },
             "extract": {
-              "column": "key"
+              "column": "embarkation_ports/key"
             }
           }
         },

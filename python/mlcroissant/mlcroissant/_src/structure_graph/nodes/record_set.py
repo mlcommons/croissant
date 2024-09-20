@@ -12,11 +12,11 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import data_types_from_jsonld
 from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.core.uuid import formatted_uuid_to_json
-from mlcroissant._src.core.uuid import uuid_from_jsonld
 
 
 def json_from_jsonld(ctx: Context, data) -> Json | None:
