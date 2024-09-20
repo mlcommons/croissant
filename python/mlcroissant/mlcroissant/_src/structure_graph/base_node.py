@@ -444,6 +444,9 @@ def _value_from_input_types(
             actual_jsonld_type = value.get("@type")
             if actual_jsonld_type == jsonld_type:
                 return input_type.from_jsonld(ctx, value)
+        # ...or it is a dictionary of keys...
+        elif isinstance(value, dict) and field.name == 'key':
+            return None
         # ...or it's a basic int/str/bool/etc type
         else:
             matching_type = MATCHING_TYPES.get(input_type)
