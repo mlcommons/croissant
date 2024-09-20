@@ -98,7 +98,7 @@
         {
           "@type": "cr:Field",
           "@id": "genders/label",
-          "name": "genders/label",
+          "name": "label",
           "description": "One of {\"male\", \"female\"}",
           "dataType": [
             "sc:Text",
@@ -109,7 +109,7 @@
               "@id": "genders.csv"
             },
             "extract": {
-              "column": "genders/label"
+              "column": "label"
             }
           }
         },
@@ -146,7 +146,7 @@
         {
           "@type": "cr:Field",
           "@id": "embarkation_ports/key",
-          "name": "embarkation_ports/key",
+          "name": "key",
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
           "source": {
@@ -154,7 +154,7 @@
               "@id": "embarkation_ports.csv"
             },
             "extract": {
-              "column": "embarkation_ports/key"
+              "column": "key"
             }
           }
         },
