@@ -70,7 +70,7 @@
         {
           "@type": "cr:Field",
           "@id": "persons/name",
-          "name": "name",
+          "name": "persons/name",
           "description": "Name of the person.",
           "dataType": "sc:Text",
           "source": {
@@ -85,7 +85,7 @@
         {
           "@type": "cr:Field",
           "@id": "persons/age",
-          "name": "age",
+          "name": "persons/age",
           "description": "Age of the person.",
           "dataType": "sc:Integer",
           "source": {

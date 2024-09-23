@@ -70,7 +70,7 @@
         {
           "@type": "cr:Field",
           "@id": "examples/name",
-          "name": "name",
+          "name": "examples/name",
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
           "references": {
@@ -85,7 +85,7 @@
         {
           "@type": "cr:Field",
           "@id": "examples/age",
-          "name": "age",
+          "name": "examples/age",
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
           "references": {

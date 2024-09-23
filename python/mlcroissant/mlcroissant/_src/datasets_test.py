@@ -90,10 +90,14 @@ def load_records_and_test_equality(
     num_records: int,
     filters: dict[str, Any] | None = None,
 ):
+    filters_command = ""
+    if filters:
+        filters_command = f" --filters '{filters}'"
     print(
-        "If this test fails, update JSONL with: `mlcroissant load"
-        f" --jsonld ../../datasets/{version}/{dataset_name} --record_set"
-        f" {record_set_name} --num_records {num_records} --debug --update_output`"
+        "If this test fails, update JSONL with: `mlcroissant load --jsonld"
+        f" ../../datasets/{version}/{dataset_name} --record_set"
+        f" {record_set_name} --num_records {num_records} --debug --update_output"
+        f" {filters_command}`"
     )
     config = (
         epath.Path(__file__).parent.parent.parent.parent.parent

@@ -248,6 +248,8 @@ class Source(Node):
         elif self.extract.json_path:
             return self.extract.json_path
         else:
+            if self.ctx.is_v0():
+                return self.uuid.split("/")[-1]
             return self.uuid
 
     def check_source(self, add_error: Any):

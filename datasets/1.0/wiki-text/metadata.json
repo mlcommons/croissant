@@ -93,7 +93,7 @@
         {
           "@type": "cr:Field",
           "@id": "split_enums/name",
-          "name": "name",
+          "name": "split_enums/name",
           "description": "One of: train, valid, test.",
           "dataType": "sc:Text",
           "source": {
@@ -108,7 +108,7 @@
         {
           "@type": "cr:Field",
           "@id": "split_enums/url",
-          "name": "url",
+          "name": "split_enums/url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
             "sc:URL",
@@ -134,7 +134,7 @@
         {
           "@type": "cr:Field",
           "@id": "words/word",
-          "name": "word",
+          "name": "words/word",
           "description": "A word.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -158,7 +158,7 @@
         {
           "@type": "cr:Field",
           "@id": "words/split",
-          "name": "split",
+          "name": "words/split",
           "description": "The train, valid or test split.",
           "dataType": [
             "sc:Text",

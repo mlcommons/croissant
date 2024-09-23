@@ -67,7 +67,7 @@
         {
           "@type": "cr:Field",
           "@id": "read_from_directory_example/id",
-          "name": "id",
+          "name": "read_from_directory_example/id",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {

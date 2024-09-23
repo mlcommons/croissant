@@ -137,13 +137,15 @@
         "field": [
           {
             "@type": "ml:Field",
-            "name": "name",
+            "@id": "split_enums/name",
+            "name": "split_enums/name",
             "description": "One of: train, val, test.",
             "dataType": "sc:Text"
           },
           {
             "@type": "ml:Field",
-            "name": "url",
+            "@id": "split_enums/url",
+            "name": "split_enums/url",
             "description": "Corresponding mlcommons.org definition URL",
             "dataType": [
               "sc:URL",
@@ -153,16 +155,16 @@
         ],
         "data": [
           {
-            "name": "train",
-            "url": "https://mlcommons.org/definitions/training_split"
+            "split_enums/name": "train",
+            "split_enums/url": "https://mlcommons.org/definitions/training_split"
           },
           {
-            "name": "val",
-            "url": "https://mlcommons.org/definitions/validation_split"
+            "split_enums/name": "val",
+            "split_enums/url": "https://mlcommons.org/definitions/validation_split"
           },
           {
-            "name": "test",
-            "url": "https://mlcommons.org/definitions/test_split"
+            "split_enums/name": "test",
+            "split_enums/url": "https://mlcommons.org/definitions/test_split"
           }
         ]
       },

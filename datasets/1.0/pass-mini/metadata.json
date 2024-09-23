@@ -104,7 +104,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/hash",
-          "name": "hash",
+          "name": "images/hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
@@ -130,7 +130,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_content",
-          "name": "image_content",
+          "name": "images/image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
@@ -145,7 +145,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/creator_uname",
-          "name": "creator_uname",
+          "name": "images/creator_uname",
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
@@ -160,14 +160,14 @@
         {
           "@type": "cr:Field",
           "@id": "images/gps_coordinates",
-          "name": "gps_coordinates",
+          "name": "images/gps_coordinates",
           "description": "GPS coordinates where the image was taken.",
           "dataType": "sc:GeoCoordinates",
           "subField": [
             {
               "@type": "cr:Field",
               "@id": "images/latitude",
-              "name": "latitude",
+              "name": "images/latitude",
               "dataType": "sc:Float",
               "source": {
                 "fileObject": {
@@ -181,7 +181,7 @@
             {
               "@type": "cr:Field",
               "@id": "images/longitude",
-              "name": "longitude",
+              "name": "images/longitude",
               "dataType": "sc:Float",
               "source": {
                 "fileObject": {
@@ -197,7 +197,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/date_taken",
-          "name": "date_taken",
+          "name": "images/date_taken",
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {

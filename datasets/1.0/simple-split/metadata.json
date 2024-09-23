@@ -69,7 +69,7 @@
         {
           "@type": "cr:Field",
           "@id": "data/data",
-          "name": "data",
+          "name": "data/data",
           "description": "Data in the record.",
           "dataType": "sc:Integer",
           "source": {
@@ -84,7 +84,7 @@
         {
           "@type": "cr:Field",
           "@id": "data/split",
-          "name": "split",
+          "name": "data/split",
           "description": "Data in the record.",
           "dataType": "sc:Text",
           "source": {

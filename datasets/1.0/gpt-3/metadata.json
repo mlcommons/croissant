@@ -81,7 +81,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/context",
-          "name": "context",
+          "name": "default/context",
           "description": "The context in the promt.",
           "dataType": "sc:Text",
           "source": {
@@ -96,7 +96,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/completion",
-          "name": "completion",
+          "name": "default/completion",
           "description": "The expected completion of the promt.",
           "dataType": "sc:Text",
           "source": {
@@ -111,7 +111,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/task",
-          "name": "task",
+          "name": "default/task",
           "description": "The machine learning task appearing as the name of the file.",
           "dataType": "sc:Text",
           "source": {

@@ -95,7 +95,7 @@
               "fileProperty": "fullpath"
             },
             "transform": {
-              "regex": "(.+)\/.+\/.+\\.parquet"
+              "regex": "(.+)/.+/.+\\.parquet"
             }
           }
         },

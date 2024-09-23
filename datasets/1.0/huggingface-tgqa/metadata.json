@@ -138,7 +138,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/story",
-          "name": "story",
+          "name": "TGSR_train/story",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -152,7 +152,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/id",
-          "name": "id",
+          "name": "TGSR_train/id",
           "description": "Story id.",
           "dataType": "sc:Integer",
           "source": {
@@ -167,7 +167,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/TG",
-          "name": "TG",
+          "name": "TGSR_train/TG",
           "description": "Temporal graph corresponding to the story.",
           "dataType": "sc:Text",
           "source": {
@@ -182,7 +182,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/question",
-          "name": "question",
+          "name": "TGSR_train/question",
           "description": "question",
           "dataType": "sc:Text",
           "source": {
@@ -197,7 +197,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/answer",
-          "name": "answer",
+          "name": "TGSR_train/answer",
           "description": "answer",
           "dataType": "sc:Text",
           "source": {
@@ -212,7 +212,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/candidates",
-          "name": "candidates",
+          "name": "TGSR_train/candidates",
           "description": "Candidate answers.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -228,7 +228,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/Q-Type",
-          "name": "Q-Type",
+          "name": "TGSR_train/Q-Type",
           "description": "Candidate answers.",
           "dataType": "sc:Text",
           "source": {
@@ -243,7 +243,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/EK",
-          "name": "EK",
+          "name": "TGSR_train/EK",
           "description": "External knowledge.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -259,7 +259,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_train/CoT",
-          "name": "CoT",
+          "name": "TGSR_train/CoT",
           "description": "Chain of thought",
           "dataType": "sc:Text",
           "repeated": true,
@@ -282,7 +282,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/story",
-          "name": "story",
+          "name": "TGSR_validation/story",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -296,7 +296,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/id",
-          "name": "id",
+          "name": "TGSR_validation/id",
           "description": "Story id.",
           "dataType": "sc:Integer",
           "source": {
@@ -311,7 +311,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/TG",
-          "name": "TG",
+          "name": "TGSR_validation/TG",
           "description": "Temporal graph corresponding to the story.",
           "dataType": "sc:Text",
           "source": {
@@ -326,7 +326,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/question",
-          "name": "question",
+          "name": "TGSR_validation/question",
           "description": "question",
           "dataType": "sc:Text",
           "source": {
@@ -341,7 +341,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/answer",
-          "name": "answer",
+          "name": "TGSR_validation/answer",
           "description": "answer",
           "dataType": "sc:Text",
           "source": {
@@ -356,7 +356,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/candidates",
-          "name": "candidates",
+          "name": "TGSR_validation/candidates",
           "description": "Candidate answers.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -372,7 +372,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/Q-Type",
-          "name": "Q-Type",
+          "name": "TGSR_validation/Q-Type",
           "description": "Candidate answers.",
           "dataType": "sc:Text",
           "source": {
@@ -387,7 +387,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/EK",
-          "name": "EK",
+          "name": "TGSR_validation/EK",
           "description": "External knowledge.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -403,7 +403,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_validation/CoT",
-          "name": "CoT",
+          "name": "TGSR_validation/CoT",
           "description": "Chain of thought",
           "dataType": "sc:Text",
           "repeated": true,
@@ -426,7 +426,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/story",
-          "name": "story",
+          "name": "TGSR_test/story",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -440,7 +440,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/id",
-          "name": "id",
+          "name": "TGSR_test/id",
           "description": "Story id.",
           "dataType": "sc:Integer",
           "source": {
@@ -455,7 +455,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/TG",
-          "name": "TG",
+          "name": "TGSR_test/TG",
           "description": "Temporal graph corresponding to the story.",
           "dataType": "sc:Text",
           "source": {
@@ -470,7 +470,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/question",
-          "name": "question",
+          "name": "TGSR_test/question",
           "description": "question",
           "dataType": "sc:Text",
           "source": {
@@ -485,7 +485,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/answer",
-          "name": "answer",
+          "name": "TGSR_test/answer",
           "description": "answer",
           "dataType": "sc:Text",
           "source": {
@@ -500,7 +500,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/candidates",
-          "name": "candidates",
+          "name": "TGSR_test/candidates",
           "description": "Candidate answers.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -516,7 +516,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/Q-Type",
-          "name": "Q-Type",
+          "name": "TGSR_test/Q-Type",
           "description": "Candidate answers.",
           "dataType": "sc:Text",
           "source": {
@@ -531,7 +531,7 @@
         {
           "@type": "cr:Field",
           "@id": "TGSR_test/EK",
-          "name": "EK",
+          "name": "TGSR_test/EK",
           "description": "External knowledge.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -554,7 +554,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_train/story",
-          "name": "story",
+          "name": "Story_TG_Trans_train/story",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -568,7 +568,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_train/id",
-          "name": "id",
+          "name": "Story_TG_Trans_train/id",
           "description": "Story id.",
           "dataType": "sc:Integer",
           "source": {
@@ -583,7 +583,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_train/TG",
-          "name": "TG",
+          "name": "Story_TG_Trans_train/TG",
           "description": "Temporal graph corresponding to the story.",
           "dataType": "sc:Text",
           "source": {
@@ -605,7 +605,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_validation/story",
-          "name": "story",
+          "name": "Story_TG_Trans_validation/story",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -619,7 +619,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_validation/id",
-          "name": "id",
+          "name": "Story_TG_Trans_validation/id",
           "description": "Story id.",
           "dataType": "sc:Integer",
           "source": {
@@ -634,7 +634,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_validation/TG",
-          "name": "TG",
+          "name": "Story_TG_Trans_validation/TG",
           "description": "Temporal graph corresponding to the story.",
           "dataType": "sc:Text",
           "source": {
@@ -656,7 +656,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_test/story",
-          "name": "story",
+          "name": "Story_TG_Trans_test/story",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -670,7 +670,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_test/id",
-          "name": "id",
+          "name": "Story_TG_Trans_test/id",
           "description": "Story id.",
           "dataType": "sc:Integer",
           "source": {
@@ -685,7 +685,7 @@
         {
           "@type": "cr:Field",
           "@id": "Story_TG_Trans_test/TG",
-          "name": "TG",
+          "name": "Story_TG_Trans_test/TG",
           "description": "Temporal graph corresponding to the story.",
           "dataType": "sc:Text",
           "source": {
