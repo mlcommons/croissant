@@ -6,6 +6,7 @@ the specs.
 
 
 def up(json_ld):
+    """Up function."""
     json_copy = json_ld.copy()
     for _, record_set in enumerate(json_copy.get("recordSet", [])):
         if record_set["@id"] != record_set["name"]:
