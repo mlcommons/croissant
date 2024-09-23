@@ -43,6 +43,12 @@ def test_uuid_to_jsonld(input, output):
     [
         [CroissantVersion.V_0_8, "example/uuid", "example/uuid"],
         [CroissantVersion.V_1_0, "example/uuid", {"@id": "example/uuid"}],
+        [
+            CroissantVersion.V_1_0,
+            ["example/uuid1", "example/uuid2"],
+            [{"@id": "example/uuid1"}, {"@id": "example/uuid2"}],
+        ],
+        [CroissantVersion.V_1_0, ["example/uuid1"], {"@id": "example/uuid1"}],
     ],
 )
 def test_formatted_uuid_to_json(conforms_to, uuid, output):

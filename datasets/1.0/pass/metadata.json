@@ -185,7 +185,9 @@
       "@type": "cr:RecordSet",
       "@id": "images",
       "name": "images",
-      "key": "hash",
+      "key": {
+        "@id": "hash"
+      },
       "field": [
         {
           "@type": "cr:Field",

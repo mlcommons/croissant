@@ -78,25 +78,27 @@
     {
       "@type": "cr:RecordSet",
       "dataType": "cr:Split",
-      "key": "name",
+      "key": {
+        "@id": "mnist_splits/split_name"
+      },
       "@id": "mnist_splits",
       "name": "mnist_splits",
       "description": "Splits for the mnist config.",
       "field": [
         {
           "@type": "cr:Field",
-          "@id": "mnist_splits/name",
-          "name": "name",
+          "@id": "mnist_splits/split_name",
+          "name": "split_name",
           "description": "The name of the split.",
           "dataType": "sc:Text"
         }
       ],
       "data": [
         {
-          "name": "train"
+          "split_name": "train"
         },
         {
-          "name": "test"
+          "split_name": "test"
         }
       ]
     },
@@ -125,7 +127,7 @@
           },
           "references": {
             "field": {
-              "@id": "mnist_splits/name"
+              "@id": "mnist_splits/split_name"
             }
           }
         },

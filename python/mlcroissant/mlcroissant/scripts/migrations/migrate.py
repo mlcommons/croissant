@@ -28,7 +28,7 @@ function.
 python mlcroissant/scripts/migrations/migrate.py --migration 202307171508
 ```
 
-Commiting your migration allows to keep track of previous migrations in the codebase.
+Committing your migration allows to keep track of previous migrations in the codebase.
 """
 
 import importlib

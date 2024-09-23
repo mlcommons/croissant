@@ -91,7 +91,9 @@
       "name": "genders",
       "description": "Maps gender labels to semantic definitions.",
       "dataType": "sc:Enumeration",
-      "key": "label",
+      "key": {
+        "@id": "genders/label"
+      },
       "field": [
         {
           "@type": "cr:Field",
@@ -137,7 +139,9 @@
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "dataType": "sc:Enumeration",
-      "key": "key",
+      "key": {
+        "@id": "embarkation_ports/key"
+      },
       "field": [
         {
           "@type": "cr:Field",
