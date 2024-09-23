@@ -64,7 +64,7 @@ flags.DEFINE_string(
 flags.DEFINE_string(
     "filters",
     None,
-    "Filters to apply to `Dataset.records`. For example, '{\"data/split\": \"train\"}'",
+    'Filters to apply to `Dataset.records`. For example, \'{"data/split": "train"}\'',
 )
 
 flags.mark_flag_as_required("jsonld")

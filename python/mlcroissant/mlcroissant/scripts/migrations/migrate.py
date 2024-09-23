@@ -159,18 +159,16 @@ def main(argv):
             json.dump(json_ld, f, indent="  ")
             f.write("\n")
     for dataset in test_datasets:
-        # print(f"Converting test dataset {dataset}...")
-        pass
-        # if "mlfield_bad_type" in str(dataset):
-        #     print("YESSS")
-        #     with dataset.open("r") as f:
-        #         json_ld = json.load(f)
-        #         json_ld = up(json_ld)
-        #     json_ld = standardize_context(json_ld)
-        #     json_ld = migrate_test_dataset(dataset, json_ld)
-        #     with dataset.open("w") as f:
-        #         json.dump(json_ld, f, indent="  ")
-        #         f.write("\n")
+        print(f"Converting test dataset {dataset}...")
+        if "mlfield_bad_type" in str(dataset):
+            with dataset.open("r") as f:
+                json_ld = json.load(f)
+                json_ld = up(json_ld)
+            json_ld = standardize_context(json_ld)
+            json_ld = migrate_test_dataset(dataset, json_ld)
+            with dataset.open("w") as f:
+                json.dump(json_ld, f, indent="  ")
+                f.write("\n")
     print("Done.")
 
 
