@@ -76,15 +76,15 @@
   ],
   "recordSet": [
     {
-      "@type": "cr:RecordSet",
+      "@type": "cr:RecordSetc4",
       "@id": "data",
       "name": "data",
       "description": "The en set of records in the dataset.",
       "field": [
         {
           "@type": "cr:Field",
-          "@id": "variant",
-          "name": "variant",
+          "@id": "data/variant",
+          "name": "data/variant",
           "description": "The name of the variant (e.g., en or en.noclean).",
           "dataType": "sc:Text",
           "source": {
@@ -101,8 +101,8 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "text",
-          "name": "text",
+          "@id": "data/text",
+          "name": "data/text",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
@@ -116,8 +116,8 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "timestamp",
-          "name": "timestamp",
+          "@id": "data/timestamp",
+          "name": "data/timestamp",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
@@ -131,8 +131,8 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "url",
-          "name": "url",
+          "@id": "data/url",
+          "name": "data/url",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Text",
           "source": {
