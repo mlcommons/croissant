@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import abc
 import dataclasses
-from typing import Iterable
+import types
+from typing import Generic, Iterable, Sequence, TypeVar
 
 import networkx as nx
+import pandas as pd
 
 from mlcroissant._src.structure_graph.base_node import Node
 
@@ -33,12 +35,19 @@ class Operations(nx.DiGraph):
         if not self.has_edge(operation1, operation2):
             super().add_edge(operation1, operation2)
 
+    # pytype: disable=signature-mismatch
+    def predecessors(self, operation: Operation) -> Iterable[Operation]:
+        """Overloads nx.predecessors to have types."""
+        return super().predecessors(operation)
+
+    # pytype: enable=signature-mismatch
+
     @property
     def nodes(self) -> Iterable[Operation]:
         """Overloads nx.nodes to return an interator of operations."""
         return super().nodes()
 
-    def entry_operations(self) -> list[Operation]:
+    def entry_operations(self) -> Sequence[Operation]:
         """Lists all operations without a parent in the graph of operations."""
         return [
             operation
@@ -47,8 +56,11 @@ class Operations(nx.DiGraph):
         ]
 
 
+OutputT = TypeVar("OutputT")
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
-class Operation(abc.ABC):
+class Operation(abc.ABC, Generic[OutputT]):
     """Generic base class to define an operation.
 
     `@dataclass(frozen=True)` allows having a hashable operation for NetworkX to use
@@ -56,20 +68,30 @@ class Operation(abc.ABC):
 
     `@dataclass(repr=False)` allows having a readable stringified `str(operation)`.
 
+    `_output` is an internal-only field used to cache the output of calling the
+    operation (`self.call()`).
+
     Args:
+        operations: The graph of all operations.
         node: The node attached to the operation for the context.
-        output: The result of the operation when it is executed (as returned by
-            __call__).
     """
 
     operations: Operations
     node: Node
+    _output: OutputT = dataclasses.field(init=False, hash=False, compare=False)
 
     def __post_init__(self):
         """Adds the operation to the graph of operations."""
-        self.operations.add_node(self)
-        self.connect_to_last_operation(self.node)
-        self.set_last_operation_for(self.node)
+        operation = self
+        # If the operation is already in the graph we don't want to leak other
+        # references to the same operation, so we find the original operation:
+        if self in self.operations:
+            operation = next(
+                operation for operation in self.operations if operation == self
+            )
+        operation.operations.add_node(operation)
+        operation.connect_to_last_operation(operation.node)
+        operation.set_last_operation_for(operation.node)
 
     def set_last_operation_for(self, node: Node):
         """Sets self as the last operation for the node and its successors."""
@@ -91,14 +113,37 @@ class Operation(abc.ABC):
             if previous_operation != self:
                 self.operations.add_edge(previous_operation, self)
 
-    def __call__(self, *args, **kwargs):
-        """Syntactic sugar around self.call to write `operation()`."""
-        return self.call(*args, **kwargs)
+    def __call__(self, set_output_in_memory: bool = False) -> OutputT:
+        """Executes the current operation from the output of its parents and store the result."""
+        if self.has_output():
+            return self._output
+        inputs = []
+        parents = self.operations.predecessors(self)
+        for parent in parents:
+            if not parent.has_output():
+                raise ValueError(
+                    f'did not set output for "{parent}". This situation should not'
+                    " happen as we go through the graph in a topological sort."
+                )
+            inputs.append(parent._output)
+        output = self.call() if inputs is None else self.call(*inputs)
+        if isinstance(output, types.GeneratorType) and set_output_in_memory:
+            output = pd.DataFrame(output)
+        self.set_output(output)
+        return output
 
     @abc.abstractmethod
-    def call(self, *args, **kwargs):
+    def call(self, *args, **kwargs) -> OutputT:
         """Abstract method to implement when an operation is called."""
         raise NotImplementedError
+
+    def has_output(self) -> bool:
+        """Checks whether self.output was already set."""
+        return hasattr(self, "_output")
+
+    def set_output(self, output: OutputT):
+        """Sets the given output."""
+        object.__setattr__(self, "_output", output)
 
     def __repr__(self):
         """Prints a simplified string representation of the operation."""
@@ -139,7 +184,7 @@ class Operation(abc.ABC):
         for field in dataclasses.fields(self):
             if field.name == "operations":
                 state[field.name] = Operations()
-            else:
+            elif hasattr(self, field.name):  # _output may not be set
                 state[field.name] = getattr(self, field.name)
         return state
 

@@ -5,7 +5,6 @@ from typing import Any
 
 from apache_beam.testing import test_pipeline
 from apache_beam.testing.util import assert_that
-from apache_beam.testing.util import BeamAssertException
 from etils import epath
 import pytest
 
@@ -130,10 +129,7 @@ def _equal_to_set(expected):
         actual_set = set([
             json.dumps(record_to_python(element)) for element in list(actual)
         ])
-        if expected_set != actual_set:
-            raise BeamAssertException(
-                f"sets are not equal: {expected_set - actual_set}"
-            )
+        assert expected_set == actual_set
 
     return matcher_fn
 
