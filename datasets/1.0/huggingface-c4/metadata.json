@@ -76,7 +76,7 @@
   ],
   "recordSet": [
     {
-      "@type": "cr:RecordSetc4",
+      "@type": "cr:RecordSet",
       "@id": "data",
       "name": "data",
       "description": "The en set of records in the dataset.",
