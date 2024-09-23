@@ -139,9 +139,14 @@
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "dataType": "sc:Enumeration",
-      "key": {
-        "@id": "embarkation_ports/key"
-      },
+      "key": [
+        {
+          "@id": "embarkation_ports/key"
+        },
+        {
+          "@id": "embarkation_ports/key2"
+        }
+      ],
       "field": [
         {
           "@type": "cr:Field",

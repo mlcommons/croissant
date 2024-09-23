@@ -78,11 +78,9 @@
     {
       "@type": "cr:RecordSet",
       "dataType": "cr:Split",
-      "key": [
-        {
-          "@id": "mnist_splits/split_name"
-        }
-      ],
+      "key": {
+        "@id": "mnist_splits/split_name"
+      },
       "@id": "mnist_splits",
       "name": "mnist_splits",
       "description": "Splits for the mnist config.",

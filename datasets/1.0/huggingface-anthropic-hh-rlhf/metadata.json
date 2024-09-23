@@ -125,7 +125,9 @@
       "@id": "split_enums",
       "name": "split_enums",
       "dataType": "cr:Split",
-      "key": "name",
+      "key": {
+        "@id": "name"
+      },
       "field": [
         {
           "@type": "cr:Field",

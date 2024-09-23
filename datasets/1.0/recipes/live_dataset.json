@@ -65,7 +65,9 @@
       "@id": "direction_enum",
       "name": "direction_enum",
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
-      "key": "key",
+      "key": {
+        "@id": "key"
+      },
       "field": [
         {
           "@type": "cr:Field",

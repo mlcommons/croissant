@@ -131,7 +131,9 @@
         "@type": "ml:RecordSet",
         "name": "split_enums",
         "description": "Maps split names to semantic values.",
-        "key": "name",
+        "key": {
+          "@id": "name"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -167,7 +169,9 @@
       {
         "@type": "ml:RecordSet",
         "name": "images",
-        "key": "image_id",
+        "key": {
+            "@id": "image_id"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -233,7 +237,9 @@
       {
         "@type": "ml:RecordSet",
         "name": "captions",
-        "key": "id",
+        "key": {
+            "@id": "id"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -300,7 +306,9 @@
         "@type": "ml:RecordSet",
         "name": "categories",
         "isEnumeration": true,
-        "key": "id",
+        "key": {
+          "@id": "id"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -350,7 +358,9 @@
       {
         "@type": "ml:RecordSet",
         "name": "annotations",
-        "key": "id",
+        "key": {
+          "@id": "id"
+        },
         "field": [
           {
             "@type": "ml:Field",

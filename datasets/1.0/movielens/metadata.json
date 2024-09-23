@@ -124,7 +124,9 @@
       "@type": "cr:RecordSet",
       "@id": "movies",
       "name": "movies",
-      "key": "movie_id",
+      "key": {
+        "@id": "movie_id"
+      },
       "field": [
         {
           "@type": "cr:Field",
@@ -181,8 +183,12 @@
       "@id": "ratings",
       "name": "ratings",
       "key": [
-        "user_id",
-        "movie_id"
+        {
+          "@id": "user_id"
+        },
+        {
+          "@id": "movie_id"
+        }
       ],
       "field": [
         {
@@ -254,9 +260,15 @@
       "@id": "tags",
       "name": "tags",
       "key": [
-        "user_id",
-        "movie_id",
-        "timestamp"
+        {
+          "@id": "user_id"
+        },
+        {
+          "@id": "movie_id"
+        },
+        {
+          "@id": "timestamp"
+        }
       ],
       "field": [
         {
@@ -327,7 +339,9 @@
       "@type": "cr:RecordSet",
       "@id": "movies_with_ratings_with_tags",
       "name": "movies_with_ratings_with_tags",
-      "key": "movie_id",
+      "key": {
+        "@id": "movie_id"
+      },
       "field": [
         {
           "@type": "cr:Field",

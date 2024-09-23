@@ -86,7 +86,9 @@
       "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "name",
+      "key": {
+        "@id": "name"
+      },
       "field": [
         {
           "@type": "cr:Field",

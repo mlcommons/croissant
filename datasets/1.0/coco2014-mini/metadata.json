@@ -97,7 +97,9 @@
       "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "name",
+      "key": {
+        "@id": "name"
+      },
       "field": [
         {
           "@type": "cr:Field",
@@ -136,7 +138,9 @@
       "@type": "cr:RecordSet",
       "@id": "images",
       "name": "images",
-      "key": "img_id",
+      "key": {
+        "@id": "img_id"
+      },
       "field": [
         {
           "@type": "cr:Field",
@@ -199,7 +203,9 @@
       "@type": "cr:RecordSet",
       "@id": "captions",
       "name": "captions",
-      "key": "id",
+      "key": {
+        "@id": "id"
+      },
       "field": [
         {
           "@type": "cr:Field",

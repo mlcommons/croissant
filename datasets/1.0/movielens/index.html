@@ -94,7 +94,9 @@
     {
       "@type": "ml:RecordSet",
       "name": "movies",
-      "key": "movie_id",
+      "key": {
+        "@id": "movie_id"
+      },
       "field": [
         {
           "@type": "ml:Field",
@@ -141,8 +143,8 @@
       "@type": "ml:RecordSet",
       "name": "ratings",
       "key": [
-        "user_id",
-        "movie_id"
+        {"@id": "user_id"},
+        {"@id": "movie_id"},
       ],
       "field": [
         {
@@ -257,7 +259,9 @@
     {
       "@type": "ml:RecordSet",
       "name": "movies_with_ratings_with_tags",
-      "key": "movie_id",
+      "key": {
+        "@id": "movie_id"
+      },
       "field": [
         {
           "@type": "ml:Field",
