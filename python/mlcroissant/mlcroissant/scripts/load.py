@@ -113,16 +113,17 @@ def load(
             file_mapping = json.loads(mapping)
         except json.JSONDecodeError as e:
             raise ValueError("--mapping should be a valid dict[str, str]") from e
+    parsed_filters = None
     if filters:
         try:
-            filters = json.loads(filters)
+            parsed_filters = json.loads(filters)
         except json.JSONDecodeError as e:
             raise ValueError("--filters should be a valid dict[str, str]") from e
     dataset = mlc.Dataset(jsonld, debug=debug, mapping=file_mapping)
     if record_set is None:
         record_sets = ", ".join([f"`{rs.name}`" for rs in dataset.metadata.record_sets])
         raise ValueError(f"--record_set flag should have a value in {record_sets}")
-    records = dataset.records(record_set, filters=filters)
+    records = dataset.records(record_set, filters=parsed_filters)
     generate_all_records = num_records == -1
     if generate_all_records:
         print(f"Generating all records from {jsonld}.")
