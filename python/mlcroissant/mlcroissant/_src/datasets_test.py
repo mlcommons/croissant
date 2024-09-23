@@ -196,6 +196,7 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
     ["dataset_name", "record_set_name"],
     [
         ["simple-parquet/metadata.json", "persons"],
+        ["simple-join/metadata.json", "publications_by_user"],
     ],
 )
 def test_beam_hermetic_loading(version, dataset_name, record_set_name):

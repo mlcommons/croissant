@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import collections
-from collections.abc import Iterable
 import concurrent.futures
 import functools
 import sys
@@ -135,17 +133,57 @@ def execute_operations_in_beam(
     import apache_beam as beam
 
     list_of_operations = _order_relevant_operations(operations, record_set)
-    queue_of_operations = collections.deque(list_of_operations)
-    files = None
-    operation = None
-    while queue_of_operations:
-        operation = queue_of_operations.popleft()
-        files = operation.call(files)
-        if isinstance(operation, FilterFiles):
-            break
-    if not isinstance(files, Iterable):
-        raise ValueError("Could not filter files.")
-    files = list(files)  # even for large datasets, this can be handled in RAM.
+    target = list_of_operations[-1]
+    if not isinstance(target, ReadFields):
+        raise ValueError("the target MUST correspond to the RecordSet to generate.")
+
+    # We use the FilterFiles operation to parallelize operations. If there's no
+    # FilterFile operation, we set it to `target`.
+    filter_files = _find_filter_files(operations, target)
+
+    # In memory = all operations that are not between FilterFiles and the target.
+    # In Beam = all operations that are between FilterFiles and the target.
+    # Example for a Hugging Face dataset:
+    #
+    #                         Download(repo)                   Data(splits)
+    #                              │                                 │
+    #                              ▼                                 │
+    #                   FilterFiles(parquet-files)                   │
+    #                              │                                 │
+    #                              ▼                                 │
+    #                 ┌────────────────────────────┐                 ▼
+    #                 │      Read(parquet-files)   │         ReadFields(splits)
+    #           Those │            │               │                 |
+    #      operations │            ▼               │                 |
+    #             are │        Join(default)   ◄─────────────────────┘
+    #        executed │            │               │
+    #     in parallel │            ▼               │
+    #         in Beam │    ReadFields(default)     │
+    #                 └────────────────────────────┘
+
+    operations_in_memory: list[Operation] = []
+    operations_in_beam: list[Operation] = []
+    for paths in nx.all_simple_paths(operations, source=filter_files, target=target):
+        for operation in paths:
+            if operation != filter_files:
+                operations_in_beam.append(operation)
+    for operation in list_of_operations:
+        if operation not in operations_in_beam:
+            operations_in_memory.append(operation)
+
+    # Execute all in-memory operations.
+    for operation in operations_in_memory:
+        # If there is no FilterFiles, we return the PCollection without parallelization.
+        if operation == target:
+            return (
+                pipeline
+                | beam.Create([(0, *operation.inputs)])
+                | _beam_operation_with_index(operation, sys.maxsize)
+            )
+        else:
+            operation(set_output_in_memory=True)
+
+    files = filter_files.output  # even for large datasets, this can be handled in RAM.
 
     # We first shard by file and assign a shard_index.
     pipeline = pipeline | "Shard by files with index" >> beam.Create(enumerate(files))
@@ -165,20 +203,8 @@ def execute_operations_in_beam(
     # TODO(https://github.com/mlcommons/croissant/issues/732): Compute shard_sizes
     # explicitly instead of relying on max_shard_size.
     max_shard_size = sys.maxsize // num_shards
-    while queue_of_operations:
-        operation = queue_of_operations.popleft()
-        if isinstance(operation, ReadFields):
-            beam_operation = beam.ParDo(
-                functools.partial(
-                    _add_global_index,
-                    operation=operation,
-                    max_shard_size=max_shard_size,
-                )
-            )
-        else:
-            beam_operation = beam.MapTuple(
-                functools.partial(_pass_index, operation=operation)
-            )
+    for operation in operations_in_beam:
+        beam_operation = _beam_operation_with_index(operation, max_shard_size)
         pipeline |= beam_operation
     return pipeline
 
@@ -206,3 +232,37 @@ def _add_global_index(
 def _pass_index(index: int, element: Any, operation: Operation) -> ElementWithIndex:
     """Passes the index to the next operation while executing the operation."""
     return (index, operation.call(element))
+
+
+def _beam_operation_with_index(operation: Operation, max_shard_size: int):
+    import apache_beam as beam
+
+    if isinstance(operation, ReadFields):
+        return beam.ParDo(
+            functools.partial(
+                _add_global_index,
+                operation=operation,
+                max_shard_size=max_shard_size,
+            )
+        )
+    else:
+        return beam.MapTuple(functools.partial(_pass_index, operation=operation))
+
+
+def _find_filter_files(operations: Operations, target: ReadFields) -> Operation:
+    """Finds a FilterFiles operation to parallelize on."""
+    filter_files_operations = [
+        operation for operation in operations if isinstance(operation, FilterFiles)
+    ]
+    match len(filter_files_operations):
+        case 0:
+            return target
+        case 1:
+            filter_files = filter_files_operations[0]
+            if not nx.has_path(operations, source=filter_files, target=target):
+                raise NotImplementedError("No path between FilterFiles and the target")
+            return filter_files
+        case _:
+            # If joined branches also have FilterFiles operations, this case is not
+            # handled yet. If you have this issue, please open an issue on GitHub.
+            raise NotImplementedError("Found several FilterFiles - not handled yet.")

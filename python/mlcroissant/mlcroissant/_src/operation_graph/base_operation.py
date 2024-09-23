@@ -5,7 +5,7 @@ from __future__ import annotations
 import abc
 import dataclasses
 import types
-from typing import Generic, Iterable, Sequence, TypeVar
+from typing import Any, Generic, Iterable, Sequence, TypeVar
 
 import networkx as nx
 import pandas as pd
@@ -117,15 +117,7 @@ class Operation(abc.ABC, Generic[OutputT]):
         """Executes the current operation from the output of its parents and store the result."""
         if self.has_output():
             return self._output
-        inputs = []
-        parents = self.operations.predecessors(self)
-        for parent in parents:
-            if not parent.has_output():
-                raise ValueError(
-                    f'did not set output for "{parent}". This situation should not'
-                    " happen as we go through the graph in a topological sort."
-                )
-            inputs.append(parent._output)
+        inputs = self.inputs
         output = self.call() if inputs is None else self.call(*inputs)
         if isinstance(output, types.GeneratorType) and set_output_in_memory:
             output = pd.DataFrame(output)
@@ -136,6 +128,25 @@ class Operation(abc.ABC, Generic[OutputT]):
     def call(self, *args, **kwargs) -> OutputT:
         """Abstract method to implement when an operation is called."""
         raise NotImplementedError
+
+    @property
+    def inputs(self) -> Sequence[Any]:
+        """Returns the inputs of the operation - i.e. the outputs of the predecessors."""
+        inputs = []
+        parents = self.operations.predecessors(self)
+        for parent in parents:
+            if not parent.has_output():
+                raise ValueError(
+                    f'did not set output for "{parent}". This situation should not'
+                    " happen as we go through the graph in a topological sort."
+                )
+            inputs.append(parent._output)
+        return inputs
+
+    @property
+    def output(self) -> OutputT:
+        """Returns the cached output of the operation if it is set."""
+        return self._output
 
     def has_output(self) -> bool:
         """Checks whether self.output was already set."""
@@ -171,11 +182,14 @@ class Operation(abc.ABC, Generic[OutputT]):
         to be able to reference all operations from a single operation.
         """
         state = self.__getstate__()
+        state_setter = {"operations": self.operations}
+        if "_output" in state:
+            state_setter["_output"] = state.pop("_output")
         args = tuple(state.values())
         return (
             self.__class__,
             args,
-            {"operations": self.operations},
+            state_setter,
         )
 
     def __getstate__(self):
@@ -191,3 +205,5 @@ class Operation(abc.ABC, Generic[OutputT]):
     def __setstate__(self, state):
         """Overwrites __setstate__ for pickling."""
         object.__setattr__(self, "operations", state["operations"])
+        if "_output" in state:
+            self.set_output(state["_output"])
