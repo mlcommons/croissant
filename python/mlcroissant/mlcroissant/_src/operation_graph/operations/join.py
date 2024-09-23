@@ -22,12 +22,18 @@ class Join(Operation):
         """See class' docstring."""
         if len(args) == 1:
             return args[0]
+
+        print("DEBUG: those are the pandas df")
+        for a in args:
+            print("DEBUG: a=\n", a, "\n--------")
         predecessors: list[str | None] = [
             operation.node.uuid for operation in self.operations.predecessors(self)
         ]
+        print("DEBUG: predecessors are: ", predecessors)
         if len(predecessors) != len(args):
             raise ValueError(f"Unsupported: Trying to join {len(args)} pd.DataFrames.")
         fields = self.node.fields
+        print("DEBUG: fields are: ", fields)
         # `joins` is the list of joins: field x (source1, df1) x (source2, df2)
         joins: list[
             tuple[Field, tuple[Source, pd.Series], tuple[Source, pd.Series]]
@@ -35,6 +41,7 @@ class Join(Operation):
         for field in fields:
             left = field.source
             right = field.references
+            print("DEBUG: field is: ", field, "\n with left: ", left, "\n and right:", right)
             if left is None or right is None:
                 continue
             if left.uuid is None or right.uuid is None:
@@ -42,8 +49,10 @@ class Join(Operation):
             left_index = predecessors.index(get_parent_uuid(self.node.ctx, left.uuid))
             right_index = predecessors.index(get_parent_uuid(self.node.ctx, right.uuid))
             join = (field, (left, args[left_index]), (right, args[right_index]))
+            print("and right_index:", right_index, "\nand left index: ", left_index, " and join: ", join)
             if join not in joins:
                 joins.append(join)
+            print("DEBUG: joins are: ", joins)
         for field, (left, df_left), (right, df_right) in joins:
             assert left is not None and left.uuid is not None, (
                 f'Left reference for "{field.uuid}" is None. It should be a valid'
@@ -55,6 +64,7 @@ class Join(Operation):
             )
             left_column = left.get_column()
             right_column = right.get_column()
+            print("DEBUG: left column is: ", left_column, " and df_left.columns is: ", df_left.columns)
             assert left_column in df_left.columns, (
                 f'Column "{left_column}" does not exist in node "{left.uuid}".'
                 f" Existing columns: {df_left.columns}"

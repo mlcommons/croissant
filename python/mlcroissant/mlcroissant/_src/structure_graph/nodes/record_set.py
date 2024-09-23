@@ -122,7 +122,7 @@ class RecordSet(Node):
                     f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a non empty"
                     " list."
                 )
-            expected_keys = {field.name for field in self.fields}
+            expected_keys = {field.id for field in self.fields}
             for i, line in enumerate(data):
                 if not isinstance(line, dict):
                     self.add_error(

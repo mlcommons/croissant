@@ -248,7 +248,7 @@ class Source(Node):
         elif self.extract.json_path:
             return self.extract.json_path
         else:
-            return self.uuid.split("/")[-1]
+            return self.uuid
 
     def check_source(self, add_error: Any):
         """Checks if the source is valid and adds error otherwise."""

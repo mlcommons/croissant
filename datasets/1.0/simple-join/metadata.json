@@ -70,34 +70,34 @@
         {
           "@type": "cr:Field",
           "@id": "users/email",
-          "name": "email",
+          "name": "users/email",
           "description": "Email of the author.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
           "@id": "users/fullname",
-          "name": "fullname",
+          "name": "users/fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text"
         }
       ],
       "data": [
         {
-          "email": "john.smith@gmail.com",
-          "fullname": "John Smith"
+          "users/email": "john.smith@gmail.com",
+          "users/fullname": "John Smith"
         },
         {
-          "email": "jane.doe@yahoo.com",
-          "fullname": "Jane Doe"
+          "users/email": "jane.doe@yahoo.com",
+          "users/fullname": "Jane Doe"
         },
         {
-          "email": "david.lee@outlook.com",
-          "fullname": "David Lee"
+          "users/email": "david.lee@outlook.com",
+          "users/fullname": "David Lee"
         },
         {
-          "email": "mary.jones@hotmail.com",
-          "fullname": "Mary Jones"
+          "users/email": "mary.jones@hotmail.com",
+          "users/fullname": "Mary Jones"
         }
       ]
     },
@@ -110,7 +110,7 @@
         {
           "@type": "cr:Field",
           "@id": "publications_by_user/title",
-          "name": "title",
+          "name": "publications_by_user/title",
           "description": "Full title of the publication.",
           "dataType": "sc:Text",
           "source": {
@@ -125,7 +125,7 @@
         {
           "@type": "cr:Field",
           "@id": "publications_by_user/author_email",
-          "name": "author_email",
+          "name": "publications_by_user/author_email",
           "description": "Email of the author.",
           "dataType": "sc:Text",
           "references": {
@@ -145,7 +145,7 @@
         {
           "@type": "cr:Field",
           "@id": "publications_by_user/author_fullname",
-          "name": "author_fullname",
+          "name": "publications_by_user/author_fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text",
           "source": {
