@@ -37,10 +37,10 @@ def uuid_to_jsonld(uuid: str | None) -> str | None:
 
 def formatted_uuid_to_json(
     ctx: Context, uuid: None | str | list[str]
-) -> str | None | dict[str, Any] | list[dict[str, Any]]:
+) -> str | dict[str, Any] | list[dict[str, Any]] | None:
     """Return a formatted node's uuid depending on the Croissant version."""
     if ctx.is_v0():
-        return uuid
+        return uuid  # type: ignore  # Force mypy types.
     else:
         if isinstance(uuid, list):
             if len(uuid) == 1:
