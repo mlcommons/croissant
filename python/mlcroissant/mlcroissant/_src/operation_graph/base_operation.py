@@ -68,10 +68,12 @@ class Operation(abc.ABC, Generic[OutputT]):
 
     `@dataclass(repr=False)` allows having a readable stringified `str(operation)`.
 
+    `_output` is an internal-only field used to cache the output of calling the
+    operation (`self.call()`).
+
     Args:
+        operations: The graph of all operations.
         node: The node attached to the operation for the context.
-        output: The result of the operation when it is executed (as returned by
-            __call__).
     """
 
     operations: Operations
