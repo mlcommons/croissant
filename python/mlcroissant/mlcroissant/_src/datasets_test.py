@@ -91,7 +91,7 @@ def load_records_and_test_equality(
 ):
     filters_command = ""
     if filters:
-        filters_command = str(filters).replace("'", "\"")
+        filters_command = str(filters).replace("'", '"')
         filters_command = f" --filters '{filters_command}'"
     print(
         "If this test fails, update JSONL with: `mlcroissant load --jsonld"
