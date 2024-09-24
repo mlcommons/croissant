@@ -121,7 +121,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/content",
-          "name": "content",
+          "name": "default/content",
           "description": "The content of the file.",
           "dataType": "sc:Text",
           "source": {
@@ -136,7 +136,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/language",
-          "name": "language",
+          "name": "default/language",
           "description": "Programming language of the file.",
           "dataType": "sc:Text",
           "source": {
@@ -151,7 +151,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/hexsha",
-          "name": "hexsha",
+          "name": "default/hexsha",
           "description": "Unique git hash of file.",
           "dataType": "sc:Text",
           "source": {
@@ -166,7 +166,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/size",
-          "name": "size",
+          "name": "default/size",
           "description": "Size of the uncompressed file..",
           "dataType": "sc:Integer",
           "source": {
@@ -181,7 +181,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/ext",
-          "name": "ext",
+          "name": "default/ext",
           "description": "File extension.",
           "dataType": "sc:Text",
           "source": {
@@ -196,7 +196,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/lang",
-          "name": "lang",
+          "name": "default/lang",
           "description": "Hash of the file.",
           "dataType": "sc:Text",
           "source": {
@@ -211,7 +211,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_stars_repo_path",
-          "name": "max_stars_repo_path",
+          "name": "default/max_stars_repo_path",
           "description": "Path to file in repo containing this file with maximum number of stars.",
           "dataType": "sc:Text",
           "source": {
@@ -226,7 +226,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_stars_repo_name",
-          "name": "max_stars_repo_name",
+          "name": "default/max_stars_repo_name",
           "description": "Name of repo containing this file with maximum number of stars.",
           "dataType": "sc:Text",
           "source": {
@@ -241,7 +241,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_stars_repo_head_hexsha",
-          "name": "max_stars_repo_head_hexsha",
+          "name": "default/max_stars_repo_head_hexsha",
           "description": "Hexsha of repository head with the maximum of stars.",
           "dataType": "sc:Text",
           "source": {
@@ -256,7 +256,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_stars_count",
-          "name": "max_stars_count",
+          "name": "default/max_stars_count",
           "description": "Number of stars in repository.",
           "dataType": "sc:Text",
           "source": {
@@ -271,7 +271,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_stars_repo_stars_event_min_datetime",
-          "name": "max_stars_repo_stars_event_min_datetime",
+          "name": "default/max_stars_repo_stars_event_min_datetime",
           "description": "First timestamp of a stars event.",
           "dataType": "sc:Text",
           "source": {
@@ -286,7 +286,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_stars_repo_stars_event_max_datetime",
-          "name": "max_stars_repo_stars_event_max_datetime",
+          "name": "default/max_stars_repo_stars_event_max_datetime",
           "description": "Last timestamp of a stars event.",
           "dataType": "sc:Text",
           "source": {
@@ -301,7 +301,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_issues_repo_path",
-          "name": "max_issues_repo_path",
+          "name": "default/max_issues_repo_path",
           "description": "Path to file in repo containing this file with maximum number of issues.",
           "dataType": "sc:Text",
           "source": {
@@ -316,7 +316,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_issues_repo_head_hexsha",
-          "name": "max_issues_repo_head_hexsha",
+          "name": "default/max_issues_repo_head_hexsha",
           "description": "Hexsha of repository head with the maximum of issues.",
           "dataType": "sc:Text",
           "source": {
@@ -331,7 +331,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_issues_count",
-          "name": "max_issues_count",
+          "name": "default/max_issues_count",
           "description": "Number of issues in repository.",
           "dataType": "sc:Integer",
           "source": {
@@ -346,7 +346,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_issues_repo_issues_event_min_datetime",
-          "name": "max_issues_repo_issues_event_min_datetime",
+          "name": "default/max_issues_repo_issues_event_min_datetime",
           "description": "First timestamp of an issues event.",
           "dataType": "sc:Text",
           "source": {
@@ -361,7 +361,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_issues_repo_issues_event_max_datetime",
-          "name": "max_issues_repo_issues_event_max_datetime",
+          "name": "default/max_issues_repo_issues_event_max_datetime",
           "description": "Last timestamp of an issues event.",
           "dataType": "sc:Text",
           "source": {
@@ -376,7 +376,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_forks_repo_path",
-          "name": "max_forks_repo_path",
+          "name": "default/max_forks_repo_path",
           "description": "Path to file in repo containing this file with maximum number of forks.",
           "dataType": "sc:Text",
           "source": {
@@ -391,7 +391,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_forks_repo_name",
-          "name": "max_forks_repo_name",
+          "name": "default/max_forks_repo_name",
           "description": "Name of repo containing this file with maximum number of forks.",
           "dataType": "sc:Text",
           "source": {
@@ -406,7 +406,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_forks_repo_head_hexsha",
-          "name": "max_forks_repo_head_hexsha",
+          "name": "default/max_forks_repo_head_hexsha",
           "description": "Hexsha of repository head with the maximum of forks.",
           "dataType": "sc:Text",
           "source": {
@@ -421,7 +421,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_forks_count",
-          "name": "max_forks_count",
+          "name": "default/max_forks_count",
           "description": "Number of forks in repository.",
           "dataType": "sc:Integer",
           "source": {
@@ -436,7 +436,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_forks_repo_forks_event_min_datetime",
-          "name": "max_forks_repo_forks_event_min_datetime",
+          "name": "default/max_forks_repo_forks_event_min_datetime",
           "description": "First timestamp of a forks event.",
           "dataType": "sc:Text",
           "source": {
@@ -451,7 +451,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_forks_repo_forks_event_max_datetime",
-          "name": "max_forks_repo_forks_event_max_datetime",
+          "name": "default/max_forks_repo_forks_event_max_datetime",
           "description": "Last timestamp of a forks event.",
           "dataType": "sc:Text",
           "source": {
@@ -466,7 +466,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/avg_line_length",
-          "name": "avg_line_length",
+          "name": "default/avg_line_length",
           "description": "The average line-length of the file.",
           "dataType": "sc:Float",
           "source": {
@@ -481,7 +481,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/max_line_length",
-          "name": "max_line_length",
+          "name": "default/max_line_length",
           "description": "The maximum line-length of the file.",
           "dataType": "sc:Integer",
           "source": {
@@ -496,7 +496,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/alphanum_fraction",
-          "name": "alphanum_fraction",
+          "name": "default/alphanum_fraction",
           "description": "The fraction of characters in the file that are alphabetical or numerical characters.",
           "dataType": "sc:Float",
           "source": {

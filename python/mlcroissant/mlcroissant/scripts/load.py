@@ -61,6 +61,12 @@ flags.DEFINE_string(
     ' "~/Downloads/document.csv"}\'`.',
 )
 
+flags.DEFINE_string(
+    "filters",
+    None,
+    'Filters to apply to `Dataset.records`. For example, \'{"data/split": "train"}\'',
+)
+
 flags.mark_flag_as_required("jsonld")
 
 
@@ -78,6 +84,7 @@ def main(argv):
     debug = FLAGS.debug
     update_output = FLAGS.update_output
     mapping = FLAGS.mapping
+    filters = FLAGS.filters
     return load(
         jsonld=jsonld,
         record_set=record_set,
@@ -85,6 +92,7 @@ def main(argv):
         debug=debug,
         update_output=update_output,
         mapping=mapping,
+        filters=filters,
     )
 
 
@@ -95,6 +103,7 @@ def load(
     debug: bool = False,
     update_output: bool = False,
     mapping: str | None = None,
+    filters: str | None = None,
 ):
     """Yields data from the `record_set` in the input Croissant file."""
     if not mapping:
@@ -104,11 +113,17 @@ def load(
             file_mapping = json.loads(mapping)
         except json.JSONDecodeError as e:
             raise ValueError("--mapping should be a valid dict[str, str]") from e
+    parsed_filters = None
+    if filters:
+        try:
+            parsed_filters = json.loads(filters)
+        except json.JSONDecodeError as e:
+            raise ValueError("--filters should be a valid dict[str, str]") from e
     dataset = mlc.Dataset(jsonld, debug=debug, mapping=file_mapping)
     if record_set is None:
         record_sets = ", ".join([f"`{rs.name}`" for rs in dataset.metadata.record_sets])
         raise ValueError(f"--record_set flag should have a value in {record_sets}")
-    records = dataset.records(record_set)
+    records = dataset.records(record_set, filters=parsed_filters)
     generate_all_records = num_records == -1
     if generate_all_records:
         print(f"Generating all records from {jsonld}.")

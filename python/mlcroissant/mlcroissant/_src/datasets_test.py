@@ -89,10 +89,14 @@ def load_records_and_test_equality(
     num_records: int,
     filters: dict[str, Any] | None = None,
 ):
+    filters_command = ""
+    if filters:
+        filters_command = f" --filters '{filters}'"
     print(
-        "If this test fails, update JSONL with: `mlcroissant load"
-        f" --jsonld ../../datasets/{version}/{dataset_name} --record_set"
-        f" {record_set_name} --num_records {num_records} --debug --update_output`"
+        "If this test fails, update JSONL with: `mlcroissant load --jsonld"
+        f" ../../datasets/{version}/{dataset_name} --record_set"
+        f" {record_set_name} --num_records {num_records} --debug --update_output"
+        f" {filters_command}`"
     )
     config = (
         epath.Path(__file__).parent.parent.parent.parent.parent
@@ -247,7 +251,7 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
     ["dataset_name", "record_set_name", "num_records", "filters"],
     [
         ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10, None],
-        ["huggingface-c4/metadata.json", "data", 1, {"variant": "en"}],
+        ["huggingface-c4/metadata.json", "data", 1, {"data/variant": "en"}],
         ["huggingface-levanti/metadata.json", "levanti_train", 10, None],
     ],
 )

@@ -83,7 +83,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/image",
-          "name": "image",
+          "name": "default/image",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:ImageObject",
           "source": {
@@ -101,7 +101,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/label",
-          "name": "label",
+          "name": "default/label",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Integer",
           "source": {

@@ -132,14 +132,14 @@
         {
           "@type": "cr:Field",
           "@id": "split_enums/name",
-          "name": "name",
+          "name": "split_enums/name",
           "description": "One of train or test.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
           "@id": "split_enums/url",
-          "name": "url",
+          "name": "split_enums/url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
             "wd:Q3985153",
@@ -149,12 +149,12 @@
       ],
       "data": [
         {
-          "name": "train",
-          "url": "https://mlcommons.org/definitions/training_split"
+          "split_enums/name": "train",
+          "split_enums/url": "https://mlcommons.org/definitions/training_split"
         },
         {
-          "name": "test",
-          "url": "https://mlcommons.org/definitions/test_split"
+          "split_enums/name": "test",
+          "split_enums/url": "https://mlcommons.org/definitions/test_split"
         }
       ]
     },

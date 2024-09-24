@@ -77,28 +77,28 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "mnist_splits",
+      "name": "mnist_splits",
+      "description": "Splits for the mnist config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "mnist_splits/split_name"
       },
-      "@id": "mnist_splits",
-      "name": "mnist_splits",
-      "description": "Splits for the mnist config.",
       "field": [
         {
           "@type": "cr:Field",
           "@id": "mnist_splits/split_name",
-          "name": "split_name",
+          "name": "mnist_splits/split_name",
           "description": "The name of the split.",
           "dataType": "sc:Text"
         }
       ],
       "data": [
         {
-          "split_name": "train"
+          "mnist_splits/split_name": "train"
         },
         {
-          "split_name": "test"
+          "mnist_splits/split_name": "test"
         }
       ]
     },
@@ -114,6 +114,11 @@
           "name": "default/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "mnist_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files"
@@ -124,17 +129,12 @@
             "transform": {
               "regex": "mnist/(train|test)/.+parquet$"
             }
-          },
-          "references": {
-            "field": {
-              "@id": "mnist_splits/split_name"
-            }
           }
         },
         {
           "@type": "cr:Field",
           "@id": "default/image",
-          "name": "image",
+          "name": "default/image",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:ImageObject",
           "source": {
@@ -152,7 +152,7 @@
         {
           "@type": "cr:Field",
           "@id": "default/label",
-          "name": "label",
+          "name": "default/label",
           "description": "Column from Hugging Face parquet file.",
           "dataType": "sc:Integer",
           "source": {

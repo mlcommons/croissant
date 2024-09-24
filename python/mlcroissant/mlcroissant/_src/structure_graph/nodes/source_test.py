@@ -200,7 +200,7 @@ def test_declaring_wrong_file_property(conforms_to):
         ],
         [
             Source(field="record_set/field_name"),
-            "field_name",
+            "record_set/field_name",
         ],
     ],
 )

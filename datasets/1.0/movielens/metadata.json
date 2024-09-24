@@ -131,7 +131,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies/movie_id",
-          "name": "movie_id",
+          "name": "movies/movie_id",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
@@ -145,7 +145,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies/title",
-          "name": "title",
+          "name": "movies/title",
           "description": "The title of the  movie with the release year in parentheses.",
           "dataType": "sc:Text",
           "source": {
@@ -160,7 +160,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies/genre",
-          "name": "genre",
+          "name": "movies/genre",
           "description": "A sequence of genres to which the rated movie belongs.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -194,7 +194,7 @@
         {
           "@type": "cr:Field",
           "@id": "ratings/user_id",
-          "name": "user_id",
+          "name": "ratings/user_id",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
@@ -208,7 +208,7 @@
         {
           "@type": "cr:Field",
           "@id": "ratings/movie_id",
-          "name": "movie_id",
+          "name": "ratings/movie_id",
           "dataType": "sc:Integer",
           "references": {
             "field": {
@@ -227,7 +227,7 @@
         {
           "@type": "cr:Field",
           "@id": "ratings/rating",
-          "name": "rating",
+          "name": "ratings/rating",
           "description": "The score of the rating on a five-star scale.",
           "dataType": "sc:Float",
           "source": {
@@ -242,7 +242,7 @@
         {
           "@type": "cr:Field",
           "@id": "ratings/timestamp",
-          "name": "timestamp",
+          "name": "ratings/timestamp",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
@@ -274,7 +274,7 @@
         {
           "@type": "cr:Field",
           "@id": "tags/user_id",
-          "name": "user_id",
+          "name": "tags/user_id",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
@@ -288,7 +288,7 @@
         {
           "@type": "cr:Field",
           "@id": "tags/movie_id",
-          "name": "movie_id",
+          "name": "tags/movie_id",
           "dataType": "sc:Integer",
           "references": {
             "field": {
@@ -307,7 +307,7 @@
         {
           "@type": "cr:Field",
           "@id": "tags/tag",
-          "name": "tag",
+          "name": "tags/tag",
           "description": "Tags assigned to the movie.",
           "dataType": "sc:Text",
           "source": {
@@ -322,7 +322,7 @@
         {
           "@type": "cr:Field",
           "@id": "tags/timestamp",
-          "name": "timestamp",
+          "name": "tags/timestamp",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
@@ -346,7 +346,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies_with_ratings_with_tags/movie_id",
-          "name": "movie_id",
+          "name": "movies_with_ratings_with_tags/movie_id",
           "source": {
             "field": {
               "@id": "movies/movie_id"
@@ -356,7 +356,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies_with_ratings_with_tags/movie_title",
-          "name": "movie_title",
+          "name": "movies_with_ratings_with_tags/movie_title",
           "source": {
             "field": {
               "@id": "movies/title"
@@ -366,7 +366,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies_with_ratings_with_tags/movie_genres",
-          "name": "movie_genres",
+          "name": "movies_with_ratings_with_tags/movie_genres",
           "source": {
             "field": {
               "@id": "movies/genre"
@@ -376,7 +376,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies_with_ratings_with_tags/ratings",
-          "name": "ratings",
+          "name": "movies_with_ratings_with_tags/ratings",
           "dataType": "cr:RecordSet",
           "parentField": {
             "references": {
@@ -426,7 +426,7 @@
         {
           "@type": "cr:Field",
           "@id": "movies_with_ratings_with_tags/tags",
-          "name": "tags",
+          "name": "movies_with_ratings_with_tags/tags",
           "dataType": "cr:RecordSet",
           "parentField": {
             "references": {

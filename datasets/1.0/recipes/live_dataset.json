@@ -72,7 +72,7 @@
         {
           "@type": "cr:Field",
           "@id": "direction_enum/key",
-          "name": "key",
+          "name": "direction_enum/key",
           "description": "0, 1, 2 or 3",
           "dataType": "sc:Integer",
           "source": {
@@ -87,7 +87,7 @@
         {
           "@type": "cr:Field",
           "@id": "direction_enum/label",
-          "name": "label",
+          "name": "direction_enum/label",
           "description": "North, East, South or West",
           "dataType": [
             "sc:Text",

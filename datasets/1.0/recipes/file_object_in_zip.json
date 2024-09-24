@@ -89,7 +89,7 @@
         {
           "@type": "cr:Field",
           "@id": "csv1/property1",
-          "name": "property1",
+          "name": "csv1/property1",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
@@ -111,7 +111,7 @@
         {
           "@type": "cr:Field",
           "@id": "csv2/property2",
-          "name": "property2",
+          "name": "csv2/property2",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {

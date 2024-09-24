@@ -79,7 +79,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_content",
-          "name": "image_content",
+          "name": "images/image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {

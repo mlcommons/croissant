@@ -170,14 +170,14 @@
         {
           "@type": "cr:Field",
           "@id": "split_enums/name",
-          "name": "name",
+          "name": "split_enums/name",
           "description": "One of: train, val, test.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
           "@id": "split_enums/url",
-          "name": "url",
+          "name": "split_enums/url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
             "sc:URL",
@@ -187,16 +187,16 @@
       ],
       "data": [
         {
-          "name": "train",
-          "url": "https://mlcommons.org/definitions/training_split"
+          "split_enums/name": "train",
+          "split_enums/url": "https://mlcommons.org/definitions/training_split"
         },
         {
-          "name": "val",
-          "url": "https://mlcommons.org/definitions/validation_split"
+          "split_enums/name": "val",
+          "split_enums/url": "https://mlcommons.org/definitions/validation_split"
         },
         {
-          "name": "test",
-          "url": "https://mlcommons.org/definitions/test_split"
+          "split_enums/name": "test",
+          "split_enums/url": "https://mlcommons.org/definitions/test_split"
         }
       ]
     },
@@ -211,7 +211,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_id",
-          "name": "image_id",
+          "name": "images/image_id",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
@@ -229,7 +229,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_filename",
-          "name": "image_filename",
+          "name": "images/image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
@@ -244,7 +244,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_content",
-          "name": "image_content",
+          "name": "images/image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
@@ -259,7 +259,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/split",
-          "name": "split",
+          "name": "images/split",
           "dataType": [
             "sc:Text",
             "wd:Q3985153"
@@ -294,7 +294,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/id",
-          "name": "id",
+          "name": "captions/id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
@@ -309,7 +309,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/image_id",
-          "name": "image_id",
+          "name": "captions/image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
@@ -324,7 +324,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/caption",
-          "name": "caption",
+          "name": "captions/caption",
           "description": "The caption",
           "dataType": [
             "sc:Text",
@@ -342,7 +342,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/split",
-          "name": "split",
+          "name": "captions/split",
           "dataType": [
             "sc:Text",
             "wd:Q3985153"
@@ -378,7 +378,7 @@
         {
           "@type": "cr:Field",
           "@id": "categories/id",
-          "name": "id",
+          "name": "categories/id",
           "description": "The ID of the category",
           "dataType": "sc:Integer",
           "source": {
@@ -393,7 +393,7 @@
         {
           "@type": "cr:Field",
           "@id": "categories/name",
-          "name": "name",
+          "name": "categories/name",
           "description": "The name of the category.",
           "dataType": [
             "sc:Text",
@@ -411,7 +411,7 @@
         {
           "@type": "cr:Field",
           "@id": "categories/supercategory",
-          "name": "supercategory",
+          "name": "categories/supercategory",
           "description": "The name of the supercategory.",
           "dataType": [
             "sc:Enumeration",
@@ -440,7 +440,7 @@
         {
           "@type": "cr:Field",
           "@id": "annotations/id",
-          "name": "id",
+          "name": "annotations/id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
@@ -455,7 +455,7 @@
         {
           "@type": "cr:Field",
           "@id": "annotations/category_id",
-          "name": "category_id",
+          "name": "annotations/category_id",
           "description": "The ID of the category.",
           "dataType": "sc:Integer",
           "references": {
@@ -475,7 +475,7 @@
         {
           "@type": "cr:Field",
           "@id": "annotations/image_id",
-          "name": "image_id",
+          "name": "annotations/image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
           "references": {
@@ -495,7 +495,7 @@
         {
           "@type": "cr:Field",
           "@id": "annotations/bbox",
-          "name": "bbox",
+          "name": "annotations/bbox",
           "description": "The bounding box around annotated object[s].",
           "dataType": "cr:BoundingBox",
           "source": {

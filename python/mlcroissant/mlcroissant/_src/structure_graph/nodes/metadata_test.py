@@ -181,13 +181,13 @@ def test_validate_license():
 def test_predecessors_are_propagated():
     field = Field(
         id="records/name",
-        name="name",
+        name="records/name",
         data_types=constants.DataType.TEXT,
     )
     record_set = RecordSet(
         id="records",
         fields=[field],
-        data=[{"name": "train"}, {"name": "test"}],
+        data=[{"records/name": "train"}, {"records/name": "test"}],
     )
     Metadata(name="dummy", record_sets=[record_set])
     assert field.predecessors == {record_set}

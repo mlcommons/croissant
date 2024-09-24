@@ -70,7 +70,7 @@
         {
           "@type": "cr:Field",
           "@id": "books/title",
-          "name": "title",
+          "name": "books/title",
           "description": "The title of the book",
           "dataType": "sc:Text",
           "source": {
@@ -85,7 +85,7 @@
         {
           "@type": "cr:Field",
           "@id": "books/Author",
-          "name": "Author",
+          "name": "books/Author",
           "description": "The author of the book",
           "dataType": "sc:Text",
           "source": {
@@ -100,7 +100,7 @@
         {
           "@type": "cr:Field",
           "@id": "books/split",
-          "name": "split",
+          "name": "books/split",
           "description": "The data split to which belongs the record",
           "dataType": [
             "sc:Text",
