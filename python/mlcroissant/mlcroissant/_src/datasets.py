@@ -169,8 +169,6 @@ class Records:
         """See ReadFromCroissant docstring."""
         operations = self._filter_interesting_operations(self.filters)
         execute_downloads(operations)
-        if not _is_streamable_dataset(operations):
-            raise ValueError("only streamable datasets can be used with Beam.")
         return execute_operations_in_beam(
             pipeline=pipeline,
             record_set=self.record_set,
