@@ -188,7 +188,7 @@ class ReadFields(Operation):
                 if self.node.ctx.is_v0():
                     result[field.name] = value
                 else:
-                    result[field.uuid] = value
+                    result[field.id] = value
             return result
 
         chunk_size = 100
