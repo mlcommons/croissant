@@ -32,7 +32,7 @@ def print_graph_traversal(graph: nx.Graph):
     print("--- Graph traversal ---")
     for start, end, _ in nx.edge_bfs(graph):
         for node in [start, end]:
-            if node.name not in visited:
-                print(f"Visited: {node.name}")
-                visited[node.name] = True
+            if node.id not in visited:
+                print(f"Visited: {node.id}")
+                visited[node.id] = True
     print("Done traversing the graph.")

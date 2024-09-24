@@ -185,7 +185,10 @@ class ReadFields(Operation):
                     ]
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
-                result[field.id] = value
+                if self.node.ctx.is_v0():
+                    result[field.name] = value
+                else:
+                    result[field.uuid] = value
             return result
 
         chunk_size = 100
