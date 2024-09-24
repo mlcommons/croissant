@@ -56,14 +56,17 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     return value
 
 
-def apply_transforms_fn(value: Any, field: Field) -> Any:
+def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any:
     """Applies all transforms in `source` to `value`."""
     source = field.source
     if source is None:
         return value
     transforms = source.transforms
     for transform in transforms:
-        value = _apply_transform_fn(value, transform, field)
+        if repeated:
+            value = [_apply_transform_fn(v, transform, field) for v in value]
+        else:
+            value = _apply_transform_fn(value, transform, field)
     return value
 
 
@@ -178,8 +181,9 @@ class ReadFields(Operation):
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
                 value = row[column]
-                value = apply_transforms_fn(value, field=field)
-                if field.repeated:
+                is_repeated = field.repeated or (field.parent and hasattr(field.parent, "repeated") and field.parent.repeated)
+                value = apply_transforms_fn(value, field=field, repeated=is_repeated)
+                if is_repeated:
                     value = [
                         _cast_value(self.node.ctx, v, field.data_type) for v in value
                     ]
