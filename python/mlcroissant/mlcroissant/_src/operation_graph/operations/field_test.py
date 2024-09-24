@@ -160,10 +160,22 @@ def test_extract_lines(separator):
             read_field = ReadFields(operations=Operations(), node=record_sets[0])
             df = pd.DataFrame({FileProperty.filepath: [path]})
             expected = [
-                {"line_number": 0, "line": b"bon jour  ", "filename": b"file"},
-                {"line_number": 1, "line": b"", "filename": b"file"},
-                {"line_number": 2, "line": b" h\xc3\xa9llo ", "filename": b"file"},
-                {"line_number": 3, "line": b"hallo ", "filename": b"file"},
+                {
+                    "main/line_number": 0,
+                    "main/line": b"bon jour  ",
+                    "main/filename": b"file",
+                },
+                {"main/line_number": 1, "main/line": b"", "main/filename": b"file"},
+                {
+                    "main/line_number": 2,
+                    "main/line": b" h\xc3\xa9llo ",
+                    "main/filename": b"file",
+                },
+                {
+                    "main/line_number": 3,
+                    "main/line": b"hallo ",
+                    "main/filename": b"file",
+                },
             ]
             result = list(read_field.call(df))
             assert result == expected
