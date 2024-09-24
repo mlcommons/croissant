@@ -181,7 +181,11 @@ class ReadFields(Operation):
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
                 value = row[column]
-                is_repeated = field.repeated or (field.parent and hasattr(field.parent, "repeated") and field.parent.repeated)
+                is_repeated = field.repeated or (
+                    field.parent
+                    and hasattr(field.parent, "repeated")
+                    and field.parent.repeated
+                )
                 value = apply_transforms_fn(value, field=field, repeated=is_repeated)
                 if is_repeated:
                     value = [
