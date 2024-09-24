@@ -1,6 +1,6 @@
 """Migration: Uniforme names and ids.
 
-In fields and record sets, make the names the same as the ids, as it is recommended in
+In fields and record sets, make the names the same as the ids, as it is mostly done in
 the specs.
 """
 

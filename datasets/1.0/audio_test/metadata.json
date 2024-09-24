@@ -68,7 +68,7 @@
         {
           "@type": "cr:Field",
           "@id": "records/audio",
-          "name": "records/audio",
+          "name": "audio",
           "description": "These are the sounds.",
           "dataType": "sc:AudioObject",
           "source": {
