@@ -15,6 +15,8 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.tests.records import record_to_python
 from mlcroissant._src.tests.versions import parametrize_version
 
+_REPOSITORY_FOLDER = epath.Path(__file__).parent.parent.parent.parent.parent
+
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
 def get_error_msg(folder: epath.Path):
@@ -100,12 +102,7 @@ def load_records_and_test_equality(
         f" {record_set_name} --num_records {num_records} --debug --update_output"
         f" {filters_command}`"
     )
-    config = (
-        epath.Path(__file__).parent.parent.parent.parent.parent
-        / "datasets"
-        / version
-        / dataset_name
-    )
+    config = _REPOSITORY_FOLDER / "datasets" / version / dataset_name
     output_file = config.parent / "output" / f"{record_set_name}.jsonl"
     with output_file.open("rb") as f:
         lines = f.readlines()
@@ -145,12 +142,7 @@ def load_records_with_beam_and_test_equality(
     dataset_name: str,
     record_set_name: str,
 ):
-    jsonld = (
-        epath.Path(__file__).parent.parent.parent.parent.parent
-        / "datasets"
-        / version
-        / dataset_name
-    )
+    jsonld = _REPOSITORY_FOLDER / "datasets" / version / dataset_name
     output_file = jsonld.parent / "output" / f"{record_set_name}.jsonl"
     with output_file.open("rb") as f:
         lines = f.readlines()
@@ -282,12 +274,7 @@ def test_load_from_huggingface():
 
 @parametrize_version()
 def test_raises_when_the_record_set_does_not_exist(version):
-    dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent
-        / "datasets"
-        / version
-        / "titanic"
-    )
+    dataset_folder = _REPOSITORY_FOLDER / "datasets" / version / "titanic"
     dataset = datasets.Dataset(dataset_folder / "metadata.json")
     with pytest.raises(ValueError, match="did not find"):
         dataset.records("this_record_set_does_not_exist")
@@ -298,15 +285,9 @@ def test_cypress_fixtures(version):
     # Cypress cannot read files outside of its direct scope, so we have to copy them
     # as fixtures. This test tests that the copies are equal to the original.
     fixture_folder: epath.Path = (
-        epath.Path(__file__).parent.parent.parent.parent.parent
-        / "editor"
-        / "cypress"
-        / "fixtures"
-        / version
+        _REPOSITORY_FOLDER / "editor" / "cypress" / "fixtures" / version
     )
-    datasets_folder: epath.Path = (
-        epath.Path(__file__).parent.parent.parent.parent.parent / "datasets" / version
-    )
+    datasets_folder: epath.Path = _REPOSITORY_FOLDER / "datasets" / version
     for fixture in fixture_folder.glob("*.json"):
         dataset = datasets_folder / f"{fixture.stem}" / "metadata.json"
         assert json.load(fixture.open()) == json.load(dataset.open()), (
@@ -359,3 +340,26 @@ def test_check_mapping_when_the_path_does_not_exist(version):
             -1,
             mapping={"dataframe": "/this/path/does/not/exist"},
         )
+
+
+@parametrize_version()
+def test_check_mapping_when_the_mapping_is_correct(version, tmp_path):
+    dataset_name = "simple-parquet/metadata.json"
+    record_set_name = "persons"
+    old_path = (
+        _REPOSITORY_FOLDER
+        / "datasets"
+        / version
+        / "simple-parquet/data/dataframe.parquet"
+    )
+    assert old_path.exists()
+    # Copy the dataframe to a temporary file:
+    new_path = tmp_path / "dataframe.parquet"
+    old_path.copy(new_path)
+    load_records_and_test_equality(
+        version,
+        dataset_name,
+        record_set_name,
+        -1,
+        mapping={"dataframe": new_path},
+    )
