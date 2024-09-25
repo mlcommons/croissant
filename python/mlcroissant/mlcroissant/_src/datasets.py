@@ -46,6 +46,16 @@ def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
     return operations
 
 
+def _check_mapping(metadata: Metadata, mapping: Mapping[str, epath.Path]):
+    """Checks that the mapping is valid, i.e. keys are actual UUIDs and paths exist."""
+    uuids = set([node.uuid for node in metadata.nodes()])
+    for uuid, path in mapping.items():
+        if uuid not in uuids:
+            raise ValueError(f"{uuid=} in the mapping doesn't exist in the JSON-LD")
+        if not path.exists():
+            raise ValueError(f"{path=} doesn't exist on disk")
+
+
 def _expand_mapping(
     mapping: Mapping[str, epath.PathLike] | None,
 ) -> Mapping[str, epath.Path]:
@@ -83,6 +93,7 @@ class Dataset:
             self.metadata = Metadata.from_file(ctx=ctx, file=self.jsonld)
         else:
             return
+        _check_mapping(self.metadata, ctx.mapping)
         # Draw the structure graph for debugging purposes.
         if self.debug:
             graphs_utils.pretty_print_graph(ctx.graph)

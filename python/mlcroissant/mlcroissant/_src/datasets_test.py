@@ -88,6 +88,7 @@ def load_records_and_test_equality(
     record_set_name: str,
     num_records: int,
     filters: dict[str, Any] | None = None,
+    mapping: dict[str, epath.PathLike] | None = None,
 ):
     filters_command = ""
     if filters:
@@ -109,7 +110,7 @@ def load_records_and_test_equality(
     with output_file.open("rb") as f:
         lines = f.readlines()
         expected_records = [json.loads(line) for line in lines]
-    dataset = datasets.Dataset(config)
+    dataset = datasets.Dataset(config, mapping=mapping)
     records = dataset.records(record_set_name, filters=filters)
     records = iter(records)
     length = 0
@@ -330,3 +331,31 @@ def test_validate_filters(filters, raises):
             datasets._validate_filters(filters)
     else:
         datasets._validate_filters(filters)
+
+
+@parametrize_version()
+def test_check_mapping_when_the_key_does_not_exist(version):
+    dataset_name = "simple-parquet/metadata.json"
+    record_set_name = "persons"
+    with pytest.raises(ValueError, match="doesn't exist in the JSON-LD"):
+        load_records_and_test_equality(
+            version,
+            dataset_name,
+            record_set_name,
+            -1,
+            mapping={"this_UUID_does_not_exist": "/this/path/does/not/exist"},
+        )
+
+
+@parametrize_version()
+def test_check_mapping_when_the_path_does_not_exist(version):
+    dataset_name = "simple-parquet/metadata.json"
+    record_set_name = "persons"
+    with pytest.raises(ValueError, match="doesn't exist on disk"):
+        load_records_and_test_equality(
+            version,
+            dataset_name,
+            record_set_name,
+            -1,
+            mapping={"dataframe": "/this/path/does/not/exist"},
+        )
