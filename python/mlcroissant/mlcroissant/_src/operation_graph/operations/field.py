@@ -32,8 +32,8 @@ def _parse_jsonpath(json_path: str):
     return jsonpath_rw.parse(json_path)
 
 
-def _is_repeated_field(field: Field) -> bool:
-    return hasattr(field, "repeated") and field.repeated
+def _is_repeated_field(field: Field | None) -> bool | None:
+    return isinstance(field, Field) and field.repeated
 
 
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
@@ -176,6 +176,7 @@ class ReadFields(Operation):
             df = _extract_value(df, field)
 
         def _get_result(row):
+            """Returns a record parsed as a dictionary of fields."""
             result: dict[str, Any] = {}
             for field in fields:
                 source = field.source
@@ -202,23 +203,30 @@ class ReadFields(Operation):
                         result[field.id] = value
                     else:
                         # Repeated nested sub-fields render as a list of dictionaries.
-                        if _is_repeated_field(field.parent):
-                            if field.parent.id not in result:
-                                result[field.parent.id] = [{field.id: v} for v in value]
+                        if field.parent:
+                            if _is_repeated_field(field.parent):
+                                if field.parent.id not in result:
+                                    result[field.parent.id] = [
+                                        {field.id: v} for v in value
+                                    ]
+                                else:
+                                    if len(value) != len(result[field.parent.id]):
+                                        raise ValueError(
+                                            f"Lenghts of {field.id} doesn't match"
+                                            " already stored items for"
+                                            f" {field.parent.id}"
+                                        )
+                                    for i, v in enumerate(value):
+                                        result[field.parent.id][i][field.id] = v
+                            # Non-repeated subfields render as a single dictionary.
                             else:
-                                if len(value) != len(result[field.parent.id]):
-                                    raise ValueError(
-                                        f"Lenghts of {field.id} doesn't match already"
-                                        f" stored items for {field.parent.id}"
-                                    )
-                                for i, v in enumerate(value):
-                                    result[field.parent.id][i][field.id] = v
-                        # Non-repeated subfields renders as a single dictionary.
+                                if field.parent.id not in result:
+                                    result[field.parent.id] = {}
+                                result[field.parent.id][field.id] = value
                         else:
-                            if field.parent.id not in result:
-                                result[field.parent.id] = {}
-                            result[field.parent.id][field.id] = value
-
+                            raise ValueError(
+                                f"The field {field.id} is a SubField but has no parent."
+                            )
             return result
 
         chunk_size = 100

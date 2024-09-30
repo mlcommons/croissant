@@ -93,11 +93,9 @@
           "dataType": "sc:Text"
         }
       ],
-      "data": [
-        {
-          "conversations_splits/split_name": "train"
-        }
-      ]
+      "data": {
+        "conversations_splits/split_name": "train"
+      }
     },
     {
       "@type": "cr:RecordSet",
