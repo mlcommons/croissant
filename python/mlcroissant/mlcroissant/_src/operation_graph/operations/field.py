@@ -32,6 +32,10 @@ def _parse_jsonpath(json_path: str):
     return jsonpath_rw.parse(json_path)
 
 
+def _is_repeated_field(field: Field) -> bool:
+    return hasattr(field, "repeated") and field.repeated
+
+
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
@@ -182,9 +186,7 @@ class ReadFields(Operation):
                 )
                 value = row[column]
                 is_repeated = field.repeated or (
-                    field.parent
-                    and hasattr(field.parent, "repeated")
-                    and field.parent.repeated
+                    field.parent and _is_repeated_field(field.parent)
                 )
                 value = apply_transforms_fn(value, field=field, repeated=is_repeated)
                 if is_repeated:
@@ -196,7 +198,27 @@ class ReadFields(Operation):
                 if self.node.ctx.is_v0():
                     result[field.name] = value
                 else:
-                    result[field.id] = value
+                    if field in self.node.fields:
+                        result[field.id] = value
+                    else:
+                        # Repeated nested sub-fields render as a list of dictionaries.
+                        if _is_repeated_field(field.parent):
+                            if field.parent.id not in result:
+                                result[field.parent.id] = [{field.id: v} for v in value]
+                            else:
+                                if len(value) != len(result[field.parent.id]):
+                                    raise ValueError(
+                                        f"Lenghts of {field.id} doesn't match already"
+                                        f" stored items for {field.parent.id}"
+                                    )
+                                for i, v in enumerate(value):
+                                    result[field.parent.id][i][field.id] = v
+                        # Non-repeated subfields renders as a single dictionary.
+                        else:
+                            if field.parent.id not in result:
+                                result[field.parent.id] = {}
+                            result[field.parent.id][field.id] = value
+
             return result
 
         chunk_size = 100
