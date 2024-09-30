@@ -182,7 +182,7 @@ def test_extract_lines(separator):
 
 
 @pytest.mark.parametrize(
-    ["value", "source", "data_type", "expected_value"],
+    ["value", "source", "data_type", "expected_value", "repeated"],
     [
         # Capturing group
         [
@@ -190,12 +190,21 @@ def test_extract_lines(separator):
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "train",
+            False,
+        ],
+        [
+            ["train1234", "train5678", "val1111"],
+            Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
+            DataType.TEXT,
+            ["train", "train", "val"],
+            True,
         ],
         [
             epath.Path("path/to/train1234"),
             Source(transforms=[Transform(regex=".*/(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "train",
+            False,
         ],
         # Non working capturing group
         [
@@ -203,27 +212,31 @@ def test_extract_lines(separator):
             Source(transforms=[Transform(regex="(train|val)\\d\\d\\d\\d")]),
             DataType.TEXT,
             "foo1234",
+            False,
         ],
         [
             {"one": {"two": "expected_value"}, "three": "non_expected_value"},
             Source(transforms=[Transform(json_path="one.two")]),
             DataType.TEXT,
             "expected_value",
+            False,
         ],
         [
             pd.Timestamp("2024-12-10 12:00:00"),
             Source(transforms=[Transform(format="%Y-%m-%d")]),
             DataType.DATE,
             "2024-12-10",
+            False,
         ],
         [
             "2024-12-10 12:00:00",
             Source(transforms=[Transform(format="%Y-%m-%d")]),
             DataType.DATE,
             "2024-12-10",
+            False,
         ],
     ],
 )
-def test_apply_transforms_fn(value, source, data_type, expected_value):
+def test_apply_transforms_fn(value, source, data_type, expected_value, repeated):
     f = Field(id="test", name="test", data_types=data_type, source=source)
-    assert field.apply_transforms_fn(value, f) == expected_value
+    assert field.apply_transforms_fn(value, f, repeated=repeated) == expected_value
