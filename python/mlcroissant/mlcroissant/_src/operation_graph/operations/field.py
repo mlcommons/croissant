@@ -68,7 +68,7 @@ def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any
     if source is None:
         return value
     transforms = source.transforms
-    for transform in transforms:    
+    for transform in transforms:
         if repeated and isinstance(value, list):
             value = [_apply_transform_fn(v, transform, field) for v in value]
         else:
