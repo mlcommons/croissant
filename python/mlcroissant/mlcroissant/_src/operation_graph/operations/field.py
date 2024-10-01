@@ -57,6 +57,8 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             return pd.Timestamp(value).strftime(transform.format)
         else:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
+    elif transform.separator is not None:
+        return value.split(transform.separator)
     return value
 
 
@@ -66,8 +68,8 @@ def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any
     if source is None:
         return value
     transforms = source.transforms
-    for transform in transforms:
-        if repeated:
+    for transform in transforms:    
+        if repeated and isinstance(value, list):
             value = [_apply_transform_fn(v, transform, field) for v in value]
         else:
             value = _apply_transform_fn(value, transform, field)
