@@ -91,10 +91,18 @@
           "name": "conversations_splits/split_name",
           "description": "The name of the split.",
           "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_url",
+          "name": "conversations_splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
         }
       ],
       "data": {
-        "conversations_splits/split_name": "train"
+        "conversations_splits/split_name": "train",
+        "conversations_splits/split_url": "cr:TrainingSplit"
       }
     },
     {
