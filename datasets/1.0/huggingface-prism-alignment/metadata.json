@@ -1,0 +1,711 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "mnist",
+  "description": "The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/mnist",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "conversations-parquet-files",
+      "name": "conversations-parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face for the conversations record set (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "conversations/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conversations_splits",
+      "name": "conversations_splits",
+      "description": "Splits for the conversations config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "conversations_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_name",
+          "name": "conversations_splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_url",
+          "name": "conversations_splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "conversations_splits/split_name": "train",
+        "conversations_splits/split_url": "cr:TrainingSplit"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conversations",
+      "name": "conversations",
+      "description": "The conversations record set.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/split",
+          "name": "conversations/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "conversations_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "conversations/(.*)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_id",
+          "name": "conversations/conversation_id",
+          "description": "Column conversation_id from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "conversation_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/user_id",
+          "name": "conversations/user_id",
+          "description": "Column conversation_id from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "user_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_type",
+          "name": "conversations/conversation_type",
+          "description": "Column conversation_type from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "conversation_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/opening_prompt",
+          "name": "conversations/opening_prompt",
+          "description": "Column opening_prompt from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "opening_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_turns",
+          "name": "conversations/conversation_turns",
+          "description": "Column conversation_turns from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "conversation_turns"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_history",
+          "name": "conversations/conversation_history",
+          "description": "Column conversation_history from conversations parquet file.",
+          "repeated": true,
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/turn",
+              "name": "conversations/conversation_history/turn",
+              "description": "Column conversation_history/turn from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..turn"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/role",
+              "name": "conversations/conversation_history/role",
+              "description": "Column conversation_history/role from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/content",
+              "name": "conversations/conversation_history/content",
+              "description": "Column conversation_history/content from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/model_provider",
+              "name": "conversations/conversation_history/model_provider",
+              "description": "Column conversation_history/model_provider from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..model_provider"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/model_name",
+              "name": "conversations/conversation_history/model_name",
+              "description": "Column conversation_history/model_name from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..model_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/score",
+              "name": "conversations/conversation_history/score",
+              "description": "Column conversation_history/score from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/if_chosen",
+              "name": "conversations/conversation_history/if_chosen",
+              "description": "Column conversation_history/if_chosen from conversations parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..if_chosen"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/within_turn_id",
+              "name": "conversations/conversation_history/within_turn_id",
+              "description": "Column conversation_history/within_turn_id from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "$..within_turn_id"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/performance_attributes",
+          "name": "conversations/performance_attributes",
+          "description": "Column performance_attributes from conversations parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/values",
+              "name": "conversations/performance_attributes/values",
+              "description": "Column performance_attributes/values from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..values"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/fluency",
+              "name": "conversations/performance_attributes/fluency",
+              "description": "Column performance_attributes/fluency from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..fluency"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/factuality",
+              "name": "conversations/performance_attributes/factuality",
+              "description": "Column performance_attributes/factuality from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..factuality"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/safety",
+              "name": "conversations/performance_attributes/safety",
+              "description": "Column performance_attributes/safety from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..safety"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/diversity",
+              "name": "conversations/performance_attributes/diversity",
+              "description": "Column performance_attributes/diversity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..diversity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/creativity",
+              "name": "conversations/performance_attributes/creativity",
+              "description": "Column performance_attributes/creativity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..creativity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/helpfulness",
+              "name": "conversations/performance_attributes/helpfulness",
+              "description": "Column performance_attributes/helpfulness from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..helpfulness"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/choice_attributes",
+          "name": "conversations/choice_attributes",
+          "description": "Column choice_attributes from conversations parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/values",
+              "name": "conversations/choice_attributes/values",
+              "description": "Column choice_attributes/values from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..values"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/fluency",
+              "name": "conversations/choice_attributes/fluency",
+              "description": "Column choice_attributes/fluency from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..fluency"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/factuality",
+              "name": "conversations/choice_attributes/factuality",
+              "description": "Column choice_attributes/factuality from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..factuality"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/safety",
+              "name": "conversations/choice_attributes/safety",
+              "description": "Column choice_attributes/safety from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..safety"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/diversity",
+              "name": "conversations/choice_attributes/diversity",
+              "description": "Column choice_attributes/diversity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..diversity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/creativity",
+              "name": "conversations/choice_attributes/creativity",
+              "description": "Column choice_attributes/creativity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..creativity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/helpfulness",
+              "name": "conversations/choice_attributes/helpfulness",
+              "description": "Column choice_attributes/helpfulness from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "$..helpfulness"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/open_feedback",
+          "name": "conversations/open_feedback",
+          "description": "Column open_feedback from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "open_feedback"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/generated_datetime",
+          "name": "conversations/generated_datetime",
+          "description": "Column generated_datetime from conversations parquet file.",
+          "dataType": "sc:Date",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "generated_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/timing_duration_s",
+          "name": "conversations/timing_duration_s",
+          "description": "Column timing_duration from conversations parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "timing_duration_s"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/timing_duration_mins",
+          "name": "conversations/timing_duration_mins",
+          "description": "Column timing_duration_mins from conversations parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "timing_duration_mins"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/included_in_balanced_subset",
+          "name": "conversations/included_in_balanced_subset",
+          "description": "Column included_in_balanced_subset from conversations parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "included_in_balanced_subset"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -32,6 +32,10 @@ def _parse_jsonpath(json_path: str):
     return jsonpath_rw.parse(json_path)
 
 
+def _is_repeated_field(field: Field | None) -> bool | None:
+    return isinstance(field, Field) and field.repeated
+
+
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
     if transform.regex is not None:
@@ -53,17 +57,22 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             return pd.Timestamp(value).strftime(transform.format)
         else:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
+    elif transform.separator is not None:
+        return value.split(transform.separator)
     return value
 
 
-def apply_transforms_fn(value: Any, field: Field) -> Any:
+def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any:
     """Applies all transforms in `source` to `value`."""
     source = field.source
     if source is None:
         return value
     transforms = source.transforms
     for transform in transforms:
-        value = _apply_transform_fn(value, transform, field)
+        if repeated and isinstance(value, list):
+            value = [_apply_transform_fn(v, transform, field) for v in value]
+        else:
+            value = _apply_transform_fn(value, transform, field)
     return value
 
 
@@ -169,6 +178,7 @@ class ReadFields(Operation):
             df = _extract_value(df, field)
 
         def _get_result(row):
+            """Returns a record parsed as a dictionary of fields."""
             result: dict[str, Any] = {}
             for field in fields:
                 source = field.source
@@ -178,8 +188,11 @@ class ReadFields(Operation):
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
                 value = row[column]
-                value = apply_transforms_fn(value, field=field)
-                if field.repeated:
+                is_repeated = field.repeated or (
+                    field.parent and _is_repeated_field(field.parent)
+                )
+                value = apply_transforms_fn(value, field=field, repeated=is_repeated)
+                if is_repeated:
                     value = [
                         _cast_value(self.node.ctx, v, field.data_type) for v in value
                     ]
@@ -188,7 +201,34 @@ class ReadFields(Operation):
                 if self.node.ctx.is_v0():
                     result[field.name] = value
                 else:
-                    result[field.id] = value
+                    if field in self.node.fields:
+                        result[field.id] = value
+                    else:
+                        # Repeated nested sub-fields render as a list of dictionaries.
+                        if field.parent:
+                            if _is_repeated_field(field.parent):
+                                if field.parent.id not in result:
+                                    result[field.parent.id] = [
+                                        {field.id: v} for v in value
+                                    ]
+                                else:
+                                    if len(value) != len(result[field.parent.id]):
+                                        raise ValueError(
+                                            f"Lenghts of {field.id} doesn't match"
+                                            " already stored items for"
+                                            f" {field.parent.id}"
+                                        )
+                                    for i, v in enumerate(value):
+                                        result[field.parent.id][i][field.id] = v
+                            # Non-repeated subfields render as a single dictionary.
+                            else:
+                                if field.parent.id not in result:
+                                    result[field.parent.id] = {}
+                                result[field.parent.id][field.id] = value
+                        else:
+                            raise ValueError(
+                                f"The field {field.id} is a SubField but has no parent."
+                            )
             return result
 
         chunk_size = 100

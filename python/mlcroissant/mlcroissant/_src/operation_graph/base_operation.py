@@ -120,7 +120,7 @@ class Operation(abc.ABC, Generic[OutputT]):
         inputs = self.inputs
         output = self.call() if inputs is None else self.call(*inputs)
         if isinstance(output, types.GeneratorType) and set_output_in_memory:
-            output = pd.DataFrame(output)
+            output = pd.DataFrame(output)  # type:ignore
         self.set_output(output)
         return output
 
