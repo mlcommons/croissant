@@ -91,7 +91,7 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     elif data_type == DataType.AUDIO_OBJECT:
         output = deps.librosa.load(io.BytesIO(value))
         return output
-    elif data_type == DataType.BOUNDING_BOX(ctx):  # pytype: disable=wrong-arg-types
+    elif data_type == DataType.BOUNDING_BOX:  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
