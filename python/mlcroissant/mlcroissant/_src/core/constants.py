@@ -226,7 +226,7 @@ class DataType:
 
     AUDIO_OBJECT = namespace.SDO.AudioObject
     BOOL = namespace.SDO.Boolean
-    BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
+    BOUNDING_BOX = ML_COMMONS_V_1_0.BoundingBox
     DATE = namespace.SDO.Date
     FLOAT = namespace.SDO.Float
     IMAGE_OBJECT = namespace.SDO.ImageObject
