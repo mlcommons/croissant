@@ -170,10 +170,6 @@ def load_records_with_beam_and_test_equality(
     ["dataset_name", "record_set_name", "num_records"],
     [
         ["audio_test/metadata.json", "records", 2],
-        ["coco2014-mini/metadata.json", "bounding_boxes", -1],
-        ["coco2014-mini/metadata.json", "captions", -1],
-        ["coco2014-mini/metadata.json", "images", -1],
-        ["coco2014-mini/metadata.json", "split_enums", -1],
         ["pass-mini/metadata.json", "images", -1],
         ["recipes/file_object_in_zip.json", "csv1", -1],
         ["recipes/file_object_in_zip.json", "csv2", -1],
@@ -205,6 +201,10 @@ def test_beam_hermetic_loading(version, dataset_name, record_set_name):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records", "filters"],
     [
+        ["coco2014-mini/metadata.json", "bounding_boxes", -1, None],
+        ["coco2014-mini/metadata.json", "captions", -1, None],
+        ["coco2014-mini/metadata.json", "images", -1, None],
+        ["coco2014-mini/metadata.json", "split_enums", -1, None],
         ["simple-split/metadata.json", "data", -1, {"data/split": "train"}],
     ],
 )

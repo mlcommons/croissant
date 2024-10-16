@@ -161,7 +161,7 @@ class Field(Node):
             elif data_type in [
                 DataType.IMAGE_OBJECT,
                 # For some reasons, pytype cannot infer `Any` on ctx:
-                DataType.BOUNDING_BOX(self.ctx),  # pytype: disable=wrong-arg-types
+                DataType.BOUNDING_BOX,  # pytype: disable=wrong-arg-types
                 DataType.AUDIO_OBJECT,
             ]:
                 return term.URIRef(data_type)
