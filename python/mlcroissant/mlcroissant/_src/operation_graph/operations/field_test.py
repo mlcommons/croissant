@@ -83,6 +83,7 @@ def test_readfield_with_subfields():
             f.write("latitude,longitude,names,surnames\n")
             f.write("1,1,Anna-Maria,Rossi-Bianchi\n")
             f.write("2,2,Giulia,Ferrari\n")
+            f.write("1,3,,\n")
         # Nodes to define metadata.
         distribution = [
             FileObject(
@@ -195,9 +196,41 @@ def test_readfield_with_subfields():
                         },
                     ],
                 },
+                {
+                    "main/coordinates": {
+                        "main/coordinates/latitude": 1,
+                        "main/coordinates/longitude": 3,
+                    },
+                    "main/checked_users": [
+                        {
+                            "main/checked_users/name": float("nan"),
+                            "main/checked_users/surname": float("nan"),
+                        },
+                    ],
+                },
             ]
             result = list(read_field.call(df))
-            assert result == expected
+            for i in range(len(result)):
+                assert result[i]["main/coordinates"] == expected[i]["main/coordinates"]
+                if not field._is_na(
+                    result[i]["main/checked_users"][0]["main/checked_users/name"]
+                ):
+                    assert (
+                        result[i]["main/checked_users"]
+                        == expected[i]["main/checked_users"]
+                    )
+                else:
+                    assert field._is_na(
+                        expected[i]["main/checked_users"][0]["main/checked_users/name"]
+                    )
+                    assert field._is_na(
+                        expected[i]["main/checked_users"][0][
+                            "main/checked_users/surname"
+                        ]
+                    )
+                    assert field._is_na(
+                        result[i]["main/checked_users"][0]["main/checked_users/surname"]
+                    )
 
 
 @pytest.mark.parametrize(
