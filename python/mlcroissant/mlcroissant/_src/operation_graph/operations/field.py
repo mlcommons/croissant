@@ -38,6 +38,8 @@ def _is_repeated_field(field: Field | None) -> bool | None:
 
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
+    if _is_na(value):
+        return value
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
         if isinstance(value, pathlib.PurePath):
@@ -57,7 +59,7 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             return pd.Timestamp(value).strftime(transform.format)
         else:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
-    elif transform.separator is not None and not _is_na(value):
+    elif transform.separator is not None:
         return value.split(transform.separator)
     return value
 
@@ -157,18 +159,19 @@ def _populate_repeated_nested_subfield(
             "Nested subfields can only be populated when the parent field exists!"
         )
     parent_id = field.parent.id
-    if parent_id not in result:
-        result[parent_id] = (
-            [{field.id: v} for v in value] if not _is_na(value) else [{field.id: value}]
-        )
-    else:
-        if not _is_na(value) and len(value) != len(result[parent_id]):
+    existing_values = result.get(parent_id, None)
+    if existing_values:
+        if not _is_na(value) and len(value) != len(existing_values):
             raise ValueError(
                 f"Lenghts of {field.id} doesn't match  already stored items for "
                 f" {parent_id}"
             )
-        for i in range(len(result[parent_id])):
-            result[parent_id][i][field.id] = value[i] if not _is_na(value) else value
+        for i in range(len(existing_values)):
+            existing_values[i][field.id] = None if _is_na(value) else value[i]
+    else:
+        result[parent_id] = (
+            [{field.id: None}] if _is_na(value) else [{field.id: v} for v in value]
+        )
     return result
 
 
@@ -214,19 +217,21 @@ class ReadFields(Operation):
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
-                value = row[column]
                 is_repeated = field.repeated or (
                     field.parent and _is_repeated_field(field.parent)
                 )
-                value = apply_transforms_fn(value, field=field, repeated=is_repeated)
-                if is_repeated:
-                    value = (
-                        [_cast_value(self.node.ctx, v, field.data_type) for v in value]
-                        if not _is_na(value)
-                        else value
-                    )
+                value = apply_transforms_fn(
+                    row[column], field=field, repeated=is_repeated
+                )
+                if _is_na(value):
+                    value = None
+                elif is_repeated:
+                    value = [
+                        _cast_value(self.node.ctx, v, field.data_type) for v in value
+                    ]
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
+
                 if self.node.ctx.is_v0():
                     result[field.name] = value
                 else:

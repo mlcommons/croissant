@@ -203,34 +203,14 @@ def test_readfield_with_subfields():
                     },
                     "main/checked_users": [
                         {
-                            "main/checked_users/name": float("nan"),
-                            "main/checked_users/surname": float("nan"),
+                            "main/checked_users/name": None,
+                            "main/checked_users/surname": None,
                         },
                     ],
                 },
             ]
             result = list(read_field.call(df))
-            for i in range(len(result)):
-                assert result[i]["main/coordinates"] == expected[i]["main/coordinates"]
-                if not field._is_na(
-                    result[i]["main/checked_users"][0]["main/checked_users/name"]
-                ):
-                    assert (
-                        result[i]["main/checked_users"]
-                        == expected[i]["main/checked_users"]
-                    )
-                else:
-                    assert field._is_na(
-                        expected[i]["main/checked_users"][0]["main/checked_users/name"]
-                    )
-                    assert field._is_na(
-                        expected[i]["main/checked_users"][0][
-                            "main/checked_users/surname"
-                        ]
-                    )
-                    assert field._is_na(
-                        result[i]["main/checked_users"][0]["main/checked_users/surname"]
-                    )
+            assert result == expected
 
 
 @pytest.mark.parametrize(
