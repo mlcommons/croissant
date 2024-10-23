@@ -38,6 +38,8 @@ def _is_repeated_field(field: Field | None) -> bool | None:
 
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
+    if _is_na(value):
+        return value
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
         if isinstance(value, pathlib.PurePath):
@@ -76,10 +78,13 @@ def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any
     return value
 
 
+def _is_na(value: Any) -> bool:
+    return not isinstance(value, (list, np.ndarray)) and pd.isna(value)
+
+
 def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     """Casts the value `value` to the desired target data type `data_type`."""
-    is_na = not isinstance(value, (list, np.ndarray)) and pd.isna(value)
-    if is_na:
+    if _is_na(value):
         return value
     elif data_type == DataType.IMAGE_OBJECT:
         if isinstance(value, deps.PIL_Image.Image):
@@ -145,6 +150,31 @@ def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     return df
 
 
+def _populate_repeated_nested_subfield(
+    value: Any, field: Field, result: dict[str, Any]
+) -> dict[str, Any]:
+    """Populates result with a field's nested subfields."""
+    if not field.parent:
+        raise ValueError(
+            "Nested subfields can only be populated when the parent field exists!"
+        )
+    parent_id = field.parent.id
+    existing_values = result.get(parent_id, None)
+    if existing_values:
+        if not _is_na(value) and len(value) != len(existing_values):
+            raise ValueError(
+                f"Lenghts of {field.id} doesn't match  already stored items for "
+                f" {parent_id}"
+            )
+        for i in range(len(existing_values)):
+            existing_values[i][field.id] = None if _is_na(value) else value[i]
+    else:
+        result[parent_id] = (
+            [{field.id: None}] if _is_na(value) else [{field.id: v} for v in value]
+        )
+    return result
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class ReadFields(Operation):
     """Reads fields in a RecordSet from a Pandas DataFrame and applies transformations.
@@ -187,17 +217,21 @@ class ReadFields(Operation):
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
-                value = row[column]
                 is_repeated = field.repeated or (
                     field.parent and _is_repeated_field(field.parent)
                 )
-                value = apply_transforms_fn(value, field=field, repeated=is_repeated)
-                if is_repeated:
+                value = apply_transforms_fn(
+                    row[column], field=field, repeated=is_repeated
+                )
+                if _is_na(value):
+                    value = None
+                elif is_repeated:
                     value = [
                         _cast_value(self.node.ctx, v, field.data_type) for v in value
                     ]
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
+
                 if self.node.ctx.is_v0():
                     result[field.name] = value
                 else:
@@ -207,19 +241,9 @@ class ReadFields(Operation):
                         # Repeated nested sub-fields render as a list of dictionaries.
                         if field.parent:
                             if _is_repeated_field(field.parent):
-                                if field.parent.id not in result:
-                                    result[field.parent.id] = [
-                                        {field.id: v} for v in value
-                                    ]
-                                else:
-                                    if len(value) != len(result[field.parent.id]):
-                                        raise ValueError(
-                                            f"Lenghts of {field.id} doesn't match"
-                                            " already stored items for"
-                                            f" {field.parent.id}"
-                                        )
-                                    for i, v in enumerate(value):
-                                        result[field.parent.id][i][field.id] = v
+                                result = _populate_repeated_nested_subfield(
+                                    value=value, field=field, result=result
+                                )
                             # Non-repeated subfields render as a single dictionary.
                             else:
                                 if field.parent.id not in result:

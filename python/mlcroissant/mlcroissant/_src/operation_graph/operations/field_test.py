@@ -83,6 +83,7 @@ def test_readfield_with_subfields():
             f.write("latitude,longitude,names,surnames\n")
             f.write("1,1,Anna-Maria,Rossi-Bianchi\n")
             f.write("2,2,Giulia,Ferrari\n")
+            f.write("1,3,,\n")
         # Nodes to define metadata.
         distribution = [
             FileObject(
@@ -192,6 +193,18 @@ def test_readfield_with_subfields():
                         {
                             "main/checked_users/name": b"Giulia",
                             "main/checked_users/surname": b"Ferrari",
+                        },
+                    ],
+                },
+                {
+                    "main/coordinates": {
+                        "main/coordinates/latitude": 1,
+                        "main/coordinates/longitude": 3,
+                    },
+                    "main/checked_users": [
+                        {
+                            "main/checked_users/name": None,
+                            "main/checked_users/surname": None,
                         },
                     ],
                 },

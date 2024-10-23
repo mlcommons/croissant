@@ -247,6 +247,7 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
         ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10, None],
         ["huggingface-c4/metadata.json", "data", 1, {"data/variant": "en"}],
         ["huggingface-levanti/metadata.json", "levanti_train", 10, None],
+        ["huggingface-open-hermes/metadata.json", "default", 3, None],
     ],
 )
 def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
