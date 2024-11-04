@@ -159,6 +159,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
   - Via a `Croissant` tag button on the dataset's page (ex: <https://huggingface.co/datasets/CohereForAI/aya_collection>)
   - Via their API (ex: <https://huggingface.co/api/datasets/CohereForAI/aya_collection/croissant>)
 - [TFDS](https://www.tensorflow.org/datasets/overview) has a [`CroissantBuilder`](https://www.tensorflow.org/datasets/format_specific_dataset_builders#croissantbuilder) to transform any JSON-LD file into a TFDS dataset, which makes it possible to load the data into TensorFlow, JAX and PyTorch.
+- [Dataverse](https://dataverse.org) offers an [addon](https://github.com/gdcc/exporter-croissant) to export datasets in Croissant format and embed Croissant directly in the HTML of dataset landing pages.
 
 ## Licensing
 
