@@ -204,7 +204,7 @@
                   "column": "answers"
                 },
                 "transform": {
-                  "jsonPath": "$..text"
+                  "jsonPath": "text"
                 }
               }
             },
@@ -223,7 +223,7 @@
                   "column": "answers"
                 },
                 "transform": {
-                  "jsonPath": "$..answer_start"
+                  "jsonPath": "answer_start"
                 }
               }
             }

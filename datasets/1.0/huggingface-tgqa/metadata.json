@@ -70,7 +70,7 @@
       "containedIn": {
         "@id": "repo"
       },
-      "contentUrl": "TGQA/TGSR_train.json",
+      "contentUrl": "TGQA/TGR_train.json",
       "encodingFormat": "application/json"
     },
     {
@@ -81,7 +81,7 @@
       "containedIn": {
         "@id": "repo"
       },
-      "contentUrl": "TGQA/TGSR_val.json",
+      "contentUrl": "TGQA/TGR_val.json",
       "encodingFormat": "application/json"
     },
     {
@@ -92,7 +92,7 @@
       "containedIn": {
         "@id": "repo"
       },
-      "contentUrl": "TGQA/TGSR_test.json",
+      "contentUrl": "TGQA/TGR_test.json",
       "encodingFormat": "application/json"
     },
     {
@@ -145,7 +145,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..story"
+              "jsonPath": "story"
             }
           }
         },
@@ -160,7 +160,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..id"
+              "jsonPath": "id"
             }
           }
         },
@@ -175,7 +175,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..TG"
+              "jsonPath": "TG"
             }
           }
         },
@@ -190,7 +190,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..question"
+              "jsonPath": "question"
             }
           }
         },
@@ -205,7 +205,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..answer"
+              "jsonPath": "answer"
             }
           }
         },
@@ -221,7 +221,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..candidates"
+              "jsonPath": "candidates"
             }
           }
         },
@@ -236,7 +236,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..Q-Type"
+              "jsonPath": "Q-Type"
             }
           }
         },
@@ -252,7 +252,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..EK"
+              "jsonPath": "EK"
             }
           }
         },
@@ -268,7 +268,7 @@
               "@id": "TGSR_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..CoT"
+              "jsonPath": "CoT"
             }
           }
         }
@@ -289,7 +289,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..story"
+              "jsonPath": "story"
             }
           }
         },
@@ -304,7 +304,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..id"
+              "jsonPath": "id"
             }
           }
         },
@@ -319,7 +319,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..TG"
+              "jsonPath": "TG"
             }
           }
         },
@@ -334,7 +334,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..question"
+              "jsonPath": "question"
             }
           }
         },
@@ -349,7 +349,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..answer"
+              "jsonPath": "answer"
             }
           }
         },
@@ -365,7 +365,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..candidates"
+              "jsonPath": "candidates"
             }
           }
         },
@@ -380,7 +380,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..Q-Type"
+              "jsonPath": "Q-Type"
             }
           }
         },
@@ -396,7 +396,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..EK"
+              "jsonPath": "EK"
             }
           }
         },
@@ -412,7 +412,7 @@
               "@id": "TGSR_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..CoT"
+              "jsonPath": "CoT"
             }
           }
         }
@@ -433,7 +433,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..story"
+              "jsonPath": "story"
             }
           }
         },
@@ -448,7 +448,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..id"
+              "jsonPath": "id"
             }
           }
         },
@@ -463,7 +463,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..TG"
+              "jsonPath": "TG"
             }
           }
         },
@@ -478,7 +478,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..question"
+              "jsonPath": "question"
             }
           }
         },
@@ -493,7 +493,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..answer"
+              "jsonPath": "answer"
             }
           }
         },
@@ -509,7 +509,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..candidates"
+              "jsonPath": "candidates"
             }
           }
         },
@@ -524,7 +524,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..Q-Type"
+              "jsonPath": "Q-Type"
             }
           }
         },
@@ -540,7 +540,7 @@
               "@id": "TGSR_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..EK"
+              "jsonPath": "EK"
             }
           }
         }
@@ -561,7 +561,7 @@
               "@id": "Story_TG_Trans_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..story"
+              "jsonPath": "story"
             }
           }
         },
@@ -576,7 +576,7 @@
               "@id": "Story_TG_Trans_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..id"
+              "jsonPath": "id"
             }
           }
         },
@@ -591,7 +591,7 @@
               "@id": "Story_TG_Trans_train-fileset"
             },
             "extract": {
-              "jsonPath": "$..TG"
+              "jsonPath": "TG"
             }
           }
         }
@@ -612,7 +612,7 @@
               "@id": "Story_TG_Trans_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..story"
+              "jsonPath": "story"
             }
           }
         },
@@ -627,7 +627,7 @@
               "@id": "Story_TG_Trans_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..id"
+              "jsonPath": "id"
             }
           }
         },
@@ -642,7 +642,7 @@
               "@id": "Story_TG_Trans_validation-fileset"
             },
             "extract": {
-              "jsonPath": "$..TG"
+              "jsonPath": "TG"
             }
           }
         }
@@ -663,7 +663,7 @@
               "@id": "Story_TG_Trans_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..story"
+              "jsonPath": "story"
             }
           }
         },
@@ -678,7 +678,7 @@
               "@id": "Story_TG_Trans_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..id"
+              "jsonPath": "id"
             }
           }
         },
@@ -693,7 +693,7 @@
               "@id": "Story_TG_Trans_test-fileset"
             },
             "extract": {
-              "jsonPath": "$..TG"
+              "jsonPath": "TG"
             }
           }
         }
