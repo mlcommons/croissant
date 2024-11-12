@@ -52,6 +52,14 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             if group is not None:
                 return group
     elif transform.json_path is not None:
+
+        def _prepare_value_for_jsonpath(value):
+            for k, v in value.items():
+                if isinstance(v, np.ndarray):
+                    value[k] = v.tolist()
+            return value
+
+        value = _prepare_value_for_jsonpath(value)
         jsonpath_expression = _parse_jsonpath(transform.json_path)
         return next(match.value for match in jsonpath_expression.find(value))
     elif transform.format is not None:
