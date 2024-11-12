@@ -230,7 +230,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..turn"
+                  "jsonPath": "turn"
                 }
               }
             },
@@ -248,7 +248,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..role"
+                  "jsonPath": "role"
                 }
               }
             },
@@ -266,7 +266,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..content"
+                  "jsonPath": "content"
                 }
               }
             },
@@ -284,7 +284,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..model_provider"
+                  "jsonPath": "model_provider"
                 }
               }
             },
@@ -302,7 +302,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..model_name"
+                  "jsonPath": "model_name"
                 }
               }
             },
@@ -320,7 +320,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..score"
+                  "jsonPath": "score"
                 }
               }
             },
@@ -338,7 +338,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..if_chosen"
+                  "jsonPath": "if_chosen"
                 }
               }
             },
@@ -356,7 +356,7 @@
                   "column": "conversation_history"
                 },
                 "transform": {
-                  "jsonPath": "$..within_turn_id"
+                  "jsonPath": "within_turn_id"
                 }
               }
             }
@@ -382,7 +382,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..values"
+                  "jsonPath": "values"
                 }
               }
             },
@@ -400,7 +400,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..fluency"
+                  "jsonPath": "fluency"
                 }
               }
             },
@@ -418,7 +418,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..factuality"
+                  "jsonPath": "factuality"
                 }
               }
             },
@@ -436,7 +436,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..safety"
+                  "jsonPath": "safety"
                 }
               }
             },
@@ -454,7 +454,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..diversity"
+                  "jsonPath": "diversity"
                 }
               }
             },
@@ -472,7 +472,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..creativity"
+                  "jsonPath": "creativity"
                 }
               }
             },
@@ -490,7 +490,7 @@
                   "column": "performance_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..helpfulness"
+                  "jsonPath": "helpfulness"
                 }
               }
             }
@@ -516,7 +516,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..values"
+                  "jsonPath": "values"
                 }
               }
             },
@@ -534,7 +534,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..fluency"
+                  "jsonPath": "fluency"
                 }
               }
             },
@@ -552,7 +552,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..factuality"
+                  "jsonPath": "factuality"
                 }
               }
             },
@@ -570,7 +570,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..safety"
+                  "jsonPath": "safety"
                 }
               }
             },
@@ -588,7 +588,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..diversity"
+                  "jsonPath": "diversity"
                 }
               }
             },
@@ -606,7 +606,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..creativity"
+                  "jsonPath": "creativity"
                 }
               }
             },
@@ -624,7 +624,7 @@
                   "column": "choice_attributes"
                 },
                 "transform": {
-                  "jsonPath": "$..helpfulness"
+                  "jsonPath": "helpfulness"
                 }
               }
             }
