@@ -174,7 +174,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "transcript"
+              "jsonPath": "$..transcript"
             }
           }
         },
@@ -189,7 +189,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "is_upworker"
+              "jsonPath": "$..is_upworker"
             }
           }
         },
@@ -204,7 +204,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "min_harmlessness_score_transcript"
+              "jsonPath": "$..min_harmlessness_score_transcript"
             }
           }
         },
@@ -219,7 +219,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "task_descripton_harmlessness_score"
+              "jsonPath": "$..task_descripton_harmlessness_score"
             }
           }
         },
@@ -234,7 +234,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "red_team_member_id"
+              "jsonPath": "$..red_team_member_id"
             }
           }
         },
@@ -249,7 +249,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "rating"
+              "jsonPath": "$..rating"
             }
           }
         },
@@ -264,7 +264,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "num_params"
+              "jsonPath": "$..num_params"
             }
           }
         },
@@ -279,7 +279,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "model_type"
+              "jsonPath": "$..model_type"
             }
           }
         },
@@ -294,7 +294,7 @@
               "@id": "red-team-attempts-file-object"
             },
             "extract": {
-              "jsonPath": "task_description"
+              "jsonPath": "$..task_description"
             }
           }
         }
