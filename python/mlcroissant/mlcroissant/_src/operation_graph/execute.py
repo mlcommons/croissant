@@ -186,7 +186,7 @@ def execute_operations_in_beam(
     files = filter_files.output  # even for large datasets, this can be handled in RAM.
 
     # We first shard by file and assign a shard_index.
-    pipeline = pipeline | "Shard by files with index" >> beam.Create(enumerate(files))
+    pipeline = pipeline | beam.Create(enumerate(files))
     num_shards = len(files)
 
     # We don't know in advance the number of records per shards. So we just allocate the
