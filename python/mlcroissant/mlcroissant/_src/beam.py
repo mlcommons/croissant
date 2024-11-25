@@ -41,7 +41,7 @@ def ReadFromCroissant(
     record_set: str,
     mapping: Mapping[str, epath.PathLike] | None = None,
     filters: Filters | None = None,
-    stage_prefix: str | None = None,
+    stage_prefix: str = "",
 ):
     """Returns an Apache Beam reader to generate the dataset using e.g. Spark.
 

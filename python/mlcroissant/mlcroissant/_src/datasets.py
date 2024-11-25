@@ -176,7 +176,7 @@ class Records:
                 record_set=self.record_set, operations=operations
             )
 
-    def beam_reader(self, pipeline: beam.Pipeline, stage_prefix: str | None = None):
+    def beam_reader(self, pipeline: beam.Pipeline, stage_prefix: str = ""):
         """See ReadFromCroissant docstring."""
         operations = self._filter_interesting_operations(self.filters)
         execute_downloads(operations)

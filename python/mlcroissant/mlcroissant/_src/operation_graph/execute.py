@@ -130,7 +130,7 @@ def execute_operations_in_beam(
     pipeline: beam.Pipeline,
     record_set: str,
     operations: Operations,
-    stage_prefix: str | None = None,
+    stage_prefix: str = "",
 ):
     """See ReadFromCroissant docstring."""
     import apache_beam as beam
@@ -189,7 +189,6 @@ def execute_operations_in_beam(
     files = filter_files.output  # even for large datasets, this can be handled in RAM.
 
     # We first shard by file and assign a shard_index.
-    stage_prefix = stage_prefix or record_set
     pipeline = pipeline | f"{stage_prefix} Shard by files with index" >> beam.Create(
         enumerate(files)
     )
