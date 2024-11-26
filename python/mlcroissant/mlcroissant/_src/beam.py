@@ -85,4 +85,7 @@ def ReadFromCroissant(
         A ValueError if the dataset is not streamable.
     """
     dataset = Dataset(jsonld=jsonld, mapping=mapping)
-    return dataset.records(record_set, filters=filters).beam_reader(pipeline)
+    return dataset.records(record_set, filters=filters).beam_reader(
+        pipeline,
+        filters=filters,
+    )

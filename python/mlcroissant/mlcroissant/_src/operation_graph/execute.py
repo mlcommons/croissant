@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import concurrent.futures
 import functools
+import json
 import sys
 import typing
 from typing import Any, Generator
@@ -127,7 +129,10 @@ def execute_operations_in_streaming(
 
 
 def execute_operations_in_beam(
-    pipeline: beam.Pipeline, record_set: str, operations: Operations
+    pipeline: beam.Pipeline,
+    record_set: str,
+    operations: Operations,
+    filters: Mapping[str, Any] | None = None,
 ):
     """See ReadFromCroissant docstring."""
     import apache_beam as beam
@@ -140,6 +145,7 @@ def execute_operations_in_beam(
     # We use the FilterFiles operation to parallelize operations. If there's no
     # FilterFile operation, we set it to `target`.
     filter_files = _find_filter_files(operations, target)
+    stage_prefix = f"{record_set} " + json.dumps(filters) if filters else "no filter"
 
     # In memory = all operations that are not between FilterFiles and the target.
     # In Beam = all operations that are between FilterFiles and the target.
@@ -178,15 +184,16 @@ def execute_operations_in_beam(
             return (
                 pipeline
                 | beam.Create([(0, *operation.inputs)])
-                | _beam_operation_with_index(operation, sys.maxsize)
+                | _beam_operation_with_index(operation, sys.maxsize, stage_prefix)
             )
         else:
             operation(set_output_in_memory=True)
 
     files = filter_files.output  # even for large datasets, this can be handled in RAM.
-
     # We first shard by file and assign a shard_index.
-    pipeline = pipeline | "Shard by files with index" >> beam.Create(enumerate(files))
+    pipeline = pipeline | f"{stage_prefix} Shard by files with index" >> beam.Create(
+        enumerate(files)
+    )
     num_shards = len(files)
 
     # We don't know in advance the number of records per shards. So we just allocate the
@@ -204,7 +211,9 @@ def execute_operations_in_beam(
     # explicitly instead of relying on max_shard_size.
     max_shard_size = sys.maxsize // num_shards
     for operation in operations_in_beam:
-        beam_operation = _beam_operation_with_index(operation, max_shard_size)
+        beam_operation = _beam_operation_with_index(
+            operation, max_shard_size, stage_prefix
+        )
         pipeline |= beam_operation
     return pipeline
 
@@ -234,19 +243,28 @@ def _pass_index(index: int, element: Any, operation: Operation) -> ElementWithIn
     return (index, operation.call(element))
 
 
-def _beam_operation_with_index(operation: Operation, max_shard_size: int):
+def _beam_operation_with_index(
+    operation: Operation, max_shard_size: int, stage_prefix: str | None
+):
     import apache_beam as beam
 
     if isinstance(operation, ReadFields):
-        return beam.ParDo(
-            functools.partial(
-                _add_global_index,
-                operation=operation,
-                max_shard_size=max_shard_size,
+        return (
+            f"{stage_prefix} {operation.node.uuid}: compute the global index."
+            >> beam.ParDo(
+                functools.partial(
+                    _add_global_index,
+                    operation=operation,
+                    max_shard_size=max_shard_size,
+                )
             )
         )
     else:
-        return beam.MapTuple(functools.partial(_pass_index, operation=operation))
+        return (
+            f"{stage_prefix} {operation.node.uuid}: pass the index to the next"
+            " operation."
+            >> beam.MapTuple(functools.partial(_pass_index, operation=operation))
+        )
 
 
 def _find_filter_files(operations: Operations, target: ReadFields) -> Operation:
