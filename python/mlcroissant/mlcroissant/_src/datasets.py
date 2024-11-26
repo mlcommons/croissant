@@ -184,6 +184,7 @@ class Records:
             pipeline=pipeline,
             record_set=self.record_set,
             operations=operations,
+            filters=self.filters,
         )
 
     def _filter_interesting_operations(self, filters: Filters | None) -> Operations:

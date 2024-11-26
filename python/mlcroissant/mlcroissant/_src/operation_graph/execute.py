@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import concurrent.futures
 import functools
+import json
 import sys
 import typing
 from typing import Any, Generator
@@ -127,7 +129,10 @@ def execute_operations_in_streaming(
 
 
 def execute_operations_in_beam(
-    pipeline: beam.Pipeline, record_set: str, operations: Operations
+    pipeline: beam.Pipeline,
+    record_set: str,
+    operations: Operations,
+    filters: Mapping[str, Any] | None,
 ):
     """See ReadFromCroissant docstring."""
     import apache_beam as beam
@@ -186,7 +191,12 @@ def execute_operations_in_beam(
     files = filter_files.output  # even for large datasets, this can be handled in RAM.
 
     # We first shard by file and assign a shard_index.
-    pipeline = pipeline | "Shard by files with index" >> beam.Create(enumerate(files))
+    filters = json.dumps(filters) if filters else "no filter"
+    pipeline = (
+        pipeline
+        | f"Shard by files for {record_set} with {filters}"
+        >> beam.Create(enumerate(files))
+    )
     num_shards = len(files)
 
     # We don't know in advance the number of records per shards. So we just allocate the
