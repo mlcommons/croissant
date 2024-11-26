@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import concurrent.futures
 import functools
+import json
 import sys
 import typing
 from typing import Any, Generator
@@ -130,7 +132,7 @@ def execute_operations_in_beam(
     pipeline: beam.Pipeline,
     record_set: str,
     operations: Operations,
-    stage_prefix: str = "",
+    filters: Mapping[str, Any] | None = None,
 ):
     """See ReadFromCroissant docstring."""
     import apache_beam as beam
@@ -143,6 +145,7 @@ def execute_operations_in_beam(
     # We use the FilterFiles operation to parallelize operations. If there's no
     # FilterFile operation, we set it to `target`.
     filter_files = _find_filter_files(operations, target)
+    stage_prefix = f"{record_set} " + json.dumps(filters) if filters else "no filter"
 
     # In memory = all operations that are not between FilterFiles and the target.
     # In Beam = all operations that are between FilterFiles and the target.
@@ -187,7 +190,6 @@ def execute_operations_in_beam(
             operation(set_output_in_memory=True)
 
     files = filter_files.output  # even for large datasets, this can be handled in RAM.
-
     # We first shard by file and assign a shard_index.
     pipeline = pipeline | f"{stage_prefix} Shard by files with index" >> beam.Create(
         enumerate(files)

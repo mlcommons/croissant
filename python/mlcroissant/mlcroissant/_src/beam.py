@@ -41,7 +41,6 @@ def ReadFromCroissant(
     record_set: str,
     mapping: Mapping[str, epath.PathLike] | None = None,
     filters: Filters | None = None,
-    stage_prefix: str = "",
 ):
     """Returns an Apache Beam reader to generate the dataset using e.g. Spark.
 
@@ -76,8 +75,6 @@ def ReadFromCroissant(
         filters: A dictionary mapping a field ID to the value we want to filter in. For
             example, when writing {'data/split': 'train'}, we want to keep all records
             whose field `data/split` takes the value `train`.
-        stage_prefix: Optional string which will be prepended to stage names in the beam
-            pipeline for better readibility.
 
     Returns:
         A Beam PCollection with all the records where each element contains a tuple with
@@ -89,5 +86,6 @@ def ReadFromCroissant(
     """
     dataset = Dataset(jsonld=jsonld, mapping=mapping)
     return dataset.records(record_set, filters=filters).beam_reader(
-        pipeline, stage_prefix=stage_prefix
+        pipeline,
+        filters=filters,
     )

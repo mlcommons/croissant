@@ -176,7 +176,7 @@ class Records:
                 record_set=self.record_set, operations=operations
             )
 
-    def beam_reader(self, pipeline: beam.Pipeline, stage_prefix: str = ""):
+    def beam_reader(self, pipeline: beam.Pipeline, filters: Mapping[str, Any]):
         """See ReadFromCroissant docstring."""
         operations = self._filter_interesting_operations(self.filters)
         execute_downloads(operations)
@@ -184,7 +184,7 @@ class Records:
             pipeline=pipeline,
             record_set=self.record_set,
             operations=operations,
-            stage_prefix=stage_prefix,
+            filters=self.filters,
         )
 
     def _filter_interesting_operations(self, filters: Filters | None) -> Operations:
