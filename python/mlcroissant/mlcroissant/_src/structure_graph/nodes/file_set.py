@@ -41,10 +41,14 @@ class FileSet(Node):
         input_types=[SDO.Text],
         url=SDO.encodingFormat,
     )
+    # TODO(https://github.com/mlcommons/croissant/issues/772): Support in mlcroissant.
     excludes: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
-        description="A glob pattern that specifies the files to exclude.",
+        description=(
+            "A glob pattern that specifies the files to exclude. Warning: This feature"
+            " is not implemented yet in mlcroissant, so this is a no-op."
+        ),
         input_types=[SDO.Text],
         url=lambda ctx: constants.ML_COMMONS_EXCLUDES(ctx),
     )
