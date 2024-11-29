@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 
-def regex_to_glob(regex: str | list[str]) -> list[str]:
+def regex_to_glob(regexes: str | list[str]) -> list[str]:
     """Converts a regular expression to several glob patterns.
 
     The function applies several transformations to achieve this:
@@ -16,11 +16,11 @@ def regex_to_glob(regex: str | list[str]) -> list[str]:
 
     - Convert to a glob pattern using some heuristics.
     """
-    if isinstance(regex, str):
-        results = [regex]
+    if isinstance(regexes, str):
+        regexes = [regexes]
     for fn in [_expand_non_capturing_groups, _regex_to_glob_for_str]:
-        results = list(itertools.chain.from_iterable(fn(result) for result in results))
-    return results
+        regexes = list(itertools.chain.from_iterable(fn(regex) for regex in regexes))
+    return regexes
 
 
 def _expand_non_capturing_groups(regex: str) -> Iterable[str]:
