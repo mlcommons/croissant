@@ -218,7 +218,27 @@ class Records:
         field, value = _find_data_field_to_filter(filters, interesting_operations)
         new_regex = _regex_from_value(field, value)
         _propagate_includes(field, interesting_operations, new_regex)
-        return interesting_operations  # pytype: disable=bad-return-type
+        # The value of `field` is now entirely known so we can remove any operation
+        # needed to compute it, i.e. all operations involved in a potential join:
+        join_uuid = field.references.uuid
+        graph = field.ctx.graph
+        if join_uuid:
+            join_node = next(
+                node
+                for node in graph
+                if isinstance(node, Field) and node.uuid == join_uuid
+            )
+            unneeded_nodes = [
+                node
+                for node in graph
+                if graph.has_edge(node, join_node) or node == join_node
+            ]
+            interesting_operations = [
+                o for o in interesting_operations if o.node not in unneeded_nodes
+            ]
+        return operations.subgraph(
+            interesting_operations
+        )  # pytype: disable=bad-return-type
 
 
 def _find_data_field_to_filter(

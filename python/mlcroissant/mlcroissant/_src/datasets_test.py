@@ -102,22 +102,27 @@ def load_records_and_test_equality(
         f" {record_set_name} --num_records {num_records} --debug --update_output"
         f" {filters_command}`"
     )
-    config = _REPOSITORY_FOLDER / "datasets" / version / dataset_name
-    output_file = config.parent / "output" / f"{record_set_name}.jsonl"
-    with output_file.open("rb") as f:
-        lines = f.readlines()
-        expected_records = [json.loads(line) for line in lines]
+    if dataset_name.startswith("https://"):
+        config = dataset_name
+        expected_records = None
+    else:
+        config = _REPOSITORY_FOLDER / "datasets" / version / dataset_name
+        output_file = config.parent / "output" / f"{record_set_name}.jsonl"
+        with output_file.open("rb") as f:
+            lines = f.readlines()
+            expected_records = [json.loads(line) for line in lines]
+            if num_records > 0:
+                assert len(expected_records) == num_records
     dataset = datasets.Dataset(config, mapping=mapping)
     records = dataset.records(record_set_name, filters=filters)
     records = iter(records)
-    length = 0
-    for i, record in enumerate(records):
+    for i in range(num_records):
+        record = next(records)
         if num_records > 0 and i >= num_records:
             break
         record = record_to_python(record)
-        assert record == expected_records[i]
-        length += 1
-    assert len(expected_records) == length
+        if expected_records:
+            assert record == expected_records[i]
 
 
 def _equal_to_set(expected):
@@ -248,6 +253,15 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
         ["huggingface-c4/metadata.json", "data", 1, {"data/variant": "en"}],
         ["huggingface-levanti/metadata.json", "levanti_train", 10, None],
         ["huggingface-open-hermes/metadata.json", "default", 3, None],
+        # This dataset will timeout if the following feature is broken: mlcroissant
+        # yields examples by downloading parquet files one by one. mlcroissant should
+        # not download all parquet files upfront.
+        [
+            "https://huggingface.co/api/datasets/bigcode/the-stack-metadata/croissant",
+            "default",
+            1,
+            {"default/split": "train"},
+        ],
     ],
 )
 def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
