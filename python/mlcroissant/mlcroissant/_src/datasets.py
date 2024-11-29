@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import dataclasses
-import re
 import typing
 from typing import Any
 
@@ -12,6 +11,7 @@ from absl import logging
 from etils import epath
 import networkx as nx
 
+from mlcroissant._src.core import regex as regex_lib
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
 from mlcroissant._src.core.issues import ValidationError
@@ -236,25 +236,6 @@ def _find_data_field_to_filter(
     )
 
 
-def _regex_to_glob(regex: str) -> str:
-    """Converts a regular expression to a blob pattern by unescaping regex syntax.
-
-    Warning: this is based on manual heuristics to convert a regular expression to a
-    glob expression.
-    """
-    # Remove starting ^
-    regex = re.sub(r"^\^", "", regex)
-    # Remove trailing $
-    regex = re.sub(r"\$$", "", regex)
-    # Interpret \. as .
-    regex = re.sub(r"\\\.", ".", regex)
-    # Interpret .* as *
-    regex = re.sub(r"\.\*", "*", regex)
-    # Interpret .+ as *
-    regex = re.sub(r"\.\+", "*", regex)
-    return regex
-
-
 def _regex_from_value(field: Field, value: Any):
     """Creates a regular expression by injecting the value in the transformation."""
     transforms = field.source.transforms
@@ -266,17 +247,7 @@ def _regex_from_value(field: Field, value: Any):
         raise NotImplementedError(error)
     transform = transforms[0]
     if str_regex := transform.regex:
-        capturing_groups = re.compile(r"\(.*\)")
-        groups = capturing_groups.findall(str_regex)
-        if len(groups) == 1:
-            # Check that the value respects the expected capturing group:
-            re.match(groups[0], value)
-        else:
-            raise ValueError(
-                "A transform regex should have exactly 1 capturing group in"
-                f" the transform regex. Got: '{str_regex}'"
-            )
-        return capturing_groups.sub(re.escape(value), str_regex)
+        return regex_lib.capture_one_capturing_group(str_regex, value)
     raise NotImplementedError(error)
 
 
@@ -313,12 +284,13 @@ def _propagate_includes(field: Field, operations: nx.Graph[Operation], new_regex
                         filename_pattern = pattern.split("/")
                         if len(filename_pattern) <= 1:
                             raise NotImplementedError()
-                        filename = _regex_to_glob(new_regex)
-                        new_pattern = filename_pattern[:-1] + [filename]
-                        new_includes.append("/".join(new_pattern))
+                        filenames = regex_lib.regex_to_glob(new_regex)
+                        for filename in filenames:
+                            new_pattern = filename_pattern[:-1] + [filename]
+                            new_includes.append("/".join(new_pattern))
                     node.includes = new_includes
                 elif source_type == FileProperty.fullpath:
-                    node.includes = [_regex_to_glob(new_regex) for _ in includes]
+                    node.includes = regex_lib.regex_to_glob(new_regex)
                 else:
                     raise NotImplementedError(error)
 
