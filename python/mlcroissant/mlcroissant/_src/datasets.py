@@ -223,7 +223,11 @@ class Records:
         join_uuid = field.references.uuid
         graph = field.ctx.graph
         if join_uuid:
-            join_node = next(node for node in graph if node.uuid == join_uuid)
+            join_node = next(
+                node
+                for node in graph
+                if isinstance(node, Field) and node.uuid == join_uuid
+            )
             unneeded_nodes = [
                 node
                 for node in graph
