@@ -53,7 +53,9 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
                 return group
     elif transform.json_path is not None:
         jsonpath_expression = _parse_jsonpath(transform.json_path)
-        return next(match.value for match in jsonpath_expression.find(value))
+        if matches := jsonpath_expression.find(value):
+            return next(match.value for match in matches)
+        return None
     elif transform.format is not None:
         if field.data_type is pd.Timestamp:
             return pd.Timestamp(value).strftime(transform.format)
@@ -104,7 +106,6 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         return _to_bytes(value)
     else:
         return data_type(value)
-
 
 def _to_bytes(value: Any) -> bytes:
     """Casts the value `value` to bytes."""
@@ -185,16 +186,15 @@ class ReadFields(Operation):
 
     node: RecordSet
 
-    def _fields(self) -> list[Field]:
-        """Extracts all fields (i.e., direct fields without subFields and subFields)."""
-        fields: list[Field] = []
-        for field in self.node.fields:
+    def _get_fields(self, fields: list[Field]):
+        """Extracts all leaves fields (i.e., including subFields)."""
+        all_fields: list[Field] = []
+        for field in fields:
             if field.sub_fields:
-                for sub_field in field.sub_fields:
-                    fields.append(sub_field)
+                all_fields.extend(self._get_fields(field.sub_fields))
             else:
-                fields.append(field)
-        return fields
+                all_fields.append(field)
+        return all_fields
 
     def call(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
@@ -203,7 +203,9 @@ class ReadFields(Operation):
             for _, row in df.iterrows():
                 yield dict(row)
             return
-        fields = self._fields()
+        fields = self._get_fields(self.node.fields)
+        if not fields:
+            raise ValueError(f"RecordSet {self.node.uuid} has no fields!")
         for field in fields:
             df = _extract_value(df, field)
 
@@ -226,9 +228,12 @@ class ReadFields(Operation):
                 if _is_na(value):
                     value = None
                 elif is_repeated:
-                    value = [
-                        _cast_value(self.node.ctx, v, field.data_type) for v in value
-                    ]
+                    try:
+                        value = [
+                            _cast_value(self.node.ctx, v, field.data_type) for v in value
+                        ]
+                    except TypeError:
+                        value = value
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
 
