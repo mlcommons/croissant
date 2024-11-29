@@ -49,8 +49,7 @@ class FilterFiles(Operation):
                     filepath = epath.Path(basepath) / file
                     fullpath = get_fullpath(filepath, path.filepath)
                     match_includes = match_path(self.node.includes, fullpath)
-                    match_excludes = match_path(self.node.excludes, fullpath)
-                    if match_includes and match_excludes:
+                    if match_includes:
                         included_files.append(
                             Path(
                                 filepath=filepath,
