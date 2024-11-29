@@ -1,11 +1,11 @@
 """Metadata module."""
 
 import datetime
+from typing import Any
 
 from etils import epath
 from rdflib.namespace import SDO
 import requests
-from typing import Any
 from typing_extensions import Self
 
 from mlcroissant._src.core import constants
@@ -306,8 +306,9 @@ class Metadata(Node):
             field.parents = [self] + parents
             if field.sub_fields:
                 field_parents = parents + [field]
-                self._define_field_parents(fields = field.sub_fields, parents=field_parents)
-
+                self._define_field_parents(
+                    fields=field.sub_fields, parents=field_parents
+                )
 
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""

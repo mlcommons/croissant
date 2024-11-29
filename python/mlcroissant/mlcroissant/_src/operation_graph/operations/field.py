@@ -107,6 +107,7 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     else:
         return data_type(value)
 
+
 def _to_bytes(value: Any) -> bytes:
     """Casts the value `value` to bytes."""
     if isinstance(value, bytes):
@@ -230,7 +231,8 @@ class ReadFields(Operation):
                 elif is_repeated:
                     try:
                         value = [
-                            _cast_value(self.node.ctx, v, field.data_type) for v in value
+                            _cast_value(self.node.ctx, v, field.data_type)
+                            for v in value
                         ]
                     except TypeError:
                         value = value
