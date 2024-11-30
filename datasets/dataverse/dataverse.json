@@ -1,0 +1,180 @@
+{
+  "dcterms:modified": "2023-09-27",
+  "dcterms:creator": "DataverseNL",
+  "@type": "ore:ResourceMap",
+  "@id": "https://dataverse.nl/api/datasets/export?exporter=OAI_ORE&persistentId=doi:10.34894/VFS3VQ",
+  "ore:describes": {
+    "Subject": "Medicine, Health and Life Sciences",
+    "Title": "Safety and pharmacodynamic efficacy of eculizumab in aneurysmal subarachnoid hemorrhage (CLASH): a phase 2a randomized clinical trial.",
+    "citation:Depositor": "Vergouwen, Mervyn",
+    "Deposit Date": "2023-09-21",
+    "citation:Contact": [
+      {
+        "datasetContact:Name": "data management",
+        "datasetContact:Affiliation": "UMC Utrecht"
+      },
+      {
+        "datasetContact:Name": "Broeders, Willem",
+        "datasetContact:Affiliation": "UMC Utrecht"
+      }
+    ],
+    "citation:Keyword": {
+      "keyword:Term": "subarachnoid hemorrhage"
+    },
+    "Author": {
+      "author:Name": "Vergouwen, Mervyn",
+      "author:Affiliation": "UMC Utrecht"
+    },
+    "citation:Description": {
+      "dsDescription:Text": "The dataset includes the raw data collected for the CLASH-trial."
+    },
+    "Related Publication": {
+      "Citation": "Koopman I, Tack RW, Wunderink HF, Bruns AH, van der Schaaf IC, Cianci D, Gelderman KA, van de Ridder IM, Hol EM, Rinkel GJ, Vergouwen MD. Safety and pharmacodynamic efficacy of eculizumab in aneurysmal subarachnoid hemorrhage (CLASH): A phase 2a randomized clinical trial. Eur Stroke J. 2023 Aug 22:23969873231194123. doi: 10.1177/23969873231194123. Online ahead of print.",
+      "ID Type": "pmid",
+      "ID Number": "37606053",
+      "URL": "https://journals.sagepub.com/doi/full/10.1177/23969873231194123?rfr_dat=cr_pub++0pubmed&url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org"
+    },
+    "@id": "doi:10.34894/VFS3VQ",
+    "@type": [
+      "ore:Aggregation",
+      "schema:Dataset"
+    ],
+    "schema:version": "1.0",
+    "schema:name": "Safety and pharmacodynamic efficacy of eculizumab in aneurysmal subarachnoid hemorrhage (CLASH): a phase 2a randomized clinical trial.",
+    "schema:dateModified": "2023-09-27 15:15:06.674",
+    "schema:datePublished": "2023-09-27",
+    "dvcore:termsOfUse": "The standard Data Sharing Agreement (DSA) of the UMC Utrecht must be signed without adjustments. This DSA is in compliance with Dutch law. No costs are involved.",
+    "dvcore:confidentialityDeclaration": "no",
+    "dvcore:specialPermissions": "To obtain access to the data, a <a href=\"https://www.umcutrecht.nl/en/data-request-form-umc-utrecht\">request form</a> has to be completed. In addition to a completed request form, a  Data Sharing Agreement (DSA) in line with GDPR regulations and/or a Research Collaboration Agreement (RCA) should be signed before data is shared. Only data requests in line with the Terms of Use will be taken into consideration. ",
+    "dvcore:restrictions": "See Data Sharing Agreement.",
+    "dvcore:citationRequirements": "See Data Sharing Agreement.",
+    "dvcore:conditions": "To access and use the dataset please read the Terms of Use and the Terms of Access.",
+    "dvcore:disclaimer": "See Data Sharing Agreement.",
+    "dvcore:fileTermsOfAccess": {
+      "dvcore:termsOfAccess": "The data is not available for download directly via DataverseNL. Data is available on request by completing the <a href=\"https://www.umcutrecht.nl/en/data-request-form-umc-utrecht\">request form</a>. Only data requests in line with the Terms of Use will be taken into consideration. In addition to a completed request form, the Data Sharing Agreement (DSA) in line with GDPR regulations and/or the Research Collaboration Agreement (RCA) should be signed before data is shared. If a data request is approved, the data will be delivered in a safe and secure manner. By signing the DSA and/or RCA and accessing the Materials, the recipient represents his/her acceptance of the Terms of Use.  ",
+      "dvcore:fileRequestAccess": true,
+      "dvcore:availabilityStatus": "The data is not available for download directly via DataverseNL but is available on request if the request is compliant with the Terms of Access. ",
+      "dvcore:contactForAccess": "Please fill out the <a href=\"https://www.umcutrecht.nl/en/data-request-form-umc-utrecht\">request form</a>."
+    },
+    "schema:includedInDataCatalog": "DataverseNL",
+    "ore:aggregates": [
+      {
+        "schema:description": "Blood parameters",
+        "schema:name": "CLASH_bloedafname_longformat_LOD30112021.sav",
+        "dvcore:restricted": true,
+        "schema:version": 3,
+        "dvcore:datasetVersionId": 25355,
+        "@id": "https://dataverse.nl/file.xhtml?fileId=382085",
+        "schema:sameAs": "https://dataverse.nl/api/access/datafile/382085",
+        "@type": "ore:AggregatedResource",
+        "schema:fileFormat": "application/x-spss-sav",
+        "dvcore:filesize": 30134,
+        "dvcore:storageIdentifier": "file://18ad6ac957a-2d81a9fa399f",
+        "dvcore:rootDataFileId": -1,
+        "dvcore:checksum": {
+          "@type": "MD5",
+          "@value": "a53741b30daa1bc08494b26d39041c62"
+        }
+      },
+      {
+        "schema:description": "main file",
+        "schema:name": "CLASH_database_uitgebreid_LOD_03032022.sav",
+        "dvcore:restricted": true,
+        "schema:version": 3,
+        "dvcore:datasetVersionId": 25355,
+        "@id": "https://dataverse.nl/file.xhtml?fileId=382084",
+        "schema:sameAs": "https://dataverse.nl/api/access/datafile/382084",
+        "@type": "ore:AggregatedResource",
+        "schema:fileFormat": "application/x-spss-sav",
+        "dvcore:filesize": 156995,
+        "dvcore:storageIdentifier": "file://18ad6ab85d9-ca8aea1a511c",
+        "dvcore:rootDataFileId": -1,
+        "dvcore:checksum": {
+          "@type": "MD5",
+          "@value": "1e4c8267c2dd8c3ecf4bc6b2404c614b"
+        }
+      },
+      {
+        "schema:description": "GCS scores",
+        "schema:name": "CLASH_GCS_longformat.sav",
+        "dvcore:restricted": true,
+        "schema:version": 3,
+        "dvcore:datasetVersionId": 25355,
+        "@id": "https://dataverse.nl/file.xhtml?fileId=382086",
+        "schema:sameAs": "https://dataverse.nl/api/access/datafile/382086",
+        "@type": "ore:AggregatedResource",
+        "schema:fileFormat": "application/x-spss-sav",
+        "dvcore:filesize": 32310,
+        "dvcore:storageIdentifier": "file://18ad6ad1705-775fab552427",
+        "dvcore:rootDataFileId": -1,
+        "dvcore:checksum": {
+          "@type": "MD5",
+          "@value": "9664180463d345816ecb9fcb6d9a3568"
+        }
+      },
+      {
+        "schema:description": "SAE reporting",
+        "schema:name": "CLASH_SAE_longformat_12012022.sav",
+        "dvcore:restricted": true,
+        "schema:version": 3,
+        "dvcore:datasetVersionId": 25355,
+        "@id": "https://dataverse.nl/file.xhtml?fileId=382087",
+        "schema:sameAs": "https://dataverse.nl/api/access/datafile/382087",
+        "@type": "ore:AggregatedResource",
+        "schema:fileFormat": "application/x-spss-sav",
+        "dvcore:filesize": 104711,
+        "dvcore:storageIdentifier": "file://18ad6ad1746-18c2569f17eb",
+        "dvcore:rootDataFileId": -1,
+        "dvcore:checksum": {
+          "@type": "MD5",
+          "@value": "5b5c0b1384437fe31cccc1b542aac7b1"
+        }
+      },
+      {
+        "schema:description": "Publication of CLASH trial",
+        "schema:name": "Safety and pharmacodynamic efficacy of eculizumab in aneurysmal subarachnoid hemorrhage.pdf",
+        "dvcore:restricted": false,
+        "schema:version": 1,
+        "dvcore:datasetVersionId": 25355,
+        "@id": "https://dataverse.nl/file.xhtml?fileId=382088",
+        "schema:sameAs": "https://dataverse.nl/api/access/datafile/382088",
+        "@type": "ore:AggregatedResource",
+        "schema:fileFormat": "application/pdf",
+        "dvcore:filesize": 593876,
+        "dvcore:storageIdentifier": "file://18ad6b04df6-7a64f6b05506",
+        "dvcore:rootDataFileId": -1,
+        "dvcore:checksum": {
+          "@type": "MD5",
+          "@value": "96045317b449ec3020374a48c9f638d4"
+        }
+      }
+    ],
+    "schema:hasPart": [
+      "https://dataverse.nl/file.xhtml?fileId=382085",
+      "https://dataverse.nl/file.xhtml?fileId=382084",
+      "https://dataverse.nl/file.xhtml?fileId=382086",
+      "https://dataverse.nl/file.xhtml?fileId=382087",
+      "https://dataverse.nl/file.xhtml?fileId=382088"
+    ]
+  },
+  "@context": {
+    "Author": "http://purl.org/dc/terms/creator",
+    "Citation": "http://purl.org/dc/terms/bibliographicCitation",
+    "Deposit Date": "http://purl.org/dc/terms/dateSubmitted",
+    "ID Number": "http://purl.org/spar/datacite/ResourceIdentifier",
+    "ID Type": "http://purl.org/spar/datacite/ResourceIdentifierScheme",
+    "Related Publication": "http://purl.org/dc/terms/isReferencedBy",
+    "Subject": "http://purl.org/dc/terms/subject",
+    "Title": "http://purl.org/dc/terms/title",
+    "URL": "https://schema.org/distribution",
+    "author": "https://dataverse.org/schema/citation/author#",
+    "citation": "https://dataverse.org/schema/citation/",
+    "datasetContact": "https://dataverse.org/schema/citation/datasetContact#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "dsDescription": "https://dataverse.org/schema/citation/dsDescription#",
+    "dvcore": "https://dataverse.org/schema/core#",
+    "keyword": "https://dataverse.org/schema/citation/keyword#",
+    "ore": "http://www.openarchives.org/ore/terms/",
+    "schema": "http://schema.org/"
+  }
+}
