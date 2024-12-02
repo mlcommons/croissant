@@ -252,8 +252,8 @@ class ReadFields(Operation):
                             # Non-repeated subfields render as a single dictionary.
                             else:
                                 parent_id = (
-                                    field.parent.id
-                                )  # pytype: disable=attribute-error
+                                    field.parent.id  # pytype: disable=attribute-error
+                                )
                                 if parent_id not in result:
                                     result[parent_id] = {}
                                 result[parent_id][field.id] = value
