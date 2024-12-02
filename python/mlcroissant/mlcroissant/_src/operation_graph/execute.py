@@ -195,6 +195,10 @@ def execute_operations_in_beam(
         enumerate(files)
     )
     num_shards = len(files)
+    if not num_shards:
+        raise ValueError(
+            f"Empty {record_set=}. No file found for filters={json.dumps(filters)}"
+        )
 
     # We don't know in advance the number of records per shards. So we just allocate the
     # maximum number which is `sys.maxsize // num_shards`. Taking the practical case of
