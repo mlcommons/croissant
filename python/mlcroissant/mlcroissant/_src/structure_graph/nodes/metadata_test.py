@@ -191,3 +191,26 @@ def test_predecessors_are_propagated():
     )
     Metadata(name="dummy", record_sets=[record_set])
     assert field.predecessors == {record_set}
+
+
+def test_parents_are_defined():
+    subfield = Field(
+        id="records/name/subfield",
+        name="records/name/subfield",
+        data_types=constants.DataType.TEXT,
+    )
+    field = Field(
+        id="records/name",
+        name="records/name",
+        sub_fields=[subfield],
+    )
+    record_set = RecordSet(
+        id="records",
+        fields=[field],
+        data=[{"records/name": "train"}, {"records/name": "test"}],
+    )
+    Metadata(name="dummy", record_sets=[record_set])
+    assert {record_set.uuid, field.uuid}.issubset(
+        set([p.uuid for p in subfield.parents])
+    )
+    assert {record_set.uuid}.issubset(set([p.uuid for p in field.parents]))
