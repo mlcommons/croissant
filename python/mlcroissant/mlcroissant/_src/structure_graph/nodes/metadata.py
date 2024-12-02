@@ -1,6 +1,7 @@
 """Metadata module."""
 
 import datetime
+from typing import Any
 
 from etils import epath
 from rdflib.namespace import SDO
@@ -299,6 +300,16 @@ class Metadata(Node):
         url=constants.ML_COMMONS_RAI_DATA_RELEASE_MAINTENANCE_PLAN,
     )
 
+    def _define_field_parents(self, fields: list[Field], parents: list[Any]):
+        """Recursively populate the field's and subfield's parents."""
+        for field in fields:
+            field.parents = [self] + parents
+            if field.sub_fields:
+                field_parents = parents + [field]
+                self._define_field_parents(
+                    fields=field.sub_fields, parents=field_parents
+                )
+
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""
         Node.__post_init__(self)
@@ -307,10 +318,7 @@ class Metadata(Node):
             node.parents = [self]
         for record_set in self.record_sets:
             record_set.parents = [self]
-            for field in record_set.fields:
-                field.parents = [self, record_set]
-                for sub_field in field.sub_fields:
-                    sub_field.parents = [self, record_set, field]
+            self._define_field_parents(record_set.fields, parents=[record_set])
 
         # Back-fill the graph in every node.
         self.ctx.graph = from_nodes_to_graph(self)

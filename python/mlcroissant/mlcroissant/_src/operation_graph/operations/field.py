@@ -53,7 +53,9 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
                 return group
     elif transform.json_path is not None:
         jsonpath_expression = _parse_jsonpath(transform.json_path)
-        return next(match.value for match in jsonpath_expression.find(value))
+        if matches := jsonpath_expression.find(value):
+            return next(match.value for match in matches)
+        return None
     elif transform.format is not None:
         if field.data_type is pd.Timestamp:
             return pd.Timestamp(value).strftime(transform.format)
@@ -100,6 +102,8 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
+    elif isinstance(value, list) or isinstance(value, np.ndarray):
+        return [_cast_value(ctx=ctx, value=v, data_type=data_type) for v in value]
     elif data_type == bytes and not isinstance(value, bytes):
         return _to_bytes(value)
     else:
@@ -185,16 +189,15 @@ class ReadFields(Operation):
 
     node: RecordSet
 
-    def _fields(self) -> list[Field]:
-        """Extracts all fields (i.e., direct fields without subFields and subFields)."""
-        fields: list[Field] = []
-        for field in self.node.fields:
+    def _get_fields(self, fields: list[Field]):
+        """Extracts all leaves fields (i.e., including subFields)."""
+        all_fields: list[Field] = []
+        for field in fields:
             if field.sub_fields:
-                for sub_field in field.sub_fields:
-                    fields.append(sub_field)
+                all_fields.extend(self._get_fields(field.sub_fields))
             else:
-                fields.append(field)
-        return fields
+                all_fields.append(field)
+        return all_fields
 
     def call(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
@@ -203,7 +206,7 @@ class ReadFields(Operation):
             for _, row in df.iterrows():
                 yield dict(row)
             return
-        fields = self._fields()
+        fields = self._get_fields(self.node.fields)
         for field in fields:
             df = _extract_value(df, field)
 
@@ -246,9 +249,12 @@ class ReadFields(Operation):
                                 )
                             # Non-repeated subfields render as a single dictionary.
                             else:
-                                if field.parent.id not in result:
-                                    result[field.parent.id] = {}
-                                result[field.parent.id][field.id] = value
+                                parent_id = (
+                                    field.parent.id  # pytype: disable=attribute-error
+                                )
+                                if parent_id not in result:
+                                    result[parent_id] = {}
+                                result[parent_id][field.id] = value
                         else:
                             raise ValueError(
                                 f"The field {field.id} is a SubField but has no parent."
