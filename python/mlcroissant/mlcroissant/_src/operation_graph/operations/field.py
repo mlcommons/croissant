@@ -205,8 +205,6 @@ class ReadFields(Operation):
                 yield dict(row)
             return
         fields = self._get_fields(self.node.fields)
-        if not fields:
-            raise ValueError(f"RecordSet {self.node.uuid} has no fields!")
         for field in fields:
             df = _extract_value(df, field)
 
@@ -253,9 +251,10 @@ class ReadFields(Operation):
                                 )
                             # Non-repeated subfields render as a single dictionary.
                             else:
-                                if field.parent.id not in result:
-                                    result[field.parent.id] = {}
-                                result[field.parent.id][field.id] = value
+                                parent_id = field.parent.id  # pytype: disable=attribute-error
+                                if parent_id not in result:
+                                    result[parent_id] = {}
+                                result[parent_id][field.id] = value
                         else:
                             raise ValueError(
                                 f"The field {field.id} is a SubField but has no parent."
