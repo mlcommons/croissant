@@ -230,9 +230,8 @@ class ReadFields(Operation):
                     value = None
                 elif is_repeated:
                     value = [
-                            _cast_value(self.node.ctx, v, field.data_type)
-                            for v in value
-                        ]
+                        _cast_value(self.node.ctx, v, field.data_type) for v in value
+                    ]
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
 
