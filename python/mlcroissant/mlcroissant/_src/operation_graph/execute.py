@@ -197,7 +197,7 @@ def execute_operations_in_beam(
     num_shards = len(files)
     if not num_shards:
         raise ValueError(
-            f"Empty {record_set=}. No file found for filters={json.dumps(filters)}"
+            f"Empty {record_set=}. No files found for filters={json.dumps(filters)}"
         )
 
     # We don't know in advance the number of records per shards. So we just allocate the
