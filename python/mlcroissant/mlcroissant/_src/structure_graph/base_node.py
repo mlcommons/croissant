@@ -1,5 +1,7 @@
 """Base node module."""
 
+from __future__ import annotations
+
 import dataclasses
 import inspect
 import re
@@ -63,7 +65,7 @@ class Node:
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
     name: str | None = None
-    parents: list["Node"] = dataclasses.field(default_factory=list)
+    parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 
     def __post_init__(self):
@@ -205,14 +207,14 @@ class Node:
             return self.id
 
     @property
-    def parent(self) -> "Node | None":
+    def parent(self) -> Node | None:
         """Direct parent of the node or None if no parent."""
         if not self.parents:
             return None
         return self.parents[-1]
 
     @property
-    def predecessors(self) -> set["Node"]:
+    def predecessors(self) -> set[Node]:
         """Predecessors in the structure graph."""
         try:
             predecessors = self.ctx.graph.predecessors(self)
@@ -225,7 +227,7 @@ class Node:
             ) from e
 
     @property
-    def recursive_predecessors(self) -> set["Node"]:
+    def recursive_predecessors(self) -> set[Node]:
         """Predecessors and predecessors of predecessors in the structure graph."""
         predecessors = set()
         for predecessor in self.predecessors:
@@ -234,7 +236,7 @@ class Node:
         return predecessors
 
     @property
-    def predecessor(self) -> "Node | None":
+    def predecessor(self) -> Node | None:
         """First predecessor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
@@ -243,7 +245,7 @@ class Node:
         )  # pytype: disable=bad-return-type
 
     @property
-    def successors(self) -> tuple["Node", ...]:
+    def successors(self) -> tuple[Node, ...]:
         """Successors in the structure graph."""
         if self not in self.ctx.graph:
             return ()
@@ -252,7 +254,7 @@ class Node:
         return tuple(self.ctx.graph.successors(self))  # pytype: disable=bad-return-type
 
     @property
-    def recursive_successors(self) -> set["Node"]:
+    def recursive_successors(self) -> set[Node]:
         """Successors and successors of successors in the structure graph."""
         successors = set()
         for successor in self.successors:
@@ -261,7 +263,7 @@ class Node:
         return successors
 
     @property
-    def successor(self) -> "Node | None":
+    def successor(self) -> Node | None:
         """Direct successor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None

@@ -186,6 +186,5 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str | None:
         )
         return None
     if isinstance(node, Field):
-        if node.parent:
-            return node.parent.uuid
+        return node.parent.uuid
     return node.uuid

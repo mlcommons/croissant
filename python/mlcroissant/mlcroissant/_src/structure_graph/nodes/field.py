@@ -182,3 +182,11 @@ class Field(Node):
         if hasattr(self.parent, "data"):
             return getattr(self.parent, "data")
         return None
+
+    @property
+    def parent(self) -> Node:
+        """Direct parent of the field."""
+        parent = super().parent
+        if parent:
+            return parent
+        raise ValueError(f"field={self} does not have any parent.")

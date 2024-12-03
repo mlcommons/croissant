@@ -220,9 +220,7 @@ class ReadFields(Operation):
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
-                is_repeated = field.repeated or (
-                    field.parent and _is_repeated_field(field.parent)
-                )
+                is_repeated = field.repeated or _is_repeated_field(field.parent)
                 value = apply_transforms_fn(
                     row[column], field=field, repeated=is_repeated
                 )
@@ -242,23 +240,16 @@ class ReadFields(Operation):
                         result[field.id] = value
                     else:
                         # Repeated nested sub-fields render as a list of dictionaries.
-                        if field.parent:
-                            if _is_repeated_field(field.parent):
-                                result = _populate_repeated_nested_subfield(
-                                    value=value, field=field, result=result
-                                )
-                            # Non-repeated subfields render as a single dictionary.
-                            else:
-                                parent_id = (
-                                    field.parent.id  # pytype: disable=attribute-error
-                                )
-                                if parent_id not in result:
-                                    result[parent_id] = {}
-                                result[parent_id][field.id] = value
-                        else:
-                            raise ValueError(
-                                f"The field {field.id} is a SubField but has no parent."
+                        if _is_repeated_field(field.parent):
+                            result = _populate_repeated_nested_subfield(
+                                value=value, field=field, result=result
                             )
+                        # Non-repeated subfields render as a single dictionary.
+                        else:
+                            parent_id = field.parent.id
+                            if parent_id not in result:
+                                result[parent_id] = {}
+                            result[parent_id][field.id] = value
             return result
 
         chunk_size = 100
