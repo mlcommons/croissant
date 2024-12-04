@@ -7,7 +7,6 @@ import concurrent.futures
 import functools
 import json
 import sys
-import typing
 from typing import Any, Generator
 
 from absl import logging
@@ -20,9 +19,6 @@ from mlcroissant._src.operation_graph.operations import FilterFiles
 from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.operation_graph.operations.download import Download
 from mlcroissant._src.operation_graph.operations.read import Read
-
-if typing.TYPE_CHECKING:
-    import apache_beam as beam
 
 ElementWithIndex = tuple[int, Any]
 
@@ -129,7 +125,6 @@ def execute_operations_in_streaming(
 
 
 def execute_operations_in_beam(
-    pipeline: beam.Pipeline,
     record_set: str,
     operations: Operations,
     filters: Mapping[str, Any] | None = None,
@@ -181,19 +176,15 @@ def execute_operations_in_beam(
     for operation in operations_in_memory:
         # If there is no FilterFiles, we return the PCollection without parallelization.
         if operation == target:
-            return (
-                pipeline
-                | beam.Create([(0, *operation.inputs)])
-                | _beam_operation_with_index(operation, sys.maxsize, stage_prefix)
+            return beam.Create([(0, *operation.inputs)]) | _beam_operation_with_index(
+                operation, sys.maxsize, stage_prefix
             )
         else:
             operation(set_output_in_memory=True)
 
     files = filter_files.output  # even for large datasets, this can be handled in RAM.
     # We first shard by file and assign a shard_index.
-    pipeline = pipeline | f"{stage_prefix} Shard by files with index" >> beam.Create(
-        enumerate(files)
-    )
+    pipeline = beam.Create(enumerate(files))
     num_shards = len(files)
     if not num_shards:
         raise ValueError(

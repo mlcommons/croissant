@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import dataclasses
-import typing
 from typing import Any
 
 from absl import logging
@@ -28,9 +27,6 @@ from mlcroissant._src.operation_graph.operations import ReadFields
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
-
-if typing.TYPE_CHECKING:
-    import apache_beam as beam
 
 Filters = Mapping[str, Any]
 
@@ -176,17 +172,14 @@ class Records:
                 record_set=self.record_set, operations=operations
             )
 
-    def beam_reader(
-        self, pipeline: beam.Pipeline, filters: Mapping[str, Any] | None = None
-    ):
+    def beam_reader(self):
         """See ReadFromCroissant docstring."""
         operations = self._filter_interesting_operations(self.filters)
         execute_downloads(operations)
         return execute_operations_in_beam(
-            pipeline=pipeline,
             record_set=self.record_set,
             operations=operations,
-            filters=filters or self.filters,
+            filters=self.filters,
         )
 
     def _filter_interesting_operations(self, filters: Filters | None) -> Operations:
