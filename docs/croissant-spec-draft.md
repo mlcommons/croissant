@@ -1,10 +1,13 @@
-# Croissant Format Specification
+# Croissant Format Specification (draft)
 
-Version 1.0
+Version 1.1 (draft)
 
-Published: 2024/03/01
+**This is a draft of the Croissant 1.1 specification. This document is a work in progress.
+ For the latest official specification, please see the [Croissant 1.0 specification](https://http://mlcommons.org/croissant/1.0).**
 
-<http://mlcommons.org/croissant/1.0>
+<!-- Published:  -->
+
+<http://mlcommons.org/croissant/1.1>
 
 Authors:
 
