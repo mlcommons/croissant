@@ -212,8 +212,8 @@
           "@type": "cr:Field",
           "@id": "images/image_id",
           "name": "images/image_id",
-          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
-          "dataType": "sc:Text",
+          "description": "The surrogate key ID of the image, used to reference this image from other recordsets.",
+          "dataType": "sc:Integer",
           "source": {
             "fileSet": {
               "@id": "image-files"
