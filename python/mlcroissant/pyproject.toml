@@ -15,7 +15,7 @@ authors = [
   { name = "Pierre Ruyssen" },
   { name = "Prabhant Singh" },
 ]
-
+requires-python = ">= 3.10"
 # pip dependencies of the project
 # Installed locally with `pip install -e .`
 dependencies = [
