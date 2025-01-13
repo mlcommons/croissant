@@ -1,0 +1,108 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "enum_example",
+  "description": "This is a fairly minimal example, showing a way to describe enumerations.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "isLiveDataset": true,
+  "url": "https://example.com/datasets/enum/about",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "enum_directions.csv",
+      "name": "enum_directions.csv",
+      "contentUrl": "data/enum_directions.csv",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "direction_enum",
+      "name": "direction_enum",
+      "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
+      "key": {
+        "@id": "key"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "direction_enum/key",
+          "name": "direction_enum/key",
+          "description": "0, 1, 2 or 3",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "enum_directions.csv"
+            },
+            "extract": {
+              "column": "key"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "direction_enum/label",
+          "name": "direction_enum/label",
+          "description": "North, East, South or West",
+          "dataType": [
+            "sc:Text",
+            "sc:name"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "enum_directions.csv"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

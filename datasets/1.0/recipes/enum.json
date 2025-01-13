@@ -16,6 +16,10 @@
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -42,14 +46,14 @@
   },
   "@type": "sc:Dataset",
   "name": "enum_example",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a fairly minimal example, showing a way to describe enumerations.",
-  "url": "https://example.com/datasets/enum/about",
-  "rai:dataCollection": "This is how data is collected",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "rai:dataBiases": [
     "Bias 1 in data",
     "Bias 2 in data"
   ],
+  "rai:dataCollection": "This is how data is collected",
+  "url": "https://example.com/datasets/enum/about",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -74,12 +78,14 @@
       "@id": "direction_enum",
       "name": "direction_enum",
       "description": "Maps compass direction keys (0, 1, 2, 3) to labeled values.",
-      "key": "key",
+      "key": {
+        "@id": "key"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "direction_enum/key",
-          "name": "key",
+          "name": "direction_enum/key",
           "description": "0, 1, 2 or 3",
           "dataType": "sc:Integer",
           "source": {
@@ -94,7 +100,7 @@
         {
           "@type": "cr:Field",
           "@id": "direction_enum/label",
-          "name": "label",
+          "name": "direction_enum/label",
           "description": "North, East, South or West",
           "dataType": [
             "sc:Text",
@@ -120,7 +126,7 @@
         {
           "@type": "cr:Field",
           "@id": "examples/name",
-          "name": "name",
+          "name": "examples/name",
           "description": "The first column contains the name of the object.",
           "dataType": "sc:Text",
           "references": {
@@ -135,7 +141,7 @@
         {
           "@type": "cr:Field",
           "@id": "examples/direction",
-          "name": "direction",
+          "name": "examples/direction",
           "description": "Direction of the object (0: North, 1: East, 2: South, 3: West)",
           "dataType": [
             "sc:Text",

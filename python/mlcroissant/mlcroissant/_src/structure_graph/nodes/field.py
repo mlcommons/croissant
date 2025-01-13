@@ -128,7 +128,6 @@ class Field(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
-        self.assert_has_optional_properties("description")
         self.source.check_source(self.add_error)
         self._standardize_data_types()
 
@@ -162,7 +161,7 @@ class Field(Node):
             elif data_type in [
                 DataType.IMAGE_OBJECT,
                 # For some reasons, pytype cannot infer `Any` on ctx:
-                DataType.BOUNDING_BOX(self.ctx),  # pytype: disable=wrong-arg-types
+                DataType.BOUNDING_BOX,  # pytype: disable=wrong-arg-types
                 DataType.AUDIO_OBJECT,
             ]:
                 return term.URIRef(data_type)
@@ -183,3 +182,11 @@ class Field(Node):
         if hasattr(self.parent, "data"):
             return getattr(self.parent, "data")
         return None
+
+    @property
+    def parent(self) -> Node:
+        """Direct parent of the field."""
+        parent = super().parent
+        if parent:
+            return parent
+        raise ValueError(f"field={self} does not have any parent.")

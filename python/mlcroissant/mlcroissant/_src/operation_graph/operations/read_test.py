@@ -1,6 +1,7 @@
 """read_test module."""
 
 import pathlib
+import pickle
 import tempfile
 from unittest import mock
 
@@ -51,7 +52,7 @@ def test_explicit_message_when_pyarrow_is_not_installed():
             with pytest.raises(
                 ImportError, match=".*pip install mlcroissant\\[parquet\\].*"
             ):
-                read([file])
+                read.call([file])
 
 
 def test_reading_method():
@@ -84,3 +85,14 @@ def test_reading_method():
     assert _reading_method(empty_file_object, (filename,)) == ReadingMethod.NONE
     with pytest.raises(ValueError):
         _reading_method(empty_file_object, (content_field, lines_field))
+
+
+def test_pickable():
+    operation = Read(
+        operations=operations(),
+        node=empty_file_object,
+        folder=epath.Path("/foo/bar"),
+        fields=(),
+    )
+    operation = pickle.loads(pickle.dumps(operation))
+    assert operation.folder == epath.Path("/foo/bar")

@@ -44,7 +44,7 @@
   "url": "https://www.openml.org/d/40945",
   "distribution": [
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "passengers.csv",
       "contentSize": "117743 B",
       "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
@@ -52,7 +52,7 @@
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "genders.csv",
       "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
       "contentSize": "117743 B",
@@ -61,7 +61,7 @@
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
     },
     {
-      "@type": "sc:FileObject",
+      "@type": "cr:FileObject",
       "name": "embarkation_ports.csv",
       "description": "Maps Embarkation port initial to labeled values.",
       "contentSize": "117743 B",
@@ -115,7 +115,9 @@
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "isEnumeration": true,
-      "key": "key",
+      "key": {
+        "@id": "key"
+      },
       "field": [
         {
           "@type": "ml:Field",

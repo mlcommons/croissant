@@ -12,6 +12,8 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.data_types import data_types_from_jsonld
 from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
@@ -79,7 +81,8 @@ class RecordSet(Node):
             "One or more fields whose values uniquely identify each record in the"
             " `RecordSet`."
         ),
-        input_types=[SDO.Text],
+        from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        to_jsonld=formatted_uuid_to_json,
         url=constants.SCHEMA_ORG_KEY,
     )
     name: str = mlc_dataclasses.jsonld_field(
@@ -105,7 +108,6 @@ class RecordSet(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
-        self.assert_has_optional_properties("description")
 
         if self.data is not None:
             data = self.data
@@ -120,7 +122,10 @@ class RecordSet(Node):
                     f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a non empty"
                     " list."
                 )
-            expected_keys = {field.name for field in self.fields}
+            if self.ctx.is_v0():
+                expected_keys = {field.name for field in self.fields}
+            else:
+                expected_keys = {field.id for field in self.fields}
             for i, line in enumerate(data):
                 if not isinstance(line, dict):
                     self.add_error(
@@ -181,6 +186,5 @@ def get_parent_uuid(ctx: Context, uuid: str) -> str | None:
         )
         return None
     if isinstance(node, Field):
-        if node.parent:
-            return node.parent.uuid
+        return node.parent.uuid
     return node.uuid

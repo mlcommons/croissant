@@ -42,7 +42,7 @@ class Extract(Operation):
 
     node: FileObject
 
-    def __call__(self, archive_file: Path) -> Path:
+    def call(self, archive_file: Path) -> Path:
         """See class' docstring."""
         url = self.node.content_url
         assert url, "Content of URL for this node is None"

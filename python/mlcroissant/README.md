@@ -203,6 +203,6 @@ This will:
 
 To publish a package,
 
-1. Bump the version in `croissant/python/mlcroissant/pyproject.toml`.
-2. Publish a release in GitHub. The workflow script `python-publish.yml` will trigger and publish the package to PyPI.
+1. Bump the version in `croissant/python/mlcroissant/pyproject.toml`, and merge your PR.
+2. Publish a [new release](https://github.com/mlcommons/croissant/releases) in GitHub, and add a tag to it with the newest version in `pyproject.toml`. Ensure that the new release is marked as `latest`. The workflow script `python-publish.yml` will trigger and publish the package to [PyPI](https://pypi.org/project/mlcroissant/).
 

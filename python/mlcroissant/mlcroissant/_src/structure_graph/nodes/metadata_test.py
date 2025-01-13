@@ -14,6 +14,7 @@ from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_node
@@ -76,7 +77,7 @@ def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
     assert metadata.license[0].name == "U.S. Government Works"
     assert metadata.license[0].url == "https://www.usa.gov/government-works/"
     assert metadata.license[1] == "License"
-    assert metadata.is_live_dataset == False
+    assert metadata.ctx.is_live_dataset == False
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
     assert not ctx.issues.errors
@@ -124,7 +125,10 @@ def test_warning_version(version, expected_warning):
 @pytest.mark.parametrize(
     ["version", "expected_version"],
     [
+        ["1", "1"],
+        ["1.2", "1.2"],
         ["1.2.3", "1.2.3"],
+        ["1.2.3-foo+bar", "1.2.3-foo+bar"],
         [1, "1.0.0"],
         [1.2, "1.2.0"],
         ["thisisanarbitraryversion", "thisisanarbitraryversion"],
@@ -172,3 +176,41 @@ def test_validate_license():
     ]
     with pytest.raises(ValidationError, match="License should be a list of str"):
         Metadata(name="foo", license=42)  # pytype: disable=wrong-arg-types
+
+
+def test_predecessors_are_propagated():
+    field = Field(
+        id="records/name",
+        name="records/name",
+        data_types=constants.DataType.TEXT,
+    )
+    record_set = RecordSet(
+        id="records",
+        fields=[field],
+        data=[{"records/name": "train"}, {"records/name": "test"}],
+    )
+    Metadata(name="dummy", record_sets=[record_set])
+    assert field.predecessors == {record_set}
+
+
+def test_parents_are_defined():
+    subfield = Field(
+        id="records/name/subfield",
+        name="records/name/subfield",
+        data_types=constants.DataType.TEXT,
+    )
+    field = Field(
+        id="records/name",
+        name="records/name",
+        sub_fields=[subfield],
+    )
+    record_set = RecordSet(
+        id="records",
+        fields=[field],
+        data=[{"records/name": "train"}, {"records/name": "test"}],
+    )
+    Metadata(name="dummy", record_sets=[record_set])
+    assert {record_set.uuid, field.uuid}.issubset(
+        set([p.uuid for p in subfield.parents])
+    )
+    assert {record_set.uuid}.issubset(set([p.uuid for p in field.parents]))

@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +46,8 @@
   },
   "@type": "sc:Dataset",
   "name": "minimal_example_with_recommended_fields",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a minimal example, including the required and the recommended fields.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://example.com/dataset/recipes/minimal-recommended",
   "distribution": [
@@ -68,7 +70,7 @@
         {
           "@type": "cr:Field",
           "@id": "examples/name",
-          "name": "name",
+          "name": "examples/name",
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
           "references": {
@@ -83,7 +85,7 @@
         {
           "@type": "cr:Field",
           "@id": "examples/age",
-          "name": "age",
+          "name": "examples/age",
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
           "references": {

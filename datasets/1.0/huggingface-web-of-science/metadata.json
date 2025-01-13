@@ -1,0 +1,463 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "HDLTex/web_of_science dataset",
+  "description": "The Web Of Science (WOS) dataset is a collection of data  of published papers\navailable from the Web of Science. WOS has been released in three versions: WOS-46985, WOS-11967 and WOS-5736. WOS-46985 is the\nfull dataset. WOS-11967 and WOS-5736 are two subsets of WOS-46985.\n\nNOTE: This corresponds to version 6.0.0\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "mit",
+  "url": "https://data.mendeley.com/datasets/9rw3vkcfy4/6",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HDLTex/web_of_science/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "WOS5736-file-set",
+      "name": "WOS5736-file-set",
+      "description": "The WOS5736 parquet files.",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "includes": "WOS5736/*/*.parquet",
+      "encodingFormat": "application/x-parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "WOS11967-file-set",
+      "name": "WOS11967-file-set",
+      "description": "The WOS11967 parquet files.",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "includes": "WOS11967/*/*.parquet",
+      "encodingFormat": "application/x-parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "WOS46985-file-set",
+      "name": "WOS46985-file-set",
+      "description": "The WOS46985 parquet files.",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "includes": "WOS46985/*/*.parquet",
+      "encodingFormat": "application/x-parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WOS5736-splits",
+      "name": "WOS5736-splits",
+      "description": "Splits of Web of Science Dataset WOS-5736",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "WOS5736-splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736-splits/split_name",
+          "name": "WOS5736-splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736-splits/split_url",
+          "name": "WOS5736-splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "WOS5736-splits/split_name": "train",
+        "WOS5736-splits/split_url": "cr:TrainingSplit"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WOS5736",
+      "name": "WOS5736",
+      "description": "Web of Science Dataset WOS-5736: This dataset contains 5,736 documents with 11 categories which include 3 parents categories.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736/split",
+          "name": "WOS5736/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "WOS5736-splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "WOS5736-file-set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "WOS5736/(.*)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736/input_data",
+          "name": "WOS5736/input_data",
+          "description": "Field input_data for the WOS5736 record set.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "WOS5736-file-set"
+            },
+            "extract": {
+              "column": "input_data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736/label",
+          "name": "WOS5736/label",
+          "description": "Field label for the WOS5736 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS5736-file-set"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736/label_level_1",
+          "name": "WOS5736/label_level_1",
+          "description": "Field label_level_1 for the WOS5736 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS5736-file-set"
+            },
+            "extract": {
+              "column": "label_level_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS5736/label_level_2",
+          "name": "WOS5736/label_level_2",
+          "description": "Field label_level_2 for the WOS5736 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS5736-file-set"
+            },
+            "extract": {
+              "column": "label_level_2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WOS11967-splits",
+      "name": "WOS11967-splits",
+      "description": "Splits of Web of Science Dataset WOS-11967",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "WOS11967-splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967-splits/split_name",
+          "name": "WOS11967-splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967-splits/split_url",
+          "name": "WOS11967-splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "WOS11967-splits/split_name": "train",
+        "WOS11967-splits/split_url": "cr:TrainingSplit"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WOS11967",
+      "name": "WOS11967",
+      "description": "Web of Science Dataset WOS-11967: This dataset contains 11,967 documents with 35 categories which include 7 parents categories.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967/split",
+          "name": "WOS11967/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "WOS11967-splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "WOS11967-file-set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "WOS11967/(.*)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967/input_data",
+          "name": "WOS11967/input_data",
+          "description": "Field input_data for the WOS11967 record set.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "WOS11967-file-set"
+            },
+            "extract": {
+              "column": "input_data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967/label",
+          "name": "WOS11967/label",
+          "description": "Field label for the WOS11967 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS11967-file-set"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967/label_level_1",
+          "name": "WOS11967/label_level_1",
+          "description": "Field label_level_1 for the WOS11967 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS11967-file-set"
+            },
+            "extract": {
+              "column": "label_level_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS11967/label_level_2",
+          "name": "WOS11967/label_level_2",
+          "description": "Field label_level_2 for the WOS11967 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS11967-file-set"
+            },
+            "extract": {
+              "column": "label_level_2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WOS46985-splits",
+      "name": "WOS46985-splits",
+      "description": "Splits of Web of Science Dataset WOS-46985",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "WOS46985-splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985-splits/split_name",
+          "name": "WOS46985-splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985-splits/split_url",
+          "name": "WOS46985-splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "WOS46985-splits/split_name": "train",
+        "WOS46985-splits/split_url": "cr:TrainingSplit"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WOS46985",
+      "name": "WOS46985",
+      "description": "Web of Science Dataset WOS-46985: This dataset contains 46,985 documents with 134 categories which include 7 parents categories.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985/split",
+          "name": "WOS46985/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "WOS46985-splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "WOS46985-file-set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "WOS46985/(.*)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985/input_data",
+          "name": "WOS46985/input_data",
+          "description": "Field input_data for the WOS46985 record set.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "WOS46985-file-set"
+            },
+            "extract": {
+              "column": "input_data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985/label",
+          "name": "WOS46985/label",
+          "description": "Field label for the WOS46985 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS46985-file-set"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985/label_level_1",
+          "name": "WOS46985/label_level_1",
+          "description": "Field label_level_1 for the WOS46985 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS46985-file-set"
+            },
+            "extract": {
+              "column": "label_level_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WOS46985/label_level_2",
+          "name": "WOS46985/label_level_2",
+          "description": "Field label_level_2 for the WOS46985 record set.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "WOS46985-file-set"
+            },
+            "extract": {
+              "column": "label_level_2"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

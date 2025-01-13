@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +46,8 @@
   },
   "@type": "sc:Dataset",
   "name": "file_object_in_zip",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Minimal example to read a FileObject contained in a zip.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {
@@ -60,20 +62,20 @@
       "@type": "cr:FileObject",
       "@id": "csv2_in_zip",
       "name": "csv2_in_zip",
-      "contentUrl": "csv2_in_zip.csv",
       "containedIn": {
         "@id": "zip_with_csv"
       },
+      "contentUrl": "csv2_in_zip.csv",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "cr:FileObject",
       "@id": "csv1_in_zip",
       "name": "csv1_in_zip",
-      "contentUrl": "csv1_in_zip.csv",
       "containedIn": {
         "@id": "zip_with_csv"
       },
+      "contentUrl": "csv1_in_zip.csv",
       "encodingFormat": "text/csv"
     }
   ],
@@ -87,7 +89,7 @@
         {
           "@type": "cr:Field",
           "@id": "csv1/property1",
-          "name": "property1",
+          "name": "csv1/property1",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
@@ -109,7 +111,7 @@
         {
           "@type": "cr:Field",
           "@id": "csv2/property2",
-          "name": "property2",
+          "name": "csv2/property2",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {

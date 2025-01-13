@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -45,8 +47,8 @@
   },
   "@type": "sc:Dataset",
   "name": "Mini-COCO",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Smaller downloadable version of COCO to be used in unit tests.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "None",
   "license": "cc-by-4.0",
   "url": "None",
@@ -95,19 +97,21 @@
       "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "name",
+      "key": {
+        "@id": "name"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "split_enums/name",
-          "name": "name",
+          "name": "split_enums/name",
           "description": "One of: train, val, test.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
           "@id": "split_enums/url",
-          "name": "url",
+          "name": "split_enums/url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
             "wd:Q3985153",
@@ -117,16 +121,16 @@
       ],
       "data": [
         {
-          "name": "train",
-          "url": "https://mlcommons.org/definitions/training_split"
+          "split_enums/name": "train",
+          "split_enums/url": "https://mlcommons.org/definitions/training_split"
         },
         {
-          "name": "val",
-          "url": "https://mlcommons.org/definitions/validation_split"
+          "split_enums/name": "val",
+          "split_enums/url": "https://mlcommons.org/definitions/validation_split"
         },
         {
-          "name": "test",
-          "url": "https://mlcommons.org/definitions/test_split"
+          "split_enums/name": "test",
+          "split_enums/url": "https://mlcommons.org/definitions/test_split"
         }
       ]
     },
@@ -134,12 +138,14 @@
       "@type": "cr:RecordSet",
       "@id": "images",
       "name": "images",
-      "key": "img_id",
+      "key": {
+        "@id": "img_id"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "images/image_filename",
-          "name": "image_filename",
+          "name": "images/image_filename",
           "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
           "dataType": "sc:Text",
           "source": {
@@ -154,7 +160,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_content",
-          "name": "image_content",
+          "name": "images/image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
@@ -169,7 +175,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/split",
-          "name": "split",
+          "name": "images/split",
           "dataType": [
             "wd:Q3985153",
             "sc:Text"
@@ -197,12 +203,14 @@
       "@type": "cr:RecordSet",
       "@id": "captions",
       "name": "captions",
-      "key": "id",
+      "key": {
+        "@id": "id"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "captions/id",
-          "name": "id",
+          "name": "captions/id",
           "description": "The ID of the caption",
           "dataType": "sc:Integer",
           "source": {
@@ -217,7 +225,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/image_id",
-          "name": "image_id",
+          "name": "captions/image_id",
           "description": "The ID of the image",
           "dataType": "sc:Integer",
           "source": {
@@ -232,7 +240,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/caption",
-          "name": "caption",
+          "name": "captions/caption",
           "description": "The caption",
           "dataType": [
             "wd:Q18585177",
@@ -250,7 +258,7 @@
         {
           "@type": "cr:Field",
           "@id": "captions/split",
-          "name": "split",
+          "name": "captions/split",
           "dataType": [
             "wd:Q3985153",
             "sc:Text"
@@ -282,7 +290,7 @@
         {
           "@type": "cr:Field",
           "@id": "bounding_boxes/id",
-          "name": "id",
+          "name": "bounding_boxes/id",
           "description": "The ID of the annotation.",
           "dataType": "sc:Integer",
           "source": {
@@ -297,7 +305,7 @@
         {
           "@type": "cr:Field",
           "@id": "bounding_boxes/image_id",
-          "name": "image_id",
+          "name": "bounding_boxes/image_id",
           "description": "The ID of the image.",
           "dataType": "sc:Integer",
           "source": {
@@ -312,7 +320,7 @@
         {
           "@type": "cr:Field",
           "@id": "bounding_boxes/bbox",
-          "name": "bbox",
+          "name": "bounding_boxes/bbox",
           "description": "The bounding box on the image.",
           "dataType": "cr:BoundingBox",
           "source": {
@@ -327,7 +335,7 @@
         {
           "@type": "cr:Field",
           "@id": "bounding_boxes/area",
-          "name": "area",
+          "name": "bounding_boxes/area",
           "description": "The area of the bounding box.",
           "dataType": "sc:Integer",
           "source": {

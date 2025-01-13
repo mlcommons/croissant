@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +46,8 @@
   },
   "@type": "sc:Dataset",
   "name": "read_binary_file_by_line",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "This is a recipe illustrating how to read files line by line.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {
@@ -87,7 +89,7 @@
         {
           "@type": "cr:Field",
           "@id": "translations_from_directory/translation",
-          "name": "translation",
+          "name": "translations_from_directory/translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
@@ -102,7 +104,7 @@
         {
           "@type": "cr:Field",
           "@id": "translations_from_directory/lineNumber",
-          "name": "lineNumber",
+          "name": "translations_from_directory/lineNumber",
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
@@ -117,7 +119,7 @@
         {
           "@type": "cr:Field",
           "@id": "translations_from_directory/filename",
-          "name": "filename",
+          "name": "translations_from_directory/filename",
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {
@@ -140,7 +142,7 @@
         {
           "@type": "cr:Field",
           "@id": "translations_from_zip/translation",
-          "name": "translation",
+          "name": "translations_from_zip/translation",
           "description": "The translation of the sentence in the target language.",
           "dataType": "sc:Text",
           "source": {
@@ -155,7 +157,7 @@
         {
           "@type": "cr:Field",
           "@id": "translations_from_zip/lineNumber",
-          "name": "lineNumber",
+          "name": "translations_from_zip/lineNumber",
           "description": "The number of the line in the file.",
           "dataType": "sc:Integer",
           "source": {
@@ -170,7 +172,7 @@
         {
           "@type": "cr:Field",
           "@id": "translations_from_zip/filename",
-          "name": "filename",
+          "name": "translations_from_zip/filename",
           "description": "The name of the source file.",
           "dataType": "sc:Text",
           "source": {

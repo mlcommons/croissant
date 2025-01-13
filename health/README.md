@@ -17,7 +17,7 @@ pip install -r requirements.txt
 
 # Test the spider locally.
 # In huggingface.py you can uncomment the line in
-# `start_requests` to produce crawl fake data.
+# `list_datasets` to produce crawl fake data.
 scrapy crawl huggingface
 
 # When you're ready, the following commands launch a new job:

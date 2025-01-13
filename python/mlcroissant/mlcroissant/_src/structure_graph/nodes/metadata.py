@@ -1,6 +1,7 @@
 """Metadata module."""
 
 import datetime
+from typing import Any
 
 from etils import epath
 from rdflib.namespace import SDO
@@ -16,6 +17,7 @@ from mlcroissant._src.core.dates import cast_dates
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import sort_dict
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.url import is_url
@@ -82,12 +84,6 @@ class Metadata(Node):
         description="Description of the dataset.",
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
-    )
-    is_live_dataset: bool | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Whether the dataset is a live dataset.",
-        input_types=[SDO.Boolean],
-        url=constants.ML_COMMONS_IS_LIVE_DATASET,
     )
     keywords: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -304,6 +300,16 @@ class Metadata(Node):
         url=constants.ML_COMMONS_RAI_DATA_RELEASE_MAINTENANCE_PLAN,
     )
 
+    def _define_field_parents(self, fields: list[Field], parents: list[Any]):
+        """Recursively populate the field's and subfield's parents."""
+        for field in fields:
+            field.parents = [self] + parents
+            if field.sub_fields:
+                field_parents = parents + [field]
+                self._define_field_parents(
+                    fields=field.sub_fields, parents=field_parents
+                )
+
     def __post_init__(self):
         """Checks arguments of the node and setup ID."""
         Node.__post_init__(self)
@@ -312,10 +318,7 @@ class Metadata(Node):
             node.parents = [self]
         for record_set in self.record_sets:
             record_set.parents = [self]
-            for field in record_set.fields:
-                field.parents = [self, record_set]
-                for sub_field in field.sub_fields:
-                    sub_field.parents = [self, record_set, field]
+            self._define_field_parents(record_set.fields, parents=[record_set])
 
         # Back-fill the graph in every node.
         self.ctx.graph = from_nodes_to_graph(self)
@@ -339,6 +342,10 @@ class Metadata(Node):
             self.ctx, self.ctx.conforms_to
         )
 
+        # Share the structure graph in the context
+        for node in self.nodes():
+            node.ctx.graph = self.ctx.graph
+
     def to_json(self) -> Json:
         """Converts the `Metadata` to JSON."""
         context = self.ctx.rdf.context
@@ -350,7 +357,10 @@ class Metadata(Node):
         jsonld["@context"] = context
         conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
         jsonld["conformsTo"] = conforms_to
-        return remove_empty_values(jsonld)
+        if self.ctx.is_live_dataset:
+            jsonld["isLiveDataset"] = self.ctx.is_live_dataset
+        jsonld = remove_empty_values(jsonld)
+        return sort_dict(jsonld)
 
     @property
     def file_objects(self) -> list[FileObject]:

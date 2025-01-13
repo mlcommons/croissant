@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +46,8 @@
   },
   "@type": "sc:Dataset",
   "name": "simple-join",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Example to showcase the use of join.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://mlcommons.org",
   "distribution": [
@@ -68,34 +70,34 @@
         {
           "@type": "cr:Field",
           "@id": "users/email",
-          "name": "email",
+          "name": "users/email",
           "description": "Email of the author.",
           "dataType": "sc:Text"
         },
         {
           "@type": "cr:Field",
           "@id": "users/fullname",
-          "name": "fullname",
+          "name": "users/fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text"
         }
       ],
       "data": [
         {
-          "email": "john.smith@gmail.com",
-          "fullname": "John Smith"
+          "users/email": "john.smith@gmail.com",
+          "users/fullname": "John Smith"
         },
         {
-          "email": "jane.doe@yahoo.com",
-          "fullname": "Jane Doe"
+          "users/email": "jane.doe@yahoo.com",
+          "users/fullname": "Jane Doe"
         },
         {
-          "email": "david.lee@outlook.com",
-          "fullname": "David Lee"
+          "users/email": "david.lee@outlook.com",
+          "users/fullname": "David Lee"
         },
         {
-          "email": "mary.jones@hotmail.com",
-          "fullname": "Mary Jones"
+          "users/email": "mary.jones@hotmail.com",
+          "users/fullname": "Mary Jones"
         }
       ]
     },
@@ -108,7 +110,7 @@
         {
           "@type": "cr:Field",
           "@id": "publications_by_user/title",
-          "name": "title",
+          "name": "publications_by_user/title",
           "description": "Full title of the publication.",
           "dataType": "sc:Text",
           "source": {
@@ -123,7 +125,7 @@
         {
           "@type": "cr:Field",
           "@id": "publications_by_user/author_email",
-          "name": "author_email",
+          "name": "publications_by_user/author_email",
           "description": "Email of the author.",
           "dataType": "sc:Text",
           "references": {
@@ -143,7 +145,7 @@
         {
           "@type": "cr:Field",
           "@id": "publications_by_user/author_fullname",
-          "name": "author_fullname",
+          "name": "publications_by_user/author_fullname",
           "description": "Full name of the author.",
           "dataType": "sc:Text",
           "source": {

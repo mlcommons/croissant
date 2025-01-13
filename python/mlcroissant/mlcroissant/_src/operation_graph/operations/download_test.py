@@ -106,7 +106,7 @@ def test_get_hash_obj_sha256():
 def test_get_download_filepath():
     ctx = Context()
     # With mapping
-    ctx.mapping = {"foo": epath.Path("/bar/foo")}
+    ctx.mapping = {"file-object": epath.Path("/bar/foo")}
     node = FileObject(
         ctx=ctx, name="foo", id="file-object", content_url="http://foo", sha256="12345"
     )

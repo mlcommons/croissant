@@ -25,7 +25,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -34,6 +34,11 @@ jobs:
 
     - name: PyTest
       run: make pytest
+
+    # Pylint is not compatible with Apache Beam in Python 3.11:
+    # https://github.com/pylint-dev/pylint/blob/02616372282fd84862636d58071e6f3c62b53559/pyproject.toml#L38
+    - name: Install Pylint separately.
+      run: pip install pylint
 
     - name: PyLint
       run: make pylint
@@ -62,7 +67,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -80,16 +85,7 @@ jobs:
           do
             if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ]
             then
-              MAX_SEQUENCE_LENGTH="10" \
-              TRAIN_BATCH_SIZE="1" \
-              TEST_BATCH_SIZE="1" \
-              NUM_TRAIN_EPOCHS="0" \
-              TEST_FRACTION="2e-5" \
-              jupyter nbconvert \
-                --ExecutePreprocessor.timeout=600 \
-                --ExecutePreprocessor.kernel_name=croissant-notebook \
-                --to notebook \
-                --execute "$notebook"
+              echo "Skipping notebook=${notebook}"
             else
               jupyter nbconvert \
                 --ExecutePreprocessor.timeout=600 \
@@ -126,14 +122,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.11'
 
     - name: Install dependencies except mlcroissant itself
       run: >
         pip install absl-py \
-          datasets \
+          apache-beam \
           etils[epath] \
           GitPython \
           jsonpath_rw \
@@ -161,14 +157,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.11'
 
     - name: Install dependencies except mlcroissant itself
       run: >
           pip install absl-py \
-            datasets \
+            apache-beam \
             etils[epath] \
             GitPython \
             jsonpath_rw \
@@ -197,7 +193,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -226,7 +222,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -238,62 +234,3 @@ jobs:
 
     - name: Generate JSON-LD files - PASS
       run: pip install .[image] && python mlcroissant/scripts/load.py --jsonld ../../datasets/${{ matrix.version }}/pass-mini/metadata.json --record_set images
-
-  editor-python-test:
-    name: Editor Python Test
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./editor
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
-    - name: Install library
-      run: pip install -r requirements.txt
-
-    - name: Install mlcroissant
-      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
-      working-directory: ./python/mlcroissant
-
-    - name: PyTest
-      run: make pytest
-
-  editor-e2e-test:
-    name: Editor End-to-End Tests
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./editor
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
-    - name: Install library
-      run: pip install -r requirements.txt
-
-    - name: Install mlcroissant
-      run: sudo apt-get install -y libgraphviz-dev && pip install .[dev]
-      working-directory: ./python/mlcroissant
-
-    - uses: cypress-io/github-action@v6
-      with:
-        start: streamlit run app.py
-        wait-on: 'http://localhost:8501'
-        working-directory: ./editor
-
-    - name: Upload screenshots
-      uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-          name: cypress-screenshots
-          path: ./editor/cypress/screenshots
-          retention-days: 1

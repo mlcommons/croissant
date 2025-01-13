@@ -1,0 +1,105 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-split",
+  "description": "Example to declare splits.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "cr:FileSet",
+      "@id": "dataframes",
+      "name": "dataframes",
+      "encodingFormat": "application/x-parquet",
+      "includes": "data/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "data",
+      "name": "data",
+      "description": "Data in the split.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "data/data",
+          "name": "data/data",
+          "description": "Data in the record.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "dataframes"
+            },
+            "extract": {
+              "column": "data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/split",
+          "name": "data/split",
+          "description": "Data in the record.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "dataframes"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^(train|test)\\.parquet$"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

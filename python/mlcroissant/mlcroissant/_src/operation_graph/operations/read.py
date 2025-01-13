@@ -2,7 +2,9 @@
 
 import dataclasses
 import enum
+import gzip
 import json
+import pathlib
 
 from etils import epath
 import pandas as pd
@@ -86,7 +88,11 @@ class Read(Operation):
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
+
         with filepath.open("rb") as file:
+            # TODO(https://github.com/mlcommons/croissant/issues/635).
+            if filepath.suffix == ".gz":
+                file = gzip.open(file, "rt", newline="")
             if encoding_format == EncodingFormat.CSV:
                 return pd.read_csv(file)
             elif encoding_format == EncodingFormat.TSV:
@@ -132,7 +138,7 @@ class Read(Operation):
                     f"Unsupported encoding format for file: {encoding_format}"
                 )
 
-    def __call__(self, files: list[Path] | Path) -> pd.DataFrame:
+    def call(self, files: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
         if isinstance(files, Path):
             files = [files]
@@ -147,7 +153,7 @@ class Read(Operation):
                 content_url = self.node.content_url
                 file = Path(
                     filepath=file.filepath / content_url,
-                    fullpath=file.fullpath / content_url,
+                    fullpath=pathlib.PurePath(content_url),
                 )
             # The FileObject comes from disk:
             elif (

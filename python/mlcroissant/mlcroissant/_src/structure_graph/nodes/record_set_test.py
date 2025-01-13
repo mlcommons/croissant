@@ -14,7 +14,6 @@ from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.tests.nodes import create_test_field
 from mlcroissant._src.tests.nodes import create_test_node
 from mlcroissant._src.tests.nodes import create_test_record_set
-from mlcroissant._src.tests.versions import parametrize_conforms_to
 
 
 @pytest.mark.parametrize(
@@ -68,28 +67,22 @@ def test_invalid_data(data, error):
 def test_checks_are_performed(conforms_to, field_uuid):
     with mock.patch.object(
         Node, "assert_has_mandatory_properties"
-    ) as mandatory_mock, mock.patch.object(
-        Node, "assert_has_optional_properties"
-    ) as optional_mock, mock.patch.object(
-        Node, "validate_name"
-    ) as validate_name_mock:
+    ) as mandatory_mock, mock.patch.object(Node, "validate_name") as validate_name_mock:
         ctx = Context(conforms_to=conforms_to)
         create_test_node(RecordSet, ctx=ctx)
         mandatory_mock.assert_called_once_with(field_uuid)
-        optional_mock.assert_called_once_with("description")
         validate_name_mock.assert_called_once()
 
 
-@parametrize_conforms_to()
-def test_from_jsonld(conforms_to: CroissantVersion):
-    ctx = Context(conforms_to=conforms_to)
+def test_from_jsonld():
+    ctx = Context()
     jsonld = {
         "@type": constants.ML_COMMONS_RECORD_SET_TYPE(ctx),
         "@id": "foo_id",
         constants.SCHEMA_ORG_NAME: "foo",
         constants.SCHEMA_ORG_DESCRIPTION: "bar",
         constants.ML_COMMONS_IS_ENUMERATION(ctx): True,
-        constants.SCHEMA_ORG_KEY(ctx): ["key1", "key2"],
+        constants.SCHEMA_ORG_KEY(ctx): [{"@id": "key1"}, {"@id": "key2"}],
         constants.ML_COMMONS_DATA(ctx): '[{"column1": ["value1", "value2"]}]',
     }
     record_set = RecordSet.from_jsonld(ctx, jsonld)

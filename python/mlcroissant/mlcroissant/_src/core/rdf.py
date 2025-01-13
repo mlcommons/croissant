@@ -6,6 +6,7 @@ import dataclasses
 import functools
 from typing import Any
 
+from absl import logging
 from rdflib import term
 
 from mlcroissant._src.core.types import Json
@@ -71,6 +72,15 @@ class Rdf:
     def from_json(cls, ctx, json: Json) -> Rdf:
         """Creates a `Rdf` from JSON."""
         context = get_context(json)
+        # Keys that are in the standard @context, but not in the current @context.
+        different_keys = make_context(ctx).keys() - context.keys()
+        if different_keys:
+            logging.warning(
+                "WARNING: The JSON-LD `@context` is not standard. Refer to the"
+                " official @context (e.g., from the example datasets in"
+                " https://github.com/mlcommons/croissant/tree/main/datasets/1.0). The"
+                f" different keys are: {different_keys}"
+            )
         return cls(context=context)
 
     @functools.cache

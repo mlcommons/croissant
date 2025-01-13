@@ -1,8 +1,12 @@
 """Tests for RDF."""
 
+from unittest import mock
+
+from absl import logging
 import pytest
 
 from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.core.rdf import Rdf
 from mlcroissant._src.tests.versions import CONFORMS_TO
 
@@ -52,3 +56,19 @@ def test_shorten_key(ctx):
     assert rdf.shorten_key("bio:bar") == "bar"
     assert rdf.shorten_key("https://bioschemas.org/baz") == "baz"
     assert rdf.shorten_key("bio:baz") == "baz"
+
+
+@mock.patch.object(logging, "warning")
+def test_from_json_without_warning(mock_warning):
+    jsonld = {"@context": make_context()}
+    rdf = Rdf.from_json(Context(), jsonld)
+    assert rdf.context == make_context()
+    mock_warning.assert_not_called()
+
+
+@mock.patch.object(logging, "warning")
+def test_from_json_with_warning(mock_warning):
+    jsonld = {"@context": {"foo": "bar"}}
+    rdf = Rdf.from_json(Context(), jsonld)
+    assert rdf.context == {"foo": "bar"}
+    mock_warning.assert_called_once()

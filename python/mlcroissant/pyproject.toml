@@ -3,7 +3,7 @@
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "1.0.3"
+version = "1.0.12"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
@@ -32,26 +32,37 @@ dependencies = [
 ]
 readme = "README.md"
 
+[urls]
+github = "https://github.com/mlcommons/croissant"
+documentation = "https://mlcommons.org/working-groups/data/croissant/"
+"bug tracker" = "https://github.com/mlcommons/croissant/issues"
+
 [project.optional-dependencies]
 # Development deps (linting, formatting,...)
 # Installed through `pip install -e .[dev]`
 dev = [
   "black==23.11.0",
-  "datasets",
   "flake8-docstrings",
   "mlcroissant[audio]",
+  "mlcroissant[beam]",
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
   "mypy",
   "pyflakes",
   "pygraphviz",
-  "pylint",
   "pytest",
   "pytype",
   "torchdata",
 ]
-audio = ["librosa"]
+# Fix following https://github.com/librosa/librosa/issues/1831#issuecomment-2176274560
+audio = [
+  "librosa",
+  "soxr==0.4.0b1",
+]
+beam = [
+  "apache-beam",
+]
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
@@ -80,7 +91,7 @@ disable_error_code = "attr-defined"
 [[tool.mypy.overrides]]
 module = [
   "absl",
-  "datasets",
+  "apache-beam",
   "etils.*",
   "jsonpath_rw",
   "librosa",

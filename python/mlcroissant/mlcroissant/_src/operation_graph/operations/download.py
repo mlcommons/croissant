@@ -40,8 +40,8 @@ def get_hash(url: str) -> str:
 def get_download_filepath(node: FileObject) -> epath.Path:
     """Retrieves the download filepath of an URL."""
     ctx = node.ctx
-    if node.name in ctx.mapping:
-        return ctx.mapping[node.name]
+    if node.id in ctx.mapping:
+        return ctx.mapping[node.id]
     url = node.content_url
     if url and not is_url(url) and not node.contained_in:
         if ctx.folder is None:
@@ -218,7 +218,7 @@ class Download(Operation):
             repo.remote().fetch(f"{refs}:{branch_name}")
             repo.branches[branch_name].checkout()
 
-    def __call__(self, *args) -> Path:
+    def call(self, *args) -> Path:
         """See class' docstring."""
         del args  # unused
         filepath = get_download_filepath(self.node)

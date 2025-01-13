@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -45,8 +47,8 @@
   },
   "@type": "sc:Dataset",
   "name": "WikiText-103",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The WikiText language modeling dataset is a collection of over 100 million tokens extracted from the set of verified Good and Featured articles on Wikipedia. The dataset is available under the Creative Commons Attribution-ShareAlike License.\n\nCompared to the preprocessed version of Penn Treebank (PTB), WikiText-2 is over 2 times larger and WikiText-103 is over 110 times larger. The WikiText dataset also features a far larger vocabulary and retains the original case, punctuation and numbers - all of which are removed in PTB. As it is composed of full articles, the dataset is well suited for models that can take advantage of long term dependencies.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@article{merity2016pointer, title={Pointer sentinel mixture models}, author={Merity, Stephen and Xiong, Caiming and Bradbury, James and Socher, Richard}, journal={arXiv preprint arXiv:1609.07843}, year={2016} }",
   "license": "cc-by-sa-3.0",
   "url": "https://blog.salesforceairesearch.com/the-wikitext-long-term-dependency-language-modeling-dataset/",
@@ -84,12 +86,14 @@
       "@id": "split_enums",
       "name": "split_enums",
       "description": "Maps split names to semantic values.",
-      "key": "name",
+      "key": {
+        "@id": "name"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "split_enums/name",
-          "name": "name",
+          "name": "split_enums/name",
           "description": "One of: train, valid, test.",
           "dataType": "sc:Text",
           "source": {
@@ -104,7 +108,7 @@
         {
           "@type": "cr:Field",
           "@id": "split_enums/url",
-          "name": "url",
+          "name": "split_enums/url",
           "description": "Corresponding mlcommons.org definition URL",
           "dataType": [
             "sc:URL",
@@ -130,7 +134,7 @@
         {
           "@type": "cr:Field",
           "@id": "words/word",
-          "name": "word",
+          "name": "words/word",
           "description": "A word.",
           "dataType": "sc:Text",
           "repeated": true,
@@ -154,7 +158,7 @@
         {
           "@type": "cr:Field",
           "@id": "words/split",
-          "name": "split",
+          "name": "words/split",
           "description": "The train, valid or test split.",
           "dataType": [
             "sc:Text",

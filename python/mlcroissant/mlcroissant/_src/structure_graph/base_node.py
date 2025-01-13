@@ -1,5 +1,7 @@
 """Base node module."""
 
+from __future__ import annotations
+
 import dataclasses
 import inspect
 import re
@@ -17,6 +19,7 @@ from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.issues import WarningException
 from mlcroissant._src.core.json_ld import box_singleton_list
 from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core.json_ld import sort_dict
 from mlcroissant._src.core.json_ld import unbox_singleton_list
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.core.uuid import generate_uuid
@@ -62,7 +65,7 @@ class Node:
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
     name: str | None = None
-    parents: list["Node"] = dataclasses.field(default_factory=list)
+    parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 
     def __post_init__(self):
@@ -204,19 +207,27 @@ class Node:
             return self.id
 
     @property
-    def parent(self) -> "Node | None":
+    def parent(self) -> Node | None:
         """Direct parent of the node or None if no parent."""
         if not self.parents:
             return None
         return self.parents[-1]
 
     @property
-    def predecessors(self) -> set["Node"]:
+    def predecessors(self) -> set[Node]:
         """Predecessors in the structure graph."""
-        return set(self.ctx.graph.predecessors(self))  # pytype: disable=bad-return-type
+        try:
+            predecessors = self.ctx.graph.predecessors(self)
+            return set(predecessors)  # pytype: disable=bad-return-type
+        except KeyError as e:
+            raise KeyError(
+                f"Could not find node '{self.id}' in the graph. Make sure to build a"
+                " full mlcroissant metadata object (mlc.Metadata) wrapping all the"
+                " FileSets/FileObjects/RecordSets/Fields."
+            ) from e
 
     @property
-    def recursive_predecessors(self) -> set["Node"]:
+    def recursive_predecessors(self) -> set[Node]:
         """Predecessors and predecessors of predecessors in the structure graph."""
         predecessors = set()
         for predecessor in self.predecessors:
@@ -225,7 +236,7 @@ class Node:
         return predecessors
 
     @property
-    def predecessor(self) -> "Node | None":
+    def predecessor(self) -> Node | None:
         """First predecessor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
@@ -234,7 +245,7 @@ class Node:
         )  # pytype: disable=bad-return-type
 
     @property
-    def successors(self) -> tuple["Node", ...]:
+    def successors(self) -> tuple[Node, ...]:
         """Successors in the structure graph."""
         if self not in self.ctx.graph:
             return ()
@@ -243,7 +254,7 @@ class Node:
         return tuple(self.ctx.graph.successors(self))  # pytype: disable=bad-return-type
 
     @property
-    def recursive_successors(self) -> set["Node"]:
+    def recursive_successors(self) -> set[Node]:
         """Successors and successors of successors in the structure graph."""
         successors = set()
         for successor in self.successors:
@@ -252,7 +263,7 @@ class Node:
         return successors
 
     @property
-    def successor(self) -> "Node | None":
+    def successor(self) -> Node | None:
         """Direct successor in the structure graph."""
         if not self.ctx.graph.has_node(self):
             return None
@@ -295,8 +306,8 @@ class Node:
         return False
 
     def __hash__(self):
-        """Hashes all immutable arguments."""
-        return hash(self.uuid)
+        """Re-uses parent's hash function (i.e., object)."""
+        return super().__hash__()
 
     def __eq__(self, other: Any) -> bool:
         """Compares two Nodes given their arguments."""
@@ -347,7 +358,8 @@ class Node:
             if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
             jsonld[key] = value
-        return remove_empty_values(jsonld)
+        jsonld = remove_empty_values(jsonld)
+        return sort_dict(jsonld)
 
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Json):
@@ -357,10 +369,11 @@ class Node:
             ctx.issues.add_error(f'{name} should be a dict with keys. Got "{jsonld}"')
             return None
         if cls._jsonld_type(ctx) == constants.SCHEMA_ORG_DATASET:
-            # For `Metadata` node, insert the conforms_to in the context:
+            # For `Metadata` node, insert conforms_to/is_live_dataset in the context:
             ctx.conforms_to = CroissantVersion.from_jsonld(
                 ctx, jsonld.get(constants.DCTERMS_CONFORMS_TO)
             )
+            ctx.is_live_dataset = jsonld.get(constants.ML_COMMONS_IS_LIVE_DATASET(ctx))
         if isinstance(jsonld, list):
             return [cls.from_jsonld(ctx, el) for el in jsonld]
         check_expected_type(ctx.issues, jsonld, cls._jsonld_type(ctx))

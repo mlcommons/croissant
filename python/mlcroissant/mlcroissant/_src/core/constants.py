@@ -102,6 +102,9 @@ RDF_TYPE = namespace.RDF.type
 DCTERMS = "http://purl.org/dc/terms/"
 DCTERMS_CONFORMS_TO = namespace.DCTERMS.conformsTo
 
+# Wikidata standard URIs.
+WIKIDATA = rdflib.Namespace("https://www.wikidata.org/wiki/")
+
 # Schema.org standard URIs.
 SCHEMA_ORG_CITATION: term.URIRef = namespace.SDO.citation
 SCHEMA_ORG_CONTAINED_IN = namespace.SDO.containedIn
@@ -223,10 +226,11 @@ class DataType:
 
     AUDIO_OBJECT = namespace.SDO.AudioObject
     BOOL = namespace.SDO.Boolean
-    BOUNDING_BOX = lambda ctx: ML_COMMONS(ctx).BoundingBox
+    BOUNDING_BOX = ML_COMMONS_V_1_0.BoundingBox
     DATE = namespace.SDO.Date
     FLOAT = namespace.SDO.Float
     IMAGE_OBJECT = namespace.SDO.ImageObject
     INTEGER = namespace.SDO.Integer
+    SPLIT = ML_COMMONS_V_1_0.Split
     TEXT = namespace.SDO.Text
     URL = namespace.SDO.URL

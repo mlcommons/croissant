@@ -38,7 +38,7 @@ class FilterFiles(Operation):
 
     node: FileSet
 
-    def __call__(self, *paths: Path) -> list[Path]:
+    def call(self, *paths: Path) -> list[Path]:
         """See class' docstring."""
         if self.node.includes is None:
             raise ValueError("cannot filter files without `includes`.")
@@ -49,8 +49,7 @@ class FilterFiles(Operation):
                     filepath = epath.Path(basepath) / file
                     fullpath = get_fullpath(filepath, path.filepath)
                     match_includes = match_path(self.node.includes, fullpath)
-                    match_excludes = match_path(self.node.excludes, fullpath)
-                    if match_includes and match_excludes:
+                    if match_includes:
                         included_files.append(
                             Path(
                                 filepath=filepath,

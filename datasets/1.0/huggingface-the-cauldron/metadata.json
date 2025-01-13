@@ -1,0 +1,209 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HuggingFaceM4/the_cauldron/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ai2d",
+      "name": "parquet-files-for-config-ai2d",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ai2d/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-aokvqa",
+      "name": "parquet-files-for-config-aokvqa",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "aokvqa/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-chart2text",
+      "name": "parquet-files-for-config-chart2text",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "chart2text/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ai2d",
+      "name": "ai2d",
+      "description": "HuggingFaceM4/the_cauldron - 'ai2d' subset\n\nAdditional information:\n- 1 skipped column: texts",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d/images",
+          "name": "ai2d/images",
+          "description": "Image column 'images' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ai2d"
+            },
+            "extract": {
+              "column": "images"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "aokvqa",
+      "name": "aokvqa",
+      "description": "HuggingFaceM4/the_cauldron - 'aokvqa' subset\n\nAdditional information:\n- 1 skipped column: texts",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "aokvqa/images",
+          "name": "aokvqa/images",
+          "description": "Image column 'images' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aokvqa"
+            },
+            "extract": {
+              "column": "images"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "chart2text",
+      "name": "chart2text",
+      "description": "HuggingFaceM4/the_cauldron - 'chart2text' subset\n\nAdditional information:\n- 1 skipped column: texts",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "chart2text/images",
+          "name": "chart2text/images",
+          "description": "Image column 'images' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chart2text"
+            },
+            "extract": {
+              "column": "images"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "the_cauldron",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for The Cauldron\n\t\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset description\n\t\n\nThe Cauldron is part of the Idefics2 release.\nIt is a massive collection of 50 vision-language datasets (training sets only) that were used for the fine-tuning of the vision-language model Idefics2.\n\n\t\n\t\t\n\t\n\t\n\t\tLoad the dataset\n\t\n\nTo load the dataset, install the library datasets with pip install datasets. Then,\nfrom datasets import load_dataset\nds = load_dataset(\"HuggingFaceM4/the_cauldron\", \"ai2d\")\n\nto download… See the full description on the dataset page: https://huggingface.co/datasets/HuggingFaceM4/the_cauldron.",
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "HuggingFaceM4",
+    "url": "https://huggingface.co/HuggingFaceM4"
+  },
+  "keywords": [
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:1603.07396",
+    "arxiv:2206.01718",
+    "arxiv:2208.05358",
+    "arxiv:1612.06890",
+    "arxiv:2310.00367",
+    "arxiv:1710.07300",
+    "arxiv:2312.12241",
+    "arxiv:1912.03098",
+    "arxiv:2211.08545",
+    "arxiv:2306.05425",
+    "arxiv:1709.00103",
+    "arxiv:2003.12462",
+    "arxiv:1612.00837",
+    "arxiv:2205.00363",
+    "arxiv:2403.09029",
+    "arxiv:2405.02246",
+    "🇺🇸 Region: US"
+  ],
+  "url": "https://huggingface.co/datasets/HuggingFaceM4/the_cauldron"
+}

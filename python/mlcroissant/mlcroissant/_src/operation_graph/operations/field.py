@@ -4,6 +4,8 @@ import dataclasses
 import functools
 import io
 import logging
+import os
+import pathlib
 import re
 from typing import Any, Iterator
 
@@ -30,10 +32,18 @@ def _parse_jsonpath(json_path: str):
     return jsonpath_rw.parse(json_path)
 
 
+def _is_repeated_field(field: Field | None) -> bool | None:
+    return isinstance(field, Field) and field.repeated
+
+
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     """Applies one transform to `value`."""
+    if _is_na(value):
+        return value
     if transform.regex is not None:
         source_regex = re.compile(transform.regex)
+        if isinstance(value, pathlib.PurePath):
+            value = os.fspath(value)
         match = source_regex.match(value)
         if match is None:
             logging.warning(f"Could not match {source_regex} in {value}")
@@ -43,30 +53,40 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
                 return group
     elif transform.json_path is not None:
         jsonpath_expression = _parse_jsonpath(transform.json_path)
-        return next(match.value for match in jsonpath_expression.find(value))
+        if matches := jsonpath_expression.find(value):
+            return next(match.value for match in matches)
+        return None
     elif transform.format is not None:
         if field.data_type is pd.Timestamp:
             return pd.Timestamp(value).strftime(transform.format)
         else:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
+    elif transform.separator is not None:
+        return value.split(transform.separator)
     return value
 
 
-def apply_transforms_fn(value: Any, field: Field) -> Any:
+def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any:
     """Applies all transforms in `source` to `value`."""
     source = field.source
     if source is None:
         return value
     transforms = source.transforms
     for transform in transforms:
-        value = _apply_transform_fn(value, transform, field)
+        if repeated and isinstance(value, (list, np.ndarray)):
+            value = [_apply_transform_fn(v, transform, field) for v in value]
+        else:
+            value = _apply_transform_fn(value, transform, field)
     return value
+
+
+def _is_na(value: Any) -> bool:
+    return not isinstance(value, (list, np.ndarray)) and pd.isna(value)
 
 
 def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     """Casts the value `value` to the desired target data type `data_type`."""
-    is_na = not isinstance(value, (list, np.ndarray)) and pd.isna(value)
-    if is_na:
+    if _is_na(value):
         return value
     elif data_type == DataType.IMAGE_OBJECT:
         if isinstance(value, deps.PIL_Image.Image):
@@ -78,10 +98,12 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     elif data_type == DataType.AUDIO_OBJECT:
         output = deps.librosa.load(io.BytesIO(value))
         return output
-    elif data_type == DataType.BOUNDING_BOX(ctx):  # pytype: disable=wrong-arg-types
+    elif data_type == DataType.BOUNDING_BOX:  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
+    elif isinstance(value, list) or isinstance(value, np.ndarray):
+        return [_cast_value(ctx=ctx, value=v, data_type=data_type) for v in value]
     elif data_type == bytes and not isinstance(value, bytes):
         return _to_bytes(value)
     else:
@@ -132,6 +154,31 @@ def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     return df
 
 
+def _populate_repeated_nested_subfield(
+    value: Any, field: Field, result: dict[str, Any]
+) -> dict[str, Any]:
+    """Populates result with a field's nested subfields."""
+    if not field.parent:
+        raise ValueError(
+            "Nested subfields can only be populated when the parent field exists!"
+        )
+    parent_id = field.parent.id
+    existing_values = result.get(parent_id, None)
+    if existing_values:
+        if not _is_na(value) and len(value) != len(existing_values):
+            raise ValueError(
+                f"Lenghts of {field.id} doesn't match  already stored items for "
+                f" {parent_id}"
+            )
+        for i in range(len(existing_values)):
+            existing_values[i][field.id] = None if _is_na(value) else value[i]
+    else:
+        result[parent_id] = (
+            [{field.id: None}] if _is_na(value) else [{field.id: v} for v in value]
+        )
+    return result
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class ReadFields(Operation):
     """Reads fields in a RecordSet from a Pandas DataFrame and applies transformations.
@@ -142,29 +189,29 @@ class ReadFields(Operation):
 
     node: RecordSet
 
-    def _fields(self) -> list[Field]:
-        """Extracts all fields (i.e., direct fields without subFields and subFields)."""
-        fields: list[Field] = []
-        for field in self.node.fields:
+    def _get_fields(self, fields: list[Field]):
+        """Extracts all leaves fields (i.e., including subFields)."""
+        all_fields: list[Field] = []
+        for field in fields:
             if field.sub_fields:
-                for sub_field in field.sub_fields:
-                    fields.append(sub_field)
+                all_fields.extend(self._get_fields(field.sub_fields))
             else:
-                fields.append(field)
-        return fields
+                all_fields.append(field)
+        return all_fields
 
-    def __call__(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
+    def call(self, df: pd.DataFrame) -> Iterator[dict[str, Any]]:
         """See class' docstring."""
         if self.node.data:
             # The RecordSet has `data`, so we directly yield from the dataframe.
             for _, row in df.iterrows():
                 yield dict(row)
             return
-        fields = self._fields()
+        fields = self._get_fields(self.node.fields)
         for field in fields:
             df = _extract_value(df, field)
 
         def _get_result(row):
+            """Returns a record parsed as a dictionary of fields."""
             result: dict[str, Any] = {}
             for field in fields:
                 source = field.source
@@ -173,10 +220,36 @@ class ReadFields(Operation):
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
-                value = row[column]
-                value = apply_transforms_fn(value, field=field)
-                value = _cast_value(self.node.ctx, value, field.data_type)
-                result[field.name] = value
+                is_repeated = field.repeated or _is_repeated_field(field.parent)
+                value = apply_transforms_fn(
+                    row[column], field=field, repeated=is_repeated
+                )
+                if _is_na(value):
+                    value = None
+                elif is_repeated:
+                    value = [
+                        _cast_value(self.node.ctx, v, field.data_type) for v in value
+                    ]
+                else:
+                    value = _cast_value(self.node.ctx, value, field.data_type)
+
+                if self.node.ctx.is_v0():
+                    result[field.name] = value
+                else:
+                    if field in self.node.fields:
+                        result[field.id] = value
+                    else:
+                        # Repeated nested sub-fields render as a list of dictionaries.
+                        if _is_repeated_field(field.parent):
+                            result = _populate_repeated_nested_subfield(
+                                value=value, field=field, result=result
+                            )
+                        # Non-repeated subfields render as a single dictionary.
+                        else:
+                            parent_id = field.parent.id
+                            if parent_id not in result:
+                                result[parent_id] = {}
+                            result[parent_id][field.id] = value
             return result
 
         chunk_size = 100

@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -45,8 +47,8 @@
   },
   "@type": "sc:Dataset",
   "name": "Titanic",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
   "license": "afl-3.0",
   "url": "https://www.openml.org/d/40945",
@@ -87,14 +89,16 @@
       "@type": "cr:RecordSet",
       "@id": "genders",
       "name": "genders",
-      "dataType": "sc:Enumeration",
       "description": "Maps gender labels to semantic definitions.",
-      "key": "label",
+      "dataType": "sc:Enumeration",
+      "key": {
+        "@id": "genders/label"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "genders/label",
-          "name": "label",
+          "name": "genders/label",
           "description": "One of {\"male\", \"female\"}",
           "dataType": [
             "sc:Text",
@@ -112,7 +116,7 @@
         {
           "@type": "cr:Field",
           "@id": "genders/url",
-          "name": "url",
+          "name": "genders/url",
           "description": "Corresponding WikiData URL",
           "dataType": [
             "sc:URL",
@@ -135,12 +139,14 @@
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
       "dataType": "sc:Enumeration",
-      "key": "key",
+      "key": {
+        "@id": "embarkation_ports/key"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "embarkation_ports/key",
-          "name": "key",
+          "name": "embarkation_ports/key",
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
           "source": {
@@ -155,7 +161,7 @@
         {
           "@type": "cr:Field",
           "@id": "embarkation_ports/label",
-          "name": "label",
+          "name": "embarkation_ports/label",
           "description": "Human-readable label",
           "dataType": [
             "sc:Text",
@@ -173,7 +179,7 @@
         {
           "@type": "cr:Field",
           "@id": "embarkation_ports/url",
-          "name": "url",
+          "name": "embarkation_ports/url",
           "description": "Corresponding WikiData URL",
           "dataType": [
             "sc:URL",
@@ -199,7 +205,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/name",
-          "name": "name",
+          "name": "passengers/name",
           "description": "Name of the passenger",
           "dataType": "sc:Text",
           "source": {
@@ -214,7 +220,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/gender",
-          "name": "gender",
+          "name": "passengers/gender",
           "description": "Gender of passenger (male or female)",
           "dataType": "sc:Text",
           "references": {
@@ -234,7 +240,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/age",
-          "name": "age",
+          "name": "passengers/age",
           "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
@@ -249,7 +255,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/survived",
-          "name": "survived",
+          "name": "passengers/survived",
           "description": "Survival status of passenger (0: Lost, 1: Saved)",
           "dataType": "sc:Integer",
           "source": {
@@ -264,7 +270,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/pclass",
-          "name": "pclass",
+          "name": "passengers/pclass",
           "description": "Passenger Class (1st/2nd/3rd)",
           "dataType": "sc:Integer",
           "source": {
@@ -279,7 +285,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/cabin",
-          "name": "cabin",
+          "name": "passengers/cabin",
           "description": "Passenger cabin.",
           "dataType": "sc:Text",
           "source": {
@@ -294,7 +300,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/embarked",
-          "name": "embarked",
+          "name": "passengers/embarked",
           "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
           "dataType": "sc:Text",
           "references": {
@@ -314,7 +320,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/fare",
-          "name": "fare",
+          "name": "passengers/fare",
           "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
@@ -329,7 +335,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/home_destination",
-          "name": "home_destination",
+          "name": "passengers/home_destination",
           "description": "Home and destination",
           "dataType": "sc:Text",
           "source": {
@@ -344,7 +350,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/ticket",
-          "name": "ticket",
+          "name": "passengers/ticket",
           "description": "Ticket Number, may include a letter.",
           "dataType": "sc:Text",
           "source": {
@@ -359,7 +365,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/num_parents_children",
-          "name": "num_parents_children",
+          "name": "passengers/num_parents_children",
           "description": "Number of Parents/Children Aboard",
           "dataType": "sc:Integer",
           "source": {
@@ -374,7 +380,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/num_siblings_spouses",
-          "name": "num_siblings_spouses",
+          "name": "passengers/num_siblings_spouses",
           "description": "Number of Siblings/Spouses Aboard",
           "dataType": "sc:Integer",
           "source": {
@@ -389,7 +395,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/boat",
-          "name": "boat",
+          "name": "passengers/boat",
           "description": "Lifeboat used by passenger",
           "dataType": "sc:Text",
           "source": {
@@ -404,7 +410,7 @@
         {
           "@type": "cr:Field",
           "@id": "passengers/body",
-          "name": "body",
+          "name": "passengers/body",
           "description": "Body Identification Number",
           "dataType": "sc:Text",
           "source": {

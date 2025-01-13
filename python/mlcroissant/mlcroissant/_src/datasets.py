@@ -2,24 +2,33 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import dataclasses
-from typing import Any, Mapping
+from typing import Any
 
 from absl import logging
 from etils import epath
 import networkx as nx
 
+from mlcroissant._src.core import regex as regex_lib
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.graphs import utils as graphs_utils
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.operation_graph import OperationGraph
+from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.operation_graph.execute import execute_downloads
+from mlcroissant._src.operation_graph.execute import execute_operations_in_beam
 from mlcroissant._src.operation_graph.execute import execute_operations_in_streaming
 from mlcroissant._src.operation_graph.execute import execute_operations_sequentially
+from mlcroissant._src.operation_graph.operations import FilterFiles
 from mlcroissant._src.operation_graph.operations import InitOperation
 from mlcroissant._src.operation_graph.operations import ReadFields
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
+from mlcroissant._src.structure_graph.nodes.source import FileProperty
+
+Filters = Mapping[str, Any]
 
 
 def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
@@ -31,6 +40,16 @@ def get_operations(ctx: Context, metadata: Metadata) -> OperationGraph:
     elif ctx.issues.warnings:
         logging.warning(ctx.issues.report())
     return operations
+
+
+def _check_mapping(metadata: Metadata, mapping: Mapping[str, epath.Path]):
+    """Checks that the mapping is valid, i.e. keys are actual UUIDs and paths exist."""
+    uuids = set([node.uuid for node in metadata.nodes()])
+    for uuid, path in mapping.items():
+        if uuid not in uuids:
+            raise ValueError(f"{uuid=} in the mapping doesn't exist in the JSON-LD")
+        if not path.exists():
+            raise ValueError(f"{path=} doesn't exist on disk")
 
 
 def _expand_mapping(
@@ -52,7 +71,7 @@ class Dataset:
         mapping: Mapping filename->filepath as a Python dict[str, str] to handle manual
             downloads. If `document.csv` is the FileObject and you downloaded it to
             `~/Downloads/document.csv`, you can specify `mapping={"document.csv":
-            "~/Downloads/document.csv"}`.,
+            "~/Downloads/document.csv"}`.
     """
 
     jsonld: epath.PathLike | str | dict[str, Any] | None
@@ -70,14 +89,14 @@ class Dataset:
             self.metadata = Metadata.from_file(ctx=ctx, file=self.jsonld)
         else:
             return
-        ctx.is_live_dataset = self.metadata.is_live_dataset
+        _check_mapping(self.metadata, ctx.mapping)
         # Draw the structure graph for debugging purposes.
         if self.debug:
-            graphs_utils.pretty_print_graph(ctx.graph, simplify=True)
+            graphs_utils.pretty_print_graph(ctx.graph)
         self.operations = get_operations(ctx, self.metadata)
         # Draw the operations graph for debugging purposes.
         if self.debug:
-            graphs_utils.pretty_print_graph(self.operations.operations, simplify=False)
+            graphs_utils.pretty_print_graph(self.operations.operations)
 
     @classmethod
     def from_metadata(cls, metadata: Metadata) -> Dataset:
@@ -87,20 +106,34 @@ class Dataset:
         dataset.operations = get_operations(metadata.ctx, metadata)
         return dataset
 
-    def records(self, record_set: str) -> Records:
-        """Accesses all records in `record_set` if it exists."""
-        if not any(rs for rs in self.metadata.record_sets if rs.name == record_set):
-            names = [record_set.name for record_set in self.metadata.record_sets]
+    def records(self, record_set: str, filters: Filters | None = None) -> Records:
+        """Accesses all records with @id==record_set if it exists.
+
+        record_set: The name of the record set to access.
+        filters: A dictionary mapping a field ID to the value we want to filter in. For
+            example, when writing {'data/split': 'train'}, we want to keep all records
+            whose field `data/split` takes the value `train`.
+        """
+        if filters:
+            _validate_filters(filters)
+
+        if not any(rs for rs in self.metadata.record_sets if rs.uuid == record_set):
+            ids = [record_set.uuid for record_set in self.metadata.record_sets]
             error_msg = f"did not find any record set with the name `{record_set}`. "
-            if not names:
+            if not ids:
                 error_msg += "This dataset declares no record sets."
             else:
-                error_msg += f"Possible RecordSets: {names}"
+                error_msg += f"Possible RecordSets: {ids}"
             raise ValueError(error_msg)
-        return Records(self, record_set, debug=self.debug)
+        return Records(
+            dataset=self,
+            record_set=record_set,
+            filters=filters,
+            debug=self.debug,
+        )
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(kw_only=True)
 class Records:
     """Iterable set of records.
 
@@ -112,6 +145,7 @@ class Records:
 
     dataset: Dataset
     record_set: str
+    filters: Filters | None
     debug: bool
 
     def __iter__(self):
@@ -121,17 +155,14 @@ class Records:
         record_set.
         """
         # We only consider the operations that are useful to produce the `ReadFields`.
-        operations = self._filter_interesting_operations()
-        if self.debug:
-            graphs_utils.pretty_print_graph(operations)
+        operations = self._filter_interesting_operations(self.filters)
         # Downloads can be parallelized, so we execute them in priority.
         execute_downloads(operations)
         # We can stream the dataset iff the operation graph is a path graph (meaning
         # that all operations lie on a single straight line, i.e. have an
         # in-degree of 0 or 1. That means that the operation graph is a single line
         # (without external joins for example).
-        can_stream_dataset = all(d == 1 or d == 2 for _, d in operations.degree())
-        if can_stream_dataset:
+        if _is_streamable_dataset(operations):
             yield from execute_operations_in_streaming(
                 record_set=self.record_set,
                 operations=operations,
@@ -141,8 +172,25 @@ class Records:
                 record_set=self.record_set, operations=operations
             )
 
-    def _filter_interesting_operations(self) -> Operations:
-        """Filters connected operations to `ReadFields(self.record_set)`."""
+    def beam_reader(self):
+        """See ReadFromCroissant docstring."""
+        operations = self._filter_interesting_operations(self.filters)
+        execute_downloads(operations)
+        return execute_operations_in_beam(
+            record_set=self.record_set,
+            operations=operations,
+            filters=self.filters,
+        )
+
+    def _filter_interesting_operations(self, filters: Filters | None) -> Operations:
+        """Filters connected operations to `ReadFields(self.record_set)`.
+
+        This function does 2 things:
+
+        - It keeps only the operations that are necessary to produce the record set.
+        - It applies the filters to all operations. Example: if we request the training
+          set, it will only download the data relative to the training set.
+        """
         operations = self.dataset.operations.operations
         source = next(
             operation
@@ -153,8 +201,129 @@ class Records:
             operation
             for operation in operations.nodes
             if isinstance(operation, ReadFields)
-            and operation.node.name == self.record_set
+            and operation.node.uuid == self.record_set
         )
         paths = nx.all_simple_paths(operations, source=source, target=target)
         interesting_nodes = {node for path in paths for node in path}
-        return operations.subgraph(interesting_nodes)  # pytype: disable=bad-return-type
+        interesting_operations = operations.subgraph(interesting_nodes)
+        if not filters:
+            return interesting_operations  # pytype: disable=bad-return-type
+        field, value = _find_data_field_to_filter(filters, interesting_operations)
+        new_regex = _regex_from_value(field, value)
+        _propagate_includes(field, interesting_operations, new_regex)
+        # The value of `field` is now entirely known so we can remove any operation
+        # needed to compute it, i.e. all operations involved in a potential join:
+        join_uuid = field.references.uuid
+        graph = field.ctx.graph
+        if join_uuid:
+            join_node = next(
+                node
+                for node in graph
+                if isinstance(node, Field) and node.uuid == join_uuid
+            )
+            unneeded_nodes = [
+                node
+                for node in graph
+                if graph.has_edge(node, join_node) or node == join_node
+            ]
+            interesting_operations = [
+                o for o in interesting_operations if o.node not in unneeded_nodes
+            ]
+        return operations.subgraph(
+            interesting_operations
+        )  # pytype: disable=bad-return-type
+
+
+def _find_data_field_to_filter(
+    filters: Filters, operations: nx.Graph[Operation]
+) -> tuple[Field, Any]:
+    for operation in operations:
+        if isinstance(operation, ReadFields):
+            for field in operation.node.fields:
+                if field.uuid in filters:
+                    return field, filters[field.id]
+    raise ValueError(
+        f"Filters ({filters}) do not apply to the fields. `filters` must be a"
+        " mapping from the field ID to the value to filter in, e.g. `{'split':"
+        " 'train'}` to filter the train split."
+    )
+
+
+def _regex_from_value(field: Field, value: Any):
+    """Creates a regular expression by injecting the value in the transformation."""
+    transforms = field.source.transforms
+    error = (
+        "Filtering is currently only implemented on fields with one transformation from"
+        " a regex."
+    )
+    if len(transforms) != 1:
+        raise NotImplementedError(error)
+    transform = transforms[0]
+    if str_regex := transform.regex:
+        return regex_lib.capture_one_capturing_group(str_regex, value)
+    raise NotImplementedError(error)
+
+
+def _propagate_includes(field: Field, operations: nx.Graph[Operation], new_regex: str):
+    """Propagates the new_regex back to the source includes.
+
+    Warning: the following lines are a heuristic to inject the regex in the glob
+    pattern. First we split the glob pattern by `/` hoping that the filename glob
+    pattern comes after this `/`. Here is an example, with the name of the variables and
+    a possible example:
+
+    pattern   ->  filename_pattern  ->  filename   ->  new_pattern
+    **/*.jpg  ->  *.jpg             ->  train.jpg  ->  **/train.jpg
+
+    Then, we update in place the nodes with the new pattern.
+    """
+    source_uuid = field.source.uuid
+    error = (
+        "Currently, filtering is only implemented when extracting a"
+        " field from its filename or fullpath. Please, open a GitHub"
+        " issue if you want support for other extract."
+    )
+    source_type = field.source.extract.file_property
+    if not field.source.extract.file_property:
+        raise NotImplementedError(error)
+    for operation in operations:
+        if isinstance(operation, FilterFiles):
+            node = operation.node
+            if node.uuid == source_uuid and new_regex:
+                includes = node.includes or []
+                if source_type == FileProperty.filename:
+                    new_includes = []
+                    for pattern in includes:
+                        filename_pattern = pattern.split("/")
+                        if len(filename_pattern) <= 1:
+                            raise NotImplementedError()
+                        filenames = regex_lib.regex_to_glob(new_regex)
+                        for filename in filenames:
+                            new_pattern = filename_pattern[:-1] + [filename]
+                            new_includes.append("/".join(new_pattern))
+                    node.includes = new_includes
+                elif source_type == FileProperty.fullpath:
+                    node.includes = regex_lib.regex_to_glob(new_regex)
+                else:
+                    raise NotImplementedError(error)
+
+
+def _validate_filters(filters: Filters):
+    if isinstance(filters, Mapping) and len(filters) <= 1:
+        if all(isinstance(value, str) for value in filters.values()):
+            return
+    raise ValueError(
+        "Filters should be a mapping from a field's ID to the value we want to"
+        " filter in. For example, when writing {'data/split': 'train'}, we want"
+        " to keep all records whose field `data/split` takes the value `train`."
+        f" Instead, we got: {filters=}"
+    )
+
+
+def _is_streamable_dataset(operations: Operations):
+    """Whether the operations define a streamable datasets.
+
+    A streamable dataset is a dataset that results from executing a linear sequence of
+    operations without branching (for example, no join).
+    """
+    return all(d == 1 or d == 2 for _, d in operations.degree())

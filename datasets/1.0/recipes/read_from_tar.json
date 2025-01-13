@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +46,8 @@
   },
   "@type": "sc:Dataset",
   "name": "read_from_tar",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "Example dataset to read several FileSets from a tar.gz and join them.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "url": "https://mlcommons.org",
   "distribution": [
     {
@@ -88,7 +90,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/id",
-          "name": "id",
+          "name": "images/id",
           "dataType": "sc:Integer",
           "source": {
             "fileSet": {
@@ -105,7 +107,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image",
-          "name": "image",
+          "name": "images/image",
           "dataType": "sc:ImageObject",
           "source": {
             "fileSet": {
@@ -119,7 +121,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/split",
-          "name": "split",
+          "name": "images/split",
           "dataType": "sc:Text",
           "source": {
             "fileSet": {
@@ -143,7 +145,7 @@
         {
           "@type": "cr:Field",
           "@id": "annotations/id",
-          "name": "id",
+          "name": "annotations/id",
           "dataType": "sc:Integer",
           "source": {
             "field": {
@@ -160,7 +162,7 @@
         {
           "@type": "cr:Field",
           "@id": "annotations/annotation",
-          "name": "annotation",
+          "name": "annotations/annotation",
           "dataType": "sc:ImageObject",
           "source": {
             "fileSet": {
@@ -182,7 +184,7 @@
         {
           "@type": "cr:Field",
           "@id": "images_with_annotations/split",
-          "name": "split",
+          "name": "images_with_annotations/split",
           "source": {
             "field": {
               "@id": "images/split"
@@ -192,7 +194,7 @@
         {
           "@type": "cr:Field",
           "@id": "images_with_annotations/id",
-          "name": "id",
+          "name": "images_with_annotations/id",
           "references": {
             "field": {
               "@id": "annotations/id"
@@ -207,7 +209,7 @@
         {
           "@type": "cr:Field",
           "@id": "images_with_annotations/image",
-          "name": "image",
+          "name": "images_with_annotations/image",
           "source": {
             "field": {
               "@id": "images/image"
@@ -217,7 +219,7 @@
         {
           "@type": "cr:Field",
           "@id": "images_with_annotations/annotation",
-          "name": "annotation",
+          "name": "images_with_annotations/annotation",
           "source": {
             "field": {
               "@id": "annotations/annotation"

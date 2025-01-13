@@ -47,7 +47,7 @@
     "url": "https://cocodataset.org/",
     "distribution": [
       {
-        "@type": "sc:FileObject",
+        "@type": "cr:FileObject",
         "name": "train2014.zip",
         "contentSize": "13510573713 B",
         "contentUrl": "http://images.cocodataset.org/zips/train2014.zip",
@@ -55,7 +55,7 @@
         "sha256": "sha256"
       },
       {
-        "@type": "sc:FileObject",
+        "@type": "cr:FileObject",
         "name": "val2014.zip",
         "contentSize": "6645013297 B",
         "contentUrl": "http://images.cocodataset.org/zips/val2014.zip",
@@ -63,7 +63,7 @@
         "sha256": "sha256"
       },
       {
-        "@type": "sc:FileObject",
+        "@type": "cr:FileObject",
         "name": "test2014.zip",
         "contentSize": "6660437059 B",
         "contentUrl": "http://images.cocodataset.org/zips/test2014.zip",
@@ -71,7 +71,7 @@
         "sha256": "sha256"
       },
       {
-        "@type": "sc:FileSet",
+        "@type": "cr:FileSet",
         "name": "image-files",
         "containedIn": [
           "train2014.zip",
@@ -82,7 +82,7 @@
         "includes": "*.jpg"
       },
       {
-        "@type": "sc:FileObject",
+        "@type": "cr:FileObject",
         "name": "annotations_trainval2014.zip",
         "contentSize": "252872794 B",
         "contentUrl": "http://images.cocodataset.org/annotations/annotations_trainval2014.zip",
@@ -90,28 +90,28 @@
         "sha256": "sha256"
       },
       {
-        "@type": "sc:FileSet",
+        "@type": "cr:FileSet",
         "name": "caption_annotations-files",
         "containedIn": "annotations_trainval2014.zip",
         "encodingFormat": "application/json",
         "includes": "annotations/captions_(val|train)2014.json"
       },
       {
-        "@type": "sc:FileSet",
+        "@type": "cr:FileSet",
         "name": "person_keypoints_annotations",
         "containedIn": "annotations_trainval2014.zip",
         "encodingFormat": "application/json",
         "includes": "annotations/person_keypoints_(val|train)2014.json"
       },
       {
-        "@type": "sc:FileSet",
+        "@type": "cr:FileSet",
         "name": "instancesperson_keypoints_annotations",
         "containedIn": "annotations_trainval2014.zip",
         "encodingFormat": "application/json",
         "includes": "annotations/instances_(val|train)2014.json"
       },
       {
-        "@type": "sc:FileObject",
+        "@type": "cr:FileObject",
         "name": "image_info_test2014.zip",
         "contentSize": "763464 B",
         "contentUrl": "http://images.cocodataset.org/annotations/image_info_test2014.zip",
@@ -119,7 +119,7 @@
         "sha256": "sha256"
       },
       {
-        "@type": "sc:FileSet",
+        "@type": "cr:FileSet",
         "name": "imageinfo",
         "containedIn": "image_info_test2014.zip",
         "encodingFormat": "application/json",
@@ -131,17 +131,21 @@
         "@type": "ml:RecordSet",
         "name": "split_enums",
         "description": "Maps split names to semantic values.",
-        "key": "name",
+        "key": {
+          "@id": "name"
+        },
         "field": [
           {
             "@type": "ml:Field",
-            "name": "name",
+            "@id": "split_enums/name",
+            "name": "split_enums/name",
             "description": "One of: train, val, test.",
             "dataType": "sc:Text"
           },
           {
             "@type": "ml:Field",
-            "name": "url",
+            "@id": "split_enums/url",
+            "name": "split_enums/url",
             "description": "Corresponding mlcommons.org definition URL",
             "dataType": [
               "sc:URL",
@@ -151,23 +155,25 @@
         ],
         "data": [
           {
-            "name": "train",
-            "url": "https://mlcommons.org/definitions/training_split"
+            "split_enums/name": "train",
+            "split_enums/url": "https://mlcommons.org/definitions/training_split"
           },
           {
-            "name": "val",
-            "url": "https://mlcommons.org/definitions/validation_split"
+            "split_enums/name": "val",
+            "split_enums/url": "https://mlcommons.org/definitions/validation_split"
           },
           {
-            "name": "test",
-            "url": "https://mlcommons.org/definitions/test_split"
+            "split_enums/name": "test",
+            "split_enums/url": "https://mlcommons.org/definitions/test_split"
           }
         ]
       },
       {
         "@type": "ml:RecordSet",
         "name": "images",
-        "key": "image_id",
+        "key": {
+            "@id": "image_id"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -233,7 +239,9 @@
       {
         "@type": "ml:RecordSet",
         "name": "captions",
-        "key": "id",
+        "key": {
+            "@id": "id"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -300,7 +308,9 @@
         "@type": "ml:RecordSet",
         "name": "categories",
         "isEnumeration": true,
-        "key": "id",
+        "key": {
+          "@id": "id"
+        },
         "field": [
           {
             "@type": "ml:Field",
@@ -350,7 +360,9 @@
       {
         "@type": "ml:RecordSet",
         "name": "annotations",
-        "key": "id",
+        "key": {
+          "@id": "id"
+        },
         "field": [
           {
             "@type": "ml:Field",

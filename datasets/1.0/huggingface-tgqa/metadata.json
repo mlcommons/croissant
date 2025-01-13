@@ -1,0 +1,703 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "TGQA",
+  "description": "## TGQA: A Synthetic Dataset for Open-book Temporal Reasoning QAs with Ground-truth Temporal Graphs\n\nThis repository contains the data for the paper [Large Language Models Can Learn Temporal Reasoning](https://arxiv.org/pdf/2401.06853.pdf).\n\nTG-LLM is a two-step framework which includes text-to-temporal graph translation and neuro-symbolic reasoning. To facilitate the experiments, we divide the data into the corresponding parts (Story_TG_Trans and TGSR). The procedure is first translating the story into a temporal graph and then performing symbolic reasoning on the graph.\n\nThe code is available [here](https://github.com/xiongsiheng/TG-LLM).\n\nWe also include the processed data for [TimeQA](https://arxiv.org/pdf/2108.06314.pdf) and [TempReason]( https://arxiv.org/pdf/2306.08952.pdf).\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@misc{xiong2024large, title={Large Language Models Can Learn Temporal Reasoning}, author={Siheng Xiong and Ali Payani and Ramana Kompella and Faramarz Fekri}, year={2024}, eprint={2401.06853}, archivePrefix={arXiv}, primaryClass={cs.CL} }",
+  "license": "mit",
+  "url": "https://github.com/xiongsiheng/TG-LLM",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/sxiong/TGQA",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "TGSR_train-fileset",
+      "name": "TGSR_train-fileset",
+      "description": "The files for TGSR_train-fileset configs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "TGQA/TGR_train.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "TGSR_validation-fileset",
+      "name": "TGSR_validation-fileset",
+      "description": "The files for TGSR_validation-fileset configs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "TGQA/TGR_val.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "TGSR_test-fileset",
+      "name": "TGSR_test-fileset",
+      "description": "The files for TGSR_test-fileset configs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "TGQA/TGR_test.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "Story_TG_Trans_train-fileset",
+      "name": "Story_TG_Trans_train-fileset",
+      "description": "The files for Story_TG_Trans_train-fileset configs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "TGQA/Story_TG_Trans_train.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "Story_TG_Trans_validation-fileset",
+      "name": "Story_TG_Trans_validation-fileset",
+      "description": "The files for Story_TG_Trans_validation-fileset configs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "TGQA/Story_TG_Trans_val.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "Story_TG_Trans_test-fileset",
+      "name": "Story_TG_Trans_test-fileset",
+      "description": "The files for Story_TG_Trans_test-fileset configs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "TGQA/Story_TG_Trans_test.json",
+      "encodingFormat": "application/json"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "TGSR_train",
+      "name": "TGSR_train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/story",
+          "name": "TGSR_train/story",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "story"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/id",
+          "name": "TGSR_train/id",
+          "description": "Story id.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/TG",
+          "name": "TGSR_train/TG",
+          "description": "Temporal graph corresponding to the story.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "TG"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/question",
+          "name": "TGSR_train/question",
+          "description": "question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/answer",
+          "name": "TGSR_train/answer",
+          "description": "answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/candidates",
+          "name": "TGSR_train/candidates",
+          "description": "Candidate answers.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "candidates"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/Q-Type",
+          "name": "TGSR_train/Q-Type",
+          "description": "Candidate answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "Q-Type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/EK",
+          "name": "TGSR_train/EK",
+          "description": "External knowledge.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "EK"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_train/CoT",
+          "name": "TGSR_train/CoT",
+          "description": "Chain of thought",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "CoT"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "TGSR_validation",
+      "name": "TGSR_validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/story",
+          "name": "TGSR_validation/story",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "story"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/id",
+          "name": "TGSR_validation/id",
+          "description": "Story id.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/TG",
+          "name": "TGSR_validation/TG",
+          "description": "Temporal graph corresponding to the story.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "TG"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/question",
+          "name": "TGSR_validation/question",
+          "description": "question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/answer",
+          "name": "TGSR_validation/answer",
+          "description": "answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/candidates",
+          "name": "TGSR_validation/candidates",
+          "description": "Candidate answers.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "candidates"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/Q-Type",
+          "name": "TGSR_validation/Q-Type",
+          "description": "Candidate answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "Q-Type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/EK",
+          "name": "TGSR_validation/EK",
+          "description": "External knowledge.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "EK"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_validation/CoT",
+          "name": "TGSR_validation/CoT",
+          "description": "Chain of thought",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "CoT"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "TGSR_test",
+      "name": "TGSR_test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/story",
+          "name": "TGSR_test/story",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "story"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/id",
+          "name": "TGSR_test/id",
+          "description": "Story id.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/TG",
+          "name": "TGSR_test/TG",
+          "description": "Temporal graph corresponding to the story.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "TG"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/question",
+          "name": "TGSR_test/question",
+          "description": "question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/answer",
+          "name": "TGSR_test/answer",
+          "description": "answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/candidates",
+          "name": "TGSR_test/candidates",
+          "description": "Candidate answers.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "candidates"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/Q-Type",
+          "name": "TGSR_test/Q-Type",
+          "description": "Candidate answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "Q-Type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "TGSR_test/EK",
+          "name": "TGSR_test/EK",
+          "description": "External knowledge.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "TGSR_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "EK"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Story_TG_Trans_train",
+      "name": "Story_TG_Trans_train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_train/story",
+          "name": "Story_TG_Trans_train/story",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "story"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_train/id",
+          "name": "Story_TG_Trans_train/id",
+          "description": "Story id.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_train/TG",
+          "name": "Story_TG_Trans_train/TG",
+          "description": "Temporal graph corresponding to the story.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_train-fileset"
+            },
+            "extract": {
+              "jsonPath": "TG"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Story_TG_Trans_validation",
+      "name": "Story_TG_Trans_validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_validation/story",
+          "name": "Story_TG_Trans_validation/story",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "story"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_validation/id",
+          "name": "Story_TG_Trans_validation/id",
+          "description": "Story id.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_validation/TG",
+          "name": "Story_TG_Trans_validation/TG",
+          "description": "Temporal graph corresponding to the story.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_validation-fileset"
+            },
+            "extract": {
+              "jsonPath": "TG"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Story_TG_Trans_test",
+      "name": "Story_TG_Trans_test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_test/story",
+          "name": "Story_TG_Trans_test/story",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "story"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_test/id",
+          "name": "Story_TG_Trans_test/id",
+          "description": "Story id.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Story_TG_Trans_test/TG",
+          "name": "Story_TG_Trans_test/TG",
+          "description": "Temporal graph corresponding to the story.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "Story_TG_Trans_test-fileset"
+            },
+            "extract": {
+              "jsonPath": "TG"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -44,8 +46,8 @@
   },
   "@type": "sc:Dataset",
   "name": "PASS",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
   "license": "cc-by-4.0",
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
@@ -183,12 +185,14 @@
       "@type": "cr:RecordSet",
       "@id": "images",
       "name": "images",
-      "key": "hash",
+      "key": {
+        "@id": "hash"
+      },
       "field": [
         {
           "@type": "cr:Field",
           "@id": "images/hash",
-          "name": "hash",
+          "name": "images/hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
@@ -214,7 +218,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/image_content",
-          "name": "image_content",
+          "name": "images/image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
@@ -229,7 +233,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/creator_uname",
-          "name": "creator_uname",
+          "name": "images/creator_uname",
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
@@ -244,7 +248,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/gps_coordinates",
-          "name": "gps_coordinates",
+          "name": "images/gps_coordinates",
           "description": "GPS coordinates where the image was taken.",
           "dataType": "sc:GeoCoordinates",
           "subField": [
@@ -281,7 +285,7 @@
         {
           "@type": "cr:Field",
           "@id": "images/date_taken",
-          "name": "date_taken",
+          "name": "images/date_taken",
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
