@@ -65,6 +65,8 @@ def _regex_to_glob_for_str(regex: str) -> Iterable[str]:
     regex = re.sub(r"\.\*", "*", regex)
     # Interpret .+ as *
     regex = re.sub(r"\.\+", "*", regex)
+    # Interpret \\- as -
+    regex = re.sub(r"\\-", "-", regex)
     return [regex]
 
 
