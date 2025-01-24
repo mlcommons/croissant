@@ -229,8 +229,5 @@ jobs:
     - name: Install library
       run: pip install .
 
-    - name: Generate JSON-LD files - Titanic
-      run: mlcroissant load --jsonld ../../datasets/${{ matrix.version }}/titanic/metadata.json --record_set passengers
-
     - name: Generate JSON-LD files - PASS
       run: pip install .[image] && python mlcroissant/scripts/load.py --jsonld ../../datasets/${{ matrix.version }}/pass-mini/metadata.json --record_set images
