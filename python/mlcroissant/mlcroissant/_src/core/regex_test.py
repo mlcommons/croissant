@@ -27,6 +27,12 @@ from mlcroissant._src.core import regex as regex_lib
                 "*/train/*.parquet",  # ...to a valid glob pattern.
             ],
         ],
+        [
+            "^.+/my\\-train/.*\.parquet$",  # From a valid regex...
+            [
+                "*/my-train/*.parquet",  # ...to a valid glob pattern.
+            ],
+        ],
     ],
 )
 def test_regex_to_glob(regex: str, output: list[str]):
