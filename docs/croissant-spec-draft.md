@@ -236,6 +236,12 @@ Croissant datasets must declare that they conform to this specification by inclu
 
 Note that while the Croissant specification is versioned, the Croissant namespace above is not, so the constructs within the Croissant vocabulary will keep stable URIs even when the specification version changes.
 
+The media type (content type or MIME type) for Croissant includes a JSON-LD [profile](https://www.w3.org/TR/json-ld/#application-ld-json) to distinguish it from other JSON-LD documents:
+
+```
+application/ld+json; profile="http://mlcommons.org/croissant/1.0"
+```
+
 ### ID and Reference Mechanism
 
 In Croissant datasets, various elements need to be connected to each other. For instance, a `FileObject` may be extracted from another `FileObject`, or a column of a table may reference another table. We therefore need a mechanism to define **identifiers** for parts of a dataset, and to reference them in other places.
