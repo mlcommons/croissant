@@ -5,9 +5,7 @@ This module implements https://peps.python.org/pep-0681.
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from collections.abc import Mapping
-from collections.abc import Sequence
+from collections.abc import Iterator, Mapping, Sequence
 import dataclasses
 import inspect
 from typing import Any, Callable, cast, Literal, TypedDict, Union
