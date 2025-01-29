@@ -5,20 +5,16 @@ This module implements https://peps.python.org/pep-0681.
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from collections.abc import Mapping
-from collections.abc import Sequence
 import dataclasses
 import inspect
-from typing import Any, Callable, cast, Literal, TypedDict, Union
+from collections.abc import Iterator, Mapping, Sequence
+from typing import Any, Callable, Literal, TypedDict, Union, cast
 
 from rdflib import term
 from rdflib.namespace import SDO
 from typing_extensions import dataclass_transform
 
-from mlcroissant._src.core.context import Context
-from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.context import Context, CroissantVersion
 
 MATCHING_TYPES: Mapping[term.URIRef, type] = {
     SDO.Boolean: bool,
