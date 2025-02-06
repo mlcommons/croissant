@@ -33,6 +33,22 @@ This can be fixed by running
 sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
 ```
 
+### macOS possible issues
+
+In the case of macOS graphviz and pygraphviz can be installed with brew, running:
+```
+brew install graphviz
+pip install --config-settings="--global-option=build_ext" \
+            --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" \
+            --config-settings="--global-option=-L$(brew --prefix graphviz)/lib/" \
+                            pygraphviz
+```
+
+The command can fail also due to missing a rust compiler. The standar way to install it is:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+``` 
+
 ### Conda installation
 Conda can help create a consistent environment.
 It can also be useful to install packages without root access.
