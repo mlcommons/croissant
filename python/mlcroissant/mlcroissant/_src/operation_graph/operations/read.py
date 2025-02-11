@@ -111,7 +111,9 @@ class Read(Operation):
             elif encoding_format == EncodingFormat.PARQUET:
                 try:
                     df = pd.read_parquet(file)
-                    df.reset_index(inplace=True) 
+                    # Sometimes the author already set an index in Parquet, so we want
+                    # to reset it to always have the same format.
+                    df.reset_index(inplace=True)
                     return df
                 except ImportError as e:
                     raise ImportError(
