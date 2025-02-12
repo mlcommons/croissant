@@ -18,6 +18,7 @@ class CroissantVersion(enum.Enum):
 
     V_0_8 = "http://mlcommons.org/croissant/0.8"
     V_1_0 = "http://mlcommons.org/croissant/1.0"
+    V_1_1 = "http://mlcommons.org/croissant/1.1"
 
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Any) -> CroissantVersion:
