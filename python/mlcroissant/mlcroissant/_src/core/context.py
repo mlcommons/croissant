@@ -18,6 +18,7 @@ class CroissantVersion(enum.Enum):
 
     V_0_8 = "http://mlcommons.org/croissant/0.8"
     V_1_0 = "http://mlcommons.org/croissant/1.0"
+    V_1_1 = "http://mlcommons.org/croissant/1.1"
 
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Any) -> CroissantVersion:
@@ -73,7 +74,7 @@ class Context:
     mapping: Mapping[str, epath.Path] = dataclasses.field(
         default_factory=dict, hash=False
     )
-    conforms_to: CroissantVersion = CroissantVersion.V_1_0
+    conforms_to: CroissantVersion = CroissantVersion.V_1_1
     is_live_dataset: bool | None = None
 
     def __post_init__(self):
