@@ -74,7 +74,7 @@ class Context:
     mapping: Mapping[str, epath.Path] = dataclasses.field(
         default_factory=dict, hash=False
     )
-    conforms_to: CroissantVersion = CroissantVersion.V_1_1
+    conforms_to: CroissantVersion = CroissantVersion.V_1_0
     is_live_dataset: bool | None = None
 
     def __post_init__(self):
