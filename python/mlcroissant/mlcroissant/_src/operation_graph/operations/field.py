@@ -33,7 +33,7 @@ def _parse_jsonpath(json_path: str):
 
 
 def _is_repeated_field(field: Field | None) -> bool | None:
-    return isinstance(field, Field) and field.repeated
+    return isinstance(field, Field) and (field.repeated or field.is_array)
 
 
 def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:

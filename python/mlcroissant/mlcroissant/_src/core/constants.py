@@ -61,6 +61,8 @@ ML_COMMONS_RECORD_SET_TYPE = lambda ctx: ML_COMMONS(ctx).RecordSet
 ML_COMMONS_REFERENCES = lambda ctx: ML_COMMONS(ctx).references
 ML_COMMONS_REGEX = lambda ctx: ML_COMMONS(ctx).regex
 ML_COMMONS_REPEATED = lambda ctx: ML_COMMONS(ctx).repeated
+ML_COMMONS_IS_ARRAY = lambda ctx: ML_COMMONS(ctx).isArray
+ML_COMMONS_ARRAY_SHAPE = lambda ctx: ML_COMMONS(ctx).arrayShape
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
 ML_COMMONS_REPLACE = lambda ctx: ML_COMMONS(ctx)["replace"]
 ML_COMMONS_SEPARATOR = lambda ctx: ML_COMMONS(ctx).separator

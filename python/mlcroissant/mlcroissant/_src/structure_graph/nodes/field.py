@@ -40,6 +40,18 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
+    # array_shape: list[int] = mlc_dataclasses.jsonld_field(
+    array_shape: list[int] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        # default_factory=lambda: [-1], # Defaults to one undefined dimension `(-1,)`?
+        default=None,
+        description=(
+            "The shape of the array, where -1 indicates dimensions of"
+            " unknown/unspecified size."
+        ),
+        input_types=[SDO.Integer],
+        url=constants.ML_COMMONS_ARRAY_SHAPE,
+    )
     description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
@@ -68,6 +80,12 @@ class Field(Node):
         ),
         input_types=[SDO.URL],
         url=constants.ML_COMMONS_EQUIVALENT_PROPERTY,
+    )
+    is_array: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="If true, then the Field is an array of values of type dataType.",
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_IS_ARRAY,
     )
     is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
@@ -101,7 +119,10 @@ class Field(Node):
     )
     repeated: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
-        description="If true, then the Field is a list of values of type dataType.",
+        description=(
+            "[DEPRECATED]. Please use `is_array` and `array_shape`. If true, then the"
+            " Field is a list of values of type dataType."
+        ),
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_REPEATED,
     )
