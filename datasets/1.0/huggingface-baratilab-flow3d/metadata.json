@@ -1,0 +1,213 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/baratilab/Flow3D-V0-Ti-6Al-4V_fast_test/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2",
+      "name": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "0_0100_01.4_1.0E-4_1.0E-2/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name"
+      },
+      "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits",
+      "name": "0_0100_01.4_1.0E-4_1.0E-2_splits",
+      "description": "Splits for the 0_0100_01.4_1.0E-4_1.0E-2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name": "simulation"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "0_0100_01.4_1.0E-4_1.0E-2",
+      "name": "0_0100_01.4_1.0E-4_1.0E-2",
+      "description": "baratilab/Flow3D-V0-Ti-6Al-4V_fast_test - '0_0100_01.4_1.0E-4_1.0E-2' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "0_0100_01.4_1.0E-4_1.0E-2/split",
+          "name": "0_0100_01.4_1.0E-4_1.0E-2/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "0_0100_01\\.4_1\\.0E\\-4_1\\.0E\\-2/(?:partial-)?(simulation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0_0100_01.4_1.0E-4_1.0E-2/pressure",
+          "name": "0_0100_01.4_1.0E-4_1.0E-2/pressure",
+          "description": "Column 'pressure' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "isArray": true,
+          "repeated": true,
+          "arrayShape": [
+            -1,
+            -1,
+            -1
+          ],
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
+            },
+            "extract": {
+              "column": "pressure"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0_0100_01.4_1.0E-4_1.0E-2/power",
+          "name": "0_0100_01.4_1.0E-4_1.0E-2/power",
+          "description": "Column 'power' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
+            },
+            "extract": {
+              "column": "power"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0_0100_01.4_1.0E-4_1.0E-2/velocity",
+          "name": "0_0100_01.4_1.0E-4_1.0E-2/velocity",
+          "description": "Column 'velocity' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
+            },
+            "extract": {
+              "column": "velocity"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0_0100_01.4_1.0E-4_1.0E-2/timestep",
+          "name": "0_0100_01.4_1.0E-4_1.0E-2/timestep",
+          "description": "Column 'timestep' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
+            },
+            "extract": {
+              "column": "timestep"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Flow3D-V0-Ti-6Al-4V_fast_test",
+  "description": "baratilab/Flow3D-V0-Ti-6Al-4V_fast_test dataset hosted on Hugging Face and contributed by the HF Datasets community",
+  "creator": {
+    "@type": "Organization",
+    "name": "BaratiLab",
+    "url": "https://huggingface.co/baratilab"
+  },
+  "keywords": [
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "🇺🇸 Region: US"
+  ],
+  "url": "https://huggingface.co/datasets/baratilab/Flow3D-V0-Ti-6Al-4V_fast_test"
+}
