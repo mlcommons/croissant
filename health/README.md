@@ -1,6 +1,6 @@
 # Croissant 🥐 Online Health
 
-This project aims at monitoring the health of the online Croissant ecocystem
+This project aims at monitoring the health of the online Croissant ecosystem
 by crawling online JSON-LD files shared across repositories.
 
 It contains:
