@@ -27,6 +27,7 @@ def ML_COMMONS(ctx) -> rdflib.Namespace:
         return ML_COMMONS_V_1_0
 
 
+ML_COMMONS_ARRAY_SHAPE = lambda ctx: ML_COMMONS(ctx).arrayShape
 ML_COMMONS_CITE_AS = lambda ctx: (
     SCHEMA_ORG_CITATION if ctx.is_v0() else ML_COMMONS(ctx).citeAs
 )
@@ -48,6 +49,7 @@ ML_COMMONS_FILE_SET = lambda ctx: ML_COMMONS(ctx).fileSet
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
 ML_COMMONS_FORMAT = lambda ctx: ML_COMMONS(ctx)["format"]
 ML_COMMONS_INCLUDES = lambda ctx: ML_COMMONS(ctx).includes
+ML_COMMONS_IS_ARRAY = lambda ctx: ML_COMMONS(ctx).isArray
 ML_COMMONS_IS_ENUMERATION = lambda ctx: ML_COMMONS(ctx).isEnumeration
 ML_COMMONS_IS_LIVE_DATASET = lambda ctx: ML_COMMONS(ctx).isLiveDataset
 ML_COMMONS_JSON_PATH = lambda ctx: ML_COMMONS(ctx).jsonPath
@@ -61,8 +63,6 @@ ML_COMMONS_RECORD_SET_TYPE = lambda ctx: ML_COMMONS(ctx).RecordSet
 ML_COMMONS_REFERENCES = lambda ctx: ML_COMMONS(ctx).references
 ML_COMMONS_REGEX = lambda ctx: ML_COMMONS(ctx).regex
 ML_COMMONS_REPEATED = lambda ctx: ML_COMMONS(ctx).repeated
-ML_COMMONS_IS_ARRAY = lambda ctx: ML_COMMONS(ctx).isArray
-ML_COMMONS_ARRAY_SHAPE = lambda ctx: ML_COMMONS(ctx).arrayShape
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
 ML_COMMONS_REPLACE = lambda ctx: ML_COMMONS(ctx)["replace"]
 ML_COMMONS_SEPARATOR = lambda ctx: ML_COMMONS(ctx).separator

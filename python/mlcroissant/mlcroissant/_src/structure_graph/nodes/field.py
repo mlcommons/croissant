@@ -40,14 +40,12 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
-    # array_shape: list[int] = mlc_dataclasses.jsonld_field(
     array_shape: list[int] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
-        # default_factory=lambda: [-1], # Defaults to one undefined dimension `(-1,)`?
         default=None,
         description=(
             "The shape of the array, where -1 indicates dimensions of"
-            " unknown/unspecified size."
+            " unknown/unspecified size. [-1] represents a simple list."
         ),
         input_types=[SDO.Integer],
         url=constants.ML_COMMONS_ARRAY_SHAPE,

@@ -131,7 +131,6 @@
           "description": "Column 'pressure' from the Hugging Face parquet file.",
           "dataType": "sc:Float",
           "isArray": true,
-          "repeated": true,
           "arrayShape": [
             -1,
             -1,
