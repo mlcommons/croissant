@@ -197,11 +197,6 @@
   "conformsTo": "http://mlcommons.org/croissant/1.1",
   "name": "Flow3D-V0-Ti-6Al-4V_fast_test",
   "description": "baratilab/Flow3D-V0-Ti-6Al-4V_fast_test dataset hosted on Hugging Face and contributed by the HF Datasets community",
-  "creator": {
-    "@type": "Organization",
-    "name": "BaratiLab",
-    "url": "https://huggingface.co/baratilab"
-  },
   "keywords": [
     "1K - 10K",
     "parquet",
