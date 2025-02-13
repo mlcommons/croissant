@@ -131,11 +131,13 @@
           "description": "Column 'pressure' from the Hugging Face parquet file.",
           "dataType": "sc:Float",
           "isArray": true,
-          "arrayShape": [
-            -1,
-            -1,
-            -1
-          ],
+          "arrayShape": {
+            "@list": [
+              -1,
+              -1,
+              -1
+            ]
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"

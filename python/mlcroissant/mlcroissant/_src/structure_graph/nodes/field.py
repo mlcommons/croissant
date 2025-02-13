@@ -48,6 +48,7 @@ class Field(Node):
             " unknown/unspecified size. [-1] represents a simple list."
         ),
         input_types=[SDO.Integer],
+        to_jsonld=lambda _, array_shape: {"@list": array_shape},
         url=constants.ML_COMMONS_ARRAY_SHAPE,
     )
     description: str | None = mlc_dataclasses.jsonld_field(
