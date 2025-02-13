@@ -2,6 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -27,6 +28,7 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
+    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -69,8 +71,8 @@
       "containedIn": {
         "@id": "repo"
       },
-      "includes": "WOS5736/*/*.parquet",
-      "encodingFormat": "application/x-parquet"
+      "encodingFormat": "application/x-parquet",
+      "includes": "WOS5736/*/*.parquet"
     },
     {
       "@type": "cr:FileSet",
@@ -80,8 +82,8 @@
       "containedIn": {
         "@id": "repo"
       },
-      "includes": "WOS11967/*/*.parquet",
-      "encodingFormat": "application/x-parquet"
+      "encodingFormat": "application/x-parquet",
+      "includes": "WOS11967/*/*.parquet"
     },
     {
       "@type": "cr:FileSet",
@@ -91,8 +93,8 @@
       "containedIn": {
         "@id": "repo"
       },
-      "includes": "WOS46985/*/*.parquet",
-      "encodingFormat": "application/x-parquet"
+      "encodingFormat": "application/x-parquet",
+      "includes": "WOS46985/*/*.parquet"
     }
   ],
   "recordSet": [
