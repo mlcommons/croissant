@@ -164,9 +164,6 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
     for key, value in entry_node.copy().items():
         if key == "@type" and isinstance(value, list):
             entry_node[key] = term.URIRef(value[0])
-        elif key == "@list" and isinstance(value, list):
-            del entry_node[key]
-            return [recursively_populate_jsonld(child, id_to_node) for child in value]
         elif isinstance(value, list):
             del entry_node[key]
             value = [recursively_populate_jsonld(child, id_to_node) for child in value]

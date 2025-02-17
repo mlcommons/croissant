@@ -45,10 +45,13 @@ class Field(Node):
         default=None,
         description=(
             "The shape of the array, where -1 indicates dimensions of"
-            " unknown/unspecified size. [-1] represents a simple list."
+            " unknown/unspecified size. [-1] represents a simple list. If specified,"
+            " then `is_array` must be True."
         ),
-        input_types=[SDO.Integer],
-        to_jsonld=lambda _, array_shape: {"@list": array_shape},
+        from_jsonld=lambda _, array_shape_str: [
+            int(dim) for dim in array_shape_str.split(",")
+        ],
+        to_jsonld=lambda _, array_shape: ",".join([str(dim) for dim in array_shape]),
         url=constants.ML_COMMONS_ARRAY_SHAPE,
     )
     description: str | None = mlc_dataclasses.jsonld_field(
@@ -82,7 +85,11 @@ class Field(Node):
     )
     is_array: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
-        description="If true, then the Field is an array of values of type dataType.",
+        description=(
+            "If true, then the Field is an array of values of type dataType. If"
+            " `array_shape` is not specified, it will default to (-1,), i.e. a"
+            " one-dimensional array of unknown shape."
+        ),
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_IS_ARRAY,
     )
@@ -150,6 +157,12 @@ class Field(Node):
         self.assert_has_mandatory_properties(uuid_field)
         self.source.check_source(self.add_error)
         self._standardize_data_types()
+        if self.array_shape and not self.is_array:
+            self.add_error(
+                f"Field {self.uuid} defines `array_shape`, but `is_array` is False."
+            )
+        if self.is_array and not self.array_shape:
+            self.array_shape = [-1]
 
     def _standardize_data_types(self):
         """Converts data_types to a list of rdflib.URIRef."""

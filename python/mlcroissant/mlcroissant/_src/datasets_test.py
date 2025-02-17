@@ -75,6 +75,7 @@ def test_static_analysis_0_8(folder):
     "folder",
     [
         "distribution_bad_id",
+        "mlfield_bad_array_definition",
     ],
 )
 def test_static_analysis_1_0(folder):
