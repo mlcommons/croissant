@@ -3,6 +3,7 @@
 import json
 
 from etils import epath
+import pytest
 
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.datasets import Dataset
