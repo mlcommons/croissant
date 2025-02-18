@@ -90,7 +90,7 @@ class Context:
     def is_v0(self):
         """Whether the JSON-LD conforms to Croissant v0.8 or lower."""
         return self.conforms_to < CroissantVersion.V_1_0
-    
+
     def is_v1_1(self):
         """Whether the JSON-LD conforms to Croissant v1.1 or higher."""
         return self.conforms_to >= CroissantVersion.V_1_1
