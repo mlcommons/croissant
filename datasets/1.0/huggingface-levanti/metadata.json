@@ -2,7 +2,6 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -28,7 +27,6 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -44,7 +42,9 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "arrayShape": "cr:arrayShape",
+    "isArray": "cr:isArray"
   },
   "@type": "sc:Dataset",
   "name": "guymorlan/levanti",

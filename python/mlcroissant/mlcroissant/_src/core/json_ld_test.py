@@ -34,7 +34,6 @@ def test_make_context():
     assert make_context(foo="bar") == {
         "@language": "en",
         "@vocab": "https://schema.org/",
-        "arrayShape": "cr:arrayShape",
         "citeAs": "cr:citeAs",
         "column": "cr:column",
         "conformsTo": "dct:conformsTo",
@@ -51,7 +50,6 @@ def test_make_context():
         "fileSet": "cr:fileSet",
         "format": "cr:format",
         "includes": "cr:includes",
-        "isArray": "cr:isArray",
         "isLiveDataset": "cr:isLiveDataset",
         "jsonPath": "cr:jsonPath",
         "key": "cr:key",
