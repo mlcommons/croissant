@@ -173,7 +173,13 @@ class Field(Node):
         if self.is_array and not self.array_shape:
             return (-1,)
         elif self.array_shape:
-            return tuple(int(dim) for dim in self.array_shape.split(","))
+            try:
+                return tuple(int(dim) for dim in self.array_shape.split(","))
+            except ValueError:
+                self.add_error(
+                    f"Field {self.uuid}'s attribute array_shape `{self.array_shape}`"
+                    " cannot be parsed as a tuple of comma-separated values."
+                )
         return None
 
     @property

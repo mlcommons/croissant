@@ -89,6 +89,7 @@ def test_static_analysis_1_0(folder):
     "folder",
     [
         "mlfield_bad_array_definition",
+        "mlfield_bad_array_shape",
     ],
 )
 def test_static_analysis_1_1(folder):

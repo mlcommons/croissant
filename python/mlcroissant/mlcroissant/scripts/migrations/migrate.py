@@ -118,7 +118,7 @@ def migrate_test_dataset(dataset: epath.Path, json_ld):
 def standardize_context(json_ld):
     """Standardizes the @context by merging it with the actual context."""
     existing_context = json_ld["@context"]
-    context = make_context() #| existing_context
+    context = make_context() | existing_context
     json_ld["@context"] = context
     return json_ld
 
