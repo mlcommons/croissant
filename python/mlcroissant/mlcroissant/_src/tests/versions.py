@@ -2,7 +2,7 @@ import pytest
 
 from mlcroissant._src.core.context import CroissantVersion
 
-VERSIONS = ["0.8", "1.0"]
+VERSIONS = ["0.8", "1.0", "1.1"]
 CONFORMS_TO = [
     CroissantVersion(f"http://mlcommons.org/croissant/{version}")
     for version in VERSIONS

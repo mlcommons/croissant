@@ -25,6 +25,9 @@ def make_context(ctx=None, **kwargs):
     context = {
         "@language": "en",
         "@vocab": "https://schema.org/",
+        "arrayShape": (
+            "cr:arrayShape" if ctx is not None and ctx.is_latest_version() else None
+        ),
         "citeAs": "cr:citeAs",
         "column": "cr:column",
         "conformsTo": "dct:conformsTo",
@@ -41,6 +44,9 @@ def make_context(ctx=None, **kwargs):
         "fileSet": "cr:fileSet",
         "format": "cr:format",
         "includes": "cr:includes",
+        "isArray": (
+            "cr:isArray" if ctx is not None and ctx.is_latest_version() else None
+        ),
         "isLiveDataset": "cr:isLiveDataset",
         "jsonPath": "cr:jsonPath",
         "key": "sc:key" if ctx is not None and ctx.is_v0() else "cr:key",
