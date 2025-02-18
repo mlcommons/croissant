@@ -40,18 +40,14 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
-    array_shape: list[int] | None = mlc_dataclasses.jsonld_field(
-        cardinality="MANY",
+    array_shape: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
-            "The shape of the array, where -1 indicates dimensions of"
-            " unknown/unspecified size. [-1] represents a simple list. If specified,"
-            " then `is_array` must be True."
+            "The shape of the array as a comma-separated string.  -1 indicates "
+            " dimensions of unknown/unspecified size. (-1,) represents a simple list."
+            " If specified,  then `is_array` must be True."
         ),
-        from_jsonld=lambda _, array_shape_str: [
-            int(dim) for dim in array_shape_str.split(",")
-        ],
-        to_jsonld=lambda _, array_shape: ",".join([str(dim) for dim in array_shape]),
+        input_types=[SDO.Text],
         url=constants.ML_COMMONS_ARRAY_SHAPE,
     )
     description: str | None = mlc_dataclasses.jsonld_field(
@@ -161,8 +157,7 @@ class Field(Node):
             self.add_error(
                 f"Field {self.uuid} defines `array_shape`, but `is_array` is False."
             )
-        if self.is_array and not self.array_shape:
-            self.array_shape = [-1]
+        self.array_shape_tuple
 
     def _standardize_data_types(self):
         """Converts data_types to a list of rdflib.URIRef."""
@@ -172,6 +167,14 @@ class Field(Node):
         if not isinstance(data_types, list):
             data_types = [data_types]
         self.data_types = [term.URIRef(data_type) for data_type in data_types]
+
+    @property
+    def array_shape_tuple(self) -> tuple[int]:
+        if self.is_array and not self.array_shape:
+            return (-1,)
+        elif self.array_shape:
+            return tuple(int(dim) for dim in self.array_shape.split(","))
+        return None
 
     @property
     def data_type(self) -> type | term.URIRef | None:

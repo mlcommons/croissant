@@ -28,6 +28,14 @@ def test_checks_are_performed(conforms_to, field_uuid):
         validate_name_mock.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    ["array_shape", "array_shape_tuple"], [["1,2,3", (1, 2, 3)], [None, (-1,)]]
+)
+def test_array_shape_tuple(array_shape, array_shape_tuple):
+    field = create_test_field(is_array=True, array_shape=array_shape)
+    assert field.array_shape_tuple == array_shape_tuple
+
+
 def test_data_type():
     # data_types can be a string:
     assert create_test_field(data_types=DataType.BOOL).data_types == [DataType.BOOL]
