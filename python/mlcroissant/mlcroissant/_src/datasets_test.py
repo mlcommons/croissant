@@ -91,7 +91,7 @@ def test_static_analysis_1_0(folder):
         "mlfield_bad_array_definition",
     ],
 )
-def test_static_analysis_1_0(folder):
+def test_static_analysis_1_1(folder):
     base_path = epath.Path(__file__).parent / "tests/graphs/1.1"
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
