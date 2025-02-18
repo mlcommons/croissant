@@ -12,7 +12,7 @@ from mlcroissant._src.tests.versions import parametrize_version
 
 # If this test fails, you probably manually updated a dataset in datasets/.
 # Please, use scripts/migrations/migrate.py to migrate datasets.
-pytest.mark.parametrize("version", ["0.8", "1.0", "1.1"])
+@pytest.mark.parametrize("version", ["0.8", "1.0", "1.1"])
 def test_expand_and_reduce_json_ld(version):
     dataset_folder = (
         epath.Path(__file__).parent.parent.parent.parent.parent.parent
