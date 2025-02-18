@@ -169,7 +169,7 @@ class Field(Node):
         self.data_types = [term.URIRef(data_type) for data_type in data_types]
 
     @property
-    def array_shape_tuple(self) -> tuple[int]:
+    def array_shape_tuple(self) -> tuple[int, ...] | None:
         if self.is_array and not self.array_shape:
             return (-1,)
         elif self.array_shape:

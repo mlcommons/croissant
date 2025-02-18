@@ -75,11 +75,24 @@ def test_static_analysis_0_8(folder):
     "folder",
     [
         "distribution_bad_id",
-        "mlfield_bad_array_definition",
     ],
 )
 def test_static_analysis_1_0(folder):
     base_path = epath.Path(__file__).parent / "tests/graphs/1.0"
+    with pytest.raises(ValidationError) as error_info:
+        datasets.Dataset(base_path / f"{folder}/metadata.json")
+    assert str(error_info.value) == get_error_msg(base_path / folder)
+
+
+# Tests for 1.1-datasets only.
+@pytest.mark.parametrize(
+    "folder",
+    [
+        "mlfield_bad_array_definition",
+    ],
+)
+def test_static_analysis_1_0(folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs/1.1"
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
