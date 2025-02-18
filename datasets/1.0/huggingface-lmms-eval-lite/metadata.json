@@ -42,12 +42,7 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform",
-    "arrayShape": "cr:arrayShape",
-    "isArray": "cr:isArray",
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation"
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "LMMs-Eval-Lite",

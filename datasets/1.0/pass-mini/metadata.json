@@ -42,9 +42,7 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform",
-    "arrayShape": "cr:arrayShape",
-    "isArray": "cr:isArray"
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "Mini-PASS",
