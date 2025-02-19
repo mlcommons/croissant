@@ -170,7 +170,7 @@ class Field(Node):
 
     @property
     def array_shape_tuple(self) -> tuple[int, ...] | None:
-        """"Converts self.array_shape into a tuple of integers."""
+        """Converts self.array_shape into a tuple of integers."""
         if self.is_array and not self.array_shape:
             return (-1,)
         elif self.array_shape:
