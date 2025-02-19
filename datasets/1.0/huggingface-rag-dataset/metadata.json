@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -43,6 +45,35 @@
     "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
+  "name": "rag-mini-wikipedia",
+  "description": "In this huggingface discussion you can share what you used the dataset for.\nDerives from https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download we generated our own subset using generate.py.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "RAG Datasets",
+    "url": "https://huggingface.co/rag-datasets"
+  },
+  "keywords": [
+    "question-answering",
+    "sentence-similarity",
+    "English",
+    "cc-by-3.0",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "rag",
+    "wikipedia",
+    "open-domain",
+    "information-retrieval",
+    "dpr"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
+  "url": "https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -79,13 +110,13 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "question-answer_splits",
+      "name": "question-answer_splits",
+      "description": "Splits for the question-answer config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "question-answer_splits/split_name"
       },
-      "@id": "question-answer_splits",
-      "name": "question-answer_splits",
-      "description": "Splits for the question-answer config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -111,6 +142,11 @@
           "name": "question-answer/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "question-answer_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-question-answer"
@@ -120,11 +156,6 @@
             },
             "transform": {
               "regex": "question\\-answer/(?:partial-)?(test)/.+parquet$"
-            }
-          },
-          "references": {
-            "field": {
-              "@id": "question-answer_splits/split_name"
             }
           }
         },
@@ -177,13 +208,13 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "text-corpus_splits",
+      "name": "text-corpus_splits",
+      "description": "Splits for the text-corpus config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "text-corpus_splits/split_name"
       },
-      "@id": "text-corpus_splits",
-      "name": "text-corpus_splits",
-      "description": "Splits for the text-corpus config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -209,6 +240,11 @@
           "name": "text-corpus/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "text-corpus_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-text-corpus"
@@ -218,11 +254,6 @@
             },
             "transform": {
               "regex": "text\\-corpus/(?:partial-)?(passages)/.+parquet$"
-            }
-          },
-          "references": {
-            "field": {
-              "@id": "text-corpus_splits/split_name"
             }
           }
         },
@@ -258,34 +289,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "name": "rag-mini-wikipedia",
-  "description": "In this huggingface discussion you can share what you used the dataset for.\nDerives from https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download we generated our own subset using generate.py.\n",
-  "creator": {
-    "@type": "sc:Organization",
-    "name": "RAG Datasets",
-    "url": "https://huggingface.co/rag-datasets"
-  },
-  "keywords": [
-    "question-answering",
-    "sentence-similarity",
-    "English",
-    "cc-by-3.0",
-    "1K - 10K",
-    "parquet",
-    "Text",
-    "Datasets",
-    "pandas",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US",
-    "rag",
-    "wikipedia",
-    "open-domain",
-    "information-retrieval",
-    "dpr"
-  ],
-  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
-  "url": "https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia"
+  ]
 }

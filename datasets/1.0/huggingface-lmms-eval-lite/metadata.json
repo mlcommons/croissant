@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -43,6 +45,22 @@
     "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
+  "name": "LMMs-Eval-Lite",
+  "description": "lmms-lab/LMMs-Eval-Lite dataset hosted on Hugging Face and contributed by the HF Datasets community",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "keywords": [
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Text",
+    "Time-series",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "url": "https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -244,13 +262,13 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "ai2d_splits",
+      "name": "ai2d_splits",
+      "description": "Splits for the ai2d config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "ai2d_splits/split_name"
       },
-      "@id": "ai2d_splits",
-      "name": "ai2d_splits",
-      "description": "Splits for the ai2d config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -276,6 +294,11 @@
           "name": "ai2d/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "ai2d_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-ai2d"
@@ -285,11 +308,6 @@
             },
             "transform": {
               "regex": "ai2d/(?:partial-)?(lite)/.+parquet$"
-            }
-          },
-          "references": {
-            "field": {
-              "@id": "ai2d_splits/split_name"
             }
           }
         },
@@ -314,6 +332,7 @@
           "name": "ai2d/options",
           "description": "Column 'options' from the Hugging Face parquet file.",
           "dataType": "sc:Text",
+          "repeated": true,
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-ai2d"
@@ -321,8 +340,7 @@
             "extract": {
               "column": "options"
             }
-          },
-          "repeated": true
+          }
         },
         {
           "@type": "cr:Field",
@@ -361,13 +379,13 @@
     },
     {
       "@type": "cr:RecordSet",
+      "@id": "gqa_splits",
+      "name": "gqa_splits",
+      "description": "Splits for the gqa config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "gqa_splits/split_name"
       },
-      "@id": "gqa_splits",
-      "name": "gqa_splits",
-      "description": "Splits for the gqa config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -393,6 +411,11 @@
           "name": "gqa/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "gqa_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-gqa"
@@ -402,11 +425,6 @@
             },
             "transform": {
               "regex": "gqa/(?:partial-)?(lite)/.+parquet$"
-            }
-          },
-          "references": {
-            "field": {
-              "@id": "gqa_splits/split_name"
             }
           }
         },
@@ -641,6 +659,7 @@
           "@id": "gqa/annotations",
           "name": "gqa/annotations",
           "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "repeated": true,
           "subField": [
             {
               "@type": "cr:Field",
@@ -774,14 +793,14 @@
                 }
               ]
             }
-          ],
-          "repeated": true
+          ]
         },
         {
           "@type": "cr:Field",
           "@id": "gqa/semantic",
           "name": "gqa/semantic",
           "description": "Column 'semantic' from the Hugging Face parquet file.",
+          "repeated": true,
           "subField": [
             {
               "@type": "cr:Field",
@@ -825,6 +844,7 @@
               "name": "gqa/semantic/dependencies",
               "description": "Column 'semantic' from the Hugging Face parquet file.",
               "dataType": "sc:Integer",
+              "repeated": true,
               "source": {
                 "fileSet": {
                   "@id": "parquet-files-for-config-gqa"
@@ -835,11 +855,9 @@
                 "transform": {
                   "jsonPath": "dependencies"
                 }
-              },
-              "repeated": true
+              }
             }
-          ],
-          "repeated": true
+          ]
         },
         {
           "@type": "cr:Field",
@@ -858,21 +876,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "name": "LMMs-Eval-Lite",
-  "description": "lmms-lab/LMMs-Eval-Lite dataset hosted on Hugging Face and contributed by the HF Datasets community",
-  "keywords": [
-    "1K - 10K",
-    "parquet",
-    "Image",
-    "Text",
-    "Time-series",
-    "Datasets",
-    "Dask",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US"
-  ],
-  "url": "https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite"
+  ]
 }

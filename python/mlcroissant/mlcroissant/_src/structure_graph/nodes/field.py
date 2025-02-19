@@ -40,6 +40,16 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
+    array_shape: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "The shape of the array as a comma-separated string.  -1 indicates "
+            " dimensions of unknown/unspecified size. (-1,) represents a simple list."
+            " If specified,  then `is_array` must be True."
+        ),
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_ARRAY_SHAPE,
+    )
     description: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
@@ -68,6 +78,16 @@ class Field(Node):
         ),
         input_types=[SDO.URL],
         url=constants.ML_COMMONS_EQUIVALENT_PROPERTY,
+    )
+    is_array: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "If true, then the Field is an array of values of type dataType. If"
+            " `array_shape` is not specified, it will default to (-1,), i.e. a"
+            " one-dimensional array of unknown shape."
+        ),
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_IS_ARRAY,
     )
     is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
@@ -101,7 +121,10 @@ class Field(Node):
     )
     repeated: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
-        description="If true, then the Field is a list of values of type dataType.",
+        description=(
+            "[DEPRECATED]. Please use `is_array` and `array_shape`. If true, then the"
+            " Field is a list of values of type dataType."
+        ),
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_REPEATED,
     )
@@ -130,6 +153,11 @@ class Field(Node):
         self.assert_has_mandatory_properties(uuid_field)
         self.source.check_source(self.add_error)
         self._standardize_data_types()
+        if self.array_shape and not self.is_array:
+            self.add_error(
+                f"Field {self.uuid} defines `array_shape`, but `is_array` is False."
+            )
+        self.array_shape_tuple
 
     def _standardize_data_types(self):
         """Converts data_types to a list of rdflib.URIRef."""
@@ -139,6 +167,21 @@ class Field(Node):
         if not isinstance(data_types, list):
             data_types = [data_types]
         self.data_types = [term.URIRef(data_type) for data_type in data_types]
+
+    @property
+    def array_shape_tuple(self) -> tuple[int, ...] | None:
+        """Converts self.array_shape into a tuple of integers."""
+        if self.is_array and not self.array_shape:
+            return (-1,)
+        elif self.array_shape:
+            try:
+                return tuple(int(dim) for dim in self.array_shape.split(","))
+            except ValueError:
+                self.add_error(
+                    f"Field {self.uuid}'s attribute array_shape `{self.array_shape}`"
+                    " cannot be parsed as a tuple of comma-separated values."
+                )
+        return None
 
     @property
     def data_type(self) -> type | term.URIRef | None:

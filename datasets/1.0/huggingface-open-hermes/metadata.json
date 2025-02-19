@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,7 +33,6 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
@@ -43,6 +45,25 @@
     "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
+  "name": "OpenHermes-2.5",
+  "description": "\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for Dataset Name\n\t\n\nThis is the dataset that made OpenHermes 2.5 and Nous Hermes 2 series of models.\nSupport me on GitHub sponsors <3 : https://github.com/sponsors/teknium1\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Details\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\nThe Open Hermes 2/2.5 and Nous Hermes 2 models have made significant advancements of SOTA LLM's over recent months, and are underpinned by this exact compilation and curation of many open source datasets and custom created synthetic\u2026 See the full description on the dataset page: https://huggingface.co/datasets/teknium/OpenHermes-2.5.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "keywords": [
+    "English",
+    "1M - 10M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "Synthetic",
+    "GPT-4",
+    "Distillation",
+    "Compilation"
+  ],
+  "url": "https://huggingface.co/datasets/teknium/OpenHermes-2.5",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -243,6 +264,7 @@
           "name": "default/hash",
           "description": "Column 'hash' from the Hugging Face parquet file.",
           "dataType": "sc:Integer",
+          "repeated": true,
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -250,8 +272,7 @@
             "extract": {
               "column": "hash"
             }
-          },
-          "repeated": true
+          }
         },
         {
           "@type": "cr:Field",
@@ -300,24 +321,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "name": "OpenHermes-2.5",
-  "description": "\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for Dataset Name\n\t\n\nThis is the dataset that made OpenHermes 2.5 and Nous Hermes 2 series of models.\nSupport me on GitHub sponsors \u003C3 : https://github.com/sponsors/teknium1\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Details\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\nThe Open Hermes 2/2.5 and Nous Hermes 2 models have made significant advancements of SOTA LLM's over recent months, and are underpinned by this exact compilation and curation of many open source datasets and custom created synthetic… See the full description on the dataset page: https://huggingface.co/datasets/teknium/OpenHermes-2.5.",
-  "keywords": [
-    "English",
-    "1M - 10M",
-    "json",
-    "Text",
-    "Datasets",
-    "pandas",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US",
-    "Synthetic",
-    "GPT-4",
-    "Distillation",
-    "Compilation"
-  ],
-  "url": "https://huggingface.co/datasets/teknium/OpenHermes-2.5"
+  ]
 }

@@ -27,6 +27,7 @@ def ML_COMMONS(ctx) -> rdflib.Namespace:
         return ML_COMMONS_V_1_0
 
 
+ML_COMMONS_ARRAY_SHAPE = lambda ctx: ML_COMMONS(ctx).arrayShape
 ML_COMMONS_CITE_AS = lambda ctx: (
     SCHEMA_ORG_CITATION if ctx.is_v0() else ML_COMMONS(ctx).citeAs
 )
@@ -48,6 +49,7 @@ ML_COMMONS_FILE_SET = lambda ctx: ML_COMMONS(ctx).fileSet
 # ML_COMMONS.format is understood as the `format` method on the class Namespace.
 ML_COMMONS_FORMAT = lambda ctx: ML_COMMONS(ctx)["format"]
 ML_COMMONS_INCLUDES = lambda ctx: ML_COMMONS(ctx).includes
+ML_COMMONS_IS_ARRAY = lambda ctx: ML_COMMONS(ctx).isArray
 ML_COMMONS_IS_ENUMERATION = lambda ctx: ML_COMMONS(ctx).isEnumeration
 ML_COMMONS_IS_LIVE_DATASET = lambda ctx: ML_COMMONS(ctx).isLiveDataset
 ML_COMMONS_JSON_PATH = lambda ctx: ML_COMMONS(ctx).jsonPath
@@ -148,6 +150,7 @@ SCHEMA_ORG_FILE_SET = lambda ctx: (
 SCHEMA_ORG_MD5 = lambda ctx: SCHEMA_ORG.md5 if ctx.is_v0() else ML_COMMONS(ctx)["md5"]
 
 TO_CROISSANT = lambda ctx: {
+    ML_COMMONS_ARRAY_SHAPE(ctx): "array_shape",
     ML_COMMONS_CITE_AS(ctx): "cite_as",
     ML_COMMONS_COLUMN(ctx): "csv_column",
     ML_COMMONS_DATA_TYPE(ctx): "data_type",
@@ -157,6 +160,7 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_FILE_PROPERTY(ctx): "file_property",
     ML_COMMONS_FORMAT(ctx): "format",
     ML_COMMONS_INCLUDES(ctx): "includes",
+    ML_COMMONS_IS_ARRAY(ctx): "is_array",
     ML_COMMONS_IS_LIVE_DATASET(ctx): "is_live_dataset",
     ML_COMMONS_JSON_PATH(ctx): "json_path",
     ML_COMMONS_REFERENCES(ctx): "references",
