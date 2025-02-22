@@ -7,5 +7,5 @@ python-magic
 rdflib
 requests
 streamlit
-streamlit-nested-layout
+streamlit-nested-layout==0.1.4
 twisted
