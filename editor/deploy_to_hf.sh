@@ -2,6 +2,12 @@ HF_REPO=/tmp/hf-croissant
 echo "Deleting $HF_REPO..."
 rm -rf ${HF_REPO}
 git clone git@hf.co:spaces/marcenacp/croissant-editor ${HF_REPO}
+streamlit_version_in_hf=$(grep -oP 'sdk_version: \K[0-9]+\.[0-9]+\.[0-9]+' ${HF_REPO}/README.md)
+streamlit_version_in_gh=$(grep -oP 'streamlit\=\=\K[0-9]+\.[0-9]+\.[0-9]+' requirements.txt)
+if [ "$streamlit_version_in_hf" != "$streamlit_version_in_gh" ]; then
+  echo "ERROR: Versions of Streamlit in the requirements.txt and ${HF_REPO}/README.md should be the same."
+  exit 1
+fi
 echo "Copying files from $PWD to $HF_REPO..."
 rsync -aP --exclude="README.md" --exclude="*node_modules*" --exclude="cypress/*" --exclude="*__pycache__*" . ${HF_REPO}
 cd ${HF_REPO}
