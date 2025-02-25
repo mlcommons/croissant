@@ -1,0 +1,233 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "AnonymousSub/recipe_RL_data_roberta-base - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/steps",
+          "name": "default/steps",
+          "description": "Column 'steps' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "isArray": true,
+          "arrayShape": "-1,-1",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "steps"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/step_attn_masks",
+          "name": "default/step_attn_masks",
+          "description": "Column 'step_attn_masks' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "isArray": true,
+          "arrayShape": "-1,-1",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "step_attn_masks"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/rewards",
+          "name": "default/rewards",
+          "description": "Column 'rewards' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "isArray": true,
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "rewards"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/actions",
+          "name": "default/actions",
+          "description": "Column 'actions' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "isArray": true,
+          "arrayShape": "-1,-1",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "actions"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/dones",
+          "name": "default/dones",
+          "description": "Column 'dones' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "isArray": true,
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "dones"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "recipe_RL_data_roberta-base",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tStructure\n\t\n\n\nConsists of 5 fields\nEach row corresponds to a policy - sequence of actions, given an initial \u003CSTART\u003E state, and corresponding rewards at each step.\n\n\n\t\n\t\t\n\t\n\t\n\t\tFields\n\t\n\nsteps, step_attn_masks, rewards, actions, dones\n\n\t\n\t\t\n\t\n\t\n\t\tField descriptions\n\t\n\n\nsteps (List of lists of Ints) - tokenized step tokens of all the steps in the policy sequence (here we use the roberta-base tokenizer, as roberta-base would be used to encode each… See the full description on the dataset page: https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base.",
+  "alternateName": [
+    "AnonymousSub/recipe_RL_data_roberta-base",
+    "recipe RL roberta base"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Anonymous",
+    "url": "https://huggingface.co/AnonymousSub"
+  },
+  "keywords": [
+    "monolingual",
+    "English",
+    "1M - 10M",
+    "parquet",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "🇺🇸 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/undefined/",
+  "url": "https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base"
+}
