@@ -2,10 +2,12 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
@@ -17,6 +19,10 @@
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -24,6 +30,7 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
+    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -84,11 +91,9 @@
           "dataType": "sc:Text"
         }
       ],
-      "data": [
-        {
-          "default_splits/split_name": "train"
-        }
-      ]
+      "data": {
+        "default_splits/split_name": "train"
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -141,9 +146,9 @@
           "@id": "default/step_attn_masks",
           "name": "default/step_attn_masks",
           "description": "Column 'step_attn_masks' from the Hugging Face parquet file.",
+          "arrayShape": "-1,-1",
           "dataType": "sc:Integer",
           "isArray": true,
-          "arrayShape": "-1,-1",
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -174,9 +179,9 @@
           "@id": "default/actions",
           "name": "default/actions",
           "description": "Column 'actions' from the Hugging Face parquet file.",
+          "arrayShape": "-1,-1",
           "dataType": "sc:Integer",
           "isArray": true,
-          "arrayShape": "-1,-1",
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -208,15 +213,6 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "name": "recipe_RL_data_roberta-base",
   "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tStructure\n\t\n\n\nConsists of 5 fields\nEach row corresponds to a policy - sequence of actions, given an initial \u003CSTART\u003E state, and corresponding rewards at each step.\n\n\n\t\n\t\t\n\t\n\t\n\t\tFields\n\t\n\nsteps, step_attn_masks, rewards, actions, dones\n\n\t\n\t\t\n\t\n\t\n\t\tField descriptions\n\t\n\n\nsteps (List of lists of Ints) - tokenized step tokens of all the steps in the policy sequence (here we use the roberta-base tokenizer, as roberta-base would be used to encode each… See the full description on the dataset page: https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base.",
-  "alternateName": [
-    "AnonymousSub/recipe_RL_data_roberta-base",
-    "recipe RL roberta base"
-  ],
-  "creator": {
-    "@type": "Person",
-    "name": "Anonymous",
-    "url": "https://huggingface.co/AnonymousSub"
-  },
   "keywords": [
     "monolingual",
     "English",
