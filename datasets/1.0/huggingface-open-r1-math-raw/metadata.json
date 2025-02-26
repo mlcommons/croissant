@@ -1,0 +1,349 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/open-r1/OpenR1-Math-Raw/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "open-r1/OpenR1-Math-Raw - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/problem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "problem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/solution",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "solution"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/problem_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "problem_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/question_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "question_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/problem_is_valid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "problem_is_valid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/solution_is_valid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "solution_is_valid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/synthetic",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "synthetic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/generations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "generations"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/generations_count",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "generations_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/correctness",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/correctness/llama_verification",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "correctness"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/correctness/math_verify_answer",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "correctness"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/correctness/math_verify_reparsed_answer",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "correctness"
+                }
+              },
+              "repeated": true
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/reparsed_answers",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },open r1 math raw datas
+            "extract": {
+              "column": "reparsed_answers"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "OpenR1-Math-Raw",
+  "description": "\n\t\n\t\t\n\t\tOpenR1-Math-Raw\n\t\n\n\n\t\n\t\t\n\t\tDataset description\n\t\n\nOpenR1-Math-Raw is a large-scale dataset for mathematical reasoning. It consists of 516k math problems sourced from AI-MO/NuminaMath-1.5 with 1 to 8 reasoning traces generated by DeepSeek R1. \nThe traces were verified using Math Verify and LLM-as-Judge based verifier (Llama-3.3-70B-Instruct)\nThe dataset contains:\n\n516,499 problems\n1,209,403 R1-generated solutions, with 2.3 solutions per problem on average\nre-parsed answers… See the full description on the dataset page: https://huggingface.co/datasets/open-r1/OpenR1-Math-Raw.",
+  "alternateName": [
+    "open-r1/OpenR1-Math-Raw"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Open R1",
+    "url": "https://huggingface.co/open-r1"
+  },
+  "keywords": [
+    "English",
+    "apache-2.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "🇺🇸 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/open-r1/OpenR1-Math-Raw"
+}
