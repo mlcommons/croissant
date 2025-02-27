@@ -193,6 +193,8 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
                 field.description = new_value
             elif new_field == FieldDataFrame.DATA_TYPE:
                 field.data_types = [str_to_mlc_data_type(new_value)]
+            elif new_field == FieldDataFrame.EQUIVALENT_PROPERTY:
+                field.equivalentProperty = new_value
     for added_row in result["added_rows"]:
         data_type = str_to_mlc_data_type(added_row.get(FieldDataFrame.DATA_TYPE))
         field = Field(
@@ -200,6 +202,7 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
             name=added_row.get(FieldDataFrame.NAME),
             description=added_row.get(FieldDataFrame.DESCRIPTION),
             data_types=[data_type],
+            equivalentProperty=added_row.get(FieldDataFrame.EQUIVALENT_PROPERTY),
             source=mlc.Source(),
             references=mlc.Source(),
         )
@@ -217,6 +220,7 @@ class FieldDataFrame:
     NAME = "Field name"
     DESCRIPTION = "Field description"
     DATA_TYPE = "Data type"
+    EQUIVALENT_PROPERTY = "Property IRI"
     SOURCE_UID = "Source"
     SOURCE_EXTRACT = "Source extract"
     SOURCE_TRANSFORM = "Source transform"
@@ -272,6 +276,19 @@ def _render_left_panel():
                 value=record_set.description,
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.DESCRIPTION, record_set, key),
+            )
+            key = f"{prefix}-datatypes"
+            st.text_input(
+                "Data types",
+                placeholder="Provide comma-separated data types for the RecordSet.",
+                help=(
+                    "Records in this set are instances of the corresponding data types"
+                    " (comma-separated)."
+                ),
+                key=key,
+                value=", ".join(record_set.data_types) if record_set.data_types else None,
+                on_change=handle_record_set_change,
+                args=(RecordSetEvent.DATA_TYPES, record_set, key),
             )
             key = f"{prefix}-is-enumeration"
             st.checkbox(
@@ -350,6 +367,9 @@ def _render_left_panel():
                     FieldDataFrame.NAME: names,
                     FieldDataFrame.DESCRIPTION: descriptions,
                     FieldDataFrame.DATA_TYPE: data_types,
+                    FieldDataFrame.EQUIVALENT_PROPERTY: [
+                        field.equivalentProperty for field in record_set.fields
+                    ],
                 },
                 dtype=np.str_,
             )
@@ -385,6 +405,11 @@ def _render_left_panel():
                         help="The Croissant type",
                         options=STR_DATA_TYPES,
                         required=True,
+                    ),
+                    FieldDataFrame.EQUIVALENT_PROPERTY: st.column_config.TextColumn(
+                        FieldDataFrame.EQUIVALENT_PROPERTY,
+                        help="Equivalent property IRI for the field",
+                        required=False,
                     ),
                 },
                 on_change=_handle_fields_change,
@@ -469,7 +494,7 @@ def _render_right_panel():
         else:
             for field_key, field in enumerate(record_set.fields):
                 prefix = f"{record_set_key}-{field.name}-{field_key}"
-                col1, col2, col3 = st.columns([1, 1, 1])
+                col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 
                 key = f"{prefix}-name"
                 if field.ctx.is_v0():
@@ -520,6 +545,16 @@ def _render_right_panel():
                     ),
                     on_change=handle_field_change,
                     args=(FieldEvent.DATA_TYPE, field, key),
+                )
+                key = f"{prefix}-properties"
+                col4.text_input(
+                    "Property IRI",
+                    placeholder="Provide an equivalent property IRI for the RecordSet.",
+                    help="Equivalent property IRI describing the field.",
+                    key=key,
+                    on_change=handle_field_change,
+                    value=field.equivalentProperty,
+                    args=(FieldEvent.EQUIVALENT_PROPERTY, field, key),
                 )
                 possible_sources = _get_possible_sources(metadata)
                 render_source(record_set, field, possible_sources)
