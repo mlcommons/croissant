@@ -18,6 +18,9 @@ class CroissantVersion(enum.Enum):
 
     V_0_8 = "http://mlcommons.org/croissant/0.8"
     V_1_0 = "http://mlcommons.org/croissant/1.0"
+    V_1_1 = "http://mlcommons.org/croissant/1.1"
+
+    LATEST_VERSION = V_1_1
 
     @classmethod
     def from_jsonld(cls, ctx: Context, jsonld: Any) -> CroissantVersion:
@@ -87,3 +90,11 @@ class Context:
     def is_v0(self):
         """Whether the JSON-LD conforms to Croissant v0.8 or lower."""
         return self.conforms_to < CroissantVersion.V_1_0
+
+    def is_v1_1(self):
+        """Whether the JSON-LD conforms to Croissant v1.1 or higher."""
+        return self.conforms_to >= CroissantVersion.V_1_1
+
+    def is_latest_version(self):
+        """Whether the JSON-LD conforms to the latest supported in mlcroissant."""
+        return self.conforms_to == CroissantVersion.LATEST_VERSION

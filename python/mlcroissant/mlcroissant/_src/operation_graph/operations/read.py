@@ -110,7 +110,11 @@ class Read(Operation):
                 return pd.read_json(file, lines=True)
             elif encoding_format == EncodingFormat.PARQUET:
                 try:
-                    return pd.read_parquet(file)
+                    df = pd.read_parquet(file)
+                    # Sometimes the author already set an index in Parquet, so we want
+                    # to reset it to always have the same format.
+                    df.reset_index(inplace=True)
+                    return df
                 except ImportError as e:
                     raise ImportError(
                         "Missing dependency to read Parquet files. pyarrow is not"

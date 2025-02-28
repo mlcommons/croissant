@@ -84,6 +84,21 @@ def test_static_analysis_1_0(folder):
     assert str(error_info.value) == get_error_msg(base_path / folder)
 
 
+# Tests for 1.1-datasets only.
+@pytest.mark.parametrize(
+    "folder",
+    [
+        "mlfield_bad_array_definition",
+        "mlfield_bad_array_shape",
+    ],
+)
+def test_static_analysis_1_1(folder):
+    base_path = epath.Path(__file__).parent / "tests/graphs/1.1"
+    with pytest.raises(ValidationError) as error_info:
+        datasets.Dataset(base_path / f"{folder}/metadata.json")
+    assert str(error_info.value) == get_error_msg(base_path / folder)
+
+
 def load_records_and_test_equality(
     version: str,
     dataset_name: str,

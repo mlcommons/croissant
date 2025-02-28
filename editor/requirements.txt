@@ -6,6 +6,6 @@ pytest
 python-magic
 rdflib
 requests
-streamlit
-streamlit-nested-layout
+streamlit==1.39.0  # streamlit-nested-layout is only tested on 1.39.0
+streamlit-nested-layout==0.1.4
 twisted

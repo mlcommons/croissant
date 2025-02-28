@@ -171,6 +171,7 @@ jobs:
             mypy \
             networkx \
             pandas \
+            pillow \
             pyarrow \
             pytest \
             pytype \

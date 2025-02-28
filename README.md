@@ -146,7 +146,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
 - [Join](https://mlcommons.org/community/subscribe/) the mailing list
 - Attend Croissant meetings (please joint the list to automatically receive the invite)
 - [File issues for](https://github.com/mlcommons/croissant) bugs for feature requests
-- [Contribute code](https://github.com/mlcommons/croissant) (please sign the MLCommons Association CLA first!)
+- [Contribute to the code](https://github.com/mlcommons/croissant). To merge PRs, you will need to sign the MLCommons Association CLA at: https://mlcommons.org/community/subscribe/
 
 ## Integrations
 
