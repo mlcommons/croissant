@@ -2,6 +2,7 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -24,6 +25,7 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
+    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -84,11 +86,9 @@
           "dataType": "sc:Text"
         }
       ],
-      "data": [
-        {
-          "default_splits/split_name": "train"
-        }
-      ]
+      "data": {
+        "default_splits/split_name": "train"
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -250,6 +250,5 @@
     "LeRobot"
   ],
   "license": "https://choosealicense.com/licenses/apache-2.0/",
-  "sameAs": "",
   "url": "https://huggingface.co/datasets/pollen-robotics/apple_storage"
 }
