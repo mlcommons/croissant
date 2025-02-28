@@ -22,7 +22,7 @@ You can debug the tests in Github Actions because failed screenshots are uploade
 
 You may need to install [`libmagic`](https://pypi.org/project/python-magic).
 
-# Create a custom component
+## Create a custom component
 
 Custom components are in `components/`.
 
@@ -102,7 +102,7 @@ st.write(node)
 
 - Build the JavaScript locally.
 
-```
+```bash
 cd components/tree/frontend/
 npm run build
 ```
@@ -114,7 +114,7 @@ npm run build
 
 Change `TAG` below and execute the following commands:
 
-```
+```bash
 TAG=0.0.1
 IMAGE=croissant-editor
 docker build -t ${IMAGE} .
