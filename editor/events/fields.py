@@ -61,6 +61,7 @@ class FieldEvent(enum.Enum):
     ID = "ID"
     DESCRIPTION = "DESCRIPTION"
     DATA_TYPE = "DATA_TYPE"
+    EQUIVALENT_PROPERTY = "EQUIVALENT_PROPERTY"
     SOURCE = "SOURCE"
     SOURCE_EXTRACT = "SOURCE_EXTRACT"
     SOURCE_EXTRACT_COLUMN = "SOURCE_EXTRACT_COLUMN"
@@ -95,6 +96,8 @@ def handle_field_change(
             metadata.rename_id(old_id=old_id, new_id=new_id)
     elif change == FieldEvent.DESCRIPTION:
         field.description = value
+    elif change == FieldEvent.EQUIVALENT_PROPERTY:
+        field.equivalentProperty = value
     elif change == FieldEvent.DATA_TYPE:
         field.data_types = [str_to_mlc_data_type(value)]
     elif change == FieldEvent.SOURCE:
