@@ -1,5 +1,6 @@
 """data_types module."""
 
+import numpy as np
 import pandas as pd
 from rdflib import term
 
@@ -25,7 +26,14 @@ EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
     DataType.BOOL: bool,
     DataType.DATE: pd.Timestamp,
     DataType.FLOAT: float,
+    DataType.FLOAT16: np.float16,
+    DataType.FLOAT32: np.float32,
+    DataType.FLOAT64: np.float64,
     DataType.INTEGER: int,
+    DataType.INT8: np.int8,
+    DataType.INT16: np.int16,
+    DataType.INT32: np.int32,
+    DataType.INT64: np.int64,
     DataType.TEXT: bytes,
     DataType.URL: bytes,
 }

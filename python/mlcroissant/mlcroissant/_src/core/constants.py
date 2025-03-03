@@ -233,8 +233,15 @@ class DataType:
     BOUNDING_BOX = ML_COMMONS_V_1_0.BoundingBox
     DATE = namespace.SDO.Date
     FLOAT = namespace.SDO.Float
+    FLOAT16 = ML_COMMONS_V_1_0.Float16
+    FLOAT32 = ML_COMMONS_V_1_0.Float32
+    FLOAT64 = ML_COMMONS_V_1_0.Float64
     IMAGE_OBJECT = namespace.SDO.ImageObject
     INTEGER = namespace.SDO.Integer
+    INT8 = ML_COMMONS_V_1_0.Int8
+    INT16 = ML_COMMONS_V_1_0.Int16
+    INT32 = ML_COMMONS_V_1_0.Int32
+    INT64 = ML_COMMONS_V_1_0.Int64
     SPLIT = ML_COMMONS_V_1_0.Split
     TEXT = namespace.SDO.Text
     URL = namespace.SDO.URL
