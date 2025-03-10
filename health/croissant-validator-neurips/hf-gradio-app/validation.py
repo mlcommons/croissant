@@ -3,7 +3,7 @@ import traceback
 import mlcroissant as mlc
 import func_timeout
 
-ONE_MINUTE = 60  # seconds
+WAIT_TIME = 5 * 60  # seconds
 
 def validate_json(file_path):
     """Validate that the file is proper JSON."""
@@ -45,15 +45,15 @@ def validate_records(json_data):
         
         for record_set in record_sets:
             try:
-                records = dataset.records(record_set=record_set.name)
-                _ = func_timeout.func_timeout(ONE_MINUTE, lambda: next(iter(records)))
-                results.append(f"✅ Record set '{record_set.name}' passed validation.")
+                records = dataset.records(record_set=record_set.uuid)
+                _ = func_timeout.func_timeout(WAIT_TIME, lambda: next(iter(records)))
+                results.append(f"✅ Record set '{record_set.uuid}' passed validation.")
             except func_timeout.exceptions.FunctionTimedOut:
-                error_message = f"❌ Record set '{record_set.name}' generation took too long (>60s)"
+                error_message = f"❌ Record set '{record_set.uuid}' generation took too long (>60s)"
                 return False, error_message
             except Exception as e:
                 error_details = traceback.format_exc()
-                error_message = f"❌ Record set '{record_set.name}' failed: {str(e)}\n\n{error_details}"
+                error_message = f"❌ Record set '{record_set.uuid}' failed: {str(e)}\n\n{error_details}"
                 return False, error_message
         
         return True, "\n".join(results)
