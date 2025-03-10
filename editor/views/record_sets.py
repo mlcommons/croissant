@@ -220,7 +220,7 @@ class FieldDataFrame:
     NAME = "Field name"
     DESCRIPTION = "Field description"
     DATA_TYPE = "Data type"
-    EQUIVALENT_PROPERTY = "Property IRI"
+    EQUIVALENT_PROPERTY = "Equivalent property"
     SOURCE_UID = "Source"
     SOURCE_EXTRACT = "Source extract"
     SOURCE_TRANSFORM = "Source transform"
@@ -283,7 +283,7 @@ def _render_left_panel():
                 placeholder="Provide comma-separated data types for the RecordSet.",
                 help=(
                     "Records in this set are instances of the corresponding data types"
-                    " (comma-separated)."
+                    " (URL, comma-separated)."
                 ),
                 key=key,
                 value=", ".join(record_set.data_types) if record_set.data_types else None,
@@ -548,9 +548,9 @@ def _render_right_panel():
                 )
                 key = f"{prefix}-properties"
                 col4.text_input(
-                    "Property IRI",
-                    placeholder="Provide an equivalent property IRI for the RecordSet.",
-                    help="Equivalent property IRI describing the field.",
+                    "Equivalent Property (URL)",
+                    placeholder="Provide an equivalent property URL for the field.",
+                    help="Equivalent property URL describing the field.",
                     key=key,
                     on_change=handle_field_change,
                     value=field.equivalentProperty,
