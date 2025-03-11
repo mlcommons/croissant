@@ -37,7 +37,7 @@ def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: 
     elif event == RecordSetEvent.DESCRIPTION:
         record_set.description = value
     elif event == RecordSetEvent.DATA_TYPES:
-        record_set.data_types = [value.strip() for value in value.split(',')]
+        record_set.data_types = [value.strip() for value in value.split(",")]
     elif event == RecordSetEvent.IS_ENUMERATION:
         record_set.is_enumeration = value
     elif event == RecordSetEvent.HAS_DATA:
