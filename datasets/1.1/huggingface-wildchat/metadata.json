@@ -84,11 +84,9 @@
           "dataType": "sc:Text"
         }
       ],
-      "data": [
-        {
-          "default_splits/split_name": "train"
-        }
-      ]
+      "data": {
+        "default_splits/split_name": "train"
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -335,7 +333,6 @@
                 }
               }
             },
-            null,
             {
               "@type": "cr:Field",
               "@id": "default/conversation/toxic",
@@ -1536,33 +1533,6 @@
   "conformsTo": "http://mlcommons.org/croissant/1.1",
   "name": "WildChat-1M",
   "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for WildChat\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\nPaper: https://arxiv.org/abs/2405.01470\n\nInteractive Search Tool: https://wildvisualizer.com (paper)\n\nLicense: ODC-BY\n\nLanguage(s) (NLP): multi-lingual\n\nPoint of Contact: Yuntian Deng\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nWildChat is a collection of 1 million conversations between human users and ChatGPT, alongside demographic data, including state, country, hashed IP addresses, and request headers. We collected WildChat… See the full description on the dataset page: https://huggingface.co/datasets/allenai/WildChat-1M.",
-  "alternateName": [
-    "allenai/WildChat-1M",
-    "WildChat-1M"
-  ],
-  "creator": {
-    "@type": "Organization",
-    "name": "Ai2",
-    "url": "https://huggingface.co/allenai"
-  },
-  "keywords": [
-    "text-generation",
-    "question-answering",
-    "text2text-generation",
-    "odc-by",
-    "100K - 1M",
-    "parquet",
-    "Text",
-    "Datasets",
-    "Dask",
-    "Croissant",
-    "Polars",
-    "arxiv:2405.01470",
-    "arxiv:2409.03753",
-    "arxiv:2406.13706",
-    "🇺🇸 Region: US",
-    "instruction-finetuning"
-  ],
   "license": "https://choosealicense.com/licenses/odc-by/",
   "url": "https://huggingface.co/datasets/allenai/WildChat-1M"
 }
