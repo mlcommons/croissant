@@ -375,5 +375,33 @@ def test_extract_lines(separator):
     ],
 )
 def test_apply_transforms_fn(value, source, data_type, expected_value, repeated):
-    f = Field(id="test", name="test", data_types=data_type, source=source)
-    assert field.apply_transforms_fn(value, f, repeated=repeated) == expected_value
+    f = Field(
+        id="test", name="test", data_types=data_type, source=source, repeated=repeated
+    )
+    assert field.apply_transforms_fn(value, f) == expected_value
+
+
+def test_apply_multiple_transforms_fn():
+    source = Source(
+        transforms=[
+            Transform(json_path="repeated_content"),
+            Transform(json_path="content"),
+        ]
+    )
+    parent_field = Field(
+        id="parent", name="parent", repeated=True, data_types=DataType.TEXT
+    )
+    f = Field(
+        id="test",
+        name="test",
+        data_types=DataType.TEXT,
+        source=source,
+        parents=[parent_field],
+    )
+    value = [
+        {"repeated_content": {"content": "hello_1"}},
+        {"repeated_content": {"content": "hello_2"}},
+    ]
+    expected_value = ["hello_1", "hello_2"]
+    field.apply_transforms_fn(value, f)
+    assert field.apply_transforms_fn(value, f) == expected_value
