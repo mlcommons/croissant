@@ -298,6 +298,7 @@ def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, fil
         "1.1", dataset_name, record_set_name, num_records, filters
     )
 
+
 @pytest.mark.nonhermetic
 def test_load_from_huggingface():
     url = "https://huggingface.co/api/datasets/mnist/croissant"
