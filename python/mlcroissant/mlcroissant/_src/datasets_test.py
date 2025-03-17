@@ -234,20 +234,6 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
     )
 
 
-# Hermetic test cases for croissant >=1.1 only.
-@pytest.mark.parametrize(
-    ["dataset_name", "record_set_name", "num_records", "filters"],
-    [
-        ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
-        ["huggingface-recipe_RL_data_roberta-base/metadata.json", "default", 2, None],
-    ],
-)
-def test_hermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
-    load_records_and_test_equality(
-        "1.1", dataset_name, record_set_name, num_records, filters
-    )
-
-
 # Non-hermetic test cases (data from the internet).
 @pytest.mark.nonhermetic
 @parametrize_version()
@@ -273,7 +259,7 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
-# Non-hermetic test cases for croissant >=1.0 only (data from the internet).
+# Non-hermetic test cases for croissant 1.0 only (data from the internet).
 @pytest.mark.nonhermetic
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records", "filters"],
@@ -298,6 +284,19 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
         "1.0", dataset_name, record_set_name, num_records, filters
     )
 
+
+# Non-hermetic test cases for croissant >=1.1 only (data from the internet).
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records", "filters"],
+    [
+        ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
+        ["huggingface-recipe_RL_data_roberta-base/metadata.json", "default", 2, None],
+    ],
+)
+def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
+    load_records_and_test_equality(
+        "1.1", dataset_name, record_set_name, num_records, filters
+    )
 
 @pytest.mark.nonhermetic
 def test_load_from_huggingface():
