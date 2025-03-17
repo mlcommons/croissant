@@ -55,14 +55,7 @@ class FileSet(Node):
     includes: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
-        # default_factory=list,
         description="A list of glob patterns that specify the files to include.",
-        # from_jsonld=lambda _, includes: uuid_from_jsonld(includes),
-        # to_jsonld=lambda ctx, includes: [
-        #     formatted_uuid_to_json(ctx, uuid) for uuid in includes
-        # ],
-        # from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
-        # to_jsonld=formatted_uuid_to_json,
         input_types=[SDO.Text],
         url=lambda ctx: constants.ML_COMMONS_INCLUDES(ctx),
     )
