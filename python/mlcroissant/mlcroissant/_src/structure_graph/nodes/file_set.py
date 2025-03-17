@@ -24,7 +24,7 @@ class FileSet(Node):
             " the contentUrl is evaluated as a relative path within the container"
             " object"
         ),
-        from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
+        from_jsonld=lambda _, contained_in: uuid_from_jsonld(contained_in),
         to_jsonld=lambda ctx, contained_in: [
             formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
         ],
@@ -55,7 +55,14 @@ class FileSet(Node):
     includes: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
-        description="A glob pattern that specifies the files to include.",
+        # default_factory=list,
+        description="A list of glob patterns that specify the files to include.",
+        # from_jsonld=lambda _, includes: uuid_from_jsonld(includes),
+        # to_jsonld=lambda ctx, includes: [
+        #     formatted_uuid_to_json(ctx, uuid) for uuid in includes
+        # ],
+        # from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        # to_jsonld=formatted_uuid_to_json,
         input_types=[SDO.Text],
         url=lambda ctx: constants.ML_COMMONS_INCLUDES(ctx),
     )
