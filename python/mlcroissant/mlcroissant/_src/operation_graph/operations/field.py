@@ -72,7 +72,7 @@ def apply_transforms_fn(value: Any, field: Field) -> Any:
     if source is None:
         return value
     transforms = source.transforms
-    for transform in transforms:     
+    for transform in transforms:
         if isinstance(value, (list, np.ndarray)):
             value = [_apply_transform_fn(v, transform, field) for v in value]
         else:
