@@ -243,7 +243,7 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
         ["huggingface-wildchat/metadata.json", "default", 2, None],
     ],
 )
-def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
+def test_hermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
     load_records_and_test_equality(
         "1.1", dataset_name, record_set_name, num_records, filters
     )
