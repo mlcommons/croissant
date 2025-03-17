@@ -240,7 +240,7 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
     [
         ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
         ["huggingface-recipe_RL_data_roberta-base/metadata.json", "default", 2, None],
-        ["huggingface-wildchat", "default", 2, None],
+        ["huggingface-wildchat/metadata.json", "default", 2, None],
     ],
 )
 def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
