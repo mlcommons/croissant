@@ -161,6 +161,13 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
             return recursively_populate_jsonld(entry_node, id_to_node)
         else:
             return entry_node
+    elif isinstance(entry_node, (str, float, int, bool)):
+        return entry_node
+    if not isinstance(entry_node, dict):
+        raise ValueError(
+            "Unsupported type for entry_node. Please, open an issue on GitHub to"
+            f" handle: {type(entry_node)}"
+        )
     for key, value in entry_node.copy().items():
         if key == "@type" and isinstance(value, list):
             entry_node[key] = term.URIRef(value[0])
