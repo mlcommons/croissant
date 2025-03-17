@@ -28,14 +28,6 @@ def test_checks_are_performed(conforms_to, field_uuid):
         validate_name_mock.assert_called_once()
 
 
-def test_is_subfield():
-    parent = create_test_field(name="field")
-    sub_field = create_test_field(name="sub_field", parents=[parent])
-    parent.sub_fields = [sub_field]
-    assert sub_field.is_subfield
-    assert not parent.is_subfield
-
-
 @pytest.mark.parametrize(
     ["array_shape", "array_shape_tuple"], [["1,2,3", (1, 2, 3)], [None, (-1,)]]
 )

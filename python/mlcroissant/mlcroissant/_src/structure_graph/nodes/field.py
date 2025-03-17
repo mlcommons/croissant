@@ -233,12 +233,3 @@ class Field(Node):
         if parent:
             return parent
         raise ValueError(f"field={self} does not have any parent.")
-
-    @property
-    def is_subfield(self) -> bool:
-        """Whether the field is a subfield of another field."""
-        parent = super().parent
-        if parent and isinstance(parent, Field):
-            if parent.sub_fields:
-                return True
-        return False
