@@ -20,8 +20,18 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 def should_extract(encoding_format: str | None) -> bool:
     """Whether the encoding format should be extracted (zip or tar)."""
     return (
-        encoding_format == EncodingFormat.TAR or encoding_format == EncodingFormat.ZIP
+        encoding_format == EncodingFormat.TAR
+        or encoding_format == EncodingFormat.ZIP
+        or encoding_format == EncodingFormat.DIR
     )
+
+
+def _is_directory(source: epath.Path) -> bool:
+    return source.exists() and source.is_dir()
+
+
+def _soft_link(source: epath.Path, target: epath.Path) -> None:
+    os.symlink(source, target)
 
 
 def _extract_file(source: epath.Path, target: epath.Path) -> None:
@@ -29,6 +39,8 @@ def _extract_file(source: epath.Path, target: epath.Path) -> None:
     if zipfile.is_zipfile(source):
         with zipfile.ZipFile(source) as zip:
             zip.extractall(target)
+    elif _is_directory(source):
+        _soft_link(source, target)
     elif tarfile.is_tarfile(source):
         with tarfile.open(source) as tar:
             tar.extractall(target)
