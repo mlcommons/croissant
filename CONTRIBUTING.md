@@ -1,4 +1,4 @@
-## Contributing
+# Contributing
 
 The best way to contribute to the MLCommons is to get involved with one of our many project communities. You find more information about getting involved with MLCommons [here](https://mlcommons.org/en/get-involved/#getting-started). 
 
