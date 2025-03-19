@@ -124,7 +124,7 @@
           "@id": "default/observation.state",
           "name": "default/observation.state",
           "description": "Column 'observation.state' from the Hugging Face parquet file.",
-          "dataType": "cr:Float32",
+          "dataType": "sc:Float",
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
