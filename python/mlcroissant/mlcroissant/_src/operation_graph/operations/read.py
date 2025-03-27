@@ -28,6 +28,7 @@ try:
 except ModuleNotFoundError:
     scipy = None
 
+
 class ReadingMethod(enum.Enum):
     """Reading method derived from the fields that consume the FileObject/FileSet."""
 

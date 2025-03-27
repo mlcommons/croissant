@@ -96,7 +96,6 @@ class OptionalDependencies(object):
         """Cached scipy module."""
         return _try_import("scipy", package_name="scipy")
 
-
     @cached_class_property
     def torchdata_datapipes(cls) -> types.ModuleType:
         """Cached torchdata module."""
