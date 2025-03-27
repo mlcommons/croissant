@@ -943,5 +943,5 @@
   ],
   "sameAs": "https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)",
   "url": "https://www.openml.org/search?type=data&id=31",
-  "version": 1
+  "version": "1.0.0"
 }

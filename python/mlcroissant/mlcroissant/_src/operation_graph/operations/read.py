@@ -22,11 +22,11 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
-
 try:
     scipy = deps.scipy
 except ModuleNotFoundError:
     scipy = None
+INSTALL_MESSAGE = "scipy is not installed and is a dependency."
 
 
 class ReadingMethod(enum.Enum):
@@ -97,6 +97,9 @@ class Read(Operation):
         reading_method = _reading_method(self.node, self.fields)
 
         if encoding_format == EncodingFormat.ARFF:
+            if scipy is None:
+                raise NotImplementedError(INSTALL_MESSAGE)
+
             data = scipy.io.arff.loadarff(filepath)
             return pd.DataFrame(data[0])
 
