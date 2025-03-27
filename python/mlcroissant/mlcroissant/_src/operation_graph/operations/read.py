@@ -135,13 +135,6 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
-            elif encoding_format == EncodingFormat.ARFF:
-
-                
-                data = arff.loadarff(file)
-                print("DEBUG: data", data)
-                # df = pd.DataFrame(data[0])
-                # df = pd.DataFrame(data['data'], columns=[attr[0] for attr in data['attributes']])
             elif (
                 encoding_format == EncodingFormat.MP3
                 or encoding_format == EncodingFormat.JPG
