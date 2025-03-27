@@ -20,7 +20,6 @@ authors = [
 # Installed locally with `pip install -e .`
 dependencies = [
   "absl-py",
-  "scipy",
   "etils[epath]>=1.7.0",
   "jsonpath-rw",
   "networkx",
@@ -29,6 +28,7 @@ dependencies = [
   "python-dateutil",
   "rdflib",
   "requests",
+  "scipy",
   "tqdm",
 ]
 readme = "README.md"
@@ -99,6 +99,7 @@ module = [
   "networkx",
   "pandas",
   "pillow",
+  "scipy",
   "torchdata",
   "torchdata.datapipes",
 ]
