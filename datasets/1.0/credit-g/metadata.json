@@ -1,0 +1,947 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileObject": "cr:fileObject",
+    "fileProperty": "cr:fileProperty",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "citeAs": "https://dl.acm.org/doi/abs/10.1145/967900.968104",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Dr. Hans Hofmann"
+    }
+  ],
+  "dateCreated": "2014-04-06T23:21:47",
+  "datePublished": "1994-11-17T00:00:00",
+  "description": "**Author**: Dr. Hans Hofmann  \n**Source**: [UCI](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)) - 1994    \n**Please cite**: [UCI](https://archive.ics.uci.edu/ml/citation_policy.html)\n\n**German Credit dataset**  \nThis dataset classifies people described by a set of attributes as good or bad credit risks.\n\nThis dataset comes with a cost matrix: \n``` \nGood  Bad (predicted)  \nGood   0    1   (actual)  \nBad    5    0  \n```\n\nIt is worse to class a customer as good when they are bad (5), than it is to class a customer as bad when they are good (1).  \n\n### Attribute description  \n\n1. Status of existing checking account, in Deutsche Mark.  \n2. Duration in months  \n3. Credit history (credits taken, paid back duly, delays, critical accounts)  \n4. Purpose of the credit (car, television,...)  \n5. Credit amount  \n6. Status of savings account/bonds, in Deutsche Mark.  \n7. Present employment, in number of years.  \n8. Installment rate in percentage of disposable income  \n9. Personal status (married, single,...) and sex  \n10. Other debtors / guarantors  \n11. Present residence since X years  \n12. Property (e.g. real estate)  \n13. Age in years  \n14. Other installment plans (banks, stores)  \n15. Housing (rent, own,...)  \n16. Number of existing credits at this bank  \n17. Job  \n18. Number of people being liable to provide maintenance for  \n19. Telephone (yes,no)  \n20. Foreign worker (yes,no)",
+  "distribution": [
+    {
+      "@id": "data-file",
+      "@type": "cr:FileObject",
+      "contentUrl": "https://api.openml.org/data/v1/download/31/credit-g.arff",
+      "description": "Data file belonging to the dataset.",
+      "encodingFormat": "text/plain",
+      "md5": "9a475053fed0c26ee95cd4525e50074c",
+      "name": "data-file"
+    }
+  ],
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "keywords": [
+    "credit_scoring",
+    "Data Science",
+    "Economics",
+    "finance_problem",
+    "mythbusting_1",
+    "OpenML-CC18",
+    "OpenML100",
+    "Statistics",
+    "study_1",
+    "study_123",
+    "study_14",
+    "study_144",
+    "study_15",
+    "study_20",
+    "study_218",
+    "study_241",
+    "study_34",
+    "study_37",
+    "study_41",
+    "study_50",
+    "study_52",
+    "study_7",
+    "study_70",
+    "study_98",
+    "study_99",
+    "uci"
+  ],
+  "license": "Public",
+  "name": "credit-g",
+  "recordSet": [
+    {
+      "@id": "enumerations/checking_status",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/checking_status/value": "0<=X<200"
+        },
+        {
+          "enumerations/checking_status/value": "<0"
+        },
+        {
+          "enumerations/checking_status/value": ">=200"
+        },
+        {
+          "enumerations/checking_status/value": "no checking"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for checking_status",
+      "field": [
+        {
+          "@id": "enumerations/checking_status/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of checking_status.",
+          "name": "value"
+        }
+      ],
+      "name": "checking_status"
+    },
+    {
+      "@id": "enumerations/credit_history",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/credit_history/value": "all paid"
+        },
+        {
+          "enumerations/credit_history/value": "critical/other existing credit"
+        },
+        {
+          "enumerations/credit_history/value": "delayed previously"
+        },
+        {
+          "enumerations/credit_history/value": "existing paid"
+        },
+        {
+          "enumerations/credit_history/value": "no credits/all paid"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for credit_history",
+      "field": [
+        {
+          "@id": "enumerations/credit_history/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of credit_history.",
+          "name": "value"
+        }
+      ],
+      "name": "credit_history"
+    },
+    {
+      "@id": "enumerations/purpose",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/purpose/value": "business"
+        },
+        {
+          "enumerations/purpose/value": "domestic appliance"
+        },
+        {
+          "enumerations/purpose/value": "education"
+        },
+        {
+          "enumerations/purpose/value": "furniture/equipment"
+        },
+        {
+          "enumerations/purpose/value": "new car"
+        },
+        {
+          "enumerations/purpose/value": "other"
+        },
+        {
+          "enumerations/purpose/value": "radio/tv"
+        },
+        {
+          "enumerations/purpose/value": "repairs"
+        },
+        {
+          "enumerations/purpose/value": "retraining"
+        },
+        {
+          "enumerations/purpose/value": "used car"
+        },
+        {
+          "enumerations/purpose/value": "vacation"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for purpose",
+      "field": [
+        {
+          "@id": "enumerations/purpose/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of purpose.",
+          "name": "value"
+        }
+      ],
+      "name": "purpose"
+    },
+    {
+      "@id": "enumerations/savings_status",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/savings_status/value": "100<=X<500"
+        },
+        {
+          "enumerations/savings_status/value": "500<=X<1000"
+        },
+        {
+          "enumerations/savings_status/value": "<100"
+        },
+        {
+          "enumerations/savings_status/value": ">=1000"
+        },
+        {
+          "enumerations/savings_status/value": "no known savings"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for savings_status",
+      "field": [
+        {
+          "@id": "enumerations/savings_status/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of savings_status.",
+          "name": "value"
+        }
+      ],
+      "name": "savings_status"
+    },
+    {
+      "@id": "enumerations/employment",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/employment/value": "1<=X<4"
+        },
+        {
+          "enumerations/employment/value": "4<=X<7"
+        },
+        {
+          "enumerations/employment/value": "<1"
+        },
+        {
+          "enumerations/employment/value": ">=7"
+        },
+        {
+          "enumerations/employment/value": "unemployed"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for employment",
+      "field": [
+        {
+          "@id": "enumerations/employment/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of employment.",
+          "name": "value"
+        }
+      ],
+      "name": "employment"
+    },
+    {
+      "@id": "enumerations/personal_status",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/personal_status/value": "female div/dep/mar"
+        },
+        {
+          "enumerations/personal_status/value": "female single"
+        },
+        {
+          "enumerations/personal_status/value": "male div/sep"
+        },
+        {
+          "enumerations/personal_status/value": "male mar/wid"
+        },
+        {
+          "enumerations/personal_status/value": "male single"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for personal_status",
+      "field": [
+        {
+          "@id": "enumerations/personal_status/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of personal_status.",
+          "name": "value"
+        }
+      ],
+      "name": "personal_status"
+    },
+    {
+      "@id": "enumerations/other_parties",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/other_parties/value": "co applicant"
+        },
+        {
+          "enumerations/other_parties/value": "guarantor"
+        },
+        {
+          "enumerations/other_parties/value": "none"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for other_parties",
+      "field": [
+        {
+          "@id": "enumerations/other_parties/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of other_parties.",
+          "name": "value"
+        }
+      ],
+      "name": "other_parties"
+    },
+    {
+      "@id": "enumerations/property_magnitude",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/property_magnitude/value": "car"
+        },
+        {
+          "enumerations/property_magnitude/value": "life insurance"
+        },
+        {
+          "enumerations/property_magnitude/value": "no known property"
+        },
+        {
+          "enumerations/property_magnitude/value": "real estate"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for property_magnitude",
+      "field": [
+        {
+          "@id": "enumerations/property_magnitude/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of property_magnitude.",
+          "name": "value"
+        }
+      ],
+      "name": "property_magnitude"
+    },
+    {
+      "@id": "enumerations/other_payment_plans",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/other_payment_plans/value": "bank"
+        },
+        {
+          "enumerations/other_payment_plans/value": "none"
+        },
+        {
+          "enumerations/other_payment_plans/value": "stores"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for other_payment_plans",
+      "field": [
+        {
+          "@id": "enumerations/other_payment_plans/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of other_payment_plans.",
+          "name": "value"
+        }
+      ],
+      "name": "other_payment_plans"
+    },
+    {
+      "@id": "enumerations/housing",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/housing/value": "for free"
+        },
+        {
+          "enumerations/housing/value": "own"
+        },
+        {
+          "enumerations/housing/value": "rent"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for housing",
+      "field": [
+        {
+          "@id": "enumerations/housing/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of housing.",
+          "name": "value"
+        }
+      ],
+      "name": "housing"
+    },
+    {
+      "@id": "enumerations/job",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/job/value": "high qualif/self emp/mgmt"
+        },
+        {
+          "enumerations/job/value": "skilled"
+        },
+        {
+          "enumerations/job/value": "unemp/unskilled non res"
+        },
+        {
+          "enumerations/job/value": "unskilled resident"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for job",
+      "field": [
+        {
+          "@id": "enumerations/job/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of job.",
+          "name": "value"
+        }
+      ],
+      "name": "job"
+    },
+    {
+      "@id": "enumerations/own_telephone",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/own_telephone/value": "none"
+        },
+        {
+          "enumerations/own_telephone/value": "yes"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for own_telephone",
+      "field": [
+        {
+          "@id": "enumerations/own_telephone/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of own_telephone.",
+          "name": "value"
+        }
+      ],
+      "name": "own_telephone"
+    },
+    {
+      "@id": "enumerations/foreign_worker",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/foreign_worker/value": "no"
+        },
+        {
+          "enumerations/foreign_worker/value": "yes"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for foreign_worker",
+      "field": [
+        {
+          "@id": "enumerations/foreign_worker/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of foreign_worker.",
+          "name": "value"
+        }
+      ],
+      "name": "foreign_worker"
+    },
+    {
+      "@id": "enumerations/class",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/class/value": "bad"
+        },
+        {
+          "enumerations/class/value": "good"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for class",
+      "field": [
+        {
+          "@id": "enumerations/class/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of class.",
+          "name": "value"
+        }
+      ],
+      "name": "class"
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "data-file-description",
+      "description": "Listing the fields of the data.",
+      "field": [
+        {
+          "@id": "features/0-checking_status",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "checking_status - a field.",
+          "name": "checking_status",
+          "references": {
+            "field": {
+              "@id": "enumerations/checking_status/value"
+            }
+          },
+          "source": {
+            "fileObject": {
+              "@id": "data-file"
+            },
+            "extract": {
+              "column": "checking_status"
+            }
+          }
+        },
+        {
+          "@id": "features/1-duration",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "duration - a field.",
+          "name": "duration",
+          "source": {
+            "extract": {
+              "column": "duration"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/2-credit_history",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "credit_history - a field.",
+          "name": "credit_history",
+          "references": {
+            "field": {
+              "@id": "enumerations/credit_history/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "credit_history"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/3-purpose",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "purpose - a field.",
+          "name": "purpose",
+          "references": {
+            "field": {
+              "@id": "enumerations/purpose/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "purpose"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/4-credit_amount",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "credit_amount - a field.",
+          "name": "credit_amount",
+          "source": {
+            "extract": {
+              "column": "credit_amount"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/5-savings_status",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "savings_status - a field.",
+          "name": "savings_status",
+          "references": {
+            "field": {
+              "@id": "enumerations/savings_status/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "savings_status"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/6-employment",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "employment - a field.",
+          "name": "employment",
+          "references": {
+            "field": {
+              "@id": "enumerations/employment/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "employment"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/7-installment_commitment",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "installment_commitment - a field.",
+          "name": "installment_commitment",
+          "source": {
+            "extract": {
+              "column": "installment_commitment"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/8-personal_status",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "personal_status - a field.",
+          "name": "personal_status",
+          "references": {
+            "field": {
+              "@id": "enumerations/personal_status/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "personal_status"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/9-other_parties",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "other_parties - a field.",
+          "name": "other_parties",
+          "references": {
+            "field": {
+              "@id": "enumerations/other_parties/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "other_parties"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/10-residence_since",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "residence_since - a field.",
+          "name": "residence_since",
+          "source": {
+            "extract": {
+              "column": "residence_since"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/11-property_magnitude",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "property_magnitude - a field.",
+          "name": "property_magnitude",
+          "references": {
+            "field": {
+              "@id": "enumerations/property_magnitude/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "property_magnitude"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/12-age",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "age - a field.",
+          "name": "age",
+          "source": {
+            "extract": {
+              "column": "age"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/13-other_payment_plans",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "other_payment_plans - a field.",
+          "name": "other_payment_plans",
+          "references": {
+            "field": {
+              "@id": "enumerations/other_payment_plans/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "other_payment_plans"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/14-housing",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "housing - a field.",
+          "name": "housing",
+          "references": {
+            "field": {
+              "@id": "enumerations/housing/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "housing"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/15-existing_credits",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "existing_credits - a field.",
+          "name": "existing_credits",
+          "source": {
+            "extract": {
+              "column": "existing_credits"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/16-job",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "job - a field.",
+          "name": "job",
+          "references": {
+            "field": {
+              "@id": "enumerations/job/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "job"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/17-num_dependents",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "num_dependents - a field.",
+          "name": "num_dependents",
+          "source": {
+            "extract": {
+              "column": "num_dependents"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/18-own_telephone",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "own_telephone - a field.",
+          "name": "own_telephone",
+          "references": {
+            "field": {
+              "@id": "enumerations/own_telephone/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "own_telephone"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/19-foreign_worker",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "foreign_worker - a field.",
+          "name": "foreign_worker",
+          "references": {
+            "field": {
+              "@id": "enumerations/foreign_worker/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "foreign_worker"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/20-class",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "class - the default target field.",
+          "name": "class",
+          "references": {
+            "field": {
+              "@id": "enumerations/class/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "class"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        }
+      ],
+      "name": "data-file-description"
+    }
+  ],
+  "sameAs": "https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)",
+  "url": "https://www.openml.org/search?type=data&id=31",
+  "version": 1
+}
