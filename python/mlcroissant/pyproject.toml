@@ -20,6 +20,7 @@ authors = [
 # Installed locally with `pip install -e .`
 dependencies = [
   "absl-py",
+  "scipy",
   "etils[epath]>=1.7.0",
   "jsonpath-rw",
   "networkx",

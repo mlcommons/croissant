@@ -212,6 +212,7 @@ class EncodingFormat:
     We inherit the wrong naming `encodingFormat` from https://schema.org/encodingFormat.
     """
 
+    ARFF = "application/x-arff"
     CSV = "text/csv"
     GIT = "git+https"
     JPG = "image/jpeg"

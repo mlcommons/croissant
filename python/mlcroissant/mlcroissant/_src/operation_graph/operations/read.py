@@ -8,6 +8,7 @@ import pathlib
 
 from etils import epath
 import pandas as pd
+from scipy.io import arff
 
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
@@ -89,6 +90,10 @@ class Read(Operation):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
 
+        if encoding_format == EncodingFormat.ARFF:
+            data = arff.loadarff(filepath)
+            return pd.DataFrame(data[0])
+
         with filepath.open("rb") as file:
             # TODO(https://github.com/mlcommons/croissant/issues/635).
             if filepath.suffix == ".gz":
@@ -130,6 +135,13 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
+            elif encoding_format == EncodingFormat.ARFF:
+
+                
+                data = arff.loadarff(file)
+                print("DEBUG: data", data)
+                # df = pd.DataFrame(data[0])
+                # df = pd.DataFrame(data['data'], columns=[attr[0] for attr in data['attributes']])
             elif (
                 encoding_format == EncodingFormat.MP3
                 or encoding_format == EncodingFormat.JPG
