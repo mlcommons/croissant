@@ -192,7 +192,7 @@ class OperationGraph:
         operations = Operations()
         for node in nx.topological_sort(ctx.graph):
             if isinstance(node, FileObject):
-                if EncodingFormat.GIT in node.encoding_format:
+                if node.encoding_format and EncodingFormat.GIT in node.encoding_format:
                     _add_operations_for_git(operations, node, ctx.folder)
                 else:
                     _add_operations_for_file_object(operations, node, ctx.folder)

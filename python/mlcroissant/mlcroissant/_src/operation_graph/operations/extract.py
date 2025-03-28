@@ -19,6 +19,8 @@ from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 
 def should_extract(encoding_format: list[str] | None) -> bool:
     """Whether the encoding format should be extracted (zip or tar)."""
+    if not encoding_format:
+        return False
     return (
         EncodingFormat.TAR in encoding_format or EncodingFormat.ZIP in encoding_format
     )
