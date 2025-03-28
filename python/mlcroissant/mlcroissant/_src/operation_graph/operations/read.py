@@ -12,6 +12,7 @@ import pandas as pd
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
@@ -20,6 +21,12 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+
+try:
+    scipy = deps.scipy
+except ModuleNotFoundError:
+    scipy = None
+INSTALL_MESSAGE = "scipy is not installed and is a dependency."
 
 
 class ReadingMethod(enum.Enum):
@@ -82,13 +89,22 @@ class Read(Operation):
     folder: epath.Path
     fields: tuple[Field, ...]
 
-    def _read_file_content(self, encoding_format: str, file: Path) -> pd.DataFrame:
+    def _read_file_content(
+        self, encoding_format: list[str], file: Path
+    ) -> pd.DataFrame:
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
+        if EncodingFormat.ARFF in encoding_format:
+            if scipy is None:
+                raise NotImplementedError(INSTALL_MESSAGE)
 
+            data = scipy.io.arff.loadarff(filepath)
+            return pd.DataFrame(data[0])
+
+        encoding_format = encoding_format[0]
         with filepath.open("rb") as file:
             # TODO(https://github.com/mlcommons/croissant/issues/635).
             if filepath.suffix == ".gz":

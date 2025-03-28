@@ -622,8 +622,8 @@ Most of the important properties needed to describe a `FileObject` are defined i
   <tr>
     <td><a href="https://schema.org/encodingFormat">sc:encodingFormat</a></td>
     <td><a href="http://schema.org/Text">Text</a></td>
-    <td>ONE</td>
-    <td>The format of the file, given as a mime type.</td>
+    <td>MANY</td>
+    <td>The formats of the file, given as a mime type. Unregistered or niche encoding and file formats can be indicated instead via the most appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry.</td>
   </tr>
   <tr>
     <td><a href="https://schema.org/sameAs">sc:sameAs</a></td>
