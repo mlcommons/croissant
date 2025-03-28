@@ -54,7 +54,7 @@ def test_from_jsonld(conforms_to):
     assert file_set.id == "foo_id"
     assert file_set.description == "bar"
     assert file_set.contained_in == ["some.zip"]
-    assert file_set.encoding_format == "application/json"
+    assert file_set.encoding_format == ["application/json"]
     assert file_set.excludes == ["*.csv"]
     assert file_set.includes == ["*.json"]
     assert not ctx.issues.errors

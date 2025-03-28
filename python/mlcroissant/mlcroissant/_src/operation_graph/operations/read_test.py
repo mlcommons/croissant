@@ -44,7 +44,7 @@ def test_explicit_message_when_pyarrow_is_not_installed():
             read = Read(
                 operations=operations(),
                 node=create_test_file_object(
-                    encoding_format="application/x-parquet", content_url=content_url
+                    encoding_format=["application/x-parquet"], content_url=content_url
                 ),
                 folder=folder,
                 fields=(),

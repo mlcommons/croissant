@@ -89,20 +89,22 @@ class Read(Operation):
     folder: epath.Path
     fields: tuple[Field, ...]
 
-    def _read_file_content(self, encoding_format: str, file: Path) -> pd.DataFrame:
+    def _read_file_content(
+        self, encoding_format: list[str], file: Path
+    ) -> pd.DataFrame:
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
-
-        if encoding_format == EncodingFormat.ARFF:
+        if EncodingFormat.ARFF in encoding_format:
             if scipy is None:
                 raise NotImplementedError(INSTALL_MESSAGE)
 
             data = scipy.io.arff.loadarff(filepath)
             return pd.DataFrame(data[0])
 
+        encoding_format = encoding_format[0]
         with filepath.open("rb") as file:
             # TODO(https://github.com/mlcommons/croissant/issues/635).
             if filepath.suffix == ".gz":

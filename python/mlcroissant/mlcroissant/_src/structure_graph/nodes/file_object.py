@@ -53,9 +53,14 @@ class FileObject(Node):
         input_types=[SDO.Text],
         url=SDO.description,
     )
-    encoding_format: str | None = mlc_dataclasses.jsonld_field(
+    encoding_format: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
         default=None,
-        description="The format of the file, given as a mime type.",
+        description=(
+            "The format of the file, given as a mime type. Unregistered or niche"
+            " encoding and file formats can be indicated instead via the most"
+            " appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry. "
+        ),
         input_types=[SDO.Text],
         url=SDO.encodingFormat,
     )

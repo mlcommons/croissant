@@ -58,7 +58,10 @@
       "@type": "cr:FileObject",
       "contentUrl": "https://api.openml.org/data/v1/download/31/credit-g.arff",
       "description": "Data file belonging to the dataset.",
-      "encodingFormat": "application/x-arff",
+      "encodingFormat": [
+        "text/plain",
+        "https://ml.cms.waikato.ac.nz/weka/arff.html"
+      ],
       "md5": "9a475053fed0c26ee95cd4525e50074c",
       "name": "data-file"
     }

@@ -17,10 +17,10 @@ from mlcroissant._src.operation_graph.operations.download import get_hash
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 
 
-def should_extract(encoding_format: str | None) -> bool:
+def should_extract(encoding_format: list[str] | None) -> bool:
     """Whether the encoding format should be extracted (zip or tar)."""
     return (
-        encoding_format == EncodingFormat.TAR or encoding_format == EncodingFormat.ZIP
+        EncodingFormat.TAR in encoding_format or EncodingFormat.ZIP in encoding_format
     )
 
 

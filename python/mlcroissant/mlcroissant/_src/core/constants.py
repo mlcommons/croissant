@@ -209,10 +209,14 @@ CROISSANT_BASIC_AUTH_PASSWORD = "CROISSANT_BASIC_AUTH_PASSWORD"
 class EncodingFormat:
     """Supported MIME Types in Croissant.
 
-    We inherit the wrong naming `encodingFormat` from https://schema.org/encodingFormat.
+    Unregistered or niche encoding and file formats can be indicated instead via the most
+    appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry.
+    Supersedes fileFormat.
+
+        We inherit the wrong naming `encodingFormat` from https://schema.org/encodingFormat.
     """
 
-    ARFF = "application/x-arff"
+    ARFF = "https://ml.cms.waikato.ac.nz/weka/arff.html"
     CSV = "text/csv"
     GIT = "git+https"
     JPG = "image/jpeg"
