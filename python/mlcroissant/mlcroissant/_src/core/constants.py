@@ -242,6 +242,10 @@ class DataType:
     INT16 = ML_COMMONS_V_1_0.Int16
     INT32 = ML_COMMONS_V_1_0.Int32
     INT64 = ML_COMMONS_V_1_0.Int64
+    UINT8 = ML_COMMONS_V_1_0.UInt8
+    UINT16 = ML_COMMONS_V_1_0.UInt16
+    UINT32 = ML_COMMONS_V_1_0.UInt32
+    UINT64 = ML_COMMONS_V_1_0.UInt64
     SPLIT = ML_COMMONS_V_1_0.Split
     TEXT = namespace.SDO.Text
     URL = namespace.SDO.URL
