@@ -110,8 +110,8 @@ class Read(Operation):
                 )
             return pd.DataFrame(data[0])
 
-        for encoding_format in encoding_formats:
-            with filepath.open("rb") as file:
+        with filepath.open("rb") as file:
+            for encoding_format in encoding_formats:
                 # TODO(https://github.com/mlcommons/croissant/issues/635).
                 if filepath.suffix == ".gz":
                     file = gzip.open(file, "rt", newline="")
@@ -159,10 +159,10 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
-                else:
-                    raise ValueError(
-                        f"Unsupported encoding format for file: {encoding_format}"
-                    )
+            raise ValueError(
+                f"None of the provided encoding formats: {encoding_format} for file"
+                f" {filepath} returned a valid pandas dataframe."
+            )
 
     def call(self, files: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
