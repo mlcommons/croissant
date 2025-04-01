@@ -12,6 +12,7 @@ import pandas as pd
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
@@ -20,6 +21,12 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+
+try:
+    scipy = deps.scipy
+except ModuleNotFoundError:
+    scipy = None
+INSTALL_MESSAGE = "scipy is not installed and is a dependency."
 
 
 class ReadingMethod(enum.Enum):
@@ -82,65 +89,80 @@ class Read(Operation):
     folder: epath.Path
     fields: tuple[Field, ...]
 
-    def _read_file_content(self, encoding_format: str, file: Path) -> pd.DataFrame:
+    def _read_file_content(
+        self, encoding_formats: list[str], file: Path
+    ) -> pd.DataFrame:
         """Extracts the `source` file to `target`."""
         filepath = file.filepath
         if is_git_lfs_file(filepath):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
+        if EncodingFormat.ARFF in encoding_formats:
+            if scipy is None:
+                raise NotImplementedError(INSTALL_MESSAGE)
+
+            data = scipy.io.arff.loadarff(filepath)
+            if not isinstance(data, list) or len(data) != 1:
+                raise ValueError(
+                    "The loaded data from scipy.io.arff does not have the expected"
+                    " shape (a list with one element). Please ensure the ARFF file is"
+                    " valid."
+                )
+            return pd.DataFrame(data[0])
 
         with filepath.open("rb") as file:
-            # TODO(https://github.com/mlcommons/croissant/issues/635).
-            if filepath.suffix == ".gz":
-                file = gzip.open(file, "rt", newline="")
-            if encoding_format == EncodingFormat.CSV:
-                return pd.read_csv(file)
-            elif encoding_format == EncodingFormat.TSV:
-                return pd.read_csv(file, sep="\t")
-            elif encoding_format == EncodingFormat.JSON:
-                json_content = json.load(file)
-                if reading_method == ReadingMethod.JSON:
-                    return parse_json_content(json_content, self.fields)
-                else:
-                    # Raw files are returned as a one-line pd.DataFrame.
-                    return pd.DataFrame({
-                        FileProperty.content: [json_content],
-                    })
-            elif encoding_format == EncodingFormat.JSON_LINES:
-                return pd.read_json(file, lines=True)
-            elif encoding_format == EncodingFormat.PARQUET:
-                try:
-                    df = pd.read_parquet(file)
-                    # Sometimes the author already set an index in Parquet, so we want
-                    # to reset it to always have the same format.
-                    df.reset_index(inplace=True)
-                    return df
-                except ImportError as e:
-                    raise ImportError(
-                        "Missing dependency to read Parquet files. pyarrow is not"
-                        " installed. Please, install `pip install"
-                        " mlcroissant[parquet]`."
-                    ) from e
-            elif encoding_format == EncodingFormat.TEXT:
-                if reading_method == ReadingMethod.LINES:
-                    return pd.read_csv(
-                        filepath, header=None, names=[FileProperty.lines]
-                    )
-                else:
+            for encoding_format in encoding_formats:
+                # TODO(https://github.com/mlcommons/croissant/issues/635).
+                if filepath.suffix == ".gz":
+                    file = gzip.open(file, "rt", newline="")
+                if encoding_format == EncodingFormat.CSV:
+                    return pd.read_csv(file)
+                elif encoding_format == EncodingFormat.TSV:
+                    return pd.read_csv(file, sep="\t")
+                elif encoding_format == EncodingFormat.JSON:
+                    json_content = json.load(file)
+                    if reading_method == ReadingMethod.JSON:
+                        return parse_json_content(json_content, self.fields)
+                    else:
+                        # Raw files are returned as a one-line pd.DataFrame.
+                        return pd.DataFrame({
+                            FileProperty.content: [json_content],
+                        })
+                elif encoding_format == EncodingFormat.JSON_LINES:
+                    return pd.read_json(file, lines=True)
+                elif encoding_format == EncodingFormat.PARQUET:
+                    try:
+                        df = pd.read_parquet(file)
+                        # Sometimes the author already set an index in Parquet, so we
+                        # want to reset it to always have the same format.
+                        df.reset_index(inplace=True)
+                        return df
+                    except ImportError as e:
+                        raise ImportError(
+                            "Missing dependency to read Parquet files. pyarrow is not"
+                            " installed. Please, install `pip install"
+                            " mlcroissant[parquet]`."
+                        ) from e
+                elif encoding_format == EncodingFormat.TEXT:
+                    if reading_method == ReadingMethod.LINES:
+                        return pd.read_csv(
+                            filepath, header=None, names=[FileProperty.lines]
+                        )
+                    else:
+                        return pd.DataFrame({
+                            FileProperty.content: [file.read()],
+                        })
+                elif (
+                    encoding_format == EncodingFormat.MP3
+                    or encoding_format == EncodingFormat.JPG
+                ):
                     return pd.DataFrame({
                         FileProperty.content: [file.read()],
                     })
-            elif (
-                encoding_format == EncodingFormat.MP3
-                or encoding_format == EncodingFormat.JPG
-            ):
-                return pd.DataFrame({
-                    FileProperty.content: [file.read()],
-                })
-            else:
-                raise ValueError(
-                    f"Unsupported encoding format for file: {encoding_format}"
-                )
+            raise ValueError(
+                f"None of the provided encoding formats: {encoding_format} for file"
+                f" {filepath} returned a valid pandas dataframe."
+            )
 
     def call(self, files: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
@@ -170,8 +192,8 @@ class Read(Operation):
                     f'In node "{self.node.uuid}", file "{self.node.content_url}" is'
                     " either an invalid URL or an invalid path."
                 )
-            assert self.node.encoding_format, "Encoding format is not specified."
-            file_content = self._read_file_content(self.node.encoding_format, file)
+            assert self.node.encoding_formats, "Encoding format is not specified."
+            file_content = self._read_file_content(self.node.encoding_formats, file)
             if _should_append_line_numbers(self.fields):
                 file_content[FileProperty.lineNumbers] = range(len(file_content))
             file_content[FileProperty.filepath] = file.filepath

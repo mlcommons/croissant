@@ -29,7 +29,7 @@ def test_checks_are_performed(conforms_to, field_uuid):
         ctx = Context(conforms_to=conforms_to)
         create_test_node(FileSet, ctx=ctx)
         mandatory_mock.assert_called_once_with(
-            "includes", "encoding_format", field_uuid
+            "includes", "encoding_formats", field_uuid
         )
         optional_mock.assert_not_called()
         validate_name_mock.assert_called_once()
@@ -54,7 +54,7 @@ def test_from_jsonld(conforms_to):
     assert file_set.id == "foo_id"
     assert file_set.description == "bar"
     assert file_set.contained_in == ["some.zip"]
-    assert file_set.encoding_format == "application/json"
+    assert file_set.encoding_formats == ["application/json"]
     assert file_set.excludes == ["*.csv"]
     assert file_set.includes == ["*.json"]
     assert not ctx.issues.errors

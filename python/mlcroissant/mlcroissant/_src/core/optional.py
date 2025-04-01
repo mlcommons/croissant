@@ -92,6 +92,11 @@ class OptionalDependencies(object):
         return _try_import("librosa", package_name="librosa")
 
     @cached_class_property
+    def scipy(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+        """Cached scipy module."""
+        return _try_import("scipy", package_name="scipy")
+
+    @cached_class_property
     def torchdata_datapipes(cls) -> types.ModuleType:
         """Cached torchdata module."""
         return _try_import("torchdata.datapipes", package_name="torchdata")

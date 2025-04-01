@@ -91,7 +91,7 @@ def test_readfield_with_subfields():
                 id="file_id",
                 content_url=csv_file,
                 sha256="None",
-                encoding_format="text/csv",
+                encoding_formats=["text/csv"],
             )
         ]
         fields = [
@@ -244,7 +244,7 @@ def test_extract_lines(separator):
                 id="file_id",
                 content_url=path,
                 sha256="None",
-                encoding_format="text/plain",
+                encoding_formats=["text/plain"],
             )
         ]
         fields = []

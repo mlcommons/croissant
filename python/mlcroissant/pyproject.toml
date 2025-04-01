@@ -28,6 +28,7 @@ dependencies = [
   "python-dateutil",
   "rdflib",
   "requests",
+  "scipy",
   "tqdm",
 ]
 readme = "README.md"
@@ -98,6 +99,7 @@ module = [
   "networkx",
   "pandas",
   "pillow",
+  "scipy",
   "torchdata",
   "torchdata.datapipes",
 ]
