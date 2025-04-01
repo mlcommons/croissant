@@ -224,8 +224,8 @@ class Download(Operation):
         filepath = get_download_filepath(self.node)
         if not filepath.exists():
             if (
-                self.node.encoding_format
-                and EncodingFormat.GIT in self.node.encoding_format
+                self.node.encoding_formats
+                and EncodingFormat.GIT in self.node.encoding_formats
             ):
                 self._download_from_git(filepath)
             else:

@@ -53,11 +53,11 @@ class FileObject(Node):
         input_types=[SDO.Text],
         url=SDO.description,
     )
-    encoding_format: list[str] | None = mlc_dataclasses.jsonld_field(
+    encoding_formats: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
         description=(
-            "The format of the file, given as a mime type. Unregistered or niche"
+            "The formats of the file, given as a mime type. Unregistered or niche"
             " encoding and file formats can be indicated instead via the most"
             " appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry. "
         ),
@@ -107,7 +107,7 @@ class FileObject(Node):
         Node.__post_init__(self)
         self.validate_name()
         uuid_field = "name" if self.ctx.is_v0() else "id"
-        self.assert_has_mandatory_properties("encoding_format", uuid_field)
+        self.assert_has_mandatory_properties("encoding_formats", uuid_field)
 
         if not self.contained_in:
             self.assert_has_mandatory_properties("content_url")

@@ -82,9 +82,9 @@ def _add_operations_for_file_object(
         operation = first_operation
         # Extract the file if needed
         if (
-            should_extract(node.encoding_format)
+            should_extract(node.encoding_formats)
             and isinstance(successor, (FileObject, FileSet))
-            and not should_extract(successor.encoding_format)
+            and not should_extract(successor.encoding_formats)
         ):
             operation = operation >> Extract(operations=operations, node=node)
         if isinstance(successor, FileSet):
@@ -93,7 +93,7 @@ def _add_operations_for_file_object(
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
             )
-        if node.encoding_format and not should_extract(node.encoding_format):
+        if node.encoding_formats and not should_extract(node.encoding_formats):
             fields = tuple([
                 field for field in node.recursive_successors if isinstance(field, Field)
             ])
@@ -192,7 +192,10 @@ class OperationGraph:
         operations = Operations()
         for node in nx.topological_sort(ctx.graph):
             if isinstance(node, FileObject):
-                if node.encoding_format and EncodingFormat.GIT in node.encoding_format:
+                if (
+                    node.encoding_formats
+                    and EncodingFormat.GIT in node.encoding_formats
+                ):
                     _add_operations_for_git(operations, node, ctx.folder)
                 else:
                     _add_operations_for_file_object(operations, node, ctx.folder)
