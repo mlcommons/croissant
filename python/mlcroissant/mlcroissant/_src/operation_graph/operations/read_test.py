@@ -6,11 +6,15 @@ import tempfile
 from unittest import mock
 
 from etils import epath
+from io import StringIO
 import pandas as pd
+import pandas.testing as tm
 import pytest
 
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.operations.read import _reading_method
+from mlcroissant._src.operation_graph.operations.read import _read_arff_file
+
 from mlcroissant._src.operation_graph.operations.read import Read
 from mlcroissant._src.operation_graph.operations.read import ReadingMethod
 from mlcroissant._src.structure_graph.nodes.source import Extract
@@ -22,6 +26,16 @@ from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
 
 
+CONTENT = """@relation foo
+@attribute width  numeric
+@attribute height numeric
+@attribute color  {red,green,blue,yellow,black}
+@data
+5.0,3.25,blue
+4.5,3.75,green
+3.0,4.00,red
+"""
+
 def test_str_representation():
     operation = Read(
         operations=operations(),
@@ -30,6 +44,14 @@ def test_str_representation():
         fields=(),
     )
     assert str(operation) == "Read(file_object_name)"
+
+
+def test_reading_arff():
+    filepath = StringIO(CONTENT)
+    actual_df = _read_arff_file(filepath)
+    data = [(5.0, 3.25, b'blue'), (4.5, 3.75, b'green'), (3.0, 4.0, b'red')]
+    expected_df = pd.DataFrame(data, columns = ['width', 'height', 'color'])
+    tm.assert_frame_equal(actual_df, expected_df)
 
 
 def test_explicit_message_when_pyarrow_is_not_installed():

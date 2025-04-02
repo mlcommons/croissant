@@ -82,6 +82,19 @@ def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     return False
 
 
+def _read_arff_file(filepath):
+    if scipy is None:
+        raise NotImplementedError(INSTALL_MESSAGE)
+
+    data, _ = scipy.io.arff.loadarff(filepath)
+    if not isinstance(data, np.ndarray):
+        raise ValueError(
+            "The loaded data from scipy.io.arff does not have the expected"
+            " type (a numpy array). Please ensure the ARFF file is valid."
+        )
+    return pd.DataFrame(data)
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Read(Operation):
     """Reads from a file and output a pd.DataFrame."""
@@ -99,16 +112,7 @@ class Read(Operation):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
         if EncodingFormat.ARFF in encoding_formats:
-            if scipy is None:
-                raise NotImplementedError(INSTALL_MESSAGE)
-
-            data, _ = scipy.io.arff.loadarff(filepath)
-            if not isinstance(data, np.ndarray):
-                raise ValueError(
-                    "The loaded data from scipy.io.arff does not have the expected"
-                    " type (a numpy array). Please ensure the ARFF file is valid."
-                )
-            return pd.DataFrame(data)
+            return _read_arff_file(filepath)
 
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
