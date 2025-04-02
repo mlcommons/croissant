@@ -1,20 +1,19 @@
 """read_test module."""
 
+from io import StringIO
 import pathlib
 import pickle
 import tempfile
 from unittest import mock
 
 from etils import epath
-from io import StringIO
 import pandas as pd
 import pandas.testing as tm
 import pytest
 
 from mlcroissant._src.core.path import Path
-from mlcroissant._src.operation_graph.operations.read import _reading_method
 from mlcroissant._src.operation_graph.operations.read import _read_arff_file
-
+from mlcroissant._src.operation_graph.operations.read import _reading_method
 from mlcroissant._src.operation_graph.operations.read import Read
 from mlcroissant._src.operation_graph.operations.read import ReadingMethod
 from mlcroissant._src.structure_graph.nodes.source import Extract
@@ -24,7 +23,6 @@ from mlcroissant._src.tests.nodes import create_test_field
 from mlcroissant._src.tests.nodes import create_test_file_object
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
-
 
 CONTENT = """@relation foo
 @attribute width  numeric
