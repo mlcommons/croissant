@@ -8,7 +8,7 @@ from unittest import mock
 
 from etils import epath
 import pandas as pd
-import pandas.testing as tm
+import pandas.testing as c
 import pytest
 
 from mlcroissant._src.core.path import Path
@@ -24,7 +24,8 @@ from mlcroissant._src.tests.nodes import create_test_file_object
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
 
-CONTENT = """@relation foo
+# Example taken from: https://docs.scipy.org/doc/scipy-1.13.0/reference/generated/scipy.io.arff.loadarff.html
+ARFF_CONTENT = """@relation foo
 @attribute width  numeric
 @attribute height numeric
 @attribute color  {red,green,blue,yellow,black}
@@ -46,11 +47,11 @@ def test_str_representation():
 
 
 def test_reading_arff():
-    filepath = StringIO(CONTENT)
+    filepath = StringIO(ARFF_CONTENT)
     actual_df = _read_arff_file(filepath)
     data = [(5.0, 3.25, b"blue"), (4.5, 3.75, b"green"), (3.0, 4.0, b"red")]
     expected_df = pd.DataFrame(data, columns=["width", "height", "color"])
-    tm.assert_frame_equal(actual_df, expected_df)
+    pd_testing.assert_frame_equal(actual_df, expected_df)
 
 
 def test_explicit_message_when_pyarrow_is_not_installed():
