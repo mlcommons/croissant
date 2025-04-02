@@ -36,6 +36,7 @@ CONTENT = """@relation foo
 3.0,4.00,red
 """
 
+
 def test_str_representation():
     operation = Read(
         operations=operations(),
@@ -49,8 +50,8 @@ def test_str_representation():
 def test_reading_arff():
     filepath = StringIO(CONTENT)
     actual_df = _read_arff_file(filepath)
-    data = [(5.0, 3.25, b'blue'), (4.5, 3.75, b'green'), (3.0, 4.0, b'red')]
-    expected_df = pd.DataFrame(data, columns = ['width', 'height', 'color'])
+    data = [(5.0, 3.25, b"blue"), (4.5, 3.75, b"green"), (3.0, 4.0, b"red")]
+    expected_df = pd.DataFrame(data, columns=["width", "height", "color"])
     tm.assert_frame_equal(actual_df, expected_df)
 
 
