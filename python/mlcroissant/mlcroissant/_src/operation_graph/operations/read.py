@@ -3,6 +3,7 @@
 import dataclasses
 import enum
 import gzip
+import io
 import json
 import pathlib
 
@@ -82,7 +83,7 @@ def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     return False
 
 
-def _read_arff_file(filepath: str) -> pd.DataFrame:
+def _read_arff_file(filepath: str | io.StringIO) -> pd.DataFrame:
     """Reads a file in ARFF format and returns it as a pandas DataFrame."""
     if scipy is None:
         raise NotImplementedError(INSTALL_MESSAGE)
