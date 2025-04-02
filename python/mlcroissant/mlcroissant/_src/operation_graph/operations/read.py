@@ -3,10 +3,12 @@
 import dataclasses
 import enum
 import gzip
+import io
 import json
 import pathlib
 
 from etils import epath
+import numpy as np
 import pandas as pd
 
 from mlcroissant._src.core.constants import EncodingFormat
@@ -81,6 +83,20 @@ def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     return False
 
 
+def _read_arff_file(filepath: str | io.StringIO) -> pd.DataFrame:
+    """Reads a file in ARFF format and returns it as a pandas DataFrame."""
+    if scipy is None:
+        raise NotImplementedError(INSTALL_MESSAGE)
+
+    data, _ = scipy.io.arff.loadarff(filepath)
+    if not isinstance(data, np.ndarray):
+        raise ValueError(
+            "The loaded data from scipy.io.arff does not have the expected"
+            " type (a numpy array). Please ensure the ARFF file is valid."
+        )
+    return pd.DataFrame(data)
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Read(Operation):
     """Reads from a file and output a pd.DataFrame."""
@@ -98,17 +114,7 @@ class Read(Operation):
             download_git_lfs_file(file)
         reading_method = _reading_method(self.node, self.fields)
         if EncodingFormat.ARFF in encoding_formats:
-            if scipy is None:
-                raise NotImplementedError(INSTALL_MESSAGE)
-
-            data = scipy.io.arff.loadarff(filepath)
-            if not isinstance(data, list) or len(data) != 1:
-                raise ValueError(
-                    "The loaded data from scipy.io.arff does not have the expected"
-                    " shape (a list with one element). Please ensure the ARFF file is"
-                    " valid."
-                )
-            return pd.DataFrame(data[0])
+            return _read_arff_file(filepath)
 
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
