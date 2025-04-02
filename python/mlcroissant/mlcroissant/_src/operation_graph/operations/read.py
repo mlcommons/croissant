@@ -7,6 +7,7 @@ import json
 import pathlib
 
 from etils import epath
+import numpy as np
 import pandas as pd
 
 from mlcroissant._src.core.constants import EncodingFormat
@@ -101,14 +102,13 @@ class Read(Operation):
             if scipy is None:
                 raise NotImplementedError(INSTALL_MESSAGE)
 
-            data = scipy.io.arff.loadarff(filepath)
-            if not isinstance(data, list) or len(data) != 1:
+            data, _ = scipy.io.arff.loadarff(filepath)
+            if not isinstance(data, np.ndarray):
                 raise ValueError(
                     "The loaded data from scipy.io.arff does not have the expected"
-                    " shape (a list with one element). Please ensure the ARFF file is"
-                    " valid."
+                    " type (a numpy array). Please ensure the ARFF file is valid."
                 )
-            return pd.DataFrame(data[0])
+            return pd.DataFrame(data)
 
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
