@@ -1,6 +1,6 @@
 """read_test module."""
 
-from io import StringIO
+import io
 import pathlib
 import pickle
 import tempfile
@@ -8,7 +8,7 @@ from unittest import mock
 
 from etils import epath
 import pandas as pd
-import pandas.testing as c
+import pandas.testing as pd_testing
 import pytest
 
 from mlcroissant._src.core.path import Path
@@ -47,7 +47,7 @@ def test_str_representation():
 
 
 def test_reading_arff():
-    filepath = StringIO(ARFF_CONTENT)
+    filepath = io.StringIO(ARFF_CONTENT)
     actual_df = _read_arff_file(filepath)
     data = [(5.0, 3.25, b"blue"), (4.5, 3.75, b"green"), (3.0, 4.0, b"red")]
     expected_df = pd.DataFrame(data, columns=["width", "height", "color"])
