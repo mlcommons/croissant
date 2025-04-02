@@ -82,7 +82,8 @@ def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     return False
 
 
-def _read_arff_file(filepath):
+def _read_arff_file(filepath: str) -> pd.DataFrame:
+    """Reads a file in ARFF format and returns it as a pandas DataFrame."""
     if scipy is None:
         raise NotImplementedError(INSTALL_MESSAGE)
 
