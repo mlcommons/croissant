@@ -286,7 +286,9 @@ def _render_left_panel():
                     " (URL, comma-separated)."
                 ),
                 key=key,
-                value=", ".join(record_set.data_types) if record_set.data_types else None,
+                value=(
+                    ", ".join(record_set.data_types) if record_set.data_types else None
+                ),
                 on_change=handle_record_set_change,
                 args=(RecordSetEvent.DATA_TYPES, record_set, key),
             )
