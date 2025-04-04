@@ -1,15 +1,16 @@
-# option 1: colab
+In order to validate whether a croissant file is JSON-LD, conforms to the Croissant schema and is able to yield records we have currently two tools:
 
-see pierre's notebook at https://colab.research.google.com/drive/1W9tSMv7OMv2nPLrbTpbCypEjv6Z3ZcxF 
+### Option 1: Colab
 
-# option 2: public gradio app hosted on hf vm (no auth)
+Access the notebook at https://colab.research.google.com/drive/1W9tSMv7OMv2nPLrbTpbCypEjv6Z3ZcxF and validate your Croissant file.
 
-live demo at https://huggingface.co/spaces/luisoala/croissant-checker 
+### Option 2: Public gradio app hosted on HF Spaces
 
-code for interface can be found here under `/hf-gradio-app`
+We have a reference implementation that you are free to adapt in `/hf-gradio-app`.
 
-to host under new account (e.g. mlc), create a new space and commit all the contents of  `/hf-gradio-app` to the space. it will spawn automatically after committing.
+To host your own validator app you can commit the contents of that folder to a HF Gradio Space, run it locally `python app.py` or otherwise on a VM of your choice. 
 
-# option 3: public gradio app hosted on mlc or neurips vm
+Some examples of live spaces can be found at
 
-tbd
+* https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker
+* https://huggingface.co/spaces/luisoala/croissant-checker
