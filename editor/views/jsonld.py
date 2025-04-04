@@ -32,6 +32,7 @@ def render_jsonld():
                         name=field["name"],
                         description=field["description"],
                         data_types=field["data_type"],
+                        equivalentProperty=field["equivalentProperty"],
                         source=mlc.Source(
                             distribution=file.name,
                             extract=mlc.Extract(column=field["name"]),

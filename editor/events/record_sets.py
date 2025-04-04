@@ -13,6 +13,7 @@ class RecordSetEvent(enum.Enum):
     NAME = "NAME"
     ID = "ID"
     DESCRIPTION = "DESCRIPTION"
+    DATA_TYPES = "DATA_TYPES"
     IS_ENUMERATION = "IS_ENUMERATION"
     HAS_DATA = "HAS_DATA"
     CHANGE_DATA = "CHANGE_DATA"
@@ -35,6 +36,8 @@ def handle_record_set_change(event: RecordSetEvent, record_set: RecordSet, key: 
             metadata.rename_id(old_id=old_id, new_id=new_id)
     elif event == RecordSetEvent.DESCRIPTION:
         record_set.description = value
+    elif event == RecordSetEvent.DATA_TYPES:
+        record_set.data_types = [value.strip() for value in value.split(",")]
     elif event == RecordSetEvent.IS_ENUMERATION:
         record_set.is_enumeration = value
     elif event == RecordSetEvent.HAS_DATA:
