@@ -3,7 +3,7 @@
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "1.0.14"
+version = "1.0.16"
 authors = [
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
@@ -28,6 +28,7 @@ dependencies = [
   "python-dateutil",
   "rdflib",
   "requests",
+  "scipy",
   "tqdm",
 ]
 readme = "README.md"
@@ -98,6 +99,7 @@ module = [
   "networkx",
   "pandas",
   "pillow",
+  "scipy",
   "torchdata",
   "torchdata.datapipes",
 ]

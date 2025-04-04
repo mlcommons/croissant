@@ -97,6 +97,7 @@ class Transform(Node):
     Args:
         format: The format for a date (e.g. "%Y-%m-%d %H:%M:%S.%f") or for a bounding
             box (e.g., "XYXY").
+        json_path: The JSONPath expression that needs to be evaluated.
         regex: A regex pattern with a capturing group to extract information in a
             string.
         replace: A replace pattern, e.g. "pattern_to_remove/pattern_to_add".

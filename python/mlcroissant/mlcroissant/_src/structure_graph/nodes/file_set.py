@@ -24,7 +24,7 @@ class FileSet(Node):
             " the contentUrl is evaluated as a relative path within the container"
             " object"
         ),
-        from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
+        from_jsonld=lambda _, contained_in: uuid_from_jsonld(contained_in),
         to_jsonld=lambda ctx, contained_in: [
             formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
         ],
@@ -35,9 +35,14 @@ class FileSet(Node):
         input_types=[SDO.Text],
         url=SDO.description,
     )
-    encoding_format: str | None = mlc_dataclasses.jsonld_field(
+    encoding_formats: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
         default=None,
-        description="The format of the file, given as a mime type.",
+        description=(
+            "The formats of the file, given as a mime type. Unregistered or niche"
+            " encoding and file formats can be indicated instead via the most"
+            " appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry. "
+        ),
         input_types=[SDO.Text],
         url=SDO.encodingFormat,
     )
@@ -55,7 +60,7 @@ class FileSet(Node):
     includes: list[str] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
-        description="A glob pattern that specifies the files to include.",
+        description="A list of glob patterns that specify the files to include.",
         input_types=[SDO.Text],
         url=lambda ctx: constants.ML_COMMONS_INCLUDES(ctx),
     )
@@ -75,4 +80,4 @@ class FileSet(Node):
         Node.__post_init__(self)
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
-        self.assert_has_mandatory_properties("includes", "encoding_format", uuid_field)
+        self.assert_has_mandatory_properties("includes", "encoding_formats", uuid_field)

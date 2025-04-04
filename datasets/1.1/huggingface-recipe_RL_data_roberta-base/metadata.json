@@ -210,7 +210,7 @@
       ]
     }
   ],
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
   "name": "recipe_RL_data_roberta-base",
   "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tStructure\n\t\n\n\nConsists of 5 fields\nEach row corresponds to a policy - sequence of actions, given an initial \u003CSTART\u003E state, and corresponding rewards at each step.\n\n\n\t\n\t\t\n\t\n\t\n\t\tFields\n\t\n\nsteps, step_attn_masks, rewards, actions, dones\n\n\t\n\t\t\n\t\n\t\n\t\tField descriptions\n\t\n\n\nsteps (List of lists of Ints) - tokenized step tokens of all the steps in the policy sequence (here we use the roberta-base tokenizer, as roberta-base would be used to encode each… See the full description on the dataset page: https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base.",
   "keywords": [

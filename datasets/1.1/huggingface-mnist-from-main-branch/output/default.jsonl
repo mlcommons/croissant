@@ -1,0 +1,2 @@
+{"default/split": "mnist/test-00000-of-00001.parquet", "default/image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "default/label": 7}
+{"default/split": "mnist/test-00000-of-00001.parquet", "default/image": "<PIL.PngImagePlugin.PngImageFile image mode=L size=28x28 at <MEMORY_ADDRESS>>", "default/label": 2}

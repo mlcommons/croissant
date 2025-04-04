@@ -31,7 +31,7 @@ def test_checks_are_performed(conforms_to, field_uuid):
         ctx = Context(conforms_to=conforms_to)
         create_test_node(FileObject, ctx=ctx)
         mandatory_mock.assert_has_calls([
-            mock.call("encoding_format", field_uuid), mock.call("content_url")
+            mock.call("encoding_formats", field_uuid), mock.call("content_url")
         ])
         exclusive_mock.assert_called_once_with(["md5", "sha256"])
         validate_name_mock.assert_called_once()
@@ -54,7 +54,7 @@ def test_checks_not_performed_for_live_dataset(conforms_to, field_uuid):
         ctx = Context(is_live_dataset=True, conforms_to=conforms_to)
         create_test_node(FileObject, ctx=ctx)
         mandatory_mock.assert_has_calls([
-            mock.call("encoding_format", field_uuid), mock.call("content_url")
+            mock.call("encoding_formats", field_uuid), mock.call("content_url")
         ])
         exclusive_mock.assert_not_called()
         validate_name_mock.assert_called_once()
@@ -86,7 +86,7 @@ def test_from_jsonld(encoding):
     assert file_object.id == "foo_id"
     assert file_object.description == "bar"
     assert file_object.content_url == "https://mlcommons.org"
-    assert file_object.encoding_format == encoding
+    assert file_object.encoding_formats == [encoding]
     assert (
         file_object.sha256
         == "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"

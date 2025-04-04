@@ -66,14 +66,14 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     return value
 
 
-def apply_transforms_fn(value: Any, field: Field, repeated: bool = False) -> Any:
+def apply_transforms_fn(value: Any, field: Field) -> Any:
     """Applies all transforms in `source` to `value`."""
     source = field.source
     if source is None:
         return value
     transforms = source.transforms
     for transform in transforms:
-        if repeated and isinstance(value, (list, np.ndarray)):
+        if isinstance(value, (list, np.ndarray)):
             value = [_apply_transform_fn(v, transform, field) for v in value]
         else:
             value = _apply_transform_fn(value, transform, field)
@@ -220,13 +220,10 @@ class ReadFields(Operation):
                     f'Column "{column}" does not exist. Inspect the ancestors of the'
                     f" field {field} to understand why. Possible fields: {df.columns}"
                 )
-                is_repeated = field.repeated or _is_repeated_field(field.parent)
-                value = apply_transforms_fn(
-                    row[column], field=field, repeated=is_repeated
-                )
+                value = apply_transforms_fn(row[column], field=field)
                 if _is_na(value):
                     value = None
-                elif is_repeated:
+                elif field.repeated:
                     value = [
                         _cast_value(self.node.ctx, v, field.data_type) for v in value
                     ]

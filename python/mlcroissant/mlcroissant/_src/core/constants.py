@@ -179,7 +179,7 @@ TO_CROISSANT = lambda ctx: {
     SCHEMA_ORG_DATE_PUBLISHED: "date_published",
     SCHEMA_ORG_DESCRIPTION: "description",
     SCHEMA_ORG_DISTRIBUTION: "distribution",
-    SCHEMA_ORG_ENCODING_FORMAT: "encoding_format",
+    SCHEMA_ORG_ENCODING_FORMAT: "encoding_formats",
     SCHEMA_ORG_KEYWORDS: "keywords",
     SCHEMA_ORG_LICENSE: "license",
     SCHEMA_ORG_MD5: "md5",
@@ -209,9 +209,14 @@ CROISSANT_BASIC_AUTH_PASSWORD = "CROISSANT_BASIC_AUTH_PASSWORD"
 class EncodingFormat:
     """Supported MIME Types in Croissant.
 
+    Unregistered or niche encoding and file formats can be indicated instead via the most
+    appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry.
+    Supersedes fileFormat.
+
     We inherit the wrong naming `encodingFormat` from https://schema.org/encodingFormat.
     """
 
+    ARFF = "https://ml.cms.waikato.ac.nz/weka/arff.html"
     CSV = "text/csv"
     GIT = "git+https"
     JPG = "image/jpeg"
@@ -242,6 +247,10 @@ class DataType:
     INT16 = ML_COMMONS_V_1_0.Int16
     INT32 = ML_COMMONS_V_1_0.Int32
     INT64 = ML_COMMONS_V_1_0.Int64
+    UINT8 = ML_COMMONS_V_1_0.UInt8
+    UINT16 = ML_COMMONS_V_1_0.UInt16
+    UINT32 = ML_COMMONS_V_1_0.UInt32
+    UINT64 = ML_COMMONS_V_1_0.UInt64
     SPLIT = ML_COMMONS_V_1_0.Split
     TEXT = namespace.SDO.Text
     URL = namespace.SDO.URL

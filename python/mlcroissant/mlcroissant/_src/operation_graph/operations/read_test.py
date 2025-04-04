@@ -1,5 +1,6 @@
 """read_test module."""
 
+import io
 import pathlib
 import pickle
 import tempfile
@@ -7,9 +8,11 @@ from unittest import mock
 
 from etils import epath
 import pandas as pd
+import pandas.testing as pd_testing
 import pytest
 
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.operation_graph.operations.read import _read_arff_file
 from mlcroissant._src.operation_graph.operations.read import _reading_method
 from mlcroissant._src.operation_graph.operations.read import Read
 from mlcroissant._src.operation_graph.operations.read import ReadingMethod
@@ -21,6 +24,17 @@ from mlcroissant._src.tests.nodes import create_test_file_object
 from mlcroissant._src.tests.nodes import empty_file_object
 from mlcroissant._src.tests.operations import operations
 
+# Example taken from: https://docs.scipy.org/doc/scipy-1.13.0/reference/generated/scipy.io.arff.loadarff.html
+ARFF_CONTENT = """@relation foo
+@attribute width  numeric
+@attribute height numeric
+@attribute color  {red,green,blue,yellow,black}
+@data
+5.0,3.25,blue
+4.5,3.75,green
+3.0,4.00,red
+"""
+
 
 def test_str_representation():
     operation = Read(
@@ -30,6 +44,14 @@ def test_str_representation():
         fields=(),
     )
     assert str(operation) == "Read(file_object_name)"
+
+
+def test_reading_arff():
+    filepath = io.StringIO(ARFF_CONTENT)
+    actual_df = _read_arff_file(filepath)
+    data = [(5.0, 3.25, b"blue"), (4.5, 3.75, b"green"), (3.0, 4.0, b"red")]
+    expected_df = pd.DataFrame(data, columns=["width", "height", "color"])
+    pd_testing.assert_frame_equal(actual_df, expected_df)
 
 
 def test_explicit_message_when_pyarrow_is_not_installed():
@@ -44,7 +66,7 @@ def test_explicit_message_when_pyarrow_is_not_installed():
             read = Read(
                 operations=operations(),
                 node=create_test_file_object(
-                    encoding_format="application/x-parquet", content_url=content_url
+                    encoding_formats=["application/x-parquet"], content_url=content_url
                 ),
                 folder=folder,
                 fields=(),

@@ -140,7 +140,7 @@ class Field(Node):
     sub_fields: list[Self] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
-        description="Another `Field` that is nested inside this one.",
+        description="A set of `Field`s that are nested inside this field.",
         from_jsonld=lambda ctx, fields: Field.from_jsonld(ctx, fields),
         url=constants.ML_COMMONS_SUB_FIELD,
     )

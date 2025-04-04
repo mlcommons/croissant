@@ -36,6 +36,10 @@ EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
     DataType.INT64: np.int64,
     DataType.TEXT: bytes,
     DataType.URL: bytes,
+    DataType.UINT8: np.uint8,
+    DataType.UINT16: np.uint16,
+    DataType.UINT32: np.uint32,
+    DataType.UINT64: np.uint64,
 }
 
 
