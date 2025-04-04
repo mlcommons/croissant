@@ -1,4 +1,12 @@
+mlcroissant>=1.0.16
+pydantic==2.10.6
 gradio>=3.50.2
-mlcroissant
 func_timeout
 requests 
+huggingface-hub==0.30.1
+fsspec==2023.10.0
+aiohttp==3.11.15
+aiohappyeyeballs==2.6.1
+pandas==2.2.2
+pyarrow==18.1.0
+GitPython>=3.1.0
