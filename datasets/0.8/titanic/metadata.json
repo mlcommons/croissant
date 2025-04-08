@@ -49,7 +49,7 @@
       "@type": "sc:FileObject",
       "name": "passengers.csv",
       "contentSize": "117743 B",
-      "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
+      "contentUrl": "data/titanic.csv",
       "encodingFormat": "text/csv",
       "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
     },
