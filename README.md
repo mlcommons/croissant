@@ -97,7 +97,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
           "name": "name",
           "description": "The first column contains the name.",
           "dataType": "sc:Text",
-          "references": {
+          "source": {
             "fileObject": { "@id": "minimal.csv" },
             "extract": {
               "column": "name"
@@ -109,7 +109,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
           "name": "age",
           "description": "The second column contains the age.",
           "dataType": "sc:Integer",
-          "references": {
+          "source": {
             "fileObject": { "@id": "minimal.csv" },
             "extract": {
               "column": "age"
