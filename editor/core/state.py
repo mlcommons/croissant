@@ -167,6 +167,7 @@ class Field(Node):
 
     description: str | None = None
     data_types: str | list[str] | None = None
+    equivalentProperty: str | list[str] | None = None
     source: mlc.Source | None = None
     references: mlc.Source | None = None
 
