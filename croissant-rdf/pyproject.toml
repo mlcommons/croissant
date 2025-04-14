@@ -1,0 +1,119 @@
+[project]
+name = "croissant-rdf"
+version = "0.1.2"
+description = "Tools for working with RDF from Croissant JSON-LD resources."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "David Steinberg", email = "david@resium.com" }]
+maintainers = [{ name = "David Steinberg", email = "david@resium.com" }]
+keywords = [
+    "CroissantML",
+    "RDF",
+    "JSON-LD",
+    "SPARQL",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+
+requires-python = ">=3.8"
+dependencies = [
+    "rdflib >=6.0.0",
+    "huggingface_hub >=0.29.1",
+    "kaggle >=1.6.17",
+    "openml >=0.15.1",
+    "rich >=13.9.4",
+    "requests>=2.32.3",
+    # "httpx >=0.28.1",
+]
+
+
+[dependency-groups]
+dev = [
+    "pytest >=8.3.4",
+    "pytest-cov >=5.0.0",
+    "ruff >=0.9.5",
+    "rdflib-endpoint[cli,oxigraph] >=0.5.3",
+    "qlever",
+    # "mypy >=1.15.0",
+    # "pre-commit >=4.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/david4096/croissant-rdf"
+Documentation = "https://github.com/david4096/croissant-rdf"
+History = "https://github.com/david4096/croissant-rdf/releases"
+Tracker = "https://github.com/david4096/croissant-rdf/issues"
+Source = "https://github.com/david4096/croissant-rdf"
+
+
+[project.scripts]
+huggingface-rdf = "croissant_rdf.providers.huggingface:main"
+kaggle-rdf = "croissant_rdf.providers.kaggle:main"
+openml-rdf = "croissant_rdf.providers.openml:main"
+dataverse-rdf = "croissant_rdf.providers.dataverse:main"
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/croissant_rdf"]
+
+
+[tool.pytest.ini_options]
+addopts = [
+    "--durations=3", # Show slowest tests durations
+    "--cov=src",
+    "--color=yes",
+    "--cov-report=term-missing",
+]
+
+
+[tool.ruff]
+line-length = 120
+lint.select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # isort
+    # "D",    # pydocstyle
+    "D401", # First line should be in imperative mood
+    "T201",
+    "UP",
+    # Ours:
+    "N",     # pep8-naming
+    "S",     # bandit
+    "A",     # flake8-builtins
+    "YTT",   # flake8-2020
+    "B",     # flake8-bugbear
+    "C",     # flake8-comprehensions
+    "ICN",   # flake8-import-conventions
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "Q",     # flake8-quotes
+    "UP",    # pyupgrade
+    "W",     # pycodestyle warnings
+    "PLC",   # pylint convention
+    "PLE",   # pylint error
+    # "PLR",   # pylint refactor Magic value used in comparison, consider replacing 400 with a constant variable
+    "PLW",   # pylint warning
+    "RUF",   # ruff specific
+    "T",
+]
+lint.ignore = [
+    "UP006",
+    "UP007",
+    # We actually do want to import from typing_extensions
+    "UP035",
+    # Relax the convention by _not_ requiring documentation for every function parameter.
+    "D417",
+    "E501",
+    "T201", # do not use print
+]
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "UP", "S101"]
+[tool.ruff.lint.pydocstyle]
+convention = "google"
