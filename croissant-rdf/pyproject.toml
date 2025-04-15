@@ -42,11 +42,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/david4096/croissant-rdf"
-Documentation = "https://github.com/david4096/croissant-rdf"
-History = "https://github.com/david4096/croissant-rdf/releases"
-Tracker = "https://github.com/david4096/croissant-rdf/issues"
-Source = "https://github.com/david4096/croissant-rdf"
+Homepage = "https://github.com/mlcommons/croissant/croissant-rdf"
+Documentation = "https://github.com/mlcommons/croissant/croissant-rdf"
+History = "https://github.com/mlcommons/croissant/releases"
+Tracker = "https://github.com/mlcommons/croissant/issues"
+Source = "https://github.com/mlcommons/croissant/croissant-rdf"
 
 
 [project.scripts]
