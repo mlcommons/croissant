@@ -647,7 +647,7 @@ In addition, `FileObject` defines the following property:
   </thead>
   <tr>
     <td>containedIn</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td>Reference</td>
     <td>MANY</td>
     <td>Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object.</td>
   </tr>
