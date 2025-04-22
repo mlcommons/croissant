@@ -2,7 +2,7 @@ import os
 
 from rdflib import Graph
 
-from croissant_rdf.providers import OpenmlHarvester
+from croissant_rdf import OpenmlHarvester
 
 OUTPUT_FILEPATH = "./tests/test_output.ttl"
 

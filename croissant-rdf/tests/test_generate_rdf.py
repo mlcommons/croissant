@@ -3,7 +3,7 @@ import os
 import pytest
 from rdflib import Graph
 
-from croissant_rdf.providers import HuggingfaceHarvester
+from croissant_rdf import HuggingfaceHarvester
 
 OUTPUT_FILEPATH = "./tests/test_output.ttl"
 

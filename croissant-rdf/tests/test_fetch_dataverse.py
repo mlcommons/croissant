@@ -2,7 +2,7 @@ import os
 
 from rdflib import Graph
 
-from croissant_rdf.providers import DataverseHarvester
+from croissant_rdf import DataverseHarvester
 
 OUTPUT_FILEPATH = "./tests/test_output.ttl"
 

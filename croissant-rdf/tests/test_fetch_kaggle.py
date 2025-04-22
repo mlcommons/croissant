@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from rdflib import Graph
 
-from croissant_rdf.providers import KaggleHarvester
+from croissant_rdf import KaggleHarvester
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(base_dir, "kaggle_croissant.json"), "r") as f:

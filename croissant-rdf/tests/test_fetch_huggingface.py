@@ -4,7 +4,7 @@ from unittest.mock import ANY, MagicMock, patch
 import pytest
 from rdflib import Graph
 
-from croissant_rdf.providers import HuggingfaceHarvester
+from croissant_rdf import HuggingfaceHarvester
 
 
 @pytest.fixture
@@ -37,7 +37,7 @@ def test_mock_fetch_datasets(mock_response):
 
 
 def test_mock_fetch_datasets_empty():
-    with patch("croissant_rdf.providers.HuggingfaceHarvester.fetch_dataset_croissant", return_value=[]):
+    with patch("croissant_rdf.HuggingfaceHarvester.fetch_dataset_croissant", return_value=[]):
         harvester = HuggingfaceHarvester(limit=0)
         result = harvester.fetch_datasets_croissant()
         assert result == []
