@@ -1,0 +1,29 @@
+# Qleverfile for Olympics, use with https://github.com/ad-freiburg/qlever-control
+#
+# qlever get-data  # downloads .zip file of size 13 MB, uncompressed to 323 MB
+# qlever index     # takes ~10 seconds and ~1 GB RAM (on an AMD Ryzen 9 5900X)
+# qlever start     # starts the server (instant)
+[data]
+NAME              = huggingface
+FILE_URL          = https://huggingface.co/datasets/david4096/huggingface-ttl/resolve/main/huggingface240k.ttl
+GET_DATA_CMD      = curl -sLo huggingface240.ttl -C - ${FILE_URL}
+DESCRIPTION       = Metadata of all huggingface datasets, converted to RDF using croissant-rdf
+TEXT_DESCRIPTION  = All literals, search with FILTER CONTAINS(?var, "...")
+[index]
+INPUT_FILES       = huggingface240.ttl
+CAT_INPUT_FILES   = cat ${INPUT_FILES}
+#MULTI_INPUT_JSON = [{"cmd": "cat huggingface240.ttl", "format": "ttl", "parallel":"false"}]
+PARALLEL_PARSING  = false
+SETTINGS_JSON   = { "ascii-prefixes-only": false, "num-triples-per-batch": 100000 }
+[server]
+PORT               = 7088
+ACCESS_TOKEN       = ${data:NAME}_7643543846_jxJWYyAKQiP8
+MEMORY_FOR_QUERIES = 5G
+CACHE_MAX_SIZE     = 2G
+TIMEOUT            = 30s
+[runtime]
+SYSTEM = docker
+IMAGE  = docker.io/adfreiburg/qlever:latest
+[ui]
+UI_CONFIG = olympics
+UI_PORT = 9085
