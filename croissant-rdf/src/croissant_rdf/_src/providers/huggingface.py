@@ -3,7 +3,7 @@ import os
 import requests
 from huggingface_hub import list_datasets
 
-from croissant_rdf.croissant_harvester import CroissantHarvester
+from croissant_rdf._src.croissant_harvester import CroissantHarvester
 
 __author__ = "David Steinberg"
 

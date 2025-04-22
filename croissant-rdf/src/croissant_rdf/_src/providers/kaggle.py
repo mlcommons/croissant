@@ -1,7 +1,7 @@
 import requests
 
-from croissant_rdf.croissant_harvester import CroissantHarvester
-from croissant_rdf.utils import logger
+from croissant_rdf._src.croissant_harvester import CroissantHarvester
+from croissant_rdf._src.utils import logger
 
 __author__ = "David Steinberg,Nelson Quinones"
 

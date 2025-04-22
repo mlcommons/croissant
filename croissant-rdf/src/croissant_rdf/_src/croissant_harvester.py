@@ -9,7 +9,7 @@ import requests
 from rdflib import Graph, URIRef
 from rich.progress import track
 
-from croissant_rdf.utils import chunk_data, logger
+from croissant_rdf._src.utils import chunk_data, logger
 
 DEFAULT_BASE_URL = "https://w3id.org/croissant-rdf/data/"
 

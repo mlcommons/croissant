@@ -1,6 +1,6 @@
 import requests
 
-from croissant_rdf.croissant_harvester import CroissantHarvester
+from croissant_rdf._src.croissant_harvester import CroissantHarvester
 
 __author__ = "Vincent Emonet"
 
