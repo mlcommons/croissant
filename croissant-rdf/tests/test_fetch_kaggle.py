@@ -1,5 +1,6 @@
 import json
-import os
+import os.path
+import tempfile
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -40,20 +41,16 @@ def test_mock_fetch_datasets(mock_response):
         assert len(result) == 1
         assert result[0] == test_metadata_kaggle
 
-
-OUTPUT_FILEPATH = "./tests/test_output.ttl"
-
-
 def test_generate_ttl(mock_response):
     """Test the complete generate_ttl workflow."""
-    with patch.object(KaggleHarvester, "fetch_datasets_ids", return_value=["test_dataset"]), patch(
-        "requests.get",
-        return_value=mock_response,
-    ):
-        harvester = KaggleHarvester(fname=OUTPUT_FILEPATH, limit=3, use_api_key=False)
-        file_ttl = harvester.generate_ttl()
-        assert os.path.isfile(OUTPUT_FILEPATH)
-        assert os.path.isfile(file_ttl)
-        g = Graph().parse(OUTPUT_FILEPATH, format="ttl")
-        assert len(g) > 0
-        os.remove(OUTPUT_FILEPATH)
+    with tempfile.NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
+        with patch.object(KaggleHarvester, "fetch_datasets_ids", return_value=["test_dataset"]), patch(
+            "requests.get",
+            return_value=mock_response,
+        ):
+            harvester = KaggleHarvester(fname=fp.name, limit=3, use_api_key=False)
+            file_ttl = harvester.generate_ttl()
+            assert os.path.isfile(fp.name)
+            assert os.path.isfile(file_ttl)
+            g = Graph().parse(fp.name, format="ttl")
+            assert len(g) > 0

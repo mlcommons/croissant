@@ -1,22 +1,22 @@
-import os
-
 from rdflib import Graph
 
 from croissant_rdf import DataverseHarvester
 
-OUTPUT_FILEPATH = "./tests/test_output.ttl"
+import tempfile
+
 
 
 def test_dataverse():
-    harvester = DataverseHarvester(
-        fname=OUTPUT_FILEPATH,
-        limit=3,
-        search="Soil",
-        api_url="https://demo.dataverse.org",
-    )
-    harvester.generate_ttl()
+    
+    with tempfile.NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
 
-    assert os.path.isfile(OUTPUT_FILEPATH)
-    g = Graph().parse(OUTPUT_FILEPATH, format="ttl")
-    assert len(g) > 0
-    os.remove(OUTPUT_FILEPATH)
+        harvester = DataverseHarvester(
+            fname=fp.name,
+            limit=3,
+            search="Soil",
+            api_url="https://demo.dataverse.org",
+        )
+        harvester.generate_ttl()
+
+        g = Graph().parse(fp.name, format="ttl")
+        assert len(g) > 0
