@@ -1,59 +1,136 @@
 """RecordSet module."""
 
-from __future__ import annotations
-
-import dataclasses
+import itertools
 import json
 
-from etils import epath
+from rdflib import term
+from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.core.json_ld import remove_empty_values
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.data_types import data_types_from_jsonld
+from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.types import Json
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 
 
-@dataclasses.dataclass(eq=False, repr=False)
+def json_from_jsonld(ctx: Context, data) -> Json | None:
+    """Creates `data` from a JSON-LD fragment."""
+    if isinstance(data, str):
+        try:
+            return json.loads(data)
+        except json.decoder.JSONDecodeError:
+            ctx.issues.add_error(
+                f"{constants.ML_COMMONS_DATA(ctx)} is not a proper list of JSON: {data}"
+            )
+    return None
+
+
+@mlc_dataclasses.dataclass
 class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
-    # `data` is passed as a string for the moment, because dicts and lists are not
-    # hashable.
-    data: list[Json] | None = None
-    description: str | None = None
-    is_enumeration: bool | None = None
-    key: str | list[str] | None = None
-    name: str = ""
-    fields: list[Field] = dataclasses.field(default_factory=list)
+    JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
+
+    data: list[Json] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description="One or more records that constitute the data of the `RecordSet`.",
+        from_jsonld=json_from_jsonld,
+        url=constants.ML_COMMONS_DATA,
+    )
+    data_types: list[term.URIRef] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "The data type of the RecordSet. Mainly used to specify: `sc:Enumeration`."
+        ),
+        from_jsonld=data_types_from_jsonld,
+        to_jsonld=data_types_to_jsonld,
+        url=constants.ML_COMMONS_DATA_TYPE,
+    )
+    description: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.SCHEMA_ORG_DESCRIPTION,
+    )
+    examples: list[Json] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "One or more records provided as example content of the `RecordSet`, or a"
+            " reference to data source that contains examples."
+        ),
+        from_jsonld=json_from_jsonld,
+        url=constants.ML_COMMONS_EXAMPLES,
+    )
+    is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_IS_ENUMERATION,
+    )
+    key: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "One or more fields whose values uniquely identify each record in the"
+            " `RecordSet`."
+        ),
+        from_jsonld=lambda ctx, jsonld: uuid_from_jsonld(jsonld),
+        to_jsonld=formatted_uuid_to_json,
+        url=constants.SCHEMA_ORG_KEY,
+    )
+    name: str = mlc_dataclasses.jsonld_field(
+        default="",
+        description="The name of the RecordSet.",
+        input_types=[SDO.Text],
+        url=constants.SCHEMA_ORG_NAME,
+    )
+    fields: list[Field] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "A data element that appears in the records of the RecordSet (e.g., one"
+            " column of a table)."
+        ),
+        input_types=[Field],
+        url=constants.ML_COMMONS_FIELD,
+    )
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
+        uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
-        self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("description")
+        self.assert_has_mandatory_properties(uuid_field)
+
         if self.data is not None:
             data = self.data
             if not isinstance(data, list):
                 self.add_error(
-                    f"{constants.ML_COMMONS_DATA} should declare a list. Got:"
+                    f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a list. Got:"
                     f" {type(data)}."
                 )
                 return
             if not data:
                 self.add_error(
-                    f"{constants.ML_COMMONS_DATA} should declare a non empty list."
+                    f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a non empty"
+                    " list."
                 )
-            expected_keys = {field.name for field in self.fields}
+            if self.ctx.is_v0():
+                expected_keys = {field.name for field in self.fields}
+            else:
+                expected_keys = {field.id for field in self.fields}
             for i, line in enumerate(data):
                 if not isinstance(line, dict):
                     self.add_error(
-                        f"{constants.ML_COMMONS_DATA} should declare a list of dict."
-                        f" Got: a list of {type(line)}."
+                        f"{constants.ML_COMMONS_DATA(self.ctx)} should declare a list"
+                        f" of dict. Got: a list of {type(line)}."
                     )
                     return
                 keys = set(line.keys())
@@ -63,63 +140,51 @@ class RecordSet(Node):
                         f" {expected_keys}. Got: {keys}."
                     )
 
-    def to_json(self) -> Json:
-        """Converts the `RecordSet` to JSON."""
-        return remove_empty_values(
-            {
-                "@type": "ml:RecordSet",
-                "name": self.name,
-                "description": self.description,
-                "isEnumeration": self.is_enumeration,
-                "key": self.key,
-                "field": [field.to_json() for field in self.fields],
-                "data": self.data,
-            }
-        )
-
-    @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
-        record_set: Json,
-    ) -> RecordSet:
-        """Creates a `RecordSet` from JSON-LD."""
-        check_expected_type(issues, record_set, constants.ML_COMMONS_RECORD_SET_TYPE)
-        record_set_name = record_set.get(constants.SCHEMA_ORG_NAME, "")
-        context = Context(
-            dataset_name=context.dataset_name, record_set_name=record_set_name
-        )
-        fields = record_set.pop(constants.ML_COMMONS_FIELD, [])
-        if isinstance(fields, dict):
-            fields = [fields]
-        fields = [
-            Field.from_jsonld(issues, context, folder, rdf, field) for field in fields
-        ]
-        key = record_set.get(constants.SCHEMA_ORG_KEY)
-        data = record_set.get(constants.ML_COMMONS_DATA)
-        if isinstance(data, str):
-            try:
-                data = json.loads(data)
-            except json.decoder.JSONDecodeError:
-                data = None
-                issues.add_error(
-                    f"{constants.ML_COMMONS_DATA} is not a proper list of JSON: {data}"
+    def check_joins_in_fields(self):
+        """Checks that all joins are declared when they are consumed."""
+        joins: set[tuple[str, str]] = set()
+        sources: set[str | None] = set()
+        for field in self.fields:
+            source_uuid = field.source.uuid
+            references_uuid = field.references.uuid
+            if source_uuid:
+                # source_uuid is used as a source.
+                sources.add(get_parent_uuid(self.ctx, source_uuid))
+            if source_uuid and references_uuid:
+                # A join happens because the user specified `source` and `references`.
+                joins.add(
+                    (
+                        get_parent_uuid(self.ctx, source_uuid),
+                        get_parent_uuid(self.ctx, references_uuid),
+                    )
                 )
-        is_enumeration = record_set.get(constants.ML_COMMONS_IS_ENUMERATION)
-        return cls(
-            issues=issues,
-            folder=folder,
-            context=Context(
-                dataset_name=context.dataset_name, record_set_name=record_set_name
-            ),
-            data=data,
-            description=record_set.get(constants.SCHEMA_ORG_DESCRIPTION),
-            is_enumeration=is_enumeration,
-            key=key,
-            fields=fields,
-            name=record_set_name,
-            rdf=rdf,
+                joins.add(
+                    (
+                        get_parent_uuid(self.ctx, references_uuid),
+                        get_parent_uuid(self.ctx, source_uuid),
+                    )
+                )
+        for combination in itertools.combinations(sources, 2):
+            if combination not in joins:
+                # Sort for reproducibility.
+                ordered_combination = tuple(sorted(combination))
+                self.add_error(
+                    f"You try to use the sources with names {ordered_combination} as"
+                    " sources, but you didn't declare a join between them. Use"
+                    " `ml:references` to declare a join. Please, refer to the"
+                    " documentation for more information."
+                )
+
+
+def get_parent_uuid(ctx: Context, uuid: str) -> str | None:
+    """Retrieves the UID of the parent, e.g. `file/column` -> `file`."""
+    node = node_by_uuid(ctx, uuid)
+    if node is None:
+        ctx.issues.add_error(
+            f"Node with uuid={uuid} does not exist. This error might have been found"
+            " during a Join operation."
         )
+        return None
+    if isinstance(node, Field):
+        return node.parent.uuid
+    return node.uuid

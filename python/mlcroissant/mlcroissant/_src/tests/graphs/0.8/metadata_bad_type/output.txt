@@ -1,0 +1,2 @@
+Found the following 1 error(s) during the validation:
+  -  The current JSON-LD doesn't extend https://schema.org/Dataset.

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<html>
+<head>
+    <title>FileSet - Croissant &#129360</title>
+</head>
+<header>
+    <nav>
+        <a href="./Metadata.html">Metadata</a>
+        <a href="./FileObject.html">FileObject</a>
+        <a href="./FileSet.html">FileSet</a>
+        <a href="./RecordSet.html">RecordSet</a>
+        <a href="./Field.html">Field</a>
+    </nav>
+    <h1>Croissant &#129360</h1>
+    Croissant specifications as implemented by <code><a href="https://pypi.org/project/mlcroissant">mlcroissant</a></code>.
+    <br>
+    For the actual specifications, please refer to the <a href="https://mlcommons.org/croissant/1.0">Croissant 1.0 standard.</a>.
+    <br>
+    To add new properties, refer to the <a href="https://github.com/mlcommons/croissant/tree/main/python/mlcroissant#add-new-properties-to-the-standard">documentation</a>.
+</header>
+<body>
+    <h3>FileSet</h3>
+    <span>Nodes to describe a dataset FileSet (distribution).</span>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Expected type</th>
+            <th>Cardinality</th>
+            <th>Description</th>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/name">sc:name</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The name of the file.  As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. &#34;images.zip&#34;.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/containedIn">sc:containedIn</a></td>
+            <td>
+                
+            </td>
+            <td>MANY</td>
+            <td>Another FileObject or FileSet that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the contentUrl is evaluated as a relative path within the container object</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/description">sc:description</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/encodingFormat">sc:encodingFormat</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The format of the file, given as a mime type.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/excludes">cr:excludes</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>A glob pattern that specifies the files to exclude.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/includes">cr:includes</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>A glob pattern that specifies the files to include.</td>
+        </tr>
+    
+    </table>
+</body>
+</html>

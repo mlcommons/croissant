@@ -1,2 +1,0 @@
-Found the following 1 error(s) during the validation:
-  -  [dataset(mydataset) > distribution()] Property "https://schema.org/name" is mandatory, but does not exist.

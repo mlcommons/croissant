@@ -1,2 +1,0 @@
-Found the following 1 error(s) during the validation:
-  -  [dataset(mydataset) > distribution(a-csv-table)] There is a reference to node named "THISDOESNOTEXIST" in node "a-csv-table", but this node doesn't exist.

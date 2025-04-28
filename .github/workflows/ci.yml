@@ -1,4 +1,4 @@
-name: Continuous Integration (CI)
+name: Continuous Integration - mlcroissant (CI)
 
 on:
   push:
@@ -22,18 +22,23 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev git-lfs && pip install .[dev]
 
     - name: PyTest
       run: make pytest
+
+    # Pylint is not compatible with Apache Beam in Python 3.11:
+    # https://github.com/pylint-dev/pylint/blob/02616372282fd84862636d58071e6f3c62b53559/pyproject.toml#L38
+    - name: Install Pylint separately.
+      run: pip install pylint
 
     - name: PyLint
       run: make pylint
@@ -56,32 +61,40 @@ jobs:
     defaults:
       run:
         working-directory: ./python/mlcroissant
+    env:
+      GITHUB_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install library
-      run: pip install .[dev]
+      run: sudo apt-get install -y libgraphviz-dev
 
     - run: pip install ipython ipykernel nbconvert
-    
-    # Notebooks are in the recipes/ folder. 
+
+    # Notebooks are in the recipes/ folder.
     - name: Run notebook
       run: |
+        GITHUB_REPOSITORY="${{ env.GITHUB_REPOSITORY }}"
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
-            jupyter nbconvert \
-              --ExecutePreprocessor.timeout=600 \
-              --ExecutePreprocessor.kernel_name=croissant-notebook \
-              --to notebook \
-              --execute $notebook
+            if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ]
+            then
+              echo "Skipping notebook=${notebook}"
+            else
+              jupyter nbconvert \
+                --ExecutePreprocessor.timeout=600 \
+                --ExecutePreprocessor.kernel_name=croissant-notebook \
+                --to notebook \
+                --execute "$notebook"
+            fi
           done
-          
+
   python-format:
     name: Python format
     runs-on: ubuntu-latest
@@ -92,8 +105,9 @@ jobs:
         python-version: '3.11'
     - uses: psf/black@stable
       with:
-        options: --line-length 88 --preview --experimental-string-processing
+        options: --check --line-length 88 --preview
         src: './python/mlcroissant'
+        version: "23.11.0"
     - uses: isort/isort-action@master
       with:
         sort-paths: './python/mlcroissant'
@@ -105,20 +119,21 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.11'
 
     - name: Install dependencies except mlcroissant itself
       run: >
         pip install absl-py \
-          datasets \
+          apache-beam \
           etils[epath] \
           GitPython \
           jsonpath_rw \
+          mypy \
           networkx \
           pandas \
           pyarrow \
@@ -126,10 +141,48 @@ jobs:
           pytype \
           rdflib \
           requests \
+          torchdata \
           tqdm
 
     - name: PyType
       run: make pytype
+
+  mypy-test:
+    name: MyPy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies except mlcroissant itself
+      run: >
+          pip install absl-py \
+            apache-beam \
+            etils[epath] \
+            GitPython \
+            jsonpath_rw \
+            mypy \
+            networkx \
+            pandas \
+            pillow \
+            pyarrow \
+            pytest \
+            pytype \
+            rdflib \
+            requests \
+            torchdata \
+            tqdm
+
+    - name: MyPy
+      run: make mypy
+
 
   validation-test:
     name: Validation / JSON-LD Tests / Python 3.11
@@ -138,10 +191,10 @@ jobs:
       run:
         working-directory: ./python/mlcroissant
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -154,7 +207,7 @@ jobs:
         for file in ${JSON_FILES}
         do
           echo "Validating ${file}..."
-          python scripts/validate.py --file ${file}
+          python mlcroissant/scripts/validate.py --jsonld ${file}
         done
 
   generation-test:
@@ -163,11 +216,14 @@ jobs:
     defaults:
       run:
         working-directory: ./python/mlcroissant
+    strategy:
+      matrix:
+        version: ['0.8', '1.0']
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -175,7 +231,7 @@ jobs:
       run: pip install .
 
     - name: Generate JSON-LD files - Titanic
-      run: python scripts/load.py --file ../../datasets/titanic/metadata.json --record_set passengers
+      run: mlcroissant load --jsonld ../../datasets/${{ matrix.version }}/titanic/metadata.json --record_set passengers
 
     - name: Generate JSON-LD files - PASS
-      run: pip install .[image] && python scripts/load.py --file ../../datasets/pass-mini/metadata.json --record_set images
+      run: pip install .[image] && python mlcroissant/scripts/load.py --jsonld ../../datasets/${{ matrix.version }}/pass-mini/metadata.json --record_set images

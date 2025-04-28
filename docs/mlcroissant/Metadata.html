@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<html>
+<head>
+    <title>Metadata - Croissant &#129360</title>
+</head>
+<header>
+    <nav>
+        <a href="./Metadata.html">Metadata</a>
+        <a href="./FileObject.html">FileObject</a>
+        <a href="./FileSet.html">FileSet</a>
+        <a href="./RecordSet.html">RecordSet</a>
+        <a href="./Field.html">Field</a>
+    </nav>
+    <h1>Croissant &#129360</h1>
+    Croissant specifications as implemented by <code><a href="https://pypi.org/project/mlcroissant">mlcroissant</a></code>.
+    <br>
+    For the actual specifications, please refer to the <a href="https://mlcommons.org/croissant/1.0">Croissant 1.0 standard.</a>.
+    <br>
+    To add new properties, refer to the <a href="https://github.com/mlcommons/croissant/tree/main/python/mlcroissant#add-new-properties-to-the-standard">documentation</a>.
+</header>
+<body>
+    <h3>Metadata</h3>
+    <span>Nodes to describe a dataset metadata.</span>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Expected type</th>
+            <th>Cardinality</th>
+            <th>Description</th>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/name">sc:name</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The name of the dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/citeAs">cr:citeAs</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/creator">sc:creator</a></td>
+            <td>
+                
+                <a href="https://schema.org/Organization">sc:Organization</a>
+                
+                <a href="https://schema.org/Person">sc:Person</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>The creator(s) of the dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/dateCreated">sc:dateCreated</a></td>
+            <td>
+                
+                <a href="https://schema.org/Date">sc:Date</a>
+                
+                <a href="https://schema.org/DateTime">sc:DateTime</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The date the dataset was initially created.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/dateModified">sc:dateModified</a></td>
+            <td>
+                
+                <a href="https://schema.org/Date">sc:Date</a>
+                
+                <a href="https://schema.org/DateTime">sc:DateTime</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The date the dataset was last modified.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/datePublished">sc:datePublished</a></td>
+            <td>
+                
+                <a href="https://schema.org/Date">sc:Date</a>
+                
+                <a href="https://schema.org/DateTime">sc:DateTime</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The date the dataset was published.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/description">sc:description</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>Description of the dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/isLiveDataset">cr:isLiveDataset</a></td>
+            <td>
+                
+                <a href="https://schema.org/Boolean">sc:Boolean</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>Whether the dataset is a live dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/keywords">sc:keywords</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/inLanguage">sc:inLanguage</a></td>
+            <td>
+                
+                <a href="https://schema.org/Language">sc:Language</a>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>The language(s) of the content of the dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/license">sc:license</a></td>
+            <td>
+                
+                <a href="https://schema.org/CreativeWork">sc:CreativeWork</a>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+                <a href="https://schema.org/URL">sc:URL</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/publisher">sc:publisher</a></td>
+            <td>
+                
+                <a href="https://schema.org/Organization">sc:Organization</a>
+                
+                <a href="https://schema.org/Person">sc:Person</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>The publisher of the dataset, which may be distinct from its creator.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/sameAs">sc:sameAs</a></td>
+            <td>
+                
+                <a href="https://schema.org/URL">sc:URL</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>The URL of another Web resource that represents the same dataset as this one.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/sdLicense">sc:sdLicense</a></td>
+            <td>
+                
+                <a href="https://schema.org/CreativeWork">sc:CreativeWork</a>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+                <a href="https://schema.org/URL">sc:URL</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>A license document that applies to this structured data, typically indicated by URL.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/url">sc:url</a></td>
+            <td>
+                
+                <a href="https://schema.org/URL">sc:URL</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The URL of the dataset. This generally corresponds to the Web page for the dataset.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/version">sc:version</a></td>
+            <td>
+                
+                <a href="https://schema.org/Integer">sc:Integer</a>
+                
+                <a href="https://schema.org/Number">sc:Number</a>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The version of the dataset following the requirements below.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/distribution">sc:distribution</a></td>
+            <td>
+                
+                <a href="http://mlcommons.org/croissant/FileObject">cr:FileObject</a>
+                
+                <a href="http://mlcommons.org/croissant/FileSet">cr:FileSet</a>
+                
+            </td>
+            <td>MANY</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/recordSet">cr:recordSet</a></td>
+            <td>
+                
+                <a href="http://mlcommons.org/croissant/RecordSet">cr:RecordSet</a>
+                
+            </td>
+            <td>MANY</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollection">rai:dataCollection</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollectionType">rai:dataCollectionType</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollectionTypeOthers">rai:dataCollectionTypeOthers</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollectionMissing">rai:dataCollectionMissing</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollectionRaw">rai:dataCollectionRaw</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollectionTimeFrameStart">rai:dataCollectionTimeFrameStart</a></td>
+            <td>
+                
+                <a href="https://schema.org/Date">sc:Date</a>
+                
+                <a href="https://schema.org/DateTime">sc:DateTime</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataCollectionTimeFrameEnd">rai:dataCollectionTimeFrameEnd</a></td>
+            <td>
+                
+                <a href="https://schema.org/Date">sc:Date</a>
+                
+                <a href="https://schema.org/DateTime">sc:DateTime</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataPreprocessingImputation">rai:dataPreprocessingImputation</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataPeprocessingProtocol">rai:dataPeprocessingProtocol</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataPreprocessingManipulation">rai:dataPreprocessingManipulation</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataAnnotationProtocol">rai:dataAnnotationProtocol</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataAnnotationPlatform">rai:dataAnnotationPlatform</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataAnnotationAnalysis">rai:dataAnnotationAnalysis</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataAnnotationPerItem">rai:dataAnnotationPerItem</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataAnnotationDemographics">rai:dataAnnotationDemographics</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataAnnotationTools">rai:dataAnnotationTools</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataBiases">rai:dataBiases</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>MANY</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataUseCases">rai:dataUseCases</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataLimitation">rai:dataLimitation</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataSocialImpact">rai:dataSocialImpact</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataSensitive">rai:dataSensitive</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/RAI/dataMaintenance">rai:dataMaintenance</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+    </table>
+</body>
+</html>

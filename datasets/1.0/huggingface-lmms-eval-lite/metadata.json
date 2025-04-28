@@ -1,0 +1,880 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "LMMs-Eval-Lite",
+  "description": "lmms-lab/LMMs-Eval-Lite dataset hosted on Hugging Face and contributed by the HF Datasets community",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "keywords": [
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Text",
+    "Time-series",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "url": "https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ai2d",
+      "name": "parquet-files-for-config-ai2d",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ai2d/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-chartqa",
+      "name": "parquet-files-for-config-chartqa",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "chartqa/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-coco2017_cap_val",
+      "name": "parquet-files-for-config-coco2017_cap_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "coco2017_cap_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-docvqa_val",
+      "name": "parquet-files-for-config-docvqa_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "docvqa_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-flickr30k_test",
+      "name": "parquet-files-for-config-flickr30k_test",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "flickr30k_test/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-gqa",
+      "name": "parquet-files-for-config-gqa",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "gqa/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-infovqa_val",
+      "name": "parquet-files-for-config-infovqa_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "infovqa_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mmbench_cn_dev",
+      "name": "parquet-files-for-config-mmbench_cn_dev",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mmbench_cn_dev/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mmbench_en_dev",
+      "name": "parquet-files-for-config-mmbench_en_dev",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mmbench_en_dev/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-nocaps_val",
+      "name": "parquet-files-for-config-nocaps_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "nocaps_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ok_vqa_val2014",
+      "name": "parquet-files-for-config-ok_vqa_val2014",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ok_vqa_val2014/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-refcoco_bbox_val",
+      "name": "parquet-files-for-config-refcoco_bbox_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "refcoco_bbox_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-seedbench",
+      "name": "parquet-files-for-config-seedbench",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "seedbench/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-textcaps_val",
+      "name": "parquet-files-for-config-textcaps_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "textcaps_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-textvqa_val",
+      "name": "parquet-files-for-config-textvqa_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "textvqa_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-vizwiz_vqa_val",
+      "name": "parquet-files-for-config-vizwiz_vqa_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "vizwiz_vqa_val/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-vqav2_val",
+      "name": "parquet-files-for-config-vqav2_val",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "vqav2_val/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ai2d_splits",
+      "name": "ai2d_splits",
+      "description": "Splits for the ai2d config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ai2d_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "ai2d_splits/split_name": "lite"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ai2d",
+      "name": "ai2d",
+      "description": "lmms-lab/LMMs-Eval-Lite - 'ai2d' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d/split",
+          "name": "ai2d/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "ai2d_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ai2d"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ai2d/(?:partial-)?(lite)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d/question",
+          "name": "ai2d/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ai2d"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d/options",
+          "name": "ai2d/options",
+          "description": "Column 'options' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ai2d"
+            },
+            "extract": {
+              "column": "options"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d/answer",
+          "name": "ai2d/answer",
+          "description": "Column 'answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ai2d"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ai2d/image",
+          "name": "ai2d/image",
+          "description": "Image column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ai2d"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "gqa_splits",
+      "name": "gqa_splits",
+      "description": "Splits for the gqa config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "gqa_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "gqa_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "gqa_splits/split_name": "lite"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "gqa",
+      "name": "gqa",
+      "description": "lmms-lab/LMMs-Eval-Lite - 'gqa' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/split",
+          "name": "gqa/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "gqa_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "gqa/(?:partial-)?(lite)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/id",
+          "name": "gqa/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/imageId",
+          "name": "gqa/imageId",
+          "description": "Column 'imageId' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "imageId"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/question",
+          "name": "gqa/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/answer",
+          "name": "gqa/answer",
+          "description": "Column 'answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/fullAnswer",
+          "name": "gqa/fullAnswer",
+          "description": "Column 'fullAnswer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "fullAnswer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/isBalanced",
+          "name": "gqa/isBalanced",
+          "description": "Column 'isBalanced' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "isBalanced"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/groups",
+          "name": "gqa/groups",
+          "description": "Column 'groups' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/groups/global",
+              "name": "gqa/groups/global",
+              "description": "Column 'groups' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "groups"
+                },
+                "transform": {
+                  "jsonPath": "global"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/groups/local",
+              "name": "gqa/groups/local",
+              "description": "Column 'groups' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "groups"
+                },
+                "transform": {
+                  "jsonPath": "local"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/entailed",
+          "name": "gqa/entailed",
+          "description": "Column 'entailed' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "entailed"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/equivalent",
+          "name": "gqa/equivalent",
+          "description": "Column 'equivalent' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "equivalent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/types",
+          "name": "gqa/types",
+          "description": "Column 'types' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/types/structural",
+              "name": "gqa/types/structural",
+              "description": "Column 'types' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "types"
+                },
+                "transform": {
+                  "jsonPath": "structural"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/types/semantic",
+              "name": "gqa/types/semantic",
+              "description": "Column 'types' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "types"
+                },
+                "transform": {
+                  "jsonPath": "semantic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/types/detailed",
+              "name": "gqa/types/detailed",
+              "description": "Column 'types' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "types"
+                },
+                "transform": {
+                  "jsonPath": "detailed"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/annotations",
+          "name": "gqa/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "repeated": true,
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/annotations/question",
+              "name": "gqa/annotations/question",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "gqa/annotations/question/objectId",
+                  "name": "gqa/annotations/question/objectId",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-gqa"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "objectId"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "gqa/annotations/question/value",
+                  "name": "gqa/annotations/question/value",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-gqa"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "value"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/annotations/answer",
+              "name": "gqa/annotations/answer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "gqa/annotations/answer/objectId",
+                  "name": "gqa/annotations/answer/objectId",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-gqa"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "objectId"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "gqa/annotations/answer/value",
+                  "name": "gqa/annotations/answer/value",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-gqa"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "value"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/annotations/fullAnswer",
+              "name": "gqa/annotations/fullAnswer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "gqa/annotations/fullAnswer/objectId",
+                  "name": "gqa/annotations/fullAnswer/objectId",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-gqa"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "objectId"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "gqa/annotations/fullAnswer/value",
+                  "name": "gqa/annotations/fullAnswer/value",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-gqa"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "value"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/semantic",
+          "name": "gqa/semantic",
+          "description": "Column 'semantic' from the Hugging Face parquet file.",
+          "repeated": true,
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/semantic/operation",
+              "name": "gqa/semantic/operation",
+              "description": "Column 'semantic' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "semantic"
+                },
+                "transform": {
+                  "jsonPath": "operation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/semantic/argument",
+              "name": "gqa/semantic/argument",
+              "description": "Column 'semantic' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "semantic"
+                },
+                "transform": {
+                  "jsonPath": "argument"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "gqa/semantic/dependencies",
+              "name": "gqa/semantic/dependencies",
+              "description": "Column 'semantic' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "repeated": true,
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-gqa"
+                },
+                "extract": {
+                  "column": "semantic"
+                },
+                "transform": {
+                  "jsonPath": "dependencies"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gqa/semanticStr",
+          "name": "gqa/semanticStr",
+          "description": "Column 'semanticStr' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gqa"
+            },
+            "extract": {
+              "column": "semanticStr"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

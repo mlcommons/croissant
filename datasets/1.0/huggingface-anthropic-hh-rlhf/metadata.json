@@ -1,0 +1,552 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "Anthropic/hh-rlhf",
+  "description": "# Dataset Card for HH-RLHF\n\n## Dataset Summary\n\n\nThis repository provides access to two different kinds of data:\n1. Human preference data about helpfulness and harmlessness from [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862). These data are meant to train preference (or reward) models for subsequent RLHF training. These data are *not* meant for supervised training of dialogue agents. Training dialogue agents on these data is likely to lead to harmful models and this shold be avoided.\n2. Human-generated and annotated red teaming dialogues from [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://www.anthropic.com/red_teaming.pdf). These data are meant to understand how crowdworkers red team models and what types of red team attacks are succesful or not. The data are *not* meant for fine-tuning or preference modeling (use the data above for preference modeling). These data are entire transcripts of conversations that are derived from the harmlessness preference modeling data described above, where only the chosen response is incorporated into the overall transcript. Furthermore, the transcripts are annotated with human and automated measurements of how harmful the overall dialogues are.\n\n**Disclaimer**: The data (especially the harmlessness preference data and the red team data) contain content that may be offensive or upsetting. Topics include, but are not limited to, discriminatory language and discussions of abuse, violence, self-harm, exploitation, and other potentially upsetting subject matter. Please only engage with the data in accordance with your own personal risk tolerance. The data are intended for research purposes, especially research that can make models *less* harmful. The views expressed in the data do not reflect the views of Anthropic or any of its employees. As mentioned above, these data are *not* intended for training dialogue agents as this will likely lead to harmful model behavior.\n\nEach of these datasets are described further below.\n\n## Human preference data about helpfulness and harmlessness (PM Data)\n\nThe data are described in the paper: [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862). If you find the data useful, please cite the paper. The data format is very simple -- each line of the jsonl files contains a pair of texts, one \"chosen\" and one \"rejected\".\n\nFor **helpfulness**, the data are grouped into train/test splits in three tranches: from our base models (context-distilled 52B language models), via rejection sampling (mostly with best-of-16 sampling) against an early preference model, and a dataset sampled during our iterated \"online\" process.\n\nFor **harmlessness**, the data are only collected for our base models, but otherwise formatted in the same way.\n\nDetails about the data collection process and crowdworker population can be found in the paper, specifically in section 2 and appendix D.\n\n## Red teaming data (not PM Data)\n\nThe data are described in the paper: [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://www.anthropic.com/red_teaming.pdf). If you find the data useful, please cite the paper. At a high level these data can be examined to understand what succesful red team attempts look like.\n\nDetails about the data and data collection procedures can be found in the Datasheet in the appendix of the paper.\n\nEach line of the jsonl file contains a dictionary with the following fields:\n- `transcript` a text transcript of a conversation between a human adversary (red team member) and an AI assistant\n- `min_harmlessness_score_transcript` a real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model\n- `num_params` number of parameters in the language model powering the AI assistant\n- `model_type` type of model powering the AI assistant\n- `rating` the red team member's rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful)\n- `task_description` a short text description written by the red team member about how they tried to red team the AI assistant\n- `task_description_harmlessness_score` a real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model\n- `red_team_member_id` an arbitrary identifier of the red team member. one red team member can generate multiple red team attacks\n- `is_upworker` a binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk\n- `tags` a list of up to 6 tags per transcript. tags are short descriptions of the red team attempts generated by crowdworkers who reviewed red team data post-hoc. tags were only provided for a random sample of 1000 red team attempts for two of four model types.\n\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@inproceedings{perez-etal-2022-red, title = \"Red Teaming Language Models with Language Models\", author = \"Perez, Ethan  and Huang, Saffron  and Song, Francis  and Cai, Trevor  and Ring, Roman  and Aslanides, John  and Glaese, Amelia  and McAleese, Nat  and Irving, Geoffrey\", editor = \"Goldberg, Yoav  and Kozareva, Zornitsa  and Zhang, Yue\", booktitle = \"Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing\", month = dec, year = \"2022\", address = \"Abu Dhabi, United Arab Emirates\", publisher = \"Association for Computational Linguistics\", url = \"https://aclanthology.org/2022.emnlp-main.225\", doi = \"10.18653/v1/2022.emnlp-main.225\", pages = \"3419--3448\", abstract = \"Language Models (LMs) often cannot be deployed because of their potential to harm users in hard-to-predict ways. Prior work identifies harmful behaviors before deployment by using human annotators to hand-write test cases. However, human annotation is expensive, limiting the number and diversity of test cases. In this work, we automatically find cases where a target LM behaves in a harmful way, by generating test cases ({``}red teaming{''}) using another LM. We evaluate the target LM{'}s replies to generated test questions using a classifier trained to detect offensive content, uncovering tens of thousands of offensive replies in a 280B parameter LM chatbot. We explore several methods, from zero-shot generation to reinforcement learning, for generating test cases with varying levels of diversity and difficulty. Furthermore, we use prompt engineering to control LM-generated test cases to uncover a variety of other harms, automatically finding groups of people that the chatbot discusses in offensive ways, personal and hospital phone numbers generated as the chatbot{'}s own contact info, leakage of private training data in generated text, and harms that occur over the course of a conversation. Overall, LM-based red teaming is one promising tool (among many needed) for finding and fixing diverse, undesirable LM behaviors before impacting users.\", }",
+  "license": "mit",
+  "url": "https://github.com/anthropics/hh-rlhf",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Anthropic/hh-rlhf",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "red-team-attempts-file-object",
+      "name": "red-team-attempts-file-object",
+      "description": "The file for red-team-attempts",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "red-team-attempts/red_team_attempts.jsonl.gz",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "harmless-base-files",
+      "name": "harmless-base-files",
+      "description": "The files for harmless-base",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "harmless-base/*.jsonl.gz"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "helpful-base-files",
+      "name": "helpful-base-files",
+      "description": "The files for helpful-base",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "helpful-base/*.jsonl.gz"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "helpful-online-files",
+      "name": "helpful-online-files",
+      "description": "The files for helpful-online",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "helpful-online/*.jsonl.gz"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "helpful-rejection-sampled-files",
+      "name": "helpful-rejection-sampled-files",
+      "description": "The files for helpful-rejection-sampled",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "helpful-rejection-sampled/*.jsonl.gz"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "split_enums",
+      "name": "split_enums",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/name",
+          "name": "split_enums/name",
+          "description": "One of train or test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/url",
+          "name": "split_enums/url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:URL"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "split_enums/name": "train",
+          "split_enums/url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "split_enums/name": "test",
+          "split_enums/url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "red-team-attempts",
+      "name": "red-team-attempts",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/transcript",
+          "name": "red-team-attempts/transcript",
+          "description": "A text transcript of a conversation between a human adversary (red team member) and an AI assistant.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..transcript"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/is_upworker",
+          "name": "red-team-attempts/is_upworker",
+          "description": "A binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..is_upworker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/min_harmlessness_score_transcript",
+          "name": "red-team-attempts/min_harmlessness_score_transcript",
+          "description": "A real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..min_harmlessness_score_transcript"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/task_descripton_harmlessness_score",
+          "name": "red-team-attempts/task_descripton_harmlessness_score",
+          "description": "A real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..task_descripton_harmlessness_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/red_team_member_id",
+          "name": "red-team-attempts/red_team_member_id",
+          "description": "An arbitrary identifier of the red team member. one red team member can generate multiple red team attacks.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..red_team_member_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/rating",
+          "name": "red-team-attempts/rating",
+          "description": "The red team member's rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful).",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/num_params",
+          "name": "red-team-attempts/num_params",
+          "description": "Number of parameters in the language model powering the AI assistant.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..num_params"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/model_type",
+          "name": "red-team-attempts/model_type",
+          "description": "Type of model powering the AI assistant.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..model_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "red-team-attempts/task_description",
+          "name": "red-team-attempts/task_description",
+          "description": "A short text description written by the red team member about how they tried to red team the AI assistant.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "red-team-attempts-file-object"
+            },
+            "extract": {
+              "jsonPath": "$..task_description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "harmless-base",
+      "name": "harmless-base",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "harmless-base/split",
+          "name": "harmless-base/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "harmless-base/chosen",
+          "name": "harmless-base/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "harmless-base/rejected",
+          "name": "harmless-base/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "harmless-base-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "helpful-base",
+      "name": "helpful-base",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-base/split",
+          "name": "helpful-base/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "helpful-base-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-base/chosen",
+          "name": "helpful-base/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-base-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-base/rejected",
+          "name": "helpful-base/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-base-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "helpful-online",
+      "name": "helpful-online",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-online/split",
+          "name": "helpful-online/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "helpful-online-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-online/chosen",
+          "name": "helpful-online/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-online-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-online/rejected",
+          "name": "helpful-online/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-online-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "helpful-rejection-sampled",
+      "name": "helpful-rejection-sampled",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-rejection-sampled/split",
+          "name": "helpful-rejection-sampled/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "helpful-rejection-sampled-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*/(train|test)\\.jsonl\\.gz$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-rejection-sampled/chosen",
+          "name": "helpful-rejection-sampled/chosen",
+          "description": "Chosen text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-rejection-sampled-files"
+            },
+            "extract": {
+              "column": "chosen"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "helpful-rejection-sampled/rejected",
+          "name": "helpful-rejection-sampled/rejected",
+          "description": "Rejected text.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "helpful-rejection-sampled-files"
+            },
+            "extract": {
+              "column": "rejected"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

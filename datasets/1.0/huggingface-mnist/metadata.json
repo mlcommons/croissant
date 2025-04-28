@@ -1,0 +1,170 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "mnist",
+  "description": "The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/mnist",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/mnist/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files",
+      "name": "parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mnist_splits",
+      "name": "mnist_splits",
+      "description": "Splits for the mnist config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mnist_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mnist_splits/split_name",
+          "name": "mnist_splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mnist_splits/split_name": "train"
+        },
+        {
+          "mnist_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "The default set of records in the dataset.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "mnist_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mnist/(train|test)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image",
+          "name": "default/image",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/label",
+          "name": "default/label",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

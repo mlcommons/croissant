@@ -1,2 +1,0 @@
-Found the following 1 error(s) during the validation:
-  -  "mydataset" should have an attribute "@type": "https://schema.org/Dataset". Got https://schema.org/WRONG_TYPE instead.

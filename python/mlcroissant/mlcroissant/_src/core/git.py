@@ -15,7 +15,7 @@ def is_git_lfs_file(filepath: epath.Path) -> bool:
     An optimization of this function would be to only read the file if there is a git
     repository in the distribution.
     """
-    with open(filepath, "rb") as file:
+    with filepath.open("rb") as file:
         # Only read the first line of the file. In the future, this could be a problem,
         # e.g. if we accept *.txt files and the file starts with the same header.
         first_line = file.readline()
@@ -34,4 +34,12 @@ def download_git_lfs_file(file: Path):
     logging.info(
         "Downloading git-lfs file: %s in working dir: %s", fullpath, working_dir
     )
-    repo.execute(["git", "lfs", "pull", "--include", fullpath])
+    try:
+        repo.execute(["git", "lfs", "pull", "--include", fullpath])
+    except deps.git.exc.GitCommandError as ex:
+        raise RuntimeError(
+            "Problem when launching `git lfs`. "
+            "Possible problems: Have you installed git lfs "
+            f"locally? Is '{fullpath}' a valid `git lfs` "
+            "repository?"
+        ) from ex

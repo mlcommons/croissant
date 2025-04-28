@@ -1,0 +1,3 @@
+{"split_enums/name": "train", "split_enums/url": "https://mlcommons.org/definitions/training_split"}
+{"split_enums/name": "val", "split_enums/url": "https://mlcommons.org/definitions/validation_split"}
+{"split_enums/name": "test", "split_enums/url": "https://mlcommons.org/definitions/test_split"}

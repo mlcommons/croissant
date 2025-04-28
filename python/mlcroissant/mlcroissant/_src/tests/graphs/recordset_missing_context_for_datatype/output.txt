@@ -1,4 +1,0 @@
-Found the following 1 error(s) during the validation:
-  -  [dataset(mydataset) > record_set(a-record-set) > field(first-field)] The field does not specify any http://mlcommons.org/schema/dataType, neither does any of its predecessor. Got: []
-Found the following 1 warning(s) during the validation:
-  -  [dataset(mydataset) > record_set(a-record-set) > field(first-field)] Property "https://schema.org/description" is recommended, but does not exist.

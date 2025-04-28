@@ -2,8 +2,9 @@
 
 import textwrap
 
-from mlcroissant._src.core.issues import Context
 from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 
 
 def test_issues():
@@ -12,29 +13,32 @@ def test_issues():
     assert not issues.warnings
 
     # With context
-    issues.add_error("foo", Context(dataset_name="abc"))
-    issues.add_warning("bar", Context(dataset_name="abc", distribution_name="xyz"))
-    assert issues.errors == {"[dataset(abc)] foo"}
-    assert issues.warnings == {"[dataset(abc) > distribution(xyz)] bar"}
+    metadata = Metadata(id="abc", name="abc")
+    file_object = FileObject(id="xyz", name="xyz")
+    file_object.parents = [metadata]
+    issues.add_error("foo", metadata)
+    issues.add_warning("bar", file_object)
+    assert issues.errors == {"[Metadata(abc)] foo"}
+    assert issues.warnings == {"[Metadata(abc) > FileObject(xyz)] bar"}
 
     # Without context
     issues.add_error("foo")
     issues.add_warning("bar")
     assert issues.errors == {
-        "[dataset(abc)] foo",
+        "[Metadata(abc)] foo",
         "foo",
     }
     assert issues.warnings == {
-        "[dataset(abc) > distribution(xyz)] bar",
+        "[Metadata(abc) > FileObject(xyz)] bar",
         "bar",
     }
 
     # Final report
     assert issues.report() == textwrap.dedent(
         """Found the following 2 error(s) during the validation:
-  -  [dataset(abc)] foo
+  -  [Metadata(abc)] foo
   -  foo
 Found the following 2 warning(s) during the validation:
-  -  [dataset(abc) > distribution(xyz)] bar
+  -  [Metadata(abc) > FileObject(xyz)] bar
   -  bar"""
     )

@@ -1,0 +1,2 @@
+Found the following 1 error(s) during the validation:
+  -  [Metadata(mydataset) > RecordSet(my-record-set)] You try to use the sources with names ('a-csv-table', 'another-csv-table') as sources, but you didn't declare a join between them. Use `ml:references` to declare a join. Please, refer to the documentation for more information.

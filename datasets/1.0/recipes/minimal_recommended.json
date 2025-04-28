@@ -1,0 +1,103 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "minimal_example_with_recommended_fields",
+  "description": "This is a minimal example, including the required and the recommended fields.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://example.com/dataset/recipes/minimal-recommended",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "minimal.csv",
+      "name": "minimal.csv",
+      "contentUrl": "data/minimal.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "48a7c257f3c90b2a3e529ddd2cca8f4f1bd8e49ed244ef53927649504ac55354"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "examples",
+      "name": "examples",
+      "description": "Records extracted from the example table, with their schema.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "examples/name",
+          "name": "examples/name",
+          "description": "The first column contains the name.",
+          "dataType": "sc:Text",
+          "references": {
+            "fileObject": {
+              "@id": "minimal.csv"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "examples/age",
+          "name": "examples/age",
+          "description": "The second column contains the age.",
+          "dataType": "sc:Integer",
+          "references": {
+            "fileObject": {
+              "@id": "minimal.csv"
+            },
+            "extract": {
+              "column": "age"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

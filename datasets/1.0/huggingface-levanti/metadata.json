@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "guymorlan/levanti",
+  "description": "# Levanti: A Levantine Arabic Dataset\n\nLevanti is a dataset of 500K sentences in Levantine colloquial Arabic (Palestinian, Syrian, Lebanese + Egyptian), translated to English and Hebrew and augmented with diacritics, Hebrew transliteration and English transliteration. Levanti is composed of a core of 42K real sentences collected and manually translated and validated, and 466K high quality synthetic sentences carefully generated with Claude Sonnet 3.5 based on diverse dictionary entries and appropriate example to increase the semantic and lexical diversity in the corpus. Diacritics, Hebrew transliteration and English transliteration are added to 113K sentences in Palestinian Arabic. Diacritics were generated with Claude Sonnet 3.5 via appropriate prompting and examples, and fixed with an extensive set of manually crafted heuristics. Claude was likewise used as a reasoning engine for applying several of the heuristics. Transliteration is the output of the transliteration model (see below). All English translation were generated with gpt-4o based on the Arabic and Hebrew translation.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/guymorlan/levanti",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/guymorlan/levanti",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "levanti-csv",
+      "name": "levanti-csv",
+      "description": "The csv file for Levanti",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "levanti_v1.csv",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "levanti_train",
+      "name": "levanti_train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/dialect",
+          "name": "levanti/dialect",
+          "description": "Palestinian, Syrian, Lebnese, Jordanian, Egyptian or Levantine (if exact dialect unknown).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "dialect"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/arabic",
+          "name": "levanti/arabic",
+          "description": "Sentence text in Arabic, without diacritics.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "arabic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/hebrew",
+          "name": "levanti/hebrew",
+          "description": "Hebrew translation.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "hebrew"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/english",
+          "name": "levanti/english",
+          "description": "English translation.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "english"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/synthesized",
+          "name": "levanti/synthesized",
+          "description": "Whether sentence is generated with LLM based on definitions and example (True) or found in the wild (False).",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "synthesized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/diacritized",
+          "name": "levanti/diacritized",
+          "description": "Diacritized version of Arabic sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "diacritized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/hebrew_taatik_EXP",
+          "name": "levanti/hebrew_taatik_EXP",
+          "description": "Transliteration into Hebrew of diacritized sentence (after disambiguation of diacritics).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "hebrew_taatik_EXP"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/english_translit_EXP",
+          "name": "levanti/english_translit_EXP",
+          "description": "Transliteration into English of diacritized sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "english_translit_EXP"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

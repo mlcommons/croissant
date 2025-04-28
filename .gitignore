@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -25,6 +24,8 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+editor/cypress/screenshots/
+
 MANIFEST
 
 # PyInstaller
@@ -110,6 +111,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# Mac files
+.DS_Store
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -130,3 +134,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# NPM
+node_modules/
+
+# Scrapy
+health/data/
+health/dbs/
+health/logs/
+health/setup.py
+health/twistd.pid

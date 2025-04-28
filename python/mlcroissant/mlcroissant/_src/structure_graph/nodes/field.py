@@ -1,85 +1,187 @@
 """Field module."""
 
-from __future__ import annotations
-
-import dataclasses
-
-from etils import epath
 from rdflib import term
+from rdflib.namespace import SDO
+from typing_extensions import Self
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.data_types import check_expected_type
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
+from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core.context import CroissantVersion
+from mlcroissant._src.core.data_types import data_types_from_jsonld
+from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.core.json_ld import remove_empty_values
-from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
+from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
-@dataclasses.dataclass(frozen=True, repr=False)
-class ParentField:
+@mlc_dataclasses.dataclass
+class ParentField(Node):
     """Class for the `parentField` property."""
 
-    references: Source | None = None
-    source: Source | None = None
+    JSONLD_TYPE = None
 
-    @classmethod
-    def from_jsonld(cls, issues: Issues, json_) -> ParentField | None:
-        """Creates a `ParentField` from JSON-LD."""
-        if json_ is None:
-            return None
-        references = json_.get(constants.ML_COMMONS_REFERENCES)
-        source = json_.get(constants.ML_COMMONS_SOURCE)
-        return cls(
-            references=Source.from_jsonld(issues, references),
-            source=Source.from_jsonld(issues, source),
-        )
-
-    def to_json(self) -> Json:
-        """Converts the `ParentField` to JSON."""
-        return remove_empty_values(
-            {
-                "references": self.references.to_json(),
-                "source": self.source.to_json(),
-            }
-        )
+    references: Source | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[Source],
+        url=constants.ML_COMMONS_REFERENCES,
+    )
+    source: Source | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[Source],
+        url=constants.ML_COMMONS_SOURCE,
+    )
 
 
-@dataclasses.dataclass(eq=False, repr=False)
+@mlc_dataclasses.dataclass
 class Field(Node):
     """Nodes to describe a dataset Field."""
 
-    description: str | None = None
-    # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
-    data_types: str | list[str] | list[term.URIRef] = dataclasses.field(
-        default_factory=list
+    JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
+
+    array_shape: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "The shape of the array as a comma-separated string.  -1 indicates "
+            " dimensions of unknown/unspecified size. (-1,) represents a simple list."
+            " If specified,  then `is_array` must be True."
+        ),
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_ARRAY_SHAPE,
     )
-    is_enumeration: bool | None = None
-    name: str = ""
-    parent_field: ParentField | None = None
-    references: Source = dataclasses.field(default_factory=Source)
-    repeated: bool | None = None
-    source: Source = dataclasses.field(default_factory=Source)
-    sub_fields: list[Field] = dataclasses.field(default_factory=list)
+    description: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.SCHEMA_ORG_DESCRIPTION,
+    )
+    # `data_types` is different than `node.data_type`. See `data_type`'s docstring.
+    data_types: list[term.URIRef] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "The data type of the field, identified by the URI of the corresponding"
+            " class. It could be either an atomic type (e.g, `sc:Integer`) or a"
+            " semantic type (e.g., `sc:GeoLocation`)."
+        ),
+        from_jsonld=data_types_from_jsonld,
+        to_jsonld=data_types_to_jsonld,
+        url=constants.ML_COMMONS_DATA_TYPE,
+    )
+    equivalentProperty: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "A property that is equivalent to this Field. Used in the case a dataType"
+            " is specified on the RecordSet to map specific fields to specific"
+            " properties associated with that dataType."
+        ),
+        input_types=[SDO.URL],
+        url=constants.ML_COMMONS_EQUIVALENT_PROPERTY,
+    )
+    is_array: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "If true, then the Field is an array of values of type dataType. If"
+            " `array_shape` is not specified, it will default to (-1,), i.e. a"
+            " one-dimensional array of unknown shape."
+        ),
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_IS_ARRAY,
+    )
+    is_enumeration: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_IS_ENUMERATION,
+        versions=[CroissantVersion.V_0_8],
+    )
+    name: str = mlc_dataclasses.jsonld_field(
+        default="",
+        description="The name of the Field.",
+        input_types=[SDO.Text],
+        url=constants.SCHEMA_ORG_NAME,
+    )
+    parent_field: ParentField | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "A special case of `SubField` that should be hidden because it references a"
+            " `Field` that already appears in the `RecordSet`."
+        ),
+        input_types=[ParentField],
+        url=constants.ML_COMMONS_PARENT_FIELD,
+    )
+    references: Source = mlc_dataclasses.jsonld_field(
+        default_factory=Source,
+        description=(
+            "Another `Field` of another `RecordSet` that this field references. This is"
+            " the equivalent of a foreign key reference in a relational database."
+        ),
+        input_types=[Source],
+        url=constants.ML_COMMONS_REFERENCES,
+    )
+    repeated: bool | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "[DEPRECATED]. Please use `is_array` and `array_shape`. If true, then the"
+            " Field is a list of values of type dataType."
+        ),
+        input_types=[SDO.Boolean],
+        url=constants.ML_COMMONS_REPEATED,
+    )
+    source: Source = mlc_dataclasses.jsonld_field(
+        default_factory=Source,
+        description=(
+            "The data source of the field. This will generally reference a `FileObject`"
+            " or `FileSet`'s contents (e.g., a specific column of a table)."
+        ),
+        input_types=[Source],
+        url=constants.ML_COMMONS_SOURCE,
+    )
+    sub_fields: list[Self] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="A set of `Field`s that are nested inside this field.",
+        from_jsonld=lambda ctx, fields: Field.from_jsonld(ctx, fields),
+        url=constants.ML_COMMONS_SUB_FIELD,
+    )
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
+        uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
-        self.assert_has_mandatory_properties("name")
-        self.assert_has_optional_properties("description")
+        self.assert_has_mandatory_properties(uuid_field)
         self.source.check_source(self.add_error)
         self._standardize_data_types()
+        if self.array_shape and not self.is_array:
+            self.add_error(
+                f"Field {self.uuid} defines `array_shape`, but `is_array` is False."
+            )
+        self.array_shape_tuple
 
     def _standardize_data_types(self):
         """Converts data_types to a list of rdflib.URIRef."""
-        if self.data_types is None:
-            self.data_types = []
-        if not isinstance(self.data_types, list):
-            self.data_types = [self.data_types]
-        self.data_types = [term.URIRef(data_type) for data_type in self.data_types]
+        data_types = self.data_types
+        if data_types is None:
+            data_types = []
+        if not isinstance(data_types, list):
+            data_types = [data_types]
+        self.data_types = [term.URIRef(data_type) for data_type in data_types]
+
+    @property
+    def array_shape_tuple(self) -> tuple[int, ...] | None:
+        """Converts self.array_shape into a tuple of integers."""
+        if self.is_array and not self.array_shape:
+            return (-1,)
+        elif self.array_shape:
+            try:
+                return tuple(int(dim) for dim in self.array_shape.split(","))
+            except ValueError:
+                self.add_error(
+                    f"Field {self.uuid}'s attribute array_shape `{self.array_shape}`"
+                    " cannot be parsed as a tuple of comma-separated values."
+                )
+        return None
 
     @property
     def data_type(self) -> type | term.URIRef | None:
@@ -93,20 +195,29 @@ class Field(Node):
         """
         if self.sub_fields:
             return None
-        if self.data_types is not None:
-            for data_type in self.data_types:
-                if data_type in EXPECTED_DATA_TYPES:
-                    return EXPECTED_DATA_TYPES[data_type]
-        predecessor = next(
-            (p for p in self.graph.predecessors(self) if isinstance(p, Field)), None
-        )
-        if predecessor is None:
+        data_types = self.data_types or []
+        for data_type in data_types:
+            # data_type can be matched to a Python type:
+            if data_type in EXPECTED_DATA_TYPES:
+                return EXPECTED_DATA_TYPES[term.URIRef(data_type)]
+            # data_type is an ML semantic type:
+            elif data_type in [
+                DataType.IMAGE_OBJECT,
+                # For some reasons, pytype cannot infer `Any` on ctx:
+                DataType.BOUNDING_BOX,  # pytype: disable=wrong-arg-types
+                DataType.AUDIO_OBJECT,
+            ]:
+                return term.URIRef(data_type)
+        # The data_type has to be found on the source:
+        source = node_by_uuid(self.ctx, self.source.uuid)
+        if not isinstance(source, Field):
             self.add_error(
-                f"The field does not specify any {constants.ML_COMMONS_DATA_TYPE},"
-                f" neither does any of its predecessor. Got: {self.data_types}"
+                "The field does not specify a valid"
+                f" {constants.ML_COMMONS_DATA_TYPE(self.ctx)}, neither does any of"
+                f" its predecessor. Got: {self.data_types}"
             )
             return None
-        return predecessor.data_type
+        return source.data_type
 
     @property
     def data(self) -> str | None:
@@ -115,82 +226,10 @@ class Field(Node):
             return getattr(self.parent, "data")
         return None
 
-    def to_json(self) -> Json:
-        """Converts the `Field` to JSON."""
-        data_type = [self.rdf.shorten_value(data_type) for data_type in self.data_types]
-        if len(data_type) == 1:
-            data_type = data_type[0]
-        parent_field = self.parent_field.to_json() if self.parent_field else None
-        return remove_empty_values(
-            {
-                "@type": "ml:Field",
-                "name": self.name,
-                "description": self.description,
-                "dataType": data_type,
-                "isEnumeration": self.is_enumeration,
-                "parentField": parent_field,
-                "repeated": self.repeated,
-                "references": self.references.to_json() if self.references else None,
-                "source": self.source.to_json() if self.source else None,
-                "subField": [sub_field.to_json() for sub_field in self.sub_fields],
-            }
-        )
-
-    @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
-        field: Json,
-    ) -> Field:
-        """Creates a `Field` from JSON-LD."""
-        check_expected_type(
-            issues,
-            field,
-            constants.ML_COMMONS_FIELD_TYPE,
-        )
-        references_jsonld = field.get(constants.ML_COMMONS_REFERENCES)
-        references = Source.from_jsonld(issues, references_jsonld)
-        source_jsonld = field.get(constants.ML_COMMONS_SOURCE)
-        source = Source.from_jsonld(issues, source_jsonld)
-        data_types = field.get(constants.ML_COMMONS_DATA_TYPE, [])
-        is_enumeration = field.get(constants.ML_COMMONS_IS_ENUMERATION)
-        if isinstance(data_types, dict):
-            data_types = [data_types.get("@id")]
-        elif isinstance(data_types, list):
-            data_types = [d.get("@id") for d in data_types]
-        else:
-            data_types = []
-        field_name = field.get(constants.SCHEMA_ORG_NAME, "")
-        if context.field_name is None:
-            context.field_name = field_name
-        else:
-            context.sub_field_name = field_name
-        sub_fields = field.get(constants.ML_COMMONS_SUB_FIELD, [])
-        if isinstance(sub_fields, dict):
-            sub_fields = [sub_fields]
-        sub_fields = [
-            Field.from_jsonld(issues, context, folder, rdf, sub_field)
-            for sub_field in sub_fields
-        ]
-        parent_field = ParentField.from_jsonld(
-            issues, field.get(constants.ML_COMMONS_PARENT_FIELD)
-        )
-        repeated = field.get(constants.ML_COMMONS_REPEATED)
-        return cls(
-            issues=issues,
-            context=context,
-            folder=folder,
-            description=field.get(constants.SCHEMA_ORG_DESCRIPTION),
-            data_types=data_types,
-            is_enumeration=is_enumeration,
-            name=field_name,
-            parent_field=parent_field,
-            rdf=rdf,
-            references=references,
-            repeated=repeated,
-            source=source,
-            sub_fields=sub_fields,
-        )
+    @property
+    def parent(self) -> Node:
+        """Direct parent of the field."""
+        parent = super().parent
+        if parent:
+            return parent
+        raise ValueError(f"field={self} does not have any parent.")

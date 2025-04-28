@@ -1,0 +1,291 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix croissant: <http://mlcommons.org/croissant/> .
+
+# Top-level classes
+
+croissant:FileObject a rdf:Class ;
+  rdfs:label "FileObject" ;
+  rdfs:comment "An individual file that is part of a dataset." ;
+  rdfs:subClassOf schema:CreativeWork .
+
+croissant:FileSet a rdf:Class ;
+  rdfs:label "FileSet" ;
+  rdfs:comment "A set of homogeneous files extracted from a container, optionally filtered by inclusion and/or exclusion filters." ;
+  rdfs:subClassOf schema:Intangible .
+
+croissant:RecordSet a rdf:Class ;
+  rdfs:label "RecordSet" ;
+  rdfs:comment "A description of a set of structured records from one or more data sources and their structure, expressed as a set of fields." ;
+  rdfs:subClassOf schema:Intangible .
+
+# Secondary classes
+
+croissant:DataType a rdf:Class ;
+  rdfs:label "DataType" ;
+  rdfs:comment "The data type of values expected for a Field in a RecordSet. This class is inspired by the Datatype class in CSVW. In addition to simple atomic types, types can be semantic types, such as schema.org classes, as well types defined in other vocabularies." ;
+  rdfs:subClassOf schema:URL .
+
+croissant:Format a rdf:Class ;
+  rdfs:label "Format" ;
+  rdfs:comment "Specifies how to parse the format of the data from a string representation. For example, format may hold a date format string, a number format, or a bounding box format." ;
+  rdfs:subClassOf schema:Text .
+
+croissant:Field a rdf:Class ;
+  rdfs:label "Field" ;
+  rdfs:comment "A component of the structure of a RecordSet, such as a column of a table." ;
+  rdfs:subClassOf schema:Intangible .
+
+croissant:DataSource a rdf:Class ;
+  rdfs:label "DataSource" ;
+  rdfs:comment "A source of data, optionally transformed before being used." ;
+  rdfs:subClassOf schema:Intangible .
+
+croissant:Extract a rdf:Class ;
+  rdfs:label "Extract" ;
+  rdfs:comment "Specifies how to extract data from a DataSource. The extraction mechanism depends on the type of content, e.g., a column name for tabular data, or a jsonPath for JSON data." ;
+  rdfs:subClassOf schema:Intangible .
+
+croissant:Transform a rdf:Class ;
+  rdfs:label "Transform" ;
+  rdfs:comment "Specifies how to transform data extracted from a DataSource. The type of transformation depends on the type of content, e.g., a regular expression to appy on text, or a jsonQuery to transform JSON content." ;
+  rdfs:subClassOf schema:Intangible .
+
+# Enumerations
+
+croissant:ContentExtractionEnumeration a rdf:Class ;
+  rdfs:label "ContexExtractionEnumeration" ;
+  rdfs:comment "Specifies which content to extract from a file. One of \"all\", \"lines\", or \"lineNumbers\"." ;
+  rdfs:subClassOf schema:Enumeration .
+
+croissant:FilePropertyEnumeration a rdf:Class ;
+  rdfs:label "FilePropertyEnumeration" ;
+  rdfs:comment "Specifies a property of a FileObject. One of \"fullPath\" or \"fileName\"." ;
+  rdfs:subClassOf schema:Enumeration .
+
+# Dataset level properies
+
+schema:distribution a rdf:Property ;
+  rdfs:label "distribution" ;
+  rdfs:comment "By contrast with schema.org/Dataset, Croissant requires the distribution property to have values of type FileObject or FileSet." ;
+  schema:domainIncludes schema:Dataset ;
+  schema:rangeIncludes croissant:FileObject, croissant:FileSet .
+
+croissant:isLiveDataset a rdf:Property ;
+  rdfs:label "isLiveDataset" ;
+  rdfs:comment "Indicates that the dataset is continuously updated instead of being versioned." ;
+  schema:domainIncludes schema:Dataset ;
+  schema:rangeIncludes schema:Boolean .
+
+croissant:citeAs a rdf:Property ;
+  rdfs:label "citeAs" ;
+  rdfs:comment "How to cite this dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset." ;
+  schema:domainIncludes schema:Dataset ;
+  schema:rangeIncludes schema:Text .
+
+# FileObject & FileSet properties
+
+croissant:containedIn a rdf:Property ;
+  rdfs:label "containedIn" ;
+  rdfs:comment "Another FileObject or FileSet that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the contentUrl is evaluated as a relative path within the container object." ;
+  schema:domainIncludes croissant:FileObject, croissant:FileSet ;
+  schema:rangeIncludes croissant:FileObject, croissant:FileSet .
+
+croissant:includes a rdf:Property ; # Should this be named includePattern instead?
+  rdfs:label "includes" ;
+  rdfs:comment "A glob pattern that specifies the files to include, e.g., \".jpg\", \"/foo/pic*.jpg\". The pattern is evaluated from the root of the containedIn contents." ;
+  schema:domainIncludes croissant:FileSet ;
+  schema:rangeIncludes schema:Text .
+
+croissant:excludes a rdf:Property ; # Should this be named excludePattern instead?
+  rdfs:label "excludes" ;
+  rdfs:comment "A glob pattern that specifies the files to exclude. The pattern is evaluated from the root of the containedIn contents, after the includes patterns have been evaluated." ;
+  schema:domainIncludes croissant:FileSet ;
+  schema:rangeIncludes schema:Text .
+
+# RecordSet & Field properties
+
+croissant:field a rdf:Property ;
+  rdfs:label "field" ;
+  rdfs:comment "A data element that appears in the records of the RecordSet (e.g., one column of a table)." ;
+  schema:domainIncludes croissant:RecordSet ;
+  schema:rangeIncludes croissant:Field .
+
+croissant:key a rdf:Property ;
+  rdfs:label "key" ;
+  rdfs:comment "One or more fields whose values uniquely identify each record in the RecordSet. (See example below.)" ;
+  schema:domainIncludes croissant:RecordSet ;
+  schema:rangeIncludes croissant:Field .
+
+croissant:data a rdf:Property ;
+  rdfs:label "data" ;
+  rdfs:comment "One or more inlined records that constitute the data of the RecordSet, typically used for small enumeration values." ;
+  schema:domainIncludes croissant:RecordSet ;
+  schema:rangeIncludes rdf:JSON .
+
+croissant:examples a rdf:Property ;
+  rdfs:label "examples" ;
+  rdfs:comment "One more inlined records provided as example content of the RecordSet." ;
+  schema:domainIncludes croissant:RecordSet ;
+  schema:rangeIncludes rdf:JSON .
+
+croissant:source a rdf:Property ;
+  rdfs:label "source" ;
+  rdfs:comment "The data source of the field. This will generally reference a FileObject or FileSet's contents (e.g., a specific column of a table)." ;
+  schema:domainIncludes croissant:RecordSet, croissant:Field ;
+  schema:rangeIncludes croissant:DataSource, croissant:FileObject, croissant:FileSet, croissant:RecordSet .
+
+croissant:dataType a rdf:Property ;
+  rdfs:label "dataType" ;
+  rdfs:comment "The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, sc:Integer) or a semantic type (e.g., sc:GeoLocation)." ;
+  schema:domainIncludes croissant:RecordSet, croissant:Field ;
+  schema:rangeIncludes croissant:DataType .
+
+croissant:repeated a rdf:Property ;
+  rdfs:label "repeated" ;
+  rdfs:comment "If true, then the Field is a list of values of type dataType." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes schema:Boolean .
+
+croissant:references a rdf:Property ;
+  rdfs:label "references" ;
+  rdfs:comment "Another Field of another RecordSet that this field references. This is the equivalent of a foreign key reference in a relational database." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:Field .
+
+croissant:subField a rdf:Property ;
+  rdfs:label "subField" ;
+  rdfs:comment "Another Field that is nested inside this one." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:Field .
+
+croissant:parentField a rdf:Property ;
+  rdfs:label "parentField" ;
+  rdfs:comment "A special case of SubField that should be hidden because it references a Field that already appears in the RecordSet." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes croissant:Field .
+
+croissant:equivalentProperty a rdf:Property ;
+  rdfs:label "equivalentProperty" ;
+  rdfs:comment "A property that is equivalent to this Field. Used in the case a dataType is specified on the RecordSet to map specific fields to specific properties associated with that dataType." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes schema:URL .
+
+# DataSource properties
+
+croissant:fileObject a rdf:Property ;
+  rdfs:label "fileObject" ;
+  rdfs:comment "The id of a FileObject that is the source of the data." ;
+  schema:domainIncludes croissant:DataSource ;
+  schema:rangeIncludes croissant:FileObject .
+
+croissant:fileSet a rdf:Property ;
+  rdfs:label "fileSet" ;
+  rdfs:comment "The id of a FileSet that is the source of the data." ;
+  schema:domainIncludes croissant:DataSource ;
+  schema:rangeIncludes croissant:FileSet .
+
+croissant:recordSet a rdf:Property ;
+  rdfs:label "recordSet" ;
+  rdfs:comment "The id of a RecordSet that is the source of the data." ;
+  schema:domainIncludes croissant:DataSource ;
+  schema:rangeIncludes croissant:RecordSet .
+
+croissant:extract a rdf:Property ;
+  rdfs:label "extract" ;
+  rdfs:comment "The extraction method from the provided source." ;
+  schema:domainIncludes croissant:DataSource ;
+  schema:rangeIncludes croissant:Extract .
+
+croissant:transform a rdf:Property ;
+  rdfs:label "transform" ;
+  rdfs:comment "A transformation to apply on source data on top of the extracted method as specified through extract, e.g., a regular expression or JSON query." ;
+  schema:domainIncludes croissant:DataSource ;
+  schema:rangeIncludes croissant:Transform .
+
+croissant:format a rdf:Property ;
+  rdfs:label "format" ;
+  rdfs:comment "A format to parse the values of the data from text, e.g., a date format or number format." ;
+  schema:domainIncludes croissant:DataSource ;
+  schema:rangeIncludes croissant:Format .
+
+# Extract properties
+
+croissant:content a rdf:Property ;
+  rdfs:label "content" ;
+  rdfs:comment "What to extract from the data source content, e.g., lines." ;
+  schema:domainIncludes croissant:Extract ;
+  schema:rangeIncludes croissant:ContentExtractionEnumeration .
+
+croissant:fileProperty a rdf:Property ;
+  rdfs:label "fileProperty" ;
+  rdfs:comment "The file property to extract from the data source metadata, e.g., the filename." ;
+  schema:domainIncludes croissant:Extract ;
+  schema:rangeIncludes croissant:FilePropertyEnumeration .
+
+croissant:column a rdf:Property ;
+  rdfs:label "column" ;
+  rdfs:comment "In case the data source is tabular, the id of a column to extract." ;
+  schema:domainIncludes croissant:Extract ;
+  schema:rangeIncludes schema:Text .
+
+croissant:jsonPath a rdf:Property ;
+  rdfs:label "jsonPath" ;
+  rdfs:comment "In case the data source is JSON data, a path expression to extract a subset of the data." ;
+  schema:domainIncludes croissant:Extract ;
+  schema:rangeIncludes schema:Text .
+
+# Transform properties
+
+croissant:delimiter a rdf:Property ;
+  rdfs:label "delimiter" ;
+  rdfs:comment "A delimiter to use parse the data into an array." ;
+  schema:domainIncludes croissant:Transform ;
+  schema:rangeIncludes schema:Text .
+
+croissant:regex a rdf:Property ;
+  rdfs:label "regex" ;
+  rdfs:comment "A regular expression to apply to the data." ;
+  schema:domainIncludes croissant:Transform ;
+  schema:rangeIncludes schema:Text .
+
+croissant:jsonQuery a rdf:Property ;
+  rdfs:label "jsonQuery" ;
+  rdfs:comment "For JSON content, a query to evaluate on the data." ;
+  schema:domainIncludes croissant:Transform ;
+  schema:rangeIncludes schema:Text .
+
+### ML-specific definitions
+
+croissant:Split a rdf:class ;
+  rdfs:label "Split" ;
+  rdfs:comment "Splits for training a machine learning, typically test, train and validation." ;
+  rdfs:subClassOf schema:Enumeration .
+
+croissant:TrainSplit a croissant:Split ;
+  rdfs:label "TrainSplit" ;
+  rdfs:comment "Training split." .
+
+croissant:TestSplit a croissant:Split ;
+  rdfs:label "TestSplit" ;
+  rdfs:comment "Test split." .
+
+croissant:ValidationSplit a croissant:Split ;
+  rdfs:label "ValidationSplit" ;
+  rdfs:comment "Validation split." .
+
+croissant:Label a rdf:class ;
+  rdfs:label "Label" ;
+  rdfs:comment "A machine learning label." ;
+  rdfs:subClassOf schema:Intangible .
+
+croissant:SegmentationMask a rdf:class ;
+  rdfs:label "SegmentationMask" ;
+  rdfs:comment "A data type representing a segmentation mask." ;
+  rdfs:subClassOf schema:StructuredValue .
+
+croissant:BoundingBox a rdf:class ;
+  rdfs:label "Label" ;
+  rdfs:comment "A data type representing a bounding box." ;
+  rdfs:subClassOf schema:Text .

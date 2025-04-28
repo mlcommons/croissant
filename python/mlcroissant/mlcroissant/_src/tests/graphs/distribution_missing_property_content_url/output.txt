@@ -1,2 +1,0 @@
-Found the following 1 error(s) during the validation:
-  -  [dataset(mydataset) > distribution(a-csv-table)] Property "https://schema.org/contentUrl" is mandatory, but does not exist.

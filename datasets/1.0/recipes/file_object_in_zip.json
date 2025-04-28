@@ -1,0 +1,128 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "file_object_in_zip",
+  "description": "Minimal example to read a FileObject contained in a zip.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "zip_with_csv",
+      "name": "zip_with_csv",
+      "contentUrl": "data/zip_with_csv.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "409b80b15f540661197ae22b78cda2f5cd71f336379f5c9cd1a6b4fc6abe74bd"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "csv2_in_zip",
+      "name": "csv2_in_zip",
+      "containedIn": {
+        "@id": "zip_with_csv"
+      },
+      "contentUrl": "csv2_in_zip.csv",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "csv1_in_zip",
+      "name": "csv1_in_zip",
+      "containedIn": {
+        "@id": "zip_with_csv"
+      },
+      "contentUrl": "csv1_in_zip.csv",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "csv1",
+      "name": "csv1",
+      "description": "Records extracted from the CSV in the ZIP.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "csv1/property1",
+          "name": "csv1/property1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "csv1_in_zip"
+            },
+            "extract": {
+              "column": "property1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "csv2",
+      "name": "csv2",
+      "description": "Records extracted from the CSV in the ZIP.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "csv2/property2",
+          "name": "csv2/property2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "csv2_in_zip"
+            },
+            "extract": {
+              "column": "property2"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

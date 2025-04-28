@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<html>
+<head>
+    <title>RecordSet - Croissant &#129360</title>
+</head>
+<header>
+    <nav>
+        <a href="./Metadata.html">Metadata</a>
+        <a href="./FileObject.html">FileObject</a>
+        <a href="./FileSet.html">FileSet</a>
+        <a href="./RecordSet.html">RecordSet</a>
+        <a href="./Field.html">Field</a>
+    </nav>
+    <h1>Croissant &#129360</h1>
+    Croissant specifications as implemented by <code><a href="https://pypi.org/project/mlcroissant">mlcroissant</a></code>.
+    <br>
+    For the actual specifications, please refer to the <a href="https://mlcommons.org/croissant/1.0">Croissant 1.0 standard.</a>.
+    <br>
+    To add new properties, refer to the <a href="https://github.com/mlcommons/croissant/tree/main/python/mlcroissant#add-new-properties-to-the-standard">documentation</a>.
+</header>
+<body>
+    <h3>RecordSet</h3>
+    <span>Nodes to describe a dataset RecordSet.</span>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Expected type</th>
+            <th>Cardinality</th>
+            <th>Description</th>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/name">sc:name</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td>The name of the RecordSet.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/data">cr:data</a></td>
+            <td>
+                
+            </td>
+            <td>MANY</td>
+            <td>One or more records that constitute the data of the `RecordSet`.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/dataType">cr:dataType</a></td>
+            <td>
+                
+            </td>
+            <td>MANY</td>
+            <td>The data type of the RecordSet. Mainly used to specify: `sc:Enumeration`.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://schema.org/description">sc:description</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/examples">cr:examples</a></td>
+            <td>
+                
+            </td>
+            <td>MANY</td>
+            <td>One or more records provided as example content of the `RecordSet`, or a reference to data source that contains examples.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/isEnumeration">cr:isEnumeration</a></td>
+            <td>
+                
+                <a href="https://schema.org/Boolean">sc:Boolean</a>
+                
+            </td>
+            <td>ONE</td>
+            <td></td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/key">cr:key</a></td>
+            <td>
+                
+                <a href="https://schema.org/Text">sc:Text</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>One or more fields whose values uniquely identify each record in the `RecordSet`.</td>
+        </tr>
+    
+        <tr>
+            <td><a href="http://mlcommons.org/croissant/field">cr:field</a></td>
+            <td>
+                
+                <a href="http://mlcommons.org/croissant/Field">cr:Field</a>
+                
+            </td>
+            <td>MANY</td>
+            <td>A data element that appears in the records of the RecordSet (e.g., one column of a table).</td>
+        </tr>
+    
+    </table>
+</body>
+</html>

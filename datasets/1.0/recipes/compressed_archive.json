@@ -1,0 +1,97 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "compressed_archive_example",
+  "description": "This is a fairly minimal example, showing a way to describe archive files.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "url": "https://example.com/datasets/recipes/compressed_archive/about",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "compressed_archive.zip",
+      "name": "compressed_archive.zip",
+      "contentUrl": "data/compressed_archive.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "4cee7cd36f1d874072b6a96c95ce53c9b01d158f0737e754e6c9cc80aeb06e5a"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "image-files",
+      "name": "image-files",
+      "containedIn": {
+        "@id": "compressed_archive.zip"
+      },
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpeg"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "images",
+      "name": "images",
+      "description": "Records extracted from the image files, with their schema.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images/image_content",
+          "name": "images/image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "image-files"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

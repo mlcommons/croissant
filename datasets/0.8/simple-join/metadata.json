@@ -1,0 +1,135 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-join",
+  "description": "Example to showcase the use of join.",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "publications",
+      "contentUrl": "data/publications.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "d1bd4b903d5de29e6d455f28a68aff7095d3393a19a7cdfdeea3b9ad799e1ce1"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "users",
+      "description": "List of users.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "email",
+          "description": "Email of the author.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "ml:Field",
+          "name": "fullname",
+          "description": "Full name of the author.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "email": "john.smith@gmail.com",
+          "fullname": "John Smith"
+        },
+        {
+          "email": "jane.doe@yahoo.com",
+          "fullname": "Jane Doe"
+        },
+        {
+          "email": "david.lee@outlook.com",
+          "fullname": "David Lee"
+        },
+        {
+          "email": "mary.jones@hotmail.com",
+          "fullname": "Mary Jones"
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "publications_by_user",
+      "description": "List of publications by user.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "title",
+          "description": "Full title of the publication.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "publications",
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "author_email",
+          "description": "Email of the author.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": "users/email"
+          },
+          "source": {
+            "distribution": "publications",
+            "extract": {
+              "column": "by"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "author_fullname",
+          "description": "Full name of the author.",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "users/fullname"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -41,7 +41,7 @@ class cached_class_property(classmethod):
         self._func = func
         self._cache = {}
 
-    def __get__(self, obj, objtype):
+    def __get__(self, obj, objtype=None):
         """Cached getter."""
         if objtype not in self._cache:
             self._cache[objtype] = self._func(objtype)
@@ -83,8 +83,23 @@ class OptionalDependencies(object):
 
     @cached_class_property
     def PIL_Image(cls) -> types.ModuleType:  # pylint: disable=invalid-name
-        """Cached git module."""
+        """Cached PIL module."""
         return _try_import("PIL.Image", package_name="Pillow")
+
+    @cached_class_property
+    def librosa(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+        """Cached librosa module."""
+        return _try_import("librosa", package_name="librosa")
+
+    @cached_class_property
+    def scipy(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+        """Cached scipy module."""
+        return _try_import("scipy", package_name="scipy")
+
+    @cached_class_property
+    def torchdata_datapipes(cls) -> types.ModuleType:
+        """Cached torchdata module."""
+        return _try_import("torchdata.datapipes", package_name="torchdata")
 
 
 deps = OptionalDependencies

@@ -1,0 +1,2 @@
+Found the following 1 error(s) during the validation:
+  -  [Metadata(mydataset) > FileObject(a-csv-table)] There is a reference to node with UUID "THISDOESNOTEXIST" in node "a-csv-table", but this node doesn't exist.

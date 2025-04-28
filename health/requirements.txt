@@ -1,0 +1,12 @@
+duckdb
+etils[epath]
+huggingface_hub
+openml
+mlcroissant
+pandas
+polars
+pyarrow
+scrapy
+scrapyd
+scrapydweb
+scrapyd-client

@@ -1,0 +1,293 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "rag-mini-wikipedia",
+  "description": "In this huggingface discussion you can share what you used the dataset for.\nDerives from https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download we generated our own subset using generate.py.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "RAG Datasets",
+    "url": "https://huggingface.co/rag-datasets"
+  },
+  "keywords": [
+    "question-answering",
+    "sentence-similarity",
+    "English",
+    "cc-by-3.0",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "rag",
+    "wikipedia",
+    "open-domain",
+    "information-retrieval",
+    "dpr"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
+  "url": "https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-question-answer",
+      "name": "parquet-files-for-config-question-answer",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "question-answer/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-text-corpus",
+      "name": "parquet-files-for-config-text-corpus",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "text-corpus/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "question-answer_splits",
+      "name": "question-answer_splits",
+      "description": "Splits for the question-answer config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "question-answer_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "question-answer_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "question-answer_splits/split_name": "test"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "question-answer",
+      "name": "question-answer",
+      "description": "rag-datasets/rag-mini-wikipedia - 'question-answer' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "question-answer/split",
+          "name": "question-answer/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "question-answer_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-question-answer"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "question\\-answer/(?:partial-)?(test)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "question-answer/question",
+          "name": "question-answer/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-question-answer"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "question-answer/answer",
+          "name": "question-answer/answer",
+          "description": "Column 'answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-question-answer"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "question-answer/id",
+          "name": "question-answer/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-question-answer"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "text-corpus_splits",
+      "name": "text-corpus_splits",
+      "description": "Splits for the text-corpus config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "text-corpus_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text-corpus_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "text-corpus_splits/split_name": "passages"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "text-corpus",
+      "name": "text-corpus",
+      "description": "rag-datasets/rag-mini-wikipedia - 'text-corpus' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text-corpus/split",
+          "name": "text-corpus/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "text-corpus_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text-corpus"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "text\\-corpus/(?:partial-)?(passages)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text-corpus/passage",
+          "name": "text-corpus/passage",
+          "description": "Column 'passage' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text-corpus"
+            },
+            "extract": {
+              "column": "passage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text-corpus/id",
+          "name": "text-corpus/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text-corpus"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -6,8 +6,11 @@
         ],
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
         },
+    },
+    "[js]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[json]": {
         "editor.detectIndentation": false,
@@ -26,8 +29,7 @@
     "black-formatter.args": [
         "--line-length",
         "88",
-        "--preview",
-        "--experimental-string-processing"
+        "--preview"
     ],
     "isort.args": [
         "--profile",
@@ -35,11 +37,28 @@
         "--line-length",
         "88",
         "--use-parentheses",
+        // For python/mlcroissant/
         "--project",
         "mlcroissant",
+        // For editor/
+        "--project",
+        "components",
+        "--project",
+        "core",
+        "--project",
+        "events",
+        "--project",
+        "views",
+        "--project",
+        "state",
+        "--project",
+        "utils",
         "--multi-line",
         "3",
         "--thirdparty",
-        "datasets"
+        "datasets",
+        // For health/
+        "--project",
+        "crawler",
     ],
 }

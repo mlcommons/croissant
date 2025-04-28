@@ -1,0 +1,2 @@
+Found the following 1 error(s) during the validation:
+  -  [Metadata(mydataset) > FileObject(a-csv-table)] Property "https://schema.org/contentUrl" is mandatory, but does not exist.

@@ -1,0 +1,353 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "Mini-COCO",
+  "description": "Smaller downloadable version of COCO to be used in unit tests.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "None",
+  "license": "cc-by-4.0",
+  "url": "None",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "train2014.zip",
+      "name": "train2014.zip",
+      "contentSize": " B",
+      "contentUrl": "data/train2014.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "d010037fee9416bdcc187a37a4aec7bef798316147da2753bd86e78fc0d469a5"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "image-files",
+      "name": "image-files",
+      "containedIn": {
+        "@id": "train2014.zip"
+      },
+      "encodingFormat": "image/jpeg",
+      "includes": "*.jpg"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "caption_annotations-files",
+      "name": "caption_annotations-files",
+      "contentSize": " B",
+      "contentUrl": "data/captions_train2014.json",
+      "encodingFormat": "application/json",
+      "sha256": "6f3755cb987413021018525cbb4c484d696ff41269e6b0b43c5f63eaf576e09f"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "bbox_annotations-files",
+      "name": "bbox_annotations-files",
+      "contentUrl": "data/instances_train2014.json",
+      "encodingFormat": "application/json",
+      "sha256": "df2760cf1d55e37b9cde91499286a3cac52efc31d95a9d21ba34dbbbcf693654"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "split_enums",
+      "name": "split_enums",
+      "description": "Maps split names to semantic values.",
+      "key": {
+        "@id": "name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/name",
+          "name": "split_enums/name",
+          "description": "One of: train, val, test.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "split_enums/url",
+          "name": "split_enums/url",
+          "description": "Corresponding mlcommons.org definition URL",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:URL"
+          ]
+        }
+      ],
+      "data": [
+        {
+          "split_enums/name": "train",
+          "split_enums/url": "https://mlcommons.org/definitions/training_split"
+        },
+        {
+          "split_enums/name": "val",
+          "split_enums/url": "https://mlcommons.org/definitions/validation_split"
+        },
+        {
+          "split_enums/name": "test",
+          "split_enums/url": "https://mlcommons.org/definitions/test_split"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "images",
+      "name": "images",
+      "key": {
+        "@id": "img_id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images/image_filename",
+          "name": "images/image_filename",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "image-files"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/image_content",
+          "name": "images/image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "image-files"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/split",
+          "name": "images/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "image-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "^(train|val|test)2014/.*\\.jpg$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "captions",
+      "name": "captions",
+      "key": {
+        "@id": "id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "captions/id",
+          "name": "captions/id",
+          "description": "The ID of the caption",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "captions/image_id",
+          "name": "captions/image_id",
+          "description": "The ID of the image",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "captions/caption",
+          "name": "captions/caption",
+          "description": "The caption",
+          "dataType": [
+            "wd:Q18585177",
+            "sc:Text"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "captions/split",
+          "name": "captions/split",
+          "dataType": [
+            "wd:Q3985153",
+            "sc:Text"
+          ],
+          "references": {
+            "field": {
+              "@id": "split_enums/name"
+            }
+          },
+          "source": {
+            "fileObject": {
+              "@id": "caption_annotations-files"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": ".*_(val|train)2014\\.json$"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "bounding_boxes",
+      "name": "bounding_boxes",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bounding_boxes/id",
+          "name": "bounding_boxes/id",
+          "description": "The ID of the annotation.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bounding_boxes/image_id",
+          "name": "bounding_boxes/image_id",
+          "description": "The ID of the image.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].image_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bounding_boxes/bbox",
+          "name": "bounding_boxes/bbox",
+          "description": "The bounding box on the image.",
+          "dataType": "cr:BoundingBox",
+          "source": {
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].bbox"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bounding_boxes/area",
+          "name": "bounding_boxes/area",
+          "description": "The area of the bounding box.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "bbox_annotations-files"
+            },
+            "extract": {
+              "jsonPath": "$.annotations[*].area"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

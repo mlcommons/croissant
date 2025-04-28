@@ -1,95 +1,117 @@
 """FileObject module."""
 
-from __future__ import annotations
-
-import dataclasses
-
-from etils import epath
+from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
-from mlcroissant._src.core.data_types import check_expected_type
-from mlcroissant._src.core.issues import Context
-from mlcroissant._src.core.issues import Issues
-from mlcroissant._src.core.json_ld import remove_empty_values
-from mlcroissant._src.core.types import Json
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
+from mlcroissant._src.core.constants import ML_COMMONS
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
-from mlcroissant._src.structure_graph.nodes.rdf import Rdf
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
-@dataclasses.dataclass(eq=False, repr=False)
+@mlc_dataclasses.dataclass
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
 
-    content_url: str | None = None
-    content_size: str | None = None
-    contained_in: list[str] = dataclasses.field(default_factory=list)
-    description: str | None = None
-    encoding_format: str | None = None
-    md5: str | None = None
-    name: str = ""
-    sha256: str | None = None
-    source: Source | None = None
+    content_url: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "Actual bytes of the media object, for example the image file or video"
+            " file."
+        ),
+        input_types=[SDO.URL],
+        url=SDO.contentUrl,
+    )
+    content_size: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "File size in (mega/kilo/...)bytes. Defaults to bytes if a unit is not"
+            " specified."
+        ),
+        input_types=[SDO.Text],
+        url=SDO.contentSize,
+    )
+    contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "Another FileObject or FileSet that this one is contained in, e.g., in the"
+            " case of a file extracted from an archive. When this property is present,"
+            " the contentUrl is evaluated as a relative path within the container"
+            " object"
+        ),
+        from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
+        to_jsonld=lambda ctx, contained_in: [
+            formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
+        ],
+        url=SDO.containedIn,
+    )
+    description: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=SDO.description,
+    )
+    encoding_formats: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "The formats of the file, given as a mime type. Unregistered or niche"
+            " encoding and file formats can be indicated instead via the most"
+            " appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry. "
+        ),
+        input_types=[SDO.Text],
+        url=SDO.encodingFormat,
+    )
+    md5: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=lambda ctx: ML_COMMONS(ctx).md5,
+    )
+    name: str = mlc_dataclasses.jsonld_field(
+        default="",
+        description=(
+            "The name of the file.  As much as possible, the name should reflect the"
+            " name of the file as downloaded, including the file extension. e.g."
+            ' "images.zip".'
+        ),
+        input_types=[SDO.Text],
+        url=SDO.name,
+    )
+    same_as: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description=(
+            "URL (or local name) of a FileObject with the same content, but in a"
+            " different format."
+        ),
+        input_types=[SDO.URL],
+        url=SDO.sameAs,
+    )
+    sha256: str | None = mlc_dataclasses.jsonld_field(
+        cardinality="ONE",
+        default=None,
+        description="Checksum for the file contents.",
+        input_types=[SDO.Text],
+        url=SDO.sha256,
+    )
+    source: Source = mlc_dataclasses.jsonld_field(
+        default_factory=Source,
+        input_types=[Source],
+        url=lambda ctx: ML_COMMONS(ctx).source,
+    )
 
     def __post_init__(self):
         """Checks arguments of the node."""
+        Node.__post_init__(self)
         self.validate_name()
-        self.assert_has_mandatory_properties("content_url", "encoding_format", "name")
+        uuid_field = "name" if self.ctx.is_v0() else "id"
+        self.assert_has_mandatory_properties("encoding_formats", uuid_field)
+
         if not self.contained_in:
-            self.assert_has_exclusive_properties(["md5", "sha256"])
+            self.assert_has_mandatory_properties("content_url")
+            if not self.ctx.is_live_dataset:
+                self.assert_has_exclusive_properties(["md5", "sha256"])
 
-    def to_json(self) -> Json:
-        """Converts the `FileObject` to JSON."""
-        if isinstance(self.contained_in, list) and len(self.contained_in) == 1:
-            contained_in = self.contained_in[0]
-        else:
-            contained_in = self.contained_in
-        return remove_empty_values(
-            {
-                "@type": "sc:FileObject",
-                "name": self.name,
-                "description": self.description,
-                "contentSize": self.content_size,
-                "contentUrl": self.content_url,
-                "containedIn": contained_in,
-                "encodingFormat": self.encoding_format,
-                "md5": self.md5,
-                "sha256": self.sha256,
-                "source": self.source.to_json() if self.source else None,
-            }
-        )
-
-    @classmethod
-    def from_jsonld(
-        cls,
-        issues: Issues,
-        context: Context,
-        folder: epath.Path,
-        rdf: Rdf,
-        file_object: Json,
-    ) -> FileObject:
-        """Creates a `FileObject` from JSON-LD."""
-        check_expected_type(issues, file_object, constants.SCHEMA_ORG_FILE_OBJECT)
-        content_url = file_object.get(constants.SCHEMA_ORG_CONTENT_URL)
-        contained_in = file_object.get(constants.SCHEMA_ORG_CONTAINED_IN, [])
-        name = file_object.get(constants.SCHEMA_ORG_NAME, "")
-        if contained_in is not None and not isinstance(contained_in, list):
-            contained_in = [contained_in]
-        content_size = file_object.get(constants.SCHEMA_ORG_CONTENT_SIZE)
-        description = file_object.get(constants.SCHEMA_ORG_DESCRIPTION)
-        encoding_format = file_object.get(constants.SCHEMA_ORG_ENCODING_FORMAT)
-        return cls(
-            issues=issues,
-            context=Context(dataset_name=context.dataset_name, distribution_name=name),
-            folder=folder,
-            content_url=content_url,
-            content_size=content_size,
-            contained_in=contained_in,
-            description=description,
-            encoding_format=encoding_format,
-            md5=file_object.get(constants.SCHEMA_ORG_MD5),
-            name=name,
-            rdf=rdf,
-            sha256=file_object.get(constants.SCHEMA_ORG_SHA256),
-            source=file_object.get(constants.ML_COMMONS_SOURCE),
-        )
+    JSONLD_TYPE = constants.SCHEMA_ORG_FILE_OBJECT

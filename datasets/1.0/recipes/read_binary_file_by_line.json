@@ -1,0 +1,190 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "read_binary_file_by_line",
+  "description": "This is a recipe illustrating how to read files line by line.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "cr:FileSet",
+      "@id": "languages_in_directory",
+      "name": "languages_in_directory",
+      "description": "Binary files containing the expression \"hello\" translated in several languages.",
+      "encodingFormat": "text/plain",
+      "includes": "data/read_binary_file_by_line/*.txt"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "zip",
+      "name": "zip",
+      "description": "Zip file containing the binary files with the translations.",
+      "contentUrl": "data/read_binary_file_by_line/files.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "49c616fdf402d70a6bc02a1265f2ad410f06395dcec54b8cd8f376f7fdae636b"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "languages_in_zip",
+      "name": "languages_in_zip",
+      "description": "Binary files containing the expression \"hello\" translated in several languages.",
+      "containedIn": {
+        "@id": "zip"
+      },
+      "encodingFormat": "text/plain",
+      "includes": "*.txt"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "translations_from_directory",
+      "name": "translations_from_directory",
+      "description": "\"Hello\" translated in several languages [from a directory].",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "translations_from_directory/translation",
+          "name": "translations_from_directory/translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "languages_in_directory"
+            },
+            "extract": {
+              "fileProperty": "lines"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "translations_from_directory/lineNumber",
+          "name": "translations_from_directory/lineNumber",
+          "description": "The number of the line in the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "languages_in_directory"
+            },
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "translations_from_directory/filename",
+          "name": "translations_from_directory/filename",
+          "description": "The name of the source file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "languages_in_directory"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "translations_from_zip",
+      "name": "translations_from_zip",
+      "description": "\"Hello\" translated in several languages [from a zip].",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "translations_from_zip/translation",
+          "name": "translations_from_zip/translation",
+          "description": "The translation of the sentence in the target language.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "languages_in_zip"
+            },
+            "extract": {
+              "fileProperty": "lines"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "translations_from_zip/lineNumber",
+          "name": "translations_from_zip/lineNumber",
+          "description": "The number of the line in the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "languages_in_zip"
+            },
+            "extract": {
+              "fileProperty": "lineNumbers"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "translations_from_zip/filename",
+          "name": "translations_from_zip/filename",
+          "description": "The name of the source file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "languages_in_zip"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
