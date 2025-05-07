@@ -11,7 +11,6 @@ import pytest
 from mlcroissant._src import datasets
 from mlcroissant._src.beam import ReadFromCroissant
 from mlcroissant._src.core.issues import ValidationError
-from mlcroissant._src.core.optional import deps
 from mlcroissant._src.tests.records import record_to_python
 from mlcroissant._src.tests.versions import parametrize_version
 
