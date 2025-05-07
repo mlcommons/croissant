@@ -8,6 +8,7 @@ from mlcroissant._src.datasets_test import load_records_and_test_equality
 from mlcroissant._src.tests.versions import parametrize_version
 
 
+@pytest.mark.nonhermetic
 @parametrize_version()
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
@@ -32,6 +33,7 @@ def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records
 
 
 # Non-hermetic test cases for croissant 1.0 only (data from the internet).
+@pytest.mark.nonhermetic
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records", "filters"],
     [
@@ -56,6 +58,7 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
     )
 
 
+@pytest.mark.nonhermetic
 def test_load_from_huggingface():
     url = "https://huggingface.co/api/datasets/mnist/croissant"
     dataset = datasets.Dataset(url)
