@@ -1,0 +1,71 @@
+"""datasets_nonhermetic_test module with data from the internet."""
+
+import pytest
+
+from mlcroissant._src import datasets
+from mlcroissant._src.tests.versions import parametrize_version
+from mlcroissant._src.datasets_test import load_records_and_test_equality
+
+
+@parametrize_version()
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records"],
+    [
+        [
+            "flores-200/metadata.json",
+            "language_translations_train_data_with_metadata",
+            10,
+        ],
+        [
+            "flores-200/metadata.json",
+            "language_translations_test_data_with_metadata",
+            10,
+        ],
+        ["gpt-3/metadata.json", "default", 10],
+        ["huggingface-mnist/metadata.json", "default", 10],
+        ["titanic/metadata.json", "passengers", -1],
+    ],
+)
+def test_nonhermetic_loading(version, dataset_name, record_set_name, num_records):
+    load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
+
+
+# Non-hermetic test cases for croissant 1.0 only (data from the internet).
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records", "filters"],
+    [
+        ["huggingface-anthropic-hh-rlhf/metadata.json", "red-team-attempts", 10, None],
+        ["huggingface-c4/metadata.json", "data", 1, {"data/variant": "en"}],
+        ["huggingface-levanti/metadata.json", "levanti_train", 10, None],
+        ["huggingface-open-hermes/metadata.json", "default", 3, None],
+        # This dataset will timeout if the following feature is broken: mlcroissant
+        # yields examples by downloading parquet files one by one. mlcroissant should
+        # not download all parquet files upfront.
+        [
+            "https://huggingface.co/api/datasets/bigcode/the-stack-metadata/croissant",
+            "default",
+            1,
+            {"default/split": "train"},
+        ],
+    ],
+)
+def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
+    load_records_and_test_equality(
+        "1.0", dataset_name, record_set_name, num_records, filters
+    )
+
+
+def test_load_from_huggingface():
+    url = "https://huggingface.co/api/datasets/mnist/croissant"
+    dataset = datasets.Dataset(url)
+    has_one_record = False
+    for record in dataset.records(record_set="mnist"):
+        assert record["mnist/label"] == 7
+        assert isinstance(record["mnist/image"], deps.PIL_Image.Image)
+        has_one_record = True
+        break
+    assert has_one_record, (
+        "mlc.Dataset.records() didn't yield any record. Warning: this test is"
+        " non-hermetic and makes an API call to Hugging Face, so it's prone to network"
+        " failure."
+    )
