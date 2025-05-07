@@ -3,8 +3,9 @@
 import pytest
 
 from mlcroissant._src import datasets
-from mlcroissant._src.tests.versions import parametrize_version
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.datasets_test import load_records_and_test_equality
+from mlcroissant._src.tests.versions import parametrize_version
 
 
 @parametrize_version()
