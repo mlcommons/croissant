@@ -67,7 +67,7 @@ Croissant 🥐 is a high-level format for machine learning datasets. Croissant b
 
 ## Simple Format Example
 
-Here is an extremely simple example of the Croissant format, with comments showing the four layers:
+Here is an extremely simple example of the Croissant format, with comments showing the four layers. The `@context` preamble is not included for simplicity. Complete croissant definitions for a wide range of datasets are included in the `datasets` folder of this repository.
 
 ```json
 {
@@ -76,6 +76,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
   "description": "This is a minimal example, including the required and the recommended fields.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://example.com/dataset/recipes/minimal-recommended",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "distribution": [
     {
       "@type": "cr:FileObject",
