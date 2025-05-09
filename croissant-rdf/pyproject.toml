@@ -25,8 +25,7 @@ dependencies = [
     "kaggle >=1.6.17",
     "openml >=0.15.1",
     "rich >=13.9.4",
-    "requests>=2.32.3",
-    # "httpx >=0.28.1",
+    "requests>=2.32.3"
 ]
 
 

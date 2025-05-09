@@ -1,0 +1,1241 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://mlcommons.org/croissant/> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://fakebase/ARC-Challenge> a ns1:RecordSet ;
+    ns1:field <http://fakebase/ARC-Challenge/answerKey>,
+        <http://fakebase/ARC-Challenge/id>,
+        <http://fakebase/ARC-Challenge/question> ;
+    schema:description """allenai/ai2_arc - 'ARC-Challenge' subset
+
+Additional information:
+- 3 splits: train, test, validation
+- 1 skipped column: choices"""@en ;
+    schema:name "ARC-Challenge"@en .
+
+<http://fakebase/ARC-Challenge/answerKey> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "answerKey"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-ARC-Challenge> ] ;
+    schema:description "Column 'answerKey' from the Hugging Face parquet file."@en ;
+    schema:name "ARC-Challenge/answerKey"@en .
+
+<http://fakebase/ARC-Challenge/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-ARC-Challenge> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "ARC-Challenge/id"@en .
+
+<http://fakebase/ARC-Challenge/question> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "question"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-ARC-Challenge> ] ;
+    schema:description "Column 'question' from the Hugging Face parquet file."@en ;
+    schema:name "ARC-Challenge/question"@en .
+
+<http://fakebase/ARC-Easy> a ns1:RecordSet ;
+    ns1:field <http://fakebase/ARC-Easy/answerKey>,
+        <http://fakebase/ARC-Easy/id>,
+        <http://fakebase/ARC-Easy/question> ;
+    schema:description """allenai/ai2_arc - 'ARC-Easy' subset
+
+Additional information:
+- 3 splits: train, test, validation
+- 1 skipped column: choices"""@en ;
+    schema:name "ARC-Easy"@en .
+
+<http://fakebase/ARC-Easy/answerKey> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "answerKey"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-ARC-Easy> ] ;
+    schema:description "Column 'answerKey' from the Hugging Face parquet file."@en ;
+    schema:name "ARC-Easy/answerKey"@en .
+
+<http://fakebase/ARC-Easy/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-ARC-Easy> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "ARC-Easy/id"@en .
+
+<http://fakebase/ARC-Easy/question> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "question"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-ARC-Easy> ] ;
+    schema:description "Column 'question' from the Hugging Face parquet file."@en ;
+    schema:name "ARC-Easy/question"@en .
+
+<http://fakebase/Ade_corpus_v2_classification> a ns1:RecordSet ;
+    ns1:field <http://fakebase/Ade_corpus_v2_classification/label>,
+        <http://fakebase/Ade_corpus_v2_classification/text> ;
+    schema:description "ade-benchmark-corpus/ade_corpus_v2 - 'Ade_corpus_v2_classification' subset"@en ;
+    schema:name "Ade_corpus_v2_classification"@en .
+
+<http://fakebase/Ade_corpus_v2_classification/label> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:source [ ns1:extract [ ns1:column "label"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_classification> ] ;
+    schema:description """ClassLabel column 'label' from the Hugging Face parquet file.
+Labels:
+Not-Related (0), Related (1)"""@en ;
+    schema:name "Ade_corpus_v2_classification/label"@en .
+
+<http://fakebase/Ade_corpus_v2_classification/text> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "text"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_classification> ] ;
+    schema:description "Column 'text' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_classification/text"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_ade_relation> a ns1:RecordSet ;
+    ns1:field <http://fakebase/Ade_corpus_v2_drug_ade_relation/drug>,
+        <http://fakebase/Ade_corpus_v2_drug_ade_relation/effect>,
+        <http://fakebase/Ade_corpus_v2_drug_ade_relation/text> ;
+    schema:description """ade-benchmark-corpus/ade_corpus_v2 - 'Ade_corpus_v2_drug_ade_relation' subset
+
+Additional information:
+- 1 skipped column: indexes"""@en ;
+    schema:name "Ade_corpus_v2_drug_ade_relation"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_ade_relation/drug> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "drug"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_ade_relation> ] ;
+    schema:description "Column 'drug' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_drug_ade_relation/drug"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_ade_relation/effect> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "effect"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_ade_relation> ] ;
+    schema:description "Column 'effect' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_drug_ade_relation/effect"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_ade_relation/text> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "text"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_ade_relation> ] ;
+    schema:description "Column 'text' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_drug_ade_relation/text"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_dosage_relation> a ns1:RecordSet ;
+    ns1:field <http://fakebase/Ade_corpus_v2_drug_dosage_relation/dosage>,
+        <http://fakebase/Ade_corpus_v2_drug_dosage_relation/drug>,
+        <http://fakebase/Ade_corpus_v2_drug_dosage_relation/text> ;
+    schema:description """ade-benchmark-corpus/ade_corpus_v2 - 'Ade_corpus_v2_drug_dosage_relation' subset
+
+Additional information:
+- 1 skipped column: indexes"""@en ;
+    schema:name "Ade_corpus_v2_drug_dosage_relation"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_dosage_relation/dosage> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "dosage"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_dosage_relation> ] ;
+    schema:description "Column 'dosage' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_drug_dosage_relation/dosage"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_dosage_relation/drug> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "drug"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_dosage_relation> ] ;
+    schema:description "Column 'drug' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_drug_dosage_relation/drug"@en .
+
+<http://fakebase/Ade_corpus_v2_drug_dosage_relation/text> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "text"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_dosage_relation> ] ;
+    schema:description "Column 'text' from the Hugging Face parquet file."@en ;
+    schema:name "Ade_corpus_v2_drug_dosage_relation/text"@en .
+
+<http://fakebase/adversarialQA> a ns1:RecordSet ;
+    ns1:field <http://fakebase/adversarialQA/context>,
+        <http://fakebase/adversarialQA/id>,
+        <http://fakebase/adversarialQA/question>,
+        <http://fakebase/adversarialQA/title> ;
+    schema:description """UCLNLP/adversarial_qa - 'adversarialQA' subset
+
+Additional information:
+- 3 splits: train, validation, test
+- 2 skipped columns: answers, metadata"""@en ;
+    schema:name "adversarialQA"@en .
+
+<http://fakebase/adversarialQA/context> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "context"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-adversarialQA> ] ;
+    schema:description "Column 'context' from the Hugging Face parquet file."@en ;
+    schema:name "adversarialQA/context"@en .
+
+<http://fakebase/adversarialQA/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-adversarialQA> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "adversarialQA/id"@en .
+
+<http://fakebase/adversarialQA/question> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "question"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-adversarialQA> ] ;
+    schema:description "Column 'question' from the Hugging Face parquet file."@en ;
+    schema:name "adversarialQA/question"@en .
+
+<http://fakebase/adversarialQA/title> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "title"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-adversarialQA> ] ;
+    schema:description "Column 'title' from the Hugging Face parquet file."@en ;
+    schema:name "adversarialQA/title"@en .
+
+<http://fakebase/afrikaans_ner_corpus> a ns1:RecordSet ;
+    ns1:field <http://fakebase/afrikaans_ner_corpus/id>,
+        <http://fakebase/afrikaans_ner_corpus/ner_tags>,
+        <http://fakebase/afrikaans_ner_corpus/tokens> ;
+    schema:description "nwu-ctext/afrikaans_ner_corpus - 'afrikaans_ner_corpus' subset"@en ;
+    schema:name "afrikaans_ner_corpus"@en .
+
+<http://fakebase/afrikaans_ner_corpus/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-afrikaans_ner_corpus> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "afrikaans_ner_corpus/id"@en .
+
+<http://fakebase/afrikaans_ner_corpus/ner_tags> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:repeated true ;
+    ns1:source [ ns1:extract [ ns1:column "ner_tags"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-afrikaans_ner_corpus> ] ;
+    schema:description """ClassLabel column 'ner_tags' from the Hugging Face parquet file.
+Labels:
+OUT (0), B-PERS (1), I-PERS (2), B-ORG (3), I-ORG (4), B-LOC (5), I-LOC (6), B-MISC (7), I-MISC (8)"""@en ;
+    schema:name "afrikaans_ner_corpus/ner_tags"@en .
+
+<http://fakebase/afrikaans_ner_corpus/tokens> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:repeated true ;
+    ns1:source [ ns1:extract [ ns1:column "tokens"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-afrikaans_ner_corpus> ] ;
+    schema:description "Column 'tokens' from the Hugging Face parquet file."@en ;
+    schema:name "afrikaans_ner_corpus/tokens"@en .
+
+<http://fakebase/air_dialogue_data> a ns1:RecordSet ;
+    ns1:field <http://fakebase/air_dialogue_data/dialogue>,
+        <http://fakebase/air_dialogue_data/timestamps> ;
+    schema:description """google/air_dialogue - 'air_dialogue_data' subset
+
+Additional information:
+- 2 splits: train, validation
+- 5 skipped columns: action, intent, expected_action, search_info, correct_sample"""@en ;
+    schema:name "air_dialogue_data"@en .
+
+<http://fakebase/air_dialogue_data/dialogue> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:repeated true ;
+    ns1:source [ ns1:extract [ ns1:column "dialogue"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-air_dialogue_data> ] ;
+    schema:description "Column 'dialogue' from the Hugging Face parquet file."@en ;
+    schema:name "air_dialogue_data/dialogue"@en .
+
+<http://fakebase/air_dialogue_data/timestamps> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:repeated true ;
+    ns1:source [ ns1:extract [ ns1:column "timestamps"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-air_dialogue_data> ] ;
+    schema:description "Column 'timestamps' from the Hugging Face parquet file."@en ;
+    schema:name "air_dialogue_data/timestamps"@en .
+
+<http://fakebase/air_dialogue_kb> a ns1:RecordSet ;
+    ns1:field <http://fakebase/air_dialogue_kb/reservation> ;
+    schema:description """google/air_dialogue - 'air_dialogue_kb' subset
+
+Additional information:
+- 2 splits: train, validation
+- 1 skipped column: kb"""@en ;
+    schema:name "air_dialogue_kb"@en .
+
+<http://fakebase/air_dialogue_kb/reservation> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:source [ ns1:extract [ ns1:column "reservation"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-air_dialogue_kb> ] ;
+    schema:description "Column 'reservation' from the Hugging Face parquet file."@en ;
+    schema:name "air_dialogue_kb/reservation"@en .
+
+<http://fakebase/dbert> a ns1:RecordSet ;
+    ns1:field <http://fakebase/dbert/context>,
+        <http://fakebase/dbert/id>,
+        <http://fakebase/dbert/question>,
+        <http://fakebase/dbert/title> ;
+    schema:description """UCLNLP/adversarial_qa - 'dbert' subset
+
+Additional information:
+- 3 splits: train, validation, test
+- 2 skipped columns: answers, metadata"""@en ;
+    schema:name "dbert"@en .
+
+<http://fakebase/dbert/context> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "context"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbert> ] ;
+    schema:description "Column 'context' from the Hugging Face parquet file."@en ;
+    schema:name "dbert/context"@en .
+
+<http://fakebase/dbert/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbert> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "dbert/id"@en .
+
+<http://fakebase/dbert/question> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "question"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbert> ] ;
+    schema:description "Column 'question' from the Hugging Face parquet file."@en ;
+    schema:name "dbert/question"@en .
+
+<http://fakebase/dbert/title> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "title"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbert> ] ;
+    schema:description "Column 'title' from the Hugging Face parquet file."@en ;
+    schema:name "dbert/title"@en .
+
+<http://fakebase/dbidaf> a ns1:RecordSet ;
+    ns1:field <http://fakebase/dbidaf/context>,
+        <http://fakebase/dbidaf/id>,
+        <http://fakebase/dbidaf/question>,
+        <http://fakebase/dbidaf/title> ;
+    schema:description """UCLNLP/adversarial_qa - 'dbidaf' subset
+
+Additional information:
+- 3 splits: train, validation, test
+- 2 skipped columns: answers, metadata"""@en ;
+    schema:name "dbidaf"@en .
+
+<http://fakebase/dbidaf/context> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "context"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbidaf> ] ;
+    schema:description "Column 'context' from the Hugging Face parquet file."@en ;
+    schema:name "dbidaf/context"@en .
+
+<http://fakebase/dbidaf/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbidaf> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "dbidaf/id"@en .
+
+<http://fakebase/dbidaf/question> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "question"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbidaf> ] ;
+    schema:description "Column 'question' from the Hugging Face parquet file."@en ;
+    schema:name "dbidaf/question"@en .
+
+<http://fakebase/dbidaf/title> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "title"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-dbidaf> ] ;
+    schema:description "Column 'title' from the Hugging Face parquet file."@en ;
+    schema:name "dbidaf/title"@en .
+
+<http://fakebase/default/email_body> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "email_body"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description "Column 'email_body' from the Hugging Face parquet file."@en ;
+    schema:name "default/email_body"@en .
+
+<http://fakebase/default/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "default/id"@en .
+
+<http://fakebase/default/label> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:source [ ns1:extract [ ns1:column "label"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description """ClassLabel column 'label' from the Hugging Face parquet file.
+Labels:
+World (0), Sports (1), Business (2), Sci/Tech (3)"""@en ;
+    schema:name "default/label"@en .
+
+<http://fakebase/default/labels> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:repeated true ;
+    ns1:source [ ns1:extract [ ns1:column "labels"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description """ClassLabel column 'labels' from the Hugging Face parquet file.
+Labels:
+B-long (0), B-short (1), I-long (2), I-short (3), O (4)"""@en ;
+    schema:name "default/labels"@en .
+
+<http://fakebase/default/rating> a ns1:Field ;
+    ns1:dataType schema:Float ;
+    ns1:source [ ns1:extract [ ns1:column "rating"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description "Column 'rating' from the Hugging Face parquet file."@en ;
+    schema:name "default/rating"@en .
+
+<http://fakebase/default/subject_line> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "subject_line"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description "Column 'subject_line' from the Hugging Face parquet file."@en ;
+    schema:name "default/subject_line"@en .
+
+<http://fakebase/default/text> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "text"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ ns1:extract [ ns1:column "text"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description "Column 'text' from the Hugging Face parquet file."@en ;
+    schema:name "default/text"@en .
+
+<http://fakebase/default/tokens> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:repeated true ;
+    ns1:source [ ns1:extract [ ns1:column "tokens"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-default> ] ;
+    schema:description "Column 'tokens' from the Hugging Face parquet file."@en ;
+    schema:name "default/tokens"@en .
+
+<http://fakebase/droberta> a ns1:RecordSet ;
+    ns1:field <http://fakebase/droberta/context>,
+        <http://fakebase/droberta/id>,
+        <http://fakebase/droberta/question>,
+        <http://fakebase/droberta/title> ;
+    schema:description """UCLNLP/adversarial_qa - 'droberta' subset
+
+Additional information:
+- 3 splits: train, validation, test
+- 2 skipped columns: answers, metadata"""@en ;
+    schema:name "droberta"@en .
+
+<http://fakebase/droberta/context> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "context"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-droberta> ] ;
+    schema:description "Column 'context' from the Hugging Face parquet file."@en ;
+    schema:name "droberta/context"@en .
+
+<http://fakebase/droberta/id> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "id"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-droberta> ] ;
+    schema:description "Column 'id' from the Hugging Face parquet file."@en ;
+    schema:name "droberta/id"@en .
+
+<http://fakebase/droberta/question> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "question"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-droberta> ] ;
+    schema:description "Column 'question' from the Hugging Face parquet file."@en ;
+    schema:name "droberta/question"@en .
+
+<http://fakebase/droberta/title> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "title"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-droberta> ] ;
+    schema:description "Column 'title' from the Hugging Face parquet file."@en ;
+    schema:name "droberta/title"@en .
+
+<http://fakebase/plain_text> a ns1:RecordSet ;
+    ns1:field <http://fakebase/plain_text/label>,
+        <http://fakebase/plain_text/text> ;
+    schema:description "komari6/ajgt_twitter_ar - 'plain_text' subset"@en ;
+    schema:name "plain_text"@en .
+
+<http://fakebase/plain_text/label> a ns1:Field ;
+    ns1:dataType schema:Integer ;
+    ns1:source [ ns1:extract [ ns1:column "label"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-plain_text> ] ;
+    schema:description """ClassLabel column 'label' from the Hugging Face parquet file.
+Labels:
+Negative (0), Positive (1)"""@en ;
+    schema:name "plain_text/label"@en .
+
+<http://fakebase/plain_text/text> a ns1:Field ;
+    ns1:dataType schema:Text ;
+    ns1:source [ ns1:extract [ ns1:column "text"@en ] ;
+            ns1:fileSet <http://fakebase/parquet-files-for-config-plain_text> ] ;
+    schema:description "Column 'text' from the Hugging Face parquet file."@en ;
+    schema:name "plain_text/text"@en .
+
+<http://fakebase/parquet-files-for-config-air_dialogue_kb> a ns1:FileSet ;
+    ns1:includes "air_dialogue_kb/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-air_dialogue_kb"@en .
+
+<http://fakebase/parquet-files-for-config-Ade_corpus_v2_classification> a ns1:FileSet ;
+    ns1:includes "Ade_corpus_v2_classification/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-Ade_corpus_v2_classification"@en .
+
+<http://fakebase/parquet-files-for-config-air_dialogue_data> a ns1:FileSet ;
+    ns1:includes "air_dialogue_data/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-air_dialogue_data"@en .
+
+<http://fakebase/parquet-files-for-config-plain_text> a ns1:FileSet ;
+    ns1:includes "plain_text/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-plain_text"@en .
+
+<http://fakebase/default> a ns1:RecordSet ;
+    ns1:field <http://fakebase/default/email_body>,
+        <http://fakebase/default/id>,
+        <http://fakebase/default/label>,
+        <http://fakebase/default/labels>,
+        <http://fakebase/default/rating>,
+        <http://fakebase/default/subject_line>,
+        <http://fakebase/default/text>,
+        <http://fakebase/default/tokens> ;
+    schema:description """Yale-LILY/aeslc - 'default' subset
+
+Additional information:
+- 3 splits: train, validation, test"""@en,
+        """amirveyseh/acronym_identification - 'default' subset
+
+Additional information:
+- 3 splits: train, validation, test"""@en,
+        """fancyzhx/ag_news - 'default' subset
+
+Additional information:
+- 2 splits: train, test"""@en,
+        """legacy-datasets/allegro_reviews - 'default' subset
+
+Additional information:
+- 3 splits: train, test, validation"""@en ;
+    schema:name "default"@en .
+
+<http://fakebase/parquet-files-for-config-ARC-Challenge> a ns1:FileSet ;
+    ns1:includes "ARC-Challenge/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-ARC-Challenge"@en .
+
+<http://fakebase/parquet-files-for-config-ARC-Easy> a ns1:FileSet ;
+    ns1:includes "ARC-Easy/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-ARC-Easy"@en .
+
+<http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_ade_relation> a ns1:FileSet ;
+    ns1:includes "Ade_corpus_v2_drug_ade_relation/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-Ade_corpus_v2_drug_ade_relation"@en .
+
+<http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_dosage_relation> a ns1:FileSet ;
+    ns1:includes "Ade_corpus_v2_drug_dosage_relation/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-Ade_corpus_v2_drug_dosage_relation"@en .
+
+<http://fakebase/parquet-files-for-config-afrikaans_ner_corpus> a ns1:FileSet ;
+    ns1:includes "afrikaans_ner_corpus/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-afrikaans_ner_corpus"@en .
+
+<http://fakebase/parquet-files-for-config-adversarialQA> a ns1:FileSet ;
+    ns1:includes "adversarialQA/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-adversarialQA"@en .
+
+<http://fakebase/parquet-files-for-config-dbert> a ns1:FileSet ;
+    ns1:includes "dbert/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-dbert"@en .
+
+<http://fakebase/parquet-files-for-config-dbidaf> a ns1:FileSet ;
+    ns1:includes "dbidaf/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-dbidaf"@en .
+
+<http://fakebase/parquet-files-for-config-droberta> a ns1:FileSet ;
+    ns1:includes "droberta/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-droberta"@en .
+
+<http://fakebase/parquet-files-for-config-default> a ns1:FileSet ;
+    ns1:includes "default/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."@en ;
+    schema:encodingFormat "application/x-parquet"@en ;
+    schema:name "parquet-files-for-config-default"@en .
+
+<http://fakebase/repo> a ns1:FileObject ;
+    schema:contentUrl "https://huggingface.co/datasets/UCLNLP/adversarial_qa/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/Yale-LILY/aeslc/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/allenai/ai2_arc/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/amirveyseh/acronym_identification/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/fancyzhx/ag_news/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/google/air_dialogue/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/komari6/ajgt_twitter_ar/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/legacy-datasets/allegro_reviews/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/nwu-ctext/afrikaans_ner_corpus/tree/refs%2Fconvert%2Fparquet"@en ;
+    schema:description "The Hugging Face git repository."@en ;
+    schema:encodingFormat "git+https"@en ;
+    schema:name "repo"@en ;
+    schema:sha256 "https://github.com/mlcommons/croissant/issues/80"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/default> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Acronym Identification Dataset"@en,
+        "amirveyseh/acronym_identification"@en ;
+    schema:creator [ a schema:Person ;
+            schema:name "amir veyseh"@en ;
+            schema:url "https://huggingface.co/amirveyseh"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for Acronym Identification Dataset
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+This dataset contains the training, validation, and test data for the Shared Task 1: Acronym Identification of the AAAI-21 Workshop on Scientific Document Understanding.
+
+	
+		
+	
+	
+		Supported Tasks and Leaderboards
+	
+
+The dataset supports an acronym-identification task, where the aim is to predic which tokens in a pre-tokenized sentence correspond to acronyms. The dataset was released for a Shared… See the full description on the dataset page: https://huggingface.co/datasets/amirveyseh/acronym_identification."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "acronym-identification"@en,
+        "arxiv:2010.14678"@en,
+        "expert-generated"@en,
+        "found"@en,
+        "mit"@en,
+        "monolingual"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "token-classification"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/mit/"@en ;
+    schema:name "acronym_identification"@en ;
+    schema:sameAs "https://sites.google.com/view/sdu-aaai21/shared-task"@en ;
+    schema:url "https://huggingface.co/datasets/amirveyseh/acronym_identification"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/Ade_corpus_v2_classification>,
+        <http://fakebase/Ade_corpus_v2_drug_ade_relation>,
+        <http://fakebase/Ade_corpus_v2_drug_dosage_relation> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Adverse Drug Reaction Data v2"@en,
+        "ade-benchmark-corpus/ade_corpus_v2"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "ADE Benchmark Corpus"@en ;
+            schema:url "https://huggingface.co/ade-benchmark-corpus"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for Adverse Drug Reaction Data v2
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+ADE-Corpus-V2  Dataset: Adverse Drug Reaction Data.
+ This is a dataset for Classification if a sentence is ADE-related (True) or not (False) and Relation Extraction between Adverse Drug Event and Drug.
+ DRUG-AE.rel provides relations between drugs and adverse effects.
+ DRUG-DOSE.rel provides relations between drugs and dosages.
+ ADE-NEG.txt provides all sentences in the ADE corpus that DO NOT contain… See the full description on the dataset page: https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-Ade_corpus_v2_classification>,
+        <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_ade_relation>,
+        <http://fakebase/parquet-files-for-config-Ade_corpus_v2_drug_dosage_relation>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "coreference-resolution"@en,
+        "expert-generated"@en,
+        "fact-checking"@en,
+        "found"@en,
+        "monolingual"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "text-classification"@en,
+        "token-classification"@en,
+        "unknown"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/unknown/"@en ;
+    schema:name "ade_corpus_v2"@en ;
+    schema:sameAs "https://www.sciencedirect.com/science/article/pii/S1532046412000615"@en ;
+    schema:url "https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/adversarialQA>,
+        <http://fakebase/dbert>,
+        <http://fakebase/dbidaf>,
+        <http://fakebase/droberta> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "UCLNLP/adversarial_qa"@en,
+        "adversarialQA"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "UCL NLP"@en ;
+            schema:url "https://huggingface.co/UCLNLP"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for adversarialQA
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+We have created three new Reading Comprehension datasets constructed using an adversarial model-in-the-loop.
+We use three different models; BiDAF (Seo et al., 2016), BERTLarge (Devlin et al., 2018), and RoBERTaLarge (Liu et al., 2019) in the annotation loop and construct three datasets; D(BiDAF), D(BERT), and D(RoBERTa), each with 10,000 training examples, 1,000 validation, and 1,000 test examples.
+The adversarial… See the full description on the dataset page: https://huggingface.co/datasets/UCLNLP/adversarial_qa."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-adversarialQA>,
+        <http://fakebase/parquet-files-for-config-dbert>,
+        <http://fakebase/parquet-files-for-config-dbidaf>,
+        <http://fakebase/parquet-files-for-config-droberta>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "arxiv:1606.05250"@en,
+        "arxiv:2002.00293"@en,
+        "cc-by-sa-4.0"@en,
+        "crowdsourced"@en,
+        "extractive-qa"@en,
+        "found"@en,
+        "monolingual"@en,
+        "open-domain-qa"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "question-answering"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc-by-sa-4.0/"@en ;
+    schema:name "adversarial_qa"@en ;
+    schema:sameAs "https://adversarialqa.github.io/"@en ;
+    schema:url "https://huggingface.co/datasets/UCLNLP/adversarial_qa"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/air_dialogue_data>,
+        <http://fakebase/air_dialogue_kb> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "AirDialogue"@en,
+        "google/air_dialogue"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Google"@en ;
+            schema:url "https://huggingface.co/google"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for air_dialogue
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+AirDialogue, is a large dataset that contains 402,038 goal-oriented conversations. To collect this dataset, we create a contextgenerator which provides travel and flight restrictions. Then the human annotators are asked to play the role of a customer or an agent and interact with the goal of successfully booking a trip given the restrictions.
+News in v1.3:
+
+We have included the test split of the AirDialogue dataset.
+We… See the full description on the dataset page: https://huggingface.co/datasets/google/air_dialogue."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-air_dialogue_data>,
+        <http://fakebase/parquet-files-for-config-air_dialogue_kb>,
+        <http://fakebase/repo> ;
+    schema:keywords "100K - 1M"@en,
+        "Croissant"@en,
+        "Dask"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "cc-by-nc-4.0"@en,
+        "conversational"@en,
+        "crowdsourced"@en,
+        "dialogue-generation"@en,
+        "dialogue-modeling"@en,
+        "fill-mask"@en,
+        "language-modeling"@en,
+        "machine-generated"@en,
+        "masked-language-modeling"@en,
+        "monolingual"@en,
+        "original"@en,
+        "parquet"@en,
+        "text-generation"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc-by-nc-4.0/"@en ;
+    schema:name "air_dialogue"@en ;
+    schema:sameAs "https://worksheets.codalab.org/worksheets/0xa79833f4b3c24f4188cee7131b120a59"@en ;
+    schema:url "https://huggingface.co/datasets/google/air_dialogue"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/default> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "AG’s News Corpus"@en,
+        "fancyzhx/ag_news"@en ;
+    schema:creator [ a schema:Person ;
+            schema:name "Xiang Zhang"@en ;
+            schema:url "https://huggingface.co/fancyzhx"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for "ag_news"
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+AG is a collection of more than 1 million news articles. News articles have been
+gathered from more than 2000 news sources by ComeToMyHead in more than 1 year of
+activity. ComeToMyHead is an academic news search engine which has been running
+since July, 2004. The dataset is provided by the academic comunity for research
+purposes in data mining (clustering, classification, etc), information retrieval
+(ranking, search, etc)… See the full description on the dataset page: https://huggingface.co/datasets/fancyzhx/ag_news."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "100K - 1M"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "found"@en,
+        "monolingual"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "text-classification"@en,
+        "topic-classification"@en,
+        "unknown"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/unknown/"@en ;
+    schema:name "ag_news"@en ;
+    schema:sameAs "http://groups.di.unipi.it/~gulli/AG_corpus_of_news_articles.html"@en ;
+    schema:url "https://huggingface.co/datasets/fancyzhx/ag_news"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/plain_text> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Arabic Jordanian General Tweets"@en,
+        "komari6/ajgt_twitter_ar"@en ;
+    schema:creator [ a schema:Person ;
+            schema:name "khaled Alomari"@en ;
+            schema:url "https://huggingface.co/komari6"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for Arabic Jordanian General Tweets
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+Arabic Jordanian General Tweets (AJGT) Corpus consisted of 1,800 tweets annotated as positive and negative. Modern Standard Arabic (MSA) or Jordanian dialect.
+
+	
+		
+	
+	
+		Supported Tasks and Leaderboards
+	
+
+The dataset was published on this paper. 
+
+	
+		
+	
+	
+		Languages
+	
+
+The dataset is based on Arabic.
+
+	
+		
+	
+	
+		Dataset Structure
+	
+
+
+	
+		
+	
+	
+		Data Instances
+	
+
+A binary datset with with negative… See the full description on the dataset page: https://huggingface.co/datasets/komari6/ajgt_twitter_ar."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-plain_text>,
+        <http://fakebase/repo> ;
+    schema:keywords "1K - 10K"@en,
+        "Arabic"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Text"@en,
+        "found"@en,
+        "monolingual"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "sentiment-classification"@en,
+        "text-classification"@en,
+        "unknown"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/unknown/"@en ;
+    schema:name "ajgt_twitter_ar"@en ;
+    schema:url "https://huggingface.co/datasets/komari6/ajgt_twitter_ar"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/ARC-Challenge>,
+        <http://fakebase/ARC-Easy> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Ai2Arc"@en,
+        "allenai/ai2_arc"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Ai2"@en ;
+            schema:url "https://huggingface.co/allenai"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for "ai2_arc"
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+A new dataset of 7,787 genuine grade-school level, multiple-choice science questions, assembled to encourage research in
+ advanced question-answering. The dataset is partitioned into a Challenge Set and an Easy Set, where the former contains
+ only questions answered incorrectly by both a retrieval-based algorithm and a word co-occurrence algorithm. We are also
+ including a corpus of over 14 million science sentences… See the full description on the dataset page: https://huggingface.co/datasets/allenai/ai2_arc."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-ARC-Challenge>,
+        <http://fakebase/parquet-files-for-config-ARC-Easy>,
+        <http://fakebase/repo> ;
+    schema:keywords "1K - 10K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "arxiv:1803.05457"@en,
+        "cc-by-sa-4.0"@en,
+        "found"@en,
+        "monolingual"@en,
+        "multiple-choice-qa"@en,
+        "open-domain-qa"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "question-answering"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc-by-sa-4.0/"@en ;
+    schema:name "ai2_arc"@en ;
+    schema:sameAs "https://allenai.org/data/arc"@en ;
+    schema:url "https://huggingface.co/datasets/allenai/ai2_arc"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/afrikaans_ner_corpus> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Afrikaans Ner Corpus"@en,
+        "nwu-ctext/afrikaans_ner_corpus"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Centre for Text Technology - Humanities - NWU"@en ;
+            schema:url "https://huggingface.co/nwu-ctext"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for Afrikaans Ner Corpus
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+The Afrikaans Ner Corpus is an Afrikaans dataset developed by The Centre for Text Technology (CTexT), North-West University, South Africa. The data is based on documents from the South African goverment domain and crawled from gov.za websites. It was created to support NER task for Afrikaans language. The dataset uses CoNLL shared task annotation standards.
+
+	
+		
+	
+	
+		Supported Tasks and Leaderboards
+	
+
+[More… See the full description on the dataset page: https://huggingface.co/datasets/nwu-ctext/afrikaans_ner_corpus."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-afrikaans_ner_corpus>,
+        <http://fakebase/repo> ;
+    schema:keywords "1K - 10K"@en,
+        "Afrikaans"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Text"@en,
+        "expert-generated"@en,
+        "monolingual"@en,
+        "named-entity-recognition"@en,
+        "original"@en,
+        "other"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "token-classification"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/other/"@en ;
+    schema:name "afrikaans_ner_corpus"@en ;
+    schema:sameAs "https://repo.sadilar.org/handle/20.500.12185/299"@en ;
+    schema:url "https://huggingface.co/datasets/nwu-ctext/afrikaans_ner_corpus"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/default> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Allegro Reviews"@en,
+        "legacy-datasets/allegro_reviews"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Legacy Datasets"@en ;
+            schema:url "https://huggingface.co/legacy-datasets"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for [Dataset Name]
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+Allegro Reviews is a sentiment analysis dataset, consisting of 11,588 product reviews written in Polish and extracted from Allegro.pl - a popular e-commerce marketplace. Each review contains at least 50 words and has a rating on a scale from one (negative review) to five (positive review).
+We recommend using the provided train/dev/test split. The ratings for the test set reviews are kept hidden. You can evaluate your… See the full description on the dataset page: https://huggingface.co/datasets/legacy-datasets/allegro_reviews."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Polish"@en,
+        "Text"@en,
+        "cc-by-sa-4.0"@en,
+        "found"@en,
+        "monolingual"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "sentiment-scoring"@en,
+        "text-classification"@en,
+        "text-scoring"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc-by-sa-4.0/"@en ;
+    schema:name "allegro_reviews"@en ;
+    schema:sameAs "https://klejbenchmark.com/"@en ;
+    schema:url "https://huggingface.co/datasets/legacy-datasets/allegro_reviews"@en .
+
+[] a schema:Dataset ;
+    ns1:recordSet <http://fakebase/default> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "AESLC: Annotated Enron Subject Line Corpus"@en,
+        "Yale-LILY/aeslc"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Yale LILY Lab"@en ;
+            schema:url "https://huggingface.co/Yale-LILY"@en ] ;
+    schema:description """
+	
+		
+	
+	
+		Dataset Card for "aeslc"
+	
+
+
+	
+		
+	
+	
+		Dataset Summary
+	
+
+A collection of email messages of employees in the Enron Corporation.
+There are two features:
+
+email_body: email body text.
+subject_line: email subject text.
+
+
+	
+		
+	
+	
+		Supported Tasks and Leaderboards
+	
+
+More Information Needed
+
+	
+		
+	
+	
+		Languages
+	
+
+Monolingual English (mainly en-US) with some exceptions.
+
+	
+		
+	
+	
+		Dataset Structure
+	
+
+
+	
+		
+	
+	
+		Data Instances
+	
+
+
+	
+		
+	
+	
+		default
+	
+
+
+Size of downloaded dataset… See the full description on the dataset page: https://huggingface.co/datasets/Yale-LILY/aeslc."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "arxiv:1906.03497"@en,
+        "aspect-based-summarization"@en,
+        "conversations-summarization"@en,
+        "crowdsourced"@en,
+        "email-headline-generation"@en,
+        "found"@en,
+        "monolingual"@en,
+        "multi-document-summarization"@en,
+        "original"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "summarization"@en,
+        "unknown"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/unknown/"@en ;
+    schema:name "aeslc"@en ;
+    schema:sameAs ""@en ;
+    schema:url "https://huggingface.co/datasets/Yale-LILY/aeslc"@en .
+
