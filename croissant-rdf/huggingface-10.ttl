@@ -1,0 +1,1211 @@
+@prefix cr: <http://mlcommons.org/croissant/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://fakebase/all> a cr:RecordSet ;
+    cr:field <http://fakebase/all/answer>,
+        <http://fakebase/all/correctness_count>,
+        <http://fakebase/all/correctness_llama>,
+        <http://fakebase/all/correctness_math_verify>,
+        <http://fakebase/all/finish_reasons>,
+        <http://fakebase/all/generations>,
+        <http://fakebase/all/is_reasoning_complete>,
+        <http://fakebase/all/messages>,
+        <http://fakebase/all/problem>,
+        <http://fakebase/all/problem_type>,
+        <http://fakebase/all/question_type>,
+        <http://fakebase/all/solution>,
+        <http://fakebase/all/source>,
+        <http://fakebase/all/split>,
+        <http://fakebase/all/uuid> ;
+    schema:description "open-r1/OpenR1-Math-220k - 'all' subset"@en .
+
+<http://fakebase/all/answer> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "answer"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/correctness_count> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "correctness_count"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/correctness_llama> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "correctness_llama"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/correctness_math_verify> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "correctness_math_verify"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/finish_reasons> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "finish_reasons"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/generations> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "generations"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/is_reasoning_complete> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "is_reasoning_complete"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/messages> a cr:Field ;
+    cr:repeated true ;
+    cr:subField <http://fakebase/all/messages/content>,
+        <http://fakebase/all/messages/role> .
+
+<http://fakebase/all/messages/content> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "messages"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ;
+            cr:transform [ cr:jsonPath "content"@en ] ] .
+
+<http://fakebase/all/messages/role> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "messages"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ;
+            cr:transform [ cr:jsonPath "role"@en ] ] .
+
+<http://fakebase/all/problem> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/problem_type> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem_type"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/question_type> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "question_type"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/solution> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "solution"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/source> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "source"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all/split> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:references [ cr:field <http://fakebase/all_splits/split_name> ] ;
+    cr:source [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ;
+            cr:transform [ cr:regex "all/(?:partial-)?(train)/.+parquet$"@en ] ] .
+
+<http://fakebase/all/uuid> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "uuid"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-all> ] .
+
+<http://fakebase/all_splits> a cr:RecordSet ;
+    cr:data "[{\"all_splits/split_name\":\"train\"}]"^^rdf:JSON ;
+    cr:dataType cr:Split ;
+    cr:field <http://fakebase/all_splits/split_name> ;
+    cr:key <http://fakebase/all_splits/split_name> ;
+    schema:description "Splits for the all config."@en ;
+    schema:name "all_splits"@en .
+
+<http://fakebase/default/CUDA_Code> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "CUDA_Code"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/CUDA_Runtime> a cr:Field ;
+    cr:dataType schema:Float ;
+    cr:source [ cr:extract [ cr:column "CUDA_Runtime"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/CUDA_Speedup_Compile> a cr:Field ;
+    cr:dataType schema:Float ;
+    cr:source [ cr:extract [ cr:column "CUDA_Speedup_Compile"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/CUDA_Speedup_Native> a cr:Field ;
+    cr:dataType schema:Float ;
+    cr:source [ cr:extract [ cr:column "CUDA_Speedup_Native"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Clang_Tidy> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Clang_Tidy"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Correct> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:source [ cr:extract [ cr:column "Correct"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Error> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Error"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Kernel_Name> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Kernel_Name"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Level_ID> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "Level_ID"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Max_Diff> a cr:Field ;
+    cr:dataType schema:Float ;
+    cr:source [ cr:extract [ cr:column "Max_Diff"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/NCU_Profile> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "NCU_Profile"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Op_Name> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Op_Name"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/PyTorch_Code_Functional> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "PyTorch_Code_Functional"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/PyTorch_Code_Module> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "PyTorch_Code_Module"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/PyTorch_Compile_Runtime> a cr:Field ;
+    cr:dataType schema:Float ;
+    cr:source [ cr:extract [ cr:column "PyTorch_Compile_Runtime"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/PyTorch_Native_Runtime> a cr:Field ;
+    cr:dataType schema:Float ;
+    cr:source [ cr:extract [ cr:column "PyTorch_Native_Runtime"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Task_ID> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "Task_ID"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/Torch_Profile> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Torch_Profile"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/__index_level_0__> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "__index_level_0__"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/act> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "act"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/answer> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "answer"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/content> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "content"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/content_tokens_len> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "content_tokens_len"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ cr:extract [ cr:column "content_tokens_len"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/conversations> a cr:Field ;
+    cr:repeated true ;
+    cr:subField <http://fakebase/default/conversations/from>,
+        <http://fakebase/default/conversations/value> .
+
+<http://fakebase/default/conversations/from> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "conversations"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:jsonPath "from"@en ] ] .
+
+<http://fakebase/default/conversations/value> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "conversations"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:jsonPath "value"@en ] ] .
+
+<http://fakebase/default/correctness_count> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "correctness_count"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/correctness_llama> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "correctness_llama"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/correctness_math_verify> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "correctness_math_verify"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/finish_reasons> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "finish_reasons"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/generations> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "generations"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/input> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "input"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ cr:extract [ cr:column "input"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/instruction> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "instruction"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/is_reasoning_complete> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "is_reasoning_complete"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/messages> a cr:Field ;
+    cr:repeated true ;
+    cr:subField <http://fakebase/default/messages/content>,
+        <http://fakebase/default/messages/role> .
+
+<http://fakebase/default/messages/content> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "messages"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:jsonPath "content"@en ] ] .
+
+<http://fakebase/default/messages/role> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "messages"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:jsonPath "role"@en ] ] .
+
+<http://fakebase/default/output> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "output"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/problem> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/problem_type> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem_type"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/prompt> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "prompt"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/prompt_tokens_len> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "prompt_tokens_len"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ cr:extract [ cr:column "prompt_tokens_len"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/question> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "question"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/question_type> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "question_type"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/reasoning_content> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "reasoning_content"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/reasoning_content_tokens_len> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "reasoning_content_tokens_len"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ cr:extract [ cr:column "reasoning_content_tokens_len"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/reference_answer> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "reference_answer"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/repo_name> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "repo_name"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ cr:extract [ cr:column "repo_name"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/responses> a cr:Field ;
+    cr:repeated true ;
+    cr:subField <http://fakebase/default/responses/response>,
+        <http://fakebase/default/responses/response_model> .
+
+<http://fakebase/default/responses/response> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "responses"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:jsonPath "response"@en ] ] .
+
+<http://fakebase/default/responses/response_model> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "responses"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:jsonPath "response_model"@en ] ] .
+
+<http://fakebase/default/score> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "score"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ],
+        [ cr:extract [ cr:column "score"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/solution> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "solution"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/source> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "source"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/split> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:references [ cr:field <http://fakebase/default_splits/split_name> ],
+        [ cr:field <http://fakebase/default_splits/split_name> ],
+        [ cr:field <http://fakebase/default_splits/split_name> ],
+        [ cr:field <http://fakebase/default_splits/split_name> ],
+        [ cr:field <http://fakebase/default_splits/split_name> ],
+        [ cr:field <http://fakebase/default_splits/split_name> ],
+        [ cr:field <http://fakebase/default_splits/split_name> ] ;
+    cr:source [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(train)/.+parquet$"@en ] ],
+        [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(train)/.+parquet$"@en ] ],
+        [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(train)/.+parquet$"@en ] ],
+        [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(level_1|level_2|level_3)/.+parquet$"@en ] ],
+        [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(train)/.+parquet$"@en ] ],
+        [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(train)/.+parquet$"@en ] ],
+        [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ;
+            cr:transform [ cr:regex "default/(?:partial-)?(train)/.+parquet$"@en ] ] .
+
+<http://fakebase/default/system> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "system"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/default/uuid> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "uuid"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-default> ] .
+
+<http://fakebase/en> a cr:RecordSet ;
+    cr:field <http://fakebase/en/Complex_CoT>,
+        <http://fakebase/en/Question>,
+        <http://fakebase/en/Response>,
+        <http://fakebase/en/split> ;
+    schema:description "FreedomIntelligence/medical-o1-reasoning-SFT - 'en' subset"@en .
+
+<http://fakebase/en/Complex_CoT> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Complex_CoT"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-en> ] .
+
+<http://fakebase/en/Question> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Question"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-en> ] .
+
+<http://fakebase/en/Response> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Response"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-en> ] .
+
+<http://fakebase/en/split> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:references [ cr:field <http://fakebase/en_splits/split_name> ] ;
+    cr:source [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-en> ;
+            cr:transform [ cr:regex "en/(?:partial-)?(train)/.+parquet$"@en ] ] .
+
+<http://fakebase/en_splits> a cr:RecordSet ;
+    cr:data "[{\"en_splits/split_name\":\"train\"}]"^^rdf:JSON ;
+    cr:dataType cr:Split ;
+    cr:field <http://fakebase/en_splits/split_name> ;
+    cr:key <http://fakebase/en_splits/split_name> ;
+    schema:description "Splits for the en config."@en ;
+    schema:name "en_splits"@en .
+
+<http://fakebase/extended> a cr:RecordSet ;
+    cr:field <http://fakebase/extended/answer>,
+        <http://fakebase/extended/correctness_count>,
+        <http://fakebase/extended/correctness_llama>,
+        <http://fakebase/extended/correctness_math_verify>,
+        <http://fakebase/extended/finish_reasons>,
+        <http://fakebase/extended/generations>,
+        <http://fakebase/extended/is_reasoning_complete>,
+        <http://fakebase/extended/messages>,
+        <http://fakebase/extended/problem>,
+        <http://fakebase/extended/problem_type>,
+        <http://fakebase/extended/question_type>,
+        <http://fakebase/extended/solution>,
+        <http://fakebase/extended/source>,
+        <http://fakebase/extended/split>,
+        <http://fakebase/extended/uuid> ;
+    schema:description "open-r1/OpenR1-Math-220k - 'extended' subset"@en .
+
+<http://fakebase/extended/answer> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "answer"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/correctness_count> a cr:Field ;
+    cr:dataType schema:Integer ;
+    cr:source [ cr:extract [ cr:column "correctness_count"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/correctness_llama> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "correctness_llama"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/correctness_math_verify> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "correctness_math_verify"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/finish_reasons> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "finish_reasons"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/generations> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "generations"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/is_reasoning_complete> a cr:Field ;
+    cr:dataType schema:Boolean ;
+    cr:repeated true ;
+    cr:source [ cr:extract [ cr:column "is_reasoning_complete"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/messages> a cr:Field ;
+    cr:repeated true ;
+    cr:subField <http://fakebase/extended/messages/content>,
+        <http://fakebase/extended/messages/role> .
+
+<http://fakebase/extended/messages/content> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "messages"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ;
+            cr:transform [ cr:jsonPath "content"@en ] ] .
+
+<http://fakebase/extended/messages/role> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "messages"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ;
+            cr:transform [ cr:jsonPath "role"@en ] ] .
+
+<http://fakebase/extended/problem> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/problem_type> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem_type"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/question_type> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "question_type"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/solution> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "solution"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/source> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "source"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended/split> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:references [ cr:field <http://fakebase/extended_splits/split_name> ] ;
+    cr:source [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ;
+            cr:transform [ cr:regex "extended/(?:partial-)?(train)/.+parquet$"@en ] ] .
+
+<http://fakebase/extended/uuid> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "uuid"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-extended> ] .
+
+<http://fakebase/extended_splits> a cr:RecordSet ;
+    cr:data "[{\"extended_splits/split_name\":\"train\"}]"^^rdf:JSON ;
+    cr:dataType cr:Split ;
+    cr:field <http://fakebase/extended_splits/split_name> ;
+    cr:key <http://fakebase/extended_splits/split_name> ;
+    schema:description "Splits for the extended config."@en ;
+    schema:name "extended_splits"@en .
+
+<http://fakebase/metadata> a cr:RecordSet ;
+    cr:field <http://fakebase/metadata/deepseek_reasoning>,
+        <http://fakebase/metadata/deepseek_solution>,
+        <http://fakebase/metadata/domain>,
+        <http://fakebase/metadata/ground_truth_solution>,
+        <http://fakebase/metadata/problem>,
+        <http://fakebase/metadata/source>,
+        <http://fakebase/metadata/split>,
+        <http://fakebase/metadata/starter_code>,
+        <http://fakebase/metadata/test_cases> ;
+    schema:description "open-thoughts/OpenThoughts-114k - 'metadata' subset"@en .
+
+<http://fakebase/metadata/deepseek_reasoning> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "deepseek_reasoning"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/deepseek_solution> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "deepseek_solution"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/domain> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "domain"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/ground_truth_solution> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "ground_truth_solution"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/problem> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "problem"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/source> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "source"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/split> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:references [ cr:field <http://fakebase/metadata_splits/split_name> ] ;
+    cr:source [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ;
+            cr:transform [ cr:regex "metadata/(?:partial-)?(train)/.+parquet$"@en ] ] .
+
+<http://fakebase/metadata/starter_code> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "starter_code"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata/test_cases> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "test_cases"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-metadata> ] .
+
+<http://fakebase/metadata_splits> a cr:RecordSet ;
+    cr:data "[{\"metadata_splits/split_name\":\"train\"}]"^^rdf:JSON ;
+    cr:dataType cr:Split ;
+    cr:field <http://fakebase/metadata_splits/split_name> ;
+    cr:key <http://fakebase/metadata_splits/split_name> ;
+    schema:description "Splits for the metadata config."@en ;
+    schema:name "metadata_splits"@en .
+
+<http://fakebase/zh> a cr:RecordSet ;
+    cr:field <http://fakebase/zh/Complex_CoT>,
+        <http://fakebase/zh/Question>,
+        <http://fakebase/zh/Response>,
+        <http://fakebase/zh/split> ;
+    schema:description "FreedomIntelligence/medical-o1-reasoning-SFT - 'zh' subset"@en .
+
+<http://fakebase/zh/Complex_CoT> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Complex_CoT"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-zh> ] .
+
+<http://fakebase/zh/Question> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Question"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-zh> ] .
+
+<http://fakebase/zh/Response> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:source [ cr:extract [ cr:column "Response"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-zh> ] .
+
+<http://fakebase/zh/split> a cr:Field ;
+    cr:dataType schema:Text ;
+    cr:references [ cr:field <http://fakebase/zh_splits/split_name> ] ;
+    cr:source [ cr:extract [ cr:fileProperty "fullpath"@en ] ;
+            cr:fileSet <http://fakebase/parquet-files-for-config-zh> ;
+            cr:transform [ cr:regex "zh/(?:partial-)?(train)/.+parquet$"@en ] ] .
+
+<http://fakebase/zh_splits> a cr:RecordSet ;
+    cr:data "[{\"zh_splits/split_name\":\"train\"}]"^^rdf:JSON ;
+    cr:dataType cr:Split ;
+    cr:field <http://fakebase/zh_splits/split_name> ;
+    cr:key <http://fakebase/zh_splits/split_name> ;
+    schema:description "Splits for the zh config."@en ;
+    schema:name "zh_splits"@en .
+
+<http://fakebase/all_splits/split_name> a cr:Field ;
+    cr:dataType schema:Text .
+
+<http://fakebase/en_splits/split_name> a cr:Field ;
+    cr:dataType schema:Text .
+
+<http://fakebase/extended_splits/split_name> a cr:Field ;
+    cr:dataType schema:Text .
+
+<http://fakebase/metadata_splits/split_name> a cr:Field ;
+    cr:dataType schema:Text .
+
+<http://fakebase/zh_splits/split_name> a cr:Field ;
+    cr:dataType schema:Text .
+
+<http://fakebase/parquet-files-for-config-en> a cr:FileSet ;
+    cr:includes "en/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:encodingFormat "application/x-parquet"@en .
+
+<http://fakebase/parquet-files-for-config-zh> a cr:FileSet ;
+    cr:includes "zh/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:encodingFormat "application/x-parquet"@en .
+
+<http://fakebase/default> a cr:RecordSet ;
+    cr:field <http://fakebase/default/CUDA_Code>,
+        <http://fakebase/default/CUDA_Runtime>,
+        <http://fakebase/default/CUDA_Speedup_Compile>,
+        <http://fakebase/default/CUDA_Speedup_Native>,
+        <http://fakebase/default/Clang_Tidy>,
+        <http://fakebase/default/Correct>,
+        <http://fakebase/default/Error>,
+        <http://fakebase/default/Kernel_Name>,
+        <http://fakebase/default/Level_ID>,
+        <http://fakebase/default/Max_Diff>,
+        <http://fakebase/default/NCU_Profile>,
+        <http://fakebase/default/Op_Name>,
+        <http://fakebase/default/PyTorch_Code_Functional>,
+        <http://fakebase/default/PyTorch_Code_Module>,
+        <http://fakebase/default/PyTorch_Compile_Runtime>,
+        <http://fakebase/default/PyTorch_Native_Runtime>,
+        <http://fakebase/default/Task_ID>,
+        <http://fakebase/default/Torch_Profile>,
+        <http://fakebase/default/__index_level_0__>,
+        <http://fakebase/default/act>,
+        <http://fakebase/default/answer>,
+        <http://fakebase/default/content>,
+        <http://fakebase/default/content_tokens_len>,
+        <http://fakebase/default/conversations>,
+        <http://fakebase/default/correctness_count>,
+        <http://fakebase/default/correctness_llama>,
+        <http://fakebase/default/correctness_math_verify>,
+        <http://fakebase/default/finish_reasons>,
+        <http://fakebase/default/generations>,
+        <http://fakebase/default/input>,
+        <http://fakebase/default/instruction>,
+        <http://fakebase/default/is_reasoning_complete>,
+        <http://fakebase/default/messages>,
+        <http://fakebase/default/output>,
+        <http://fakebase/default/problem>,
+        <http://fakebase/default/problem_type>,
+        <http://fakebase/default/prompt>,
+        <http://fakebase/default/prompt_tokens_len>,
+        <http://fakebase/default/question>,
+        <http://fakebase/default/question_type>,
+        <http://fakebase/default/reasoning_content>,
+        <http://fakebase/default/reasoning_content_tokens_len>,
+        <http://fakebase/default/reference_answer>,
+        <http://fakebase/default/repo_name>,
+        <http://fakebase/default/responses>,
+        <http://fakebase/default/score>,
+        <http://fakebase/default/solution>,
+        <http://fakebase/default/source>,
+        <http://fakebase/default/split>,
+        <http://fakebase/default/system>,
+        <http://fakebase/default/uuid> ;
+    schema:description "Congliu/Chinese-DeepSeek-R1-Distill-data-110k - 'default' subset"@en,
+        "Congliu/Chinese-DeepSeek-R1-Distill-data-110k-SFT - 'default' subset"@en,
+        """SakanaAI/AI-CUDA-Engineer-Archive - 'default' subset
+
+Additional information:
+- 3 splits: level_1, level_2, level_3"""@en,
+        "facebook/natural_reasoning - 'default' subset"@en,
+        "fka/awesome-chatgpt-prompts - 'default' subset"@en,
+        "open-r1/OpenR1-Math-220k - 'default' subset"@en,
+        "open-thoughts/OpenThoughts-114k - 'default' subset"@en .
+
+<http://fakebase/default_splits> a cr:RecordSet ;
+    cr:data "[{\"default_splits/split_name\":\"level_1\"},{\"default_splits/split_name\":\"level_2\"},{\"default_splits/split_name\":\"level_3\"}]"^^rdf:JSON,
+        "[{\"default_splits/split_name\":\"train\"}]"^^rdf:JSON ;
+    cr:dataType cr:Split ;
+    cr:field <http://fakebase/default_splits/split_name> ;
+    cr:key <http://fakebase/default_splits/split_name> ;
+    schema:description "Splits for the default config."@en ;
+    schema:name "default_splits"@en .
+
+<http://fakebase/default_splits/split_name> a cr:Field ;
+    cr:dataType schema:Text .
+
+<http://fakebase/parquet-files-for-config-metadata> a cr:FileSet ;
+    cr:includes "metadata/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:encodingFormat "application/x-parquet"@en .
+
+<http://fakebase/repo> a cr:FileObject ;
+    schema:contentUrl "https://huggingface.co/datasets/Congliu/Chinese-DeepSeek-R1-Distill-data-110k-SFT/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/Congliu/Chinese-DeepSeek-R1-Distill-data-110k/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/SakanaAI/AI-CUDA-Engineer-Archive/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/arcinstitute/opengenome2/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/facebook/natural_reasoning/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/open-r1/OpenR1-Math-220k/tree/refs%2Fconvert%2Fparquet"@en,
+        "https://huggingface.co/datasets/open-thoughts/OpenThoughts-114k/tree/refs%2Fconvert%2Fparquet"@en ;
+    schema:description "The Hugging Face git repository."@en ;
+    schema:encodingFormat "git+https"@en ;
+    schema:name "repo"@en ;
+    schema:sha256 "https://github.com/mlcommons/croissant/issues/80"@en .
+
+<http://fakebase/parquet-files-for-config-all> a cr:FileSet ;
+    cr:includes "all/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:encodingFormat "application/x-parquet"@en .
+
+<http://fakebase/parquet-files-for-config-extended> a cr:FileSet ;
+    cr:includes "extended/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:encodingFormat "application/x-parquet"@en .
+
+<http://fakebase/parquet-files-for-config-default> a cr:FileSet ;
+    cr:includes "default/*/*.parquet"@en ;
+    schema:containedIn <http://fakebase/repo> ;
+    schema:encodingFormat "application/x-parquet"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/default>,
+        <http://fakebase/default_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "SakanaAI/AI-CUDA-Engineer-Archive"@en,
+        "The AI CUDA Engineer Archive"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Sakana AI"@en ;
+            schema:url "https://huggingface.co/SakanaAI"@en ] ;
+    schema:description """
+	
+		
+		The AI CUDA Engineer Archive 👷: Agentic CUDA Kernel Discovery, Optimization & Composition
+	
+
+
+We release The AI CUDA Engineer archive, a dataset consisting of approximately 30,000 CUDA kernels generated by The AI CUDA Engineer. It is released under the CC-By-4.0 license and can be accessed via HuggingFace and interactively visualized here. The dataset is based on the Kernel tasks provided in KernelBench and includes a torch reference implementation, torch, NCU and Clang-tidy profiling… See the full description on the dataset page: https://huggingface.co/datasets/SakanaAI/AI-CUDA-Engineer-Archive."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Tabular"@en,
+        "Text"@en,
+        "cc-by-4.0"@en,
+        "code"@en,
+        "pandas"@en,
+        "parquet"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc-by-4.0/"@en ;
+    schema:name "AI-CUDA-Engineer-Archive"@en ;
+    schema:url "https://huggingface.co/datasets/SakanaAI/AI-CUDA-Engineer-Archive"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/default>,
+        <http://fakebase/default_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "fka/awesome-chatgpt-prompts"@en ;
+    schema:creator [ a schema:Person ;
+            schema:name "Fatih Kadir Akın"@en ;
+            schema:url "https://huggingface.co/fka"@en ] ;
+    schema:description """🧠 Awesome ChatGPT Prompts [CSV dataset]
+
+This is a Dataset Repository of Awesome ChatGPT Prompts
+View All Prompts on GitHub
+
+	
+		
+		License
+	
+
+CC-0
+"""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "< 1K"@en,
+        "ChatGPT"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Text"@en,
+        "cc0-1.0"@en,
+        "csv"@en,
+        "pandas"@en,
+        "question-answering"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc0-1.0/"@en ;
+    schema:name "awesome-chatgpt-prompts"@en ;
+    schema:url "https://huggingface.co/datasets/fka/awesome-chatgpt-prompts"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/default>,
+        <http://fakebase/default_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Congliu/Chinese-DeepSeek-R1-Distill-data-110k-SFT"@en ;
+    schema:creator [ a schema:Person ;
+            schema:name "CongLiu"@en ;
+            schema:url "https://huggingface.co/Congliu"@en ] ;
+    schema:description """
+	
+		
+		中文基于满血DeepSeek-R1蒸馏数据集（Chinese-Data-Distill-From-R1）
+	
+
+
+🤗 Hugging Face   |   🤖 ModelScope    |   🚀 Github    |   📑 Blog
+
+
+注意：该版本为，可以直接SFT使用的版本，将原始数据中的思考和答案整合成output字段，大部分SFT代码框架均可直接直接加载训练。
+本数据集为中文开源蒸馏满血R1的数据集，数据集中不仅包含math数据，还包括大量的通用类型数据，总数量为110K。
+为什么开源这个数据？
+R1的效果十分强大，并且基于R1蒸馏数据SFT的小模型也展现出了强大的效果，但检索发现，大部分开源的R1蒸馏数据集均为英文数据集。 同时，R1的报告中展示，蒸馏模型中同时也使用了部分通用场景数据集。
+为了帮助大家更好地复现R1蒸馏模型的效果，特此开源中文数据集。该中文数据集中的数据分布如下：
+
+Math：共计36568个样本，
+Exam：共计2432个样本，
+STEM：共计12648个样本，… See the full description on the dataset page: https://huggingface.co/datasets/Congliu/Chinese-DeepSeek-R1-Distill-data-110k-SFT."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "100K - 1M"@en,
+        "Chinese"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Tabular"@en,
+        "Text"@en,
+        "apache-2.0"@en,
+        "json"@en,
+        "pandas"@en,
+        "question-answering"@en,
+        "text-generation"@en,
+        "text2text-generation"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/apache-2.0/"@en ;
+    schema:name "Chinese-DeepSeek-R1-Distill-data-110k-SFT"@en ;
+    schema:url "https://huggingface.co/datasets/Congliu/Chinese-DeepSeek-R1-Distill-data-110k-SFT"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/en>,
+        <http://fakebase/en_splits>,
+        <http://fakebase/zh>,
+        <http://fakebase/zh_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "FreedomIntelligence/medical-o1-reasoning-SFT"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "FreedomAI"@en ;
+            schema:url "https://huggingface.co/FreedomIntelligence"@en ] ;
+    schema:description """
+	
+		
+		News
+	
+
+[2025/02/22] We released the distilled dataset from Deepseek-R1 based on medical verifiable problems. You can use it to initialize your models with the reasoning chain from Deepseek-R1.
+[2024/12/25] We open-sourced the medical reasoning dataset for SFT, built on medical verifiable problems and an LLM verifier.
+
+	
+		
+		Introduction
+	
+
+This dataset is used to fine-tune HuatuoGPT-o1, a medical LLM designed for advanced medical reasoning. This dataset is constructed using GPT-4o… See the full description on the dataset page: https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-en>,
+        <http://fakebase/parquet-files-for-config-zh>,
+        <http://fakebase/repo> ;
+    schema:keywords "10K - 100K"@en,
+        "Chinese"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "apache-2.0"@en,
+        "arxiv:2412.18925"@en,
+        "biology"@en,
+        "json"@en,
+        "medical"@en,
+        "pandas"@en,
+        "question-answering"@en,
+        "text-generation"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/apache-2.0/"@en ;
+    schema:name "medical-o1-reasoning-SFT"@en ;
+    schema:url "https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/default>,
+        <http://fakebase/default_splits>,
+        <http://fakebase/metadata>,
+        <http://fakebase/metadata_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "open-thoughts/OpenThoughts-114k"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Open Thoughts"@en ;
+            schema:url "https://huggingface.co/open-thoughts"@en ] ;
+    schema:description """
+    
+
+
+
+ 
+
+
+
+	
+		
+		Open-Thoughts-114k
+	
+
+Open synthetic reasoning dataset with 114k high-quality examples covering math, science, code, and puzzles!
+Inspect the content with rich formatting with Curator Viewer.
+
+	
+		
+		Available Subsets
+	
+
+default subset containing ready-to-train data used to finetune the OpenThinker-7B and OpenThinker-32B models:
+ds = load_dataset("open-thoughts/OpenThoughts-114k", split="train")
+
+metadata subset containing extra columns used in dataset construction:… See the full description on the dataset page: https://huggingface.co/datasets/open-thoughts/OpenThoughts-114k."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/parquet-files-for-config-metadata>,
+        <http://fakebase/repo> ;
+    schema:keywords "100K - 1M"@en,
+        "Croissant"@en,
+        "Dask"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Synthetic"@en,
+        "Text"@en,
+        "apache-2.0"@en,
+        "curator"@en,
+        "parquet"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/apache-2.0/"@en ;
+    schema:name "OpenThoughts-114k"@en ;
+    schema:sameAs "https://www.open-thoughts.ai/"@en ;
+    schema:url "https://huggingface.co/datasets/open-thoughts/OpenThoughts-114k"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/default>,
+        <http://fakebase/default_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Natural Reasoning"@en,
+        "facebook/natural_reasoning"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "AI at Meta"@en ;
+            schema:url "https://huggingface.co/facebook"@en ] ;
+    schema:description "NaturalReasoning is a large-scale dataset for general reasoning tasks. It consists of high-quality challenging reasoning questions backtranslated from pretraining corpora DCLM and FineMath. The questions have been deduplicated and decontaminated from popular reasoning benchmarks including MATH, GPQA, MMLU-Pro, MMLU-STEM. For each question, we extract the reference final answer from the original document from the pretraining corpora if possible. We also provide a model-generated response from… See the full description on the dataset page: https://huggingface.co/datasets/facebook/natural_reasoning."@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "1M - 10M"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "arxiv:2502.13124"@en,
+        "cc-by-nc-4.0"@en,
+        "json"@en,
+        "pandas"@en,
+        "text-generation"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/cc-by-nc-4.0/"@en ;
+    schema:name "natural_reasoning"@en ;
+    schema:url "https://huggingface.co/datasets/facebook/natural_reasoning"@en .
+
+[] a schema:Dataset ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "arcinstitute/opengenome2"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Arc Institute"@en ;
+            schema:url "https://huggingface.co/arcinstitute"@en ] ;
+    schema:description "arcinstitute/opengenome2 dataset hosted on Hugging Face and contributed by the HF Datasets community"@en ;
+    schema:distribution <http://fakebase/repo> ;
+    schema:keywords "apache-2.0"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/apache-2.0/"@en ;
+    schema:name "opengenome2"@en ;
+    schema:url "https://huggingface.co/datasets/arcinstitute/opengenome2"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/all>,
+        <http://fakebase/all_splits>,
+        <http://fakebase/default>,
+        <http://fakebase/default_splits>,
+        <http://fakebase/extended>,
+        <http://fakebase/extended_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "open-r1/OpenR1-Math-220k"@en ;
+    schema:creator [ a schema:Organization ;
+            schema:name "Open R1"@en ;
+            schema:url "https://huggingface.co/open-r1"@en ] ;
+    schema:description """
+	
+		
+		OpenR1-Math-220k
+	
+
+
+	
+		
+		Dataset description
+	
+
+OpenR1-Math-220k is a large-scale dataset for mathematical reasoning. It consists of 220k math problems with two to four reasoning traces generated by DeepSeek R1 for problems from NuminaMath 1.5. 
+The traces were verified using Math Verify for most samples and Llama-3.3-70B-Instruct as a judge for 12% of the samples, and each problem contains at least one reasoning trace with a correct answer.
+The dataset consists of two splits:… See the full description on the dataset page: https://huggingface.co/datasets/open-r1/OpenR1-Math-220k."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-all>,
+        <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/parquet-files-for-config-extended>,
+        <http://fakebase/repo> ;
+    schema:keywords "100K - 1M"@en,
+        "Croissant"@en,
+        "Dask"@en,
+        "Datasets"@en,
+        "English"@en,
+        "Polars"@en,
+        "Text"@en,
+        "apache-2.0"@en,
+        "parquet"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/apache-2.0/"@en ;
+    schema:name "OpenR1-Math-220k"@en ;
+    schema:url "https://huggingface.co/datasets/open-r1/OpenR1-Math-220k"@en .
+
+[] a schema:Dataset ;
+    cr:recordSet <http://fakebase/default>,
+        <http://fakebase/default_splits> ;
+    dcterms:conformsTo "http://mlcommons.org/croissant/1.0"@en ;
+    schema:alternateName "Congliu/Chinese-DeepSeek-R1-Distill-data-110k"@en ;
+    schema:creator [ a schema:Person ;
+            schema:name "CongLiu"@en ;
+            schema:url "https://huggingface.co/Congliu"@en ] ;
+    schema:description """
+	
+		
+		中文基于满血DeepSeek-R1蒸馏数据集（Chinese-Data-Distill-From-R1）
+	
+
+
+🤗 Hugging Face   |   🤖 ModelScope    |   🚀 Github    |   📑 Blog
+
+
+注意：提供了直接SFT使用的版本，点击下载。将数据中的思考和答案整合成output字段，大部分SFT代码框架均可直接直接加载训练。
+本数据集为中文开源蒸馏满血R1的数据集，数据集中不仅包含math数据，还包括大量的通用类型数据，总数量为110K。
+为什么开源这个数据？
+R1的效果十分强大，并且基于R1蒸馏数据SFT的小模型也展现出了强大的效果，但检索发现，大部分开源的R1蒸馏数据集均为英文数据集。 同时，R1的报告中展示，蒸馏模型中同时也使用了部分通用场景数据集。
+为了帮助大家更好地复现R1蒸馏模型的效果，特此开源中文数据集。该中文数据集中的数据分布如下：
+
+Math：共计36568个样本，
+Exam：共计2432个样本，
+STEM：共计12648个样本，… See the full description on the dataset page: https://huggingface.co/datasets/Congliu/Chinese-DeepSeek-R1-Distill-data-110k."""@en ;
+    schema:distribution <http://fakebase/parquet-files-for-config-default>,
+        <http://fakebase/repo> ;
+    schema:keywords "100K - 1M"@en,
+        "Chinese"@en,
+        "Croissant"@en,
+        "Datasets"@en,
+        "Polars"@en,
+        "Tabular"@en,
+        "Text"@en,
+        "apache-2.0"@en,
+        "json"@en,
+        "pandas"@en,
+        "question-answering"@en,
+        "text-generation"@en,
+        "text2text-generation"@en,
+        "🇺🇸 Region: US"@en ;
+    schema:license "https://choosealicense.com/licenses/apache-2.0/"@en ;
+    schema:name "Chinese-DeepSeek-R1-Distill-data-110k"@en ;
+    schema:url "https://huggingface.co/datasets/Congliu/Chinese-DeepSeek-R1-Distill-data-110k"@en .
+

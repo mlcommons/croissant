@@ -1,0 +1,291 @@
+[
+    {
+        "@context": {
+            "@language": "en",
+            "@vocab": "https://schema.org/",
+            "citeAs": "cr:citeAs",
+            "column": "cr:column",
+            "conformsTo": "dct:conformsTo",
+            "cr": "http://mlcommons.org/croissant/",
+            "data": {
+                "@id": "cr:data",
+                "@type": "@json"
+            },
+            "dataBiases": "cr:dataBiases",
+            "dataCollection": "cr:dataCollection",
+            "dataType": {
+                "@id": "cr:dataType",
+                "@type": "@vocab"
+            },
+            "dct": "http://purl.org/dc/terms/",
+            "extract": "cr:extract",
+            "field": "cr:field",
+            "fileProperty": "cr:fileProperty",
+            "fileObject": "cr:fileObject",
+            "fileSet": "cr:fileSet",
+            "format": "cr:format",
+            "includes": "cr:includes",
+            "isEnumeration": "cr:isEnumeration",
+            "isLiveDataset": "cr:isLiveDataset",
+            "jsonPath": "cr:jsonPath",
+            "key": "cr:key",
+            "md5": "cr:md5",
+            "parentField": "cr:parentField",
+            "path": "cr:path",
+            "personalSensitiveInformation": "cr:personalSensitiveInformation",
+            "recordSet": "cr:recordSet",
+            "references": "cr:references",
+            "regex": "cr:regex",
+            "repeated": "cr:repeated",
+            "replace": "cr:replace",
+            "sc": "https://schema.org/",
+            "separator": "cr:separator",
+            "source": "cr:source",
+            "subField": "cr:subField",
+            "transform": "cr:transform",
+            "wd": "https://www.wikidata.org/wiki/"
+        },
+        "alternateName": "This dataset provides 10,000 vehicles with key features that influence car price",
+        "conformsTo": "http://mlcommons.org/croissant/1.0",
+        "license": {
+            "@type": "sc:CreativeWork",
+            "name": "Other (specified in description)"
+        },
+        "distribution": [
+            {
+                "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/asinow/car-price-dataset?datasetVersionNumber=1",
+                "contentSize": "134.607 KB",
+                "md5": "xnQ+q8WLj9aPCvhTsG+L6A==",
+                "encodingFormat": "application/zip",
+                "@id": "archive.zip",
+                "@type": "cr:FileObject",
+                "name": "archive.zip",
+                "description": "Archive containing all the contents of the Car Price Dataset dataset"
+            },
+            {
+                "contentUrl": "car_price_dataset.csv",
+                "containedIn": {
+                    "@id": "archive.zip"
+                },
+                "encodingFormat": "text/csv",
+                "@id": "car_price_dataset.csv_fileobject",
+                "@type": "cr:FileObject",
+                "name": "car_price_dataset.csv",
+                "description": "This dataset contains 10,000 entries created for the purpose of predicting car prices. Each row represents information about a car and its price. The descriptions of the columns are as follows:"
+            }
+        ],
+        "recordSet": [
+            {
+                "field": [
+                    {
+                        "dataType": [
+                            "sc:Text"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Brand"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Brand",
+                        "@type": "cr:Field",
+                        "name": "Brand",
+                        "description": "Specifies the brand of the car "
+                    },
+                    {
+                        "dataType": [
+                            "sc:Text"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Model"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Model",
+                        "@type": "cr:Field",
+                        "name": "Model",
+                        "description": "Specifies the model of the car"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Integer"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Year"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Year",
+                        "@type": "cr:Field",
+                        "name": "Year",
+                        "description": "The production year of the car"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Float"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Engine_Size"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Engine_Size",
+                        "@type": "cr:Field",
+                        "name": "Engine_Size",
+                        "description": "Specifies the engine size in liters"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Text"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Fuel_Type"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Fuel_Type",
+                        "@type": "cr:Field",
+                        "name": "Fuel_Type",
+                        "description": "indicates the type of fuel used by the car"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Text"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Transmission"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Transmission",
+                        "@type": "cr:Field",
+                        "name": "Transmission",
+                        "description": "The type of transmission in the car"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Integer"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Mileage"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Mileage",
+                        "@type": "cr:Field",
+                        "name": "Mileage",
+                        "description": "The total distance the car has traveled, measured in kilometers"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Integer"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Doors"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Doors",
+                        "@type": "cr:Field",
+                        "name": "Doors",
+                        "description": "The number of doors in the car"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Integer"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Owner_Count"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Owner_Count",
+                        "@type": "cr:Field",
+                        "name": "Owner_Count",
+                        "description": " The number of previous owners of the car"
+                    },
+                    {
+                        "dataType": [
+                            "sc:Integer"
+                        ],
+                        "source": {
+                            "fileObject": {
+                                "@id": "car_price_dataset.csv_fileobject"
+                            },
+                            "extract": {
+                                "column": "Price"
+                            }
+                        },
+                        "@id": "car_price_dataset.csv/Price",
+                        "@type": "cr:Field",
+                        "name": "Price",
+                        "description": "The estimated selling price of the car"
+                    }
+                ],
+                "@id": "car_price_dataset.csv",
+                "@type": "cr:RecordSet",
+                "name": "car_price_dataset.csv",
+                "description": "This dataset contains 10,000 entries created for the purpose of predicting car prices. Each row represents information about a car and its price. The descriptions of the columns are as follows:"
+            }
+        ],
+        "version": 1,
+        "keywords": [
+            "task > linear regression",
+            "subject > people and society > education",
+            "audience > beginner",
+            "packages > randomForest",
+            "subject > science and technology > transportation > automobiles and vehicles"
+        ],
+        "isAccessibleForFree": true,
+        "includedInDataCatalog": {
+            "@type": "sc:DataCatalog",
+            "name": "Kaggle",
+            "url": "https://www.kaggle.com"
+        },
+        "creator": {
+            "@type": "sc:Person",
+            "name": "Tech",
+            "url": "/asinow",
+            "image": "https://storage.googleapis.com/kaggle-avatars/thumbnails/24158669-kg.jpg?t=2025-01-10-15-58-33"
+        },
+        "publisher": {
+            "@type": "sc:Organization",
+            "name": "Kaggle",
+            "url": "https://www.kaggle.com/organizations/kaggle",
+            "image": "https://storage.googleapis.com/kaggle-organizations/4/thumbnail.png"
+        },
+        "thumbnailUrl": "https://storage.googleapis.com/kaggle-datasets-images/6552734/10587923/68e141538ca1377df4a965084853ce32/dataset-card.jpg?t=2025-01-26-20-13-13",
+        "dateModified": "2025-01-26T19:53:28.043",
+        "datePublished": "2025-01-26T19:53:28.043",
+        "@type": "sc:Dataset",
+        "name": "Car Price Dataset",
+        "url": "https://www.kaggle.com/datasets/asinow/car-price-dataset/versions/1",
+        "description": "Car Price Prediction Dataset Description:\n\nThis dataset contains 10,000 entries created for the purpose of predicting car prices. Each row represents information about a car and its price. The descriptions of the columns are as follows:\n\n****Columns Descriptions:\n\nBrand: Specifies the brand of the car (e.g., Toyota, BMW, Ford).\nExample values: \"Toyota\", \"BMW\", \"Mercedes\".\n\nModel: Specifies the model of the car (e.g., Corolla, Focus, X5).\nExample values: \"Corolla\", \"Focus\", \"X5\".\n\nYear: The production year of the car. Newer years typically indicate higher prices.\nExample values: 2005, 2018, 2023.\n\nEngine_Size: Specifies the engine size in liters (L). Larger engines generally correlate with higher prices.\nExample values: 1.6, 2.0, 3.5.\n\nFuel_Type: indicates the type of fuel used by the car:\nPetrol: Cars running on gasoline.\nDiesel: Cars running on diesel fuel.\nHybrid: Cars that use both fuel and electricity.\nElectric: Fully electric cars.\n\nTransmission: The type of transmission in the car:\nManual: Manual transmission.\nAutomatic: Automatic transmission.\nSemi-Automatic: Semi-automatic transmission.\n\nMileage: The total distance the car has traveled, measured in kilometers. Lower mileage generally indicates a higher price.\nExample values: 15,000, 75,000, 230,000.\n\nDoors: The number of doors in the car. Commonly 2, 3, 4, or 5 doors.\nExample values: 2, 3, 4, 5.\n\nOwner_Count: The number of previous owners of the car. Fewer owners generally indicate a higher price.\nExample values: 1, 2, 3, 4.\n\nPrice:The estimated selling price of the car. It is calculated based on several factors such as production year, engine size, mileage, fuel type, and transmission.\nExample values: 5,000, 15,000, 30,000."
+    }
+]
