@@ -4,8 +4,9 @@ from unittest.mock import ANY, MagicMock, patch
 import pytest
 from rdflib import Graph
 
-from croissant_rdf.providers import HuggingfaceHarvester
+from croissant_rdf import HuggingfaceHarvester
 
+from tempfile import NamedTemporaryFile
 
 @pytest.fixture
 def mock_response():
@@ -37,7 +38,7 @@ def test_mock_fetch_datasets(mock_response):
 
 
 def test_mock_fetch_datasets_empty():
-    with patch("croissant_rdf.providers.HuggingfaceHarvester.fetch_dataset_croissant", return_value=[]):
+    with patch("croissant_rdf.HuggingfaceHarvester.fetch_dataset_croissant", return_value=[]):
         harvester = HuggingfaceHarvester(limit=0)
         result = harvester.fetch_datasets_croissant()
         assert result == []
@@ -67,15 +68,13 @@ def test_fetch_data_workflow():
             assert "http://mlcommons.org/croissant/" in dataset["@context"]["cr"]
 
 
-OUTPUT_FILEPATH = "./tests/test_output.ttl"
-
 
 def test_generate_ttl():
     """Test the complete generate_ttl workflow."""
-    harvester = HuggingfaceHarvester(fname=OUTPUT_FILEPATH, limit=3, use_api_key=False)
-    file_ttl = harvester.generate_ttl()
-    assert os.path.isfile(OUTPUT_FILEPATH)
-    assert os.path.isfile(file_ttl)
-    g = Graph().parse(OUTPUT_FILEPATH, format="ttl")
-    assert len(g) > 0
-    os.remove(OUTPUT_FILEPATH)
+    with NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
+        harvester = HuggingfaceHarvester(fname=fp.name, limit=3, use_api_key=False)
+        file_ttl = harvester.generate_ttl()
+        assert os.path.isfile(fp.name)
+        assert os.path.isfile(file_ttl)
+        g = Graph().parse(fp, format="ttl")
+        assert len(g) > 0
