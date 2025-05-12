@@ -884,10 +884,16 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, <code>sc:Integer</code>) or a semantic type (e.g., <code>sc:GeoLocation</code>).</td>
   </tr>
   <tr>
-    <td>repeated</td>
+    <td>isArray</td>
     <td><a href="http://schema.org/Boolean">Boolean</a></td>
     <td>ONE</td>
-    <td>If true, then the Field is a list of values of type dataType.</td>
+    <td>If true, then the Field is an array of values of type dataType. If `arrayShape` is not specified, it will default to `(-1,)`, i.e. a one-dimensional array of unknown shape.</td>
+  </tr>
+  <tr>
+    <td>arrayShape</td>
+    <td><a href="http://schema.org/Text">Text</a></td>
+    <td>ONE</td>
+    <td>The shape of the array as a comma-separated string. `-1` indicates dimensions of unknown/unspecified size. `(-1,)` represents a simple list. If specified,  then `is_array` must be True.</td>
   </tr>
   <tr>
     <td>equivalentProperty</td>
@@ -1830,6 +1836,7 @@ Segmentation mask as an image:
     "cr": "http://mlcommons.org/croissant/",
     "rai": "http://mlcommons.org/croissant/RAI/",
     "dct": "http://purl.org/dc/terms/",
+    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -1852,6 +1859,7 @@ Segmentation mask as an image:
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
+    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
@@ -1861,7 +1869,6 @@ Segmentation mask as an image:
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
-    "repeated": "cr:repeated",
     "replace": "cr:replace",
     "separator": "cr:separator",
     "source": "cr:source",
