@@ -43,7 +43,7 @@ class Field(Node):
     array_shape: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
-            "The shape of the array as a comma-separated string.  -1 indicates "
+            "The shape of the array as a comma-separated string. -1 indicates "
             " dimensions of unknown/unspecified size. (-1,) represents a simple list."
             " If specified,  then `is_array` must be True."
         ),
