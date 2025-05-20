@@ -1030,7 +1030,7 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
     <td>transform</td>
     <td>Transform</td>
     <td>MANY</td>
-    <td>A transformation to apply on source data on top of the extracted method as specified through <code>extract</code>, e.g., a regular expression or JSON query.</td>
+    <td>A transformation to apply on source data on top of the extracted method as specified through <code>extract</code>, e.g., a regular expression or a JSON path</td>
   </tr>
   <tr>
     <td>format</td>
@@ -1087,7 +1087,7 @@ Croissant supports a few simple transformations that can be applied on the sourc
 
 - delimiter: split a string into an array using the supplied character.
 - regex: A regular expression to parse the data.
-- jsonQuery: A JSON query to evaluate on the (JSON) data source.
+- jsonPath: A JSON path to evaluate on the (JSON) data source.
 
 For example, to extract information from a filename using a regular expression, we can write:
 
