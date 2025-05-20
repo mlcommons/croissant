@@ -177,7 +177,7 @@ See the [Resources](#resources) section for a complete description.
   ]
 ```
 
-Furthermore, we can describe the structure and the data types in the data using a simple schema that supports flat and nested records called `RecordSet`. In this example, the dataset defines a single `RecordSet`, with one record per image in the dataset. Each record has 3 fields:
+Furthermore, we can describe the structure and the data types in the data using a simple schema called `RecordSet`. In this example, the dataset defines a single `RecordSet`, with one record per image in the dataset. Each record has 3 fields:
 
 - the content of the image
 - the hash of the image, extracted from its filename
@@ -807,7 +807,7 @@ While `FileObject` and `FileSet` describe the resources contained in a dataset, 
 
 A key challenge is that ML data comes in many different formats, including unstructured formats such as text, audio and video, and structured ones such as CSV and JSON. All these formats, no matter their level of machine-readable structuredness, need to be loaded into a common representation for ML purposes, and sometimes combined despite their heterogeneity.
 
-`RecordSet` provides a common structure description that can be used across different modalities, in terms of records that may contain multiple fields. Unstructured content, like text and images, is represented as single-field records. Tabular data yields one record per row in the table, with fields for each column. Tree-structured data can be described with nested and repeated fields.
+`RecordSet` provides a common structure description that can be used across different modalities, in terms of records that may contain multiple fields. Unstructured content, like text and images, is represented as single-field records. Tabular data yields one record per row in the table, with fields for each column. Tree-structured data can be described with sub-fields, or with fields representing multi-dimensional arrays.
 
 Let's introduce the relevant classes first, before illustrating how they are used through examples.
 
@@ -857,7 +857,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
 
 ### Field
 
-A `Field` is part of a `RecordSet`. It may represent a column of a table, or a nested data structure or even a nested `RecordSet` in the case of hierarchical data.
+A `Field` is part of a `RecordSet`. It may represent a column of a table, or a nested data structure.
 
 `Field` is a subclass of [sc:Intangible](https://schema.org/Intangible). It defines the following additional properties:
 
@@ -1499,64 +1499,6 @@ Note that the values of these fields may still come from a "flat" source, such a
 
 Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
 
-#### Nested Records
-
-Croissant also supports nesting (multiple) records inside a single record. This functionality is often needed to represent the structure of hierarchical formats like the contents of JSON files. It's also useful to "denormalize" data so as to create joins across multiple tables in preparation for loading them into an ML framework.
-
-Here is an example where a set of "ratings" records (one per user) are nested inside movie records:
-
-```json
-{
-  "@type": "cr:RecordSet",
-  "@id": "movies_with_ratings",
-  "key": { "@id": "movies_with_ratings/movie_id" },
-  "field": [
-    {
-      "@type": "cr:Field",
-      "@id": "movies_with_ratings/movie_id",
-      "source": { "@id": "movies/movie_id" }
-    },
-    {
-      "@type": "cr:Field",
-      "@id": "movies_with_ratings/movie_title",
-      "source": { "@id": "movies/title" }
-    },
-    {
-      "@type": "cr:Field",
-      "@id": "movies_with_ratings/ratings",
-      "dataType": "cr:RecordSet",
-      "parentField": {
-        "source": { "@id": "ratings/movie_id" },
-        "references": { "@id": "movies_with_ratings/movie_id" }
-      },
-      "subField": [
-        {
-          "@type": "cr:Field",
-          "@id": "movies_with_ratings/ratings/user_id",
-          "source": { "@id": "ratings/user_id" }
-        },
-        {
-          "@type": "cr:Field",
-          "@id": "movies_with_ratings/ratings/rating",
-          "source": { "@id": "ratings/rating" }
-        },
-        {
-          "@type": "cr:Field",
-          "@id": "movies_with_ratings/ratings/timestamp",
-          "source": { "@id": "ratings/timestamp" }
-        }
-      ]
-    }
-  ]
-}
-```
-
-This is achieved in a few steps:
-
-- Creating a "container" field of type `cr:RecordSet`,
-- Creating subFields for the structure of the nested records
-- In case a join between multiple sources is needed, `parentField` can be used to make sure the join field does not appear in the child records (here, the movie_id from the ratings table, which is has the same value as movie_id in parent records)
-
 ## ML-specific Features
 
 We now introduce a number of features that are useful in the context of ML data. These are implemented using the primitives defined in the previous sections, generally as new classes or properties defined in the Croissant namespace. ML-specific features are experimental and subject to change based on the needs of ML users.
@@ -1724,7 +1666,7 @@ Most ML workflows use label data. In Croissant, we identify label data using the
 }
 ```
 
-The `cr:Label` data type can also be applied to a complex Field, e.g., a nested `RecordSet`, that contains multiple annotations. The following example, extracted from the COCO2014 Croissant definition, defines the annotations `RecordSet` as being a label of the images `RecordSet` it is nested in.
+The `cr:Label` data type can also be applied to a complex Field that contains multiple annotations. The following example, extracted from the COCO2014 Croissant definition, defines the annotations `Field` as being a label of the images `RecordSet`.
 
 ```json
 {
@@ -1744,12 +1686,7 @@ The `cr:Label` data type can also be applied to a complex Field, e.g., a nested 
     {
       "@type": "cr:Field",
       "@id": "images/annotations",
-      "dataType": ["cr:RecordSet", "cr:Label"],
-      "parentField": {
-        "@type": "cr:Field",
-        "@id": "images/annotations/image_id",
-        "references": { "@id": "images/image_id" }
-      },
+      "dataType": "cr:Label",
       "subField": [
         {
           "@type": "cr:Field",
