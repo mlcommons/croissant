@@ -70,7 +70,7 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
         parts = re.split(r"(?<!\\)/", transform.replace)
         if len(parts) != 2:
             raise ValueError(
-                f"`replace` must have exactly one unescaped slash. "
+                "`replace` must have exactly one unescaped slash. "
                 f"Got {transform.replace} which has "
                 f"{len(parts) - 1} unescaped slashes."
             )
@@ -147,9 +147,9 @@ def _extract_lines(row: pd.Series) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
     path = epath.Path(row[FileProperty.filepath])
     lines = path.open("rb").read().splitlines()
-    return pd.Series(
-        {**row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))}
-    )
+    return pd.Series({
+        **row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))
+    })
 
 
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
