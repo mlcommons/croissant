@@ -380,8 +380,8 @@ def test_extract_lines(separator):
             False,
         ],
         [
-            "a/path/to/a/file",
-            Source(transforms=[Transform(replace=r"a\/path\/to\/a/some\/new\/path")]),
+            "path/to/a/file",
+            Source(transforms=[Transform(replace=r"path\/to\/a/some\/new\/path")]),
             DataType.TEXT,
             "some/new/path/file",
             False,

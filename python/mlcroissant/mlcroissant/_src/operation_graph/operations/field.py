@@ -67,10 +67,14 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
         if isinstance(value, pathlib.PurePath):
             value = os.fspath(value)
         # split on unescaped slash
-        parts = re.split(r'(?<!\\)/', transform.replace)
+        parts = re.split(r"(?<!\\)/", transform.replace)
         if len(parts) != 2:
-            raise ValueError(f"`replace` must have exactly one unescaped slash. Got {transform.replace} which has {len(parts) - 1} unescaped slashes.")
-        parts =  [part.replace('\\/', '/') for part in parts]
+            raise ValueError(
+                f"`replace` must have exactly one unescaped slash. "
+                f"Got {transform.replace} which has "
+                f"{len(parts) - 1} unescaped slashes."
+            )
+        parts = [part.replace("\\/", "/") for part in parts]
         pattern, replacement = parts
         return re.sub(pattern, replacement, value)
     return value
