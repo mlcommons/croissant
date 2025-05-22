@@ -372,6 +372,27 @@ def test_extract_lines(separator):
             "2024-12-10",
             False,
         ],
+        [
+            "foo",
+            Source(transforms=[Transform(replace="foo/bar")]),
+            DataType.TEXT,
+            "bar",
+            False,
+        ],
+        [
+            "a/path/to/a/file",
+            Source(transforms=[Transform(replace=r"a\/path\/to\/a/some\/new\/path")]),
+            DataType.TEXT,
+            "some/new/path/file",
+            False,
+        ],
+                [
+            "123",
+            Source(transforms=[Transform(replace=r"[0-9]+([0-9])/abc\1")]),
+            DataType.TEXT,
+            "abc3",
+            False,
+        ],
     ],
 )
 def test_apply_transforms_fn(value, source, data_type, expected_value, repeated):
