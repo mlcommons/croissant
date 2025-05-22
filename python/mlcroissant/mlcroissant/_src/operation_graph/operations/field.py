@@ -72,7 +72,7 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             raise ValueError(f"`replace` must have exactly one unescaped slash. Got {transform.replace} which has {len(parts) - 1} unescaped slashes.")
         parts =  [part.replace('\\/', '/') for part in parts]
         pattern, replacement = parts
-        return re.sub(pattern, replacement)
+        return re.sub(pattern, replacement, value)
     return value
 
 
