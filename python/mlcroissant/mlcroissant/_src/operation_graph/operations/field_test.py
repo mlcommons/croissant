@@ -386,7 +386,7 @@ def test_extract_lines(separator):
             "some/new/path/file",
             False,
         ],
-                [
+        [
             "123",
             Source(transforms=[Transform(replace=r"[0-9]+([0-9])/abc\1")]),
             DataType.TEXT,
