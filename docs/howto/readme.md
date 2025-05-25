@@ -11,6 +11,7 @@ This is a list of how-to's for the `Croissant` format.
   across structured and unstructured sources.
 * [Semantic types](semantic-types.md): How to use existing semantic types, or
   define new ones.
+* [CKAN integration](ckan.md): How to serve Croissant metadata from a CKAN instance.
 
 ## ML semantics
 
