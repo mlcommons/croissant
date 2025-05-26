@@ -1,6 +1,6 @@
 # Croissant How-to's
 
-This is a list of how-to's for the `Croissant` format.
+This is a list of how-to's for the `Croissant` format. Contributions are welcome to complete the currently WIP guides.
 
 ## General 
 
