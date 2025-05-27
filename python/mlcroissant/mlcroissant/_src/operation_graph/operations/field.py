@@ -66,7 +66,7 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
     elif transform.replace is not None:
         if isinstance(value, pathlib.PurePath):
             value = os.fspath(value)
-        # split on unescaped slash
+        # Split on unescaped slash.
         parts = re.split(r"(?<!\\)/", transform.replace)
         if len(parts) != 2:
             raise ValueError(

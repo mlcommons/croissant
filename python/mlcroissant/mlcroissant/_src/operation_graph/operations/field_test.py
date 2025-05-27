@@ -402,6 +402,39 @@ def test_apply_transforms_fn(value, source, data_type, expected_value, repeated)
     assert field.apply_transforms_fn(value, f) == expected_value
 
 
+@pytest.mark.parametrize(
+    ["replace", "unescaped_slashes"],
+    [
+        ["two/unescaped/slashes", 2],
+        [r"no\/unescaped\/slashes", 0],
+        [r"f/o/u/r/\/unescaped\/slashes", 4],
+    ],
+)
+def test_apply_replace_exception_fn(replace, unescaped_slashes):
+    f = Field(
+        id="test",
+        name="test",
+        data_types=DataType.TEXT,
+        source=Source(transforms=[Transform(replace=replace)]),
+        repeated=False,
+    )
+
+    has_error = False
+    try:
+        field.apply_transforms_fn("foo", f)
+    except ValueError as e:
+        has_error = True
+        e.__str__
+        assert (
+            e.args[0]
+            == "`replace` must have exactly one unescaped slash. "
+            f"Got {replace} which has "
+            f"{unescaped_slashes} unescaped slashes."
+        )
+
+    assert has_error
+
+
 def test_apply_multiple_transforms_fn():
     source = Source(
         transforms=[
