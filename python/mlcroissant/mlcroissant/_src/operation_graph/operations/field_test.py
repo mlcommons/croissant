@@ -424,7 +424,6 @@ def test_apply_replace_exception_fn(replace, unescaped_slashes):
         field.apply_transforms_fn("foo", f)
     except ValueError as e:
         has_error = True
-        e.__str__
         assert (
             e.args[0]
             == "`replace` must have exactly one unescaped slash. "
