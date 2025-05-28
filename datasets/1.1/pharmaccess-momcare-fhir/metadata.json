@@ -1,7 +1,5 @@
 {
   "@context": {
-    "@base": "https://sen.science/core/",
-    "@vocab": "http://senscience.ai/",
     "Audience": {
       "@id": "dv:Audience"
     },
@@ -320,7 +318,7 @@
   "description": "This dataset is part of the MomCare dataset, that captures maternal health journeys from the MomCare program in Tanzania, structured as HL7 FHIR v4 resources. It includes over 430,000 records across nine resource types—Patient, Observation, Condition, EpisodeOfCare, Location, Organization, Questionnaire, QuestionnaireResponse, and ServiceRequest. Extracted from a relational point-of-service system and transformed using SQL-based methods, the dataset models enrollment, antenatal care, diagnoses, risk profiling, and follow-up across more than 70 clinics. All data are pseudonymized, machine-actionable, and exported in NDJSON format for interoperability, analytics, and AI integration.",
   "recordSet": [
     {
-      "@id": "record-sets/serviceRequest",
+      "@id": "serviceRequest",
       "@type": "RecordSet",
       "name": "Servicerequest",
       "recordSetId": "serviceRequest",
@@ -525,7 +523,7 @@
       ]
     },
     {
-      "@id": "record-sets/patient",
+      "@id": "patient",
       "@type": "RecordSet",
       "name": "Patient",
       "recordSetId": "patient",
