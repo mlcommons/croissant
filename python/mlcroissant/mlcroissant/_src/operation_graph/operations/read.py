@@ -134,16 +134,12 @@ class Read(Operation):
                         return pd.DataFrame({
                             FileProperty.content: [json_content],
                         })
-                elif encoding_format == EncodingFormat.JSON_LINES:
-                    # Take into account nested JSON objects.
+                elif encoding_format in (EncodingFormat.JSON_LINES, EncodingFormat.FHIR):
+                    # JSON_LINES and FHIR do the same thing
                     if reading_method == ReadingMethod.JSON:
-                        json_content = [json.loads(line) for line in file if line.strip()]
-                        return parse_json_content(json_content, self.fields)
-                    else:
-                        return pd.read_json(file, lines=True)
-                elif encoding_format == EncodingFormat.FHIR:
-                    json_content = [json.loads(line) for line in file if line.strip()]
-                    return parse_json_content(json_content, self.fields)
+                        records = [json.loads(line) for line in file if line.strip()]
+                        return parse_json_content(records, self.fields)
+                    return pd.read_json(file, lines=True)
                 elif encoding_format == EncodingFormat.PARQUET:
                     try:
                         df = pd.read_parquet(file)
