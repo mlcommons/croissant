@@ -1,0 +1,615 @@
+{
+    "@context": {
+        "@base": "https://sen.science/core/",
+        "@vocab": "http://senscience.ai/",
+        "Audience": {
+            "@id": "dv:Audience"
+        },
+        "Boolean": {
+            "@id": "schema:Boolean"
+        },
+        "CreativeWork": {
+            "@id": "schema:CreativeWork"
+        },
+        "Date": {
+            "@id": "schema:Date"
+        },
+        "DataDownload": {
+            "@id": "schema:DataDownload"
+        },
+        "Dataset": {
+            "@id": "schema:Dataset"
+        },
+        "DateTime": {
+            "@id": "schema:DateTime"
+        },
+        "DescriptiveStatistics": {
+            "@id": "dv:DescriptiveStatistics"
+        },
+        "Duration": {
+            "@id": "schema:Duration"
+        },
+        "ExperimentDataset": {
+            "@id": "dv:ExperimentDataset",
+            "@type": "schema:Dataset"
+        },
+        "Field": {
+            "@id": "cr:Field"
+        },
+        "FileObject": {
+            "@id": "cr:FileObject"
+        },
+        "Float": {
+            "@id": "schema:Float"
+        },
+        "HowTo": {
+            "@id": "schema:HowTo"
+        },
+        "HowToSection": {
+            "@id": "schema:HowToSection"
+        },
+        "HowToStep": {
+            "@id": "schema:HowToStep"
+        },
+        "Integer": {
+            "@id": "schema:Integer"
+        },
+        "Location": {
+            "@id": "schema:Location"
+        },
+        "Number": {
+            "@id": "schema:Number"
+        },
+        "OpenDataArticle": {
+            "@id": "dv:OpenDataArticle",
+            "@type": "schema:ScholarlyArticle"
+        },
+        "OpenDataArticleSection": {
+            "@id": "dv:OpenDataArticleSection",
+            "@type": "schema:Text"
+        },
+        "Organization": {
+            "@id": "schema:Organization"
+        },
+        "Person": {
+            "@id": "schema:Person"
+        },
+        "Rating": {
+            "@id": "schema:Rating"
+        },
+        "RecordSet": {
+            "@id": "cr:RecordSet"
+        },
+        "Role": {
+            "@id": "dv:Role"
+        },
+        "ScholarlyArticle": {
+            "@id": "schema:ScholarlyArticle"
+        },
+        "Step": {
+            "@id": "dv:Step"
+        },
+        "Submission": {
+            "@id": "dv:Submission"
+        },
+        "Substep": {
+            "@id": "dv:Substep"
+        },
+        "Section": {
+            "@id": "dv:Section"
+        },
+        "Text": {
+            "@id": "schema:Text"
+        },
+        "Visualization": {
+            "@id": "dv:Visualization"
+        },
+        "VisualizationDataset": {
+            "@id": "dv:VisualizationDataset"
+        },
+        "activities": {
+            "@id": "dv:activities"
+        },
+        "affiliation": {
+            "@id": "schema:affiliation"
+        },
+        "algorithm": {
+            "@id": "schema:algorithm"
+        },
+        "annotationsPerItem": {
+            "@id": "rai:annotationsPerItem"
+        },
+        "annotatorDemographics": {
+            "@id": "rai:annotatorDemographics"
+        },
+        "atLocation": {
+            "@id": "schema:atLocation"
+        },
+        "attachment": {
+            "@id": "dv:attachment"
+        },
+        "author": {
+            "@id": "schema:author"
+        },
+        "builds": {
+            "@id": "dv:builds"
+        },
+        "citation": {
+            "@id": "schema:citation"
+        },
+        "citeAs": {
+            "@id": "cr:citeAs"
+        },
+        "column": {
+            "@id": "cr:column"
+        },
+        "conformsTo": {
+            "@id": "dct:conformsTo"
+        },
+        "contentSize": {
+            "@id": "schema:contentSize"
+        },
+        "contentUrl": {
+            "@id": "schema:contentUrl"
+        },
+        "contributor": {
+            "@id": "schema:contributor"
+        },
+        "contributorRole": {
+            "@id": "dv:contributorRole"
+        },
+        "cr": "http://mlcommons.org/croissant/",
+        "credit": "http://www.niso.org/publications/z39104-2022-credit#",
+        "dataAnnotationAnalysis": {
+            "@id": "rai:dataAnnotationAnalysis"
+        },
+        "dataAnnotationPlatform": {
+            "@id": "rai:dataAnnotationPlatform"
+        },
+        "dataAnnotationProtocol": {
+            "@id": "rai:dataAnnotationProtocol"
+        },
+        "dataBiases": {
+            "@id": "rai:dataBiases"
+        },
+        "dataCollection": {
+            "@id": "rai:dataCollection"
+        },
+        "dataCollectionMissingData": {
+            "@id": "rai:dataCollectionMissingData"
+        },
+        "dataCollectionRawData": {
+            "@id": "rai:dataCollectionRawData"
+        },
+        "dataCollectionTimeframe": {
+            "@id": "rai:dataCollectionTimeframe"
+        },
+        "dataCollectionType": {
+            "@id": "rai:dataCollectionType"
+        },
+        "dataImputationProtocol": {
+            "@id": "rai:dataImputationProtocol"
+        },
+        "dataLimitations": {
+            "@id": "rai:dataLimitations"
+        },
+        "dataManipulationProtocol": {
+            "@id": "rai:dataManipulationProtocol"
+        },
+        "dataPreprocessingProtocol": {
+            "@id": "rai:dataPreprocessingProtocol"
+        },
+        "dataReleaseMaintenancePlan": {
+            "@id": "rai:dataReleaseMaintenancePlan"
+        },
+        "dataSocialImpact": {
+            "@id": "rai:dataSocialImpact"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dataUseCases": {
+            "@id": "rai:dataUseCases"
+        },
+        "dataset": {
+            "@id": "dv:dataset"
+        },
+        "datePublished": {
+            "@id": "schema:datePublished"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "description": {
+            "@id": "schema:description"
+        },
+        "digest": {
+            "@id": "dv:digest"
+        },
+        "distribution": {
+            "@id": "schema:distribution"
+        },
+        "dv": "http://senscience.ai/",
+        "encoding": {
+            "@id": "schema:encoding"
+        },
+        "encodingFormat": {
+            "@id": "schema:encodingFormat"
+        },
+        "extract": {
+            "@id": "cr:extract"
+        },
+        "field": {
+            "@id": "cr:field"
+        },
+        "fileObject": {
+            "@id": "cr:fileObject"
+        },
+        "funding": {
+            "@id": "schema:funding"
+        },
+        "hasPart": {
+            "@id": "schema:hasPart"
+        },
+        "isBasedOn": {
+            "@id": "schema:isBasedOn"
+        },
+        "jsonPath": {
+            "@id": "cr:jsonPath"
+        },
+        "license": {
+            "@id": "schema:license"
+        },
+        "machineAnnotationTools": {
+            "@id": "rai:machineAnnotationTools"
+        },
+        "manuscript": {
+            "@id": "dv:manuscript"
+        },
+        "name": {
+            "@id": "schema:name"
+        },
+        "personalSensitiveInformation": {
+            "@id": "rai:personalSensitiveInformation"
+        },
+        "prov": "http://www.w3.org/ns/prov#",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": {
+            "@id": "cr:recordSet"
+        },
+        "roleName": {
+            "@id": "dv:roleName"
+        },
+        "schema": "https://schema.org/",
+        "sh": "http://www.w3.org/ns/shacl#",
+        "sha256": {
+            "@id": "schema:sha256"
+        },
+        "source": {
+            "@id": "cr:source"
+        },
+        "statistics": {
+            "@id": "dv:statistics"
+        },
+        "steps": {
+            "@id": "dv:steps"
+        },
+        "store": {
+            "@id": "dv:store"
+        },
+        "unitCode": {
+            "@id": "schema:unitCode"
+        },
+        "value": {
+            "@id": "schema:value"
+        },
+        "variables": {
+            "@id": "dv:variables",
+            "@type": "schema:DefinedTermSet"
+        },
+        "visualization": {
+            "@id": "dv:visualization"
+        },
+        "version": {
+            "@id": "schema:version"
+        }
+    },
+    "@type": "Dataset",
+    "conformsTo": "http://mlcommons.org/croissant/1.0",
+    "@id": "#dataset",
+    "name": "MomCare_dataset_FHIR_patient_serviceRequest",
+    "description": "This dataset is part of the MomCare dataset, that captures maternal health journeys from the MomCare program in Tanzania, structured as HL7 FHIR v4 resources. It includes over 430,000 records across nine resource types—Patient, Observation, Condition, EpisodeOfCare, Location, Organization, Questionnaire, QuestionnaireResponse, and ServiceRequest. Extracted from a relational point-of-service system and transformed using SQL-based methods, the dataset models enrollment, antenatal care, diagnoses, risk profiling, and follow-up across more than 70 clinics. All data are pseudonymized, machine-actionable, and exported in NDJSON format for interoperability, analytics, and AI integration.",
+    "recordSet": [
+        {
+            "@id": "record-sets/serviceRequest",
+            "@type": "RecordSet",
+            "name": "Servicerequest",
+            "recordSetId": "serviceRequest",
+            "description": "Automatically extracted fields from serviceRequest.ndjson",
+            "field": [
+                {
+                    "@id": "record-sets/serviceRequest/fields/authoredOn",
+                    "@type": "Field",
+                    "name": "authoredOn",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.authoredOn"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/identifier_value",
+                    "@type": "Field",
+                    "name": "value",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.identifier[*].value"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/intent",
+                    "@type": "Field",
+                    "name": "intent",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.intent"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/performer_display",
+                    "@type": "Field",
+                    "name": "display",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.performer[*].display"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/performer_reference",
+                    "@type": "Field",
+                    "name": "reference",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.performer[*].reference"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/performer_type",
+                    "@type": "Field",
+                    "name": "type",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.performer[*].type"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/reasonCode_text",
+                    "@type": "Field",
+                    "name": "text",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.reasonCode[*].text"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/requester_display",
+                    "@type": "Field",
+                    "name": "display",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.requester.display"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/requester_reference",
+                    "@type": "Field",
+                    "name": "reference",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.requester.reference"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/requester_type",
+                    "@type": "Field",
+                    "name": "type",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.requester.type"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/resourceType",
+                    "@type": "Field",
+                    "name": "resourceType",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.resourceType"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/status",
+                    "@type": "Field",
+                    "name": "status",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.status"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/subject_reference",
+                    "@type": "Field",
+                    "name": "reference",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.subject.reference"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/serviceRequest/fields/subject_type",
+                    "@type": "Field",
+                    "name": "type",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.subject.type"
+                        },
+                        "fileObject": {
+                            "@id": "resources/serviceRequest"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "record-sets/patient",
+            "@type": "RecordSet",
+            "name": "Patient",
+            "recordSetId": "patient",
+            "description": "Automatically extracted fields from patient.ndjson",
+            "field": [
+                {
+                    "@id": "record-sets/patient/fields/active",
+                    "@type": "Field",
+                    "name": "active",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.active"
+                        },
+                        "fileObject": {
+                            "@id": "resources/patient"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/patient/fields/birthDate",
+                    "@type": "Field",
+                    "name": "birthDate",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.birthDate"
+                        },
+                        "fileObject": {
+                            "@id": "resources/patient"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/patient/fields/gender",
+                    "@type": "Field",
+                    "name": "gender",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.gender"
+                        },
+                        "fileObject": {
+                            "@id": "resources/patient"
+                        }
+                    }
+                },
+                {
+                    "@id": "record-sets/patient/fields/resourceType",
+                    "@type": "Field",
+                    "name": "resourceType",
+                    "dataType": "Text",
+                    "source": {
+                        "extract": {
+                            "jsonPath": "$.resourceType"
+                        },
+                        "fileObject": {
+                            "@id": "resources/patient"
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "distribution": [
+        {
+            "@id": "resources/patient",
+            "@type": "FileObject",
+            "contentSize": "13259393",
+            "contentUrl": "https://storage.googleapis.com/hanang-anonymized-maternal-care-data/patient.ndjson",
+            "description": "Raw FHIR patient resource exported as NDJSON.",
+            "encodingFormat": "application/fhir+json",
+            "name": "patient.ndjson",
+            "sha256": "e208bfb1e4b93750f48c6e406f94f9ead7e3e7d6b5b267d6077785fec5de0986"
+        },
+        {
+            "@id": "resources/serviceRequest",
+            "@type": "FileObject",
+            "contentSize": "190572",
+            "contentUrl": "https://storage.googleapis.com/hanang-anonymized-maternal-care-data/serviceRequest.ndjson",
+            "description": "Raw FHIR serviceRequest resource exported as NDJSON.",
+            "encodingFormat": "application/fhir+json",
+            "name": "serviceRequest.ndjson",
+            "sha256": "da4aaffd4f57b9717a9984399bce85d764e8dc5f3b1ad5bea96acef4d4673b2d"
+        }
+    ]
+}
