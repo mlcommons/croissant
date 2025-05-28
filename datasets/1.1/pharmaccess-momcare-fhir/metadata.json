@@ -311,24 +311,22 @@
       "@id": "schema:version"
     }
   },
-  "@type": "Dataset",
+  "@type": "schema:Dataset",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "@id": "#momcare-dataset",
   "name": "MomCare_dataset_FHIR_patient_serviceRequest",
   "description": "This dataset is part of the MomCare dataset, that captures maternal health journeys from the MomCare program in Tanzania, structured as HL7 FHIR v4 resources. It includes over 430,000 records across nine resource types—Patient, Observation, Condition, EpisodeOfCare, Location, Organization, Questionnaire, QuestionnaireResponse, and ServiceRequest. Extracted from a relational point-of-service system and transformed using SQL-based methods, the dataset models enrollment, antenatal care, diagnoses, risk profiling, and follow-up across more than 70 clinics. All data are pseudonymized, machine-actionable, and exported in NDJSON format for interoperability, analytics, and AI integration.",
   "recordSet": [
     {
       "@id": "serviceRequest",
-      "@type": "RecordSet",
+      "@type": "cr:RecordSet",
       "name": "Servicerequest",
-      "recordSetId": "serviceRequest",
       "description": "Automatically extracted fields from serviceRequest.ndjson",
       "field": [
         {
           "@id": "record-sets/serviceRequest/fields/authoredOn",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "authoredOn",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.authoredOn"
@@ -340,9 +338,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/identifier_value",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "value",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.identifier[*].value"
@@ -354,9 +352,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/intent",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "intent",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.intent"
@@ -368,9 +366,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/performer_display",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "display",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.performer[*].display"
@@ -382,9 +380,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/performer_reference",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "reference",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.performer[*].reference"
@@ -396,9 +394,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/performer_type",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "type",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.performer[*].type"
@@ -410,9 +408,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/reasonCode_text",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "text",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.reasonCode[*].text"
@@ -424,9 +422,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/requester_display",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "display",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.requester.display"
@@ -438,9 +436,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/requester_reference",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "reference",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.requester.reference"
@@ -452,9 +450,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/requester_type",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "type",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.requester.type"
@@ -466,9 +464,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/resourceType",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "resourceType",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.resourceType"
@@ -480,9 +478,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/status",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "status",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.status"
@@ -494,9 +492,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/subject_reference",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "reference",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.subject.reference"
@@ -508,9 +506,9 @@
         },
         {
           "@id": "record-sets/serviceRequest/fields/subject_type",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "type",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.subject.type"
@@ -524,16 +522,15 @@
     },
     {
       "@id": "patient",
-      "@type": "RecordSet",
+      "@type": "cr:RecordSet",
       "name": "Patient",
-      "recordSetId": "patient",
       "description": "Automatically extracted fields from patient.ndjson",
       "field": [
         {
           "@id": "record-sets/patient/fields/active",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "active",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.active"
@@ -545,9 +542,9 @@
         },
         {
           "@id": "record-sets/patient/fields/birthDate",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "birthDate",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.birthDate"
@@ -559,9 +556,9 @@
         },
         {
           "@id": "record-sets/patient/fields/gender",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "gender",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.gender"
@@ -573,9 +570,9 @@
         },
         {
           "@id": "record-sets/patient/fields/resourceType",
-          "@type": "Field",
+          "@type": "cr:Field",
           "name": "resourceType",
-          "dataType": "Text",
+          "dataType": "schema:Text",
           "source": {
             "extract": {
               "jsonPath": "$.resourceType"
@@ -591,7 +588,7 @@
   "distribution": [
     {
       "@id": "resources/patient",
-      "@type": "FileObject",
+      "@type": "cr:FileObject",
       "contentSize": "13259393",
       "contentUrl": "https://storage.googleapis.com/hanang-anonymized-maternal-care-data/patient.ndjson",
       "description": "Raw FHIR patient resource exported as NDJSON.",
@@ -601,7 +598,7 @@
     },
     {
       "@id": "resources/serviceRequest",
-      "@type": "FileObject",
+      "@type": "cr:FileObject",
       "contentSize": "190572",
       "contentUrl": "https://storage.googleapis.com/hanang-anonymized-maternal-care-data/serviceRequest.ndjson",
       "description": "Raw FHIR serviceRequest resource exported as NDJSON.",
@@ -609,6 +606,5 @@
       "name": "serviceRequest.ndjson",
       "sha256": "da4aaffd4f57b9717a9984399bce85d764e8dc5f3b1ad5bea96acef4d4673b2d"
     }
-  ],
-  "url": "https://github.com/PharmAccess/hdc-furahi/tree/main"
+  ]
 }
