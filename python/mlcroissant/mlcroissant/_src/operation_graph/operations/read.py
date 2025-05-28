@@ -18,7 +18,9 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
-from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
+from mlcroissant._src.operation_graph.operations.parse_json import (
+    JsonlReader, JsonReader
+)
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
@@ -126,20 +128,17 @@ class Read(Operation):
                 elif encoding_format == EncodingFormat.TSV:
                     return pd.read_csv(file, sep="\t")
                 elif encoding_format == EncodingFormat.JSON:
-                    json_content = json.load(file)
+                    reader = JsonReader(self.fields)
                     if reading_method == ReadingMethod.JSON:
-                        return parse_json_content(json_content, self.fields)
-                    else:
-                        # Raw files are returned as a one-line pd.DataFrame.
-                        return pd.DataFrame({
-                            FileProperty.content: [json_content],
-                        })
-                elif encoding_format in (EncodingFormat.JSON_LINES, EncodingFormat.FHIR):
+                        return reader.parse(file)
+                    return reader.raw(file)
+                elif encoding_format in (EncodingFormat.JSON_LINES,
+                                         EncodingFormat.FHIR):
                     # JSON_LINES and FHIR do the same thing
+                    reader = JsonlReader(self.fields)
                     if reading_method == ReadingMethod.JSON:
-                        records = [json.loads(line) for line in file if line.strip()]
-                        return parse_json_content(records, self.fields)
-                    return pd.read_json(file, lines=True)
+                        return reader.parse(file)
+                    return reader.raw(file)
                 elif encoding_format == EncodingFormat.PARQUET:
                     try:
                         df = pd.read_parquet(file)
