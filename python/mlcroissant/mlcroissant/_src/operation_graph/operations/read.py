@@ -4,7 +4,6 @@ import dataclasses
 import enum
 import gzip
 import io
-import json
 import pathlib
 
 from etils import epath
