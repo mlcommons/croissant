@@ -31,6 +31,8 @@ dependencies = [
   "requests",
   "scipy",
   "tqdm",
+  "jmespath",
+  "orjson"
 ]
 readme = "README.md"
 
