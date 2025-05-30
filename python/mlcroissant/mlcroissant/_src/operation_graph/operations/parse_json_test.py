@@ -2,16 +2,15 @@
 
 import io
 import json
+
 import pandas as pd
 
-from mlcroissant._src.operation_graph.operations.parse_json import (
-    parse_json_content,
-    JsonReader,
-    JsonlReader,
-)
+from mlcroissant._src.operation_graph.operations.parse_json import JsonlReader
+from mlcroissant._src.operation_graph.operations.parse_json import JsonReader
+from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
 from mlcroissant._src.structure_graph.nodes.source import Extract
-from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.tests.nodes import create_test_field
 
 
