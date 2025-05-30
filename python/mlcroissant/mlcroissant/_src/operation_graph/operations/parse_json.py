@@ -1,10 +1,11 @@
 """Parse JSON operation."""
 
 import json
+from typing import Any, TextIO
+
 import jsonpath_rw
 import orjson
 import pandas as pd
-from typing import TextIO, Any
 
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
