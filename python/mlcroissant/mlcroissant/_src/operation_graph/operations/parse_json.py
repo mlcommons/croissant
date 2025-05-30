@@ -1,7 +1,6 @@
 """Parse JSON operation."""
 
 import json
-import jmespath
 import jsonpath_rw
 import orjson
 import pandas as pd
@@ -11,22 +10,31 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
 
+def _unwrap_single_item(value: Any) -> Any:
+    """Unwraps a single-item list to its value, or returns the value as is."""
+    if isinstance(value, list) and len(value) == 1:
+        if not value[0]:
+            return None
+        return value[0]
+    return value
+
+
 def parse_json_content(json_obj, fields):
     """Parsed all JSONs defined in the fields of RecordSet and outputs a pd.DF."""
     series = {}
     for field in fields:
-        jp = field.source.extract.json_path
-        if not jp:
+        json_path = field.source.extract.json_path
+        if not json_path:
             continue
-        expr = jsonpath_rw.parse(jp)
+        expr = jsonpath_rw.parse(json_path)
         vals = []
         for match in expr.find(json_obj):
             v = match.value
-            # if we got back a one‐item list, unwrap it
+            # If we got back a one‐item list, unwrap it.
             if isinstance(v, list) and len(v) == 1:
                 v = v[0]
             vals.append(v)
-        series[jp] = vals
+        series[json_path] = vals
     return pd.DataFrame(series)
 
 
@@ -49,25 +57,27 @@ class JsonReader:
 
         Fields without a JSON path are skipped.
         """
-        # build a list of (original_jsonpath, engine, compiled_expr)
+        import jmespath
+
+        # Build a list of (original_jsonpath, engine, compiled_expr).
         self.exprs: list[tuple[str, str, Any]] = []
         for field in fields:
-            jp = field.source.extract.json_path
-            if not jp:
+            json_path = field.source.extract.json_path
+            if not json_path:
                 continue
 
-            # decide whether this path can be JMESPath or needs full JSONPath
-            stripped = jp.lstrip("$.")
-            if ".." in jp:
-                # uses recursive‐descent → fall back to jsonpath_ng
-                expr = jsonpath_rw.parse(jp)
+            # Decide whether this path can be JMESPath or needs full JSONPath.
+            stripped = json_path.lstrip("$.")
+            if ".." in json_path:
+                # Uses recursive‐descent → fall back to jsonpath_ng.
+                expr = jsonpath_rw.parse(json_path)
                 engine = "jsonpath"
             else:
-                # simple direct path → use JMESPath
+                # Simple direct path → use JMESPath.
                 expr = jmespath.compile(stripped)
                 engine = "jmespath"
 
-            self.exprs.append((jp, engine, expr))
+            self.exprs.append((json_path, engine, expr))
         self.fields = fields
 
     def parse(self, fh: TextIO) -> pd.DataFrame:
@@ -80,11 +90,13 @@ class JsonReader:
             pd.DataFrame: DataFrame with extracted data,
             where each column corresponds to an expression.
         """
-        # Load entire JSON file (could be a list or a single dict)
+        import orjson
+
+        # Load entire JSON file (could be a list or a single dict).
         raw = fh.read()
         data = orjson.loads(raw)
 
-        # Always treat as list of records
+        # Always treat as list of records.
         records = data if isinstance(data, list) else [data]
 
         series: dict[str, list] = {}
@@ -93,13 +105,13 @@ class JsonReader:
             for rec in records:
                 if engine == "jmespath":
                     out = expr.search(rec)
-                    # unwrap single‐item lists
+                    # Unwrap single‐item lists.
                     if isinstance(out, list):
                         if len(out) == 1:
                             out = out[0]
                         elif len(out) == 0:
                             out = None
-                else:  # jsonpath_ng
+                else:  # Engine jsonpath_ng.
                     matches = expr.find(rec)
                     out = [m.value for m in matches]
                     if len(out) == 1:
@@ -107,7 +119,7 @@ class JsonReader:
                     elif not out:
                         out = None
 
-                # flatten: if out is a list, extend; else append scalar (unless None)
+                # Flatten: if out is a list, extend; else append scalar (unless None).
                 if isinstance(out, list):
                     vals.extend(out)
                 elif out is not None:
@@ -129,14 +141,15 @@ class JsonReader:
         Returns:
             pd.DataFrame: A DataFrame containing the JSON content in a single cell.
         """
-        # raw JSON fallback: one‐cell DataFrame
-        fh.seek(0)
-        content = json.load(fh)
+        # Raw JSON fallback: one‐cell DataFrame.
+        raw = fh.read()
+        content = orjson.loads(raw)
         return pd.DataFrame({FileProperty.content: [content]})
 
 
 class JsonlReader:
     """Parser for JSON Lines files, supporting both JSONPath and JMESPath."""
+
     def __init__(self, fields):
         """Initializes the parser with a list of fields.
 
@@ -154,23 +167,25 @@ class JsonlReader:
         used, are stored in `self.exprs`. The original list of fields is stored
         in `self.fields`.
         """
+        import jmespath
+
         self.exprs = []  # list of (orig_path, engine, compiled_expr)
         for field in fields:
-            jp = field.source.extract.json_path
-            if not jp:
+            json_path = field.source.extract.json_path
+            if not json_path:
                 continue
 
-            if jp.startswith("$.") and ".." not in jp:
+            if json_path.startswith("$.") and ".." not in json_path:
                 # simple JSONPath → JMESPath
-                jm = jp.lstrip("$.")      # drop the "$."
+                jm = json_path.lstrip("$.")  # drop the "$."
                 expr = jmespath.compile(jm)
                 engine = "jmespath"
             else:
                 # anything with recursive‐descent or complex filters
-                expr = jsonpath_rw.parse(jp)
+                expr = jsonpath_rw.parse(json_path)
                 engine = "jsonpath"
 
-            self.exprs.append((jp, engine, expr))
+            self.exprs.append((json_path, engine, expr))
         self.fields = fields
 
     def parse(self, fh):
@@ -190,26 +205,26 @@ class JsonlReader:
             - For JSONPath, values are extracted from Match objects and
             single-item lists are unwrapped.
         """
+        import orjson
+
         rows = []
         for line in fh:
             line = line.strip()
             if not line:
                 continue
             rec = orjson.loads(line)
-            row = {}
-            for jp, engine, expr in self.exprs:
+            row: dict[str, object] = {}
+            for json_path, engine, expr in self.exprs:
                 if engine == "jmespath":
-                    val = expr.search(rec)
-                    # unwrap single‐item lists if you like:
-                    if isinstance(val, list):
-                        val = val[0] if len(val) == 1 else val
+                    out = expr.search(rec)
+                    # Unwrap single‐item lists.
+                    out = _unwrap_single_item(out)
                 else:
                     matches = expr.find(rec)
-                    # jsonpath_ng gives you a list of Match objects
-                    val = [m.value for m in matches]
-                    if len(val) == 1:
-                        val = val[0]
-                row[jp] = val
+                    temp = [m.value for m in matches]
+                    # Unwrap single‐item lists.
+                    out = _unwrap_single_item(temp)
+                row[json_path] = out
             rows.append(row)
         return pd.DataFrame(rows)
 

@@ -18,7 +18,8 @@ from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
 from mlcroissant._src.operation_graph.operations.parse_json import (
-    JsonlReader, JsonReader
+    JsonlReader,
+    JsonReader,
 )
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
@@ -117,6 +118,7 @@ class Read(Operation):
         if EncodingFormat.ARFF in encoding_formats:
             return _read_arff_file(filepath)
 
+        reader: JsonReader | JsonlReader | None = None
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
                 # TODO(https://github.com/mlcommons/croissant/issues/635).
@@ -131,8 +133,10 @@ class Read(Operation):
                     if reading_method == ReadingMethod.JSON:
                         return reader.parse(file)
                     return reader.raw(file)
-                elif encoding_format in (EncodingFormat.JSON_LINES,
-                                         EncodingFormat.FHIR):
+                elif encoding_format in (
+                    EncodingFormat.JSON_LINES,
+                    EncodingFormat.FHIR,
+                ):
                     # JSON_LINES and FHIR do the same thing
                     reader = JsonlReader(self.fields)
                     if reading_method == ReadingMethod.JSON:
