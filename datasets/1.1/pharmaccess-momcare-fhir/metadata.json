@@ -323,7 +323,7 @@
       "description": "Automatically extracted fields from serviceRequest.ndjson",
       "field": [
         {
-          "@id": "record-sets/serviceRequest/fields/authoredOn",
+          "@id": "serviceRequest/authoredOn",
           "@type": "cr:Field",
           "name": "authoredOn",
           "dataType": "schema:Text",
@@ -337,7 +337,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/identifier_value",
+          "@id": "serviceRequest/identifier_value",
           "@type": "cr:Field",
           "name": "value",
           "dataType": "schema:Text",
@@ -351,7 +351,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/intent",
+          "@id": "serviceRequest/intent",
           "@type": "cr:Field",
           "name": "intent",
           "dataType": "schema:Text",
@@ -365,7 +365,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/performer_display",
+          "@id": "serviceRequest/performer_display",
           "@type": "cr:Field",
           "name": "display",
           "dataType": "schema:Text",
@@ -379,7 +379,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/performer_reference",
+          "@id": "serviceRequest/performer_reference",
           "@type": "cr:Field",
           "name": "reference",
           "dataType": "schema:Text",
@@ -393,7 +393,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/performer_type",
+          "@id": "serviceRequest/performer_type",
           "@type": "cr:Field",
           "name": "type",
           "dataType": "schema:Text",
@@ -407,7 +407,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/reasonCode_text",
+          "@id": "serviceRequest/reasonCode_text",
           "@type": "cr:Field",
           "name": "text",
           "dataType": "schema:Text",
@@ -421,7 +421,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/requester_display",
+          "@id": "serviceRequest/requester_display",
           "@type": "cr:Field",
           "name": "display",
           "dataType": "schema:Text",
@@ -435,7 +435,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/requester_reference",
+          "@id": "serviceRequest/requester_reference",
           "@type": "cr:Field",
           "name": "reference",
           "dataType": "schema:Text",
@@ -449,7 +449,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/requester_type",
+          "@id": "serviceRequest/requester_type",
           "@type": "cr:Field",
           "name": "type",
           "dataType": "schema:Text",
@@ -463,7 +463,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/resourceType",
+          "@id": "serviceRequest/resourceType",
           "@type": "cr:Field",
           "name": "resourceType",
           "dataType": "schema:Text",
@@ -477,7 +477,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/status",
+          "@id": "serviceRequest/status",
           "@type": "cr:Field",
           "name": "status",
           "dataType": "schema:Text",
@@ -491,7 +491,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/subject_reference",
+          "@id": "serviceRequest/subject_reference",
           "@type": "cr:Field",
           "name": "reference",
           "dataType": "schema:Text",
@@ -505,7 +505,7 @@
           }
         },
         {
-          "@id": "record-sets/serviceRequest/fields/subject_type",
+          "@id": "serviceRequest/subject_type",
           "@type": "cr:Field",
           "name": "type",
           "dataType": "schema:Text",
@@ -527,7 +527,7 @@
       "description": "Automatically extracted fields from patient.ndjson",
       "field": [
         {
-          "@id": "record-sets/patient/fields/active",
+          "@id": "patient/active",
           "@type": "cr:Field",
           "name": "active",
           "dataType": "schema:Text",
@@ -541,7 +541,7 @@
           }
         },
         {
-          "@id": "record-sets/patient/fields/birthDate",
+          "@id": "patient/birthDate",
           "@type": "cr:Field",
           "name": "birthDate",
           "dataType": "schema:Text",
@@ -555,7 +555,7 @@
           }
         },
         {
-          "@id": "record-sets/patient/fields/gender",
+          "@id": "patient/gender",
           "@type": "cr:Field",
           "name": "gender",
           "dataType": "schema:Text",
@@ -569,7 +569,7 @@
           }
         },
         {
-          "@id": "record-sets/patient/fields/resourceType",
+          "@id": "patient/resourceType",
           "@type": "cr:Field",
           "name": "resourceType",
           "dataType": "schema:Text",
