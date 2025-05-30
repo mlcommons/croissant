@@ -17,10 +17,8 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
-from mlcroissant._src.operation_graph.operations.parse_json import (
-    JsonlReader,
-    JsonReader,
-)
+from mlcroissant._src.operation_graph.operations.parse_json import JsonlReader
+from mlcroissant._src.operation_graph.operations.parse_json import JsonReader
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
