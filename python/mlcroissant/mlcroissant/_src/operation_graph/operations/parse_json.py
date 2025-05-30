@@ -106,24 +106,13 @@ class JsonReader:
                 if engine == "jmespath":
                     out = expr.search(rec)
                     # Unwrap single‐item lists.
-                    if isinstance(out, list):
-                        if len(out) == 1:
-                            out = out[0]
-                        elif len(out) == 0:
-                            out = None
+                    out = _unwrap_single_item(out)
                 else:  # Engine jsonpath_ng.
                     matches = expr.find(rec)
                     out = [m.value for m in matches]
-                    if len(out) == 1:
-                        out = out[0]
-                    elif not out:
-                        out = None
+                    out = _unwrap_single_item(out)
 
-                # Flatten: if out is a list, extend; else append scalar (unless None).
-                if isinstance(out, list):
-                    vals.extend(out)
-                elif out is not None:
-                    vals.append(out)
+                vals.append(out)
 
             series[jp] = vals
 

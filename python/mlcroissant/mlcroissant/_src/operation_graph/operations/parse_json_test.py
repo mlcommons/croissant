@@ -58,7 +58,7 @@ def test_jsonreader_parse_deep():
     )
     fields = (field,)
     json_obj = {"level1": {"level2": [{"value": 100}, {"value": 200}]}}
-    expected_df = pd.DataFrame({"$.level1.level2[*].value": [100, 200]})
+    expected_df = pd.DataFrame({"$.level1.level2[*].value": [[100, 200]]})
     raw_str = orjson.dumps(json_obj).decode("utf-8")
     fh = io.StringIO(raw_str)
     reader = JsonReader(fields=fields)
