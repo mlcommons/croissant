@@ -1,6 +1,5 @@
 """Parse JSON operation."""
 
-import json
 from typing import Any, TextIO
 
 import jsonpath_rw

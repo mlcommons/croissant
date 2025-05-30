@@ -9,7 +9,6 @@ from mlcroissant._src.operation_graph.operations.parse_json import JsonlReader
 from mlcroissant._src.operation_graph.operations.parse_json import JsonReader
 from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
 from mlcroissant._src.structure_graph.nodes.source import Extract
-from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.tests.nodes import create_test_field
 
@@ -50,7 +49,7 @@ def test_jsonreader_parse():
     pd.testing.assert_frame_equal(df, expected)
 
 
-def test_jsonreader_parse():
+def test_jsonreader_parse_deep():
     import orjson
 
     # Test nested JSONPath ($.level1.level2[*].value)
