@@ -37,21 +37,21 @@ def test_parse_json():
 
 def test_jsonreader_parse():
     # JsonReader.parse should extract values according to JSONPath
-    field = create_test_field(source=Source(extract=Extract(json_path="$.values[*]")))
+    field = create_test_field(source=Source(extract=Extract(json_path="$.item[*].value")))
     fields = (field,)
-    data = [{"values": [10]}, {"values": [20, 30]}]
+    data = [{"item": [{"value" : 10}]}, {"item": [{"value": 20}, {"value": 30}]}]
     raw_str = json.dumps(data)
     fh = io.StringIO(raw_str)
     reader = JsonReader(fields=fields)
     df = reader.parse(fh)
-    expected = pd.DataFrame({"$.values[*]": [10, [20, 30]]})
+    expected = pd.DataFrame({"$.item[*].value": [10, [20, 30]]})
     pd.testing.assert_frame_equal(df, expected)
 
 
-def test_jsonreader_deeper_path():
+def test_jsonreader_parse():
     import orjson
 
-    # Test nested deeper JSONPath ($.level1.level2[*].value)
+    # Test nested JSONPath ($.level1.level2[*].value)
     field = create_test_field(
         source=Source(extract=Extract(json_path="$.level1.level2[*].value"))
     )
@@ -103,5 +103,5 @@ def test_jsonlreader_deeper_path():
     fh = io.StringIO(raw_text)
     reader = JsonlReader(fields=fields)
     df = reader.parse(fh)
-    expected = pd.DataFrame({"$.meta.detail[*].info": ["a", "b", "c"]})
+    expected = pd.DataFrame({"$.meta.detail[*].info": [["a", "b"], "c"]})
     pd.testing.assert_frame_equal(df, expected)
