@@ -37,9 +37,11 @@ def test_parse_json():
 
 def test_jsonreader_parse():
     # JsonReader.parse should extract values according to JSONPath
-    field = create_test_field(source=Source(extract=Extract(json_path="$.item[*].value")))
+    field = create_test_field(
+        source=Source(extract=Extract(json_path="$.item[*].value"))
+    )
     fields = (field,)
-    data = [{"item": [{"value" : 10}]}, {"item": [{"value": 20}, {"value": 30}]}]
+    data = [{"item": [{"value": 10}]}, {"item": [{"value": 20}, {"value": 30}]}]
     raw_str = json.dumps(data)
     fh = io.StringIO(raw_str)
     reader = JsonReader(fields=fields)
