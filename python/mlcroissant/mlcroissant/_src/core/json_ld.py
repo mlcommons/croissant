@@ -147,7 +147,10 @@ def box_singleton_list(element: Any) -> list[Any] | None:
 
 def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
     """Changes in place `entry_node` with its children."""
-    if "@value" in entry_node:
+    if not isinstance(entry_node, dict):
+        # If entry_node is not dict, just return it without doing anything.
+        return entry_node
+    elif "@value" in entry_node:
         if entry_node.get("@type") == namespace.RDF.JSON:
             # Stringified JSON is loaded as a dict.
             return json.loads(entry_node["@value"])
