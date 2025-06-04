@@ -42,12 +42,12 @@ print(mlc.Dataset(url).metadata.to_json())
 import tensorflow_datasets as tfds
 builder = tfds.core.dataset_builders.CroissantBuilder(
     jsonld=url,
-    record_set_ids=["record_set_fashion_mnist"],
+    record_set_ids=["fashion_mnist"],
     file_format='array_record',
 )
 builder.download_and_prepare()
 # 4. Split for training/testing
-train, test = builder.as_data_source(split=['default[:80%]', 'default[80%:]'])
+train, test = builder.as_data_source(split=['train', 'test'])
 ```
 
 Please see the [notebook recipes](python/mlcroissant/recipes) for more examples.
