@@ -125,6 +125,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
 
 ## Resources
 
+- [Specification](https://docs.mlcommons.org/croissant/docs/croissant-spec.html)
 - [Github Repo](https://github.com/mlcommons/croissant)
   - Specification
   - Examples
