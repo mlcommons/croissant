@@ -13,7 +13,7 @@ from mlcroissant._src.structure_graph.nodes.source import FileProperty
 def _unwrap_single_item(value: Any) -> Any:
     """Unwraps a single-item list to its value, or returns the value as is."""
     if isinstance(value, list) and len(value) == 1:
-        if not value[0]:
+        if value[0] is None:
             return None
         return value[0]
     return value
