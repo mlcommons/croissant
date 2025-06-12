@@ -404,7 +404,7 @@ class Node:
             id=uuid_from_jsonld(jsonld),
             jsonld=jsonld,
             **kwargs,
-        )
+        )  # type: ignore[arg-type]
 
     JSONLD_TYPE: Callable[[Context], term.URIRef] | term.URIRef | str | None = (
         _MISSING_JSONLD_TYPE
