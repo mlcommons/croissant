@@ -403,12 +403,16 @@ class Node:
             ctx=ctx,
             id=uuid_from_jsonld(jsonld),
             jsonld=jsonld,
-            **kwargs,
-        )  # type: ignore[arg-type]
+            **kwargs,  # type: ignore[arg-type]
+        )
 
-    JSONLD_TYPE: Callable[[Context], term.URIRef] | term.URIRef | str | None = (
-        _MISSING_JSONLD_TYPE
-    )
+    JSONLD_TYPE: (
+        Callable[[Context], term.URIRef]
+        | Callable[[], term.URIRef]
+        | term.URIRef
+        | str
+        | None
+    ) = _MISSING_JSONLD_TYPE
 
     @classmethod
     def _jsonld_type(cls, ctx: Context):
@@ -416,7 +420,10 @@ class Node:
         if cls.JSONLD_TYPE == _MISSING_JSONLD_TYPE:
             raise NotImplementedError("Output the right JSON-LD type.")
         elif callable(cls.JSONLD_TYPE):
-            return cls.JSONLD_TYPE(ctx)
+            sig = inspect.signature(cls.JSONLD_TYPE)
+            if len(sig.parameters) == 1:
+                return cls.JSONLD_TYPE(ctx)  # type: ignore[call-arg]
+            return cls.JSONLD_TYPE()  # type: ignore[call-arg]
         else:
             return cls.JSONLD_TYPE
 
