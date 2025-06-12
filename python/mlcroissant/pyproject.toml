@@ -5,6 +5,7 @@ name = "mlcroissant"
 description = "MLCommons datasets format."
 version = "1.0.17"
 authors = [
+  { name = "Costanza Conforti" },
   { name = "Joaquin Vanschoren" },
   { name = "Jos van der Velde" },
   { name = "Monjish Bhattacharyya" },
