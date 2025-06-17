@@ -41,6 +41,7 @@ class CroissantVersion(enum.Enum):
                     except ValueError:
                         pass
                 ctx.issues.add_error(_CONFORMS_TO_ERROR + f" Got: {jsonld}")
+                return CroissantVersion.V_0_8
             elif isinstance(jsonld, str):
                 try:
                     return CroissantVersion(jsonld)
@@ -49,6 +50,7 @@ class CroissantVersion(enum.Enum):
                     return CroissantVersion.V_0_8
             else:
                 ctx.issues.add_error(_CONFORMS_TO_ERROR + f" Got: {jsonld}")
+                return CroissantVersion.V_0_8
 
     def to_json(self) -> str | None:
         """Serializes back to JSON-LD."""
