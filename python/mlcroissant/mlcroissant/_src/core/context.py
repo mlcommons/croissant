@@ -12,7 +12,6 @@ import networkx as nx
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.rdf import Rdf
 
-
 _CONFORMS_TO_ERROR = (
     "At least one of the provided conformsTo should be a valid CroissantVersion."
 )
