@@ -2,9 +2,9 @@
 
 import json
 
-from etils import epath
 import pytest
 
+from mlcroissant._src.core import constants
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.datasets import Dataset
 
@@ -13,11 +13,7 @@ from mlcroissant._src.datasets import Dataset
 # Please, use scripts/migrations/migrate.py to migrate datasets.
 @pytest.mark.parametrize("version", ["0.8", "1.0", "1.1"])
 def test_expand_and_reduce_json_ld(version):
-    dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent.parent
-        / "datasets"
-        / version
-    )
+    dataset_folder = constants.DATASETS_FOLDER / version
     paths = [path for path in dataset_folder.glob("*/*.json")]
     assert paths, f"Warning: Checking an empty list of paths: {dataset_folder}"
     for path in paths:
