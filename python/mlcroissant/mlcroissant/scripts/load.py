@@ -121,7 +121,8 @@ def load(
             raise ValueError("--filters should be a valid dict[str, str]") from e
     dataset = mlc.Dataset(jsonld, debug=debug, mapping=file_mapping)
     if record_set is None:
-        record_sets = ", ".join([f"`{rs.id}`" for rs in dataset.metadata.record_sets])
+        record_sets = sorted([rs.id for rs in dataset.metadata.record_sets])
+        record_sets = ", ".join([f"`{rs}`" for rs in record_sets])
         raise ValueError(f"--record_set flag should have a value in {record_sets}")
     records = dataset.records(record_set, filters=parsed_filters)
     generate_all_records = num_records == -1
