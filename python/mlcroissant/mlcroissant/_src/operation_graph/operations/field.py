@@ -63,6 +63,20 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
     elif transform.separator is not None:
         return value.split(transform.separator)
+    elif transform.replace is not None:
+        if isinstance(value, pathlib.PurePath):
+            value = os.fspath(value)
+        # Split on unescaped slash.
+        parts = re.split(r"(?<!\\)/", transform.replace)
+        if len(parts) != 2:
+            raise ValueError(
+                "`replace` must have exactly one unescaped slash. "
+                f"Got {transform.replace} which has "
+                f"{len(parts) - 1} unescaped slashes."
+            )
+        parts = [part.replace("\\/", "/") for part in parts]
+        pattern, replacement = parts
+        return re.sub(pattern, replacement, value)
     return value
 
 
