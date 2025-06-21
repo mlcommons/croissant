@@ -88,7 +88,7 @@ Croissant metadata is encoded in JSON-LD.
   },
   "@type": "sc:Dataset",
   "name": "simple-pass",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
   "description": "PASS is a large-scale image dataset that does not include any humans ...",
   "citeAs": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and ...",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -226,12 +226,12 @@ In addition, Croissant relies on the following namespaces:
 
 Because Croissant builds on [schema.org](http://schema.org), we use that as the default namespace in all examples. Croissant terms should be prefixed with `cr`. We use the JSON-LD context mechanism to define aliases for these terms, so that specifying a prefix is not necessary.
 
-The Croissant specification is versioned, and the version is included in the URI of this Croissant specification: `http://mlcommons.org/croissant/1.0`
+The Croissant specification is versioned, and the version is included in the URI of this Croissant specification: `http://mlcommons.org/croissant/1.1`
 
 Croissant datasets must declare that they conform to this specification by including the following property, at the dataset level:
 
 ```json
-"dct:conformsTo" : "http://mlcommons.org/croissant/1.0"
+"dct:conformsTo" : "http://mlcommons.org/croissant/1.1"
 ```
 
 Note that while the Croissant specification is versioned, the Croissant namespace above is not, so the constructs within the Croissant vocabulary will keep stable URIs even when the specification version changes.
@@ -341,8 +341,8 @@ The following list of properties from [schema.org](http://schema.org) must be sp
   <tr>
     <td><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">dct:conformsTo</a></td>
     <td><a href="http://schema.org/URL">URL</a></td>
-    <td>ONE</td>
-    <td>Croissant datasets must declare that they conform to the versioned schema: <a href="http://mlcommons.org/croissant/1.0">http://mlcommons.org/croissant/1.0</a></td>
+    <td>MANY</td>
+    <td>Croissant datasets must declare that they conform to the versioned schema, e.g. <a href="http://mlcommons.org/croissant/1.1">http://mlcommons.org/croissant/1.1</a>. In case a dataset conforms to multiple specifications, those can be added in form of a list. </td>
   </tr>
   <tr>
     <td><a href="http://schema.org/description">description</a></td>

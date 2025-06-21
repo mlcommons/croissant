@@ -51,6 +51,17 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_CITE_AS,
     )
+    conforms_to: list[str] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "The specifications the dataset conforms to. mlcroissant will use the first"
+            " valid CroissantVersion for validation. Note that, to use mlcroissant, at"
+            " least one valid CroissantVersion should be provided."
+        ),
+        input_types=[SDO.Text],
+        url=constants.DCTERMS_CONFORMS_TO,
+    )
     creators: list[Organization | Person] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
@@ -355,7 +366,12 @@ class Metadata(Node):
         jsonld = super().to_json()
         jsonld.pop("@id", None)
         jsonld["@context"] = context
-        conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
+        if self.conforms_to:
+            conforms_to = (
+                self.conforms_to[0] if len(self.conforms_to) == 1 else self.conforms_to
+            )
+        else:
+            conforms_to = None
         jsonld["conformsTo"] = conforms_to
         if self.ctx.is_live_dataset:
             jsonld["isLiveDataset"] = self.ctx.is_live_dataset

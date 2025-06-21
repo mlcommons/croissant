@@ -12,6 +12,10 @@ import networkx as nx
 from mlcroissant._src.core.issues import Issues
 from mlcroissant._src.core.rdf import Rdf
 
+_CONFORMS_TO_ERROR = (
+    "At least one of the provided conformsTo should be a valid CroissantVersion."
+)
+
 
 class CroissantVersion(enum.Enum):
     """Major and minor versions of the Croissant standard."""
@@ -30,14 +34,20 @@ class CroissantVersion(enum.Enum):
         elif not jsonld:
             return CroissantVersion.V_0_8
         else:
-            try:
-                return CroissantVersion(jsonld)
-            except ValueError:
-                ctx.issues.add_error(
-                    "conformsTo should be a string or a CroissantVersion. Got:"
-                    f" {jsonld}"
-                )
+            if isinstance(jsonld, list):
+                for conforms_to in jsonld:
+                    try:
+                        return CroissantVersion(conforms_to)
+                    except ValueError:
+                        pass
+                ctx.issues.add_error(_CONFORMS_TO_ERROR + f" Got: {jsonld}")
                 return CroissantVersion.V_0_8
+            else:
+                try:
+                    return CroissantVersion(jsonld)
+                except ValueError:
+                    ctx.issues.add_error(_CONFORMS_TO_ERROR + f" Got: {jsonld}")
+                    return CroissantVersion.V_0_8
 
     def to_json(self) -> str | None:
         """Serializes back to JSON-LD."""
