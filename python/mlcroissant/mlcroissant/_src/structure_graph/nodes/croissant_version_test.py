@@ -13,7 +13,10 @@ from mlcroissant._src.core.context import CroissantVersion
 def test_conforms_to_is_invalid(conforms_to):
     ctx = Context(conforms_to=conforms_to)
     assert any(
-        error.startswith("conformsTo should be a string or a CroissantVersion.")
+        error.startswith(
+            "At least one of the provided conformsTo should be a valid"
+            " CroissantVersion."
+        )
         for error in ctx.issues.errors
     )
 
