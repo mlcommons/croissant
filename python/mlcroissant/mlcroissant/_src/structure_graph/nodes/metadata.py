@@ -366,12 +366,13 @@ class Metadata(Node):
         jsonld = super().to_json()
         jsonld.pop("@id", None)
         jsonld["@context"] = context
+        conforms_to: str | list[str] | None = None
         if self.conforms_to:
             conforms_to = (
                 self.conforms_to[0] if len(self.conforms_to) == 1 else self.conforms_to
             )
-        else:
-            conforms_to = None
+        elif self.ctx.conforms_to:
+            conforms_to = self.ctx.conforms_to.to_json()
         jsonld["conformsTo"] = conforms_to
         if self.ctx.is_live_dataset:
             jsonld["isLiveDataset"] = self.ctx.is_live_dataset
