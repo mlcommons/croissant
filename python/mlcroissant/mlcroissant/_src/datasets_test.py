@@ -6,6 +6,8 @@ from typing import Any
 from apache_beam.testing import test_pipeline
 from apache_beam.testing.util import assert_that
 from etils import epath
+import librosa
+from packaging.version import parse as version_parse
 import pytest
 
 from mlcroissant._src import datasets
@@ -200,6 +202,8 @@ def load_records_with_beam_and_test_equality(
     ],
 )
 def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
+    if version_parse(librosa.__version__) < version_parse("0.9.0"):
+        return
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
