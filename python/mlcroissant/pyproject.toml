@@ -45,7 +45,6 @@ documentation = "https://mlcommons.org/working-groups/data/croissant/"
 dev = [
   "black==23.11.0",
   "flake8-docstrings",
-  "librosa",
   "mlcroissant[audio]",
   "mlcroissant[beam]",
   "mlcroissant[git]",
@@ -56,7 +55,6 @@ dev = [
   "pygraphviz",
   "pytest",
   "pytype",
-  "soxr==0.4.0b1",
   "torchdata",
 ]
 # Fix following https://github.com/librosa/librosa/issues/1831#issuecomment-2176274560
