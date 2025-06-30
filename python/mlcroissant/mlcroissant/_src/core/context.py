@@ -24,6 +24,7 @@ class CroissantVersion(enum.Enum):
     V_1_0 = "http://mlcommons.org/croissant/1.0"
     V_1_1 = "http://mlcommons.org/croissant/1.1"
 
+    DEFAULT_VERSION = V_1_0
     LATEST_VERSION = V_1_1
 
     @classmethod
@@ -32,7 +33,7 @@ class CroissantVersion(enum.Enum):
         if isinstance(jsonld, CroissantVersion):
             return jsonld
         elif not jsonld:
-            return CroissantVersion.V_0_8
+            return CroissantVersion.DEFAULT_VERSION
         else:
             if isinstance(jsonld, list):
                 for conforms_to in jsonld:
@@ -41,13 +42,13 @@ class CroissantVersion(enum.Enum):
                     except ValueError:
                         pass
                 ctx.issues.add_error(_CONFORMS_TO_ERROR + f" Got: {jsonld}")
-                return CroissantVersion.V_0_8
+                return CroissantVersion.DEFAULT_VERSION
             else:
                 try:
                     return CroissantVersion(jsonld)
                 except ValueError:
                     ctx.issues.add_error(_CONFORMS_TO_ERROR + f" Got: {jsonld}")
-                    return CroissantVersion.V_0_8
+                    return CroissantVersion.DEFAULT_VERSION
 
     def to_json(self) -> str | None:
         """Serializes back to JSON-LD."""
@@ -86,7 +87,7 @@ class Context:
     mapping: Mapping[str, epath.Path] = dataclasses.field(
         default_factory=dict, hash=False
     )
-    conforms_to: CroissantVersion = CroissantVersion.V_1_0
+    conforms_to: CroissantVersion = CroissantVersion.DEFAULT_VERSION
     is_live_dataset: bool | None = None
 
     def __post_init__(self):
