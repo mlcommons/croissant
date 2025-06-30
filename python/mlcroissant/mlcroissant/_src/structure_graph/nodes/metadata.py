@@ -370,6 +370,8 @@ class Metadata(Node):
             conforms_to = (
                 self.conforms_to[0] if len(self.conforms_to) == 1 else self.conforms_to
             )
+        elif self.ctx.conforms_to:
+            conforms_to = self.ctx.conforms_to.to_json()
         else:
             conforms_to = None
         jsonld["conformsTo"] = conforms_to
