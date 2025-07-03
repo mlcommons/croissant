@@ -62,6 +62,19 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
     )
 
 
+# Non-hermetic test cases for croissant >=1.1 only.
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records", "filters"],
+    [
+        ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
+    ],
+)
+def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
+    load_records_and_test_equality(
+        "1.1", dataset_name, record_set_name, num_records, filters
+    )
+
+
 @pytest.mark.nonhermetic
 def test_load_from_huggingface():
     url = "https://huggingface.co/api/datasets/mnist/croissant"
