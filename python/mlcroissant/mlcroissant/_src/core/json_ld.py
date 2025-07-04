@@ -44,6 +44,7 @@ for conforms_to in CroissantVersion:
 _PREFIX_MAP = {}
 for conforms_to in CroissantVersion:
     ctx = Context(conforms_to=conforms_to)
+    _PREFIX_MAP[constants.ML_COMMONS_ANNOTATION_TYPE(ctx)] = "annotation"
     _PREFIX_MAP[constants.ML_COMMONS_FIELD_TYPE(ctx)] = "field"
     _PREFIX_MAP[constants.ML_COMMONS_RECORD_SET_TYPE(ctx)] = "recordSet"
     _PREFIX_MAP[constants.ML_COMMONS_SUB_FIELD_TYPE(ctx)] = "subField"
@@ -59,6 +60,9 @@ for conforms_to in CroissantVersion:
     )
     _KEYS_WITH_LIST.add(
         (constants.ML_COMMONS_SUB_FIELD(ctx), constants.ML_COMMONS_FIELD_TYPE(ctx))
+    )
+    _KEYS_WITH_LIST.add(
+        (constants.ML_COMMONS_ANNOTATION(ctx), constants.ML_COMMONS_FIELD_TYPE(ctx))
     )
     _KEYS_WITH_LIST.add(
         (constants.SCHEMA_ORG_DISTRIBUTION, constants.SCHEMA_ORG_DATASET)

@@ -40,6 +40,13 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
+    annotations: list[Self] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="A set of annotations that apply to the specific field.",
+        from_jsonld=lambda ctx, annotations: Field.from_jsonld(ctx, annotations),
+        url=constants.ML_COMMONS_ANNOTATION,
+    )
     array_shape: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
