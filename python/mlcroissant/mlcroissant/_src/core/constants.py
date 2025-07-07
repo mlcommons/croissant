@@ -33,6 +33,8 @@ def ML_COMMONS(ctx) -> rdflib.Namespace:
         return ML_COMMONS_V_1_0
 
 
+ML_COMMONS_ANNOTATION = lambda ctx: ML_COMMONS(ctx).annotation
+ML_COMMONS_ANNOTATION_TYPE = lambda ctx: ML_COMMONS(ctx).annotation
 ML_COMMONS_ARRAY_SHAPE = lambda ctx: ML_COMMONS(ctx).arrayShape
 ML_COMMONS_CITE_AS = lambda ctx: (
     SCHEMA_ORG_CITATION if ctx.is_v0() else ML_COMMONS(ctx).citeAs
