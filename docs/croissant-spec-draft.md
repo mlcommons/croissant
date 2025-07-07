@@ -859,6 +859,14 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
     <td>MANY</td>
     <td>One or more records provided as example content of the <code>RecordSet</code>, or a reference to data source that contains examples.</td>
   </tr>
+  <tr>
+    <td>annotation</td>
+    <td>
+      Field
+    </td>
+    <td>MANY</td>
+    <td>One or more data-level annotations that apply to the entire record.</td>
+  </tr>
 </table>
 
 ### Field
@@ -924,6 +932,14 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>Reference</td>
     <td>MANY</td>
     <td>A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.</td>
+  </tr>
+  <tr>
+    <td>annotation</td>
+    <td>
+      Field
+    </td>
+    <td>MANY</td>
+    <td>One or more data-level annotations that apply to the field.</td>
   </tr>
 </table>
 
@@ -1462,6 +1478,48 @@ While the above example joins two tabular files, joining is also possible betwee
     ]
   }
 ]
+```
+
+### Annotating Data
+
+Annotations are a general mechanism to attach additional information to other pieces of data. Annotations can be used in multiple use cases, including: statistics, provenance (including human annotator information), labels (textual or otherwise).
+
+Croissant defines annotations as a special kind of field that annotates its container. Annotations can be specified both at the field and at the RecordSet level.
+
+Consider the following example, in which the field-level annotation `images/label` applies to the field `images/image`. 
+
+```json
+{"@type": "cr:RecordSet", "@id": "images",
+  "field": [
+    { "@type": "cr:Field", "@id": "images/image", ... ,
+      "annotation": {
+        "@type": "cr:Field", "@id": "images/label", 
+        "dataType": ["sc:Text", "cr:Label"]
+      }
+    }
+  ]
+}
+```
+
+Annotations can also appear at the level of a RecordSet. A RecordSet-level annotation applies to the entire record. In the example below, `ratings` is a structured annotation that contains two sub-fields, `user_id` and `rating`.
+
+```json
+{
+  "@type": "cr:RecordSet",
+  "@id": "movies",
+  "field": [
+    { "@type": "cr:Field", "@id": "movies/movie_id", ...},
+    { "@type": "cr:Field", "@id": "movies/title", ...},
+    { "@type": "cr:Field", "@id": "movies/genre", ...}
+  ],
+  "annotation" : {
+    "@type": "cr:Field", "@id": "movies/ratings", 
+    subField: [
+      { "@type": "cr:Field", "@id": "movies/ratings/user_id", ...}, 
+      { "@type": "cr:Field", "@id": "movies/ratings/rating", ...}, 
+    ]  
+  }
+}
 ```
 
 ### Hierarchical RecordSets
