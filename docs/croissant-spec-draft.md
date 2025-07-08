@@ -1110,6 +1110,7 @@ Croissant supports a few simple transformations that can be applied on the sourc
 - delimiter: split a string into an array using the supplied character.
 - regex: A regular expression to parse the data.
 - jsonPath: A JSON path to evaluate on the (JSON) data source.
+- replace: A string of the form `pattern/replacement` to replace occurrences of `pattern` with `replacement`. Additional forward slashes (`/`) can be escaped with a backslash, and `pattern` can be a regular expression.
 
 For example, to extract information from a filename using a regular expression, we can write:
 
