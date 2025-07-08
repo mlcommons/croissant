@@ -96,12 +96,14 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type == DataType.AUDIO_OBJECT:
-        output = deps.librosa.load(io.BytesIO(value))
+        output = deps.librosa.load(io.BytesIO(value), sr=None)
         return output
     elif data_type == DataType.BOUNDING_BOX:  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
         raise ValueError(f"No special case for type {data_type}.")
+    elif isinstance(value, np.ndarray) and issubclass(data_type, np.generic):
+        return value.astype(data_type)
     elif isinstance(value, list) or isinstance(value, np.ndarray):
         return [_cast_value(ctx=ctx, value=v, data_type=data_type) for v in value]
     elif data_type == bytes and not isinstance(value, bytes):

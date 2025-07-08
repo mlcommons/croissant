@@ -53,6 +53,21 @@ def test_cast_value(conforms_to, value, data_type, expected):
 
 @parametrize_conforms_to()
 @pytest.mark.parametrize(
+    ["value", "data_type", "expected"],
+    [
+        [np.array([1, 2, 3]), DataType.INTEGER, np.array([1, 2, 3])],
+        [np.array([1, 2, 3]), DataType.FLOAT32, np.array([1.0, 2.0, 3.0])],
+    ],
+)
+def test_cast_value_ndarray():
+    ctx = Context(conforms_to=conforms_to)
+    cast_value = field._cast_value(ctx, value, data_type)
+    assert cast_value == expected
+    assert cast_value.dtype == expected.dtype
+
+
+@parametrize_conforms_to()
+@pytest.mark.parametrize(
     ["value", "data_type"],
     [
         [np.nan, bool],
