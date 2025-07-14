@@ -1789,6 +1789,25 @@ Bounding boxes are common annotations in computer vision. They describe imaginar
 }
 ```
 
+
+### AudioObject
+
+Croissant uses Schema.org [AudioObject](https://schema.org/AudioObject) to represent an Audio feature. An AudioObject is a standard feature that represents a segment of audio as a digital sound recording. Croissant provides the audio-specific `cr:samplingRate` attribute, which can be specified at the audio field's `Source`:
+
+```json
+{
+  "@type": "cr:Field",
+  "@id": "recordset/audio",
+  "dataType": "sc:AudioObject",
+  "source": {
+    "fileSet": { "@id": "files" },
+    "extract": { "fileProperty": "content" },
+    "samplingRate": "16000",
+  }
+}
+```
+
+
 ### SegmentationMask
 
 Segmentation masks are common annotations in computer vision. They describe pixel-perfect zones that outline objects or groups of objects in images or videos. Croissant defines `cr:SegmentationMask` with two manners to describe them:
