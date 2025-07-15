@@ -79,7 +79,7 @@
             "extract": {
               "fileProperty": "content"
             },
-            "samplingRate": 22050
+            "samplingRate": 48000
           }
         }
       ]
