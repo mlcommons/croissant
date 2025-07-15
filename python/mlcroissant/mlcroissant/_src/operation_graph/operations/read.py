@@ -85,7 +85,7 @@ def _get_sampling_rate(
     sampling_rates: set[int] = set()
     for field in fields:
         if sr := field.source.sampling_rate:
-            sampling_rates.append(sr)
+            sampling_rates.add(sr)
     if len(sampling_rates) > 1:
         raise ValueError(
             f"Cannot read {node=}. The fields use several sampling rates:"
