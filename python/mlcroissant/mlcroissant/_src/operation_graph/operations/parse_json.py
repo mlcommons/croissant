@@ -3,11 +3,17 @@
 from typing import Any, TextIO
 
 import jsonpath_rw
-import orjson
 import pandas as pd
 
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
+
+
+try:
+    orjson = deps.orjson
+except ModuleNotFoundError:
+    orjson = None
 
 
 def _unwrap_single_item(value: Any) -> Any:

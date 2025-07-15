@@ -92,6 +92,11 @@ class OptionalDependencies(object):
         return _try_import("librosa", package_name="librosa")
 
     @cached_class_property
+    def orjson(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+        """Cached orjson module."""
+        return _try_import("orjson", package_name="orjson")
+
+    @cached_class_property
     def scipy(cls) -> types.ModuleType:  # pylint: disable=invalid-name
         """Cached scipy module."""
         return _try_import("scipy", package_name="scipy")
