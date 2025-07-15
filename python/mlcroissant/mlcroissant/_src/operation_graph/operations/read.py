@@ -72,7 +72,7 @@ def _reading_method(
             " requires this feature. Alternatively, you can use two different"
             " FileObject/FileSet pointing to the same resource."
         )
-    return next(iter(reading_methods))
+    return reading_methods[0]
 
 
 def _get_sampling_rate(
@@ -93,7 +93,7 @@ def _get_sampling_rate(
             " sampling rate is not possible. You can change the original sampling rate"
             " of an audio using a Transform operation."
         )
-    return next(iter(sampling_rates)) if sampling_rates else None
+    return sampling_rates[0] if sampling_rates else None
 
 
 def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
