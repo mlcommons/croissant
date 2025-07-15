@@ -96,8 +96,6 @@ class JsonReader:
             pd.DataFrame: DataFrame with extracted data,
             where each column corresponds to an expression.
         """
-        import orjson
-
         # Load entire JSON file (could be a list or a single dict).
         raw = fh.read()
         data = orjson.loads(raw)
@@ -200,8 +198,6 @@ class JsonlReader:
             - For JSONPath, values are extracted from Match objects and
             single-item lists are unwrapped.
         """
-        import orjson
-
         rows = []
         for line in fh:
             line = line.strip()
