@@ -63,6 +63,8 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
     elif transform.separator is not None:
         return value.split(transform.separator)
+    elif transform.sampling_rate is not None:
+        return deps.librosa.resample(y=value, target_sr=transform.sampling_rate)
     return value
 
 
@@ -96,8 +98,7 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type == DataType.AUDIO_OBJECT:
-        output = deps.librosa.load(io.BytesIO(value))
-        return output
+        return value
     elif data_type == DataType.BOUNDING_BOX:  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
