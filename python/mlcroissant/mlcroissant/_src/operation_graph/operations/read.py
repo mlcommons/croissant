@@ -184,7 +184,10 @@ class Read(Operation):
                     or encoding_format == EncodingFormat.JPG
                 ):
                     sampling_rate = _get_sampling_rate(self.node, self.fields)
-                    out = deps.librosa.load(file, sr=sampling_rate)
+                    if sampling_rate:
+                        out = deps.librosa.load(file, sr=sampling_rate)
+                    else:
+                        out = deps.librosa.load(file)
                     return pd.DataFrame({
                         FileProperty.content: [out],
                     })
