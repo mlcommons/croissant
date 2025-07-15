@@ -73,6 +73,7 @@ ML_COMMONS_REGEX = lambda ctx: ML_COMMONS(ctx).regex
 ML_COMMONS_REPEATED = lambda ctx: ML_COMMONS(ctx).repeated
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
 ML_COMMONS_REPLACE = lambda ctx: ML_COMMONS(ctx)["replace"]
+ML_COMMONS_SAMPLING_RATE = lambda ctx: ML_COMMONS(ctx).samplingRate
 ML_COMMONS_SEPARATOR = lambda ctx: ML_COMMONS(ctx).separator
 ML_COMMONS_SOURCE = lambda ctx: ML_COMMONS(ctx).source
 ML_COMMONS_SUB_FIELD = lambda ctx: ML_COMMONS(ctx).subField
@@ -174,6 +175,7 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_REFERENCES(ctx): "references",
     ML_COMMONS_REGEX(ctx): "regex",
     ML_COMMONS_REPLACE(ctx): "replace",
+    ML_COMMONS_SAMPLING_RATE(ctx): "sampling_rate",
     ML_COMMONS_SEPARATOR(ctx): "separator",
     ML_COMMONS_SOURCE(ctx): "source",
     ML_COMMONS_TRANSFORM(ctx): "transforms",

@@ -54,6 +54,7 @@ def make_context(ctx=None, **kwargs):
         "regex": "cr:regex",
         "repeated": "cr:repeated",
         "replace": "cr:replace",
+        "samplingRate": "cr:samplingRate",
         "sc": "https://schema.org/",
         "separator": "cr:separator",
         "source": "cr:source",
