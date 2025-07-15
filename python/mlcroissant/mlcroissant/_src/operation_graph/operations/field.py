@@ -63,6 +63,8 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
     elif transform.separator is not None:
         return value.split(transform.separator)
+    elif transform.sampling_rate is not None:
+        return deps.librosa.resample(y=value, target_sr=transform.sampling_rate)
     return value
 
 

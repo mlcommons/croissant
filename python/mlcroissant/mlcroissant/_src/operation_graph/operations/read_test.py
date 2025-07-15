@@ -50,7 +50,7 @@ def test_str_representation():
 def test_get_sampling_rate():
     node = create_test_file_object()
     audio_field = create_test_field(source=Source(sampling_rate=3000))
-    assert _get_sampling_rate(node=node, fields=[audio_field]) == 3000
+    assert _get_sampling_rate(node=node, fields=(audio_field, )) == 3000
 
 
 def test_get_sampling_rate_with_value_error():
@@ -64,7 +64,7 @@ def test_get_sampling_rate_with_value_error():
             " several sampling rates: \[2000, 3000\]"
         ),
     ):
-        _get_sampling_rate(node=node, fields=[audio_field_1, audio_field_2])
+        _get_sampling_rate(node=node, fields=(audio_field_1, audio_field_2))
 
 
 def test_reading_arff():
