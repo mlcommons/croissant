@@ -61,7 +61,7 @@ def test_get_sampling_rate_with_value_error():
         ValueError,
         match=(
             r'Cannot read node=FileObject\(uuid="file_object_name"\). The fields use'
-            " several sampling rates: \[2000, 3000\]"
+            " several sampling rates: {2000, 3000}"
         ),
     ):
         _get_sampling_rate(node=node, fields=(audio_field_1, audio_field_2))
