@@ -127,6 +127,11 @@ class Transform(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_REPLACE,
     )
+    sampling_rate: int | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Integer],
+        url=constants.ML_COMMONS_SAMPLING_RATE,
+    )
     separator: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
@@ -217,6 +222,11 @@ class Source(Node):
         default=None,
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_FORMAT,
+    )
+    sampling_rate: int | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Integer],
+        url=constants.ML_COMMONS_SAMPLING_RATE,
     )
     transforms: list[Transform] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
