@@ -133,6 +133,7 @@ SCHEMA_ORG_DATA_TYPE_FLOAT = namespace.SDO.Float
 SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT = namespace.SDO.ImageObject
 SCHEMA_ORG_DATA_TYPE_INTEGER = namespace.SDO.Integer
 SCHEMA_ORG_DATA_TYPE_TEXT = namespace.SDO.Text
+SCHEMA_ORG_DATA_TYPE_TIME = namespace.SDO.Time
 SCHEMA_ORG_DATA_TYPE_URL = namespace.SDO.URL
 SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
@@ -263,4 +264,5 @@ class DataType:
     UINT64 = ML_COMMONS_V_1_0.UInt64
     SPLIT = ML_COMMONS_V_1_0.Split
     TEXT = namespace.SDO.Text
+    TIME = namespace.SDO.Time
     URL = namespace.SDO.URL
