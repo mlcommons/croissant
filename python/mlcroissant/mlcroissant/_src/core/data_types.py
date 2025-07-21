@@ -1,6 +1,7 @@
 """data_types module."""
 
 import datetime
+
 import numpy as np
 import pandas as pd
 from rdflib import term
