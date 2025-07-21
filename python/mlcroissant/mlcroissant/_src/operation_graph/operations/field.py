@@ -1,6 +1,7 @@
 """Field operation module."""
 
 import dataclasses
+import datetime
 import functools
 import io
 import logging
@@ -107,6 +108,15 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         return [_cast_value(ctx=ctx, value=v, data_type=data_type) for v in value]
     elif data_type == bytes and not isinstance(value, bytes):
         return _to_bytes(value)
+    elif data_type == datetime.time:
+        if isinstance(value, str):
+            return datetime.datetime.strptime(value, "%H:%M:%S").time()
+        elif isinstance(value, datetime.time):
+            return value
+        else:
+            raise ValueError(
+                f"No special case for type: {type(value)} of data_type: {data_type}"
+            )
     else:
         return data_type(value)
 
