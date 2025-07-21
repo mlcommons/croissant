@@ -111,7 +111,7 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     elif data_type == datetime.time:
         return (
             datetime.datetime.strptime(value, "%H:%M:%S").time()
-            if type(value) != datetime.time
+            if not isinstance(value, datetime.time)
             else value
         )
     else:
