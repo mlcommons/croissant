@@ -110,7 +110,7 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         return _to_bytes(value)
     elif data_type == datetime.time:
         return (
-            datetime.strptime(value, "%H:%M:%S").time()
+            datetime.datetime.strptime(value, "%H:%M:%S").time()
             if type(value) != datetime.time
             else value
         )
