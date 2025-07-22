@@ -1202,6 +1202,10 @@ Commonly used atomic data types:
     <td>Describes a time.</td>
   </tr>
   <tr>
+    <td><a href="https://schema.org/DateTime">sc:DateTime</a></td>
+    <td>Describes a combination of date and time of day.</td>
+  </tr>
+  <tr>
     <td><a href="https://schema.org/Float">sc:Float</a></td>
     <td>Describes a float.</td>
   </tr>
