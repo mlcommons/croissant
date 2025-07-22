@@ -129,6 +129,7 @@ SCHEMA_ORG_DATASET = namespace.SDO.Dataset
 SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT = namespace.SDO.AudioObject
 SCHEMA_ORG_DATA_TYPE_BOOL = namespace.SDO.Boolean
 SCHEMA_ORG_DATA_TYPE_DATE = namespace.SDO.Date
+SCHEMA_ORG_DATA_TYPE_DATETIME = namespace.SDO.DateTime
 SCHEMA_ORG_DATA_TYPE_FLOAT = namespace.SDO.Float
 SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT = namespace.SDO.ImageObject
 SCHEMA_ORG_DATA_TYPE_INTEGER = namespace.SDO.Integer
@@ -248,6 +249,7 @@ class DataType:
     BOOL = namespace.SDO.Boolean
     BOUNDING_BOX = ML_COMMONS_V_1_0.BoundingBox
     DATE = namespace.SDO.Date
+    DATETIME = namespace.SDO.DateTime
     FLOAT = namespace.SDO.Float
     FLOAT16 = ML_COMMONS_V_1_0.Float16
     FLOAT32 = ML_COMMONS_V_1_0.Float32

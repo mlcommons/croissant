@@ -27,6 +27,7 @@ def check_expected_type(issues: Issues, jsonld: Json, expected_type: str):
 EXPECTED_DATA_TYPES: dict[term.URIRef, type] = {
     DataType.BOOL: bool,
     DataType.DATE: pd.Timestamp,
+    DataType.DATETIME: pd.Timestamp,
     DataType.FLOAT: float,
     DataType.FLOAT16: np.float16,
     DataType.FLOAT32: np.float32,
