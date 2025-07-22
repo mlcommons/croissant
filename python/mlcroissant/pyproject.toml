@@ -3,7 +3,7 @@
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "1.0.19"
+version = "1.0.20"
 authors = [
   { name = "Costanza Conforti" },
   { name = "Joaquin Vanschoren" },
