@@ -1,5 +1,6 @@
 """Parse JSON operation."""
 
+import json
 from typing import Any, TextIO
 
 import jsonpath_rw
@@ -8,7 +9,6 @@ import pandas as pd
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
-
 
 try:
     orjson = deps.orjson
@@ -102,7 +102,7 @@ class JsonReader:
         """
         # Load entire JSON file (could be a list or a single dict).
         raw = fh.read()
-        data = orjson.loads(raw)
+        data = orjson.loads(raw) if orjson else json.loads(raw)
 
         # Always treat as list of records.
         records = data if isinstance(data, list) else [data]
@@ -140,7 +140,7 @@ class JsonReader:
         """
         # Raw JSON fallback: one‐cell DataFrame.
         raw = fh.read()
-        content = orjson.loads(raw)
+        content = orjson.loads(raw) if orjson else json.loads(raw)
         return pd.DataFrame({FileProperty.content: [content]})
 
 
@@ -207,7 +207,7 @@ class JsonlReader:
             line = line.strip()
             if not line:
                 continue
-            rec = orjson.loads(line)
+            rec = orjson.loads(line) if orjson else json.loads(line)
             row: dict[str, object] = {}
             for json_path, engine, expr in self.exprs:
                 if engine == "jmespath":
