@@ -5,12 +5,8 @@ from typing import Any, List
 
 def _parse_one(value: Any) -> List[float]:
     """Parses a single bounding box from various formats."""
-    # Handle nested list case, e.g., [[0.1, 0.2, 0.3, 0.4]]
-    if isinstance(value, list):
-        if len(value) == 1 and isinstance(value[0], list):
-            value = value[0]
     # Handle space-separated string case
-    elif isinstance(value, str):
+    if isinstance(value, str):
         value = value.split(" ")
 
     # The value should now be a simple list of coordinates
@@ -76,6 +72,10 @@ def parse(value: Any) -> List[List[float]]:
         A list of bounding boxes, where each box is a 4-float list.
         e.g., [[25.0, 30.0, 100.0, 150.0]]
     """
+    # Pre-process to handle a single box wrapped in an extra list, e.g., [[...]] -> [...]
+    if isinstance(value, list) and len(value) == 1 and isinstance(value[0], list):
+        value = value[0]
+
     # Strings are always treated as a single bounding box
     if isinstance(value, str):
         return [_parse_one(value)]
