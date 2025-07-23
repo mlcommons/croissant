@@ -2,6 +2,7 @@
 
 from typing import Any, List
 
+
 def _parse_one(value: Any) -> List[float]:
     """Parses a single bounding box from various formats."""
     # Handle nested list case, e.g., [[0.1, 0.2, 0.3, 0.4]]
@@ -21,15 +22,15 @@ def _parse_one(value: Any) -> List[float]:
             "A single bounding box must have exactly 4 coordinates. "
             f"Got {len(value)} for value: {value}"
         )
-    
+
     try:
         # Convert all elements to float and return
         return [float(coord) for coord in value]
     except (ValueError, TypeError) as e:
         raise ValueError(
-            "Bounding box coordinates must be convertible to floats. "
-            f"Got {value}"
+            "Bounding box coordinates must be convertible to floats. " f"Got {value}"
         ) from e
+
 
 def _parse_all(value: List) -> List[List[float]]:
     """Parses a list containing multiple bounding boxes."""
@@ -39,18 +40,18 @@ def _parse_all(value: List) -> List[List[float]]:
     # Case 1: List of lists, e.g., [[box1], [box2]]
     if isinstance(value[0], list):
         return [_parse_one(item) for item in value]
-    
+
     # Case 2: Flat list, e.g., [x1, y1, w1, h1, x2, y2, w2, h2, ...]
     if len(value) % 4 != 0:
         raise ValueError(
             "A flat list of bounding box coordinates must have a length "
             f"that is a multiple of 4. Got length {len(value)}."
         )
-    
+
     try:
         coords = [float(v) for v in value]
         # Chunk the flat list into a list of 4-element lists
-        return [coords[i:i + 4] for i in range(0, len(coords), 4)]
+        return [coords[i : i + 4] for i in range(0, len(coords), 4)]
     except (ValueError, TypeError) as e:
         raise ValueError(
             "All elements in the flat list must be convertible to float."
@@ -96,6 +97,5 @@ def parse(value: Any) -> List[List[float]]:
             return [_parse_one(value)]
 
     raise TypeError(
-        "Wrong format for a bounding box. Expected: str | list. "
-        f"Got: {type(value)}."
+        "Wrong format for a bounding box. Expected: str | list. " f"Got: {type(value)}."
     )
