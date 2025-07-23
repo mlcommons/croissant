@@ -44,8 +44,7 @@ def _parse_all(value: List) -> List[List[float]]:
 
 
 def parse(value: Any) -> Union[List[float], List[List[float]]]:
-    """
-    Parse a value into one or more bounding boxes.
+    """Parse a value into one or more bounding boxes.
 
     The return type depends on the input:
     - A single bounding box returns a List[float].
