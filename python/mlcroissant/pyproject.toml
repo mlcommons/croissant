@@ -21,17 +21,17 @@ authors = [
 dependencies = [
   "absl-py",
   "etils[epath]>=1.7.0",
+  "jmespath",
   "jsonpath-rw",
   "networkx",
   "pandas",
   "pandas-stubs",
   "python-dateutil",
+  "orjson",
   "rdflib",
   "requests",
   "scipy",
   "tqdm",
-  "jmespath",
-  "orjson"
 ]
 readme = "README.md"
 
@@ -96,9 +96,11 @@ module = [
   "absl",
   "apache-beam",
   "etils.*",
+  "jmespath",
   "jsonpath_rw",
   "librosa",
   "networkx",
+  "orjson",
   "pandas",
   "pillow",
   "scipy",
