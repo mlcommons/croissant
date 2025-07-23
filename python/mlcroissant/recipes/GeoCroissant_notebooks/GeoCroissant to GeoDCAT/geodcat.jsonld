@@ -1,0 +1,205 @@
+[
+  {
+    "@id": "https://10.57967/hf/0956/distribution/repo/checksum",
+    "@type": [
+      "http://spdx.org/rdf/terms#Checksum"
+    ],
+    "http://spdx.org/rdf/terms#algorithm": [
+      {
+        "@value": "SHA256"
+      }
+    ],
+    "http://spdx.org/rdf/terms#checksumValue": [
+      {
+        "@value": "https://github.com/mlcommons/croissant/issues/80"
+      }
+    ]
+  },
+  {
+    "@id": "https://10.57967/hf/0956",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Dataset",
+      "https://schema.org/Dataset"
+    ],
+    "http://purl.org/dc/terms/conformsTo": [
+      {
+        "@id": "http://mlcommons.org/croissant/1.0"
+      }
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://huggingface.co/ibm-nasa-geospatial"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@value": "This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models."
+      }
+    ],
+    "http://purl.org/dc/terms/identifier": [
+      {
+        "@value": "10.57967/hf/0956"
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://choosealicense.com/licenses/cc-by-4.0/"
+      }
+    ],
+    "http://purl.org/dc/terms/spatial": [
+      {
+        "@id": "http://sws.geonames.org/6252001/"
+      }
+    ],
+    "http://purl.org/dc/terms/temporal": [
+      {
+        "@id": "https://10.57967/hf/0956/period"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@value": "hls_burn_scars"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#distribution": [
+      {
+        "@id": "https://10.57967/hf/0956/distribution/repo"
+      },
+      {
+        "@id": "https://10.57967/hf/0956/distribution/parquet-files-for-config-hls_burn_scars"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#keyword": [
+      {
+        "@value": "English"
+      },
+      {
+        "@value": "cc-by-4.0"
+      },
+      {
+        "@value": "1K - 10K"
+      },
+      {
+        "@value": "Image"
+      },
+      {
+        "@value": "Datasets"
+      },
+      {
+        "@value": "Croissant"
+      },
+      {
+        "@value": "doi:10.57967/hf/0956"
+      },
+      {
+        "@value": "🇺🇸 Region: US"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#landingPage": [
+      {
+        "@id": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars"
+      }
+    ],
+    "https://schema.org/alternateName": [
+      {
+        "@value": "ibm-nasa-geospatial/hls_burn_scars"
+      }
+    ]
+  },
+  {
+    "@id": "https://10.57967/hf/0956/distribution/parquet-files-for-config-hls_burn_scars",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Distribution"
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@value": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)."
+      }
+    ],
+    "http://purl.org/dc/terms/isPartOf": [
+      {
+        "@id": "https://10.57967/hf/0956/distribution/repo"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@value": "parquet-files-for-config-hls_burn_scars"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#accessURL": [
+      {
+        "@id": "https://example.org/data"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#mediaType": [
+      {
+        "@value": "application/x-parquet"
+      }
+    ],
+    "https://schema.org/hasPart": [
+      {
+        "@value": "hls_burn_scars/*/*.parquet"
+      }
+    ]
+  },
+  {
+    "@id": "https://huggingface.co/ibm-nasa-geospatial",
+    "@type": [
+      "http://xmlns.com/foaf/0.1/Agent"
+    ],
+    "http://xmlns.com/foaf/0.1/name": [
+      {
+        "@value": "IBM-NASA Prithvi Models Family"
+      }
+    ]
+  },
+  {
+    "@id": "https://10.57967/hf/0956/distribution/repo",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Distribution"
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@value": "The Hugging Face git repository."
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@value": "repo"
+      }
+    ],
+    "http://spdx.org/rdf/terms#checksum": [
+      {
+        "@id": "https://10.57967/hf/0956/distribution/repo/checksum"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#accessURL": [
+      {
+        "@id": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars/tree/refs%2Fconvert%2Fparquet"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#mediaType": [
+      {
+        "@value": "git+https"
+      }
+    ]
+  },
+  {
+    "@id": "https://10.57967/hf/0956/period",
+    "@type": [
+      "http://www.w3.org/ns/dcat#PeriodOfTime"
+    ],
+    "http://www.w3.org/ns/dcat#endDate": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2021-12-31"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#startDate": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2018-01-01"
+      }
+    ]
+  }
+]

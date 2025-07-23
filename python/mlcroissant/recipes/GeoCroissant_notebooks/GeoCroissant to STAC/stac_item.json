@@ -1,0 +1,108 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json",
+    "https://schemas.stacspec.org/v1.1.0/item-spec/json-schema/item.json"
+  ],
+  "id": "10.57967_hf_0956",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -125.0,
+          24.0
+        ],
+        [
+          -125.0,
+          50.0
+        ],
+        [
+          -66.0,
+          50.0
+        ],
+        [
+          -66.0,
+          24.0
+        ],
+        [
+          -125.0,
+          24.0
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -125.0,
+    24.0,
+    -66.0,
+    50.0
+  ],
+  "properties": {
+    "title": "hls_burn_scars",
+    "description": "This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models.",
+    "license": "CC-BY-4.0",
+    "start_datetime": "2018-01-01T00:00:00Z",
+    "end_datetime": "2021-12-31T00:00:00Z",
+    "keywords": [
+      "English",
+      "cc-by-4.0",
+      "1K - 10K",
+      "Image",
+      "Datasets",
+      "Croissant",
+      "doi:10.57967/hf/0956",
+      "\ud83c\uddfa\ud83c\uddf8 Region: US"
+    ],
+    "msft:region": "US",
+    "msft:short_description": "HLS burn scars imagery and masks for US (2018-2021)",
+    "providers": [
+      {
+        "name": "IBM-NASA Prithvi Models Family",
+        "roles": [
+          "producer"
+        ],
+        "url": "https://huggingface.co/ibm-nasa-geospatial"
+      }
+    ],
+    "table:columns": [
+      {
+        "name": "image",
+        "type": "binary",
+        "description": "Harmonized Landsat and Sentinel-2 imagery"
+      },
+      {
+        "name": "annotation",
+        "type": "binary",
+        "description": "Associated burn scar annotations"
+      },
+      {
+        "name": "split",
+        "type": "string",
+        "description": "Dataset split (train/validation/test)"
+      }
+    ],
+    "datetime": "2019-06-30T00:00:00Z"
+  },
+  "links": [],
+  "assets": {
+    "repo": {
+      "href": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars/tree/refs%2Fconvert%2Fparquet",
+      "type": "git+https",
+      "title": "The Hugging Face git repository.",
+      "roles": [
+        "data"
+      ]
+    },
+    "documentation": {
+      "href": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars",
+      "type": "text/html",
+      "title": "Dataset Documentation",
+      "roles": [
+        "metadata",
+        "documentation"
+      ]
+    }
+  }
+}
