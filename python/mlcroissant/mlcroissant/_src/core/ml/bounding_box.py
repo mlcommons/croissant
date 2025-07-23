@@ -1,101 +1,92 @@
 """Module to manage "bounding boxes" annotations on images."""
 
-from typing import Any, List
+from typing import Any, List, Union
 
 
-def _parse_one(value: Any) -> List[float]:
-    """Parses a single bounding box from various formats."""
-    # Handle space-separated string case
+def _parse_one(value: Union[str, List[Any]]) -> List[float]:
+    """Parses a single bounding box representation into a list of four floats."""
+    processed_value = []
     if isinstance(value, str):
-        value = value.split(" ")
+        processed_value = value.split()
+    elif isinstance(value, list):
+        processed_value = value
 
-    # The value should now be a simple list of coordinates
-    if not isinstance(value, list):
-        raise TypeError(f"Cannot parse a single bounding box from type {type(value)}")
-
-    if len(value) != 4:
+    if len(processed_value) != 4:
         raise ValueError(
-            "A single bounding box must have exactly 4 coordinates. "
-            f"Got {len(value)} for value: {value}"
+            "Input should have a length of 4, "
+            f"but has length {len(processed_value)}."
         )
 
     try:
-        # Convert all elements to float and return
-        return [float(coord) for coord in value]
-    except (ValueError, TypeError) as e:
+        return [float(coord) for coord in processed_value]
+    except ValueError as e:
         raise ValueError(
-            "Bounding box coordinates must be convertible to floats. " f"Got {value}"
+            "All bounding box coordinates can be converted to floats. "
+            f"Got: {processed_value}"
         ) from e
 
 
 def _parse_all(value: List) -> List[List[float]]:
     """Parses a list containing multiple bounding boxes."""
-    if not value:
-        return []
-
     # Case 1: List of lists, e.g., [[box1], [box2]]
     if isinstance(value[0], list):
         return [_parse_one(item) for item in value]
 
-    # Case 2: Flat list, e.g., [x1, y1, w1, h1, x2, y2, w2, h2, ...]
-    if len(value) % 4 != 0:
-        raise ValueError(
-            "A flat list of bounding box coordinates must have a length "
-            f"that is a multiple of 4. Got length {len(value)}."
-        )
-
+    # Case 2: Flat list, e.g., [x1, y1, w1, h1, x2, y2, w2, h2]
+    # This case is handled by the main parse function's dispatch logic.
+    # We chunk the flat list into a list of 4-element lists.
     try:
         coords = [float(v) for v in value]
-        # Chunk the flat list into a list of 4-element lists
         return [coords[i : i + 4] for i in range(0, len(coords), 4)]
-    except (ValueError, TypeError) as e:
+    except ValueError as e:
         raise ValueError(
-            "All elements in the flat list must be convertible to float."
+            "All bounding box coordinates can be converted to floats. " f"Got: {value}"
         ) from e
 
 
-def parse(value: Any) -> List[List[float]]:
+def parse(value: Any) -> Union[List[float], List[List[float]]]:
     """
-    Parses a value into a list of one or more bounding boxes.
+    Parses a value into one or more bounding boxes.
 
-    This function determines whether the input represents a single bounding box
-    or multiple, and delegates to the appropriate parser.
+    The return type depends on the input:
+    - A single bounding box returns a List[float].
+    - Multiple bounding boxes returns a List[List[float]].
 
     Args:
-        value: The value to parse. Can be:
-            - A single space-separated string: "x y w h"
-            - A list representing one box: [x, y, w, h] or [[x, y, w, h]]
-            - A list of lists for multiple boxes: [[box1], [box2], ...]
-            - A flat list for multiple boxes: [x1, y1, w1, h1, x2, ...]
+        value: The value to parse. Can be a string, a list of 4 elements,
+               a list of lists, or a flat list of 4*N elements.
 
     Returns:
-        A list of bounding boxes, where each box is a 4-float list.
-        e.g., [[25.0, 30.0, 100.0, 150.0]]
-    """
-    # Pre-process to handle a single box wrapped in an extra list, e.g., [[...]] -> [...]
-    if isinstance(value, list) and len(value) == 1 and isinstance(value[0], list):
-        value = value[0]
+        A list of four floats, or a list of such lists.
 
-    # Strings are always treated as a single bounding box
+    Raises:
+        ValueError: If the input format is invalid.
+    """
     if isinstance(value, str):
-        return [_parse_one(value)]
+        return _parse_one(value)
 
     if isinstance(value, list):
         if not value:
             return []
 
-        # Determine parsing strategy based on list structure and length
-        is_list_of_lists = isinstance(value[0], list)
-        is_flat_list_of_many = len(value) > 4 and len(value) % 4 == 0
-
-        if is_list_of_lists or is_flat_list_of_many:
-            print(f"Parsing multiple bounding boxes from: {value}")
+        # Decide if we're parsing one or multiple boxes.
+        if isinstance(value[0], list):
+            # A list of lists is always multiple bounding boxes.
             return _parse_all(value)
         else:
-            # Otherwise, treat as a single bounding box
-            print(f"Parsing single bounding box from: {value}")
-            return [_parse_one(value)]
+            # A flat list. Check length to decide.
+            if len(value) % 4 == 0:
+                if len(value) == 4:
+                    # A list of 4 items is a single bounding box.
+                    return _parse_one(value)
+                else:
+                    # A list of 4*N items is multiple bounding boxes.
+                    return _parse_all(value)
 
-    raise TypeError(
-        "Wrong format for a bounding box. Expected: str | list. " f"Got: {type(value)}."
-    )
+    # If the input is not a string or a list, or if it's a list with
+    # an invalid length (e.g., 5), we let _parse_one raise the
+    # appropriate, specific error.
+    if isinstance(value, list) and len(value) != 4:
+        return _parse_one(value)
+
+    raise ValueError(f"Wrong format. Expected str or list, but got {type(value)}.")
