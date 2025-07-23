@@ -40,6 +40,10 @@ def parse_json_content(json_obj, fields):
             if isinstance(v, list) and len(v) == 1:
                 v = v[0]
             vals.append(v)
+        
+        # Unwrap the final list if it's a list of a single list.
+        vals = _unwrap_single_item(vals)
+
         series[json_path] = vals
     return pd.DataFrame(series)
 
