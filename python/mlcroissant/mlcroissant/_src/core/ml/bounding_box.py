@@ -4,7 +4,7 @@ from typing import Any, List, Union
 
 
 def _parse_one(value: Union[str, List[Any]]) -> List[float]:
-    """Parses a single bounding box representation into a list of four floats."""
+    """Parse a single bounding box representation into a list of four floats."""
     processed_value = []
     if isinstance(value, str):
         processed_value = value.split()
@@ -13,8 +13,7 @@ def _parse_one(value: Union[str, List[Any]]) -> List[float]:
 
     if len(processed_value) != 4:
         raise ValueError(
-            "Input should have a length of 4, "
-            f"but has length {len(processed_value)}."
+            f"Input should have a length of 4, but has length {len(processed_value)}."
         )
 
     try:
@@ -27,7 +26,7 @@ def _parse_one(value: Union[str, List[Any]]) -> List[float]:
 
 
 def _parse_all(value: List) -> List[List[float]]:
-    """Parses a list containing multiple bounding boxes."""
+    """Parse a list containing multiple bounding boxes."""
     # Case 1: List of lists, e.g., [[box1], [box2]]
     if isinstance(value[0], list):
         return [_parse_one(item) for item in value]
@@ -40,13 +39,13 @@ def _parse_all(value: List) -> List[List[float]]:
         return [coords[i : i + 4] for i in range(0, len(coords), 4)]
     except ValueError as e:
         raise ValueError(
-            "All bounding box coordinates can be converted to floats. " f"Got: {value}"
+            f"All bounding box coordinates can be converted to floats. Got: {value}"
         ) from e
 
 
 def parse(value: Any) -> Union[List[float], List[List[float]]]:
     """
-    Parses a value into one or more bounding boxes.
+    Parse a value into one or more bounding boxes.
 
     The return type depends on the input:
     - A single bounding box returns a List[float].
