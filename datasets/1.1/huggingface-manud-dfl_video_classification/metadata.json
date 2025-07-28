@@ -83,11 +83,9 @@
           "dataType": "sc:Text"
         }
       ],
-      "data": [
-        {
-          "default_splits/split_name": "validation"
-        }
-      ]
+      "data": {
+        "default_splits/split_name": "validation"
+      }
     },
     {
       "@type": "cr:RecordSet",
