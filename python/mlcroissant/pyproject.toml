@@ -69,7 +69,6 @@ beam = [
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
-video = ["torchcodec"]
 
 [project.scripts]
 mlcroissant = "mlcroissant.scripts.cli:main"
