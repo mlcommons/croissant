@@ -50,6 +50,7 @@ dev = [
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
+  "mlcroissant[video]",
   "mypy",
   "pyflakes",
   "pygraphviz",
@@ -68,6 +69,7 @@ beam = [
 git = ["GitPython"]
 image = ["Pillow"]
 parquet = ["pyarrow"]
+video = ["torchcodec]
 
 [project.scripts]
 mlcroissant = "mlcroissant.scripts.cli:main"
