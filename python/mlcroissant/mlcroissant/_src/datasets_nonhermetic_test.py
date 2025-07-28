@@ -67,6 +67,12 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
     ["dataset_name", "record_set_name", "num_records", "filters"],
     [
         ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
+        [
+            "huggingface-manud-dfl_video_classification/metadata.json",
+            "default",
+            2,
+            None,
+        ],
     ],
 )
 def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
