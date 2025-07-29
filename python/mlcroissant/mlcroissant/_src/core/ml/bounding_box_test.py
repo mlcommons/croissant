@@ -9,6 +9,14 @@ def test_parse():
     assert bounding_box.parse([1, 2, 3, 4]) == [1.0, 2.0, 3.0, 4.0]
     assert bounding_box.parse("1 2 3 4") == [1.0, 2.0, 3.0, 4.0]
     assert bounding_box.parse("1.0 2 3.0 4.0") == [1.0, 2.0, 3.0, 4.0]
+    assert bounding_box.parse([[1, 2, 3, 4], [5, 6, 7, 8]]) == [
+        [1.0, 2.0, 3.0, 4.0],
+        [5.0, 6.0, 7.0, 8.0],
+    ]
+    assert bounding_box.parse([1, 2, 3, 4, 5, 6, 7, 8]) == [
+        [1.0, 2.0, 3.0, 4.0],
+        [5.0, 6.0, 7.0, 8.0],
+    ]
     with pytest.raises(ValueError, match="Wrong format"):
         bounding_box.parse(42)
     with pytest.raises(ValueError, match="should have a length of"):
