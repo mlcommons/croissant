@@ -136,6 +136,7 @@ SCHEMA_ORG_DATA_TYPE_INTEGER = namespace.SDO.Integer
 SCHEMA_ORG_DATA_TYPE_TEXT = namespace.SDO.Text
 SCHEMA_ORG_DATA_TYPE_TIME = namespace.SDO.Time
 SCHEMA_ORG_DATA_TYPE_URL = namespace.SDO.URL
+SCHEMA_ORG_DATA_TYPE_VIDEO_OBJECT = namespace.SDO.VideoObject
 SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
 SCHEMA_ORG_EMAIL = namespace.SDO.email
@@ -235,6 +236,7 @@ class EncodingFormat:
     JSON = "application/json"
     JSON_LINES = "application/jsonlines"
     MP3 = "audio/mpeg"
+    MP4 = "video/mp4"
     PARQUET = "application/x-parquet"
     TEXT = "text/plain"
     TSV = "text/tab-separated-values"
@@ -268,3 +270,4 @@ class DataType:
     TEXT = namespace.SDO.Text
     TIME = namespace.SDO.Time
     URL = namespace.SDO.URL
+    VIDEO_OBJECT = namespace.SDO.VideoObject

@@ -1,0 +1,2 @@
+{"default/split": "validation", "default/label": 0, "default/video": {"bytes": "None", "path": "hf://datasets/ManuD/DFL_video_classification@8758006e72f11925fbe3712242d3fa1c8177c940/valid/background/3c993bd2_0_1000432_1002350.mp4"}}
+{"default/split": "validation", "default/label": 0, "default/video": {"bytes": "None", "path": "hf://datasets/ManuD/DFL_video_classification@8758006e72f11925fbe3712242d3fa1c8177c940/valid/background/3c993bd2_0_1002932_1049192.mp4"}}
