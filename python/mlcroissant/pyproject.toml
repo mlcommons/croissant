@@ -50,7 +50,6 @@ dev = [
   "mlcroissant[git]",
   "mlcroissant[image]",
   "mlcroissant[parquet]",
-  "mlcroissant[video]",
   "mypy",
   "pyflakes",
   "pygraphviz",
