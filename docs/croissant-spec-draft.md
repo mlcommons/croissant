@@ -1234,6 +1234,10 @@ Other data types commonly used in ML datasets:
     <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
     <td>Describes the coordinates of a bounding box (4-number array). Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
+ <tr>
+    <td><a href="https://schema.org/VideoObject">sc:VideoObject</a></td>
+    <td>Describes a field containing the content of a video file.</td>
+  </tr>
   <tr>
     <td><a href="http://mlcommons.org/schema/Split">cr:Split</a></td>
     <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section "ML-specific features > Splits".</td>
@@ -1776,6 +1780,22 @@ The `cr:Label` data type can also be applied to a complex Field that contains mu
       ]
     }
   ]
+}
+```
+
+### VideoObject
+
+Croissant uses Schema.org [VideoObject](https://schema.org/VideoObject) to represent a Video feature, as in the example:
+
+```json
+{
+  "@type": "cr:Field",
+  "@id": "recordset/video",
+  "dataType": "sc:VideoObject",
+  "source": {
+    "fileSet": { "@id": "parquet-files-for-recordset" },
+    "extract": { "column": "video" },
+  }
 }
 ```
 
