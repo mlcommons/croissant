@@ -204,7 +204,7 @@ def _handle_fields_change(record_set_key: int, record_set: RecordSet):
             data_types=[data_type],
             equivalentProperty=added_row.get(FieldDataFrame.EQUIVALENT_PROPERTY),
             source=mlc.Source(),
-            references=mlc.Source(),
+            references=[mlc.Source()],
         )
         st.session_state[Metadata].add_field(record_set_key, field)
     for field_key in result["deleted_rows"]:

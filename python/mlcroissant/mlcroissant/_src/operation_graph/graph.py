@@ -49,7 +49,9 @@ def _add_operations_for_record_set(
         Data(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
         )
-    has_join = any(field for field in record_set.fields if field.references.uuid)
+    has_join = any(field for field in record_set.fields 
+        if field.references != None and len(field.references) > 0
+    )
     if has_join:
         Join(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
@@ -164,12 +166,15 @@ def _add_operations_for_field(operations: Operations, node: Field):
         for operation in operations.nodes
         if isinstance(operation, Join) and operation.node == record_set
     ]
+    if node.references == None:
+        return
     for join in joins:
         left_node = node_by_uuid(node.ctx, node.source.uuid)
-        right_node = node_by_uuid(node.ctx, node.references.uuid)
-        if left_node and right_node:
-            join.connect_to_last_operation(left_node)
-            join.connect_to_last_operation(right_node)
+        for reference in node.references:
+            right_node = node_by_uuid(node.ctx, reference.uuid)
+            if left_node and right_node:
+                join.connect_to_last_operation(left_node)
+                join.connect_to_last_operation(right_node)
 
 
 @dataclasses.dataclass(frozen=True)

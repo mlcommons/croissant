@@ -153,24 +153,26 @@ class RecordSet(Node):
         sources: set[str | None] = set()
         for field in self.fields:
             source_uuid = field.source.uuid
-            references_uuid = field.references.uuid
-            if source_uuid:
-                # source_uuid is used as a source.
-                sources.add(get_parent_uuid(self.ctx, source_uuid))
-            if source_uuid and references_uuid:
-                # A join happens because the user specified `source` and `references`.
-                joins.add(
-                    (
-                        get_parent_uuid(self.ctx, source_uuid),
-                        get_parent_uuid(self.ctx, references_uuid),
+            references = field.references or []
+            for reference in references:
+                references_uuid = reference.uuid
+                if source_uuid:
+                    # source_uuid is used as a source.
+                    sources.add(get_parent_uuid(self.ctx, source_uuid))
+                if source_uuid and references_uuid:
+                    # A join happens because the user specified `source` and `references`.
+                    joins.add(
+                        (
+                            get_parent_uuid(self.ctx, source_uuid),
+                            get_parent_uuid(self.ctx, references_uuid),
+                        )
                     )
-                )
-                joins.add(
-                    (
-                        get_parent_uuid(self.ctx, references_uuid),
-                        get_parent_uuid(self.ctx, source_uuid),
+                    joins.add(
+                        (
+                            get_parent_uuid(self.ctx, references_uuid),
+                            get_parent_uuid(self.ctx, source_uuid),
+                        )
                     )
-                )
         for combination in itertools.combinations(sources, 2):
             if combination not in joins:
                 # Sort for reproducibility.

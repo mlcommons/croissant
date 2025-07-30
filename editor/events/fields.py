@@ -145,16 +145,17 @@ def handle_field_change(
         source = (
             mlc.Source(field=value) if "/" in value else mlc.Source(file_object=value)
         )
-        field.references = source
+        field.references = [source]
     elif change == FieldEvent.REFERENCE_EXTRACT:
-        source = field.references
-        source = _get_source(source, value)
-        field.references = source
+        references = field.references or []
+        for src in references:
+            references.append(_get_source(src, value))
+        field.references = references
     elif change == FieldEvent.REFERENCE_EXTRACT_COLUMN:
         if not field.references:
-            field.references = mlc.Source(extract=mlc.Extract())
-        field.references.extract = mlc.Extract(column=value)
+            field.references = [mlc.Source(extract=mlc.Extract())]
+        field.references[0].extract = mlc.Extract(column=value)
     elif change == FieldEvent.REFERENCE_EXTRACT_JSON_PATH:
         if not field.references:
-            field.references = mlc.Source(extract=mlc.Extract())
-        field.references.extract = mlc.Extract(json_path=value)
+            field.references = [mlc.Source(extract=mlc.Extract())]
+        field.references[0].extract = mlc.Extract(json_path=value)

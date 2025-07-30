@@ -290,64 +290,65 @@ def render_references(
     key = f"references-{record_set.name}-{field.name}"
     button_key = f"{key}-add-reference"
     has_clicked_button = st.session_state.get(button_key)
-    references = field.references
-    if references or has_clicked_button:
-        col1, col2, col3, col4 = st.columns([4.5, 4, 4, 1])
-        index = (
-            possible_sources.index(references.uuid)
-            if references.uuid in possible_sources
-            else None
-        )
-        options = [s for s in possible_sources if not s.startswith(record_set.name)]
-        if index and (index < 0 or index >= len(options)):
-            index = None
-        key = f"{key}-reference"
-        col1.selectbox(
-            "Reference",
-            index=index,
-            options=options,
-            key=key,
-            on_change=handle_field_change,
-            args=(FieldEvent.REFERENCE, field, key),
-        )
-        if references.distribution or references.file_object or references.file_set:
-            key = f"{key}-extract-references"
-            extract = col2.selectbox(
-                needed_field("Extract the reference"),
-                index=_get_extract_index(references),
-                key=key,
-                options=EXTRACT_TYPES,
-                help=_EXTRACT_DOCUMENTATION,
-                on_change=handle_field_change,
-                args=(FieldEvent.REFERENCE_EXTRACT, field, key),
+    references = field.references or []
+    if has_clicked_button or len(references) > 0:
+        for reference in references:
+            col1, col2, col3, col4 = st.columns([4.5, 4, 4, 1])
+            index = (
+                possible_sources.index(reference.uuid)
+                if reference.uuid in possible_sources
+                else None
             )
-            if extract == ExtractType.COLUMN:
-                key = f"{key}-columnname"
-                col3.text_input(
-                    needed_field("Column name"),
-                    value=references.extract.column,
+            options = [s for s in possible_sources if not s.startswith(record_set.name)]
+            if index and (index < 0 or index >= len(options)):
+                index = None
+            key = f"{key}-reference"
+            col1.selectbox(
+                "Reference",
+                index=index,
+                options=options,
+                key=key,
+                on_change=handle_field_change,
+                args=(FieldEvent.REFERENCE, field, key),
+            )
+            if reference.distribution or reference.file_object or reference.file_set:
+                key = f"{key}-extract-references"
+                extract = col2.selectbox(
+                    needed_field("Extract the reference"),
+                    index=_get_extract_index(reference),
                     key=key,
-                    help=_COLUMN_NAME_DOCUMENTATION,
+                    options=EXTRACT_TYPES,
+                    help=_EXTRACT_DOCUMENTATION,
                     on_change=handle_field_change,
-                    args=(FieldEvent.REFERENCE_EXTRACT_COLUMN, field, key),
+                    args=(FieldEvent.REFERENCE_EXTRACT, field, key),
                 )
-            if extract == ExtractType.JSON_PATH:
-                key = f"{key}-jsonpath"
-                col3.text_input(
-                    needed_field("JSON path"),
-                    value=references.extract.json_path,
-                    key=key,
-                    help=_JSON_PATH_DOCUMENTATION,
-                    on_change=handle_field_change,
-                    args=(FieldEvent.REFERENCE_EXTRACT_JSON_PATH, field, key),
-                )
-        col4.button(
-            "✖️",
-            key=f"{key}-remove-reference",
-            help="Remove the join.",
-            on_click=_handle_remove_reference,
-            args=(field,),
-        )
+                if extract == ExtractType.COLUMN:
+                    key = f"{key}-columnname"
+                    col3.text_input(
+                        needed_field("Column name"),
+                        value=reference.extract.column,
+                        key=key,
+                        help=_COLUMN_NAME_DOCUMENTATION,
+                        on_change=handle_field_change,
+                        args=(FieldEvent.REFERENCE_EXTRACT_COLUMN, field, key),
+                    )
+                if extract == ExtractType.JSON_PATH:
+                    key = f"{key}-jsonpath"
+                    col3.text_input(
+                        needed_field("JSON path"),
+                        value=reference.extract.json_path,
+                        key=key,
+                        help=_JSON_PATH_DOCUMENTATION,
+                        on_change=handle_field_change,
+                        args=(FieldEvent.REFERENCE_EXTRACT_JSON_PATH, field, key),
+                    )
+            col4.button(
+                "✖️",
+                key=f"{key}-remove-reference",
+                help="Remove the join.",
+                on_click=_handle_remove_reference,
+                args=(field,),
+            )
     elif not has_clicked_button:
         st.button(
             "Add a join with another column/field",

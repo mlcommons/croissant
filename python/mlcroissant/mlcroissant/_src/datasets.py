@@ -213,9 +213,11 @@ class Records:
         _propagate_includes(field, interesting_operations, new_regex)
         # The value of `field` is now entirely known so we can remove any operation
         # needed to compute it, i.e. all operations involved in a potential join:
-        join_uuid = field.references.uuid
         graph = field.ctx.graph
-        if join_uuid:
+        interesting_operations = []
+        references = field.references or []
+        for reference in references:
+            join_uuid = reference.uuid
             join_node = next(
                 node
                 for node in graph
@@ -226,7 +228,7 @@ class Records:
                 for node in graph
                 if graph.has_edge(node, join_node) or node == join_node
             ]
-            interesting_operations = [
+            interesting_operations += [
                 o for o in interesting_operations if o.node not in unneeded_nodes
             ]
         return operations.subgraph(

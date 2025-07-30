@@ -34,16 +34,18 @@ class Join(Operation):
         ] = []
         for field in fields:
             left = field.source
-            right = field.references
-            if left is None or right is None:
-                continue
-            if left.uuid is None or right.uuid is None:
-                continue
-            left_index = predecessors.index(get_parent_uuid(self.node.ctx, left.uuid))
-            right_index = predecessors.index(get_parent_uuid(self.node.ctx, right.uuid))
-            join = (field, (left, args[left_index]), (right, args[right_index]))
-            if join not in joins:
-                joins.append(join)
+            references = field.references or []
+            for ref in references:
+                right = ref
+                if left is None or right is None:
+                    continue
+                if left.uuid is None or right.uuid is None:
+                    continue
+                left_index = predecessors.index(get_parent_uuid(self.node.ctx, left.uuid))
+                right_index = predecessors.index(get_parent_uuid(self.node.ctx, right.uuid))
+                join = (field, (left, args[left_index]), (right, args[right_index]))
+                if join not in joins:
+                    joins.append(join)
         for field, (left, df_left), (right, df_right) in joins:
             assert left is not None and left.uuid is not None, (
                 f'Left reference for "{field.uuid}" is None. It should be a valid'
