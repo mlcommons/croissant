@@ -917,9 +917,12 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </tr>
   <tr>
     <td>references</td>
-    <td>Reference</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>MANY</td>
-    <td>Another <code>Field</code> of another <code>RecordSet</code> that this field references. This is the equivalent of a foreign key reference in a relational database.</td>
+    <td>The DataSource object or URL of another <code>RecordSet</code> <code>Field</code> that this field references. This is the equivalent of a foreign key reference in a relational database.</td>
   </tr>
   <tr>
     <td>subField</td>
@@ -1371,7 +1374,7 @@ If the example values cannot easily be provided directly within the Croissant de
 
 ### Joins
 
-Croissant provides a simple mechanism to create a "foreign key" reference between fields of recordsets. The property `references` of `RecordSet` means that values in the `Field` that contains the reference are taken from the values of the target `Field`. The target is generally the key of the target `RecordSet`.
+Croissant provides a simple mechanism to create a "foreign key" reference between fields of RecordSets. The property `references` of `RecordSet` means that values in the `Field` that contains the reference are taken from the values of the target `Field`. The target is generally the key of the target `RecordSet`.
 
 For example, the `ratings` `RecordSet` below has a `movie_id` field that references the `movies` `RecordSet`.
 
