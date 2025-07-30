@@ -121,8 +121,9 @@ class Field(Node):
         cardinality="MANY",
         default_factory=list,
         description=(
-            "One or more `Field`s of another `RecordSet` that this field references. This is"
-            " the equivalent of a foreign key reference in a relational database."
+            "One or more `Field`s of another `RecordSet` that this field references."
+            " This is the equivalent of a foreign key reference in a relational"
+            " database."
         ),
         url=constants.ML_COMMONS_SOURCE,
     )

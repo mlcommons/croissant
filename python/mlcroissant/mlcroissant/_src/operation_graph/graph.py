@@ -49,7 +49,9 @@ def _add_operations_for_record_set(
         Data(operations=operations, node=record_set) >> ReadFields(
             operations=operations, node=record_set
         )
-    has_join = any(field for field in record_set.fields 
+    has_join = any(
+        field
+        for field in record_set.fields
         if field.references != None and len(field.references) > 0
     )
     if has_join:
