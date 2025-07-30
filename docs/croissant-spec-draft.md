@@ -719,7 +719,10 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </thead>
   <tr>
     <td>containedIn</td>
-    <td>Reference</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>MANY</td>
     <td>The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).</td>
   </tr>
@@ -928,13 +931,16 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>subField</td>
     <td>Field</td>
     <td>MANY</td>
-    <td>Another <code>Field</code> that is nested inside this one.</td>
+    <td>One or more <code>Field</code>s that are nested inside this one.</td>
   </tr>
   <tr>
     <td>parentField</td>
-    <td>Reference</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>MANY</td>
-    <td>A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.</td>
+    <td>A special case of <code>SubField</code> that contains one ore more references to <code>Field</code>s that are already referenced in the <code>RecordSet</code>. Should by hidden.</td>
   </tr>
   <tr>
     <td>annotation</td>
@@ -1029,21 +1035,30 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
   </thead>
   <tr>
     <td>fileObject</td>
-    <td>Reference</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>ONE</td>
-    <td>The name of the referenced <code>FileObject</code> source of the data.</td>
+    <td>The id of the referenced <code>FileObject</code> source of the data.</td>
   </tr>
   <tr>
     <td>fileSet</td>
-    <td>Reference</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>ONE</td>
-    <td>The name of the referenced <code>FileSet</code> source of the data.</td>
+    <td>The id of the referenced <code>FileSet</code> source of the data.</td>
   </tr>
   <tr>
     <td>recordSet</td>
-    <td>Reference</td>
+    <td>
+      DataSource<br>
+      <a href="http://schema.org/URL">URL</a>
+    </td>
     <td>ONE</td>
-    <td>The name of the referenced <code>RecordSet</code> source.</td>
+    <td>The id of the referenced <code>RecordSet</code> source.</td>
   </tr>
   <tr>
     <td>extract</td>
