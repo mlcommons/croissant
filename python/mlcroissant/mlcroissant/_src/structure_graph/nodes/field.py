@@ -117,15 +117,14 @@ class Field(Node):
         input_types=[ParentField],
         url=constants.ML_COMMONS_PARENT_FIELD,
     )
-    references: Source = mlc_dataclasses.jsonld_field(
+    references: list[Source] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
-        default_factory=Source,
+        default_factory=list,
         description=(
             "One or more `Field`s of another `RecordSet` that this field references. This is"
             " the equivalent of a foreign key reference in a relational database."
         ),
-        input_types=[Source],
-        url=constants.ML_COMMONS_REFERENCES,
+        url=constants.ML_COMMONS_SOURCE,
     )
     repeated: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
