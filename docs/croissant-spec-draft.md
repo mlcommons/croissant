@@ -719,7 +719,7 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </thead>
   <tr>
     <td>containedIn</td>
-    <td>Reference</td>
+    <td>FileObject or FileSet <code>@id</code></td>
     <td>MANY</td>
     <td>The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).</td>
   </tr>
@@ -917,21 +917,21 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </tr>
   <tr>
     <td>references</td>
-    <td>Reference</td>
+    <td>Field <code>@id</code></td>
     <td>MANY</td>
-    <td>Another <code>Field</code> of another <code>RecordSet</code> that this field references. This is the equivalent of a foreign key reference in a relational database.</td>
+    <td>An unordered list of references to other <code>RecordSet</code> <code>Field</code>s. This is the equivalent of a foreign key reference in a relational database.</td>
   </tr>
   <tr>
     <td>subField</td>
-    <td>Field</td>
+    <td>Field <code>@id</code></td>
     <td>MANY</td>
-    <td>Another <code>Field</code> that is nested inside this one.</td>
+    <td>An unordered list of references to <code>Field</code>s that are nested within this one.</td>
   </tr>
   <tr>
     <td>parentField</td>
-    <td>Reference</td>
+    <td>Field <code>@id</code></td>
     <td>MANY</td>
-    <td>A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.</td>
+    <td>An unordered list of references to <code>Field</code>s. A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.</td>
   </tr>
   <tr>
     <td>annotation</td>
@@ -1026,21 +1026,21 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
   </thead>
   <tr>
     <td>fileObject</td>
-    <td>Reference</td>
+    <td>FileObject <code>@id</code></td>
     <td>ONE</td>
-    <td>The name of the referenced <code>FileObject</code> source of the data.</td>
+    <td>The id of the <code>FileObject</code> source of the data.</td>
   </tr>
   <tr>
     <td>fileSet</td>
-    <td>Reference</td>
+    <td>FileSet <code>@id</code></td>
     <td>ONE</td>
-    <td>The name of the referenced <code>FileSet</code> source of the data.</td>
+    <td>The id of the <code>FileSet</code> source of the data.</td>
   </tr>
   <tr>
     <td>recordSet</td>
-    <td>Reference</td>
+    <td>RecordSet <code>@id</code></td>
     <td>ONE</td>
-    <td>The name of the referenced <code>RecordSet</code> source.</td>
+    <td>The id of the referenced <code>RecordSet</code> source.</td>
   </tr>
   <tr>
     <td>extract</td>
@@ -1371,7 +1371,7 @@ If the example values cannot easily be provided directly within the Croissant de
 
 ### Joins
 
-Croissant provides a simple mechanism to create a "foreign key" reference between fields of recordsets. The property `references` of `RecordSet` means that values in the `Field` that contains the reference are taken from the values of the target `Field`. The target is generally the key of the target `RecordSet`.
+Croissant provides a simple mechanism to create a "foreign key" reference between fields of RecordSets. The property `references` of `RecordSet` means that values in the `Field` that contains the reference are taken from the values of the target `Field`. The target is generally the key of the target `RecordSet`.
 
 For example, the `ratings` `RecordSet` below has a `movie_id` field that references the `movies` `RecordSet`.
 
