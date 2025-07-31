@@ -70,9 +70,9 @@ Croissant is designed to be modular and extensible. One such extension is the Cr
 
 **Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
 
-**Data record**: A granular part of a dataset, such as an image, text file, or a row in a table.
+**FileObject**: A granular part of a dataset, such as an image, text file, archive file, or a row in a table.
 
-**Recordset**: A set of homogeneous data records, such as a collection of images, text files, or all the rows in a table.
+**RecordSet**: A set of structured data records obtained from one or more data sources (typically a file or set of files), such as a collection of images, text files, or all the rows in a table.
 
 ## Format Example
 
@@ -183,7 +183,7 @@ Furthermore, we can describe the structure and the data types in the data using 
 - the hash of the image, extracted from its filename
 - the date the image was taken, extracted from the metadata CSV file
 
-The [RecordSets](#recordsets) section explains how to define recordsets and fields, as well as extract, transform and join their data.
+The [RecordSets](#recordsets) section explains how to define RecordSets and Fields, as well as extract, transform and join their data.
 
 ## Prerequisites
 
@@ -534,7 +534,7 @@ Datasets may change over time. Versioning is hence important to enable reproduci
 Croissant datasets are versioned using the `version` property defined in [schema.org](http://schema.org). The recommended versioning scheme to use for datasets is`MAJOR.MINOR.PATCH`, following [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). More specifically:
 
 - If the `PATCH` version is incremented, the data remains the same, although it might be serialized differently or is packaged using different file formats.
-- If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as it: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old recordSets can still be retrieved (eg: the new records are added to a different Split).
+- If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as it: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old RecordSets can still be retrieved (eg: the new records are added to a different Split).
 - If the `MAJOR` version is incremented, the existing data has been changed (edited, removed or shuffled records across splits), or extended in a way which doesn't allow for easy access to the data as it was at the previous version.
 
 #### Checksums
@@ -871,7 +871,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
 
 ### Field
 
-A `Field` is part of a `RecordSet`. It may represent a column of a table, or a nested data structure.
+A `Field` represents one or more properties of a `RecordSet`, such as a column of a table, Exif data, or a nested data structure.
 
 `Field` is a subclass of [sc:Intangible](https://schema.org/Intangible). It defines the following additional properties:
 
