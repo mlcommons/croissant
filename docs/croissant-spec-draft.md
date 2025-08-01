@@ -3,7 +3,7 @@
 Version 1.1 (draft)
 
 **This is a draft of the Croissant 1.1 specification. This document is a work in progress.
- For the latest official specification, please see the [Croissant 1.0 specification](https://http://mlcommons.org/croissant/1.0).**
+ For the latest official specification, please see the [Croissant 1.0 specification](http://mlcommons.org/croissant/1.0).**
 
 <!-- Published:  -->
 
