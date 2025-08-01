@@ -1522,7 +1522,7 @@ Annotations can also appear at the level of a RecordSet. A RecordSet-level annot
   ],
   "annotation" : {
     "@type": "cr:Field", "@id": "movies/ratings", 
-    subField: [
+    "subField": [
       { "@type": "cr:Field", "@id": "movies/ratings/user_id", ...}, 
       { "@type": "cr:Field", "@id": "movies/ratings/rating", ...}, 
     ]  
