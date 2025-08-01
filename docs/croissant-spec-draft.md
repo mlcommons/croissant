@@ -919,19 +919,19 @@ A `Field` represents one or more properties of a `RecordSet`, such as a column o
     <td>references</td>
     <td>Field <code>@id</code></td>
     <td>MANY</td>
-    <td>An unordered list of references to other <code>RecordSet</code> <code>Field</code>s. This is the equivalent of a foreign key reference in a relational database.</td>
+    <td>A list of references to other <code>RecordSet</code> <code>Field</code>s. This is the equivalent of a foreign key reference in a relational database. Missing or circular references should result in an error.</td>
   </tr>
   <tr>
     <td>subField</td>
     <td>Field <code>@id</code></td>
     <td>MANY</td>
-    <td>An unordered list of references to <code>Field</code>s that are nested within this one.</td>
+    <td>A list of references to <code>Field</code>s that are nested within this one. Missing or circular references should result in an error.</td>
   </tr>
   <tr>
     <td>parentField</td>
     <td>Field <code>@id</code></td>
     <td>MANY</td>
-    <td>An unordered list of references to <code>Field</code>s. A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.</td>
+    <td>A list of references to one or more <code>Field</code>s. A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>. Missing or circular references should result in a warning.</td>
   </tr>
   <tr>
     <td>annotation</td>
