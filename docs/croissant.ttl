@@ -55,7 +55,7 @@ croissant:Transform a rdf:Class ;
 # Enumerations
 
 croissant:ContentExtractionEnumeration a rdf:Class ;
-  rdfs:label "ContexExtractionEnumeration" ;
+  rdfs:label "ContentExtractionEnumeration" ;
   rdfs:comment "Specifies which content to extract from a file. One of \"all\", \"lines\", or \"lineNumbers\"." ;
   rdfs:subClassOf schema:Enumeration .
 
