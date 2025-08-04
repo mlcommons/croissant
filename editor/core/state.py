@@ -128,7 +128,7 @@ class SelectedRecordSet:
 class Node:
     ctx: mlc.Context = dataclasses.field(default_factory=mlc.Context)
     id: str | None = None
-    name: str | None = None
+    name: str | dict[str, str] | None = None
 
     def get_name_or_id(self):
         if self.ctx.is_v0():
@@ -141,7 +141,7 @@ class Node:
 class FileObject(Node):
     """FileObject analogue for editor"""
 
-    description: str | None = None
+    description: str | dict[str, str] | None = None
     contained_in: list[str] | None = dataclasses.field(default_factory=list)
     content_size: str | None = None
     content_url: str | None = None
@@ -156,7 +156,7 @@ class FileSet(Node):
     """FileSet analogue for editor"""
 
     contained_in: list[str] = dataclasses.field(default_factory=list)
-    description: str | None = None
+    description: str | dict[str, str] | None = None
     encoding_format: str | None = ""
     includes: str | None = ""
 
@@ -165,7 +165,7 @@ class FileSet(Node):
 class Field(Node):
     """Field analogue for editor"""
 
-    description: str | None = None
+    description: str | dict[str, str] | None = None
     data_types: str | list[str] | None = None
     equivalentProperty: str | list[str] | None = None
     source: mlc.Source | None = None
@@ -178,7 +178,7 @@ class RecordSet(Node):
 
     data: list[Any] | None = None
     data_types: list[str] | None = None
-    description: str | None = None
+    description: str | dict[str, str] | None = None
     is_enumeration: bool | None = None
     key: str | list[str] | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
@@ -188,7 +188,7 @@ class RecordSet(Node):
 class Metadata(Node):
     """main croissant data object, helper functions exist to load and unload this into the mlcroissant version"""
 
-    description: str | None = None
+    description: str | dict[str, str] | None = None
     cite_as: str | None = None
     creators: list[mlc.Person] = dataclasses.field(default_factory=list)
     date_published: datetime.datetime | None = None

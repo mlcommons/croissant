@@ -177,6 +177,11 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
             entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
             del entry_node[key]
+            if key in ('https://schema.org/name', 'https://schema.org/description'):
+                entry_node[term.URIRef(key)] = {
+                    d['@language']: d['@value'] for d in value
+                }
+                continue
             value = [recursively_populate_jsonld(child, id_to_node) for child in value]
             node_type = entry_node.get("@type", "")
             key, node_type = term.URIRef(key), term.URIRef(node_type)

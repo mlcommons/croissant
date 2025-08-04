@@ -279,9 +279,14 @@ class Node:
     def validate_name(self):
         """Validates the name."""
         name = self.name
-        if not isinstance(name, str):
-            self.add_error(f"The name should be a string. Got: {type(name)}.")
+        if not isinstance(name, (str, dict)):
+            self.add_error(f"The name should be a string or dict. Got: {type(name)}.")
             return
+        if isinstance(name, dict):
+            if not all(isinstance(k, str) for k in name):
+                self.add_error("The name dict keys should all be BCP-47 strings.")
+            if not all(isinstance(v, str) for v in name.values()):
+                self.add_error("The name dict values should all be strings.")
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
             # is a mandatory parameter for Croissant 0.8
@@ -453,6 +458,8 @@ def _value_from_input_types(
             actual_jsonld_type = value.get("@type")
             if actual_jsonld_type == jsonld_type:
                 return input_type.from_jsonld(ctx, value)
+        elif isinstance(value, dict) and field.cardinality == "LANGUAGE-TAGGED":
+            return value
         # ...or it's a basic int/str/bool/etc type
         else:
             matching_type = MATCHING_TYPES.get(input_type)
