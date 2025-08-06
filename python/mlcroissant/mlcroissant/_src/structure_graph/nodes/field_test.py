@@ -5,7 +5,7 @@ from unittest import mock
 import pytest
 from rdflib import term
 
-from mlcroissant._src.core.constants import DataType
+from mlcroissant._src.core import constants
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph.base_node import Node
@@ -38,12 +38,14 @@ def test_array_shape_tuple(array_shape, array_shape_tuple):
 
 def test_data_type():
     # data_types can be a string:
-    assert create_test_field(data_types=DataType.BOOL).data_types == [DataType.BOOL]
+    assert create_test_field(data_types=constants.DataType.BOOL).data_types == [
+        constants.DataType.BOOL
+    ]
     # ...or a list of strings:
     assert create_test_field(
-        data_types=[DataType.BOOL, "http://some-semantic-type"]
+        data_types=[constants.DataType.BOOL, "http://some-semantic-type"]
     ).data_types == [
-        DataType.BOOL,
+        constants.DataType.BOOL,
         term.URIRef("http://some-semantic-type"),
     ]
 
@@ -51,7 +53,7 @@ def test_data_type():
     assert (
         create_test_field(
             data_types=[
-                DataType.BOOL,
+                constants.DataType.BOOL,
                 "http://some-semantic-type",
             ]
         ).data_type
@@ -59,3 +61,35 @@ def test_data_type():
     )
     # ...or from the predecessors. See the test case
     # `recordset_missing_context_for_datatype`.
+
+
+def test_from_jsonld():
+    ctx = Context()
+    jsonld = {
+        "@type": constants.ML_COMMONS_FIELD_TYPE(ctx),
+        "@id": "foo_id",
+        constants.SCHEMA_ORG_NAME: "foo",
+        constants.SCHEMA_ORG_DESCRIPTION: "bar",
+        constants.ML_COMMONS_DATA_TYPE(ctx): constants.DataType.BOOL,
+        constants.ML_COMMONS_ANNOTATION(ctx): {
+            "@type": constants.ML_COMMONS_FIELD_TYPE(ctx),
+            "@id": "annotation_id",
+            constants.SCHEMA_ORG_NAME: "annotation",
+            constants.SCHEMA_ORG_DESCRIPTION: "annotation description",
+            constants.ML_COMMONS_DATA_TYPE(ctx): [
+                constants.DataType.TEXT,
+                constants.DataType.URL,
+            ],
+        },
+    }
+    field = Field.from_jsonld(ctx, jsonld)
+    assert field.name == "foo"
+    assert field.description == "bar"
+    assert field.data_types == [constants.DataType.BOOL]
+    assert len(field.annotations) == 1
+    annotation = field.annotations[0]
+    assert annotation.name == "annotation"
+    assert annotation.description == "annotation description"
+    assert set(annotation.data_types) == set([
+        constants.DataType.TEXT, constants.DataType.URL
+    ])

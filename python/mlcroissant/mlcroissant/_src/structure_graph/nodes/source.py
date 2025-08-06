@@ -127,6 +127,11 @@ class Transform(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_REPLACE,
     )
+    sampling_rate: int | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Integer],
+        url=constants.ML_COMMONS_SAMPLING_RATE,
+    )
     separator: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Text],
@@ -185,6 +190,12 @@ class Source(Node):
         url=constants.SCHEMA_ORG_DISTRIBUTION,
         versions=[CroissantVersion.V_0_8],
     )
+    extract: Extract = mlc_dataclasses.jsonld_field(
+        default_factory=Extract,
+        description="",
+        input_types=[Extract],
+        url=constants.ML_COMMONS_EXTRACT,
+    )
     field: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description="",
@@ -207,11 +218,15 @@ class Source(Node):
         to_jsonld=formatted_uuid_to_json,
         url=constants.ML_COMMONS_FILE_SET,
     )
-    extract: Extract = mlc_dataclasses.jsonld_field(
-        default_factory=Extract,
-        description="",
-        input_types=[Extract],
-        url=constants.ML_COMMONS_EXTRACT,
+    format: str | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Text],
+        url=constants.ML_COMMONS_FORMAT,
+    )
+    sampling_rate: int | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        input_types=[SDO.Integer],
+        url=constants.ML_COMMONS_SAMPLING_RATE,
     )
     transforms: list[Transform] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",

@@ -40,6 +40,13 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
+    annotations: list[Self] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="A set of annotations that apply to the specific field.",
+        from_jsonld=lambda ctx, annotations: Field.from_jsonld(ctx, annotations),
+        url=constants.ML_COMMONS_ANNOTATION,
+    )
     array_shape: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
@@ -202,10 +209,11 @@ class Field(Node):
                 return EXPECTED_DATA_TYPES[term.URIRef(data_type)]
             # data_type is an ML semantic type:
             elif data_type in [
-                DataType.IMAGE_OBJECT,
+                DataType.AUDIO_OBJECT,
                 # For some reasons, pytype cannot infer `Any` on ctx:
                 DataType.BOUNDING_BOX,  # pytype: disable=wrong-arg-types
-                DataType.AUDIO_OBJECT,
+                DataType.IMAGE_OBJECT,
+                DataType.VIDEO_OBJECT,
             ]:
                 return term.URIRef(data_type)
         # The data_type has to be found on the source:

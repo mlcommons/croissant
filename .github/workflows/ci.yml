@@ -133,6 +133,7 @@ jobs:
           etils[epath] \
           GitPython \
           jsonpath_rw \
+          librosa \
           mypy \
           networkx \
           pandas \

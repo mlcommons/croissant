@@ -1,8 +1,12 @@
 """datasets_nonhermetic_test module with data from the internet."""
 
+import json
+
+from etils import epath
 import pytest
 
 from mlcroissant._src import datasets
+from mlcroissant._src.core import constants
 from mlcroissant._src.core.optional import deps
 from mlcroissant._src.datasets_test import load_records_and_test_equality
 from mlcroissant._src.tests.versions import parametrize_version
@@ -58,6 +62,25 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
     )
 
 
+# Non-hermetic test cases for croissant >=1.1 only.
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records", "filters"],
+    [
+        ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
+        [
+            "huggingface-manud-dfl_video_classification/metadata.json",
+            "default",
+            2,
+            None,
+        ],
+    ],
+)
+def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
+    load_records_and_test_equality(
+        "1.1", dataset_name, record_set_name, num_records, filters
+    )
+
+
 @pytest.mark.nonhermetic
 def test_load_from_huggingface():
     url = "https://huggingface.co/api/datasets/mnist/croissant"
@@ -73,3 +96,23 @@ def test_load_from_huggingface():
         " non-hermetic and makes an API call to Hugging Face, so it's prone to network"
         " failure."
     )
+
+
+@parametrize_version()
+def test_cypress_fixtures(version):
+    # Cypress cannot read files outside of its direct scope, so we have to copy them
+    # as fixtures. This test tests that the copies are equal to the original.
+    fixture_folder: epath.Path = (
+        epath.Path(__file__).parent.parent.parent.parent.parent
+        / "editor"
+        / "cypress"
+        / "fixtures"
+        / version
+    )
+    datasets_folder: epath.Path = constants.DATASETS_FOLDER / version
+    for fixture in fixture_folder.glob("*.json"):
+        dataset = datasets_folder / f"{fixture.stem}" / "metadata.json"
+        assert json.load(fixture.open()) == json.load(dataset.open()), (
+            f"If this test fails, you probably have to copy the content of {dataset} to"
+            f" {fixture}. Launch the command `cp {dataset} {fixture}`"
+        )

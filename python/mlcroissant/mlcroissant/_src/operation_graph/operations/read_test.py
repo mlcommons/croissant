@@ -12,6 +12,7 @@ import pandas.testing as pd_testing
 import pytest
 
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.operation_graph.operations.read import _get_sampling_rate
 from mlcroissant._src.operation_graph.operations.read import _read_arff_file
 from mlcroissant._src.operation_graph.operations.read import _reading_method
 from mlcroissant._src.operation_graph.operations.read import Read
@@ -44,6 +45,26 @@ def test_str_representation():
         fields=(),
     )
     assert str(operation) == "Read(file_object_name)"
+
+
+def test_get_sampling_rate():
+    node = create_test_file_object()
+    audio_field = create_test_field(source=Source(sampling_rate=3000))
+    assert _get_sampling_rate(node=node, fields=(audio_field,)) == 3000
+
+
+def test_get_sampling_rate_with_value_error():
+    node = create_test_file_object()
+    audio_field_1 = create_test_field(source=Source(sampling_rate=2000))
+    audio_field_2 = create_test_field(source=Source(sampling_rate=3000))
+    with pytest.raises(
+        ValueError,
+        match=(
+            r'Cannot read node=FileObject\(uuid="file_object_name"\). The fields use'
+            " several sampling rates: {2000, 3000}"
+        ),
+    ):
+        _get_sampling_rate(node=node, fields=(audio_field_1, audio_field_2))
 
 
 def test_reading_arff():

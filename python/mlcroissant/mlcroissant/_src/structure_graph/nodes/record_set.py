@@ -37,6 +37,13 @@ class RecordSet(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
 
+    annotations: list[Field] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="A set of annotations that apply to the entire record.",
+        from_jsonld=lambda ctx, annotations: Field.from_jsonld(ctx, annotations),
+        url=constants.ML_COMMONS_ANNOTATION,
+    )
     data: list[Json] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,

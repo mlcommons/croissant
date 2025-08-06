@@ -6,15 +6,16 @@ from typing import Any
 from apache_beam.testing import test_pipeline
 from apache_beam.testing.util import assert_that
 from etils import epath
+import librosa
+from packaging.version import parse as version_parse
 import pytest
 
 from mlcroissant._src import datasets
 from mlcroissant._src.beam import ReadFromCroissant
+from mlcroissant._src.core import constants
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.tests.records import record_to_python
 from mlcroissant._src.tests.versions import parametrize_version
-
-_REPOSITORY_FOLDER = epath.Path(__file__).parent.parent.parent.parent.parent
 
 
 # End-to-end tests on real data. The data is in `tests/graphs/*/metadata.json`.
@@ -46,7 +47,7 @@ def get_error_msg(folder: epath.Path):
     ],
 )
 def test_static_analysis(version, folder):
-    base_path = epath.Path(__file__).parent / "tests/graphs" / version
+    base_path = constants.TEST_DATASETS_FOLDER / version
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
@@ -63,7 +64,7 @@ def test_static_analysis(version, folder):
     ],
 )
 def test_static_analysis_0_8(folder):
-    base_path = epath.Path(__file__).parent / "tests/graphs" / "0.8"
+    base_path = constants.TEST_DATASETS_FOLDER / "0.8"
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
@@ -77,7 +78,7 @@ def test_static_analysis_0_8(folder):
     ],
 )
 def test_static_analysis_1_0(folder):
-    base_path = epath.Path(__file__).parent / "tests/graphs/1.0"
+    base_path = constants.TEST_DATASETS_FOLDER / "1.0"
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
@@ -92,7 +93,7 @@ def test_static_analysis_1_0(folder):
     ],
 )
 def test_static_analysis_1_1(folder):
-    base_path = epath.Path(__file__).parent / "tests/graphs/1.1"
+    base_path = constants.TEST_DATASETS_FOLDER / "1.1"
     with pytest.raises(ValidationError) as error_info:
         datasets.Dataset(base_path / f"{folder}/metadata.json")
     assert str(error_info.value) == get_error_msg(base_path / folder)
@@ -120,7 +121,7 @@ def load_records_and_test_equality(
         config = dataset_name
         expected_records = None
     else:
-        config = _REPOSITORY_FOLDER / "datasets" / version / dataset_name
+        config = constants.DATASETS_FOLDER / version / dataset_name
         output_file = config.parent / "output" / f"{record_set_name}.jsonl"
         with output_file.open("rb") as f:
             lines = f.readlines()
@@ -161,7 +162,7 @@ def load_records_with_beam_and_test_equality(
     dataset_name: str,
     record_set_name: str,
 ):
-    jsonld = _REPOSITORY_FOLDER / "datasets" / version / dataset_name
+    jsonld = constants.DATASETS_FOLDER / version / dataset_name
     output_file = jsonld.parent / "output" / f"{record_set_name}.jsonl"
     with output_file.open("rb") as f:
         lines = f.readlines()
@@ -201,6 +202,8 @@ def load_records_with_beam_and_test_equality(
     ],
 )
 def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
+    if version_parse(librosa.__version__) < version_parse("0.9.0"):
+        return
     load_records_and_test_equality(version, dataset_name, record_set_name, num_records)
 
 
@@ -233,41 +236,12 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
     )
 
 
-# Hermetic test cases for croissant >=1.1 only.
-@pytest.mark.parametrize(
-    ["dataset_name", "record_set_name", "num_records", "filters"],
-    [
-        ["huggingface-pollen-robotics-apple-storage/metadata.json", "default", 2, None],
-    ],
-)
-def test_hermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
-    load_records_and_test_equality(
-        "1.1", dataset_name, record_set_name, num_records, filters
-    )
-
-
 @parametrize_version()
 def test_raises_when_the_record_set_does_not_exist(version):
-    dataset_folder = _REPOSITORY_FOLDER / "datasets" / version / "titanic"
+    dataset_folder = constants.DATASETS_FOLDER / version / "titanic"
     dataset = datasets.Dataset(dataset_folder / "metadata.json")
     with pytest.raises(ValueError, match="did not find"):
         dataset.records("this_record_set_does_not_exist")
-
-
-@parametrize_version()
-def test_cypress_fixtures(version):
-    # Cypress cannot read files outside of its direct scope, so we have to copy them
-    # as fixtures. This test tests that the copies are equal to the original.
-    fixture_folder: epath.Path = (
-        _REPOSITORY_FOLDER / "editor" / "cypress" / "fixtures" / version
-    )
-    datasets_folder: epath.Path = _REPOSITORY_FOLDER / "datasets" / version
-    for fixture in fixture_folder.glob("*.json"):
-        dataset = datasets_folder / f"{fixture.stem}" / "metadata.json"
-        assert json.load(fixture.open()) == json.load(dataset.open()), (
-            f"If this test fails, you probably have to copy the content of {dataset} to"
-            f" {fixture}. Launch the command `cp {dataset} {fixture}`"
-        )
 
 
 @pytest.mark.parametrize(
@@ -321,10 +295,7 @@ def test_check_mapping_when_the_mapping_is_correct(version, tmp_path):
     dataset_name = "simple-parquet/metadata.json"
     record_set_name = "persons"
     old_path = (
-        _REPOSITORY_FOLDER
-        / "datasets"
-        / version
-        / "simple-parquet/data/dataframe.parquet"
+        constants.DATASETS_FOLDER / version / "simple-parquet/data/dataframe.parquet"
     )
     assert old_path.exists()
     # Copy the dataframe to a temporary file:

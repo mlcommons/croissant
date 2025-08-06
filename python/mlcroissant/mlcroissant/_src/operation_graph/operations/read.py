@@ -75,6 +75,27 @@ def _reading_method(
     return next(iter(reading_methods))
 
 
+def _get_sampling_rate(
+    node: FileObject | FileSet, fields: tuple[Field, ...]
+) -> int | None:
+    """Retuns the sampling rate to use for an audio file, if specified.
+
+    If several sampling rates are used for the same audio file, an error is raised.
+    """
+    sampling_rates: set[int] = set()
+    for field in fields:
+        if sr := field.source.sampling_rate:
+            sampling_rates.add(sr)
+    if len(sampling_rates) > 1:
+        raise ValueError(
+            f"Cannot read {node=}. The fields use several sampling rates:"
+            f" {sampling_rates}. Reading the same FileObject/FileSet using different"
+            " sampling rate is not possible. You can change the original sampling rate"
+            " of an audio using a Transform operation."
+        )
+    return next(iter(sampling_rates)) if sampling_rates else None
+
+
 def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     """Checks whether at least one field requires listing the line numbers."""
     for field in fields:
@@ -162,8 +183,13 @@ class Read(Operation):
                     encoding_format == EncodingFormat.MP3
                     or encoding_format == EncodingFormat.JPG
                 ):
+                    sampling_rate = _get_sampling_rate(self.node, self.fields)
+                    if sampling_rate:
+                        out = deps.librosa.load(file, sr=sampling_rate)
+                    else:
+                        out = deps.librosa.load(file)
                     return pd.DataFrame({
-                        FileProperty.content: [file.read()],
+                        FileProperty.content: [out],
                     })
             raise ValueError(
                 f"None of the provided encoding formats: {encoding_format} for file"
