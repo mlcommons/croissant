@@ -1211,12 +1211,56 @@ Commonly used atomic data types:
     <td>Describes a float.</td>
   </tr>
   <tr>
+    <td><a href="http://mlcommons.org/schema/Float16">cr:Float16</a></td>
+    <td>Describes a float in half-precision floating-point format.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/Float32">cr:Float32</a></td>
+    <td>Describes a float in single-precision floating-point format.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/Float64">cr:Float64</a></td>
+    <td>Describes a float in double-precision floating-point format.</td>
+  </tr>
+  <tr>
     <td><a href="https://schema.org/Integer">sc:Integer</a></td>
     <td>Describes an integer.</td>
   </tr>
   <tr>
+    <td><a href="http://mlcommons.org/schema/Int8">cr:Int8</a></td>
+    <td>Describes an 8-bit integer.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/Int8">cr:Int16</a></td>
+    <td>Describes an 16-bit integer.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/Int8">cr:Int32</a></td>
+    <td>Describes an 32-bit integer.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/Int8">cr:Int64</a></td>
+    <td>Describes an 64-bit integer.</td>
+  </tr>
+  <tr>
     <td><a href="https://schema.org/Text">sc:Text</a></td>
     <td>Describes a string.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/UInt8">cr:UInt8</a></td>
+    <td>Describes an 8-bit unsigned integer.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/UInt16">cr:UInt16</a></td>
+    <td>Describes an 16-bit unsigned integer.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/UInt32">cr:UInt32</a></td>
+    <td>Describes an 32-bit unsigned integer.</td>
+  </tr>
+  <tr>
+    <td><a href="http://mlcommons.org/schema/UInt64">cr:UInt64</a></td>
+    <td>Describes an 64-bit unsigned integer.</td>
   </tr>
 </table>
 
@@ -1228,8 +1272,8 @@ Other data types commonly used in ML datasets:
     <th>Usage</th>
   </thead>
   <tr>
-    <td><a href="https://schema.org/ImageObject">sc:ImageObject</a></td>
-    <td>Describes a field containing the content of an image (pixels).</td>
+    <td><a href="https://schema.org/AudioObject">cr:AudioObject</a></td>
+    <td>Represents a segment of audio as a digital sound recording. Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
   <tr>
     <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
@@ -1238,6 +1282,10 @@ Other data types commonly used in ML datasets:
  <tr>
     <td><a href="https://schema.org/VideoObject">sc:VideoObject</a></td>
     <td>Describes a field containing the content of a video file.</td>
+  </tr>
+  <tr>
+    <td><a href="https://schema.org/ImageObject">sc:ImageObject</a></td>
+    <td>Describes a field containing the content of an image (pixels).</td>
   </tr>
   <tr>
     <td><a href="http://mlcommons.org/schema/Split">cr:Split</a></td>
@@ -1817,6 +1865,25 @@ Bounding boxes are common annotations in computer vision. They describe imaginar
   }
 }
 ```
+
+
+### AudioObject
+
+Croissant uses Schema.org [AudioObject](https://schema.org/AudioObject) to represent an Audio feature. An AudioObject is a standard feature that represents a segment of audio as a digital sound recording. Croissant provides the audio-specific `cr:samplingRate` attribute, which can be specified at the audio field's `Source`:
+
+```json
+{
+  "@type": "cr:Field",
+  "@id": "recordset/audio",
+  "dataType": "sc:AudioObject",
+  "source": {
+    "fileSet": { "@id": "files" },
+    "extract": { "fileProperty": "content" },
+    "samplingRate": "16000",
+  }
+}
+```
+
 
 ### SegmentationMask
 
