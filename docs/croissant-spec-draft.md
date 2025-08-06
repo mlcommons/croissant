@@ -17,7 +17,8 @@ Authors:
 - Pierre Ruyssen (Google),
 - Costanza Conforti (Google),
 - Michael Kuchnik (Meta),
-- Jos van der Velde (Open ML),
+- Jos van der Velde (OpenML),
+- Joaquin Vanschoren (OpenML),
 - Luis Oala (Dotphoton),
 - Steffen Vogler (Bayer),
 - Mubashara Akthar (King’s College London),
@@ -44,11 +45,11 @@ Croissant provides sufficient information for an ML tool to load a dataset, allo
 
 ![Croissant interoperability](images/cross-product.png 'Croissant interoperability')
 
-**Figure 2:** Croissant metadata helps loading ML datasets into different ML frameworks
+**Figure 2:** Croissant metadata helps load ML datasets into different ML frameworks
 
 Creating or changing the metadata is straightforward. A dataset repository can infer it from existing documentation such as a data card; beyond that, editing Croissant dataset descriptions is also supported through a visual editor and a Python library (**Figure 3**).
 
-![Croissant for dataset creatorst](images/creators.png 'Croissant for dataset creators')
+![Croissant for dataset creators](images/creators.png 'Croissant for dataset creators')
 
 **Figure 3:** Croissant benefits dataset creators by providing a standardized representation to edit and catalog datasets, supported by an editor and Python library. Once a dataset is published with the associated metadata, it can be found by dataset search engines.
 
@@ -191,13 +192,13 @@ Before jumping into the main components of a Croissant dataset, we describe some
 
 ### Namespaces
 
-The Croissant vocabulary is defined in its owned namespace, identified by the IRI:
+The Croissant vocabulary is defined in its own namespace, identified by the IRI:
 
 ```text
 http://mlcommons.org/croissant/
 ```
 
-We generally abbreviated this namespace IRI using the prefix `cr`.
+We generally abbreviate this namespace IRI using the prefix `cr`.
 
 In addition, Croissant relies on the following namespaces:
 
@@ -246,7 +247,7 @@ application/ld+json; profile="http://mlcommons.org/croissant/1.0"
 
 In Croissant datasets, various elements need to be connected to each other. For instance, a `FileObject` may be extracted from another `FileObject`, or a column of a table may reference another table. We therefore need a mechanism to define **identifiers** for parts of a dataset, and to reference them in other places.
 
-We use the standard JSON-LD mechanism for IDs and references, which relies on using the special `@id` property. References to objects are also specified using the `@id` property. They can be differenciated from ID definitions by the fact that no other properties are specified within the same object, e.g., `{"@id": "flores200_dataset.tar.gz"}` is a reference.
+We use the standard JSON-LD mechanism for IDs and references, which relies on using the special `@id` property. References to objects are also specified using the `@id` property. They can be differentiated from ID definitions by the fact that no other properties are specified within the same object, e.g., `{"@id": "flores200_dataset.tar.gz"}` is a reference.
 
 IDs may be specified as short strings, but they are interpreted as IRIs. The "base" IRI is either the URL of the document (when accessed on the Web), or is specified explicitly in the context, via the `@base` property (see [JSON-LD specification](https://www.w3.org/TR/json-ld11/#base-iri)).
 
@@ -342,7 +343,7 @@ The following list of properties from [schema.org](http://schema.org) must be sp
     <td><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#conformsTo">dct:conformsTo</a></td>
     <td><a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
-    <td>Croissant datasets must declare that they conform to the versioned schema, e.g. <a href="http://mlcommons.org/croissant/1.1">http://mlcommons.org/croissant/1.1</a>. In case a dataset conforms to multiple specifications, those can be added in form of a list. </td>
+    <td>Croissant datasets must declare that they conform to the versioned schema, e.g. <a href="http://mlcommons.org/croissant/1.1">http://mlcommons.org/croissant/1.1</a>. In case a dataset conforms to multiple specifications, those can be added in the form of a list. </td>
   </tr>
   <tr>
     <td><a href="http://schema.org/description">description</a></td>
@@ -551,7 +552,7 @@ For live datasets, the Croissant boolean property `isLiveDataset` should be set 
 
 ##### Example 1: Daily refreshes
 
-A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historicallyorganized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
+A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historically organized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
 
 ```text
 stock_data_2000.csv
@@ -1234,6 +1235,10 @@ Other data types commonly used in ML datasets:
     <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
     <td>Describes the coordinates of a bounding box (4-number array). Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
+ <tr>
+    <td><a href="https://schema.org/VideoObject">sc:VideoObject</a></td>
+    <td>Describes a field containing the content of a video file.</td>
+  </tr>
   <tr>
     <td><a href="http://mlcommons.org/schema/Split">cr:Split</a></td>
     <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section "ML-specific features > Splits".</td>
@@ -1282,12 +1287,12 @@ In the following example, the `url` field is expected to be a URL, whose semanti
 
 As mentioned above, Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
 
-More generally, when a `RecordSet`is assigned a `dataType`, some or all of its fields must be mapped to properties associated with the data type. These can be done in two ways:
+More generally, when a `RecordSet`is assigned a `dataType`, some or all of its fields must be mapped to properties associated with the data type. This can be done in two ways:
 
 - Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](http://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates).
 - Or there is an explicit mapping specified on the Field, via the property `equivalentProperty`.
 
-When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the rang of the property (e.g., require the values of latitude and longitude to be of type Float).
+When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
 
 A cities `RecordSet` with fields implicitly mapped to latitude and longitude:
 
@@ -1689,7 +1694,7 @@ For example, the following `RecordSet` defines the "train", "val" and "test" spl
 }
 ```
 
-The example above illustrates the benefit of the `url` field, used to disambiguate the meaning of names possibly designing the same concept (e.g. "train" and "training").
+The example above illustrates the benefit of the `url` field, used to disambiguate the meaning of names possibly designating the same concept (e.g. "train" and "training").
 
 Once a datasets splits have been defined, any `RecordSet` can refer to those using a regular field, as done in the following example, also extracted from the COCO dataset croissant definition:
 
@@ -1714,7 +1719,7 @@ Once a datasets splits have been defined, any `RecordSet` can refer to those usi
 }
 ```
 
-Note that the field here is named "split", but doesn’t need to: the information of this being a ML split comes from the `dataType` of the `RecordSet` it refers to. As one would expect, tools working with the Croissant config format can infer the data files needed for each split. So if a user requests loading only the validation split of the COCO 2014 dataset, the tool working with Croissant knows to download the file "val2014.zip", but not "train2014.zip" and "test2014.zip".
+Note that the field here is named "split", but doesn’t need to: the fact that this is an ML split comes from the `dataType` of the `RecordSet` it refers to. As one would expect, tools working with the Croissant config format can infer the data files needed for each split. So if a user requests loading only the validation split of the COCO 2014 dataset, the tool working with Croissant knows to download the file "val2014.zip", but not "train2014.zip" and "test2014.zip".
 
 ### Label Data
 
@@ -1779,6 +1784,22 @@ The `cr:Label` data type can also be applied to a complex Field that contains mu
 }
 ```
 
+### VideoObject
+
+Croissant uses Schema.org [VideoObject](https://schema.org/VideoObject) to represent a Video feature, as in the example:
+
+```json
+{
+  "@type": "cr:Field",
+  "@id": "recordset/video",
+  "dataType": "sc:VideoObject",
+  "source": {
+    "fileSet": { "@id": "parquet-files-for-recordset" },
+    "extract": { "column": "video" },
+  }
+}
+```
+
 ### BoundingBox
 
 Bounding boxes are common annotations in computer vision. They describe imaginary rectangles that outline objects or groups of objects in images or videos. Croissant defines the type `cr:BoundingBox` that interprets any 4-float array as a bounding box. In order to interpret the values, Croissant supports adding a format specification using the [Keras bounding box format](https://keras.io/api/keras_cv/bounding_box/formats/), specified through the property `cr:format`.
@@ -1799,7 +1820,7 @@ Bounding boxes are common annotations in computer vision. They describe imaginar
 
 ### SegmentationMask
 
-Segmentation masks are common annotations in computer vision. They describe pixel-perfect zones that outline objects or groups of objects in images or videos. Croissant defines `cr:SegmentationMask` with two manners to describe them:
+Segmentation masks are common annotations in computer vision. They describe pixel-perfect zones that outline objects or groups of objects in images or videos. Croissant defines `cr:SegmentationMask` with two ways to describe them:
 
 Segmentation mask as a polygon:
 
