@@ -5,12 +5,13 @@ This is a list of how-to's for the `Croissant` format. Contributions are welcome
 ## General 
 
 
-* Working with data: How to work with different data formats,
-  extract information, apply transformations, parse and format data (WIP).
-* Joining/Flattening: How to join, flatten, denormalize data
-  across structured and unstructured sources (WIP).
-* Semantic types: How to use existing semantic types, or
-  define new ones (WIP).
+* [Working with data](data-munging.md): How to work with different data formats,
+  extract information, apply transformations, parse and format data.
+* [Joining/Flattening](data-joining.md): How to join, flatten, denormalize data
+  across structured and unstructured sources.
+* [Semantic types](semantic-types.md): How to use existing semantic types, or
+  define new ones.
+* [CKAN integration](ckan.md): How to serve Croissant metadata from a CKAN instance.
 
 ## ML semantics
 
