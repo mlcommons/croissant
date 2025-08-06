@@ -201,7 +201,7 @@ class Node:
         """
         if self.ctx.is_v0():
             if len(self.parents) <= 1:
-                return self.name or ""
+                return f"{self.name}" or ""
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
             return self.id
@@ -279,10 +279,12 @@ class Node:
     def validate_name(self):
         """Validates the name."""
         name = self.name
-        if not isinstance(name, (str, dict)):
+        if not self.ctx.is_v1_1() and not isinstance(name, str):
+            self.add_error(f"The name should be a string. Got: {type(name)}.")
+        elif not isinstance(name, (str, dict)):
             self.add_error(f"The name should be a string or dict. Got: {type(name)}.")
             return
-        if isinstance(name, dict):
+        if self.ctx.is_v1_1() and isinstance(name, dict):
             if not all(isinstance(k, str) for k in name):
                 self.add_error("The name dict keys should all be BCP-47 strings.")
             if not all(isinstance(v, str) for v in name.values()):

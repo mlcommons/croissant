@@ -149,7 +149,9 @@ def box_singleton_list(element: Any) -> list[Any] | None:
         return [element]
 
 
-def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
+def recursively_populate_jsonld(
+    entry_node: Json, id_to_node: dict[str, Json], context: dict[str, Json]
+) -> Any:
     """Changes in place `entry_node` with its children."""
     if "@value" in entry_node:
         if entry_node.get("@type") == namespace.RDF.JSON:
@@ -162,7 +164,7 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
         node_id = entry_node["@id"]
         if node_id in id_to_node:
             entry_node = id_to_node[node_id]
-            return recursively_populate_jsonld(entry_node, id_to_node)
+            return recursively_populate_jsonld(entry_node, id_to_node, context)
         else:
             return entry_node
     elif isinstance(entry_node, (str, float, int, bool)):
@@ -178,11 +180,15 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
         elif isinstance(value, list):
             del entry_node[key]
             if key in ('https://schema.org/name', 'https://schema.org/description'):
-                entry_node[term.URIRef(key)] = {
-                    d['@language']: d['@value'] for d in value
-                }
+                if len(value) == 1 and value[0]['@language'] == context['@language']:
+                    value = value[0]['@value']
+                else:
+                    value = {d['@language']: d['@value'] for d in value}
+                entry_node[term.URIRef(key)] = value
                 continue
-            value = [recursively_populate_jsonld(child, id_to_node) for child in value]
+            value = [
+                recursively_populate_jsonld(child, id_to_node, context) for child in value
+            ]
             node_type = entry_node.get("@type", "")
             key, node_type = term.URIRef(key), term.URIRef(node_type)
             if (key, node_type) in _KEYS_WITH_LIST:
@@ -242,7 +248,7 @@ def expand_jsonld(data: Json, ctx: Context) -> Json:
     for node in nodes:
         node_id = node.get("@id")
         id_to_node[node_id] = node
-    recursively_populate_jsonld(entry_node, id_to_node)
+    recursively_populate_jsonld(entry_node, id_to_node, context)
     entry_node["@context"] = make_context(**context)
     return entry_node
 
