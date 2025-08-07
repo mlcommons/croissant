@@ -284,11 +284,6 @@ class Node:
         elif not isinstance(name, (str, dict)):
             self.add_error(f"The name should be a string or dict. Got: {type(name)}.")
             return
-        if self.ctx.is_v1_1() and isinstance(name, dict):
-            if not all(isinstance(k, str) for k in name):
-                self.add_error("The name dict keys should all be BCP-47 strings.")
-            if not all(isinstance(v, str) for v in name.values()):
-                self.add_error("The name dict values should all be strings.")
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
             # is a mandatory parameter for Croissant 0.8
@@ -449,6 +444,8 @@ def _value_from_input_types(
     """Retrieves the value based on the JsonldField."""
     if value is None:
         return None
+    if isinstance(value, dict) and field.cardinality == "LANGUAGE-TAGGED":
+        return value
     input_types = field.input_types
     if not input_types:
         # This is a problem in mlcroissant, so we raise an error:
@@ -460,8 +457,6 @@ def _value_from_input_types(
             actual_jsonld_type = value.get("@type")
             if actual_jsonld_type == jsonld_type:
                 return input_type.from_jsonld(ctx, value)
-        elif isinstance(value, dict) and field.cardinality == "LANGUAGE-TAGGED":
-            return value
         # ...or it's a basic int/str/bool/etc type
         else:
             matching_type = MATCHING_TYPES.get(input_type)

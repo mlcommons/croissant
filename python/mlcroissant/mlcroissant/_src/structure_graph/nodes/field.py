@@ -57,7 +57,8 @@ class Field(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_ARRAY_SHAPE,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
@@ -102,7 +103,8 @@ class Field(Node):
         url=constants.ML_COMMONS_IS_ENUMERATION,
         versions=[CroissantVersion.V_0_8],
     )
-    name: str = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default="",
         description="The name of the Field.",
         input_types=[SDO.Text],

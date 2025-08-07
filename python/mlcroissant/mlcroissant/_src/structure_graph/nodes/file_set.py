@@ -30,7 +30,8 @@ class FileSet(Node):
         ],
         url=SDO.containedIn,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         input_types=[SDO.Text],
         url=SDO.description,
@@ -65,6 +66,7 @@ class FileSet(Node):
         url=lambda ctx: constants.ML_COMMONS_INCLUDES(ctx),
     )
     name: str = mlc_dataclasses.jsonld_field(
+        cardinality="ONE",  # a file name is not multilingual
         default="",
         description=(
             "The name of the file.  As much as possible, the name should reflect the"

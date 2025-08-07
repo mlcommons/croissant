@@ -61,7 +61,8 @@ class RecordSet(Node):
         to_jsonld=data_types_to_jsonld,
         url=constants.ML_COMMONS_DATA_TYPE,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
@@ -92,7 +93,8 @@ class RecordSet(Node):
         to_jsonld=formatted_uuid_to_json,
         url=constants.SCHEMA_ORG_KEY,
     )
-    name: str = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default="",
         description="The name of the RecordSet.",
         input_types=[SDO.Text],
