@@ -182,6 +182,7 @@ def recursively_populate_jsonld(
             if key in ('https://schema.org/name', 'https://schema.org/description'):
                 if (
                     len(value) == 1 and isinstance(value[0], dict)
+                    and '@value' in value[0]
                     and value[0].get('@language', context['@language'])
                     == context['@language']
                 ):
