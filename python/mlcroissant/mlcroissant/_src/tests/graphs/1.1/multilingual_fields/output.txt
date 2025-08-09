@@ -1,0 +1,5 @@
+Found the following 3 error(s) during the validation:
+  -  `description` should have type https://schema.org/Text, but got float
+  -  `description` should have type https://schema.org/Text, but got int
+  -  `name` should have type https://schema.org/Text, but got bool
+

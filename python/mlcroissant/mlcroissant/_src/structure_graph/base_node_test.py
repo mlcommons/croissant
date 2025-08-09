@@ -60,6 +60,11 @@ def test_there_exists_at_least_one_property():
             ["The name should be a string. Got: <class 'dict'>."],
             CroissantVersion.V_1_0,
         ],
+        [
+            False,
+            ["The name should be a string or dict. Got: <class 'bool'>."],
+            CroissantVersion.V_1_1,
+        ],
     ],
 )
 def test_validate_name(name, expected_errors, conforms_to):

@@ -90,7 +90,8 @@ class Metadata(Node):
         input_types=[SDO.Date, SDO.DateTime],
         url=constants.SCHEMA_ORG_DATE_PUBLISHED,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         description="Description of the dataset.",
         input_types=[SDO.Text],
@@ -124,7 +125,8 @@ class Metadata(Node):
         input_types=[CreativeWork, SDO.Text, SDO.URL],
         url=constants.SCHEMA_ORG_LICENSE,
     )
-    name: str = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default="",
         description="The name of the dataset.",
         input_types=[SDO.Text],
