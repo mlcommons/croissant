@@ -242,7 +242,8 @@ class EncodingFormat:
     TSV = "text/tab-separated-values"
     TAR = "application/x-tar"
     ZIP = "application/zip"
-
+    PNG = "image/png"
+    TIF = "image/tiff"
 
 class DataType:
     """Data types supported by Croissant."""
