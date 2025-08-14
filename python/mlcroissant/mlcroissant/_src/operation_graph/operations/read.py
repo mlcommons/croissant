@@ -181,7 +181,6 @@ class Read(Operation):
                         })
                 elif (
                     encoding_format == EncodingFormat.MP3
-                    or encoding_format == EncodingFormat.JPG
                 ):
                     sampling_rate = _get_sampling_rate(self.node, self.fields)
                     if sampling_rate:
@@ -190,6 +189,14 @@ class Read(Operation):
                         out = deps.librosa.load(file)
                     return pd.DataFrame({
                         FileProperty.content: [out],
+                    })
+                elif encoding_format in {EncodingFormat.TIF, EncodingFormat.JPG, EncodingFormat.PNG}:
+                    try:
+                        img = deps.PIL_Image.open(file).convert("RGB")
+                    except ModuleNotFoundError:
+                        raise NotImplementedError("Pillow is not installed and is a dependency")
+                    return pd.DataFrame({
+                        FileProperty.content: [img]
                     })
             raise ValueError(
                 f"None of the provided encoding formats: {encoding_format} for file"
