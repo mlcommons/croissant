@@ -11,7 +11,6 @@ from etils import epath
 import numpy as np
 import pandas as pd
 
-from PIL import Image
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
@@ -192,7 +191,10 @@ class Read(Operation):
                         FileProperty.content: [out],
                     })
                 elif encoding_format in {EncodingFormat.TIF, EncodingFormat.JPG, EncodingFormat.PNG}:
-                    img = Image.open(file).convert("RGB")
+                    try:
+                        img = deps.PIL_Image.open(file).convert("RGB")
+                    except ModuleNotFoundError:
+                        raise NotImplementedError("Pillow is not installed and is a dependency")
                     return pd.DataFrame({
                         FileProperty.content: [img]
                     })
