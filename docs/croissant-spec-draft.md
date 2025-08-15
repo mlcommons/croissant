@@ -1499,14 +1499,14 @@ Annotations are a general mechanism to attach additional information to other pi
 
 Croissant defines annotations as a special kind of field that annotates its container. Annotations can be specified both at the field and at the RecordSet level.
 
-Consider the following example, in which the field-level annotation `images/label` applies to the field `images/image`. 
+Consider the following example, in which the field-level annotation `images/image/label` applies to the field `images/image`. 
 
 ```json
 {"@type": "cr:RecordSet", "@id": "images",
   "field": [
     { "@type": "cr:Field", "@id": "images/image", ... ,
       "annotation": {
-        "@type": "cr:Field", "@id": "images/label", 
+        "@type": "cr:Field", "@id": "images/image/label", 
         "dataType": ["sc:Text", "cr:Label"]
       }
     }
