@@ -152,9 +152,11 @@ class Read(Operation):
                         return parse_json_content(json_content, self.fields)
                     else:
                         # Raw files are returned as a one-line pd.DataFrame.
-                        return pd.DataFrame({
-                            FileProperty.content: [json_content],
-                        })
+                        return pd.DataFrame(
+                            {
+                                FileProperty.content: [json_content],
+                            }
+                        )
                 elif encoding_format == EncodingFormat.JSON_LINES:
                     return pd.read_json(file, lines=True)
                 elif encoding_format == EncodingFormat.PARQUET:
@@ -176,39 +178,43 @@ class Read(Operation):
                             filepath, header=None, names=[FileProperty.lines]
                         )
                     else:
-                        return pd.DataFrame({
-                            FileProperty.content: [file.read()],
-                        })
-                elif (
-                    encoding_format == EncodingFormat.MP3
-                ):
+                        return pd.DataFrame(
+                            {
+                                FileProperty.content: [file.read()],
+                            }
+                        )
+                elif encoding_format == EncodingFormat.MP3:
                     sampling_rate = _get_sampling_rate(self.node, self.fields)
                     if sampling_rate:
                         out = deps.librosa.load(file, sr=sampling_rate)
                     else:
                         out = deps.librosa.load(file)
-                    return pd.DataFrame({
-                        FileProperty.content: [out],
-                    })
+                    return pd.DataFrame(
+                        {
+                            FileProperty.content: [out],
+                        }
+                    )
                 elif encoding_format in {EncodingFormat.JPG, EncodingFormat.PNG}:
                     try:
                         img = deps.PIL_Image.open(file).convert("RGB")
                     except ModuleNotFoundError:
-                        raise NotImplementedError("Pillow is not installed and is a dependency")
-                    return pd.DataFrame({
-                        FileProperty.content: [img]
-                    })
+                        raise NotImplementedError(
+                            "Pillow is not installed and is a dependency"
+                        )
+                    return pd.DataFrame({FileProperty.content: [img]})
                 elif encoding_format == EncodingFormat.TIF:
                     try:
                         arr = deps.tifffile.imread(file)
                         arr_min, arr_max = arr.min(), arr.max()
                         arr_norm = (arr - arr_min) / (arr_max - arr_min)
-                        pil_img = deps.PIL_Image.fromarray((arr_norm * 255).astype("uint8"))
+                        pil_img = deps.PIL_Image.fromarray(
+                            (arr_norm * 255).astype("uint8")
+                        )
                     except ModuleNotFoundError:
-                        raise NotImplementedError("Pillow or tifffile is not installed and is a dependency")
-                    return pd.DataFrame({
-                        FileProperty.content: [pil_img]
-                    })
+                        raise NotImplementedError(
+                            "Pillow or tifffile is not installed and is a dependency"
+                        )
+                    return pd.DataFrame({FileProperty.content: [pil_img]})
             raise ValueError(
                 f"None of the provided encoding formats: {encoding_format} for file"
                 f" {filepath} returned a valid pandas dataframe."

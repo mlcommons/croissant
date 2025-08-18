@@ -106,4 +106,5 @@ class OptionalDependencies(object):
         """Cached tifffle module."""
         return _try_import("tifffile", package_name="Tifffile")
 
+
 deps = OptionalDependencies
