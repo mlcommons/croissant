@@ -190,13 +190,24 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [out],
                     })
-                elif encoding_format in {EncodingFormat.TIF, EncodingFormat.JPG, EncodingFormat.PNG}:
+                elif encoding_format in {EncodingFormat.JPG, EncodingFormat.PNG}:
                     try:
                         img = deps.PIL_Image.open(file).convert("RGB")
                     except ModuleNotFoundError:
                         raise NotImplementedError("Pillow is not installed and is a dependency")
                     return pd.DataFrame({
                         FileProperty.content: [img]
+                    })
+                elif encoding_format == EncodingFormat.TIF:
+                    try:
+                        arr = deps.tifffile.imread(file)
+                        arr_min, arr_max = arr.min(), arr.max()
+                        arr_norm = (arr - arr_min) / (arr_max - arr_min)
+                        pil_img = deps.PIL_Image.fromarray((arr_norm * 255).astype("uint8"))
+                    except ModuleNotFoundError:
+                        raise NotImplementedError("Pillow or tifffile is not installed and is a dependency")
+                    return pd.DataFrame({
+                        FileProperty.content: [pil_img]
                     })
             raise ValueError(
                 f"None of the provided encoding formats: {encoding_format} for file"
