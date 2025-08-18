@@ -152,11 +152,9 @@ class Read(Operation):
                         return parse_json_content(json_content, self.fields)
                     else:
                         # Raw files are returned as a one-line pd.DataFrame.
-                        return pd.DataFrame(
-                            {
-                                FileProperty.content: [json_content],
-                            }
-                        )
+                        return pd.DataFrame({
+                            FileProperty.content: [json_content],
+                        })
                 elif encoding_format == EncodingFormat.JSON_LINES:
                     return pd.read_json(file, lines=True)
                 elif encoding_format == EncodingFormat.PARQUET:
@@ -178,22 +176,18 @@ class Read(Operation):
                             filepath, header=None, names=[FileProperty.lines]
                         )
                     else:
-                        return pd.DataFrame(
-                            {
-                                FileProperty.content: [file.read()],
-                            }
-                        )
+                        return pd.DataFrame({
+                            FileProperty.content: [file.read()],
+                        })
                 elif encoding_format == EncodingFormat.MP3:
                     sampling_rate = _get_sampling_rate(self.node, self.fields)
                     if sampling_rate:
                         out = deps.librosa.load(file, sr=sampling_rate)
                     else:
                         out = deps.librosa.load(file)
-                    return pd.DataFrame(
-                        {
-                            FileProperty.content: [out],
-                        }
-                    )
+                    return pd.DataFrame({
+                        FileProperty.content: [out],
+                    })
                 elif encoding_format in {EncodingFormat.JPG, EncodingFormat.PNG}:
                     try:
                         img = deps.PIL_Image.open(file).convert("RGB")

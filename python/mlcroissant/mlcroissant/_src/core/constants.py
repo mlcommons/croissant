@@ -245,6 +245,7 @@ class EncodingFormat:
     PNG = "image/png"
     TIF = "image/tiff"
 
+
 class DataType:
     """Data types supported by Croissant."""
 
