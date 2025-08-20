@@ -235,7 +235,7 @@ def _check_types(cls_or_instance, field: dataclasses.Field, metadata: Metadata) 
     if metadata["cardinality"] == "MANY":
         expected_type = list[expected_type]  # type: ignore
     elif metadata["cardinality"] == "LANGUAGE-TAGGED":
-        expected_type = expected_type | dict[str, expected_type]
+        expected_type = expected_type | dict[str, expected_type]  # type: ignore
     if field.default != dataclasses.MISSING:
         expected_type = Union[expected_type, type(field.default)]  # type: ignore
 

@@ -64,7 +64,7 @@ class Node:
 
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
-    name: str | None = None
+    name: str | dict[str, str] | None = None
     parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 

@@ -144,9 +144,9 @@ def _extract_lines(row: pd.Series) -> pd.Series:
     """Reads a file line-by-line and outputs a named pd.Series of the lines."""
     path = epath.Path(row[FileProperty.filepath])
     lines = path.open("rb").read().splitlines()
-    return pd.Series({
-        **row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))
-    })
+    return pd.Series(
+        {**row, FileProperty.lines: lines, FileProperty.lineNumbers: range(len(lines))}
+    )
 
 
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
@@ -242,6 +242,7 @@ class ReadFields(Operation):
                     value = _cast_value(self.node.ctx, value, field.data_type)
 
                 if self.node.ctx.is_v0():
+                    assert isinstance(field.name, str), "v0 only supports str names"
                     result[field.name] = value
                 else:
                     if field in self.node.fields:
