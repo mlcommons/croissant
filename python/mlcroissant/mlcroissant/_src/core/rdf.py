@@ -34,8 +34,9 @@ def make_context(ctx=None, **kwargs):
         "data": {"@id": "cr:data", "@type": "@json"},
         "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
         "dct": "http://purl.org/dc/terms/",
-        "description": {"@container": "@language"
-            } if ctx is not None and ctx.is_v1_1() else None,
+        "description": {"@container": "@language"}
+        if ctx is not None and ctx.is_v1_1()
+        else None,
         "examples": {"@id": "cr:examples", "@type": "@json"},
         "extract": "cr:extract",
         "field": "cr:field",
@@ -49,8 +50,9 @@ def make_context(ctx=None, **kwargs):
         "jsonPath": "cr:jsonPath",
         "key": "sc:key" if ctx is not None and ctx.is_v0() else "cr:key",
         "md5": "sc:md5" if ctx is not None and ctx.is_v0() else "cr:md5",
-        "name": {"@container": "@language"
-            } if ctx is not None and ctx.is_v1_1() else None,
+        "name": {"@container": "@language"}
+        if ctx is not None and ctx.is_v1_1()
+        else None,
         "parentField": "cr:parentField",
         "path": "cr:path",
         "recordSet": "cr:recordSet",

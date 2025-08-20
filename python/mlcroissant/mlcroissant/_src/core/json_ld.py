@@ -179,20 +179,22 @@ def recursively_populate_jsonld(
             entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
             del entry_node[key]
-            if key in ('https://schema.org/name', 'https://schema.org/description'):
+            if key in ("https://schema.org/name", "https://schema.org/description"):
                 if (
-                    len(value) == 1 and isinstance(value[0], dict)
-                    and '@value' in value[0]
-                    and value[0].get('@language', context['@language'])
-                    == context['@language']
+                    len(value) == 1
+                    and isinstance(value[0], dict)
+                    and "@value" in value[0]
+                    and value[0].get("@language", context["@language"])
+                    == context["@language"]
                 ):
-                    value = value[0]['@value']
-                elif all(isinstance(v, dict) and '@language' in v for v in value):
-                    value = {d['@language']: d['@value'] for d in value}
+                    value = value[0]["@value"]
+                elif all(isinstance(v, dict) and "@language" in v for v in value):
+                    value = {d["@language"]: d["@value"] for d in value}
                 entry_node[term.URIRef(key)] = value
                 continue
             value = [
-                recursively_populate_jsonld(child, id_to_node, context) for child in value
+                recursively_populate_jsonld(child, id_to_node, context)
+                for child in value
             ]
             node_type = entry_node.get("@type", "")
             key, node_type = term.URIRef(key), term.URIRef(node_type)
