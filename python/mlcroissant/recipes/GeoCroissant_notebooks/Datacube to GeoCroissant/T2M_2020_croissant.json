@@ -1,0 +1,534 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/geocroissant/",
+    "dct": "http://purl.org/dc/terms/"
+  },
+  "@type": "Dataset",
+  "@id": "nasa_power_t2m_2020",
+  "name": "NASA-POWER-T2M-Monthly-Time-Series-2020",
+  "description": "Monthly time series of Temperature at 2 Meters (T2M) for 2020 from NASA POWER dataset",
+  "version": "1.0.0",
+  "license": "CC-BY-4.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citation": "NASA POWER Project. (2020). Prediction Of Worldwide Energy Resource (POWER) Project. NASA Langley Research Center.",
+  "creator": {
+    "@type": "Person",
+    "name": "Bradley Macpherson",
+    "email": "bradley.macpherson@nasa.gov"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Paul Stackhouse",
+    "email": "paul.w.stackhouse@nasa.gov"
+  },
+  "institution": "NASA Langley Research Center (LaRC)",
+  "project": "Prediction Of Worldwide Energy Resource (POWER)",
+  "keywords": [
+    "Temperature",
+    "Climate",
+    "NASA",
+    "POWER",
+    "2020",
+    "Monthly"
+  ],
+  "category": "Climate Data - Temperature Time Series",
+  "domain": "Earth Science",
+  "geocr:BoundingBox": [
+    -180.0,
+    -90.0,
+    179.375,
+    90.0
+  ],
+  "coordinateSystem": {
+    "type": "geographic",
+    "crs": "EPSG:4326",
+    "spatialResolution": {
+      "lat": 0.5,
+      "lon": 0.625
+    }
+  },
+  "dct:temporal": {
+    "startDate": "2020-01-01",
+    "endDate": "2020-12-31",
+    "resolution": "P1M",
+    "duration": "P1Y"
+  },
+  "dataQuality": {
+    "processingLevel": "4",
+    "temporalCompleteness": "Monthly",
+    "spatialCompleteness": "Global",
+    "significantDigits": 2
+  },
+  "distribution": [
+    {
+      "@type": "https://schema.org/FileObject",
+      "@id": "zarr-store-t2m-2020",
+      "name": "Zarr-Store-T2M-2020",
+      "description": "Zarr datacube for T2M in 2020",
+      "contentUrl": "s3://nasa-power/merra2/temporal/power_merra2_monthly_temporal_utc.zarr/",
+      "encodingFormat": "application/x-zarr",
+      "size": "4.71 GB",
+      "accessMethod": "HTTP/HTTPS",
+      "md5": "4ca24277afe104204ad95719bf6ceb40",
+      "sha256": "5ca33906836feefa93a173ba1c2dd898beaacdeda4d9ec36c4d3dae587a61e48"
+    }
+  ],
+  "references": [
+    "https://power.larc.nasa.gov"
+  ],
+  "additionalProperty": [
+    {
+      "name": "source",
+      "value": "Prediction Of Worldwide Energy Resource (POWER)"
+    },
+    {
+      "name": "variable",
+      "value": "T2M"
+    },
+    {
+      "name": "year",
+      "value": "2020"
+    },
+    {
+      "name": "months_count",
+      "value": "12"
+    },
+    {
+      "name": "data_type",
+      "value": "Temperature"
+    }
+  ],
+  "dateModified": "2025-07-13T16:22:34.605930Z",
+  "datePublished": "2024-08-19T08:32:59Z",
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "name": "t2m_monthly_time_series_2020",
+      "field": [
+        {
+          "name": "T2M",
+          "description": "Temperature at 2 Meters",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "12",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "size_mb": "9.98 MB"
+        },
+        {
+          "name": "T2M_01",
+          "description": "Temperature at 2 Meters for January 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 1,
+          "month_name": "January",
+          "start_date": "2020-01-01",
+          "end_date": "2020-01-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_02",
+          "description": "Temperature at 2 Meters for February 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 2,
+          "month_name": "February",
+          "start_date": "2020-02-01",
+          "end_date": "2020-02-29",
+          "days_in_month": 29,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_03",
+          "description": "Temperature at 2 Meters for March 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 3,
+          "month_name": "March",
+          "start_date": "2020-03-01",
+          "end_date": "2020-03-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_04",
+          "description": "Temperature at 2 Meters for April 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 4,
+          "month_name": "April",
+          "start_date": "2020-04-01",
+          "end_date": "2020-04-30",
+          "days_in_month": 30,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_05",
+          "description": "Temperature at 2 Meters for May 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 5,
+          "month_name": "May",
+          "start_date": "2020-05-01",
+          "end_date": "2020-05-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_06",
+          "description": "Temperature at 2 Meters for June 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 6,
+          "month_name": "June",
+          "start_date": "2020-06-01",
+          "end_date": "2020-06-30",
+          "days_in_month": 30,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_07",
+          "description": "Temperature at 2 Meters for July 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 7,
+          "month_name": "July",
+          "start_date": "2020-07-01",
+          "end_date": "2020-07-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_08",
+          "description": "Temperature at 2 Meters for August 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 8,
+          "month_name": "August",
+          "start_date": "2020-08-01",
+          "end_date": "2020-08-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_09",
+          "description": "Temperature at 2 Meters for September 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 9,
+          "month_name": "September",
+          "start_date": "2020-09-01",
+          "end_date": "2020-09-30",
+          "days_in_month": 30,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_10",
+          "description": "Temperature at 2 Meters for October 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 10,
+          "month_name": "October",
+          "start_date": "2020-10-01",
+          "end_date": "2020-10-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_11",
+          "description": "Temperature at 2 Meters for November 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 11,
+          "month_name": "November",
+          "start_date": "2020-11-01",
+          "end_date": "2020-11-30",
+          "days_in_month": 30,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "T2M_12",
+          "description": "Temperature at 2 Meters for December 2020",
+          "dataType": "float",
+          "units": "C",
+          "shape": [
+            "1",
+            "361",
+            "576"
+          ],
+          "dimensions": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "valid_min": -125.0,
+          "valid_max": 80.0,
+          "standard_name": "Temperature_at_2_Meters",
+          "definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "status": "official",
+          "significant_digits": 2,
+          "cell_methods": "time: mean",
+          "month": 12,
+          "month_name": "December",
+          "start_date": "2020-12-01",
+          "end_date": "2020-12-31",
+          "days_in_month": 31,
+          "size_mb": "0.83 MB"
+        },
+        {
+          "name": "lat",
+          "description": "Coordinate: lat",
+          "dataType": "float",
+          "shape": [
+            "361"
+          ],
+          "size": 361,
+          "values_sample": [
+            -90.0,
+            -89.5,
+            -89.0,
+            -88.5,
+            -88.0
+          ]
+        },
+        {
+          "name": "lon",
+          "description": "Coordinate: lon",
+          "dataType": "float",
+          "shape": [
+            "576"
+          ],
+          "size": 576,
+          "values_sample": [
+            -180.0,
+            -179.375,
+            -178.75,
+            -178.125,
+            -177.5
+          ]
+        },
+        {
+          "name": "time",
+          "description": "Coordinate: time",
+          "dataType": "string",
+          "shape": [
+            "12"
+          ],
+          "size": 12,
+          "values_sample": [
+            1580428800000000000,
+            1582934400000000000,
+            1585612800000000000,
+            1588204800000000000,
+            1590883200000000000
+          ]
+        }
+      ]
+    }
+  ]
+}
