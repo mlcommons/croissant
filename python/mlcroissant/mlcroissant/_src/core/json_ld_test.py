@@ -5,9 +5,10 @@ import json
 import pytest
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.datasets import Dataset
-from mlcroissant._src.core.context import CroissantVersion, Context
 
 
 # If this test fails, you probably manually updated a dataset in datasets/.
