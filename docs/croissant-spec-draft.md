@@ -930,7 +930,7 @@ A `Field` represents one or more properties of a `RecordSet`, such as a column o
     <td>parentField</td>
     <td><code>Field</code><a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
-    <td>A list of references to one or more <code>Field</code>s. A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>. Missing or circular references should result in a warning.</td>
+    <td>A list of references to one or more <code>Field</code>s. A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>. Missing or circular references should result in an error.</td>
   </tr>
   <tr>
     <td>annotation</td>
