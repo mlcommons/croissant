@@ -237,6 +237,17 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
     )
 
 
+# Hermetic test cases for croissant 1.1 only.
+@pytest.mark.parametrize(
+    ["dataset_name", "record_set_name", "num_records"],
+    [
+        ["recipes/minimal_multilingual.json", "examples", -1],
+    ],
+)
+def test_hermetic_loading_1_1(dataset_name, record_set_name, num_records):
+    load_records_and_test_equality("1.1", dataset_name, record_set_name, num_records)
+
+
 @parametrize_version()
 def test_raises_when_the_record_set_does_not_exist(version):
     dataset_folder = constants.DATASETS_FOLDER / version / "titanic"
