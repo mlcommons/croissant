@@ -3,7 +3,7 @@
 Version 1.1 (draft)
 
 **This is a draft of the Croissant 1.1 specification. This document is a work in progress.
- For the latest official specification, please see the [Croissant 1.0 specification](https://http://mlcommons.org/croissant/1.0).**
+ For the latest official specification, please see the [Croissant 1.0 specification](http://mlcommons.org/croissant/1.0).**
 
 <!-- Published:  -->
 
@@ -55,7 +55,7 @@ Creating or changing the metadata is straightforward. A dataset repository can i
 
 ### Responsible AI
 
-As AI advances at rapid speed there is increased recognition among researchers, practitioners and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://link.springer.com/book/10.1007/978-3-030-30371-6). One of the main instruments to operationalise responsible AI (RAI) is dataset documentation.
+As AI advances at rapid speed there is increased recognition among researchers, practitioners and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://doi.org/10.1007/978-3-030-30371-6). One of the main instruments to operationalise responsible AI (RAI) is dataset documentation.
 
 This is how Croissant helps address RAI:
 
@@ -85,7 +85,7 @@ Croissant metadata is encoded in JSON-LD.
 {
   "@context": {
     "@language": "en",
-    "@vocab": "https://schema.org/"
+    "@vocab": "http://schema.org/"
   },
   "@type": "sc:Dataset",
   "name": "simple-pass",
@@ -406,7 +406,7 @@ These [schema.org](http://schema.org) properties are recommended for every Crois
   <tr>
     <td><a href="http://schema.org/keywords">keywords</a></td>
     <td>
-      <a href="https://schema.org/DefinedTerm">DefinedTerm</a><br>
+      <a href="http://schema.org/DefinedTerm">DefinedTerm</a><br>
       <a href="http://schema.org/Text">Text</a><br>
       <a href="http://schema.org/URL">URL</a>
     </td>
@@ -467,8 +467,8 @@ These [schema.org](http://schema.org) properties are recommended for every Crois
   <tr>
     <td><a href="http://schema.org/inLanguage">inLanguage</a></td>
     <td>
-      <a href="https://schema.org/Language">Language</a><br>
-      <a href="https://schema.org/Text">Text</a>
+      <a href="http://schema.org/Language">Language</a><br>
+      <a href="http://schema.org/Text">Text</a>
     </td>
     <td>MANY</td>
     <td>The language(s) of the content of the dataset.</td>
@@ -609,37 +609,37 @@ Most of the important properties needed to describe a `FileObject` are defined i
     <th>Description</th>
   </thead>
   <tr>
-    <td><a href="https://schema.org/name">sc:name</a></td>
+    <td><a href="http://schema.org/name">sc:name</a></td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>The name of the file. As much as possible, the name should reflect the name of the file as downloaded, including the file extension. e.g. "images.zip".</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/contentUrl">sc:contentUrl</a></td>
+    <td><a href="http://schema.org/contentUrl">sc:contentUrl</a></td>
     <td><a href="http://schema.org/URL">URL</a></td>
     <td>ONE</td>
     <td>Actual bytes of the media object, for example the image file or video file.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/contentSize">sc:contentSize</a></td>
+    <td><a href="http://schema.org/contentSize">sc:contentSize</a></td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>File size in (mega/kilo/…)bytes. Defaults to bytes if a unit is not specified.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/encodingFormat">sc:encodingFormat</a></td>
+    <td><a href="http://schema.org/encodingFormat">sc:encodingFormat</a></td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>MANY</td>
     <td>The formats of the file, given as a mime type. Unregistered or niche encoding and file formats can be indicated instead via the most appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/sameAs">sc:sameAs</a></td>
+    <td><a href="http://schema.org/sameAs">sc:sameAs</a></td>
     <td><a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>URL (or local name) of a FileObject with the same content, but in a different format.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/sha256">sc:sha256</a></td>
+    <td><a href="http://schema.org/sha256">sc:sha256</a></td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
     <td>Checksum for the file contents.</td>
@@ -1016,7 +1016,7 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
 
 `RecordSet`s specify where to get their data via the `dataSource` property of Field. `DataSource` is the class describing the data that can be extracted from files to populate a `RecordSet`. This class should be used when the data coming from the source needs to be transformed or formatted to be included in the ML dataset; otherwise a simple `Reference` can be used instead to point to the source.
 
-`DataSource` is a subclassOf: [sc:Intangible](https://schema.org/Intangible) and defines the following properties:
+`DataSource` is a subclassOf: [sc:Intangible](http://schema.org/Intangible) and defines the following properties:
 
 <table>
   <thead>
@@ -1191,31 +1191,31 @@ Commonly used atomic data types:
     <th>Usage</th>
   </thead>
   <tr>
-    <td><a href="https://schema.org/Boolean">sc:Boolean</a></td>
+    <td><a href="http://schema.org/Boolean">sc:Boolean</a></td>
     <td>Describes a boolean.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/Date">sc:Date</a></td>
+    <td><a href="http://schema.org/Date">sc:Date</a></td>
     <td>Describes a date.</td>
   </tr>
  <tr>
-    <td><a href="https://schema.org/Time">sc:Time</a></td>
+    <td><a href="http://schema.org/Time">sc:Time</a></td>
     <td>Describes a time.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/DateTime">sc:DateTime</a></td>
+    <td><a href="http://schema.org/DateTime">sc:DateTime</a></td>
     <td>Describes a combination of date and time of day.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/Float">sc:Float</a></td>
+    <td><a href="http://schema.org/Float">sc:Float</a></td>
     <td>Describes a float.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/Integer">sc:Integer</a></td>
+    <td><a href="http://schema.org/Integer">sc:Integer</a></td>
     <td>Describes an integer.</td>
   </tr>
   <tr>
-    <td><a href="https://schema.org/Text">sc:Text</a></td>
+    <td><a href="http://schema.org/Text">sc:Text</a></td>
     <td>Describes a string.</td>
   </tr>
 </table>
@@ -1228,7 +1228,7 @@ Other data types commonly used in ML datasets:
     <th>Usage</th>
   </thead>
   <tr>
-    <td><a href="https://schema.org/ImageObject">sc:ImageObject</a></td>
+    <td><a href="http://schema.org/ImageObject">sc:ImageObject</a></td>
     <td>Describes a field containing the content of an image (pixels).</td>
   </tr>
   <tr>
@@ -1256,10 +1256,10 @@ Croissant datasets can use data types from other vocabularies, such as Wikidata.
   </thead>
   <tr>
     <td>
-      <a href="https://www.wikidata.org/wiki/Q48277">wd:Q48277</a><br>
+      <a href="http://www.wikidata.org/wiki/Q48277">wd:Q48277</a><br>
       (gender)
     </td>
-    <td>Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="https://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="https://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the "Typed RecordSets > Enumerations" section for an example.</td>
+    <td>Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="http://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="http://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the "Typed RecordSets > Enumerations" section for an example.</td>
   </tr>
 </table>
 
@@ -1273,13 +1273,13 @@ In the following example, `color_sample` is a field containing an image, but wit
 }
 ```
 
-In the following example, the `url` field is expected to be a URL, whose semantic type is [City](https://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: "<https://www.wikidata.org/wiki/Q90>").
+In the following example, the `url` field is expected to be a URL, whose semantic type is [City](http://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: "<http://www.wikidata.org/wiki/Q90>").
 
 ```json
 {
   "@id": "cities/url",
   "@type": "cr:Field",
-  "dataType": ["https://schema.org/URL", "https://www.wikidata.org/wiki/Q515"]
+  "dataType": ["http://schema.org/URL", "http://www.wikidata.org/wiki/Q515"]
 }
 ```
 
@@ -1499,14 +1499,14 @@ Annotations are a general mechanism to attach additional information to other pi
 
 Croissant defines annotations as a special kind of field that annotates its container. Annotations can be specified both at the field and at the RecordSet level.
 
-Consider the following example, in which the field-level annotation `images/label` applies to the field `images/image`. 
+Consider the following example, in which the field-level annotation `images/image/label` applies to the field `images/image`. 
 
 ```json
 {"@type": "cr:RecordSet", "@id": "images",
   "field": [
     { "@type": "cr:Field", "@id": "images/image", ... ,
       "annotation": {
-        "@type": "cr:Field", "@id": "images/label", 
+        "@type": "cr:Field", "@id": "images/image/label", 
         "dataType": ["sc:Text", "cr:Label"]
       }
     }
@@ -1527,7 +1527,7 @@ Annotations can also appear at the level of a RecordSet. A RecordSet-level annot
   ],
   "annotation" : {
     "@type": "cr:Field", "@id": "movies/ratings", 
-    subField: [
+    "subField": [
       { "@type": "cr:Field", "@id": "movies/ratings/user_id", ...}, 
       { "@type": "cr:Field", "@id": "movies/ratings/rating", ...}, 
     ]  
@@ -1582,9 +1582,9 @@ We now introduce a number of features that are useful in the context of ML data.
 
 ### Categorical Data
 
-In machine learning applications, it's often useful to know that some of the data is categorical in nature, and has a finite set of values that can be used, say, for classification. Croissant represents that information by using the [sc:Enumeration](https://schema.org/Enumeration) class from [schema.org](https://schema.org), as a `dataType` on `RecordSet`s that hold categorical data.
+In machine learning applications, it's often useful to know that some of the data is categorical in nature, and has a finite set of values that can be used, say, for classification. Croissant represents that information by using the [sc:Enumeration](http://schema.org/Enumeration) class from [schema.org](http://schema.org), as a `dataType` on `RecordSet`s that hold categorical data.
 
-These RecordSets must define a `name` field conforming with the [sc:name](https://schema.org/name) definition, i.e. a human-readable text naming the item. They must also specify a key to identify each possible instance. Enumerations should have a `url` field, which can also be used to uniquely refer to each instance.
+These RecordSets must define a `name` field conforming with the [sc:name](http://schema.org/name) definition, i.e. a human-readable text naming the item. They must also specify a key to identify each possible instance. Enumerations should have a `url` field, which can also be used to uniquely refer to each instance.
 
 For example, the [COCO](https://cocodataset.org/#format-data) dataset defines categories and super-categories ([Croissant definition](https://github.com/mlcommons/croissant/blob/main/datasets/1.0/coco2014/metadata.json)), to which are associated other parts of the dataset. Using Croissant, one can describe the COCO super-categories the following way:
 
@@ -1861,8 +1861,8 @@ Segmentation mask as an image:
 ```json
   "@context": {
     "@language": "en",
-    "@vocab": "https://schema.org/",
-    "sc": "https://schema.org/",
+    "@vocab": "http://schema.org/",
+    "sc": "http://schema.org/",
     "cr": "http://mlcommons.org/croissant/",
     "rai": "http://mlcommons.org/croissant/RAI/",
     "dct": "http://purl.org/dc/terms/",
