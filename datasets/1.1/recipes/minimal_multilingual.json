@@ -102,7 +102,7 @@
             "fr": "La première colonne contient le nom."
           },
           "dataType": "sc:Text",
-          "references": {
+          "source": {
             "fileObject": {
               "@id": "minimal.csv"
             },
@@ -125,7 +125,7 @@
             "fr": "La deuxième colonne contient l'âge."
           },
           "dataType": "sc:Integer",
-          "references": {
+          "source": {
             "fileObject": {
               "@id": "minimal.csv"
             },
