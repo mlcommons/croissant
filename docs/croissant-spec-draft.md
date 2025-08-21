@@ -71,7 +71,7 @@ Croissant is designed to be modular and extensible. One such extension is the Cr
 
 **Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
 
-**FileObject**: A granular part of a dataset, such as an image, text file, archive file, or a row in a table.
+**FileObject**: A granular part of a dataset, such as an image, text file, archive file.
 
 **RecordSet**: A set of structured data records obtained from one or more data sources (typically a file or set of files), such as a collection of images, text files, or all the rows in a table.
 
@@ -535,7 +535,7 @@ Datasets may change over time. Versioning is hence important to enable reproduci
 Croissant datasets are versioned using the `version` property defined in [schema.org](http://schema.org). The recommended versioning scheme to use for datasets is`MAJOR.MINOR.PATCH`, following [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). More specifically:
 
 - If the `PATCH` version is incremented, the data remains the same, although it might be serialized differently or is packaged using different file formats.
-- If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as it: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old RecordSets can still be retrieved (eg: the new records are added to a different Split).
+- If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as is: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old RecordSets can still be retrieved (eg: the new records are added to a different Split).
 - If the `MAJOR` version is incremented, the existing data has been changed (edited, removed or shuffled records across splits), or extended in a way which doesn't allow for easy access to the data as it was at the previous version.
 
 #### Checksums
@@ -862,9 +862,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
   </tr>
   <tr>
     <td>annotation</td>
-    <td>
-      Field
-    </td>
+    <td>Field</td>
     <td>MANY</td>
     <td>One or more data-level annotations that apply to the entire record.</td>
   </tr>
