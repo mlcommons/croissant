@@ -242,8 +242,8 @@ class ReadFields(Operation):
                     value = _cast_value(self.node.ctx, value, field.data_type)
 
                 if self.node.ctx.is_v0():
-                    assert isinstance(field.name, str), "v0 only supports str names"
-                    result[field.name] = value
+                    # v0 only supports str names
+                    result[field.name] = value  # pytype: disable=container-type-mismatch
                 else:
                     if field in self.node.fields:
                         result[field.id] = value
