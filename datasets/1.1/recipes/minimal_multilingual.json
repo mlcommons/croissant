@@ -57,8 +57,8 @@
   },
   "description": {
     "en": "This is a minimal example, including the required and the recommended fields in multiple languages.",
-    "de": "ies ist ein Minimalbeispiel, das die erforderlichen und empfohlenen Felder in mehreren Sprachen enthält.",
-    "fr": "Il s'agit d'un exemple minimal, incluant les champs obligatoires et recommandés dans plusieurs langues."
+    "de": "Dies ist ein Minimalbeispiel, das die erforderlichen und die empfohlenen Felder in mehreren Sprachen enthält.",
+    "fr": "Ceci est un exemple minimal, incluant les champs obligatoires et recommandés dans plusieurs langues."
   },
   "conformsTo": "http://mlcommons.org/croissant/1.1",
   "license": "https://creativecommons.org/licenses/by/4.0/",
