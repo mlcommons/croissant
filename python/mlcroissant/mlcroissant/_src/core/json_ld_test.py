@@ -5,6 +5,8 @@ import json
 import pytest
 
 from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.datasets import Dataset
 
@@ -65,3 +67,21 @@ def test_make_context():
         "transform": "cr:transform",
         "foo": "bar",
     }
+
+
+def test_expand_and_reduce_language_tagged():
+    ctx = Context(conforms_to=CroissantVersion.V_1_1)
+    dataset = Dataset({
+        "@context": make_context(ctx),
+        "@type": "sc:Dataset",
+        "conformsTo": CroissantVersion.V_1_1.value,
+        "name": {"en": "a", "fr": "b"},
+        "description": [
+            {"@language": "en", "@value": "A"},
+            {"@language": "de", "@value": "B"},
+        ],
+    })
+    metadata = dataset.metadata
+    actual = metadata.to_json()
+    assert actual["name"] == {"en": "a", "fr": "b"}
+    assert actual["description"] == {"en": "A", "de": "B"}

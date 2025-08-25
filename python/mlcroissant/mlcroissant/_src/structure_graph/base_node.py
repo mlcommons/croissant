@@ -64,7 +64,7 @@ class Node:
 
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
-    name: str | None = None
+    name: str | dict[str, str] | None = None
     parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
 
@@ -201,7 +201,7 @@ class Node:
         """
         if self.ctx.is_v0():
             if len(self.parents) <= 1:
-                return self.name or ""
+                return f"{self.name}" or ""
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
             return self.id
@@ -279,8 +279,10 @@ class Node:
     def validate_name(self):
         """Validates the name."""
         name = self.name
-        if not isinstance(name, str):
+        if not self.ctx.is_v1_1() and not isinstance(name, str):
             self.add_error(f"The name should be a string. Got: {type(name)}.")
+        elif not isinstance(name, (str, dict)):
+            self.add_error(f"The name should be a string or dict. Got: {type(name)}.")
             return
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
@@ -442,6 +444,8 @@ def _value_from_input_types(
     """Retrieves the value based on the JsonldField."""
     if value is None:
         return None
+    if isinstance(value, dict) and field.cardinality == "LANGUAGE-TAGGED":
+        return value
     input_types = field.input_types
     if not input_types:
         # This is a problem in mlcroissant, so we raise an error:
