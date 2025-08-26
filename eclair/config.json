@@ -1,0 +1,22 @@
+{
+  "name": "Eclair Dataset MCP Server",
+  "description": "MCP server to help AI models work with datasets, built on Croissant",
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "transport": "streamable-http"
+  },
+  "upstream_server": {
+    "url": "https://mcp.jetty.io/mcp",
+    "timeout": 5000
+  },
+  "gemini": {
+    "model": "gemini-2.5-pro",
+    "temperature": 0.3
+  },
+  "claude": {
+    "model": "claude-3-5-sonnet-20241022",
+    "temperature": 0.3,
+    "max_tokens": 4096
+  }
+}
