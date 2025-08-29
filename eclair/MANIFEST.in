@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include config.json
+include requirements.txt
+recursive-include src/eclair *.py
+recursive-include src/eclair *.md  
+recursive-include src/eclair *.json
+recursive-include src/eclair/mlcbakery/templates *
+include src/eclair/py.typed

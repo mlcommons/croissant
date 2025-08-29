@@ -1,0 +1,99 @@
+site_name: Eclair Documentation
+site_description: Your lightning-fast data scientist - MCP server for dataset discovery and analysis
+site_author: Joaquin Vanschoren, Omar Benjelloun, Jon Lebenshold, Natasha Noy
+site_url: https://eclair-docs.example.com
+
+repo_name: eclair
+repo_url: https://github.com/mlcommons/croissant/tree/main/eclair
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  icon:
+    logo: material/lightning-bolt
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.select
+
+nav: 
+  - Getting Started:
+    - Welcome: index.md
+    - Installation and Setup: getting-started/installation.md
+    - Running the Server: getting-started/running-server.md
+  - Usage Guides:
+    - Overview: usage/overview.md
+    - AI Agents:
+      - Gemini CLI: usage/ai-agents/gemini-cli.md
+      - Claude Code: usage/ai-agents/claude-code.md
+    - IDE Integration:
+      - VS Code + Gemini Code Assist: usage/ide/vscode-gemini.md
+      - VS Code + Copilot: usage/ide/vscode-copilot.md
+    - Python API: usage/python-api.md
+    - Command Line Interface: usage/cli.md
+  - API Reference:
+    - Available Tools: api/tools.md
+    - Python Client: api/python-client.md
+  - Development:
+    - Getting Started: development/index.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/mlcommons/croissant/tree/main/eclair/
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/eclair/
+  
+extra_css:
+  - stylesheets/extra.css

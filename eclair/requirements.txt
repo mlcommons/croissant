@@ -1,0 +1,10 @@
+fastmcp>=0.2.0
+httpx>=0.27.0
+uvicorn>=0.30.0
+google-generativeai>=0.8.0
+mcp>=1.1.0
+python-dotenv>=1.0.0
+mlcroissant>=1.0.21
+func_timeout>=4.3.0
+mkdocs>=1.5.0
+mkdocs-material>=9.4.0
