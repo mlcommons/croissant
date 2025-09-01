@@ -233,14 +233,14 @@ from mlcroissant import Dataset as CroissantDataset
 
 
 class CroissantTorchDataset(Dataset):
-    """PyTorch Dataset backed by a Croissant metadata description.
+    '''PyTorch Dataset backed by a Croissant metadata description.
 
     - jsonld: Croissant JSON-LD URL or dict
     - record_set: ID of the RecordSet to iterate over (matches @id in metadata)
     - split: optional split value to filter (e.g., "train", "validation", "test")
     - x_fields: list of field IDs to form the input tensor or structure
     - y_field: field ID for the label/target
-    """
+    '''
 
     def __init__(
         self,
@@ -269,7 +269,7 @@ class CroissantTorchDataset(Dataset):
         if self.split:
             # Common split field IDs include "data/split" or "split"; update if needed
             # Adjust the key here to match your metadata field ID
-            filters = {"split": self.split}
+            filters = {{"split": self.split}}
 
         self._examples: List[Dict[str, Any]] = list(self._ds.records(self.record_set, filters=filters))
 

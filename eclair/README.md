@@ -996,5 +996,6 @@ pip install -e .
 * Omar Benjelloun (Google Deepmind)
 * Jon Lebenshold (Jetty)
 * Natasha Noy (Google)
+* Luis Oala
 
 Thank you for supporting Eclair! 🙂
