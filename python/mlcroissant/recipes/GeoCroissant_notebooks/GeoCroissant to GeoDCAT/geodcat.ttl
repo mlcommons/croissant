@@ -1,0 +1,55 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <https://schema.org/> .
+@prefix spdx: <http://spdx.org/rdf/terms#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://10.57967/hf/0956> a dcat:Dataset,
+        schema:Dataset ;
+    dct:conformsTo <http://mlcommons.org/croissant/1.0> ;
+    dct:creator <https://huggingface.co/ibm-nasa-geospatial> ;
+    dct:description "This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models." ;
+    dct:identifier "10.57967/hf/0956" ;
+    dct:license <https://choosealicense.com/licenses/cc-by-4.0/> ;
+    dct:spatial <http://sws.geonames.org/6252001/> ;
+    dct:temporal <https://10.57967/hf/0956/period> ;
+    dct:title "hls_burn_scars" ;
+    dcat:distribution <https://10.57967/hf/0956/distribution/parquet-files-for-config-hls_burn_scars>,
+        <https://10.57967/hf/0956/distribution/repo> ;
+    dcat:keyword "1K - 10K",
+        "Croissant",
+        "Datasets",
+        "English",
+        "Image",
+        "cc-by-4.0",
+        "doi:10.57967/hf/0956",
+        "🇺🇸 Region: US" ;
+    dcat:landingPage <https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars> ;
+    schema:alternateName "ibm-nasa-geospatial/hls_burn_scars" .
+
+<https://10.57967/hf/0956/distribution/parquet-files-for-config-hls_burn_scars> a dcat:Distribution ;
+    dct:description "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet)." ;
+    dct:isPartOf <https://10.57967/hf/0956/distribution/repo> ;
+    dct:title "parquet-files-for-config-hls_burn_scars" ;
+    dcat:accessURL <https://example.org/data> ;
+    dcat:mediaType "application/x-parquet" ;
+    schema:hasPart "hls_burn_scars/*/*.parquet" .
+
+<https://10.57967/hf/0956/distribution/repo/checksum> a spdx:Checksum ;
+    spdx:algorithm "SHA256" ;
+    spdx:checksumValue "https://github.com/mlcommons/croissant/issues/80" .
+
+<https://10.57967/hf/0956/period> a dcat:PeriodOfTime ;
+    dcat:endDate "2021-12-31"^^xsd:date ;
+    dcat:startDate "2018-01-01"^^xsd:date .
+
+<https://huggingface.co/ibm-nasa-geospatial> a foaf:Agent ;
+    foaf:name "IBM-NASA Prithvi Models Family" .
+
+<https://10.57967/hf/0956/distribution/repo> a dcat:Distribution ;
+    dct:description "The Hugging Face git repository." ;
+    dct:title "repo" ;
+    spdx:checksum <https://10.57967/hf/0956/distribution/repo/checksum> ;
+    dcat:accessURL <https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars/tree/refs%2Fconvert%2Fparquet> ;
+    dcat:mediaType "git+https" .
