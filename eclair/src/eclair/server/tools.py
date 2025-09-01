@@ -9,6 +9,7 @@ import os
 from typing import Any, Dict, List
 from fastmcp import Client
 from .validation import validate
+from textwrap import dedent
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -185,3 +186,155 @@ async def ping() -> str:
 async def cleanup():
     """Cleanup resources on shutdown."""
     await relay.close()
+
+
+# Context/guidance for builders (LLM/agent)
+async def get_builder_context() -> str:
+    """Return guidance for LLM/agent on building datasets with Croissant/TFDS/PyTorch.
+
+    Loads a curated context file if available; otherwise returns a minimal fallback.
+    """
+    context_path = os.path.join(os.path.dirname(__file__), "context", "builder_context.md")
+    try:
+        with open(context_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        logger.warning("builder_context.md not found; returning fallback guidance")
+        return dedent(
+            """
+            Croissant Builder Context
+            - Use mlcroissant.Dataset(jsonld=<croissant_url>) to access records
+            - Wrap it with torch.utils.data.Dataset to integrate with PyTorch
+            - See TFDS builder notebook for reference: https://github.com/mlcommons/croissant/blob/main/python/mlcroissant/recipes/tfds_croissant_builder.ipynb
+            """
+        ).strip()
+
+
+# PyTorch scaffold generator
+async def generate_pytorch_scaffold(croissant_url: str, record_set: str | None = None, x_fields: List[str] | None = None, y_field: str | None = None) -> Dict[str, Any]:
+    """Generate a PyTorch Dataset scaffold for a given Croissant URL.
+
+    Args:
+        croissant_url: URL to a Croissant JSON-LD metadata file.
+        record_set: Optional record set ID to read. If omitted, instruct user to pick one.
+        x_fields: Optional list of field IDs to treat as inputs.
+        y_field: Optional field ID to treat as label.
+
+    Returns:
+        A dictionary with keys: instructions (str), code (str), notes (list[str]).
+    """
+    # Build a minimal, robust scaffold that works even if metadata can't be fetched now.
+    scaffold_code = f"""
+import torch
+from torch.utils.data import Dataset
+from typing import Any, Dict, List, Optional, Tuple
+
+from mlcroissant import Dataset as CroissantDataset
+
+
+class CroissantTorchDataset(Dataset):
+    """PyTorch Dataset backed by a Croissant metadata description.
+
+    - jsonld: Croissant JSON-LD URL or dict
+    - record_set: ID of the RecordSet to iterate over (matches @id in metadata)
+    - split: optional split value to filter (e.g., "train", "validation", "test")
+    - x_fields: list of field IDs to form the input tensor or structure
+    - y_field: field ID for the label/target
+    """
+
+    def __init__(
+        self,
+        jsonld: str,
+        record_set: str,
+        *,
+        split: Optional[str] = None,
+        x_fields: Optional[List[str]] = None,
+        y_field: Optional[str] = None,
+        transform=None,
+        target_transform=None,
+    ) -> None:
+        self.jsonld = jsonld
+        self.record_set = record_set
+        self.split = split
+        self.x_fields = x_fields or []
+        self.y_field = y_field
+        self.transform = transform
+        self.target_transform = target_transform
+
+        # Initialize Croissant dataset
+        self._ds = CroissantDataset(jsonld=self.jsonld)
+
+        # Materialize examples as a list for deterministic __len__.
+        filters = {{}}
+        if self.split:
+            # Common split field IDs include "data/split" or "split"; update if needed
+            # Adjust the key here to match your metadata field ID
+            filters = {"split": self.split}
+
+        self._examples: List[Dict[str, Any]] = list(self._ds.records(self.record_set, filters=filters))
+
+    def __len__(self) -> int:
+        return len(self._examples)
+
+    def __getitem__(self, idx: int) -> Tuple[Any, Any] | Any:
+        example = self._examples[idx]
+
+        # Extract inputs
+        if self.x_fields:
+            x = [example.get(fid) for fid in self.x_fields]
+            # Simplify single-input case
+            if len(x) == 1:
+                x = x[0]
+        else:
+            x = example
+
+        # Extract target
+        y = example.get(self.y_field) if self.y_field else None
+
+        if self.transform:
+            x = self.transform(x)
+        if self.target_transform and y is not None:
+            y = self.target_transform(y)
+
+        return (x, y) if self.y_field is not None else x
+
+
+def build_dataset() -> CroissantTorchDataset:
+    return CroissantTorchDataset(
+        jsonld={croissant_url!r},
+        record_set={record_set!r},
+        split=None,  # e.g., "train"
+        x_fields={x_fields or []!r},
+        y_field={y_field!r},
+    )
+
+
+if __name__ == "__main__":
+    ds = build_dataset()
+    print(len(ds))
+    first = ds[0]
+    print(type(first), (first[0].__class__ if isinstance(first, tuple) else None))
+"""
+
+    instructions = dedent(
+        f"""
+        Quickstart (PyTorch + Croissant)
+        1) Install: pip install mlcroissant torch
+        2) Pick the correct record set ID and field IDs from your metadata
+           - If unsure, open the JSON-LD at: {croissant_url}
+           - Look under "@graph" for RecordSet (@type: sc:RecordSet) and Field nodes
+        3) Save the scaffold to croissant_torch_dataset.py and run it
+        4) Replace the split/key names to match your metadata (e.g., data/split)
+
+        Reference: TFDS Croissant builder recipe
+        - https://github.com/mlcommons/croissant/blob/main/python/mlcroissant/recipes/tfds_croissant_builder.ipynb
+        """
+    ).strip()
+
+    notes = [
+        "Adjust filters to your split field ID (often 'data/split' or 'split').",
+        "Some fields may contain URIs to files; apply transforms to load them (e.g., PIL.Image).",
+        "For streaming large datasets, iterate over CroissantDataset.records directly instead of materializing.",
+    ]
+
+    return {"instructions": instructions, "code": scaffold_code.strip(), "notes": notes}

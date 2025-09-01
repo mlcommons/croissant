@@ -19,6 +19,8 @@ from .tools import (
     search_datasets,
     get_help,
     get_dataset_metadata,
+    get_builder_context,
+    generate_pytorch_scaffold,
     ping,
     cleanup
 )
@@ -90,6 +92,30 @@ class EclairServer:
         async def ping_tool() -> str:
             """Simple ping test to verify the Eclair server is working."""
             return await ping()
+
+        @self.mcp.tool(
+            "builder-context",
+            description="Guidance for LLM/agents on building datasets with Croissant/TFDS/PyTorch",
+        )
+        async def builder_context_tool() -> str:
+            return await get_builder_context()
+
+        @self.mcp.tool(
+            "pytorch-scaffold",
+            description="Generate a PyTorch Dataset scaffold from a Croissant URL",
+        )
+        async def pytorch_scaffold_tool(
+            croissant_url: str,
+            record_set: str | None = None,
+            x_fields: list[str] | None = None,
+            y_field: str | None = None,
+        ) -> dict[str, Any]:
+            return await generate_pytorch_scaffold(
+                croissant_url=croissant_url,
+                record_set=record_set,
+                x_fields=x_fields,
+                y_field=y_field,
+            )
 
         # Debug prompt
         @self.mcp.prompt()
