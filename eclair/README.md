@@ -57,8 +57,10 @@ Most importantly, Eclair aims to create an **open, global ecosystem** of data so
 3. **datasets-preview-url**: Get a download URL for a dataset preview
 4. **serve-croissant**: Get the Croissant metadata for a given dataset
 5. **validate-croissant**: Validate a Croissant metadata file
-6. **help**: Get instructions to use the Eclair tools
-7. **ping**: Test that your Eclair server is working
+6. **builder-context**: Guidance for LLM/agents on Croissant + TFDS/PyTorch best practices
+7. **pytorch-scaffold**: Generate a ready-to-run PyTorch Dataset scaffold from a Croissant URL
+8. **help**: Get instructions to use the Eclair tools
+9. **ping**: Test that your Eclair server is working
 
 
 ## Installation
@@ -89,6 +91,21 @@ pip install -e .[dev]
 Alternatively, use the provided quickstart script to install and start the server:
 ```bash
 ./start.sh
+```
+
+### Using the Eclair MCP without installation
+
+You can plug in the following config into your MCP client (e.g. Cursor, Zed, Windsurf, etc) to use a hosted test-version of the MCP directly:
+
+```
+{
+  "mcpServers": {
+    "croissant-mcp": {
+      "url": "http://35.87.210.99:8000/sse",
+      "transport": "sse"
+    }
+  }
+}
 ```
 
 # Running the Server

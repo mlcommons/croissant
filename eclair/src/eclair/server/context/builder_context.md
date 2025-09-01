@@ -8,6 +8,11 @@ This context helps agents guide users to build datasets using MLCommons Croissan
 - TFDS Croissant builder recipe: `https://github.com/mlcommons/croissant/blob/main/python/mlcroissant/recipes/tfds_croissant_builder.ipynb`
 - Python library: `https://github.com/mlcommons/croissant/tree/main/python/mlcroissant`
 
+Hugging Face tip: use the Croissant JSON-LD endpoint
+
+- Page URL: `https://huggingface.co/datasets/<org-or-user>/<dataset>`
+- JSON-LD: `https://huggingface.co/api/datasets/<org-or-user>/<dataset>/croissant`
+
 ## Core Ideas
 
 1. Use `mlcroissant.Dataset(jsonld=<url_or_dict>)` to load Croissant metadata and access records via `dataset.records(record_set, filters=...)`.

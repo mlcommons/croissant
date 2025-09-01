@@ -10,6 +10,7 @@ from typing import Any, Dict, List
 from fastmcp import Client
 from .validation import validate
 from textwrap import dedent
+import re
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -223,6 +224,17 @@ async def generate_pytorch_scaffold(croissant_url: str, record_set: str | None =
     Returns:
         A dictionary with keys: instructions (str), code (str), notes (list[str]).
     """
+    # Normalize Hugging Face dataset page URLs to direct Croissant JSON-LD endpoint.
+    normalized_url = croissant_url
+    try:
+        m = re.match(r"^https?://huggingface\.co/datasets/([^/]+)/([^/?#]+)", croissant_url)
+        if m and "/api/" not in croissant_url:
+            org, name = m.group(1), m.group(2)
+            normalized_url = f"https://huggingface.co/api/datasets/{org}/{name}/croissant"
+    except Exception:
+        # Best-effort normalization; keep original on failure
+        normalized_url = croissant_url
+
     # Build a minimal, robust scaffold that works even if metadata can't be fetched now.
     scaffold_code = f"""
 import torch
@@ -301,7 +313,7 @@ class CroissantTorchDataset(Dataset):
 
 def build_dataset() -> CroissantTorchDataset:
     return CroissantTorchDataset(
-        jsonld={croissant_url!r},
+        jsonld={normalized_url!r},
         record_set={record_set!r},
         split=None,  # e.g., "train"
         x_fields={x_fields or []!r},
@@ -328,6 +340,8 @@ if __name__ == "__main__":
 
         Reference: TFDS Croissant builder recipe
         - https://github.com/mlcommons/croissant/blob/main/python/mlcroissant/recipes/tfds_croissant_builder.ipynb
+        Note: For Hugging Face datasets, prefer the Croissant JSON-LD endpoint
+        https://huggingface.co/api/datasets/<org-or-user>/<dataset>/croissant
         """
     ).strip()
 
