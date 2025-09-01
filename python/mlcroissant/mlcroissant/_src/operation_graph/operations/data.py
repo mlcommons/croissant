@@ -17,4 +17,5 @@ class Data(Operation):
     def call(self, *args) -> pd.DataFrame:
         """See class' docstring."""
         del args  # unused
-        return pd.DataFrame.from_records(self.node.data)
+        data = self.node.data if self.node.data is not None else []
+        return pd.DataFrame.from_records(data)
