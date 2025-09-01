@@ -193,7 +193,8 @@ class Read(Operation):
                         img = deps.PIL_Image.open(file).convert("RGB")
                     except ModuleNotFoundError:
                         raise NotImplementedError(
-                            "Pillow is not installed and is a dependency"
+                            "Missing dependency to read JPG/PNG files. Pillow is not"
+                            " installed. Please, install `pip install pillow`"
                         )
                     return pd.DataFrame({FileProperty.content: [img]})
                 elif encoding_format == EncodingFormat.TIF:
@@ -206,7 +207,9 @@ class Read(Operation):
                         )
                     except ModuleNotFoundError:
                         raise NotImplementedError(
-                            "Pillow or tifffile is not installed and is a dependency"
+                            "Missing dependency to read TIFF files. Pillow or tifffile"
+                            " is not installed. Please, install `pip install pillow"
+                            " tifffile`"
                         )
                     return pd.DataFrame({FileProperty.content: [pil_img]})
             raise ValueError(

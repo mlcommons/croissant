@@ -95,7 +95,22 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         if isinstance(value, deps.PIL_Image.Image):
             return value
         elif isinstance(value, bytes):
-            return deps.PIL_Image.open(io.BytesIO(value))
+            try:
+                return deps.PIL_Image.open(io.BytesIO(value))
+            except Exception as e:
+                try:
+                    arr = deps.tifffile.imread(io.BytesIO(value))
+                    arr_min, arr_max = arr.min(), arr.max()
+                    arr_norm = (arr - arr_min) / (arr_max - arr_min)
+                    pil_img = deps.PIL_Image.fromarray((arr_norm * 255).astype("uint8"))
+                    return pil_img
+                except ModuleNotFoundError:
+                    raise NotImplementedError(
+                        "Missing dependency to read TIFF files. Pillow or tifffile"
+                        " is not installed. Please, install `pip install pillow"
+                        " tifffile`"
+                    )
+                    raise e
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type in [DataType.AUDIO_OBJECT, DataType.VIDEO_OBJECT]:
