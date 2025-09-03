@@ -199,15 +199,12 @@ class Read(Operation):
                     return pd.DataFrame({FileProperty.content: [img]})
                 elif encoding_format == EncodingFormat.TIF:
                     try:
-                        arr = deps.tifffile.imread(file)
-                        arr_min, arr_max = arr.min(), arr.max()
-                        arr_norm = (arr - arr_min) / (arr_max - arr_min)
                         pil_img = deps.PIL_Image.fromarray(
-                            (arr_norm * 255).astype("uint8")
+                            (deps.tifffile.imread(file) * 255).astype("uint8")
                         )
                     except ModuleNotFoundError:
                         raise NotImplementedError(
-                            "Missing dependency to read TIFF files. Pillow or tifffile"
+                            "Missing dependency to read TIF files. Pillow or tifffile"
                             " is not installed. Please, install `pip install pillow"
                             " tifffile`"
                         )

@@ -97,13 +97,11 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         elif isinstance(value, bytes):
             try:
                 return deps.PIL_Image.open(io.BytesIO(value))
-            except Exception as e:
+            except (deps.PIL_Image.UnidentifiedImageError, OSError) as e:
                 try:
-                    arr = deps.tifffile.imread(io.BytesIO(value))
-                    arr_min, arr_max = arr.min(), arr.max()
-                    arr_norm = (arr - arr_min) / (arr_max - arr_min)
-                    pil_img = deps.PIL_Image.fromarray((arr_norm * 255).astype("uint8"))
-                    return pil_img
+                    return deps.PIL_Image.fromarray(
+                        (deps.tifffile.imread(io.BytesIO(value)) * 255).astype("uint8")
+                    )
                 except ModuleNotFoundError:
                     raise NotImplementedError(
                         "Missing dependency to read TIFF files. Pillow or tifffile"
