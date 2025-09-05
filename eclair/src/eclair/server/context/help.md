@@ -11,6 +11,8 @@ The Eclair MCP Server provides the following tools for dataset discovery and man
 - `serve-croissant` - Get the Croissant dataset metadata
 - `validate-croissant` - Validate Croissant metadata
 - `download-dataset` - Get download information for a dataset
+- `builder-context` - Guidance for agents building datasets with Croissant/TFDS/PyTorch
+- `pytorch-scaffold` - Generate a PyTorch Dataset scaffold from a Croissant URL
 - `help` - Get this help information
 - `ping` - Test server connectivity
 
@@ -82,3 +84,24 @@ To get information about downloading a complete dataset:
 
 **Tool:** `download-dataset`
 **Parameters:** `collection` (string), `dataset` (string)
+
+## 6. Builder Context (for LLM/Agents)
+
+High-signal guidance to help agents assist users in constructing datasets:
+
+**Tool:** `builder-context`
+
+**Parameters:** none
+
+## 7. PyTorch Scaffold Generator
+
+Generate a ready-to-run PyTorch `Dataset` class using a Croissant URL.
+
+**Tool:** `pytorch-scaffold`
+
+**Parameters:**
+
+- `croissant_url` (string) - URL to Croissant JSON-LD
+- `record_set` (string, optional) - RecordSet `@id`
+- `x_fields` (list[string], optional) - Input field IDs
+- `y_field` (string, optional) - Target field ID
