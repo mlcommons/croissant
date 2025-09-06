@@ -118,6 +118,20 @@ def _read_arff_file(filepath: str | io.StringIO | epath.Path) -> pd.DataFrame:
     return pd.DataFrame(data)
 
 
+def _read_dicom_file(filepath: epath.Path) -> pd.DataFrame:
+    """Reads a file in DICOM format and returns it as a pandas DataFrame."""
+    try:
+        deps.pydicom
+    except ImportError as e:
+        raise ImportError(
+            "Missing dependency to read DICOM files. pydicom is not installed."
+            " Please, install `pip install mlcroissant[dicom]`."
+        ) from e
+    ds = deps.pydicom.dcmread(filepath)
+    pixel_array = ds.pixel_array
+    return pd.DataFrame({FileProperty.content: [pixel_array]})
+
+
 @dataclasses.dataclass(frozen=True, repr=False)
 class Read(Operation):
     """Reads from a file and output a pd.DataFrame."""
@@ -136,6 +150,8 @@ class Read(Operation):
         reading_method = _reading_method(self.node, self.fields)
         if EncodingFormat.ARFF in encoding_formats:
             return _read_arff_file(filepath)
+        if EncodingFormat.DICOM in encoding_formats:
+            return _read_dicom_file(filepath)
 
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
