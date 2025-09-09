@@ -54,8 +54,6 @@
     "@type": "sc:Organization",
     "name": "BVLabs"
   },
-  "dateCreated": "2024-03-18",
-  "datePublished": "2024-03-18",
   "keywords": ["sky imaging", "sentinel-2", "cloud"],
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "publisher": {
