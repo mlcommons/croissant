@@ -101,5 +101,10 @@ class OptionalDependencies(object):
         """Cached torchdata module."""
         return _try_import("torchdata.datapipes", package_name="torchdata")
 
+    @cached_class_property
+    def tifffile(cls) -> types.ModuleType:
+        """Cached tifffle module."""
+        return _try_import("tifffile", package_name="Tifffile")
+
 
 deps = OptionalDependencies

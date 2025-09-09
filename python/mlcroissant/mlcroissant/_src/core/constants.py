@@ -238,9 +238,11 @@ class EncodingFormat:
     MP3 = "audio/mpeg"
     MP4 = "video/mp4"
     PARQUET = "application/x-parquet"
-    TEXT = "text/plain"
-    TSV = "text/tab-separated-values"
+    PNG = "image/png"
     TAR = "application/x-tar"
+    TEXT = "text/plain"
+    TIF = "image/tiff"
+    TSV = "text/tab-separated-values"
     ZIP = "application/zip"
 
 

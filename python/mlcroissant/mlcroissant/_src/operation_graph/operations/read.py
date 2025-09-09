@@ -179,10 +179,7 @@ class Read(Operation):
                         return pd.DataFrame({
                             FileProperty.content: [file.read()],
                         })
-                elif (
-                    encoding_format == EncodingFormat.MP3
-                    or encoding_format == EncodingFormat.JPG
-                ):
+                elif encoding_format == EncodingFormat.MP3:
                     sampling_rate = _get_sampling_rate(self.node, self.fields)
                     if sampling_rate:
                         out = deps.librosa.load(file, sr=sampling_rate)
@@ -191,6 +188,27 @@ class Read(Operation):
                     return pd.DataFrame({
                         FileProperty.content: [out],
                     })
+                elif encoding_format in {EncodingFormat.JPG, EncodingFormat.PNG}:
+                    try:
+                        img = deps.PIL_Image.open(file).convert("RGB")
+                    except ModuleNotFoundError:
+                        raise NotImplementedError(
+                            "Missing dependency to read JPG/PNG files. Pillow is not"
+                            " installed. Please, install `pip install pillow`"
+                        )
+                    return pd.DataFrame({FileProperty.content: [img]})
+                elif encoding_format == EncodingFormat.TIF:
+                    try:
+                        pil_img = deps.PIL_Image.fromarray(
+                            (deps.tifffile.imread(file) * 255).astype("uint8")
+                        )
+                    except ModuleNotFoundError:
+                        raise NotImplementedError(
+                            "Missing dependency to read TIF files. Pillow or tifffile"
+                            " is not installed. Please, install `pip install pillow"
+                            " tifffile`"
+                        )
+                    return pd.DataFrame({FileProperty.content: [pil_img]})
             raise ValueError(
                 f"None of the provided encoding formats: {encoding_format} for file"
                 f" {filepath} returned a valid pandas dataframe."
