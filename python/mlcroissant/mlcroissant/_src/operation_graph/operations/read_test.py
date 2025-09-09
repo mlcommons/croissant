@@ -7,11 +7,13 @@ import tempfile
 from unittest import mock
 
 from etils import epath
+import numpy as np
 import pandas as pd
 import pandas.testing as pd_testing
 import pytest
 
 from mlcroissant._src.core.path import Path
+from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.operation_graph.operations.read import _get_sampling_rate
 from mlcroissant._src.operation_graph.operations.read import _read_arff_file
 from mlcroissant._src.operation_graph.operations.read import _reading_method
@@ -139,3 +141,59 @@ def test_pickable():
     )
     operation = pickle.loads(pickle.dumps(operation))
     assert operation.folder == epath.Path("/foo/bar")
+
+
+def test_read_dicom_success(tmpdir):
+    pydicom = pytest.importorskip("pydicom")
+    tmpdir = epath.Path(tmpdir)
+    filepath = tmpdir / "file.dcm"
+
+    # Minimal DICOM (2x2, 8-bit mono)
+    pixel_array = np.array([[1, 2], [3, 4]], dtype=np.uint8)
+    file_meta = pydicom.dataset.FileMetaDataset()
+    file_meta.MediaStorageSOPClassUID = pydicom.uid.ExplicitVRLittleEndian
+    file_meta.MediaStorageSOPInstanceUID = pydicom.uid.generate_uid()
+    file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+
+    ds = pydicom.dataset.FileDataset(
+        filepath,
+        {},
+        file_meta=file_meta,
+        preamble=b"\0" * 128,
+    )
+    ds.add_new(0x00280002, "US", 1)  # Samples per Pixel
+    ds.add_new(0x00280004, "CS", "MONOCHROME2")  # Photometric Interpretation
+    ds.add_new(0x00280010, "US", 2)  # Rows
+    ds.add_new(0x00280011, "US", 2)  # Columns
+    ds.add_new(0x00280100, "US", 8)  # Bits Allocated
+    ds.add_new(0x00280101, "US", 8)  # Bits Stored
+    ds.add_new(0x00280102, "US", 7)  # High Bit
+    ds.add_new(0x00280103, "US", 0)  # Pixel Representation
+    ds.PixelData = pixel_array.tobytes()
+    ds.save_as(filepath)
+
+    file_obj = create_test_file_object(encoding_formats=[EncodingFormat.DICOM])
+    operation = Read(
+        operations=operations(),
+        node=file_obj,
+        folder=tmpdir,
+        fields=(),
+    )
+    df = operation.call(Path(filepath=filepath, fullpath=pathlib.PurePath()))
+    assert len(df) == 1
+    val = df.iloc[0][FileProperty.content]
+    assert isinstance(val, (bytes, np.ndarray))
+
+
+def test_read_dicom_missing_dependency(tmpdir, monkeypatch):
+    import mlcroissant._src.operation_graph.operations.read as read_mod
+
+    class _DummyDeps:
+        @property
+        def pydicom(self):  # pragma: no cover
+            raise ImportError("simulated missing pydicom")
+
+    monkeypatch.setattr(read_mod, "deps", _DummyDeps())
+
+    with pytest.raises(ImportError, match="Missing dependency to read DICOM files"):
+        read_mod._read_dicom_file(tmpdir / "does_not_matter.dcm")
