@@ -49,16 +49,19 @@ async def async_main():
             print(response)
         else:
             # Call MCP tool directly
-            arguments = {}
-            if args.query:
-                arguments["query"] = args.query
-            if args.collection:
-                arguments["collection"] = args.collection
-            if args.dataset:
-                arguments["dataset"] = args.dataset
-            
-            result = await client.call_mcp_tool(args.tool, arguments)
-            print(result)
+            if args.tool == "search-datasets" and args.query:
+                result = await client.search_datasets(args.query)
+            else:
+                arguments = {}
+                if args.query:
+                    arguments["query"] = args.query
+                if args.collection:
+                    arguments["collection"] = args.collection
+                if args.dataset:
+                    arguments["dataset"] = args.dataset
+                
+                result = await client.call_mcp_tool(args.tool, arguments)
+                print(result)
             
     elif args.use_claude:
         if not CLAUDE_AVAILABLE:

@@ -29,7 +29,6 @@ except ImportError:
     # dotenv not available, will use system environment variables only
     pass
 
-
 class GeminiMCPClient:
     """Client that connects Gemini to the Eclair MCP Server."""
     
@@ -212,7 +211,21 @@ Let me analyze these results and provide recommendations."""
         """Search for datasets using the MCP server."""
         async with self.mcp_client:
             print(f"Searching for datasets on {query}")
-            return await self.mcp_client.call_tool("search-datasets", {"query": query})
+            final_results = {"I": "Am a atest"}
+
+            if self.gemini_client:
+                try:
+                    model = self.gemini_client.GenerativeModel(self.model_name)
+                    gemini_search_results = await model.generate_content(f"Find datasets that have a valid croissant file about this topic : {query}")
+                    formatted_gemini_search_results = (gemini_search_results.text or "").strip()
+                    main_search_results = await self.mcp_client.call_tool("search-datasets", {"query": query})
+
+                    final_results = await model.generate_content(f"Combine the results into the same format as main_search_results : {main_search_results} along with {formatted_gemini_search_results}")
+                except Exception as e:
+                    print(e)
+                    final_results = await self.mcp_client.call_tool("search-datasets", {"query": query})
+
+            return final_results
 
     async def serve_croissant(self, collection: str, dataset: str) -> dict:
         """Get Croissant metadata for a specific dataset."""

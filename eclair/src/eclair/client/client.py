@@ -18,7 +18,7 @@ class EclairClient:
     async def initialize(self):
         """Initialize the MCP client."""
         self.client = Client(self.server_url)
-        
+
     async def call_tool(self, tool_name: str, arguments: Optional[Dict[str, Any]] = None) -> Any:
         """Call a tool on the Eclair server."""
         if arguments is None:
