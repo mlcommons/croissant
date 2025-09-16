@@ -11,6 +11,6 @@ With Eclair, AI models can answer your questions by easily accessing millions of
 
 <img src="docs/images/eclair-diagram.png" alt="Eclair Diagram"/>
 
-[Interested? Click here to get started!](https://openml.github.io/eclair/) 
+[Interested? Click here to get started!](https://eclair-docs.github.io/)
 
 Thank you for supporting Eclair! 🙂
