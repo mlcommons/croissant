@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://eclair-docs.example.com/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/api/python-client/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/api/python-client/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/api/tools/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/api/tools/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/development/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/development/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/getting-started/installation/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/getting-started/installation/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/getting-started/running-server/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/getting-started/running-server/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/cli/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/cli/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/overview/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/overview/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/python-api/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/python-api/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/ai-agents/claude-code/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/ai-agents/claude-code/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/ai-agents/gemini-cli/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/ai-agents/gemini-cli/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/ide/vscode-copilot/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/ide/vscode-copilot/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
     <url>
-         <loc>https://eclair-docs.example.com/usage/ide/vscode-gemini/</loc>
+         <loc>https://mlcommons.github.io/croissant/eclair/usage/ide/vscode-gemini/</loc>
          <lastmod>2025-09-16</lastmod>
     </url>
 </urlset>
