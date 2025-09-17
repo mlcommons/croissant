@@ -527,6 +527,7 @@ dependencies = [
     { name = "mkdocstrings" },
     { name = "mkdocstrings-python" },
     { name = "mlcroissant" },
+    { name = "pytest" },
     { name = "python-dotenv" },
     { name = "uvicorn" },
 ]
@@ -566,6 +567,7 @@ requires-dist = [
     { name = "mlcroissant", specifier = ">=1.0.22" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0.0" },
     { name = "myst-parser", marker = "extra == 'docs'", specifier = ">=1.0.0" },
+    { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.21.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0.0" },

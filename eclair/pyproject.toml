@@ -50,6 +50,7 @@ dependencies = [
     "mlcroissant>=1.0.22",
     "func-timeout>=4.3.5",
     "google-genai>=1.36.0",
+    "pytest>=8.4.2",
 ]
 
 [project.optional-dependencies]
