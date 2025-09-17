@@ -51,6 +51,7 @@ async def async_main():
             # Call MCP tool directly
             if args.tool == "search-datasets" and args.query:
                 result = await client.search_datasets(args.query)
+                print(result)
             else:
                 arguments = {}
                 if args.query:
