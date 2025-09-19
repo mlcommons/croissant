@@ -63,13 +63,17 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     for record_set in metadata.record_sets:
         for field in record_set.fields:
             _add_edge(graph, uuid_to_node, record_set.uuid, field)
-            for origin in [field.source, field.references]:
-                if origin:
-                    _add_edge(graph, uuid_to_node, origin.uuid, record_set)
+            if field.source:
+                _add_edge(graph, uuid_to_node, field.source.uuid, record_set)
+            # Dependency on references: Referenced Field -> Referencing Field
+            if field.references:
+                _add_edge(graph, uuid_to_node, field.references.uuid, field)
             for sub_field in field.sub_fields:
-                for origin in [sub_field.source, sub_field.references]:
-                    if origin:
-                        _add_edge(graph, uuid_to_node, origin.uuid, record_set)
+                if sub_field.source:
+                    _add_edge(graph, uuid_to_node, sub_field.source.uuid, record_set)
+                # Dependency on references: Referenced Field -> Referencing Field
+                if sub_field.references:
+                    _add_edge(graph, uuid_to_node, sub_field.references.uuid, sub_field)
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
