@@ -122,7 +122,7 @@
   "name": "MRI head scan",
   "description": "This zip file contains a DICOM data set of magnetic resonance images  a normal male mathematics professor aged 52. The experimental subject is the author. The MRI scans are T2 weighted  turbo-spin-echo (T2W TSE) and T1 weighted Fast Field Echo (T1W FFE). The subject suffers from a small vertical strabismus (hypertropia), a misalignment of the eyes, which is visible in this data set. The author would like to thank the Radiology Department at the Macclesfield General Hospital for performing the scan.",
   "creator": {
-    "@type": "Organization",
+    "@type": "sc:Organization",
     "name": "Zenodo",
     "url": "https://zenodo.org/records/16956"
   },
