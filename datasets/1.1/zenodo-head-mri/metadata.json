@@ -1,0 +1,143 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "contentUrl": "https://zenodo.org/records/16956/files/DICOM.zip",
+      "contentSize": "4.698 MB",
+      "md5": "e5cbd0bca91f1787d057b0eac2572bde",
+      "encodingFormat": "application/zip",
+      "@id": "data.zip",
+      "@type": "cr:FileObject",
+      "name": "data.zip",
+      "description": "DICOM Data. This dataset consists of 5 head scans."
+    },
+    {
+      "includes": "*/dicom/*/*/*",
+      "containedIn": {
+        "@id": "data.zip"
+      },
+      "encodingFormat": "text/txt",
+      "@id": "image_labels",
+      "@type": "cr:FileSet",
+      "name": "image_labels"
+    },
+    {
+      "includes": "*/dicom/*/*/*",
+      "containedIn": {
+        "@id": "data.zip"
+      },
+      "encodingFormat": "image/dicom",
+      "@id": "image-files",
+      "@type": "cr:FileSet",
+      "name": "image/dcm files",
+      "description": "image/dcm files contained in data.zip"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "images",
+      "name": "images",
+      "key": {
+        "@id": "img_id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images/image_filename",
+          "name": "images/image_filename",
+          "description": "The filename of the image. eg: COCO_train2014_000000000003.jpg",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "image-files"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/image_content",
+          "name": "images/image_content",
+          "description": "The content of the image.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "image-files"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "MRI head scan",
+  "description": "This zip file contains a DICOM data set of magnetic resonance images  a normal male mathematics professor aged 52. The experimental subject is the author. The MRI scans are T2 weighted  turbo-spin-echo (T2W TSE) and T1 weighted Fast Field Echo (T1W FFE). The subject suffers from a small vertical strabismus (hypertropia), a misalignment of the eyes, which is visible in this data set. The author would like to thank the Radiology Department at the Macclesfield General Hospital for performing the scan.",
+  "creator": {
+    "@type": "Organization",
+    "name": "Zenodo",
+    "url": "https://zenodo.org/records/16956"
+  },
+  "keywords": [
+    "English",
+    "imagefolder",
+    "Image",
+    "Datasets",
+    "Croissant",
+    "MRI",
+    "biology",
+    "medical"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://zenodo.org/records/16956"
+}

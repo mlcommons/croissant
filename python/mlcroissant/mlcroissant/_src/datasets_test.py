@@ -242,6 +242,7 @@ def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filter
     ["dataset_name", "record_set_name", "num_records"],
     [
         ["recipes/minimal_multilingual.json", "examples", -1],
+        ["zenodo-head-mri/metadata.json", "images", -1],
     ],
 )
 def test_hermetic_loading_1_1(dataset_name, record_set_name, num_records):
