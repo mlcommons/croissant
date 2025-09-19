@@ -12,8 +12,8 @@ import pandas as pd
 import pandas.testing as pd_testing
 import pytest
 
-from mlcroissant._src.core.path import Path
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.operations.read import _get_sampling_rate
 from mlcroissant._src.operation_graph.operations.read import _read_arff_file
 from mlcroissant._src.operation_graph.operations.read import _reading_method
