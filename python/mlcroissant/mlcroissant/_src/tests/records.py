@@ -1,6 +1,5 @@
 """Test utils to handle records."""
 
-import base64
 import hashlib
 import math
 import re
