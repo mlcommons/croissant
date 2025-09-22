@@ -26,6 +26,7 @@ import networkx as nx
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
@@ -65,15 +66,29 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
             _add_edge(graph, uuid_to_node, record_set.uuid, field)
             if field.source:
                 _add_edge(graph, uuid_to_node, field.source.uuid, record_set)
-            # Dependency on references: Referenced Field -> Referencing Field
             if field.references:
-                _add_edge(graph, uuid_to_node, field.references.uuid, field)
+                referenced_node = uuid_to_node.get(field.references.uuid)
+                # If the referenced node is a "Field"
+                if isinstance(referenced_node, Field):
+                    # Dependency on references: Referenced Field -> Referencing Field
+                    _add_edge(graph, uuid_to_node, field.references.uuid, field)
+                # Backward compatible with earlier version of the Croissant spec
+                else:
+                    # If it is referencing other types of nodes such as FileObject
+                    _add_edge(graph, uuid_to_node, field.references.uuid, record_set)
             for sub_field in field.sub_fields:
                 if sub_field.source:
                     _add_edge(graph, uuid_to_node, sub_field.source.uuid, record_set)
-                # Dependency on references: Referenced Field -> Referencing Field
                 if sub_field.references:
-                    _add_edge(graph, uuid_to_node, sub_field.references.uuid, sub_field)
+                    referenced_node = uuid_to_node.get(field.references.uuid)
+                    # If the referenced node is a "Field"
+                    if isinstance(referenced_node, Field):
+                        # Dependency on references: Referenced Field -> Referencing Field
+                        _add_edge(graph, uuid_to_node, sub_field.references.uuid, sub_field)
+                    else:
+                        # If it is referencing other types of nodes such as FileObject
+                        _add_edge(graph, uuid_to_node, sub_field.references.uuid, record_set)
+
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
