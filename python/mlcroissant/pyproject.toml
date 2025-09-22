@@ -49,6 +49,7 @@ dev = [
   "mlcroissant[beam]",
   "mlcroissant[git]",
   "mlcroissant[image]",
+  "mlcroissant[dicom]",
   "mlcroissant[parquet]",
   "mypy",
   "pyflakes",
@@ -67,6 +68,7 @@ beam = [
 ]
 git = ["GitPython"]
 image = ["Pillow"]
+dicom = ["pydicom>=2.4.0"]
 parquet = ["pyarrow"]
 
 [project.scripts]

@@ -1,5 +1,6 @@
 """Test utils to handle records."""
 
+import hashlib
 import math
 import re
 from typing import Any
@@ -14,12 +15,18 @@ def record_to_python(record: Any):
 
     Records may contain non-serializable values (like `nan` or `pd.Timestamp` for
     example). This util converts records to Python-native objects:
-    - bytes -> str
+    - bytes -> UTF-8 string (fallback to compact binary summary if not valid UTF-8)
     - nan -> None
     - pd.Timestamp -> pd.Timestamp.strftime
     """
     if isinstance(record, bytes):
-        return record.decode()
+        try:
+            return record.decode()
+        except UnicodeDecodeError:
+            # Return a compact, deterministic summary for binary payloads
+            md5 = hashlib.md5(record).hexdigest()
+            size = len(record)
+            return f"<BINARY md5={md5} size={size}B>"
     elif isinstance(record, pd.Timestamp):
         return record.strftime("%Y-%m-%d %X")
     elif isinstance(record, float) and math.isnan(record):
