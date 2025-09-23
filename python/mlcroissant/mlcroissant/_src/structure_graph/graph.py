@@ -84,10 +84,14 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
                     # If the referenced node is a "Field"
                     if isinstance(referenced_node, Field):
                         # Dependency on references: Referenced Field -> Referencing Field
-                        _add_edge(graph, uuid_to_node, sub_field.references.uuid, sub_field)
+                        _add_edge(
+                            graph, uuid_to_node, sub_field.references.uuid, sub_field
+                        )
                     else:
                         # If it is referencing other types of nodes such as FileObject
-                        _add_edge(graph, uuid_to_node, sub_field.references.uuid, record_set)
+                        _add_edge(
+                            graph, uuid_to_node, sub_field.references.uuid, record_set
+                        )
 
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
