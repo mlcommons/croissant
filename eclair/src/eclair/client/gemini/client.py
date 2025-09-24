@@ -12,7 +12,9 @@ import warnings
 warnings.filterwarnings("ignore", message="Unrecognized FinishReason enum value", category=UserWarning)
 # Suppress protobuf deprecation warning for including_default_value_fields
 warnings.filterwarnings("ignore", message=".*including_default_value_fields.*", category=DeprecationWarning)
-
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 from fastmcp import Client
 
 try:
@@ -28,7 +30,6 @@ try:
 except ImportError:
     # dotenv not available, will use system environment variables only
     pass
-
 
 class GeminiMCPClient:
     """Client that connects Gemini to the Eclair MCP Server."""
@@ -212,7 +213,28 @@ Let me analyze these results and provide recommendations."""
         """Search for datasets using the MCP server."""
         async with self.mcp_client:
             print(f"Searching for datasets on {query}")
-            return await self.mcp_client.call_tool("search-datasets", {"query": query})
+            final_results = {"I": "Am a atest"}
+
+            if self.gemini_client:
+                try:
+                    model = self.gemini_client.GenerativeModel(self.model_name)
+                    # generate_content is synchronous in google-generativeai
+                    gemini_search_results = model.generate_content(f"Find datasets that have a valid croissant file about this topic : {query}")
+                    formatted_gemini_search_results = (getattr(gemini_search_results, 'text', None) or "").strip()
+                    print(f"Found datasets from gemini {formatted_gemini_search_results}")
+                    logger.info(f"Found datasets from gemini {formatted_gemini_search_results}")
+                    main_search_results = await self.mcp_client.call_tool("search-datasets", {"query": query})
+
+                    combined = model.generate_content(
+                        f"Combine the results into the same format as main_search_results : {main_search_results} along with {formatted_gemini_search_results}"
+                    )
+                    final_results = (getattr(combined, 'text', None) or "").strip() or combined
+                    logger.info(f"Final results {final_results}")
+                except Exception as e:
+                    logger.info(f"Exception {e}")
+                    final_results = await self.mcp_client.call_tool("search-datasets", {"query": query})
+
+            return final_results
 
     async def serve_croissant(self, collection: str, dataset: str) -> dict:
         """Get Croissant metadata for a specific dataset."""
