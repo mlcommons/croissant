@@ -2,22 +2,24 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -25,26 +27,50 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
     "repeated": "cr:repeated",
     "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
     "sc": "https://schema.org/",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "arrayShape": "cr:arrayShape",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "isArray": "cr:isArray",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation"
   },
   "@type": "sc:Dataset",
+  "name": "apple_storage",
+  "description": "This dataset was created using LeRobot.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Structure\n\t\n\nmeta/info.json:\n{\n    \"codebase_version\": \"v2.0\",\n    \"robot_type\": \"reachy2\",\n    \"total_episodes\": 50,\n    \"total_frames\": 14983,\n    \"total_tasks\": 1,\n    \"total_videos\": 50,\n    \"total_chunks\": 1,\n    \"chunks_size\": 1000,\n    \"fps\": 30,\n    \"splits\": {\n        \"train\": \"0:50\"\n    },\n    \"data_path\": \"data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet\",\n    \"video_path\":\u2026 See the full description on the dataset page: https://huggingface.co/datasets/pollen-robotics/apple_storage.",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "keywords": [
+    "robotics",
+    "apache-2.0",
+    "10K - 100K",
+    "parquet",
+    "Tabular",
+    "Time-series",
+    "Video",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "LeRobot"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/pollen-robotics/apple_storage",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -70,13 +96,13 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "default_splits/split_name"
       },
-      "@id": "default_splits",
-      "name": "default_splits",
-      "description": "Splits for the default config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -102,6 +128,11 @@
           "name": "default/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -112,11 +143,6 @@
             "transform": {
               "regex": "default/(?:partial-)?(train)/.+parquet$"
             }
-          },
-          "references": {
-            "field": {
-              "@id": "default_splits/split_name"
-            }
           }
         },
         {
@@ -124,7 +150,9 @@
           "@id": "default/observation.state",
           "name": "default/observation.state",
           "description": "Column 'observation.state' from the Hugging Face parquet file.",
+          "arrayShape": "19",
           "dataType": "cr:Float32",
+          "isArray": true,
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -132,16 +160,16 @@
             "extract": {
               "column": "observation.state"
             }
-          },
-          "isArray": true,
-          "arrayShape": "19"
+          }
         },
         {
           "@type": "cr:Field",
           "@id": "default/action",
           "name": "default/action",
           "description": "Column 'action' from the Hugging Face parquet file.",
+          "arrayShape": "19",
           "dataType": "cr:Float32",
+          "isArray": true,
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -149,9 +177,7 @@
             "extract": {
               "column": "action"
             }
-          },
-          "isArray": true,
-          "arrayShape": "19"
+          }
         },
         {
           "@type": "cr:Field",
@@ -230,25 +256,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.1",
-  "name": "apple_storage",
-  "description": "This dataset was created using LeRobot.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Structure\n\t\n\nmeta/info.json:\n{\n    \"codebase_version\": \"v2.0\",\n    \"robot_type\": \"reachy2\",\n    \"total_episodes\": 50,\n    \"total_frames\": 14983,\n    \"total_tasks\": 1,\n    \"total_videos\": 50,\n    \"total_chunks\": 1,\n    \"chunks_size\": 1000,\n    \"fps\": 30,\n    \"splits\": {\n        \"train\": \"0:50\"\n    },\n    \"data_path\": \"data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet\",\n    \"video_path\":… See the full description on the dataset page: https://huggingface.co/datasets/pollen-robotics/apple_storage.",
-  "keywords": [
-    "robotics",
-    "apache-2.0",
-    "10K - 100K",
-    "parquet",
-    "Tabular",
-    "Time-series",
-    "Video",
-    "Datasets",
-    "Dask",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US",
-    "LeRobot"
-  ],
-  "license": "https://choosealicense.com/licenses/apache-2.0/",
-  "url": "https://huggingface.co/datasets/pollen-robotics/apple_storage"
+  ]
 }

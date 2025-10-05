@@ -6,17 +6,20 @@
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
     "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -30,19 +33,36 @@
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
     "repeated": "cr:repeated",
     "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
     "sc": "https://schema.org/",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation"
   },
   "@type": "sc:Dataset",
+  "name": "news_recommendations_base",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for \"news_recommendations_base\"\n\t\n\nMore Information needed\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "keywords": [
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "url": "https://huggingface.co/datasets/qazisaad/news_recommendations_base",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -68,13 +88,13 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "default_splits/split_name"
       },
-      "@id": "default_splits",
-      "name": "default_splits",
-      "description": "Splits for the default config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -100,6 +120,11 @@
           "name": "default/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -109,11 +134,6 @@
             },
             "transform": {
               "regex": "default/(?:partial-)?(train)/.+parquet$"
-            }
-          },
-          "references": {
-            "field": {
-              "@id": "default_splits/split_name"
             }
           }
         },
@@ -192,19 +212,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.1",
-  "name": "news_recommendations_base",
-  "description": "\n\t\n\t\t\n\t\tDataset Card for \"news_recommendations_base\"\n\t\n\nMore Information needed\n",
-  "keywords": [
-    "1K - 10K",
-    "parquet",
-    "Text",
-    "Datasets",
-    "pandas",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US"
-  ],
-  "url": "https://huggingface.co/datasets/qazisaad/news_recommendations_base"
+  ]
 }

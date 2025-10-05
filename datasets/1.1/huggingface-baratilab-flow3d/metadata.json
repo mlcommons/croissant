@@ -2,7 +2,6 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -12,8 +11,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,26 +27,46 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
     "repeated": "cr:repeated",
     "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
     "sc": "https://schema.org/",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "arrayShape": "cr:arrayShape",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "isArray": "cr:isArray",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation"
   },
   "@type": "sc:Dataset",
+  "name": "Flow3D-V0-Ti-6Al-4V_fast_test",
+  "description": "baratilab/Flow3D-V0-Ti-6Al-4V_fast_test dataset hosted on Hugging Face and contributed by the HF Datasets community",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "keywords": [
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "url": "https://huggingface.co/datasets/baratilab/Flow3D-V0-Ti-6Al-4V_fast_test",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -75,13 +92,13 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits",
+      "name": "0_0100_01.4_1.0E-4_1.0E-2_splits",
+      "description": "Splits for the 0_0100_01.4_1.0E-4_1.0E-2 config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name"
       },
-      "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits",
-      "name": "0_0100_01.4_1.0E-4_1.0E-2_splits",
-      "description": "Splits for the 0_0100_01.4_1.0E-4_1.0E-2 config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -107,6 +124,11 @@
           "name": "0_0100_01.4_1.0E-4_1.0E-2/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
@@ -117,11 +139,6 @@
             "transform": {
               "regex": "0_0100_01\\.4_1\\.0E\\-4_1\\.0E\\-2/(?:partial-)?(simulation)/.+parquet$"
             }
-          },
-          "references": {
-            "field": {
-              "@id": "0_0100_01.4_1.0E-4_1.0E-2_splits/split_name"
-            }
           }
         },
         {
@@ -129,9 +146,9 @@
           "@id": "0_0100_01.4_1.0E-4_1.0E-2/pressure",
           "name": "0_0100_01.4_1.0E-4_1.0E-2/pressure",
           "description": "Column 'pressure' from the Hugging Face parquet file.",
+          "arrayShape": "-1,-1,-1",
           "dataType": "sc:Float",
           "isArray": true,
-          "arrayShape": "-1,-1,-1",
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-0_0100_01.4_1.0E-4_1.0E-2"
@@ -188,21 +205,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.1",
-  "name": "Flow3D-V0-Ti-6Al-4V_fast_test",
-  "description": "baratilab/Flow3D-V0-Ti-6Al-4V_fast_test dataset hosted on Hugging Face and contributed by the HF Datasets community",
-  "keywords": [
-    "1K - 10K",
-    "parquet",
-    "Image",
-    "Tabular",
-    "Text",
-    "Datasets",
-    "pandas",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US"
-  ],
-  "url": "https://huggingface.co/datasets/baratilab/Flow3D-V0-Ti-6Al-4V_fast_test"
+  ]
 }
