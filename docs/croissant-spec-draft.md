@@ -1012,12 +1012,19 @@ Let's see a simple example: The ratings `RecordSet` below defines the fields use
           "column": "timestamp"
         }
       }
+    },
+    {
+      "@type": "cr:Field",
+      "@id": "ratings/rating_scale",
+      "description": "The scale on which the rating is given.",
+      "dataType": "sc:Text",
+      "value": "1-5 stars"
     }
   ]
 }
 ```
 
-The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as a ratings table `FileObject`. Each field specifies as a source the corresponding column of the CSV file.
+The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as a ratings table `FileObject`. Each field specifies as a source the corresponding column of the CSV file. The last field has a constant value that specifies the rating scale.
 
 ### DataSource
 
