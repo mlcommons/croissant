@@ -898,6 +898,13 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>MANY</td>
     <td>The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, <code>sc:Integer</code>) or a semantic type (e.g., <code>sc:GeoLocation</code>).</td>
   </tr>
+    <tr>
+    <td>value</td>
+    <td>JSON</a></td>>
+    <td>ONE</td>
+    <td>An optional constant value for the field. Fields with values can be used to attach key/value pairs to a RecordSet. The value of a field can be atomic, for fields with a simple dataType, or it can be structured, e.g., if the field has subfields. For the latter case, a JSON string can be used to represent the value.</td>
+    </tr>
+  <tr>
   <tr>
     <td>isArray</td>
     <td><a href="http://schema.org/Boolean">Boolean</a></td>
@@ -1005,12 +1012,19 @@ Let's see a simple example: The ratings `RecordSet` below defines the fields use
           "column": "timestamp"
         }
       }
+    },
+    {
+      "@type": "cr:Field",
+      "@id": "ratings/rating_scale",
+      "description": "The scale on which the rating is given.",
+      "dataType": "sc:Text",
+      "value": "1-5 stars"
     }
   ]
 }
 ```
 
-The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as a ratings table `FileObject`. Each field specifies as a source the corresponding column of the CSV file.
+The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as a ratings table `FileObject`. Each field specifies as a source the corresponding column of the CSV file. The last field has a constant value that specifies the rating scale.
 
 ### DataSource
 
