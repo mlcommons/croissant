@@ -533,6 +533,20 @@ While you can use any vocabulary, it is up to the consumer of the Croissant file
 
 In addition to dataset-level properties, external vocabularies can be used to provide more semantic meaning to the data itself. There are three main ways to do this:
 
+#### Field typing
+
+You can assign a `dataType` from an external vocabulary to a `cr:Field`. This indicates that each value for that field is an instance of the specified type.
+
+In the following example, the `url` field is expected to be a URL, whose semantic type is [City](http://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: "<http://www.wikidata.org/wiki/Q90>").
+
+```json
+{
+  "@id": "cities/url",
+  "@type": "cr:Field",
+  "dataType": ["http://schema.org/URL", "http://www.wikidata.org/wiki/Q515"]
+}
+```
+
 #### Annotations
 
 You can add properties from external vocabularies to `cr:RecordSet` or `cr:Field` definitions. This is useful for adding information that doesn't fit the `dataType` model, like summary statistics, or for providing a more detailed semantic mapping.
@@ -1369,41 +1383,8 @@ Other data types commonly used in ML datasets:
 
 #### Using data types from other vocabularies
 
-Croissant datasets can use data types from other vocabularies, such as Wikidata. These may be supported by the tools consuming the data, but don’t need to. For example:
+See the section [Using external vocabularies with data](#using-external-vocabularies-with-data) for details on how to use data types from other vocabularies.
 
-<table>
-  <thead>
-    <th>dataType</th>
-    <th>Usage</th>
-  </thead>
-  <tr>
-    <td>
-      <a href="http://www.wikidata.org/wiki/Q48277">wd:Q48277</a><br>
-      (gender)
-    </td>
-    <td>Describes a Field or a RecordSet whose values are indicative of someone’s gender. This could be used for instance by RAI frameworks and tools to flag possible biases in the data. Values for this RecordSet can be associated with specific gender URLs (eg: <a href="http://www.wikidata.org/wiki/Q6581097">wd:Q6581097</a>, <a href="http://www.wikidata.org/wiki/Q6581072">wd:Q6581072</a>, etc.). Refer to the "Typed RecordSets > Enumerations" section for an example.</td>
-  </tr>
-</table>
-
-In the following example, `color_sample` is a field containing an image, but with no associated machine-readable semantics.
-
-```json
-{
-  "@id": "images/color_sample",
-  "@type": "cr:Field",
-  "dataType": "sc:ImageObject"
-}
-```
-
-In the following example, the `url` field is expected to be a URL, whose semantic type is [City](http://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: "<http://www.wikidata.org/wiki/Q90>").
-
-```json
-{
-  "@id": "cities/url",
-  "@type": "cr:Field",
-  "dataType": ["http://schema.org/URL", "http://www.wikidata.org/wiki/Q515"]
-}
-```
 
 #### Typing RecordSets
 
