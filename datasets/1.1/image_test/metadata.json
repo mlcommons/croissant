@@ -54,7 +54,11 @@
     "@type": "sc:Organization",
     "name": "BVLabs"
   },
-  "keywords": ["sky imaging", "sentinel-2", "cloud"],
+  "keywords": [
+    "sky imaging",
+    "sentinel-2",
+    "cloud"
+  ],
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "publisher": {
     "@type": "sc:Organization",
@@ -185,7 +189,10 @@
           "@type": "cr:Field",
           "@id": "mask_s2_tif_id",
           "name": "mask_s2_tif",
-          "dataType": ["cr:SegmentationMask", "sc:ImageObject"],
+          "dataType": [
+            "cr:SegmentationMask",
+            "sc:ImageObject"
+          ],
           "source": {
             "fileSet": {
               "@id": "mask_s2_tif_set"

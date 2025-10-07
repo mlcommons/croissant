@@ -16,7 +16,10 @@
       "@type": "@vocab"
     },
     "dct": "http://purl.org/dc/terms/",
-    "examples": {"@id": "cr:examples", "@type": "@json"},
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -43,37 +46,57 @@
     "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
+  "name": "MRI head scan",
+  "description": "This zip file contains a DICOM data set of magnetic resonance images  a normal male mathematics professor aged 52. The experimental subject is the author. The MRI scans are T2 weighted  turbo-spin-echo (T2W TSE) and T1 weighted Fast Field Echo (T1W FFE). The subject suffers from a small vertical strabismus (hypertropia), a misalignment of the eyes, which is visible in this data set. The author would like to thank the Radiology Department at the Macclesfield General Hospital for performing the scan.",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "Zenodo",
+    "url": "https://zenodo.org/records/16956"
+  },
+  "keywords": [
+    "English",
+    "imagefolder",
+    "Image",
+    "Datasets",
+    "Croissant",
+    "MRI",
+    "biology",
+    "medical"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://zenodo.org/records/16956",
   "distribution": [
     {
-      "contentUrl": "https://zenodo.org/records/16956/files/DICOM.zip",
-      "contentSize": "4.698 MB",
-      "md5": "e5cbd0bca91f1787d057b0eac2572bde",
-      "encodingFormat": "application/zip",
-      "@id": "data.zip",
       "@type": "cr:FileObject",
+      "@id": "data.zip",
       "name": "data.zip",
-      "description": "DICOM Data. This dataset consists of 5 head scans."
+      "description": "DICOM Data. This dataset consists of 5 head scans.",
+      "contentSize": "4.698 MB",
+      "contentUrl": "https://zenodo.org/records/16956/files/DICOM.zip",
+      "encodingFormat": "application/zip",
+      "md5": "e5cbd0bca91f1787d057b0eac2572bde"
     },
     {
-      "includes": "*/dicom/*/*/*",
+      "@type": "cr:FileSet",
+      "@id": "image_labels",
+      "name": "image_labels",
       "containedIn": {
         "@id": "data.zip"
       },
       "encodingFormat": "text/txt",
-      "@id": "image_labels",
-      "@type": "cr:FileSet",
-      "name": "image_labels"
+      "includes": "*/dicom/*/*/*"
     },
     {
-      "includes": "*/dicom/*/*/*",
+      "@type": "cr:FileSet",
+      "@id": "image-files",
+      "name": "image/dcm files",
+      "description": "image/dcm files contained in data.zip",
       "containedIn": {
         "@id": "data.zip"
       },
       "encodingFormat": "image/dicom",
-      "@id": "image-files",
-      "@type": "cr:FileSet",
-      "name": "image/dcm files",
-      "description": "image/dcm files contained in data.zip"
+      "includes": "*/dicom/*/*/*"
     }
   ],
   "recordSet": [
@@ -117,25 +140,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.1",
-  "name": "MRI head scan",
-  "description": "This zip file contains a DICOM data set of magnetic resonance images  a normal male mathematics professor aged 52. The experimental subject is the author. The MRI scans are T2 weighted  turbo-spin-echo (T2W TSE) and T1 weighted Fast Field Echo (T1W FFE). The subject suffers from a small vertical strabismus (hypertropia), a misalignment of the eyes, which is visible in this data set. The author would like to thank the Radiology Department at the Macclesfield General Hospital for performing the scan.",
-  "creator": {
-    "@type": "sc:Organization",
-    "name": "Zenodo",
-    "url": "https://zenodo.org/records/16956"
-  },
-  "keywords": [
-    "English",
-    "imagefolder",
-    "Image",
-    "Datasets",
-    "Croissant",
-    "MRI",
-    "biology",
-    "medical"
-  ],
-  "license": "https://choosealicense.com/licenses/mit/",
-  "url": "https://zenodo.org/records/16956"
+  ]
 }
