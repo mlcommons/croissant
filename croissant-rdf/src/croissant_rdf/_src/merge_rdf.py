@@ -83,6 +83,41 @@ def merge_rdf_files(
     return output_file
 
 
+def merge_rdf_command(args):
+    """Execute the merge RDF command.
+
+    Args:
+        args: Parsed command-line arguments with input_files, output, format, and no_deduplicate attributes.
+    """
+    # Expand wildcards and validate files
+    input_files = []
+    for pattern in args.input_files:
+        if "*" in pattern or "?" in pattern:
+            # Expand wildcard
+            from glob import glob
+
+            matched = glob(pattern)
+            if matched:
+                input_files.extend(matched)
+            else:
+                logger.warning(f"No files matched pattern: {pattern}")
+        else:
+            input_files.append(pattern)
+
+    if not input_files:
+        logger.error("No input files provided")
+        return
+
+    merge_rdf_files(
+        input_files=input_files,
+        output_file=args.output,
+        output_format=args.format,
+        deduplicate=not args.no_deduplicate,
+    )
+
+    print(f"Successfully merged {len(input_files)} files into: {args.output}")
+
+
 def main():
     """CLI for merging RDF files from multiple providers."""
     parser = argparse.ArgumentParser(
@@ -116,38 +151,11 @@ def main():
     )
 
     args = parser.parse_args()
-
-    # Expand wildcards and validate files
-    input_files = []
-    for pattern in args.input_files:
-        if "*" in pattern or "?" in pattern:
-            # Expand wildcard
-            from glob import glob
-
-            matched = glob(pattern)
-            if matched:
-                input_files.extend(matched)
-            else:
-                logger.warning(f"No files matched pattern: {pattern}")
-        else:
-            input_files.append(pattern)
-
-    if not input_files:
-        logger.error("No input files provided")
-        return
-
-    merge_rdf_files(
-        input_files=input_files,
-        output_file=args.output,
-        output_format=args.format,
-        deduplicate=not args.no_deduplicate,
-    )
-
-    print(f"Successfully merged {len(input_files)} files into: {args.output}")
+    merge_rdf_command(args)
 
 
 if __name__ == "__main__":
     main()
 
 
-__all__ = ["merge_rdf_files", "main"]
+__all__ = ["merge_rdf_files", "merge_rdf_command", "main"]
