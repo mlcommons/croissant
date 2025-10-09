@@ -52,8 +52,6 @@ huggingface-rdf = "croissant_rdf.providers.huggingface:main"
 kaggle-rdf = "croissant_rdf.providers.kaggle:main"
 openml-rdf = "croissant_rdf.providers.openml:main"
 dataverse-rdf = "croissant_rdf.providers.dataverse:main"
-rdf-to-jsonld = "croissant_rdf._src.rdf_to_jsonld:main"
-merge-rdf = "croissant_rdf._src.merge_rdf:main"
 
 
 [build-system]

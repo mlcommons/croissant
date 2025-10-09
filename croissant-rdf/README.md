@@ -82,15 +82,11 @@ dataverse-rdf --fname dataverse.ttl --limit 10 soil
 Convert any RDF file back to Croissant JSON-LD format:
 
 ```sh
-# Using the unified CLI
 croissant-rdf to-jsonld my-datasets.ttl
 # Creates: my-datasets.jsonld
 
 # Specify output file
 croissant-rdf to-jsonld my-datasets.ttl --output croissant.jsonld
-
-# Legacy standalone command (also available)
-rdf-to-jsonld my-datasets.ttl --output croissant.jsonld
 ```
 
 ### Merging Multiple RDF Sources
@@ -98,7 +94,7 @@ rdf-to-jsonld my-datasets.ttl --output croissant.jsonld
 Combine RDF files from different providers into a unified knowledge graph:
 
 ```sh
-# Using the unified CLI
+# Merge specific files
 croissant-rdf merge huggingface.ttl kaggle.ttl openml.ttl --output unified-kg.ttl
 
 # Use wildcards to merge all TTL files
@@ -106,9 +102,6 @@ croissant-rdf merge *.ttl --output complete-kg.ttl
 
 # Output in different format
 croissant-rdf merge *.ttl --output kg.jsonld --format json-ld
-
-# Legacy standalone commands (also available)
-merge-rdf *.ttl --output complete-kg.ttl
 ```
 
 ### Querying with SPARQL
@@ -266,15 +259,6 @@ croissant-rdf merge --help
 | `kaggle-rdf` | Generate RDF from Kaggle datasets |
 | `openml-rdf` | Generate RDF from OpenML datasets |
 | `dataverse-rdf` | Generate RDF from Dataverse repositories |
-
-### Legacy Standalone Commands
-
-For backward compatibility, the following standalone commands are also available:
-
-| Command | Description |
-|---------|-------------|
-| `rdf-to-jsonld` | Convert RDF files back to Croissant JSON-LD |
-| `merge-rdf` | Merge multiple RDF files into a unified knowledge graph |
 
 All tools support `--help` for detailed usage information.
 
