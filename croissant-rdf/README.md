@@ -82,10 +82,14 @@ dataverse-rdf --fname dataverse.ttl --limit 10 soil
 Convert any RDF file back to Croissant JSON-LD format:
 
 ```sh
-rdf-to-jsonld my-datasets.ttl
+# Using the unified CLI
+croissant-rdf to-jsonld my-datasets.ttl
 # Creates: my-datasets.jsonld
 
 # Specify output file
+croissant-rdf to-jsonld my-datasets.ttl --output croissant.jsonld
+
+# Legacy standalone command (also available)
 rdf-to-jsonld my-datasets.ttl --output croissant.jsonld
 ```
 
@@ -94,14 +98,17 @@ rdf-to-jsonld my-datasets.ttl --output croissant.jsonld
 Combine RDF files from different providers into a unified knowledge graph:
 
 ```sh
-# Merge specific files
-merge-rdf huggingface.ttl kaggle.ttl openml.ttl --output unified-kg.ttl
+# Using the unified CLI
+croissant-rdf merge huggingface.ttl kaggle.ttl openml.ttl --output unified-kg.ttl
 
 # Use wildcards to merge all TTL files
-merge-rdf *.ttl --output complete-kg.ttl
+croissant-rdf merge *.ttl --output complete-kg.ttl
 
 # Output in different format
-merge-rdf *.ttl --output kg.jsonld --format json-ld
+croissant-rdf merge *.ttl --output kg.jsonld --format json-ld
+
+# Legacy standalone commands (also available)
+merge-rdf *.ttl --output complete-kg.ttl
 ```
 
 ### Querying with SPARQL
@@ -236,7 +243,22 @@ LIMIT 100
 
 ## CLI Tools Reference
 
-The following command-line tools are available after installation:
+### Unified CLI
+
+The `croissant-rdf` command provides a unified interface with subcommands:
+
+```sh
+croissant-rdf --help
+croissant-rdf to-jsonld --help
+croissant-rdf merge --help
+```
+
+| Subcommand | Description |
+|------------|-------------|
+| `croissant-rdf to-jsonld` | Convert RDF files back to Croissant JSON-LD |
+| `croissant-rdf merge` | Merge multiple RDF files into a unified knowledge graph |
+
+### Provider-Specific Tools
 
 | Command | Description |
 |---------|-------------|
@@ -244,6 +266,13 @@ The following command-line tools are available after installation:
 | `kaggle-rdf` | Generate RDF from Kaggle datasets |
 | `openml-rdf` | Generate RDF from OpenML datasets |
 | `dataverse-rdf` | Generate RDF from Dataverse repositories |
+
+### Legacy Standalone Commands
+
+For backward compatibility, the following standalone commands are also available:
+
+| Command | Description |
+|---------|-------------|
 | `rdf-to-jsonld` | Convert RDF files back to Croissant JSON-LD |
 | `merge-rdf` | Merge multiple RDF files into a unified knowledge graph |
 
@@ -267,7 +296,7 @@ kaggle-rdf --fname kaggle.ttl --limit 100 nlp
 openml-rdf --fname openml.ttl --limit 100
 
 # Merge into unified catalog
-merge-rdf hf.ttl kaggle.ttl openml.ttl --output nlp-catalog.ttl
+croissant-rdf merge hf.ttl kaggle.ttl openml.ttl --output nlp-catalog.ttl
 
 # Query the unified catalog
 uv run rdflib-endpoint serve --store Oxigraph nlp-catalog.ttl
@@ -282,14 +311,14 @@ openml-rdf --fname bio-openml.ttl --limit 50 genome
 dataverse-rdf --fname bio-dataverse.ttl --limit 50 biology
 
 # Create unified knowledge graph
-merge-rdf bio-*.ttl --output bioinformatics-kg.ttl
+croissant-rdf merge bio-*.ttl --output bioinformatics-kg.ttl
 ```
 
 ### Dataset Metadata Analysis
 
 ```sh
 # Export to JSON-LD for analysis
-rdf-to-jsonld my-datasets.ttl
+croissant-rdf to-jsonld my-datasets.ttl
 
 # Process with Python
 python -c "
@@ -374,6 +403,7 @@ croissant-rdf/
 │   │   │   ├── kaggle.py
 │   │   │   ├── openml.py
 │   │   │   └── dataverse.py
+│   │   ├── cli.py                   # Unified CLI with subcommands
 │   │   ├── rdf_to_jsonld.py         # RDF → JSON-LD conversion
 │   │   ├── merge_rdf.py             # Multi-file RDF merging
 │   │   └── utils.py                 # Shared utilities
