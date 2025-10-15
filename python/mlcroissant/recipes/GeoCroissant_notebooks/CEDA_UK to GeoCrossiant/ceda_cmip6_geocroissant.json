@@ -1,0 +1,130 @@
+{
+  "@context": [
+    "https://schema.org",
+    {
+      "geocr": "https://mlcommons.org/croissant/geocroissant/1.0",
+      "cr": "https://mlcommons.org/croissant/1.0",
+      "cmip6": "https://w3id.org/cmip6/",
+      "fileObject": "cr:FileObject",
+      "fileSet": "cr:FileSet",
+      "recordSet": "cr:RecordSet",
+      "field": "cr:Field",
+      "data": {
+        "@id": "cr:data",
+        "@type": "@json"
+      },
+      "source": "cr:source",
+      "references": "cr:references",
+      "transform": "cr:transform",
+      "format": "cr:format"
+    }
+  ],
+  "@type": "Dataset",
+  "name": "CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+  "description": "CMIP6 dataset for temperature: Unknown",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "distribution": {
+    "@type": "fileSet",
+    "name": "cmip6_data_files",
+    "description": "Collection of data files for Unknown dataset",
+    "containedIn": [
+      {
+        "@type": "fileObject",
+        "name": "reference_file",
+        "description": "reference_file asset for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+        "contentUrl": "https://dap.ceda.ac.uk/badc/cmip6/metadata/kerchunk/pipeline1/ScenarioMIP/KIOST/KIOST-ESM/kr1.0/CMIP6_ScenarioMIP_KIOST_KIOST-ESM_ssp585_r1i1p1f1_Amon_tas_gr1_v20191106_kr1.0.json",
+        "encodingFormat": "application/zstd",
+        "cmip6:variable_id": "tas",
+        "cmip6:variable_long_name": "Unknown",
+        "cmip6:variable_units": "K"
+      },
+      {
+        "@type": "fileObject",
+        "name": "data0001",
+        "description": "data0001 asset for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+        "contentUrl": "https://dap.ceda.ac.uk/badc/cmip6/data/CMIP6/ScenarioMIP/KIOST/KIOST-ESM/ssp585/r1i1p1f1/Amon/tas/gr1/v20191106/tas_Amon_KIOST-ESM_ssp585_r1i1p1f1_gr1_201501-210012.nc",
+        "encodingFormat": "application/netcdf",
+        "cmip6:variable_id": "tas",
+        "cmip6:variable_long_name": "Unknown",
+        "cmip6:variable_units": "K"
+      }
+    ]
+  },
+  "recordSet": [
+    {
+      "@type": "recordSet",
+      "name": "geospatial_metadata",
+      "description": "Geospatial metadata extracted from STAC",
+      "field": [
+        {
+          "@type": "field",
+          "name": "bounding_box",
+          "description": "Dataset bounding box",
+          "data": [
+            -179.0625,
+            -90.0,
+            179.0625,
+            90.0
+          ]
+        },
+        {
+          "@type": "field",
+          "name": "geometry",
+          "description": "Dataset geometry",
+          "data": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -179.0625,
+                  -90.0
+                ],
+                [
+                  179.0625,
+                  -90.0
+                ],
+                [
+                  179.0625,
+                  90.0
+                ],
+                [
+                  -179.0625,
+                  90.0
+                ],
+                [
+                  -179.0625,
+                  -90.0
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "@type": "field",
+          "name": "temporal_coverage",
+          "description": "Temporal coverage",
+          "data": "/"
+        }
+      ]
+    },
+    {
+      "@type": "recordSet",
+      "name": "cmip6_metadata",
+      "description": "CMIP6-specific metadata",
+      "field": [
+        {
+          "@type": "field",
+          "name": "activity_id",
+          "description": "CMIP6 activity ID",
+          "data": ""
+        },
+        {
+          "@type": "field",
+          "name": "experiment_id",
+          "description": "CMIP6 experiment ID",
+          "data": ""
+        }
+      ]
+    }
+  ]
+}
