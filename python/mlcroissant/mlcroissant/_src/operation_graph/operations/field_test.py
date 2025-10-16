@@ -405,3 +405,54 @@ def test_apply_multiple_transforms_fn():
     expected_value = ["hello_1", "hello_2"]
     field.apply_transforms_fn(value, f)
     assert field.apply_transforms_fn(value, f) == expected_value
+
+
+def test_readfields_constant_value():
+    ctx = Context(conforms_to=CroissantVersion.V_1_1)
+    constant_field = Field(
+        ctx=ctx,
+        name="constant",
+        id="record_set/constant",
+        data_types=[DataType.TEXT],
+        value="static",
+    )
+    record_set = RecordSet(
+        ctx=ctx,
+        name="record_set",
+        id="record_set",
+        fields=[constant_field],
+    )
+    read_fields = ReadFields(operations=Operations(), node=record_set)
+    df = pd.DataFrame({"unused": [0, 1]})
+    assert list(read_fields.call(df)) == [
+        {"record_set/constant": b"static"},
+        {"record_set/constant": b"static"},
+    ]
+
+
+def test_readfields_sets_none_when_source_value_is_nan():
+    ctx = Context(conforms_to=CroissantVersion.V_1_1)
+    name_field = Field(
+        ctx=ctx,
+        name="name",
+        id="record_set/name",
+        data_types=[DataType.TEXT],
+        source=Source(
+            ctx=ctx,
+            file_object="file",
+            extract=Extract(column="name"),
+        ),
+        value="unknown",
+    )
+    record_set = RecordSet(
+        ctx=ctx,
+        name="record_set",
+        id="record_set",
+        fields=[name_field],
+    )
+    read_fields = ReadFields(operations=Operations(), node=record_set)
+    df = pd.DataFrame({"name": ["alice", np.nan]})
+    assert list(read_fields.call(df)) == [
+        {"record_set/name": b"alice"},
+        {"record_set/name": None},
+    ]
