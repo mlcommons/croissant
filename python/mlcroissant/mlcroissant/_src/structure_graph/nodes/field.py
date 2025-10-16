@@ -1,5 +1,7 @@
 """Field module."""
 
+from typing import Any
+
 from rdflib import term
 from rdflib.namespace import SDO
 from typing_extensions import Self
@@ -153,6 +155,19 @@ class Field(Node):
         from_jsonld=lambda ctx, fields: Field.from_jsonld(ctx, fields),
         url=constants.ML_COMMONS_SUB_FIELD,
     )
+    value: Any | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "A constant value for this Field applied to every record of the RecordSet. "
+            "If both `source` and `value` are present, `value` acts as a default when "
+            "the sourced value is missing."
+        ),
+        # Accept any JSON-serializable value (str,int,float,bool,dict,list,None).
+        # We intentionally omit input_types so non-text JSON values are allowed.
+        from_jsonld=lambda _, v: v,
+        to_jsonld=lambda _, v: v,
+        url=constants.SCHEMA_ORG_VALUE,
+    )
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -160,7 +175,15 @@ class Field(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
-        self.source.check_source(self.add_error)
+        has_value = self.value is not None
+        has_source = bool(self.source)
+        if has_value and has_source:
+            self.add_warning(
+                f"Field {self.uuid} defines both `source` and `value`. `source` takes"
+                " precedence."
+            )
+        if not has_value or has_source:
+            self.source.check_source(self.add_error)
         self._standardize_data_types()
         if self.array_shape and not self.is_array:
             self.add_error(
