@@ -148,6 +148,7 @@ SCHEMA_ORG_PUBLISHER = namespace.SDO.publisher
 SCHEMA_ORG_SAME_AS = namespace.SDO.sameAs
 SCHEMA_ORG_SHA256 = namespace.SDO.sha256
 SCHEMA_ORG_URL = namespace.SDO.url
+SCHEMA_ORG_VALUE = namespace.SDO.value
 SCHEMA_ORG_VERSION = namespace.SDO.version
 
 # Schema.org URIs that do not exist yet in the standard.
