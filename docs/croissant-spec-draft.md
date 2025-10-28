@@ -1892,6 +1892,11 @@ Key PROV-O relationships include:
 *   `prov:wasGeneratedBy`: Links an entity to the activity that generated it (e.g., a data cleaning process, a web crawl).
 *   `prov:wasAttributedTo`: Links an entity to the agent responsible for it (e.g., a person, organization, or software).
 
+
+
+![Croissant provenance](images/croissant-provenance.png 'Croissant provenance') 
+
+
 Provenance can be specified at multiple levels of granularity:
 
 **Dataset and Resource-level Provenance**
