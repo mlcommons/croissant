@@ -24,6 +24,7 @@ Authors:
 - Mubashara Akthar (King’s College London),
 - Nitisha Jain (King’s College London),
 - Slava Tykhonov (DANS-KNAW)
+- Joan Giner-Miguelez (Barcelona Supercomputing Center)
 
 ## Introduction
 
@@ -1876,7 +1877,10 @@ This section provides guidance on how to integrate external vocabularies with Cr
 
 ### Provenance Representation
 
-Tracking the provenance of a dataset is crucial for transparency, reproducibility, and responsible AI. It helps users understand where the data came from, how it was created, and how it has been modified over time. This is particularly important for datasets derived from other datasets, or those that have undergone significant transformations, such as filtering, augmentation, or annotation.
+
+Tracking the provenance of a dataset is crucial for transparency, reproducibility, and responsible AI. It helps users understand where the data came from, how it has been modified over time, and who contributed to its creation. This is particularly important for datasets derived from other datasets, or those that have undergone significant transformations, such as filtering, augmentation, or annotation.
+
+
 
 Croissant recommends using the [W3C PROV Ontology (PROV-O)](https://www.w3.org/TR/prov-o/) to describe provenance. PROV-O provides a rich and standard vocabulary for describing the entities, activities, and agents involved in the lifecycle of data.
 
