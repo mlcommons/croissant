@@ -38,8 +38,8 @@
     "regex": "cr:regex",
     "repeated": "cr:repeated",
     "replace": "cr:replace",
-    "sc": "https://schema.org/",
     "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
@@ -76,10 +76,10 @@
             "fileSet": {
               "@id": "files"
             },
+            "samplingRate": 22050,
             "extract": {
               "fileProperty": "content"
-            },
-            "samplingRate": 22050
+            }
           }
         }
       ]

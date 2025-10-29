@@ -2,7 +2,6 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -12,8 +11,6 @@
       "@id": "cr:data",
       "@type": "@json"
     },
-    "dataBiases": "cr:dataBiases",
-    "dataCollection": "cr:dataCollection",
     "dataType": {
       "@id": "cr:dataType",
       "@type": "@vocab"
@@ -30,26 +27,46 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
     "md5": "cr:md5",
     "parentField": "cr:parentField",
     "path": "cr:path",
-    "personalSensitiveInformation": "cr:personalSensitiveInformation",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
     "repeated": "cr:repeated",
     "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
     "sc": "https://schema.org/",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "arrayShape": "cr:arrayShape",
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "isArray": "cr:isArray",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation"
   },
   "@type": "sc:Dataset",
+  "name": "recipe_RL_data_roberta-base",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tStructure\n\t\n\n\nConsists of 5 fields\nEach row corresponds to a policy - sequence of actions, given an initial <START> state, and corresponding rewards at each step.\n\n\n\t\n\t\t\n\t\n\t\n\t\tFields\n\t\n\nsteps, step_attn_masks, rewards, actions, dones\n\n\t\n\t\t\n\t\n\t\n\t\tField descriptions\n\t\n\n\nsteps (List of lists of Ints) - tokenized step tokens of all the steps in the policy sequence (here we use the roberta-base tokenizer, as roberta-base would be used to encode each\u2026 See the full description on the dataset page: https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base.",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "keywords": [
+    "monolingual",
+    "English",
+    "1M - 10M",
+    "parquet",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/undefined/",
+  "url": "https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -75,13 +92,13 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
       "dataType": "cr:Split",
       "key": {
         "@id": "default_splits/split_name"
       },
-      "@id": "default_splits",
-      "name": "default_splits",
-      "description": "Splits for the default config.",
       "field": [
         {
           "@type": "cr:Field",
@@ -107,6 +124,11 @@
           "name": "default/split",
           "description": "Split to which the example belongs to.",
           "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          },
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -117,11 +139,6 @@
             "transform": {
               "regex": "default/(?:partial-)?(train)/.+parquet$"
             }
-          },
-          "references": {
-            "field": {
-              "@id": "default_splits/split_name"
-            }
           }
         },
         {
@@ -129,9 +146,9 @@
           "@id": "default/steps",
           "name": "default/steps",
           "description": "Column 'steps' from the Hugging Face parquet file.",
+          "arrayShape": "-1,-1",
           "dataType": "sc:Integer",
           "isArray": true,
-          "arrayShape": "-1,-1",
           "source": {
             "fileSet": {
               "@id": "parquet-files-for-config-default"
@@ -209,21 +226,5 @@
         }
       ]
     }
-  ],
-  "conformsTo": "http://mlcommons.org/croissant/1.1",
-  "name": "recipe_RL_data_roberta-base",
-  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tStructure\n\t\n\n\nConsists of 5 fields\nEach row corresponds to a policy - sequence of actions, given an initial \u003CSTART\u003E state, and corresponding rewards at each step.\n\n\n\t\n\t\t\n\t\n\t\n\t\tFields\n\t\n\nsteps, step_attn_masks, rewards, actions, dones\n\n\t\n\t\t\n\t\n\t\n\t\tField descriptions\n\t\n\n\nsteps (List of lists of Ints) - tokenized step tokens of all the steps in the policy sequence (here we use the roberta-base tokenizer, as roberta-base would be used to encode each… See the full description on the dataset page: https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base.",
-  "keywords": [
-    "monolingual",
-    "English",
-    "1M - 10M",
-    "parquet",
-    "Datasets",
-    "Dask",
-    "Croissant",
-    "Polars",
-    "🇺🇸 Region: US"
-  ],
-  "license": "https://choosealicense.com/licenses/undefined/",
-  "url": "https://huggingface.co/datasets/AnonymousSub/recipe_RL_data_roberta-base"
+  ]
 }
