@@ -34,18 +34,19 @@ def test_checks_are_performed(conforms_to, field_uuid):
     ["array_shape", "array_shape_tuple"], [["1,2,3", (1, 2, 3)], [None, (-1,)]]
 )
 def test_array_shape_tuple(array_shape, array_shape_tuple):
-    field = create_test_field(is_array=True, array_shape=array_shape)
+    field = create_test_field(is_array=True, array_shape=array_shape, value="constant")
     assert field.array_shape_tuple == array_shape_tuple
 
 
 def test_data_type():
     # data_types can be a string:
-    assert create_test_field(data_types=constants.DataType.BOOL).data_types == [
-        constants.DataType.BOOL
-    ]
+    assert create_test_field(
+        data_types=constants.DataType.BOOL, value="constant"
+    ).data_types == [constants.DataType.BOOL]
     # ...or a list of strings:
     assert create_test_field(
-        data_types=[constants.DataType.BOOL, "http://some-semantic-type"]
+        data_types=[constants.DataType.BOOL, "http://some-semantic-type"],
+        value="constant",
     ).data_types == [
         constants.DataType.BOOL,
         term.URIRef("http://some-semantic-type"),
@@ -57,7 +58,8 @@ def test_data_type():
             data_types=[
                 constants.DataType.BOOL,
                 "http://some-semantic-type",
-            ]
+            ],
+            value="constant",
         ).data_type
         is bool
     )
@@ -146,7 +148,8 @@ def test_value_with_source_still_validates_source():
             source=Source(ctx=ctx, field="record_set/parent"),
         )
     mocked_check_source.assert_called_once()
-    warnings = ctx.issues.warnings
-    assert len(warnings) == 1
-    warning = next(iter(warnings))
-    assert "`source` and `value`" in warning
+    assert not ctx.issues.warnings
+    errors = ctx.issues.errors
+    assert len(errors) == 1
+    error = next(iter(errors))
+    assert "`source` and `value`" in error

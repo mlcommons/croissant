@@ -110,20 +110,18 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
     for node in entry_nodes:
         if isinstance(node, RecordSet) and not node.data:
             for field in node.fields:
-                if not field.source:
-                    if field.value is None:
-                        field.add_error(
-                            f'Field "{field.uuid}" should define exactly one of '
-                            f"{constants.ML_COMMONS_SOURCE(ctx)} or "
-                            f"{constants.SCHEMA_ORG_VALUE}. Neither is provided."
-                        )
-                    elif not field.data_types:
-                        field.add_error(
-                            f'Field "{field.uuid}" defines a constant value but omits'
-                            f" {constants.ML_COMMONS_DATA_TYPE(ctx)}. Please declare"
-                            " the data type."
-                        )
-                else:
+                if not field.source and field.value is None and not field.sub_fields:
+                    field.add_error(
+                        f"Field {field.uuid} does not define `source` or `value`."
+                        " Please specify exactly one of them."
+                    )
+                elif field.value is not None and not field.data_types:
+                    field.add_error(
+                        f'Field "{field.uuid}" defines a constant value but omits '
+                        f"{constants.ML_COMMONS_DATA_TYPE(ctx)}. Please declare the "
+                        "data type."
+                    )
+                elif field.source:
                     field.add_error(
                         f"Malformed source data: {field.source.uuid}. It does not refer"
                         " to any existing node. Have you used"

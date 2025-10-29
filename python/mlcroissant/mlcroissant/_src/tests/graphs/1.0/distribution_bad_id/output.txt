@@ -1,4 +1,4 @@
 Found the following 3 error(s) during the validation:
   -  Source should have one of the following properties http://mlcommons.org/croissant/field or http://mlcommons.org/croissant/fileObject or http://mlcommons.org/croissant/fileSet.
   -  The dataset contains a wrong `@id`: 'ids should not contain spaces'. Note that currently we do not support `@id`s containing whitespaces (not even if URL-escaped).
-  -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] Field "a-record-set/first-field" should define exactly one of http://mlcommons.org/croissant/source or https://schema.org/value. Neither is provided.
+  -  [Metadata(mydataset) > RecordSet(a-record-set) > Field(first-field)] Field a-record-set/first-field does not define `source` or `value`. Please specify exactly one of them.
