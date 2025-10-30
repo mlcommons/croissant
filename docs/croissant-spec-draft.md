@@ -71,7 +71,7 @@ Croissant is designed to be modular and extensible. One such extension is the Cr
 
 **Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
 
-**FileObject**: A granular part of a dataset, such as an image, text file, archive file.
+**Data Record**: A granular part of a dataset, such as an image, text, or archive file.
 
 **RecordSet**: A set of structured data records obtained from one or more data sources (typically a file or set of files), such as a collection of images, text files, or all the rows in a table.
 
