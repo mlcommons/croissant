@@ -51,7 +51,7 @@ from mlcroissant._src.tests.nodes import create_test_record_set
 )
 def test_invalid_data(data, error):
     ctx = Context()
-    field = create_test_field(ctx=ctx)
+    field = create_test_field(ctx=ctx, value="constant")
     create_test_record_set(
         ctx=ctx,
         data=data,

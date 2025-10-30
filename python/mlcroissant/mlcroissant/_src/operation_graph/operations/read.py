@@ -52,7 +52,10 @@ def _reading_method(
     """
     reading_methods: set[ReadingMethod] = set()
     for field in fields:
-        extract = field.source.extract
+        source = field.source
+        if source is None:
+            continue
+        extract = source.extract
         if extract.column:
             reading_methods.add(ReadingMethod.CONTENT)
         elif extract.file_property == FileProperty.lines:
@@ -84,7 +87,10 @@ def _get_sampling_rate(
     """
     sampling_rates: set[int] = set()
     for field in fields:
-        if sr := field.source.sampling_rate:
+        source = field.source
+        if source is None:
+            continue
+        if (sr := source.sampling_rate) is not None:
             sampling_rates.add(sr)
     if len(sampling_rates) > 1:
         raise ValueError(
@@ -99,7 +105,10 @@ def _get_sampling_rate(
 def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     """Checks whether at least one field requires listing the line numbers."""
     for field in fields:
-        if field.source.extract.file_property == FileProperty.lineNumbers:
+        source = field.source
+        if source is None:
+            continue
+        if source.extract.file_property == FileProperty.lineNumbers:
             return True
     return False
 
