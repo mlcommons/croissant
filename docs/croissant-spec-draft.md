@@ -24,6 +24,7 @@ Authors:
 - Mubashara Akthar (King’s College London),
 - Nitisha Jain (King’s College London),
 - Slava Tykhonov (DANS-KNAW)
+- Joan Giner-Miguelez (Barcelona Supercomputing Center)
 
 ## Introduction
 
@@ -1979,7 +1980,10 @@ This section provides guidance on how to integrate external vocabularies with Cr
 
 ### Provenance Representation
 
-Tracking the provenance of a dataset is crucial for transparency, reproducibility, and responsible AI. It helps users understand where the data came from, how it was created, and how it has been modified over time. This is particularly important for datasets derived from other datasets, or those that have undergone significant transformations, such as filtering, augmentation, or annotation.
+
+Tracking the provenance of a dataset is crucial for transparency, reproducibility, and responsible AI. It helps users understand where the data came from, how it has been modified over time, and who contributed to its creation. This is particularly important for datasets derived from other datasets, or those that have undergone significant transformations, such as filtering, augmentation, or annotation.
+
+
 
 Croissant recommends using the [W3C PROV Ontology (PROV-O)](https://www.w3.org/TR/prov-o/) to describe provenance. PROV-O provides a rich and standard vocabulary for describing the entities, activities, and agents involved in the lifecycle of data.
 
@@ -1990,6 +1994,11 @@ Key PROV-O relationships include:
 *   `prov:wasDerivedFrom`: Indicates that an entity (e.g., the dataset or a part of it) was derived from another entity.
 *   `prov:wasGeneratedBy`: Links an entity to the activity that generated it (e.g., a data cleaning process, a web crawl).
 *   `prov:wasAttributedTo`: Links an entity to the agent responsible for it (e.g., a person, organization, or software).
+
+
+
+![Croissant provenance](images/croissant-provenance.png 'Croissant provenance') 
+
 
 Provenance can be specified at multiple levels of granularity:
 
