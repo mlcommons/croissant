@@ -67,13 +67,13 @@ Croissant is designed to be modular and extensible. One such extension is the Cr
 
 ## Terminology
 
-**Dataset**: A collection of data points or items reflecting the results of such activities as measuring, reporting, collecting, analyzing, or observing.
+**Dataset**: A collection of data points or items reflecting the results from activities such as measurement, reporting, analysis, or collection.
 
-**Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
+**Croissant Dataset**: A dataset accompanied by a Croissant description, which is a metadata schema defining its structure, file organization and field properties. Note that the Croissant description does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
 
-**Data Record**: A granular part of a dataset, such as an image, text, or archive file.
+**Data Record**: A granular part of a dataset, such as an image, text, or archive file. Data Records are described by `FileObject` and `FileSet` types.
 
-**RecordSet**: A set of structured data records obtained from one or more data sources (typically a file or set of files), such as a collection of images, text files, or all the rows in a table.
+**RecordSet**: A set of structured data records obtained from one or more Data Records. It represents a coherent subset of the dataset with defined properties.  The properties are described using the `Field` type.
 
 ## Format Example
 
