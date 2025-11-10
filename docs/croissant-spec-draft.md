@@ -67,13 +67,13 @@ Croissant is designed to be modular and extensible. One such extension is the Cr
 
 ## Terminology
 
-**Dataset**: A collection of data points or items reflecting the results of such activities as measuring, reporting, collecting, analyzing, or observing.
+**Dataset**: A collection of data points or items reflecting the results from activities such as measurement, reporting, analysis, or collection.
 
-**Croissant dataset**: A dataset that comes with a description in the Croissant format. Note that the Croissant description of a dataset does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
+**Croissant Dataset**: A dataset accompanied by a Croissant description, which is a metadata schema defining its structure, file organization and field properties. Note that the Croissant description does not generally contain the actual data of the dataset (with the exception of small examples or enumerations). The data itself is contained in separate files, referenced by the Croissant dataset description.
 
-**Data record**: A granular part of a dataset, such as an image, text file, or a row in a table.
+**Data Record**: A granular part of a dataset, such as an image, text, or archive file. Data Records are described by `FileObject` and `FileSet` types.
 
-**Recordset**: A set of homogeneous data records, such as a collection of images, text files, or all the rows in a table.
+**RecordSet**: A set of structured data records obtained from one or more Data Records. It represents a coherent subset of the dataset with defined properties.  The properties are described using the `Field` type.
 
 ## Format Example
 
@@ -184,7 +184,7 @@ Furthermore, we can describe the structure and the data types in the data using 
 - the hash of the image, extracted from its filename
 - the date the image was taken, extracted from the metadata CSV file
 
-The [RecordSets](#recordsets) section explains how to define recordsets and fields, as well as extract, transform and join their data.
+The [RecordSets](#recordsets) section explains how to define RecordSets and Fields, as well as extract, transform and join their data.
 
 ## Prerequisites
 
@@ -671,7 +671,7 @@ Datasets may change over time. Versioning is hence important to enable reproduci
 Croissant datasets are versioned using the `version` property defined in [schema.org](http://schema.org). The recommended versioning scheme to use for datasets is`MAJOR.MINOR.PATCH`, following [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). More specifically:
 
 - If the `PATCH` version is incremented, the data remains the same, although it might be serialized differently or is packaged using different file formats.
-- If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as is: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old recordSets can still be retrieved (eg: the new records are added to a different Split).
+- If the `MINOR` version is incremented, the existing data is the same and can still be retrieved as is: there might be additional data (e.g. new fields, new RecordSet), or even new records in existing RecordSets, as long as the old RecordSets can still be retrieved (eg: the new records are added to a different Split).
 - If the `MAJOR` version is incremented, the existing data has been changed (edited, removed or shuffled records across splits), or extended in a way which doesn't allow for easy access to the data as it was at the previous version.
 
 #### Checksums
@@ -856,7 +856,7 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </thead>
   <tr>
     <td>containedIn</td>
-    <td>Reference</td>
+    <td><code>FileObject</code> or <code>FileSet</code> <a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
     <td>The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).</td>
   </tr>
@@ -998,9 +998,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
   </tr>
   <tr>
     <td>annotation</td>
-    <td>
-      Field
-    </td>
+    <td>Field</td>
     <td>MANY</td>
     <td>One or more data-level annotations that apply to the entire record.</td>
   </tr>
@@ -1008,7 +1006,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
 
 ### Field
 
-A `Field` is part of a `RecordSet`. It may represent a column of a table, or a nested data structure.
+A `Field` represents one or more properties of a `RecordSet`, such as a column of a table, Exif data, or a nested data structure.
 
 `Field` is a subclass of [sc:Intangible](https://schema.org/Intangible). It defines the following additional properties:
 
@@ -1061,21 +1059,21 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </tr>
   <tr>
     <td>references</td>
-    <td>Reference</td>
+    <td><code>Field</code> <a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
-    <td>Another <code>Field</code> of another <code>RecordSet</code> that this field references. This is the equivalent of a foreign key reference in a relational database.</td>
+    <td>A list of references to other <code>RecordSet</code> <code>Field</code>s. This is the equivalent of a foreign key reference in a relational database. Missing or circular references should result in an error.</td>
   </tr>
   <tr>
     <td>subField</td>
-    <td>Field</td>
+    <td><code>Field</code> <a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
-    <td>Another <code>Field</code> that is nested inside this one.</td>
+    <td>A list of references to <code>Field</code>s that are nested within this one. Missing or circular references should result in an error.</td>
   </tr>
   <tr>
     <td>parentField</td>
-    <td>Reference</td>
+    <td><code>Field</code><a href="http://schema.org/URL">URL</a></td>
     <td>MANY</td>
-    <td>A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>.</td>
+    <td>A list of references to one or more <code>Field</code>s. A special case of <code>SubField</code> that should be hidden because it references a <code>Field</code> that already appears in the <code>RecordSet</code>. Missing or circular references should result in an error.</td>
   </tr>
   <tr>
     <td>annotation</td>
@@ -1177,21 +1175,21 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
   </thead>
   <tr>
     <td>fileObject</td>
-    <td>Reference</td>
+    <td><code>FileObject</code> <a href="http://schema.org/URL">URL</a></td>
     <td>ONE</td>
-    <td>The name of the referenced <code>FileObject</code> source of the data.</td>
+    <td>The id of the <code>FileObject</code> source of the data.</td>
   </tr>
   <tr>
     <td>fileSet</td>
-    <td>Reference</td>
+    <td><code>FileSet</code> <a href="http://schema.org/URL">URL</a></td>
     <td>ONE</td>
-    <td>The name of the referenced <code>FileSet</code> source of the data.</td>
+    <td>The id of the <code>FileSet</code> source of the data.</td>
   </tr>
   <tr>
     <td>recordSet</td>
-    <td>Reference</td>
+    <td><code>RecordSet</code> <a href="http://schema.org/URL">URL</a></td>
     <td>ONE</td>
-    <td>The name of the referenced <code>RecordSet</code> source.</td>
+    <td>The id of the referenced <code>RecordSet</code> source.</td>
   </tr>
   <tr>
     <td>extract</td>
@@ -1493,7 +1491,7 @@ If the example values cannot easily be provided directly within the Croissant de
 
 ### Joins
 
-Croissant provides a simple mechanism to create a "foreign key" reference between fields of recordsets. The property `references` of `RecordSet` means that values in the `Field` that contains the reference are taken from the values of the target `Field`. The target is generally the key of the target `RecordSet`.
+Croissant provides a simple mechanism to create a "foreign key" reference between fields of RecordSets. The property `references` of `RecordSet` means that values in the `Field` that contains the reference are taken from the values of the target `Field`. The target is generally the key of the target `RecordSet`.
 
 For example, the `ratings` `RecordSet` below has a `movie_id` field that references the `movies` `RecordSet`.
 
