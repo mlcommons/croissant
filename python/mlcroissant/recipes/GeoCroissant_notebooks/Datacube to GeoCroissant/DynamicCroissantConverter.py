@@ -346,16 +346,12 @@ class DynamicCroissantConverter:
                         "min": (
                             -90.0
                             if coord_name == "lat"
-                            else -180.0
-                            if coord_name == "lon"
-                            else None
+                            else -180.0 if coord_name == "lon" else None
                         ),
                         "max": (
                             90.0
                             if coord_name == "lat"
-                            else 180.0
-                            if coord_name == "lon"
-                            else None
+                            else 180.0 if coord_name == "lon" else None
                         ),
                     }
                     if coord_name in ["lat", "lon"]
@@ -364,9 +360,7 @@ class DynamicCroissantConverter:
                 "geocr:units": (
                     "degrees_north"
                     if coord_name == "lat"
-                    else "degrees_east"
-                    if coord_name == "lon"
-                    else None
+                    else "degrees_east" if coord_name == "lon" else None
                 ),
             }
             # Remove None values

@@ -159,14 +159,12 @@ def stac_to_geocroissant(stac_dict):
             "http://www.opengis.net/def/rel/ogc/1.0/queryables": "Queryables",
         }
 
-        references.append(
-            {
-                "@type": "CreativeWork",
-                "url": href,
-                "name": name_map.get(rel, rel),
-                "encodingFormat": link.get("type", "application/json"),
-            }
-        )
+        references.append({
+            "@type": "CreativeWork",
+            "url": href,
+            "name": name_map.get(rel, rel),
+            "encodingFormat": link.get("type", "application/json"),
+        })
 
     if references:
         croissant["references"] = references

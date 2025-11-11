@@ -2,22 +2,25 @@
 """Complete fine-tuning script for Prithvi-EO-1.0-100M on Landslide4Sense dataset."""
 
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 
 import h5py
 import matplotlib.pyplot as plt
 import numpy as np
+from prithvi_mae import PrithviMAE
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import precision_recall_fscore_support
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
 import torchvision.transforms.functional as F
-import wandb
-from prithvi_mae import PrithviMAE
-from sklearn.metrics import accuracy_score, f1_score, precision_recall_fscore_support
-from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+import wandb
 
 # Add the current directory to path to import prithvi_mae
 sys.path.append(".")
@@ -364,7 +367,7 @@ def train_model(model, train_loader, val_loader, num_epochs=10, device="cuda"):
             " {train_f1:.4f}, Train Acc: {train_acc:.4f}"
         )
         print(
-            f"  Val Loss: {val_loss/len(val_loader):.4f}, Val F1: {val_f1:.4f}, Val"
+            f"  Val Loss: {val_loss / len(val_loader):.4f}, Val F1: {val_f1:.4f}, Val"
             f" Acc: {val_acc:.4f}"
         )
 
@@ -385,18 +388,16 @@ def train_model(model, train_loader, val_loader, num_epochs=10, device="cuda"):
 
         # Log to wandb
         if wandb.run:
-            wandb.log(
-                {
-                    "epoch": epoch,
-                    "train_loss": train_loss / len(train_loader),
-                    "val_loss": val_loss / len(val_loader),
-                    "train_f1": train_f1,
-                    "val_f1": val_f1,
-                    "train_acc": train_acc,
-                    "val_acc": val_acc,
-                    "learning_rate": scheduler.get_last_lr()[0],
-                }
-            )
+            wandb.log({
+                "epoch": epoch,
+                "train_loss": train_loss / len(train_loader),
+                "val_loss": val_loss / len(val_loader),
+                "train_f1": train_f1,
+                "val_f1": val_f1,
+                "train_acc": train_acc,
+                "val_acc": val_acc,
+                "learning_rate": scheduler.get_last_lr()[0],
+            })
 
     # Plot training curves
     plot_training_curves(train_losses, val_losses, train_f1s, val_f1s)

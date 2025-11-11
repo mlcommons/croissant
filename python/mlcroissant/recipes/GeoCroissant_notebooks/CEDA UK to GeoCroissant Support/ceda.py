@@ -190,8 +190,7 @@ def stac_to_geocroissant(stac_item, file_hash=None, filename=None):
                 ),
             }
             for asset_key, asset in assets.items()
-        ]
-        + [
+        ] + [
             {
                 "@type": "cr:FileSet",
                 "@id": "data_files",
@@ -426,15 +425,13 @@ if data_vars or coord_vars:
         }
         variable_fields.append(coord_info)
 
-    geocroissant_data["recordSet"].append(
-        {
-            "@type": "cr:RecordSet",
-            "@id": "variable_metadata",
-            "name": "variable_metadata",
-            "description": "Variables and coordinates found in NetCDF file",
-            "field": variable_fields,
-        }
-    )
+    geocroissant_data["recordSet"].append({
+        "@type": "cr:RecordSet",
+        "@id": "variable_metadata",
+        "name": "variable_metadata",
+        "description": "Variables and coordinates found in NetCDF file",
+        "field": variable_fields,
+    })
 
 with open(OUTPUT_PATH, "w") as f:
     json.dump(geocroissant_data, f, indent=2)

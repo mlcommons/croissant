@@ -569,7 +569,9 @@ class CompleteNASAUMMGToGeoCroissantConverter:
         }
 
         for band_name, info in band_info.items():
-            attr_name = f"MSI_BAND_{band_name.replace('B', '').replace('A', '8A')}_BANDPASS_ADJUSTMENT_SLOPE_AND_OFFSET"
+            attr_name = (
+                f"MSI_BAND_{band_name.replace('B', '').replace('A', '8A')}_BANDPASS_ADJUSTMENT_SLOPE_AND_OFFSET"
+            )
             values = self.find_additional_attribute_values(additional_attrs, attr_name)
 
             if values and len(values) >= 2:
@@ -676,29 +678,25 @@ class CompleteNASAUMMGToGeoCroissantConverter:
                     }
             else:
                 # Keep non-TIFF URLs separate
-                other_urls.append(
-                    {
-                        "url": url,
-                        "url_type": url_type,
-                        "subtype": subtype,
-                        "description": description,
-                        "encoding_format": encoding_format,
-                    }
-                )
+                other_urls.append({
+                    "url": url,
+                    "url_type": url_type,
+                    "subtype": subtype,
+                    "description": description,
+                    "encoding_format": encoding_format,
+                })
 
         # Add unique TIFF files to distributions
         for filename, file_info in unique_files.items():
-            distributions.append(
-                {
-                    "@type": "cr:FileObject",
-                    "@id": "file_{filename.replace('.', '_')}",
-                    "name": filename,
-                    "description": file_info["description"] or "TIFF file: {filename}",
-                    "contentUrl": file_info["url"],
-                    "encodingFormat": file_info["encoding_format"],
-                    "md5": "d41d8cd98f00b204e9800998ecf8427e",
-                }
-            )
+            distributions.append({
+                "@type": "cr:FileObject",
+                "@id": "file_{filename.replace('.', '_')}",
+                "name": filename,
+                "description": file_info["description"] or "TIFF file: {filename}",
+                "contentUrl": file_info["url"],
+                "encodingFormat": file_info["encoding_format"],
+                "md5": "d41d8cd98f00b204e9800998ecf8427e",
+            })
 
         # Add other important URLs (metadata, visualization, etc.)
         for url_info in other_urls:
@@ -711,35 +709,31 @@ class CompleteNASAUMMGToGeoCroissantConverter:
                 )
                 and "s3credentials" not in url.lower()
             ):
-                distributions.append(
-                    {
-                        "@type": "cr:FileObject",
-                        "@id": "other_{len(distributions)}",
-                        "name": url_type or "Data Access",
-                        "description": (
-                            url_info["description"] or "Access method: {url_type}"
-                        ),
-                        "contentUrl": url,
-                        "encodingFormat": url_info["encoding_format"],
-                        "md5": "d41d8cd98f00b204e9800998ecf8427e",
-                    }
-                )
+                distributions.append({
+                    "@type": "cr:FileObject",
+                    "@id": "other_{len(distributions)}",
+                    "name": url_type or "Data Access",
+                    "description": (
+                        url_info["description"] or "Access method: {url_type}"
+                    ),
+                    "contentUrl": url,
+                    "encodingFormat": url_info["encoding_format"],
+                    "md5": "d41d8cd98f00b204e9800998ecf8427e",
+                })
 
         # Add a single file set for all TIFF files
         if unique_files:
-            distributions.append(
-                {
-                    "@type": "cr:FileSet",
-                    "@id": "tiff_files",
-                    "name": "TIFF Files",
-                    "description": (
-                        "Collection of {len(unique_files)} TIFF files containing satellite"
-                        " imagery bands"
-                    ),
-                    "encodingFormat": "image/tif",
-                    "includes": "**/*.ti",
-                }
-            )
+            distributions.append({
+                "@type": "cr:FileSet",
+                "@id": "tiff_files",
+                "name": "TIFF Files",
+                "description": (
+                    "Collection of {len(unique_files)} TIFF files containing satellite"
+                    " imagery bands"
+                ),
+                "encodingFormat": "image/tif",
+                "includes": "**/*.ti",
+            })
 
         return distributions
 
@@ -1198,13 +1192,11 @@ class CompleteNASAUMMGToGeoCroissantConverter:
             "geocr:accessMethods": {
                 "https": len([url for url in seen_urls if url.startswith("https://")]),
                 "s3": len([url for url in seen_urls if url.startswith("s3://")]),
-                "other": len(
-                    [
-                        url
-                        for url in seen_urls
-                        if not url.startswith(("https://", "s3://"))
-                    ]
-                ),
+                "other": len([
+                    url
+                    for url in seen_urls
+                    if not url.startswith(("https://", "s3://"))
+                ]),
             },
         }
 

@@ -392,13 +392,11 @@ class PrithviViT(nn.Module):
                     norm_layer=norm_layer,
                 )
             )
-            self.feature_info.append(
-                {
-                    "num_chs": embed_dim * self.patch_embed.patch_size[0],
-                    "reduction": 1,
-                    "module": "blocks.{i}",
-                }
-            )
+            self.feature_info.append({
+                "num_chs": embed_dim * self.patch_embed.patch_size[0],
+                "reduction": 1,
+                "module": "blocks.{i}",
+            })
         self.blocks = nn.ModuleList(self.blocks)
 
         self.norm = norm_layer(embed_dim)
@@ -703,18 +701,16 @@ class MAEDecoder(nn.Module):
             "decoder_pos_embed", torch.zeros(1, num_patches + 1, decoder_embed_dim)
         )
 
-        self.decoder_blocks = nn.ModuleList(
-            [
-                Block(
-                    decoder_embed_dim,
-                    num_heads,
-                    mlp_ratio,
-                    qkv_bias=True,
-                    norm_layer=norm_layer,
-                )
-                for _ in range(depth)
-            ]
-        )
+        self.decoder_blocks = nn.ModuleList([
+            Block(
+                decoder_embed_dim,
+                num_heads,
+                mlp_ratio,
+                qkv_bias=True,
+                norm_layer=norm_layer,
+            )
+            for _ in range(depth)
+        ])
 
         self.decoder_norm = norm_layer(decoder_embed_dim)
         self.decoder_pred = nn.Linear(

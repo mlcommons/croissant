@@ -9,8 +9,16 @@ interoperability with geographic data catalog systems.
 import json
 from urllib.parse import quote
 
-from rdflib import Graph, Literal, Namespace, URIRef
-from rdflib.namespace import DCAT, DCTERMS, FOAF, RDF, SKOS, XSD
+from rdflib import Graph
+from rdflib import Literal
+from rdflib import Namespace
+from rdflib import URIRef
+from rdflib.namespace import DCAT
+from rdflib.namespace import DCTERMS
+from rdflib.namespace import FOAF
+from rdflib.namespace import RDF
+from rdflib.namespace import SKOS
+from rdflib.namespace import XSD
 
 
 def croissant_to_geodcat_jsonld(
@@ -366,29 +374,29 @@ def croissant_to_geodcat_jsonld(
                             # Create proper naming based on file type and split
                             if file_type == "images":
                                 if split_type == "train":
-                                    title = f"Training Image {i+1}"
+                                    title = f"Training Image {i + 1}"
                                     description = (
-                                        f"Training satellite image {i+1} from HLS burn"
-                                        " scars dataset"
+                                        f"Training satellite image {i + 1} from HLS"
+                                        " burn scars dataset"
                                     )
                                 else:  # validation
-                                    title = f"Validation Image {i+1}"
+                                    title = f"Validation Image {i + 1}"
                                     description = (
-                                        f"Validation satellite image {i+1} from HLS"
+                                        f"Validation satellite image {i + 1} from HLS"
                                         " burn scars dataset"
                                     )
                             else:  # annotations
                                 if split_type == "train":
-                                    title = f"Training Mask {i+1}"
+                                    title = f"Training Mask {i + 1}"
                                     description = (
-                                        f"Training burn scar mask {i+1} from HLS burn"
+                                        f"Training burn scar mask {i + 1} from HLS burn"
                                         " scars dataset"
                                     )
                                 else:  # validation
-                                    title = f"Validation Mask {i+1}"
+                                    title = f"Validation Mask {i + 1}"
                                     description = (
-                                        f"Validation burn scar mask {i+1} from HLS burn"
-                                        " scars dataset"
+                                        f"Validation burn scar mask {i + 1} from HLS"
+                                        " burn scars dataset"
                                     )
 
                             # Use the actual file URL as the distribution URI

@@ -63,32 +63,28 @@ def tdml_to_geocroissant(tdml_path, output_path):
     distribution = []
 
     # Create a FileObject for the main data directory
-    distribution.append(
-        {
-            "@type": "cr:FileObject",
-            "@id": "data_repo",
-            "name": "data_repo",
-            "description": "Directory containing the dataset files",
-            "contentUrl": (
-                "https://huggingface.co/datasets/harshinde/hls_burn_scars"
-            ),  # Use actual URL from the data
-            "encodingFormat": "local_directory",
-            "md5": "placeholder_hash_for_directory",
-        }
-    )
+    distribution.append({
+        "@type": "cr:FileObject",
+        "@id": "data_repo",
+        "name": "data_repo",
+        "description": "Directory containing the dataset files",
+        "contentUrl": (
+            "https://huggingface.co/datasets/harshinde/hls_burn_scars"
+        ),  # Use actual URL from the data
+        "encodingFormat": "local_directory",
+        "md5": "placeholder_hash_for_directory",
+    })
 
     # Create single FileSet for all TIFF files
-    distribution.append(
-        {
-            "@type": "cr:FileSet",
-            "@id": "tiff-files-for-config-hls_burn_scars",
-            "name": "tiff-files-for-config-hls_burn_scars",
-            "description": "Local TIFF files organized in training/validation splits.",
-            "containedIn": {"@id": "data_repo"},
-            "encodingFormat": "image/tif",
-            "includes": "**/*.ti",
-        }
-    )
+    distribution.append({
+        "@type": "cr:FileSet",
+        "@id": "tiff-files-for-config-hls_burn_scars",
+        "name": "tiff-files-for-config-hls_burn_scars",
+        "description": "Local TIFF files organized in training/validation splits.",
+        "containedIn": {"@id": "data_repo"},
+        "encodingFormat": "image/tif",
+        "includes": "**/*.ti",
+    })
 
     # Build spatialCoverage - OGC-TDML doesn't have extent, so use description
 

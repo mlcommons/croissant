@@ -57,14 +57,12 @@ def extract_band_configuration(metadata: Dict) -> List[Dict]:
     if band_config:
         for band_key, band_info in band_config.items():
             if isinstance(band_info, dict) and "name" in band_info:
-                bands.append(
-                    {
-                        "name": band_info["name"],
-                        "common_name": band_info["name"].lower(),
-                        "hls_band": band_info.get("hlsBand", ""),
-                        "wavelength": band_info.get("wavelength", ""),
-                    }
-                )
+                bands.append({
+                    "name": band_info["name"],
+                    "common_name": band_info["name"].lower(),
+                    "hls_band": band_info.get("hlsBand", ""),
+                    "wavelength": band_info.get("wavelength", ""),
+                })
 
     return bands
 
@@ -278,13 +276,11 @@ def croissant_to_stac_item(croissant_json, output_path=None):
     )
 
     # Add extensions
-    item.stac_extensions.extend(
-        [
-            "https://stac-extensions.github.io/table/v1.2.0/schema.json",
-            "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
-            "https://schemas.stacspec.org/v1.1.0/item-spec/json-schema/item.json",
-        ]
-    )
+    item.stac_extensions.extend([
+        "https://stac-extensions.github.io/table/v1.2.0/schema.json",
+        "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+        "https://schemas.stacspec.org/v1.1.0/item-spec/json-schema/item.json",
+    ])
 
     # Add scientific extension
     scientific_ext = ScientificExtension.ext(item, add_if_missing=True)
@@ -421,15 +417,13 @@ def croissant_to_stac_item(croissant_json, output_path=None):
                         # Create corresponding annotation path
                         annotation_path = file_path.replace("_merged.tif", "_mask.tif")
 
-                        sample_data.append(
-                            {
-                                "image_path": file_path,
-                                "annotation_path": annotation_path,
-                                "split": split_name,
-                                "scene_id": scene_id,
-                                "date": date,
-                            }
-                        )
+                        sample_data.append({
+                            "image_path": file_path,
+                            "annotation_path": annotation_path,
+                            "split": split_name,
+                            "scene_id": scene_id,
+                            "date": date,
+                        })
 
     if columns:
         table_ext.columns = columns

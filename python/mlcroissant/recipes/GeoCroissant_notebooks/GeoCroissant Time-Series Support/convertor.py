@@ -179,14 +179,12 @@ def stac_itemcollection_to_geocroissant(stac_dict):
         href = link.get("href")
         if not href or rel == "self":
             continue
-        references.append(
-            {
-                "@type": "CreativeWork",
-                "url": href,
-                "name": rel,
-                "encodingFormat": link.get("type", "application/json"),
-            }
-        )
+        references.append({
+            "@type": "CreativeWork",
+            "url": href,
+            "name": rel,
+            "encodingFormat": link.get("type", "application/json"),
+        })
     if references:
         croissant["references"] = references
 
