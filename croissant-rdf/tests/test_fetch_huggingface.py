@@ -8,6 +8,7 @@ from croissant_rdf import HuggingfaceHarvester
 
 from tempfile import NamedTemporaryFile
 
+
 @pytest.fixture
 def mock_response():
     mock = MagicMock()
@@ -21,7 +22,9 @@ def test_mock_croissant_dataset(mock_response):
         result = harvester.fetch_dataset_croissant("test_dataset").json()
 
         mock_get.assert_called_once_with(
-            "https://huggingface.co/api/datasets/test_dataset/croissant", headers=ANY, timeout=30
+            "https://huggingface.co/api/datasets/test_dataset/croissant",
+            headers=ANY,
+            timeout=30,
         )
         assert result == {"name": "test_dataset", "description": "A test dataset"}
 
@@ -38,7 +41,9 @@ def test_mock_fetch_datasets(mock_response):
 
 
 def test_mock_fetch_datasets_empty():
-    with patch("croissant_rdf.HuggingfaceHarvester.fetch_dataset_croissant", return_value=[]):
+    with patch(
+        "croissant_rdf.HuggingfaceHarvester.fetch_dataset_croissant", return_value=[]
+    ):
         harvester = HuggingfaceHarvester(limit=0)
         result = harvester.fetch_datasets_croissant()
         assert result == []
@@ -66,7 +71,6 @@ def test_fetch_data_workflow():
         if "error" not in dataset:
             assert "https://schema.org/" in dataset["@context"]["@vocab"]
             assert "http://mlcommons.org/croissant/" in dataset["@context"]["cr"]
-
 
 
 def test_generate_ttl():

@@ -21,12 +21,15 @@ class DataverseHarvester(CroissantHarvester):
         }
         response = requests.get(search_url, params=params, timeout=30)
         results = response.json()
-        return [result["global_id"] for result in results.get("data", {}).get("items", [])][: self.limit]
+        return [
+            result["global_id"] for result in results.get("data", {}).get("items", [])
+        ][: self.limit]
 
     def fetch_dataset_croissant(self, dataset_id: str):
         # https://demo.dataverse.org/api/datasets/export?exporter=croissant&persistentId=doi:10.70122/FK2/JFASVV
         return requests.get(
-            f"{self.api_url}/api/datasets/export?exporter=croissant&persistentId={dataset_id}", timeout=30
+            f"{self.api_url}/api/datasets/export?exporter=croissant&persistentId={dataset_id}",
+            timeout=30,
         )
 
 

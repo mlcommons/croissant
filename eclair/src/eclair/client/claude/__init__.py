@@ -10,4 +10,4 @@ except ImportError:
     ClaudeMCPClient = None
     CLAUDE_AVAILABLE = False
 
-__all__ = ['ClaudeMCPClient', 'CLAUDE_AVAILABLE']
+__all__ = ["ClaudeMCPClient", "CLAUDE_AVAILABLE"]

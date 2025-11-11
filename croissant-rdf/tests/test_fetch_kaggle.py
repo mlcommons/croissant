@@ -27,12 +27,17 @@ def test_mock_croissant_dataset(mock_response):
         harvester = KaggleHarvester(limit=1)
         result = harvester.fetch_dataset_croissant("test_dataset").json()
 
-        mock_get.assert_called_once_with("https://www.kaggle.com/datasets/test_dataset/croissant/download", timeout=30)
+        mock_get.assert_called_once_with(
+            "https://www.kaggle.com/datasets/test_dataset/croissant/download",
+            timeout=30,
+        )
         assert result == test_metadata_kaggle
 
 
 def test_mock_fetch_datasets(mock_response):
-    with patch.object(KaggleHarvester, "fetch_datasets_ids", return_value=["test_dataset"]), patch(
+    with patch.object(
+        KaggleHarvester, "fetch_datasets_ids", return_value=["test_dataset"]
+    ), patch(
         "requests.get",
         return_value=mock_response,
     ):
@@ -41,10 +46,15 @@ def test_mock_fetch_datasets(mock_response):
         assert len(result) == 1
         assert result[0] == test_metadata_kaggle
 
+
 def test_generate_ttl(mock_response):
     """Test the complete generate_ttl workflow."""
-    with tempfile.NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
-        with patch.object(KaggleHarvester, "fetch_datasets_ids", return_value=["test_dataset"]), patch(
+    with tempfile.NamedTemporaryFile(
+        mode="w+b", suffix=".ttl", delete_on_close=False
+    ) as fp:
+        with patch.object(
+            KaggleHarvester, "fetch_datasets_ids", return_value=["test_dataset"]
+        ), patch(
             "requests.get",
             return_value=mock_response,
         ):

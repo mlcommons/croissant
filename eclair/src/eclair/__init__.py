@@ -20,9 +20,4 @@ __description__ = "MCP server to help LLMs work with datasets, built on Croissan
 # e.g., from eclair.server import EclairServer
 # e.g., from eclair.client import EclairClient
 
-__all__ = [
-    "__version__",
-    "__author__", 
-    "__email__",
-    "__description__"
-]
+__all__ = ["__version__", "__author__", "__email__", "__description__"]

@@ -13,6 +13,7 @@ from croissant_rdf._src.utils import chunk_data, logger
 
 DEFAULT_BASE_URL = "https://w3id.org/croissant-rdf/data/"
 
+
 class CroissantHarvester(ABC):
     """Abstract base class for harvesting and processing Croissant metadata for datasets.
 
@@ -67,7 +68,9 @@ class CroissantHarvester(ABC):
             requests.Response: The response from the request to retrieve metadata."""
         pass
 
-    def fetch_dataset_croissant_handler(self, dataset_id: str) -> Optional[Union[Dict, List]]:
+    def fetch_dataset_croissant_handler(
+        self, dataset_id: str
+    ) -> Optional[Union[Dict, List]]:
         """Run the function to fetch Croissant JSON-LD from URL, and catch exceptions to return them as strings.
 
         Args:
@@ -89,7 +92,6 @@ class CroissantHarvester(ABC):
                 return f"Empty error for {dataset_id}"
             return f"Error for {dataset_id}: {e!s}"
 
-
     def fetch_datasets_croissant(self) -> List[Dict]:
         """Fetch metadata for multiple datasets, using threading where applicable."""
         try:
@@ -102,8 +104,15 @@ class CroissantHarvester(ABC):
         errors = []
         try:
             with ThreadPoolExecutor(max_workers=4) as executor:
-                futures = {executor.submit(self.fetch_dataset_croissant_handler, dataset): dataset for dataset in datasets}
-                for future in track(as_completed(futures), "Fetching datasets metadata", len(futures)):
+                futures = {
+                    executor.submit(
+                        self.fetch_dataset_croissant_handler, dataset
+                    ): dataset
+                    for dataset in datasets
+                }
+                for future in track(
+                    as_completed(futures), "Fetching datasets metadata", len(futures)
+                ):
                     result = future.result()
                     if isinstance(result, str):
                         errors.append(result)
@@ -115,7 +124,8 @@ class CroissantHarvester(ABC):
             raise
         if errors:
             logger.warning(
-                f"Error fetching Croissant metadata JSON-LD for {len(errors)} URLs:\n" + "\n".join(errors)
+                f"Error fetching Croissant metadata JSON-LD for {len(errors)} URLs:\n"
+                + "\n".join(errors)
             )
         return results
 
@@ -160,7 +170,9 @@ class CroissantHarvester(ABC):
         Raises:
             Exception: If there was an error generating the turtle file.
         """
-        logger.info(f"Searching {self.limit} datasets metadata{f' for `{self.search}`' if self.search else ''}.")
+        logger.info(
+            f"Searching {self.limit} datasets metadata{f' for `{self.search}`' if self.search else ''}."
+        )
         try:
             start_time = time.time()
             datasets = self.fetch_datasets_croissant()
@@ -178,7 +190,9 @@ class CroissantHarvester(ABC):
     @classmethod
     def cli(cls):
         """Parse command-line arguments and generate a RDF file from harvested Croissant metadata."""
-        parser = argparse.ArgumentParser(description="Generate a RDF file from datasets Croissant metadata.")
+        parser = argparse.ArgumentParser(
+            description="Generate a RDF file from datasets Croissant metadata."
+        )
         parser.add_argument(
             "search",
             type=str,

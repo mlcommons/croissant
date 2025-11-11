@@ -5,11 +5,10 @@ from croissant_rdf import DataverseHarvester
 import tempfile
 
 
-
 def test_dataverse():
-    
-    with tempfile.NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
-
+    with tempfile.NamedTemporaryFile(
+        mode="w+b", suffix=".ttl", delete_on_close=False
+    ) as fp:
         harvester = DataverseHarvester(
             fname=fp.name,
             limit=3,

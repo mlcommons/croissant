@@ -1,0 +1,462 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "@id": "icesat2-boreal-v2.1-agb",
+  "name": "icesat2-boreal-v2-1-agb",
+  "description": "",
+  "version": "1.0.0",
+  "license": "CC-BY-4.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "numberReturned": 10,
+  "references": [
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb",
+      "name": "collection",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb",
+      "name": "parent",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/",
+      "name": "root",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb/items?token=next:icesat2-boreal-v2.1-agb:boreal_agb_2020_202411261732637661_0038382",
+      "name": "next",
+      "encodingFormat": "application/geo+json"
+    }
+  ],
+  "geocr:BoundingBox": [
+    -118.930297296181,
+    54.0783476506735,
+    174.734138627346,
+    73.8622051330815
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2020-01-01T00:00:00Z",
+    "endDate": "2020-12-31T23:59:59Z"
+  },
+  "datePublished": "2020-01-01T00:00:00Z",
+  "geocr:spatialResolution": "Unknown",
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202501211737487322_0039261/cog",
+      "name": "boreal_agb_2020_202501211737487322_0039261/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0039261/boreal_agb_2020_202501211737487322_0039261.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202501211737487322_0039261/training_data_csv",
+      "name": "boreal_agb_2020_202501211737487322_0039261/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0039261/boreal_agb_2020_202501211737487322_0039261_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638547_0001981/cog",
+      "name": "boreal_agb_2020_202411261732638547_0001981/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0001981/boreal_agb_2020_202411261732638547_0001981.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638547_0001981/training_data_csv",
+      "name": "boreal_agb_2020_202411261732638547_0001981/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0001981/boreal_agb_2020_202411261732638547_0001981_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638346_0003509/cog",
+      "name": "boreal_agb_2020_202411261732638346_0003509/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0003509/boreal_agb_2020_202411261732638346_0003509.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638346_0003509/training_data_csv",
+      "name": "boreal_agb_2020_202411261732638346_0003509/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0003509/boreal_agb_2020_202411261732638346_0003509_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638324_0001831/cog",
+      "name": "boreal_agb_2020_202411261732638324_0001831/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0001831/boreal_agb_2020_202411261732638324_0001831.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638324_0001831/training_data_csv",
+      "name": "boreal_agb_2020_202411261732638324_0001831/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0001831/boreal_agb_2020_202411261732638324_0001831_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638278_0002770/cog",
+      "name": "boreal_agb_2020_202411261732638278_0002770/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0002770/boreal_agb_2020_202411261732638278_0002770.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638278_0002770/training_data_csv",
+      "name": "boreal_agb_2020_202411261732638278_0002770/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0002770/boreal_agb_2020_202411261732638278_0002770_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638262_0000556/cog",
+      "name": "boreal_agb_2020_202411261732638262_0000556/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0000556/boreal_agb_2020_202411261732638262_0000556.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638262_0000556/training_data_csv",
+      "name": "boreal_agb_2020_202411261732638262_0000556/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0000556/boreal_agb_2020_202411261732638262_0000556_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638007_0000873/cog",
+      "name": "boreal_agb_2020_202411261732638007_0000873/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0000873/boreal_agb_2020_202411261732638007_0000873.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732638007_0000873/training_data_csv",
+      "name": "boreal_agb_2020_202411261732638007_0000873/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0000873/boreal_agb_2020_202411261732638007_0000873_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732637958_0000874/cog",
+      "name": "boreal_agb_2020_202411261732637958_0000874/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0000874/boreal_agb_2020_202411261732637958_0000874.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732637958_0000874/training_data_csv",
+      "name": "boreal_agb_2020_202411261732637958_0000874/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0000874/boreal_agb_2020_202411261732637958_0000874_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732637725_0003913/cog",
+      "name": "boreal_agb_2020_202411261732637725_0003913/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0003913/boreal_agb_2020_202411261732637725_0003913.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732637725_0003913/training_data_csv",
+      "name": "boreal_agb_2020_202411261732637725_0003913/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0003913/boreal_agb_2020_202411261732637725_0003913_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732637661_0038382/cog",
+      "name": "boreal_agb_2020_202411261732637661_0038382/cog",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0038382/boreal_agb_2020_202411261732637661_0038382.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "boreal_agb_2020_202411261732637661_0038382/training_data_csv",
+      "name": "boreal_agb_2020_202411261732637661_0038382/training_data_csv",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/0038382/boreal_agb_2020_202411261732637661_0038382_train_data.csv",
+      "encodingFormat": "text/csv",
+      "md5": "placeholder_hash"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "icesat2-boreal-v2.1-agb_items",
+      "name": "icesat2-boreal-v2.1-agb_items",
+      "description": "STAC items from icesat2-boreal-v2.1-agb collection",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "icesat2-boreal-v2.1-agb_items/id",
+          "name": "id",
+          "description": "STAC item identifier",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "icesat2-boreal-v2.1-agb_items/datetime",
+          "name": "datetime",
+          "description": "Item datetime",
+          "dataType": "sc:DateTime"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "icesat2-boreal-v2.1-agb_items/bbox",
+          "name": "bbox",
+          "description": "Bounding box coordinates",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "icesat2-boreal-v2.1-agb_items/assets",
+          "name": "assets",
+          "description": "Available assets",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202501211737487322_0039261",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            -118.930297296181,
+            68.7402061956762,
+            -115.731219718161,
+            69.8655764918699
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732638547_0001981",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            106.768764074572,
+            69.9502473077807,
+            110.042086361563,
+            71.0490413191252
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732638346_0003509",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            127.325842931464,
+            56.1253325177365,
+            129.427858983485,
+            57.2544092759904
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732638324_0001831",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            94.4279820484795,
+            62.5284947395846,
+            96.7015095235549,
+            63.5306009526883
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732638278_0002770",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            -109.972427731922,
+            54.0783476506735,
+            -108.056500512937,
+            55.1697983242994
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732638262_0000556",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            52.7971778085779,
+            59.2502898258342,
+            54.8374787037915,
+            60.2498154838815
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732638007_0000873",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            61.5713750882535,
+            66.8190304343066,
+            64.0108246805335,
+            67.7448594535637
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732637958_0000874",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            61.1507636583623,
+            67.6043023227785,
+            63.6777677412818,
+            68.5356172501764
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732637725_0003913",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            172.738428233344,
+            63.0543589795626,
+            174.734138627346,
+            63.9204217239912
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        },
+        {
+          "icesat2-boreal-v2.1-agb_items/id": "boreal_agb_2020_202411261732637661_0038382",
+          "icesat2-boreal-v2.1-agb_items/datetime": "2020-07-01T23:59:59.500000Z",
+          "icesat2-boreal-v2.1-agb_items/bbox": [
+            111.821583637516,
+            72.7215138641646,
+            115.626213868067,
+            73.8622051330815
+          ],
+          "icesat2-boreal-v2.1-agb_items/assets": [
+            "cog",
+            "training_data_csv"
+          ]
+        }
+      ]
+    }
+  ],
+  "citeAs": "Citation information not provided."
+}

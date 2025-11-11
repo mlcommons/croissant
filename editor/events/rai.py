@@ -60,7 +60,6 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int 
     if event == RaiEvent.RAI_DATA_MANIPULATION_PROTOCOL:
         metadata.data_manipulation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PROTOCOL:
-
         metadata.data_annotation_protocol = st.session_state[key]
     if event == RaiEvent.RAI_DATA_ANNOTATION_PLATFORM:
         metadata.data_annotation_platform = st.session_state[key]
@@ -73,7 +72,6 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int 
     if event == RaiEvent.RAI_DATA_ANNOTATION_TOOLS:
         metadata.machine_annotation_tools = st.session_state[key]
     if event == RaiEvent.RAI_DATA_USE_CASES:
-
         if metadata.data_use_cases:
             metadata.data_use_cases[int(index)] = st.session_state[key]
         else:
@@ -81,7 +79,6 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int 
             metadata.data_use_cases.append(st.session_state[key])
 
     if event == RaiEvent.RAI_DATA_BIAS:
-
         if metadata.data_biases:
             metadata.data_biases[int(index)] = st.session_state[key]
         else:
@@ -97,7 +94,6 @@ def handle_rai_change(event: RaiEvent, metadata: Metadata, key: str, index: int 
     if event == RaiEvent.RAI_DATA_SOCIAL_IMPACT:
         metadata.data_social_impact = st.session_state[key]
     if event == RaiEvent.RAI_SENSITIVE:
-
         if metadata.personal_sensitive_information:
             metadata.personal_sensitive_information[int(index)] = st.session_state[key]
         else:

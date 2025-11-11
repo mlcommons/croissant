@@ -2,102 +2,117 @@ import gradio as gr
 import json
 import time
 import traceback
-from validation import validate_json, validate_croissant, validate_records, generate_validation_report
+from validation import (
+    validate_json,
+    validate_croissant,
+    validate_records,
+    generate_validation_report,
+)
 import requests
+
 
 def process_file(file):
     results = []
     json_data = None
-    
+
     # Use just the filename instead of full path
     filename = file.name.split("/")[-1]
-    
+
     # Check 1: JSON validation
     json_valid, json_message, json_data = validate_json(file.name)
     # Remove empty checkmarks from messages
     json_message = json_message.replace("\n✓\n", "\n")
     results.append(("JSON Format Validation", json_valid, json_message))
-    
+
     if not json_valid:
         return results, None
-    
+
     # Check 2: Croissant validation
     croissant_valid, croissant_message = validate_croissant(json_data)
     # Remove empty checkmarks from messages
     croissant_message = croissant_message.replace("\n✓\n", "\n")
     results.append(("Croissant Schema Validation", croissant_valid, croissant_message))
-    
+
     if not croissant_valid:
         return results, None
-    
+
     # Check 3: Records validation
     records_valid, records_message = validate_records(json_data)
     # Remove empty checkmarks from messages
     records_message = records_message.replace("\n✓\n", "\n")
     results.append(("Records Generation Test", records_valid, records_message))
-    
+
     # Generate detailed report with just filename
     report = generate_validation_report(filename, json_data, results)
-    
+
     return results, report
+
 
 def create_ui():
     with gr.Blocks(theme=gr.themes.Soft()) as app:
         gr.Markdown("# 🔎🥐 Croissant Validator for NeurIPS D&B")
-        gr.Markdown("""
+        gr.Markdown(
+            """
         Upload your Croissant JSON-LD file or enter a URL to validate if it meets the requirements for NeurIPS submission.
         The validator will check:
         1. If the file is valid JSON
         2. If it passes Croissant schema validation
         3. If records can be generated within a reasonable time
-        """)
-        
+        """
+        )
+
         # Track the active tab for conditional UI updates
         active_tab = gr.State("upload")  # Default to upload tab
-        
+
         # Create a container for the entire input section
         with gr.Group():
             # Input tabs
             with gr.Tabs() as tabs:
                 with gr.TabItem("Upload File", id="upload_tab"):
-                    file_input = gr.File(label="Upload Croissant JSON-LD File", file_types=[".json", ".jsonld"])
-                    validate_btn = gr.Button("Validate Uploaded File", variant="primary")
-                
+                    file_input = gr.File(
+                        label="Upload Croissant JSON-LD File",
+                        file_types=[".json", ".jsonld"],
+                    )
+                    validate_btn = gr.Button(
+                        "Validate Uploaded File", variant="primary"
+                    )
+
                 with gr.TabItem("URL Input", id="url_tab"):
                     url_input = gr.Textbox(
                         label="Enter Croissant JSON-LD URL",
-                        placeholder="e.g. https://huggingface.co/api/datasets/facebook/natural_reasoning/croissant"
+                        placeholder="e.g. https://huggingface.co/api/datasets/facebook/natural_reasoning/croissant",
                     )
                     fetch_btn = gr.Button("Fetch and Validate", variant="primary")
-            
+
             # Change initial message to match upload tab
             upload_progress = gr.HTML(
-                """<div class="progress-status">Ready for upload</div>""", 
-                visible=True)
-        
+                """<div class="progress-status">Ready for upload</div>""", visible=True
+            )
+
         # Now create the validation results section in a separate group
         with gr.Group():
             # Validation results
             validation_results = gr.HTML(visible=False)
             validation_progress = gr.HTML(visible=False)
-            
+
             # Collapsible report section
-            with gr.Accordion("Download full validation report", visible=False, open=False) as report_group:
+            with gr.Accordion(
+                "Download full validation report", visible=False, open=False
+            ) as report_group:
                 with gr.Column():
                     report_md = gr.File(
-                        label="Download Report",
-                        visible=True,
-                        file_types=[".md"]
+                        label="Download Report", visible=True, file_types=[".md"]
                     )
                     report_text = gr.Textbox(
-                        label="Report Content", 
+                        label="Report Content",
                         visible=True,
                         show_copy_button=True,
-                        lines=10
+                        lines=10,
                     )
 
         # Define CSS for the validation UI
-        gr.HTML("""
+        gr.HTML(
+            """
         <style>
         /* Set max width and center the app */
         .gradio-container {
@@ -277,8 +292,9 @@ def create_ui():
             transform: rotate(90deg);
         }
         </style>
-        """)
-        
+        """
+        )
+
         # Update helper messages based on tab changes
         def on_tab_change(evt: gr.SelectData):
             tab_id = evt.value
@@ -291,7 +307,7 @@ def create_ui():
                     None,  # Clear report text
                     None,  # Clear report file
                     None,  # Clear file input
-                    gr.update(value="")  # Clear URL input
+                    gr.update(value=""),  # Clear URL input
                 ]
             else:
                 return [
@@ -302,18 +318,18 @@ def create_ui():
                     None,  # Clear report text
                     None,  # Clear report file
                     None,  # Clear file input
-                    gr.update(value="")  # Clear URL input
+                    gr.update(value=""),  # Clear URL input
                 ]
-        
+
         def on_copy_click(report):
             return report
-            
+
         def on_download_click(report, file_name):
             report_file = f"report_{file_name}.md"
             with open(report_file, "w") as f:
                 f.write(report)
             return report_file
-        
+
         def on_file_upload(file):
             if file is None:
                 return [
@@ -321,17 +337,17 @@ def create_ui():
                     gr.update(visible=False),
                     gr.update(visible=False),  # Hide report group
                     None,  # Clear report text
-                    None   # Clear report file
+                    None,  # Clear report file
                 ]
-            
+
             return [
                 """<div class="progress-status">✅ File uploaded successfully</div>""",
                 gr.update(visible=False),
                 gr.update(visible=False),  # Hide report group
                 None,  # Clear report text
-                None   # Clear report file
+                None,  # Clear report file
             ]
-        
+
         def fetch_from_url(url):
             if not url:
                 return [
@@ -339,50 +355,60 @@ def create_ui():
                     gr.update(visible=False),
                     gr.update(visible=False),
                     None,
-                    None
+                    None,
                 ]
-            
+
             try:
                 # Fetch JSON from URL
                 response = requests.get(url, timeout=10)
                 response.raise_for_status()
                 json_data = response.json()
-                
+
                 # Process validation
                 results = []
-                results.append(("JSON Format Validation", True, "The URL returned valid JSON."))
-                
+                results.append(
+                    ("JSON Format Validation", True, "The URL returned valid JSON.")
+                )
+
                 croissant_valid, croissant_message = validate_croissant(json_data)
-                results.append(("Croissant Schema Validation", croissant_valid, croissant_message))
-                
+                results.append(
+                    ("Croissant Schema Validation", croissant_valid, croissant_message)
+                )
+
                 if not croissant_valid:
                     return [
                         """<div class="progress-status">✅ JSON fetched successfully from URL</div>""",
                         build_results_html(results),
                         gr.update(visible=False),
                         None,
-                        None
+                        None,
                     ]
-                
+
                 records_valid, records_message = validate_records(json_data)
-                results.append(("Records Generation Test", records_valid, records_message))
-                
+                results.append(
+                    ("Records Generation Test", records_valid, records_message)
+                )
+
                 # Generate report
-                report = generate_validation_report(url.split("/")[-1], json_data, results)
-                report_filename = f"report_croissant-validation_{json_data.get('name', 'unnamed')}.md"
-                
+                report = generate_validation_report(
+                    url.split("/")[-1], json_data, results
+                )
+                report_filename = (
+                    f"report_croissant-validation_{json_data.get('name', 'unnamed')}.md"
+                )
+
                 if report:
                     with open(report_filename, "w") as f:
                         f.write(report)
-                
+
                 return [
                     """<div class="progress-status">✅ JSON fetched successfully from URL</div>""",
                     build_results_html(results),
                     gr.update(visible=True),
                     report,
-                    report_filename
+                    report_filename,
                 ]
-                
+
             except requests.exceptions.RequestException as e:
                 error_message = f"Error fetching URL: {str(e)}"
                 return [
@@ -390,7 +416,7 @@ def create_ui():
                     gr.update(visible=False),
                     gr.update(visible=False),
                     None,
-                    None
+                    None,
                 ]
             except json.JSONDecodeError as e:
                 error_message = f"URL did not return valid JSON: {str(e)}"
@@ -399,7 +425,7 @@ def create_ui():
                     gr.update(visible=False),
                     gr.update(visible=False),
                     None,
-                    None
+                    None,
                 ]
             except Exception as e:
                 error_message = f"Unexpected error: {str(e)}"
@@ -408,20 +434,20 @@ def create_ui():
                     gr.update(visible=False),
                     gr.update(visible=False),
                     None,
-                    None
+                    None,
                 ]
-        
+
         def build_results_html(results):
             # Build validation results HTML
             html = '<div class="validation-results">'
-            
+
             for i, (test_name, passed, message) in enumerate(results):
                 status_class = "status-success" if passed else "status-error"
                 status_icon = "✓" if passed else "✗"
                 # Add emoji to message
                 message_with_emoji = ("✅ " if passed else "❌ ") + message
-                
-                html += f'''
+
+                html += f"""
                 <div class="validation-step" id="step-{i}">
                     <div class="step-header" onclick="
                         var details = document.getElementById('details-{i}');
@@ -443,11 +469,11 @@ def create_ui():
                         {message_with_emoji}
                     </div>
                 </div>
-                '''
-            
-            html += '</div>'
+                """
+
+            html += "</div>"
             return gr.update(value=html, visible=True)
-        
+
         def on_validate(file):
             if file is None:
                 return [
@@ -455,47 +481,64 @@ def create_ui():
                     gr.update(visible=False),  # validation_progress
                     gr.update(visible=False),  # report_group
                     None,  # report_text
-                    None   # report_md
+                    None,  # report_md
                 ]
-            
+
             # Process the file and get results
             results, report = process_file(file)
-            
+
             # Extract dataset name from the JSON for the report filename
             try:
-                with open(file.name, 'r') as f:
+                with open(file.name, "r") as f:
                     json_data = json.load(f)
-                dataset_name = json_data.get('name', 'unnamed')
+                dataset_name = json_data.get("name", "unnamed")
             except:
-                dataset_name = 'unnamed'
-            
+                dataset_name = "unnamed"
+
             # Save report to file with new naming convention
             report_filename = f"report_croissant-validation_{dataset_name}.md"
             if report:
                 with open(report_filename, "w") as f:
                     f.write(report)
-            
+
             # Return final state
             return [
                 build_results_html(results),  # validation_results
                 gr.update(visible=False),  # validation_progress
-                gr.update(visible=True) if report else gr.update(visible=False),  # report_group
+                (
+                    gr.update(visible=True) if report else gr.update(visible=False)
+                ),  # report_group
                 report if report else None,  # report_text
-                report_filename if report else None  # report_md
+                report_filename if report else None,  # report_md
             ]
-        
+
         # Connect UI events to functions with updated outputs
         tabs.select(
             on_tab_change,
             None,
-            [active_tab, upload_progress, validation_results, report_group, report_text, report_md, file_input, url_input]
+            [
+                active_tab,
+                upload_progress,
+                validation_results,
+                report_group,
+                report_text,
+                report_md,
+                file_input,
+                url_input,
+            ],
         )
         file_input.change(
             on_file_upload,
             inputs=file_input,
-            outputs=[upload_progress, validation_results, report_group, report_text, report_md]
+            outputs=[
+                upload_progress,
+                validation_results,
+                report_group,
+                report_text,
+                report_md,
+            ],
         )
-        
+
         # Add progress state handling
         def show_progress():
             progress_html = """
@@ -509,35 +552,56 @@ def create_ui():
                 gr.update(visible=True, value=progress_html),  # validation_progress
                 gr.update(visible=False),  # report_group
                 None,  # report_text
-                None   # report_md
+                None,  # report_md
             ]
-        
+
         validate_btn.click(
             fn=show_progress,
             inputs=None,
-            outputs=[validation_results, validation_progress, report_group, report_text, report_md],
-            queue=False
+            outputs=[
+                validation_results,
+                validation_progress,
+                report_group,
+                report_text,
+                report_md,
+            ],
+            queue=False,
         ).then(
             fn=on_validate,
             inputs=file_input,
-            outputs=[validation_results, validation_progress, report_group, report_text, report_md]
+            outputs=[
+                validation_results,
+                validation_progress,
+                report_group,
+                report_text,
+                report_md,
+            ],
         )
-        
+
         fetch_btn.click(
             fetch_from_url,
             inputs=url_input,
-            outputs=[upload_progress, validation_results, report_group, report_text, report_md]
+            outputs=[
+                upload_progress,
+                validation_results,
+                report_group,
+                report_text,
+                report_md,
+            ],
         )
-        
+
         # Footer
-        gr.HTML("""
+        gr.HTML(
+            """
         <div style="text-align: center; margin-top: 20px;">
             <p>Learn more about <a href="https://github.com/mlcommons/croissant" target="_blank">Croissant format</a>.</p>
         </div>
-        """)
-    
+        """
+        )
+
     return app
+
 
 if __name__ == "__main__":
     app = create_ui()
-    app.launch() 
+    app.launch()

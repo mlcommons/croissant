@@ -5,9 +5,11 @@ from rdflib import Graph
 
 from croissant_rdf import OpenmlHarvester
 
-def test_openml():
-    with tempfile.NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
 
+def test_openml():
+    with tempfile.NamedTemporaryFile(
+        mode="w+b", suffix=".ttl", delete_on_close=False
+    ) as fp:
         harvester = OpenmlHarvester(fname=fp.name, limit=5, search="blood")
         harvester.generate_ttl()
 

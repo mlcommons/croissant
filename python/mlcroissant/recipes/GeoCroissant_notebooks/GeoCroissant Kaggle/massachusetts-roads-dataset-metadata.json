@@ -1,0 +1,329 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isEnumeration": "cr:isEnumeration",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "alternateName": "Aerial Images of Massachusetts to aid Machine Learning for Aerial Image Labeling",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": {
+    "@type": "sc:CreativeWork",
+    "name": "Other (specified in description)"
+  },
+  "distribution": [
+    {
+      "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/balraj98/massachusetts-roads-dataset?datasetVersionNumber=1",
+      "contentSize": "5.764 GB",
+      "md5": "ziCW3X2WUi4b2WE55xg4/g==",
+      "encodingFormat": "application/zip",
+      "@id": "archive.zip",
+      "@type": "cr:FileObject",
+      "name": "archive.zip",
+      "description": "Archive containing all the contents of the Massachusetts Roads Dataset dataset"
+    },
+    {
+      "includes": "*.(tiff|tif)",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
+      "encodingFormat": "image/tiff",
+      "@id": "image-tiff_fileset",
+      "@type": "cr:FileSet",
+      "name": "image/tiff files",
+      "description": "image/tiff files contained in archive.zip"
+    },
+    {
+      "contentUrl": "label_class_dict.csv",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
+      "encodingFormat": "text/csv",
+      "@id": "label_class_dict.csv_fileobject",
+      "@type": "cr:FileObject",
+      "name": "label_class_dict.csv",
+      "description": "Contains RGB colour code mappings for different classes in labels. The labels in this dataset have 2 classes: 'road' & 'background'."
+    },
+    {
+      "contentUrl": "metadata.csv",
+      "containedIn": {
+        "@id": "archive.zip"
+      },
+      "encodingFormat": "text/csv",
+      "@id": "metadata.csv_fileobject",
+      "@type": "cr:FileObject",
+      "name": "metadata.csv",
+      "description": "Contains the images' & masks' metadata information such as:\n\n- the source URLs they were obtained from\n- their '.tiff' / '.png' file paths in the dataset\n- train/valid/test split they belonged to in the original dataset"
+    }
+  ],
+  "recordSet": [
+    {
+      "field": [
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "label_class_dict.csv_fileobject"
+            },
+            "extract": {
+              "column": "name"
+            }
+          },
+          "@id": "label_class_dict.csv/name",
+          "@type": "cr:Field",
+          "name": "name",
+          "description": "Class Name"
+        },
+        {
+          "dataType": ["sc:Integer"],
+          "source": {
+            "fileObject": {
+              "@id": "label_class_dict.csv_fileobject"
+            },
+            "extract": {
+              "column": "r"
+            }
+          },
+          "@id": "label_class_dict.csv/r",
+          "@type": "cr:Field",
+          "name": "r",
+          "description": "Red Channel [0-255]"
+        },
+        {
+          "dataType": ["sc:Integer"],
+          "source": {
+            "fileObject": {
+              "@id": "label_class_dict.csv_fileobject"
+            },
+            "extract": {
+              "column": "g"
+            }
+          },
+          "@id": "label_class_dict.csv/g",
+          "@type": "cr:Field",
+          "name": "g",
+          "description": "Green Channel [0-255]"
+        },
+        {
+          "dataType": ["sc:Integer"],
+          "source": {
+            "fileObject": {
+              "@id": "label_class_dict.csv_fileobject"
+            },
+            "extract": {
+              "column": "b"
+            }
+          },
+          "@id": "label_class_dict.csv/b",
+          "@type": "cr:Field",
+          "name": "b",
+          "description": "Blue Channel [0-255]"
+        }
+      ],
+      "@id": "label_class_dict.csv",
+      "@type": "cr:RecordSet",
+      "name": "label_class_dict.csv",
+      "description": "Contains RGB colour code mappings for different classes in labels. The labels in this dataset have 2 classes: 'road' & 'background'."
+    },
+    {
+      "field": [
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "image_id"
+            }
+          },
+          "@id": "metadata.csv/image_id",
+          "@type": "cr:Field",
+          "name": "image_id",
+          "description": "Image & Label ID"
+        },
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "split"
+            }
+          },
+          "@id": "metadata.csv/split",
+          "@type": "cr:Field",
+          "name": "split",
+          "description": "Train/Valid/Test split"
+        },
+        {
+          "dataType": ["sc:Text", "sc:URL"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "image_souce_url"
+            }
+          },
+          "@id": "metadata.csv/image_souce_url",
+          "@type": "cr:Field",
+          "name": "image_souce_url",
+          "description": "Source URL of '.tiff' images"
+        },
+        {
+          "dataType": ["sc:Text", "sc:URL"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "label_source_url"
+            }
+          },
+          "@id": "metadata.csv/label_source_url",
+          "@type": "cr:Field",
+          "name": "label_source_url",
+          "description": "Source URL of '.tif' labels"
+        },
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "tiff_image_path"
+            }
+          },
+          "@id": "metadata.csv/tiff_image_path",
+          "@type": "cr:Field",
+          "name": "tiff_image_path",
+          "description": "File path of '.tiff' image"
+        },
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "tif_label_path"
+            }
+          },
+          "@id": "metadata.csv/tif_label_path",
+          "@type": "cr:Field",
+          "name": "tif_label_path",
+          "description": "File path of '.tif' label"
+        },
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "png_image_path"
+            }
+          },
+          "@id": "metadata.csv/png_image_path",
+          "@type": "cr:Field",
+          "name": "png_image_path",
+          "description": "File path of '.png' image"
+        },
+        {
+          "dataType": ["sc:Text"],
+          "source": {
+            "fileObject": {
+              "@id": "metadata.csv_fileobject"
+            },
+            "extract": {
+              "column": "png_label_path"
+            }
+          },
+          "@id": "metadata.csv/png_label_path",
+          "@type": "cr:Field",
+          "name": "png_label_path",
+          "description": "File path of '.png' label"
+        }
+      ],
+      "@id": "metadata.csv",
+      "@type": "cr:RecordSet",
+      "name": "metadata.csv",
+      "description": "Contains the images' & masks' metadata information such as:\n\n- the source URLs they were obtained from\n- their '.tiff' / '.png' file paths in the dataset\n- train/valid/test split they belonged to in the original dataset"
+    }
+  ],
+  "version": 1,
+  "keywords": [
+    "analysis > geospatial analysis",
+    "technique > computer vision",
+    "subject > earth and nature > earth science",
+    "technique > deep learning",
+    "data type > image",
+    "subject > arts and entertainment"
+  ],
+  "isAccessibleForFree": true,
+  "includedInDataCatalog": {
+    "@type": "sc:DataCatalog",
+    "name": "Kaggle",
+    "url": "https://www.kaggle.com"
+  },
+  "creator": {
+    "@type": "sc:Person",
+    "name": "Balraj Ashwath",
+    "url": "/balraj98",
+    "image": "https://storage.googleapis.com/kaggle-avatars/thumbnails/1715390-kg.jpg"
+  },
+  "publisher": {
+    "@type": "sc:Organization",
+    "name": "Kaggle",
+    "url": "https://www.kaggle.com/organizations/kaggle",
+    "image": "https://storage.googleapis.com/kaggle-organizations/4/thumbnail.png"
+  },
+  "thumbnailUrl": "https://storage.googleapis.com/kaggle-datasets-images/893591/1516242/3398523ca8f1e5b0fcb188e63263e050/dataset-card.png?t=2020-09-30-09-45-09",
+  "dateModified": "2020-09-26T03:57:49.343",
+  "datePublished": "2020-09-26T04:25:08.8775541",
+  "@type": "sc:Dataset",
+  "name": "Massachusetts Roads Dataset",
+  "url": "https://www.kaggle.com/datasets/balraj98/massachusetts-roads-dataset/versions/1",
+  "description": "### Context\n\n  Road Segmentation from Aerial Imagery is a challenging task. Obstruction from nearby trees, shadows of adjacent buildings, varying texture and color of roads, road class imbalance (due to relatively few road image pixels) are among other challenges that hinder present day models in segmenting sharp road boundaries that extend from one end of the image to the other. High-quality aerial imagery datasets facilitate comparisons of existing methods and lead to increased interest in aerial imagery applications in the machine learning and computer vision communities.\n\n### Content\n\nThe Massachusetts Roads Dataset consists of 1171 aerial images of the state of Massachusetts. Each image is 1500×1500 pixels in size, covering an area of 2.25 square kilometers. We randomly split the data into a training set of 1108 images, a validation set of 14 images and a test set of 49 images. The dataset covers a wide variety of urban, suburban, and rural regions and covers an area of over 2600 square kilometers. The test set alone covers over 110 square kilometers. The target maps were generated by rasterizing road centerlines obtained from the OpenStreetMap project. A line thickness of 7 pixels and no smoothing was used in generating the labels. All imagery is rescaled to a resolution of 1 pixel per square meter.\n\nRefer [this thesis](https://www.cs.toronto.edu/~vmnih/docs/Mnih_Volodymyr_PhD_Thesis.pdf) for more information.\n\n### Acknowledgements\n\n  This dataset is derived from [Volodymyr Mnih's](https://www.cs.toronto.edu/~vmnih/) original [Massachusetts Roads Dataset](https://www.cs.toronto.edu/~vmnih/data/). Massachusetts Roads Dataset & Massachusetts Buildings dataset were introduced in Chapter 6 of his [PhD thesis](https://www.cs.toronto.edu/~vmnih/docs/Mnih_Volodymyr_PhD_Thesis.pdf). If you use this dataset for research purposes you should use the following citation in any resulting publications:\n\n> @phdthesis{MnihThesis,\n>        author = {Volodymyr Mnih},\n>        title = {Machine Learning for Aerial Image Labeling},\n>        school = {University of Toronto},\n>        year = {2013}\n> }\n\n### Inspiration\n\n  Rapid advances in Image Understanding using Computer Vision techniques have brought us many state-of-the-art deep learning models across various benchmark datasets. Can we better address the challenges faced by the current models in segmenting roads from aerial images using the latest methods? Do state-of-the-art methods from other benchmarks work equally well on this data?  Does engineering features specific to roads datasets allow us to build better models?\n\n#### Go to [Massachusetts Buildings Dataset](https://www.kaggle.com/balraj98/massachusetts-buildings-dataset)."
+}
