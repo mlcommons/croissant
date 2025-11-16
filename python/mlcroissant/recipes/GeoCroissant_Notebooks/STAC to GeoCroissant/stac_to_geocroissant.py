@@ -5,9 +5,9 @@ metadata to GeoCroissant format. It includes utilities for handling name sanitiz
 version management, and metadata transformation between STAC and GeoCroissant schemas.
 """
 
+from datetime import datetime
 import json
 import re
-from datetime import datetime
 
 
 def sanitize_name(name):

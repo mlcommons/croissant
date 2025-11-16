@@ -5,9 +5,9 @@ It includes tools for name sanitization, version management, and other conversio
 necessary for working with time-series data within the GeoCroissant framework.
 """
 
+from datetime import datetime
 import json
 import re
-from datetime import datetime
 
 
 def sanitize_name(name):

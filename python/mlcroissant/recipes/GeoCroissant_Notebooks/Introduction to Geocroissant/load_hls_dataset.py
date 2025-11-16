@@ -5,10 +5,11 @@ It handles the loading of local HLS data files and organizes them into a structu
 dataset format compatible with the GeoCroissant framework.
 """
 
-import os
 from glob import glob
+import os
 
-from datasets import Dataset, DatasetDict
+from datasets import Dataset
+from datasets import DatasetDict
 
 
 def load_hls_burn_scars_dataset():

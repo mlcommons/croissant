@@ -25,16 +25,16 @@ pretraining on satellite imagery.
 # transformers: https://github.com/huggingface/transformers
 # --------------------------------------------------------
 
-import logging
 from functools import partial
+import logging
 from typing import List, Tuple
 
-import numpy as np
-import torch
-import torch.nn as nn
 from einops import rearrange
+import numpy as np
 from timm.layers import to_2tuple
 from timm.models.vision_transformer import Block
+import torch
+import torch.nn as nn
 
 
 def get_3d_sincos_pos_embed(embed_dim, grid_size, add_cls_token=False):

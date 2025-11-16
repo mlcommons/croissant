@@ -6,11 +6,13 @@ structured data into STAC Items and Assets, incorporating relevant extensions li
 Table and Scientific metadata.
 """
 
-import json
 from datetime import datetime
+import json
 from typing import Dict, List
 
-from pystac import Asset, Item, MediaType
+from pystac import Asset
+from pystac import Item
+from pystac import MediaType
 from pystac.extensions.scientific import ScientificExtension
 from pystac.extensions.table import TableExtension
 

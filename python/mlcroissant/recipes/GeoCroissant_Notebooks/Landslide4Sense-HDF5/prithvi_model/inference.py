@@ -9,12 +9,12 @@ import argparse
 import os
 from typing import List, Union
 
+from einops import rearrange
 import numpy as np
+from prithvi_mae import PrithviMAE
 import rasterio
 import torch
 import yaml
-from einops import rearrange
-from prithvi_mae import PrithviMAE
 
 NO_DATA = -9999
 NO_DATA_FLOAT = 0.0001
