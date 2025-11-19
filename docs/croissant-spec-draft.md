@@ -662,9 +662,9 @@ In addition, `FileObject` defines the following property:
   </thead>
   <tr>
     <td>containedIn</td>
-    <td><a href="http://schema.org/Text">Text</a></td>
+    <td>FileObject or FileSet or DataSource</td>
     <td>MANY</td>
-    <td>Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object.</td>
+    <td>Another <code>FileObject</code> or <code>FileSet</code> that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the <code>contentUrl</code> is evaluated as a relative path within the container object. A <code>DataSource</code> can also be used in case the data needs to be filtered or transformed.</td>
   </tr>
 </table>
 
@@ -705,6 +705,25 @@ Next: An archive and some files extracted from it (represented via the `containe
   "contentUrl": "movies.csv",
   "containedIn": { "@id": "ml-25m.zip" },
   "encodingFormat": "text/csv"
+}
+```
+
+Finally, a `FileSet` extracted from a "manifest" file (which is also an archive) using a `DataSource` with a `readLines` transform:
+
+```json
+{
+  "@type": "cr:FileObject",
+  "@id": "manifest.zip",
+  "contentUrl": "http://example.com/manifest.zip",
+  "encodingFormat": "application/zip"
+},
+{
+  "@type": "cr:FileSet",
+  "@id": "my-files",
+  "containedIn": {
+    "fileObject": { "@id": "manifest.zip" },
+    "transform": { "unArchive": true, "readLines": true }
+  }
 }
 ```
 
@@ -891,8 +910,7 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   <tr>
     <td>source</td>
     <td>
-      DataSource<br>
-      <a href="http://schema.org/URL">URL</a>
+      DataSource or FileObject or FileSet
     </td>
     <td>ONE</td>
     <td>The data source of the field. This will generally reference a <code>FileObject</code> or <code>FileSet</code>'s contents (e.g., a specific column of a table).</td>
@@ -1019,7 +1037,7 @@ The ratings `RecordSet` above corresponds to a CSV table, declared elsewhere as 
 
 ### DataSource
 
-`RecordSet`s specify where to get their data via the `dataSource` property of Field. `DataSource` is the class describing the data that can be extracted from files to populate a `RecordSet`. This class should be used when the data coming from the source needs to be transformed or formatted to be included in the ML dataset; otherwise a simple reference to the source (e.g., a `FileObject` or `FileSet`) can be used instead.
+`RecordSet`s specify where to get their data via the `source` property of Field. `DataSource` describes how to extract data from files to populate a `Field`. This class should be used when the data coming from the source needs to be transformed or formatted to be included in the ML dataset; otherwise a simple reference to the source (e.g., a `FileObject` or `FileSet`) can be used instead.
 
 `DataSource` is a subclassOf: [sc:Intangible](http://schema.org/Intangible) and defines the following properties:
 
@@ -1114,6 +1132,8 @@ Sometimes, not all the data from the source is needed, but only a subset. The `E
 Croissant supports a few simple transformations that can be applied on the source data:
 
 - delimiter: split a string into an array using the supplied character.
+- readLines: read the content of the file line by line.
+- unArchive: extract the content of the archive. True by default for archive file types (zip, tgz, etc.).
 - regex: A regular expression to parse the data.
 - jsonPath: A JSON path to evaluate on the (JSON) data source.
 
