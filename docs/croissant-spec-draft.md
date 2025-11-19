@@ -1255,60 +1255,7 @@ Other data types commonly used in ML datasets:
 See the section [Using external vocabularies with data](#using-external-vocabularies-with-data) for details on how to use data types from other vocabularies.
 
 
-#### Typing RecordSets
 
-As mentioned above, Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
-
-More generally, when a `RecordSet`is assigned a `dataType`, some or all of its fields must be mapped to properties associated with the data type. This can be done in two ways:
-
-- Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](http://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates).
-- Or there is an explicit mapping specified on the Field, via the property `equivalentProperty`.
-
-When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
-
-A cities `RecordSet` with fields implicitly mapped to latitude and longitude:
-
-```json
-{
-  "@id": "cities",
-  "@type": "cr:RecordSet",
-  "dataType": "sc:GeoCoordinates",
-  "field": [
-    {
-      "@id": "cities/latitude",
-      "@type": "cr:Field"
-    },
-    {
-      "@id": "cities/longitude",
-      "@type": "cr:Field"
-    }
-  ]
-}
-```
-
-A cities `RecordSet` with fields explicitly mapped to latitude and longitude:
-
-```json
-{
-  "@id": "cities",
-  "@type": "cr:RecordSet",
-  "dataType": "sc:GeoCoordinates",
-  "field": [
-    {
-      "@id": "cities/lat",
-      "@type": "cr:Field",
-      "equivalentProperty": "sc:latitude"
-    },
-    {
-      "@id": "cities/long",
-      "@type": "cr:Field",
-      "equivalentProperty": "sc:longitude"
-    }
-  ]
-}
-```
-
-Note that, just like for `Field`, a RecordSet might specify multiple `dataType`s, and have separate fields mapping to their respective properties. We will see below how this feature is used to specify ML-specific information such as splits.
 
 ### Embedding data
 
@@ -1608,11 +1555,20 @@ In the following example, the `url` field is expected to be a URL, whose semanti
 }
 ```
 
-#### Annotations
+#### RecordSet typing
 
 You can also associate entire records with classes from external vocabularies, and specific fields of records with properties applicable to those classes. This is useful for semantic mapping of data values in the dataset, and for adding semantic data annotations using standard vocabularies, e.g., to describe statistics about the data.
 
-The mechanism is similar to field typing, but instead of typing a `cr:Field`, you type a `cr:RecordSet` with a class from an external vocabulary, and then map its fields to the properties of the class using `equivalentProperty`. For example, you could have a `RecordSet` where each record represents a city, typed as a `wd:Q515` (City). The fields of the `RecordSet` can then be mapped to the properties of `wd:Q515`.
+Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
+
+More generally, when a `RecordSet` is assigned a `dataType`, some or all of its fields must be mapped to properties associated with the data type. This can be done in two ways:
+
+- Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](http://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates).
+- Or there is an explicit mapping specified on the Field, via the property `equivalentProperty`.
+
+When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
+
+The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping.
 
 ```json
 {
@@ -1628,7 +1584,7 @@ The mechanism is similar to field typing, but instead of typing a `cr:Field`, yo
     {
       "@type": "cr:RecordSet",
       "@id": "cities",
-      "dataType": "wd:Q515",
+      "dataType": ["wd:Q515", "sc:GeoCoordinates"],
       "field": [
         {
           "@type": "cr:Field",
@@ -1648,6 +1604,16 @@ The mechanism is similar to field typing, but instead of typing a `cr:Field`, yo
           "dataType": "sc:Text",
           "equivalentProperty": "wdt:P17"
         },
+        {
+          "@type": "cr:Field",
+          "@id": "cities/latitude",
+          "dataType": "sc:Float"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cities/longitude",
+          "dataType": "sc:Float"
+        }
       ]
     }
   ]
