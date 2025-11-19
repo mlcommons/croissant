@@ -1237,7 +1237,7 @@ Other data types commonly used in ML datasets:
     <td>Describes a field containing the content of an image (pixels).</td>
   </tr>
   <tr>
-    <td><a href="http://mlcommons.org/schema/BoundingBox">cr:BoundingBox</a></td>
+    <td>cr:BoundingBox</td>
     <td>Describes the coordinates of a bounding box (4-number array). Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
  <tr>
@@ -1245,7 +1245,7 @@ Other data types commonly used in ML datasets:
     <td>Describes a field containing the content of a video file.</td>
   </tr>
   <tr>
-    <td><a href="http://mlcommons.org/schema/Split">cr:Split</a></td>
+    <td>cr:Split</td>
     <td>Describes a RecordSet used to divide data into multiple sets according to intended usage with regards to models. Refer to the section "ML-specific features > Splits".</td>
   </tr>
 </table>
@@ -1493,7 +1493,7 @@ Croissant `RecordSet`s provide two mechanisms to represent hierarchical data:
 
 Note that the values of these fields may still come from a "flat" source, such as two separate columns of a table, as in the example above.
 
-Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [Typing RecordSets](#typing-recordsets).
+Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [RecordSet typing](#recordset-typing).
 
 ## Using external vocabularies
 
