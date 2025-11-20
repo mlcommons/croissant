@@ -2,7 +2,6 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
@@ -16,7 +15,6 @@
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
-    "description": {"@container": "@language"},
     "dct": "http://purl.org/dc/terms/",
     "examples": {
       "@id": "cr:examples",
@@ -29,12 +27,10 @@
     "fileSet": "cr:fileSet",
     "format": "cr:format",
     "includes": "cr:includes",
-    "isArray": "cr:isArray",
     "isLiveDataset": "cr:isLiveDataset",
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
     "md5": "cr:md5",
-    "name": {"@container": "@language"},
     "parentField": "cr:parentField",
     "path": "cr:path",
     "recordSet": "cr:recordSet",
@@ -47,19 +43,19 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "arrayShape": "cr:arrayShape",
+    "description": {
+      "@container": "@language"
+    },
+    "isArray": "cr:isArray",
+    "name": {
+      "@container": "@language"
+    }
   },
   "@type": "sc:Dataset",
-  "name": {
-    "en": "minimal_example_with_multilingual_descriptions",
-    "de": "minimales_Beispiel_mit_mehrsprachigen_Beschreibungen",
-    "fr": "exemple_minimal_avec_descriptions_multilingues"
-  },
-  "description": {
-    "en": "This is a minimal example, including the required and the recommended fields in multiple languages.",
-    "de": "Dies ist ein Minimalbeispiel, das die erforderlichen und die empfohlenen Felder in mehreren Sprachen enthält.",
-    "fr": "Ceci est un exemple minimal, incluant les champs obligatoires et recommandés dans plusieurs langues."
-  },
+  "name": "minimal_example_with_multilingual_descriptions",
+  "description": "This is a minimal example, including the required and the recommended fields in multiple languages.",
   "conformsTo": "http://mlcommons.org/croissant/1.1",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://example.com/dataset/recipes/minimal-recommended",
@@ -77,30 +73,14 @@
     {
       "@type": "cr:RecordSet",
       "@id": "examples",
-      "name": {
-        "en": "examples",
-        "de": "Beispiele",
-        "fr": "exemples"
-      },
-      "description": {
-        "en": "Records extracted from the example table, with their schema.",
-        "de": "Aus der Beispieltabelle extrahierte Datensätze mit ihrem Schema.",
-        "fr": "Enregistrements extraits de la table d'exemple, avec leur schéma."
-      },
+      "name": "examples",
+      "description": "Records extracted from the example table, with their schema.",
       "field": [
         {
           "@type": "cr:Field",
           "@id": "examples/name",
-          "name": {
-            "en": "name",
-            "de": "Name",
-            "fr": "nom"
-          },
-          "description": {
-            "en": "The first column contains the name.",
-            "de": "Die erste Spalte enthält den Namen.",
-            "fr": "La première colonne contient le nom."
-          },
+          "name": "name",
+          "description": "The first column contains the name.",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
@@ -114,16 +94,8 @@
         {
           "@type": "cr:Field",
           "@id": "examples/age",
-          "name": {
-            "en": "age",
-            "de": "Alter",
-            "fr": "âge"
-          },
-          "description": {
-            "en": "The second column contains the age.",
-            "de": "Die zweite Spalte enthält das Alter.",
-            "fr": "La deuxième colonne contient l'âge."
-          },
+          "name": "age",
+          "description": "The second column contains the age.",
           "dataType": "sc:Integer",
           "source": {
             "fileObject": {
