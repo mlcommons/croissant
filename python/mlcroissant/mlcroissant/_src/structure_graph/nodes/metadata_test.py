@@ -17,6 +17,7 @@ from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.tests.nodes import create_test_node
 from mlcroissant._src.tests.versions import parametrize_conforms_to
 
@@ -183,6 +184,7 @@ def test_predecessors_are_propagated():
         id="records/name",
         name="records/name",
         data_types=constants.DataType.TEXT,
+        source=Source(field="records/name"),
     )
     record_set = RecordSet(
         id="records",
@@ -198,6 +200,7 @@ def test_parents_are_defined():
         id="records/name/subfield",
         name="records/name/subfield",
         data_types=constants.DataType.TEXT,
+        source=Source(field="records/name/subfield"),
     )
     field = Field(
         id="records/name",

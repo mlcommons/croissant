@@ -44,8 +44,17 @@ Get started with Eclair in just a few steps:
    <img src="images/eclair-screen.png" alt="Eclair Diagram" style="max-width: 500px; height: auto;"/>
 
 !!! info "Hosted Eclair"
-    We plan to set up a hosted Eclair server soon. For now, you can run it locally.
-
+    We provide a hosted test version of the MCP server at this address for demo purposes. You can plug it into your MCP client (e.g. Cursor, Windsurf, etc.). This is a hosted demo server, use at own risk and expect downtimes 😄.
+    ```
+    {
+      "mcpServers": {
+        "croissant-mcp": {
+          "url": "http://35.87.210.99:8000/sse",
+          "transport": "sse"
+        }
+      }
+    }
+    ```
 
 **3. Use your favorite AI Agent**
    
@@ -73,6 +82,8 @@ Eclair currently provides 7 essential tools for dataset discovery and analysis:
 | **datasets-preview-url** | Get a download URL for a dataset preview |
 | **serve-croissant** | Get the Croissant metadata for a given dataset |
 | **validate-croissant** | Validate a Croissant metadata file |
+| **builder-context** | Guidance for LLM/agents on Croissant + TFDS/PyTorch best practices
+| **pytorch-scaffold** | Generate a ready-to-run PyTorch Dataset scaffold from a Croissant URL
 | **help** | Get instructions to use the Eclair tools |
 | **ping** | Test that your Eclair server is working |
 
@@ -106,3 +117,4 @@ Eclair is developed and maintained by:
 - **[Omar Benjelloun](https://github.com/obenjelloun)** - Google Deepmind 
 - **[Jon Lebenshold](https://github.com/jonlebensold)** - Jetty.io
 - **[Natasha Noy](https://github.com/natashanoy)** - Google
+- **[Luis Oala](https://github.com/luisoala)** - Brickroad

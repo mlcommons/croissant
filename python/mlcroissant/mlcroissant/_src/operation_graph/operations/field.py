@@ -1,5 +1,6 @@
 """Field operation module."""
 
+import copy
 import dataclasses
 import datetime
 import functools
@@ -165,6 +166,8 @@ def _extract_lines(row: pd.Series) -> pd.Series:
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     """Extracts the value according to the field rules."""
     source = field.source
+    if not source:
+        return df
     column_name = source.get_column()
     if column_name in df:
         return df
@@ -238,19 +241,25 @@ class ReadFields(Operation):
             """Returns a record parsed as a dictionary of fields."""
             result: dict[str, Any] = {}
             for field in fields:
-                source = field.source
-                column = source.get_column()
-                assert column in df, (
-                    f'Column "{column}" does not exist. Inspect the ancestors of the'
-                    f" field {field} to understand why. Possible fields: {df.columns}"
-                )
-                value = apply_transforms_fn(row[column], field=field)
+                has_source = bool(field.source)
+                if has_source:
+                    column = field.source.get_column()
+                    assert column in df, (
+                        f'Column "{column}" does not exist. Inspect the ancestors of'
+                        f" the field {field} to understand why. Possible fields:"
+                        f" {df.columns}"
+                    )
+                    value = apply_transforms_fn(row[column], field=field)
+                else:
+                    value = copy.deepcopy(field.value)
                 if _is_na(value):
                     value = None
                 elif field.repeated:
-                    value = [
-                        _cast_value(self.node.ctx, v, field.data_type) for v in value
-                    ]
+                    if value is not None:
+                        value = [
+                            _cast_value(self.node.ctx, v, field.data_type)
+                            for v in value
+                        ]
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
 
