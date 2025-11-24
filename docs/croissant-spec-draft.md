@@ -1546,7 +1546,7 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
     "croissant": "http://mlcommons.org/croissant/",
     "prov": "http://www.w3.org/ns/prov#"
   },
-  "@type": ["sc:Dataset", "prov:Entity"],
+  "@type": ["sc:Dataset"],
   "name": "My dataset",
   "description": "My beautiful dataset.",
   "url": "https://mlcommons.org",
@@ -1557,7 +1557,7 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
   },
   "distribution": [
       {
-        "@type": ["cr:FileObject", "prov:Entity"],
+        "@type": ["cr:FileObject"],
         "@id": "my-file-object",
         "name": "my-file-object",
         "contentUrl": "http://example.com/source-data.csv",
@@ -1568,8 +1568,6 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
   ...
 }
 ```
-
-Note that in order to use properties from external vocabularies, you may need to declare that your Croissant entity conforms to a type from that vocabulary. For example, `prov:wasGeneratedBy` is defined to apply to `prov:Entity`, so we declare our `sc:Dataset` to also be a `prov:Entity`. Similarly, we declare the `cr:FileObject` to be a `prov:Entity` to use `prov:wasDerivedFrom`.
 
 While you can use any vocabulary, it is up to the consumer of the Croissant file to interpret these external properties.
 
@@ -1604,7 +1602,10 @@ More generally, when a `RecordSet` is assigned a `dataType`, some or all of its 
 
 When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
 
-The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping.
+The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping:
+- The `cities/name` field corresponds to the `sc:name` property via implicit mapping
+- The `citites/population` and `cities/country` fields are mapped to `wdt:P1082` and `wdt:P17` explicitly
+- The `cities/latitude` and `cities/longitude` fiels implicitly map to `sc:latitude` and `sc:longitude`.
 
 ```json
 {
@@ -1626,7 +1627,6 @@ The following example shows a `RecordSet` where each record represents a city, t
           "@type": "cr:Field",
           "@id": "cities/name",
           "dataType": "sc:Text",
-          "equivalentProperty": "sc:name"
         },
         {
           "@type": "cr:Field",
