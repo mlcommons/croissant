@@ -507,7 +507,7 @@ Croissant modifies the meaning of one [schema.org](http://schema.org) property, 
   </tr>
 </table>
 
-The Croissant vocabulary also defines the following optional attributes:
+The Croissant vocabulary also defines the following optional dataset-level attributes:
 
 <table>
   <thead>
@@ -603,7 +603,7 @@ In Croissant, the `distribution` property contains one or more `FileObject` or `
 
 `FileObject` is the Croissant class used to represent individual files that are part of a dataset.
 
-`FileObject` is a general purpose class that inherits from [Schema.org](http://Schema.org) `CreativeWork`, and can be used to represent instances of more specific types of content like `DigitalDocument` and `MediaObject`.
+`FileObject` is a general purpose class that inherits from [Schema.org](http://Schema.org) `DataDownload`, and can be used to represent instances of more specific types of content like `DigitalDocument` and `MediaObject`.
 
 Most of the important properties needed to describe a `FileObject` are defined in the classes it inherits from:
 
@@ -709,32 +709,13 @@ Next: An archive and some files extracted from it (represented via the `containe
 }
 ```
 
-Finally, a `FileSet` extracted from a "manifest" file (which is also an archive) using a `DataSource` with a `readLines` transform:
-
-```json
-{
-  "@type": "cr:FileObject",
-  "@id": "manifest.zip",
-  "contentUrl": "http://example.com/manifest.zip",
-  "encodingFormat": "application/zip"
-},
-{
-  "@type": "cr:FileSet",
-  "@id": "my-files",
-  "containedIn": {
-    "fileObject": { "@id": "manifest.zip" },
-    "transform": { "unArchive": true, "readLines": true }
-  }
-}
-```
-
 ### FileSet
 
 In many datasets, data comes in the form of collections of homogeneous files, such as images, videos or text files, where each file needs to be treated as an individual item, e.g., as a training example. `FileSet` is a class that describes such collections of files.
 
 A `FileSet` is a set of files located in a container, which can be an archive `FileObject` or a "manifest" file. A FileSet may also specify inclusion / exclusion filters: these are file patterns that give the user flexibility to define which files should be part of the `FileSet`. For example, include patterns may refer to all images under one or more directories, which exclude patterns may be used to exclude specific images.
 
-`FileSet` extends `sc:Intangible`, and defines the following properties:
+`FileSet` also extends `sc:DataDownload`, and defines the following additional properties:
 
 <table>
   <thead>
@@ -745,9 +726,9 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </thead>
   <tr>
     <td>containedIn</td>
-    <td>FileObject</td>
+    <td>FileObject, FileSet or DataSource</td>
     <td>MANY</td>
-    <td>The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).</td>
+    <td>The source of data for the <code>FileSet</code>, e.g., an archive. If a <code>FileSet</code> or multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives). A <code>DataSource</code> can also be used in case the data needs to be filtered or transformed.</td>
   </tr>
   <tr>
     <td>includes</td>
@@ -832,6 +813,28 @@ A zip file containing multiple `FileSet`s and `FileObject`s:
   "encodingFormat": "text/tsv"
 }
 ```
+
+Finally, a `FileSet` extracted from a "manifest" file (which is also an archive) using a `DataSource` with an `unArchive` and a `readLines` transform:
+
+```json
+{
+  "@type": "cr:FileObject",
+  "@id": "manifest.zip",
+  "contentUrl": "http://example.com/manifest.zip",
+  "encodingFormat": "application/zip"
+},
+{
+  "@type": "cr:FileSet",
+  "@id": "my-files",
+  "containedIn": {
+    "@type": "cr:DataSource",
+    "fileObject": { "@id": "manifest.zip" },
+    "transform": { "unArchive": true, "readLines": true }
+  }
+}
+```
+
+While we specified `unArchive` explicitly in the last example, it is the default transform for `FileSet` when it is `containedIn` a `FileObject` of type `application/zip` or `application/gzip`.
 
 ## RecordSets
 
@@ -2156,6 +2159,7 @@ TODO: Add guidance on representing data use restrictions.
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
