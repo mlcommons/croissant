@@ -1426,65 +1426,6 @@ Other data types commonly used in ML datasets:
 See the section [Using external vocabularies with data](#using-external-vocabularies-with-data) for details on how to use data types from other vocabularies.
 
 
-<<<<<<< HEAD
-
-=======
-#### Typing RecordSets
-
-As mentioned above, Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
-
-More generally, when a `RecordSet`is assigned a `dataType`, some or all of its fields must be mapped to properties associated with the data type. This can be done in two ways:
-
-- Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](http://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates).
-- Or there is an explicit mapping specified on the Field, via the property `equivalentProperty`.
-
-When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
-
-A cities `RecordSet` with fields implicitly mapped to latitude and longitude:
-
-```json
-{
-  "@id": "cities",
-  "@type": "cr:RecordSet",
-  "dataType": "sc:GeoCoordinates",
-  "field": [
-    {
-      "@id": "cities/latitude",
-      "@type": "cr:Field"
-    },
-    {
-      "@id": "cities/longitude",
-      "@type": "cr:Field"
-    }
-  ]
-}
-```
-
-A cities `RecordSet` with fields explicitly mapped to latitude and longitude:
-
-```json
-{
-  "@id": "cities",
-  "@type": "cr:RecordSet",
-  "dataType": "sc:GeoCoordinates",
-  "field": [
-    {
-      "@id": "cities/lat",
-      "@type": "cr:Field",
-      "equivalentProperty": "sc:latitude"
-    },
-    {
-      "@id": "cities/long",
-      "@type": "cr:Field",
-      "equivalentProperty": "sc:longitude"
-    }
-  ]
-}
-```
-
-Note that, just like for `Field`, a RecordSet might specify multiple `dataType`s, and have separate fields mapping to their respective properties. We will see below how this feature is used to specify ML-specific information such as splits.
->>>>>>> main
-
 ### Embedding data
 
 While `RecordSet`s generally describe data that is stored in separate files, it is sometimes useful to include the data of a `RecordSet` directly in the Croissant dataset definition:
