@@ -4,20 +4,20 @@ import dataclasses
 from unittest import mock
 
 import pytest
+from rdflib import term
 from rdflib.namespace import SDO
 
+from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
-from mlcroissant._src.structure_graph import base_node
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.rdf import Rdf
+from mlcroissant._src.structure_graph import base_node
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.tests.nodes import assert_contain_error
 from mlcroissant._src.tests.nodes import assert_contain_warning
 from mlcroissant._src.tests.nodes import create_test_node
-from rdflib import term
-from mlcroissant._src.core import constants
 
 
 @dataclasses.dataclass(eq=False, repr=False)
