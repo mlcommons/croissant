@@ -16,7 +16,6 @@ from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.tests.nodes import assert_contain_error
 from mlcroissant._src.tests.nodes import assert_contain_warning
 from mlcroissant._src.tests.nodes import create_test_node
-import os
 from rdflib import term
 from mlcroissant._src.core import constants
 
@@ -408,7 +407,10 @@ def test_external_vocabularies():
         # 1. Standard URI shortening
         ("http://www.w3.org/ns/prov#wasGeneratedBy", "prov:wasGeneratedBy"),
         # 2. URIRef shortening
-        (term.URIRef("http://www.w3.org/ns/prov#wasGeneratedBy"), "prov:wasGeneratedBy"),
+        (
+            term.URIRef("http://www.w3.org/ns/prov#wasGeneratedBy"),
+            "prov:wasGeneratedBy",
+        ),
         # 3. Local base IRI stripping
         (
             f"file:///mock/cwd/{constants.BASE_IRI}some-id",
