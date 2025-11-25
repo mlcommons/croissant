@@ -263,9 +263,9 @@
         "prov:Collection"
       ],
       "description": "Added 50K plausible-sounding but have no correct answer…",
-      "usage": [
-        "squad1"
-      ],
+      "usage": {
+        "@id": "squad1"
+      },
       "prov:isAssociatedWith": [
         "crowdworkersAgent"
       ]
