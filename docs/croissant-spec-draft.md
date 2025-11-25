@@ -481,142 +481,6 @@ These [schema.org](http://schema.org) properties are recommended for every Crois
   </tr>
 </table>
 
-#### Using external vocabularies
-
-Croissant files can be enriched with properties from external vocabularies. This mechanism can be used to describe both dataset-level metadata and properties of the data itself, by adding external properties to `sc:Dataset`, `cr:RecordSet` or `cr:Field` definitions.
-
-To use an external vocabulary, a prefix for it must be defined in the `@context` block. This allows you to add properties from that vocabulary to your dataset description.
-
-For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) for provenance information, you would first define a prefix for it in the `@context`. The following example shows how to add dataset-level provenance with `prov:wasGeneratedBy`, and field-level provenance with `prov:wasDerivedFrom`:
-
-```json
-{
-  "@context": {
-    "@vocab": "http://schema.org/",
-    "croissant": "http://mlcommons.org/croissant/",
-    "prov": "http://www.w3.org/ns/prov#"
-  },
-  "@type": ["sc:Dataset", "prov:Entity"],
-  "name": "My dataset",
-  "description": "My beautiful dataset.",
-  "url": "https://mlcommons.org",
-  "prov:wasGeneratedBy": {
-    "@type": "prov:Activity",
-    "prov:startedAtTime": "2023-01-01T00:00:00Z",
-    "prov:endedAtTime": "2023-01-01T01:00:00Z"
-  },
-  "distribution": [
-      {
-        "@type": ["cr:FileObject", "prov:Entity"],
-        "@id": "my-file-object",
-        "name": "my-file-object",
-        "contentUrl": "http://example.com/source-data.csv",
-        "encodingFormat": "text/csv",
-        "prov:wasDerivedFrom": "http://example.com/source-data"
-      }
-  ],
-  "recordSet": [
-    {
-      "@type": "cr:RecordSet",
-      "@id": "my-record-set",
-      "field": [
-        {
-          "@type": "cr:Field",
-          "@id": "my-field",
-          "dataType": "sc:Text"
-        }
-      ]
-    }
-  ]
-}
-```
-
-Note that in order to use properties from external vocabularies, you may need to declare that your Croissant entity conforms to a type from that vocabulary. For example, `prov:wasGeneratedBy` is defined to apply to `prov:Entity`, so we declare our `sc:Dataset` to also be a `prov:Entity`. Similarly, we declare the `cr:Field` to be a `prov:Entity` to use `prov:wasDerivedFrom`.
-
-While you can use any vocabulary, it is up to the consumer of the Croissant file to interpret these external properties.
-
-### Using external vocabularies with data
-
-In addition to dataset-level properties, external vocabularies can be used to provide more semantic meaning to the data itself. There are three main ways to do this:
-
-#### Field typing
-
-You can assign a `dataType` from an external vocabulary to a `cr:Field`. This indicates that each value for that field is an instance of the specified type.
-
-In the following example, the `url` field is expected to be a URL, whose semantic type is [City](http://www.wikidata.org/wiki/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: "<http://www.wikidata.org/wiki/Q90>").
-
-```json
-{
-  "@id": "cities/url",
-  "@type": "cr:Field",
-  "dataType": ["http://schema.org/URL", "http://www.wikidata.org/wiki/Q515"]
-}
-```
-
-#### Annotations
-
-You can add properties from external vocabularies to `cr:RecordSet` or `cr:Field` definitions. This is useful for adding information that doesn't fit the `dataType` model, like summary statistics, or for providing a more detailed semantic mapping.
-
-When an external vocabulary defines a class with properties, you can type a `RecordSet` with that class and then map its fields to the properties of the class using `equivalentProperty`. For example, you could have a `RecordSet` where each record represents a provenance activity, typed as a `prov:Activity`. The fields of the `RecordSet` can then be mapped to the properties of `prov:Activity`.
-
-```json
-{
-  "@context": {
-    "@vocab": "http://schema.org/",
-    "croissant": "http://mlcommons.org/croissant/",
-    "prov": "http://www.w3.org/ns/prov#"
-  },
-  "@type": "sc:Dataset",
-  "name": "My Dataset",
-  "recordSet": [
-    {
-      "@type": "cr:RecordSet",
-      "@id": "provenance-activities",
-      "dataType": "prov:Activity",
-      "field": [
-        {
-          "@type": "cr:Field",
-          "@id": "provenance-activities/startTime",
-          "dataType": "sc:DateTime",
-          "equivalentProperty": "prov:startedAtTime"
-        },
-        {
-          "@type": "cr:Field",
-          "@id": "provenance-activities/endTime",
-          "dataType": "sc:DateTime",
-          "equivalentProperty": "prov:endedAtTime"
-        }
-      ]
-    }
-  ]
-}
-```
-
-#### Data format for external entities
-
-When a `cr:Field`'s `dataType` is an entity from an external vocabulary, the corresponding data file should contain values that can be interpreted as those entities. For a `dataType` of `prov:Agent`, the data file might contain URLs that identify the agents.
-
-To keep the data files concise, you can define prefixes in the dataset's `@context` and use those prefixes in the data. For example, you could add an `ex-agent` prefix to the context:
-
-```json
-  "@context": {
-    "@vocab": "http://schema.org/",
-    "croissant": "http://mlcommons.org/croissant/",
-    "prov": "http://www.w3.org/ns/prov#",
-    "ex-agent": "http://example.com/agents/"
-  }
-```
-
-Then, the corresponding data file can use these prefixes to create CURIEs (Compact URIs), which are shorter and more readable:
-
-**`data.csv`**
-```csv
-agent
-"ex-agent:person1"
-"ex-agent:software-tool"
-```
-Here, a consumer of the Croissant file would expand `ex-agent:person1` to the full URL `http://example.com/agents/person1`.
-
 #### Other schema.org Properties
 
 Other properties from [schema.org/Dataset](http://schema.org/Dataset) or its parent classes can also be specified for Croissant datasets. Dataset authors should decide whether they are useful for their datasets or not.
@@ -643,7 +507,7 @@ Croissant modifies the meaning of one [schema.org](http://schema.org) property, 
   </tr>
 </table>
 
-The Croissant vocabulary also defines the following optional attributes:
+The Croissant vocabulary also defines the following optional dataset-level attributes:
 
 <table>
   <thead>
@@ -739,7 +603,7 @@ In Croissant, the `distribution` property contains one or more `FileObject` or `
 
 `FileObject` is the Croissant class used to represent individual files that are part of a dataset.
 
-`FileObject` is a general purpose class that inherits from [Schema.org](http://Schema.org) `CreativeWork`, and can be used to represent instances of more specific types of content like `DigitalDocument` and `MediaObject`.
+`FileObject` is a general purpose class that inherits from [Schema.org](http://Schema.org) `DataDownload`, and can be used to represent instances of more specific types of content like `DigitalDocument` and `MediaObject`.
 
 Most of the important properties needed to describe a `FileObject` are defined in the classes it inherits from:
 
@@ -845,32 +709,13 @@ Next: An archive and some files extracted from it (represented via the `containe
 }
 ```
 
-Finally, a `FileSet` extracted from a "manifest" file (which is also an archive) using a `DataSource` with a `readLines` transform:
-
-```json
-{
-  "@type": "cr:FileObject",
-  "@id": "manifest.zip",
-  "contentUrl": "http://example.com/manifest.zip",
-  "encodingFormat": "application/zip"
-},
-{
-  "@type": "cr:FileSet",
-  "@id": "my-files",
-  "containedIn": {
-    "fileObject": { "@id": "manifest.zip" },
-    "transform": { "unArchive": true, "readLines": true }
-  }
-}
-```
-
 ### FileSet
 
 In many datasets, data comes in the form of collections of homogeneous files, such as images, videos or text files, where each file needs to be treated as an individual item, e.g., as a training example. `FileSet` is a class that describes such collections of files.
 
 A `FileSet` is a set of files located in a container, which can be an archive `FileObject` or a "manifest" file. A FileSet may also specify inclusion / exclusion filters: these are file patterns that give the user flexibility to define which files should be part of the `FileSet`. For example, include patterns may refer to all images under one or more directories, which exclude patterns may be used to exclude specific images.
 
-`FileSet` extends `sc:Intangible`, and defines the following properties:
+`FileSet` also extends `sc:DataDownload`, and defines the following additional properties:
 
 <table>
   <thead>
@@ -881,9 +726,9 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </thead>
   <tr>
     <td>containedIn</td>
-    <td>FileObject</td>
+    <td>FileObject, FileSet or DataSource</td>
     <td>MANY</td>
-    <td>The source of data for the <code>FileSet</code>, e.g., an archive. If multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives).</td>
+    <td>The source of data for the <code>FileSet</code>, e.g., an archive. If a <code>FileSet</code> or multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives). A <code>DataSource</code> can also be used in case the data needs to be filtered or transformed.</td>
   </tr>
   <tr>
     <td>includes</td>
@@ -968,6 +813,28 @@ A zip file containing multiple `FileSet`s and `FileObject`s:
   "encodingFormat": "text/tsv"
 }
 ```
+
+Finally, a `FileSet` extracted from a "manifest" file (which is also an archive) using a `DataSource` with an `unArchive` and a `readLines` transform:
+
+```json
+{
+  "@type": "cr:FileObject",
+  "@id": "manifest.zip",
+  "contentUrl": "http://example.com/manifest.zip",
+  "encodingFormat": "application/zip"
+},
+{
+  "@type": "cr:FileSet",
+  "@id": "my-files",
+  "containedIn": {
+    "@type": "cr:DataSource",
+    "fileObject": { "@id": "manifest.zip" },
+    "transform": { "unArchive": true, "readLines": true }
+  }
+}
+```
+
+While we specified `unArchive` explicitly in the last example, it is the default transform for `FileSet` when it is `containedIn` a `FileObject` of type `application/zip` or `application/gzip`.
 
 ## RecordSets
 
@@ -1679,7 +1546,7 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
     "croissant": "http://mlcommons.org/croissant/",
     "prov": "http://www.w3.org/ns/prov#"
   },
-  "@type": ["sc:Dataset", "prov:Entity"],
+  "@type": ["sc:Dataset"],
   "name": "My dataset",
   "description": "My beautiful dataset.",
   "url": "https://mlcommons.org",
@@ -1690,7 +1557,7 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
   },
   "distribution": [
       {
-        "@type": ["cr:FileObject", "prov:Entity"],
+        "@type": ["cr:FileObject"],
         "@id": "my-file-object",
         "name": "my-file-object",
         "contentUrl": "http://example.com/source-data.csv",
@@ -1701,8 +1568,6 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
   ...
 }
 ```
-
-Note that in order to use properties from external vocabularies, you may need to declare that your Croissant entity conforms to a type from that vocabulary. For example, `prov:wasGeneratedBy` is defined to apply to `prov:Entity`, so we declare our `sc:Dataset` to also be a `prov:Entity`. Similarly, we declare the `cr:FileObject` to be a `prov:Entity` to use `prov:wasDerivedFrom`.
 
 While you can use any vocabulary, it is up to the consumer of the Croissant file to interpret these external properties.
 
@@ -1737,7 +1602,10 @@ More generally, when a `RecordSet` is assigned a `dataType`, some or all of its 
 
 When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
 
-The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping.
+The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping:
+- The `cities/name` field corresponds to the `sc:name` property via implicit mapping
+- The `citites/population` and `cities/country` fields are mapped to `wdt:P1082` and `wdt:P17` explicitly
+- The `cities/latitude` and `cities/longitude` fiels implicitly map to `sc:latitude` and `sc:longitude`.
 
 ```json
 {
@@ -1759,7 +1627,6 @@ The following example shows a `RecordSet` where each record represents a city, t
           "@type": "cr:Field",
           "@id": "cities/name",
           "dataType": "sc:Text",
-          "equivalentProperty": "sc:name"
         },
         {
           "@type": "cr:Field",
@@ -2292,6 +2159,7 @@ TODO: Add guidance on representing data use restrictions.
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
