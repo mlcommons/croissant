@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import dataclasses
 import inspect
+import os
 import re
 from typing import Any, Callable
 
@@ -67,6 +68,7 @@ class Node:
     name: str | dict[str, str] | None = None
     parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
+    extra_properties: dict[str, Any] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         """Checks exclusive properties."""
@@ -360,6 +362,7 @@ class Node:
             if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
             jsonld[key] = value
+        jsonld.update(self.extra_properties)
         jsonld = remove_empty_values(jsonld)
         return sort_dict(jsonld)
 
@@ -401,10 +404,20 @@ class Node:
                 ctx.issues.add_warning(warning)
             if value is not None:
                 kwargs[field.name] = value
+        # Collect extra properties.
+        extra_properties = {}
+        for key, value in jsonld.items():
+            if key not in [
+                field.call_url(ctx) for field in mlc_dataclasses.jsonld_fields(cls)
+            ] and key not in ["@type", "@id", "@context"]:
+                # Shorten key if possible.
+                short_key = ctx.rdf.shorten_key(key)
+                extra_properties[short_key] = _compact_jsonld_value(ctx, value)
         return cls(
             ctx=ctx,
             id=uuid_from_jsonld(jsonld),
             jsonld=jsonld,
+            extra_properties=extra_properties,
             **kwargs,  # type: ignore[arg-type]
         )
 
@@ -502,3 +515,32 @@ def node_by_uuid(ctx: Context, uuid: str | None) -> Node | None:
         if node.uuid == uuid:  # pytype: disable=attribute-error
             return node  # pytype: disable=bad-return-type
     return None
+
+
+def _compact_jsonld_value(ctx: Context, value: Any) -> Any:
+    """Recursively compacts values in a JSON-LD structure."""
+    if isinstance(value, (str, term.URIRef)):
+        value_str = str(value)
+        # Handle local base IRI.
+        base_iri = f"file://{os.getcwd()}/{constants.BASE_IRI}"
+        if value_str.startswith(base_iri):
+            return value_str[len(base_iri) :]
+        return ctx.rdf.shorten_value(value_str)
+    elif isinstance(value, dict):
+        new_dict = {
+            ctx.rdf.shorten_key(k): _compact_jsonld_value(ctx, v)
+            for k, v in value.items()
+        }
+        # Hack: if we have a blank node ID, remove it.
+        # This happens sometimes during expansion/shortening of unknown properties
+        # when the input didn't have an @id.
+        if (
+            "@id" in new_dict
+            and isinstance(new_dict["@id"], str)
+            and new_dict["@id"].startswith("_:")
+        ):
+            del new_dict["@id"]
+        return new_dict
+    elif isinstance(value, list):
+        return [_compact_jsonld_value(ctx, v) for v in value]
+    return value

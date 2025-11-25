@@ -1,6 +1,7 @@
 """base_node_test module."""
 
 import dataclasses
+from unittest import mock
 
 import pytest
 from rdflib.namespace import SDO
@@ -9,9 +10,15 @@ from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph import base_node
+from mlcroissant._src.core.json_ld import expand_jsonld
+from mlcroissant._src.core.rdf import Rdf
+from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.tests.nodes import assert_contain_error
 from mlcroissant._src.tests.nodes import assert_contain_warning
 from mlcroissant._src.tests.nodes import create_test_node
+import os
+from rdflib import term
+from mlcroissant._src.core import constants
 
 
 @dataclasses.dataclass(eq=False, repr=False)
@@ -302,3 +309,139 @@ def test_cast_fn():
     Node = node(cast_fn)
     assert Node(field="field").field == "field"
     assert_contain_error(Node(field="field").issues, "bad value")
+
+
+def test_external_vocabularies():
+    jsonld = {
+        "@context": {
+            "@language": "en",
+            "@vocab": "https://schema.org/",
+            "citeAs": "cr:citeAs",
+            "column": "cr:column",
+            "conformsTo": "dct:conformsTo",
+            "cr": "http://mlcommons.org/croissant/",
+            "rai": "http://mlcommons.org/croissant/RAI/",
+            "data": {"@id": "cr:data", "@type": "@json"},
+            "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
+            "dct": "http://purl.org/dc/terms/",
+            "examples": {"@id": "cr:examples", "@type": "@json"},
+            "extract": "cr:extract",
+            "field": "cr:field",
+            "fileProperty": "cr:fileProperty",
+            "fileObject": "cr:fileObject",
+            "fileSet": "cr:fileSet",
+            "format": "cr:format",
+            "includes": "cr:includes",
+            "isLiveDataset": "cr:isLiveDataset",
+            "jsonPath": "cr:jsonPath",
+            "key": "cr:key",
+            "md5": "cr:md5",
+            "parentField": "cr:parentField",
+            "path": "cr:path",
+            "recordSet": "cr:recordSet",
+            "references": "cr:references",
+            "regex": "cr:regex",
+            "repeated": "cr:repeated",
+            "replace": "cr:replace",
+            "samplingRate": "cr:samplingRate",
+            "sc": "https://schema.org/",
+            "separator": "cr:separator",
+            "source": "cr:source",
+            "subField": "cr:subField",
+            "transform": "cr:transform",
+            "prov": "http://www.w3.org/ns/prov#",
+        },
+        "@type": "sc:Dataset",
+        "name": "test-dataset",
+        "conformsTo": "http://mlcommons.org/croissant/1.0",
+        "prov:wasDerivedFrom": "http://example.com/source-dataset",
+        "recordSet": [
+            {
+                "@type": "cr:RecordSet",
+                "name": "test-record-set",
+                "field": [
+                    {
+                        "@type": "cr:Field",
+                        "name": "test-field",
+                        "cr:equivalentProperty": "http://schema.org/name",
+                        "dataType": "sc:Text",
+                        "source": {"fileObject": {"@id": "test-file"}},
+                    }
+                ],
+            }
+        ],
+        "distribution": [
+            {
+                "@id": "test-file",
+                "@type": "cr:FileObject",
+                "name": "test-file",
+                "contentUrl": "http://example.com/data.csv",
+                "encodingFormat": "text/csv",
+                "sha256": "...",
+            }
+        ],
+    }
+    ctx = Context()
+    ctx.rdf = Rdf.from_json(ctx, jsonld)
+    expanded_jsonld = expand_jsonld(jsonld, ctx)
+    metadata = Metadata.from_jsonld(ctx, expanded_jsonld)
+    assert not ctx.issues.errors
+    assert metadata.extra_properties == {
+        "prov:wasDerivedFrom": "http://example.com/source-dataset"
+    }
+    assert metadata.record_sets[0].fields[0].equivalentProperty == [
+        "http://schema.org/name"
+    ]
+
+    # Test serialization
+    serialized = metadata.to_json()
+    assert serialized["prov:wasDerivedFrom"] == "http://example.com/source-dataset"
+    assert (
+        serialized["recordSet"][0]["field"][0]["cr:equivalentProperty"]
+        == "http://schema.org/name"
+    )
+
+
+@pytest.mark.parametrize(
+    "value, expected_output",
+    [
+        # 1. Standard URI shortening
+        ("http://www.w3.org/ns/prov#wasGeneratedBy", "prov:wasGeneratedBy"),
+        # 2. URIRef shortening
+        (term.URIRef("http://www.w3.org/ns/prov#wasGeneratedBy"), "prov:wasGeneratedBy"),
+        # 3. Local base IRI stripping
+        (
+            f"file:///mock/cwd/{constants.BASE_IRI}some-id",
+            "some-id",
+        ),
+        # 4. Dictionary key and value shortening
+        (
+            {
+                "http://www.w3.org/ns/prov#atLocation": "https://example.com",
+                "@id": "_:b0",
+            },
+            {"prov:atLocation": "https://example.com"},
+        ),
+        # 5. List shortening
+        (
+            ["http://www.w3.org/ns/prov#wasGeneratedBy", "other-value"],
+            ["prov:wasGeneratedBy", "other-value"],
+        ),
+        # 6. Other types
+        (123, 123),
+        (True, True),
+        (None, None),
+    ],
+)
+def test_compact_jsonld_value(value, expected_output):
+    with mock.patch("os.getcwd", return_value="/mock/cwd"):
+        ctx = Context()
+        ctx.rdf = Rdf.from_json(
+            ctx,
+            {
+                "@context": {
+                    "prov": "http://www.w3.org/ns/prov#",
+                }
+            },
+        )
+        assert base_node._compact_jsonld_value(ctx, value) == expected_output
