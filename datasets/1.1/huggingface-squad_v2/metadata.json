@@ -275,11 +275,11 @@
   ],
   "prov:isAssociatedWith": [
     {
-      "@type": "prov:SoftwareAgent",
+      "@type": "prov:Agent",
       "@id": "crowdworkersAgent",
-      "prov:label": "Amazon Mechanical Turk",
-      "description": "Crowdworkers were hired through Amazon Mechanical …",
-      "prov:locatedAt": "https://www.mturk.com/"
+      "prov:label": "Crowdworkers",
+      "description": "Crowdworkers were hired through Daemo crowdsourcing platform",
+      "prov:locatedAt": "https://github.com/crowdresearch/daemo"
     }
   ]
 }
