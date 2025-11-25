@@ -266,7 +266,7 @@
       "usage": [
         "squad1"
       ],
-      "isAssociatedWith": [
+      "prov:isAssociatedWith": [
         "crowdworkersAgent"
       ]
     }
