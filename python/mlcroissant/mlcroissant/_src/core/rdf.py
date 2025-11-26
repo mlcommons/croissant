@@ -37,6 +37,7 @@ def make_context(ctx=None, **kwargs):
         "description": (
             {"@container": "@language"} if ctx is not None and ctx.is_v1_1() else None
         ),
+        "equivalentProperty": "cr:equivalentProperty",
         "examples": {"@id": "cr:examples", "@type": "@json"},
         "extract": "cr:extract",
         "field": "cr:field",

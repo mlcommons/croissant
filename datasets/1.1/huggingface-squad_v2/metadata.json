@@ -1,0 +1,274 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "prov": "http://www.w3.org/ns/prov#",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/rajpurkar/squad_v2/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-squad_v2",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "squad_v2/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "squad_v2_splits/split_name"
+      },
+      "@id": "squad_v2_splits",
+      "name": "squad_v2_splits",
+      "description": "Splits for the squad_v2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "squad_v2_splits/split_name": "train"
+        },
+        {
+          "squad_v2_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "squad_v2",
+      "description": "rajpurkar/squad_v2 - 'squad_v2' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-squad_v2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "squad_v2/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "squad_v2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-squad_v2"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-squad_v2"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2/context",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-squad_v2"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-squad_v2"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad_v2/answers",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "squad_v2/answers/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-squad_v2"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "squad_v2/answers/answer_start",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-squad_v2"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "answer_start"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "squad_v2",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for SQuAD 2.0\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nStanford Question Answering Dataset (SQuAD) is a reading comprehension dataset, consisting of questions posed by crowdworkers on a set of Wikipedia articles, where the answer to every question is a segment of text, or span, from the corresponding reading passage, or the question might be unanswerable.\nSQuAD 2.0 combines the 100,000 questions in SQuAD1.1 with over 50,000 unanswerable questions written adversarially by crowdworkers… See the full description on the dataset page: https://huggingface.co/datasets/rajpurkar/squad_v2.",
+  "alternateName": [
+    "rajpurkar/squad_v2",
+    "SQuAD2.0"
+  ],
+  "creator": {
+    "@type": "sc:Person",
+    "name": "Pranav R",
+    "url": "https://huggingface.co/rajpurkar"
+  },
+  "keywords": [
+    "question-answering",
+    "open-domain-qa",
+    "extractive-qa",
+    "crowdsourced",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-sa-4.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:1806.03822",
+    "arxiv:1606.05250",
+    "🇺🇸 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "sameAs": "https://rajpurkar.github.io/SQuAD-explorer/",
+  "url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+  "prov:wasDerivedFrom": {
+    "@type": "prov:Entity",
+    "@id": "squad1",
+    "prov:locatedAt": "https://huggingface.co/datasets/rajpurkar/squad"
+  },
+  "prov:wasGeneratedBy": {
+    "@type": "prov:Activity",
+    "@id": "additionActivity",
+    "description": "Added 50K plausible-sounding but have no correct answer…",
+    "prov:isAssociatedWith": "crowdworkersAgent",
+    "type": "prov:Collection",
+    "usage": {
+      "@id": "squad1",
+      "@type": "prov:Entity",
+      "prov:locatedAt": "https://huggingface.co/datasets/rajpurkar/squad"
+    }
+  },
+  "prov:isAssociatedWith": {
+    "@type": "prov:Agent",
+    "@id": "crowdworkersAgent",
+    "prov:label": "Crowdworkers",
+    "description": "Crowdworkers were hired through Daemo crowdsourcing platform",
+    "prov:locatedAt": "https://github.com/crowdresearch/daemo"
+  }
+}
