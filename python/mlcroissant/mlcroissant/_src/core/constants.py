@@ -166,6 +166,9 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_ARRAY_SHAPE(ctx): "array_shape",
     ML_COMMONS_CITE_AS(ctx): "cite_as",
     ML_COMMONS_COLUMN(ctx): "csv_column",
+    (
+        ML_COMMONS(ctx).containedIn if ctx.is_v1_1() else namespace.SDO.containedIn
+    ): "contained_in",
     ML_COMMONS_DATA_TYPE(ctx): "data_type",
     ML_COMMONS_DATA(ctx): "data",
     ML_COMMONS_EXTRACT(ctx): "extract",
@@ -184,7 +187,6 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_SOURCE(ctx): "source",
     ML_COMMONS_TRANSFORM(ctx): "transforms",
     DCTERMS_CONFORMS_TO: "conforms_to",
-    SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",
     SCHEMA_ORG_CONTENT_URL: "content_url",
     SCHEMA_ORG_CREATOR: "creators",
