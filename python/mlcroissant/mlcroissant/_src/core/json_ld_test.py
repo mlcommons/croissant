@@ -40,6 +40,7 @@ def test_make_context():
         "data": {"@id": "cr:data", "@type": "@json"},
         "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
         "dct": "http://purl.org/dc/terms/",
+        "equivalentProperty": "cr:equivalentProperty",
         "examples": {"@id": "cr:examples", "@type": "@json"},
         "extract": "cr:extract",
         "field": "cr:field",
