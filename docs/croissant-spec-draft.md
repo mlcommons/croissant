@@ -19,7 +19,7 @@ Authors:
 - Michael Kuchnik (Meta),
 - Jos van der Velde (OpenML),
 - Joaquin Vanschoren (OpenML),
-- Luis Oala (Dotphoton),
+- Luis Oala (brickroad.network),
 - Steffen Vogler (Bayer),
 - Mubashara Akthar (King’s College London),
 - Nitisha Jain (King’s College London),
