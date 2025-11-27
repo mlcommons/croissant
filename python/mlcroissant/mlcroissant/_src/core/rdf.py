@@ -29,6 +29,7 @@ def make_context(ctx=None, **kwargs):
         "citeAs": "cr:citeAs",
         "column": "cr:column",
         "conformsTo": "dct:conformsTo",
+        "containedIn": "cr:containedIn" if ctx is not None and ctx.is_v1_1() else None,
         "cr": "http://mlcommons.org/croissant/",
         "rai": "http://mlcommons.org/croissant/RAI/",
         "data": {"@id": "cr:data", "@type": "@json"},

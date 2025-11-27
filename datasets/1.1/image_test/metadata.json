@@ -5,6 +5,7 @@
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
     "cr": "http://mlcommons.org/croissant/",
     "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
@@ -48,7 +49,7 @@
   "@type": "sc:Dataset",
   "name": "GSFC_AI4QC dataset",
   "description": "Semantic segmentation with a class assigned to each pixel.",
-  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
   "citeAs": "None",
   "creator": {
     "@type": "sc:Organization",

@@ -5,6 +5,7 @@ from rdflib.namespace import SDO
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import ML_COMMONS
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -47,6 +48,23 @@ class FileObject(Node):
             formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
         ],
         url=SDO.containedIn,
+        versions=[CroissantVersion.V_0_8, CroissantVersion.V_1_0],
+    )
+    contained_in_v1_1: list[str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "Another FileObject or FileSet that this one is contained in, e.g., in the"
+            " case of a file extracted from an archive. When this property is present,"
+            " the contentUrl is evaluated as a relative path within the container"
+            " object"
+        ),
+        from_jsonld=lambda _, contained_in: uuid_from_jsonld(contained_in),
+        to_jsonld=lambda ctx, contained_in: [
+            formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
+        ],
+        url=lambda ctx: constants.ML_COMMONS(ctx).containedIn,
+        versions=[CroissantVersion.V_1_1],
     )
     description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
         cardinality="LANGUAGE-TAGGED",
@@ -107,6 +125,8 @@ class FileObject(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         Node.__post_init__(self)
+        if self.contained_in_v1_1:
+            self.contained_in = self.contained_in_v1_1
         self.validate_name()
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.assert_has_mandatory_properties("encoding_formats", uuid_field)
