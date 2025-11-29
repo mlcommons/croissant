@@ -1,0 +1,456 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "HLS_Burn_Scars",
+  "description": "This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models. Each TIFF file contains a 512x512 pixel scene with six bands (Blue, Green, Red, NIR, SW1, SW2) converted to reflectance, and masks have one band with values: 1=Burn scar, 0=Not burned, -1=Missing data.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "1.0.0",
+  "creator": {
+    "@type": "Organization",
+    "name": "IBM-NASA Prithvi Models Family"
+  },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateCreated": "2025-01-17",
+  "dateModified": "2025-01-17",
+  "datePublished": "2025-01-17",
+  "citeAs": "@dataset{HLS_Burn_Scars, title={This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models. Each TIFF file contains a 512x512 pixel scene with six bands (Blue, Green, Red, NIR, SW1, SW2) converted to reflectance, and masks have one band with values: 1=Burn scar, 0=Not burned, -1=Missing data.}, author={IBM-NASA Prithvi Models Family}, year={2025}, url={https://huggingface.co/datasets/harshinde/hls_burn_scars}}",
+  "keywords": [
+    "geospatial",
+    "machine learning",
+    "remote sensing",
+    "burn scar detection",
+    "semantic segmentation",
+    "Landsat",
+    "Sentinel-2",
+    "HLS"
+  ],
+  "url": "https://huggingface.co/datasets/harshinde/hls_burn_scars",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "data_repo",
+      "name": "data_repo",
+      "description": "Directory containing the dataset files",
+      "contentUrl": "https://huggingface.co/datasets/harshinde/hls_burn_scars",
+      "encodingFormat": "local_directory",
+      "md5": "placeholder_hash_for_directory"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "tiff-files-for-config-hls_burn_scars",
+      "name": "tiff-files-for-config-hls_burn_scars",
+      "description": "Local TIFF files organized in training/validation splits.",
+      "containedIn": {
+        "@id": "data_repo"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "**/*.tif"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "HLS_Burn_Scars",
+      "name": "HLS_Burn_Scars",
+      "description": "HLS Burn Scars dataset with satellite imagery and burn scar mask annotations.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "HLS_Burn_Scars/image",
+          "name": "HLS_Burn_Scars/image",
+          "description": "Satellite imagery from Harmonized Landsat and Sentinel-2 sensors with 6 bands converted to reflectance.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "tiff-files-for-config-hls_burn_scars"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*_merged\\.tif$"
+            }
+          },
+          "geocr:dataShape": [
+            512,
+            512,
+            6
+          ],
+          "geocr:bandConfiguration": {
+            "totalBands": 6,
+            "band1": {
+              "name": "Blue",
+              "hlsBand": "B02",
+              "wavelength": "490nm"
+            },
+            "band2": {
+              "name": "Green",
+              "hlsBand": "B03",
+              "wavelength": "560nm"
+            },
+            "band3": {
+              "name": "Red",
+              "hlsBand": "B04",
+              "wavelength": "665nm"
+            },
+            "band4": {
+              "name": "NIR",
+              "hlsBand": "B8A",
+              "wavelength": "865nm"
+            },
+            "band5": {
+              "name": "SW1",
+              "hlsBand": "B11",
+              "wavelength": "1610nm"
+            },
+            "band6": {
+              "name": "SW2",
+              "hlsBand": "B12",
+              "wavelength": "2190nm"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "HLS_Burn_Scars/mask",
+          "name": "HLS_Burn_Scars/mask",
+          "description": "Burn scar mask annotations with values: 1=Burn scar, 0=Not burned, -1=Missing data.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "tiff-files-for-config-hls_burn_scars"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*\\.mask\\.tif$"
+            }
+          },
+          "geocr:dataShape": [
+            512,
+            512,
+            1
+          ],
+          "geocr:classValues": {
+            "0": "NotBurned",
+            "1": "BurnScar",
+            "-1": "NoData"
+          }
+        }
+      ],
+      "data": [
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SDH.2020248.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SDH.2020248.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2018245.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2018245.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2018280.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2018280.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2019305.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2019305.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2020190.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2020190.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2020285.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEH.2020285.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEJ.2018185.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEJ.2018185.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEJ.2018220.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEJ.2018220.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEJ.2019185.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SEJ.2019185.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFE.2020267.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFE.2020267.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2018155.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2018155.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2018190.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2018190.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2020250.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2020250.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2021189.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFF.2021189.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFH.2018185.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFH.2018185.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFH.2020185.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFH.2020185.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFH.2020245.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SFH.2020245.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGD.2021306.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGD.2021306.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2018247.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2018247.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2019187.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2019187.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020162.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020162.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020187.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020187.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020217.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020217.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020247.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGE.2020247.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGG.2019307.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10SGG.2019307.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TDN.2019213.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TDN.2019213.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2018183.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2018183.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2018340.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2018340.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2019275.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2019275.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2019350.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2019350.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2020275.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEK.2020275.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEM.2018213.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEM.2018213.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEN.2019168.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TEN.2019168.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFK.2020220.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFK.2020220.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFL.2018245.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFL.2018245.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFL.2020215.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFL.2020215.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFM.2018155.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFM.2018155.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFM.2019280.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFM.2019280.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFN.2018245.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFN.2018245.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFN.2020235.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFN.2020235.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFP.2018285.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFP.2018285.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFP.2020248.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFP.2020248.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFQ.2018173.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFQ.2018173.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFQ.2018245.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFQ.2018245.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFQ.2019245.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFQ.2019245.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFR.2018213.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFR.2018213.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFS.2018193.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFS.2018193.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFS.2018213.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFS.2018213.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFS.2019213.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFS.2019213.v1.4.mask.tif"
+        },
+        {
+          "HLS_Burn_Scars/image": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFT.2018213.v1.4_merged.tif",
+          "HLS_Burn_Scars/mask": "https://huggingface.co/datasets/harshinde/hls_burn_scars/resolve/main/training/subsetted_512x512_HLS.S30.T10TFT.2018213.v1.4.mask.tif"
+        }
+      ]
+    }
+  ],
+  "geocr:BoundingBox": [
+    -125.0,
+    24.0,
+    -66.0,
+    49.0
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2018-01-01T00:00:00Z",
+    "endDate": "2021-12-31T23:59:59Z"
+  },
+  "geocr:spatialResolution": "30m",
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "geocr:mlTask": {
+    "@type": "geocr:SemanticSegmentation",
+    "taskType": "multi_class_classification",
+    "evaluationMetric": "F1_score",
+    "classes": [
+      "NotBurned",
+      "BurnScar",
+      "NoData"
+    ],
+    "applicationDomain": "environmental_monitoring"
+  },
+  "variableMeasured": [
+    {
+      "name": "0",
+      "description": "NotBurned"
+    },
+    {
+      "name": "1",
+      "description": "BurnScar"
+    },
+    {
+      "name": "-1",
+      "description": "NoData"
+    },
+    {
+      "name": "Blue",
+      "description": "Band: Blue"
+    },
+    {
+      "name": "Green",
+      "description": "Band: Green"
+    },
+    {
+      "name": "Red",
+      "description": "Band: Red"
+    },
+    {
+      "name": "NIR",
+      "description": "Band: NIR"
+    },
+    {
+      "name": "SW1",
+      "description": "Band: SW1"
+    },
+    {
+      "name": "SW2",
+      "description": "Band: SW2"
+    }
+  ]
+}
