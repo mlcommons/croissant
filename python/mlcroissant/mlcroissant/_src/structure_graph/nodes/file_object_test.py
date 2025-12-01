@@ -11,6 +11,8 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
+from mlcroissant._src.structure_graph.nodes.source import Source
+from mlcroissant._src.structure_graph.nodes.source import Transform
 from mlcroissant._src.tests.nodes import create_test_node
 
 
@@ -104,3 +106,28 @@ def test_pickable(conforms_to):
     file_object = pickle.loads(pickle.dumps(file_object))
     # Test that the context was successfully restored:
     assert file_object.ctx.conforms_to == conforms_to
+
+
+def test_contained_in_with_source():
+    ctx = Context()
+    source = Source(
+        ctx=ctx,
+        file_object="manifest.zip",
+        transforms=[Transform(unarchive=True)],
+    )
+    file_object = FileObject(
+        ctx=ctx,
+        name="test_file",
+        encoding_formats=["text/csv"],
+        contained_in=[source],
+    )
+    assert file_object.contained_in == [source]
+    assert file_object.to_json() == {
+        "@type": "cr:FileObject",
+        "name": "test_file",
+        "encodingFormat": "text/csv",
+        "containedIn": {
+            "fileObject": {"@id": "manifest.zip"},
+            "transform": {"cr:unArchive": True},
+        },
+    }
