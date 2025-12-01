@@ -37,11 +37,11 @@ def test_extract_equality_and_hash():
 
 
 def test_transform_equality_and_hash():
-    t1 = Transform(replace="\\n", separator=" ", unarchive=True, readlines=True)
-    t2 = Transform(replace="\\n", separator=" ", unarchive=True, readlines=True)
-    t3 = Transform(replace="\\t", separator=" ", unarchive=True, readlines=True)
-    t4 = Transform(replace="\\n", separator=" ", unarchive=False, readlines=True)
-    t5 = Transform(replace="\\n", separator=" ", unarchive=True, readlines=False)
+    t1 = Transform(replace="\\n", separator=" ", un_archive=True, read_lines=True)
+    t2 = Transform(replace="\\n", separator=" ", un_archive=True, read_lines=True)
+    t3 = Transform(replace="\\t", separator=" ", un_archive=True, read_lines=True)
+    t4 = Transform(replace="\\n", separator=" ", un_archive=False, read_lines=True)
+    t5 = Transform(replace="\\n", separator=" ", un_archive=True, read_lines=False)
 
     assert t1 == t2
     assert t1 != t3

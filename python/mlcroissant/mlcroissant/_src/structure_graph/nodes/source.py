@@ -131,7 +131,7 @@ class Transform(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_JSON_PATH,
     )
-    readlines: bool | None = mlc_dataclasses.jsonld_field(
+    read_lines: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_READLINES,
@@ -156,7 +156,7 @@ class Transform(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_SEPARATOR,
     )
-    unarchive: bool | None = mlc_dataclasses.jsonld_field(
+    un_archive: bool | None = mlc_dataclasses.jsonld_field(
         default=None,
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_UNARCHIVE,
@@ -173,8 +173,8 @@ class Transform(Node):
             and self.replace == other.replace
             and self.sampling_rate == other.sampling_rate
             and self.separator == other.separator
-            and self.unarchive == other.unarchive
-            and self.readlines == other.readlines
+            and self.un_archive == other.un_archive
+            and self.read_lines == other.read_lines
         )
 
     def __hash__(self):
@@ -187,8 +187,8 @@ class Transform(Node):
                 self.replace,
                 self.sampling_rate,
                 self.separator,
-                self.unarchive,
-                self.readlines,
+                self.un_archive,
+                self.read_lines,
             )
         )
 

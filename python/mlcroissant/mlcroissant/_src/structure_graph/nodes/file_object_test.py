@@ -113,7 +113,7 @@ def test_contained_in_with_source():
     source = Source(
         ctx=ctx,
         file_object="manifest.zip",
-        transforms=[Transform(unarchive=True)],
+        transforms=[Transform(un_archive=True)],
     )
     file_object = FileObject(
         ctx=ctx,
