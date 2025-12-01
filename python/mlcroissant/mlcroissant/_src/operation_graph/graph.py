@@ -20,6 +20,7 @@ from mlcroissant._src.operation_graph.operations import Join
 from mlcroissant._src.operation_graph.operations import LocalDirectory
 from mlcroissant._src.operation_graph.operations import Read
 from mlcroissant._src.operation_graph.operations import ReadFields
+from mlcroissant._src.operation_graph.operations import ReadLines
 from mlcroissant._src.operation_graph.operations.extract import should_extract
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.base_node import node_by_uuid
@@ -27,6 +28,7 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.source import Source
 
 
 def _find_record_set(node: Node) -> RecordSet:
@@ -81,22 +83,40 @@ def _add_operations_for_file_object(
         # Reset `operation` to be the very first operation at each loop.
         operation = first_operation
         # Extract the file if needed
+        un_archive = should_extract(node.encoding_formats)
+        if isinstance(successor, (FileObject, FileSet)) and successor.contained_in:
+            for source in successor.contained_in:
+                if isinstance(source, Source) and source.file_object == node.uuid:
+                    for transform in source.transforms:
+                        if transform.un_archive is not None:
+                            un_archive = transform.un_archive
         if (
-            should_extract(node.encoding_formats)
+            un_archive
             and isinstance(successor, (FileObject, FileSet))
             and not should_extract(successor.encoding_formats)
         ):
             operation = operation >> Extract(operations=operations, node=node)
         if isinstance(successor, FileSet):
+            for source in successor.contained_in:
+                if isinstance(source, Source) and source.file_object == node.uuid:
+                    for transform in source.transforms:
+                        if transform.read_lines:
+                            operation = operation >> ReadLines(
+                                operations=operations, node=successor
+                            )
             operation = (
                 operation
                 >> FilterFiles(operations=operations, node=successor)
                 >> Concatenate(operations=operations, node=successor)
             )
         if node.encoding_formats and not should_extract(node.encoding_formats):
-            fields = tuple([
-                field for field in node.recursive_successors if isinstance(field, Field)
-            ])
+            fields = tuple(
+                [
+                    field
+                    for field in node.recursive_successors
+                    if isinstance(field, Field)
+                ]
+            )
             operation >> Read(
                 operations=operations,
                 node=node,
@@ -137,9 +157,9 @@ def _add_operations_for_local_file_sets(
     folder: epath.Path,
 ):
     """Adds all operations for a FileSet reading from local files."""
-    fields = tuple([
-        field for field in node.recursive_successors if isinstance(field, Field)
-    ])
+    fields = tuple(
+        [field for field in node.recursive_successors if isinstance(field, Field)]
+    )
     (
         LocalDirectory(
             operations=operations,
