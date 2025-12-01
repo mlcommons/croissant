@@ -21,7 +21,7 @@ Authors:
 - Joaquin Vanschoren (OpenML),
 - Luis Oala (brickroad.network),
 - Steffen Vogler (Bayer),
-- Mubashara Akthar (King’s College London),
+- Mubashara Akthar (ETH Zurich, ETH AI Center),
 - Nitisha Jain (King’s College London),
 - Slava Tykhonov (DANS-KNAW)
 - Joan Giner-Miguelez (Barcelona Supercomputing Center)
