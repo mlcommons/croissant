@@ -123,6 +123,8 @@ class FileObject(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         Node.__post_init__(self)
+        if self.contained_in_v1_1:
+            self.contained_in = self.contained_in_v1_1
         self.validate_name()
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.assert_has_mandatory_properties("encoding_formats", uuid_field)
