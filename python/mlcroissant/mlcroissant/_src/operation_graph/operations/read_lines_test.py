@@ -1,7 +1,4 @@
-import os
-
 from etils import epath
-import pytest
 
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.operations.read_lines import ReadLines

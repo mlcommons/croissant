@@ -96,7 +96,7 @@ def _add_operations_for_file_object(
             and not should_extract(successor.encoding_formats)
         ):
             operation = operation >> Extract(operations=operations, node=node)
-        if isinstance(successor, FileSet):
+        if isinstance(successor, FileSet) and successor.contained_in:
             for source in successor.contained_in:
                 if isinstance(source, Source) and source.file_object == node.uuid:
                     for transform in source.transforms:
