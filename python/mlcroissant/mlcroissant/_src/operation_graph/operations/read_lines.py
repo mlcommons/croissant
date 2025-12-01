@@ -11,6 +11,7 @@ class ReadLines(Operation):
     """Reads a file line by line."""
 
     def call(self, path: Path):
+        """See class' docstring."""
         with path.filepath.open("r") as f:
             for line in f:
                 yield line.strip()
