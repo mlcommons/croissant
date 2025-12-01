@@ -232,7 +232,6 @@
               "@type": "cr:Field",
               "@id": "default/metadata/license_url",
               "dataType": "sc:Text",
-              "equivalentProperty": "prov:wasAttributedTo",
               "source": {
                 "fileSet": {
                   "@id": "parquet-files-for-config-default"
