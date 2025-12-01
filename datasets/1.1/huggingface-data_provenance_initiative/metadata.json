@@ -141,6 +141,34 @@
         },
         {
           "@type": "cr:Field",
+          "@id": "default/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ],
+      "annotation": [
+        {
+          "@type": "cr:Field",
           "@id": "default/metadata",
           "equivalentProperty": "prov:wasDerivedFrom",
           "dataType": [
@@ -267,32 +295,6 @@
               }
             }
           ]
-        },
-        {
-          "@type": "cr:Field",
-          "@id": "default/source",
-          "dataType": "sc:Text",
-          "source": {
-            "fileSet": {
-              "@id": "parquet-files-for-config-default"
-            },
-            "extract": {
-              "column": "source"
-            }
-          }
-        },
-        {
-          "@type": "cr:Field",
-          "@id": "default/text",
-          "dataType": "sc:Text",
-          "source": {
-            "fileSet": {
-              "@id": "parquet-files-for-config-default"
-            },
-            "extract": {
-              "column": "text"
-            }
-          }
         }
       ]
     }
