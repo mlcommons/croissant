@@ -12,7 +12,8 @@ from mlcroissant._src.structure_graph.nodes.source import Transform
 
 
 @pytest.mark.parametrize(
-    "encoding_format, un_archive_transform, read_lines_transform, expected_extract, expected_read_lines",
+    "encoding_format, un_archive_transform, read_lines_transform, expected_extract,"
+    " expected_read_lines",
     [
         # Case 1: Implicit Unarchive (Existing Behavior)
         ("application/zip", None, None, True, False),
