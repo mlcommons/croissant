@@ -4,7 +4,6 @@ from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
-from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_object import _contained_in_from_jsonld
@@ -87,7 +86,6 @@ class FileSet(Node):
     def __post_init__(self):
         """Checks arguments of the node."""
         Node.__post_init__(self)
-
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties("includes", "encoding_formats", uuid_field)
