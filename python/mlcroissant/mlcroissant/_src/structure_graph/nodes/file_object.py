@@ -5,7 +5,8 @@ from rdflib.namespace import SDO
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.constants import ML_COMMONS
-from mlcroissant._src.core.uuid import formatted_uuid_to_json, uuid_from_jsonld
+from mlcroissant._src.core.uuid import formatted_uuid_to_json
+from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
