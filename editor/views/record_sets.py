@@ -430,13 +430,11 @@ def _render_left_panel():
                         "⚠️",
                         key=f"idea-{prefix}",
                         on_click=lambda: _generate_data_with_timeout.clear(),
-                        help=textwrap.dedent(
-                            f"""**Error**:
+                        help=textwrap.dedent(f"""**Error**:
 ```
 {exception}
 ```
-"""
-                        ),
+"""),
                     )
                 right.markdown("No preview is possible.")
 

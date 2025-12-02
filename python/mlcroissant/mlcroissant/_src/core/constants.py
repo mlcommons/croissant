@@ -66,6 +66,7 @@ ML_COMMONS_PATH = lambda ctx: ML_COMMONS(ctx).path
 ML_COMMONS_PERSONAL_SENSITVE_INFORMATION = lambda ctx: ML_COMMONS(
     ctx
 ).personalSensitiveInformation
+ML_COMMONS_READLINES = lambda ctx: ML_COMMONS(ctx).readLines
 ML_COMMONS_RECORD_SET = lambda ctx: ML_COMMONS(ctx).recordSet
 ML_COMMONS_RECORD_SET_TYPE = lambda ctx: ML_COMMONS(ctx).RecordSet
 ML_COMMONS_REFERENCES = lambda ctx: ML_COMMONS(ctx).references
@@ -79,6 +80,7 @@ ML_COMMONS_SOURCE = lambda ctx: ML_COMMONS(ctx).source
 ML_COMMONS_SUB_FIELD = lambda ctx: ML_COMMONS(ctx).subField
 ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
 ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
+ML_COMMONS_UNARCHIVE = lambda ctx: ML_COMMONS(ctx).unArchive
 
 # Croissant RAI extension
 # V1.0 namespace
@@ -166,6 +168,9 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_ARRAY_SHAPE(ctx): "array_shape",
     ML_COMMONS_CITE_AS(ctx): "cite_as",
     ML_COMMONS_COLUMN(ctx): "csv_column",
+    (
+        ML_COMMONS(ctx).containedIn if ctx.is_v1_1() else namespace.SDO.containedIn
+    ): "contained_in",
     ML_COMMONS_DATA_TYPE(ctx): "data_type",
     ML_COMMONS_DATA(ctx): "data",
     ML_COMMONS_EXTRACT(ctx): "extract",
@@ -184,7 +189,6 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_SOURCE(ctx): "source",
     ML_COMMONS_TRANSFORM(ctx): "transforms",
     DCTERMS_CONFORMS_TO: "conforms_to",
-    SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",
     SCHEMA_ORG_CONTENT_URL: "content_url",
     SCHEMA_ORG_CREATOR: "creators",

@@ -19,9 +19,9 @@ Authors:
 - Michael Kuchnik (Meta),
 - Jos van der Velde (OpenML),
 - Joaquin Vanschoren (OpenML),
-- Luis Oala (Dotphoton),
+- Luis Oala (brickroad.network),
 - Steffen Vogler (Bayer),
-- Mubashara Akthar (King’s College London),
+- Mubashara Akthar (ETH Zurich, ETH AI Center),
 - Nitisha Jain (King’s College London),
 - Slava Tykhonov (DANS-KNAW)
 - Joan Giner-Miguelez (Barcelona Supercomputing Center)
@@ -318,7 +318,7 @@ In the rest of this document, we only describe the actual JSON-LD of Croissant m
 
 Croissant builds on the [schema.org/Dataset](http://schema.org/Dataset) vocabulary, which is widely adopted by datasets on the web. An introduction to describing datasets with this vocabulary can be found [here](https://developers.google.com/search/docs/appearance/structured-data/dataset).
 
-[Schema.org](http://Schema.org) properties are known to be very flexible in terms of the types of values they accept. We list below the main properties of the vocabulary and their expected type.To facilitate more consistent use of these properties we provide additional constraints on their usage in the context of Croissant datasets. We also specify cardinalities to clarify if a property can take one or many values.
+[Schema.org](http://Schema.org) properties are known to be very flexible in terms of the types of values they accept. We list below the main properties of the vocabulary and their expected type. To facilitate more consistent use of these properties we provide additional constraints on their usage in the context of Croissant datasets. We also specify cardinalities to clarify if a property can take one or many values.
 
 We organize [schema.org](http://schema.org) properties in three categories: Required, recommended and other properties. The properties starting with the symbol `@` are defined in JSON-LD, which is our RDF syntax of choice for Croissant.
 
@@ -927,11 +927,10 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </tr>
     <tr>
     <td>value</td>
-    <td>JSON</a></td>>
+    <td>JSON</td>>
     <td>ONE</td>
     <td>An optional constant value for the field. Fields with values can be used to attach key/value pairs to a RecordSet. The value of a field can be atomic, for fields with a simple dataType, or it can be structured, e.g., if the field has subfields. For the latter case, a JSON string can be used to represent the value.</td>
     </tr>
-  <tr>
   <tr>
     <td>isArray</td>
     <td><a href="http://schema.org/Boolean">Boolean</a></td>
@@ -1278,7 +1277,7 @@ Other data types commonly used in ML datasets:
     <td>cr:BoundingBox</td>
     <td>Describes the coordinates of a bounding box (4-number array). Refer to the section "ML-specific features > Bounding boxes".</td>
   </tr>
- <tr>
+  <tr>
     <td><a href="https://schema.org/VideoObject">sc:VideoObject</a></td>
     <td>Describes a field containing the content of a video file.</td>
   </tr>
@@ -1480,7 +1479,7 @@ Annotations can also appear at the level of a RecordSet. A RecordSet-level annot
     { "@type": "cr:Field", "@id": "movies/title", ...},
     { "@type": "cr:Field", "@id": "movies/genre", ...}
   ],
-  "annotation" : {
+  "annotation": {
     "@type": "cr:Field", "@id": "movies/ratings", 
     "subField": [
       { "@type": "cr:Field", "@id": "movies/ratings/user_id", ...}, 
@@ -1604,8 +1603,8 @@ When a field is mapped to a property, it can inherit the range type of that prop
 
 The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping:
 - The `cities/name` field corresponds to the `sc:name` property via implicit mapping
-- The `citites/population` and `cities/country` fields are mapped to `wdt:P1082` and `wdt:P17` explicitly
-- The `cities/latitude` and `cities/longitude` fiels implicitly map to `sc:latitude` and `sc:longitude`.
+- The `cities/population` and `cities/country` fields are mapped to `wdt:P1082` and `wdt:P17` explicitly
+- The `cities/latitude` and `cities/longitude` fields implicitly map to `sc:latitude` and `sc:longitude`.
 
 ```json
 {

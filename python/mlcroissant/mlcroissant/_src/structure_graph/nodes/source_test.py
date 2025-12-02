@@ -24,6 +24,68 @@ def test_source_bool():
     assert whole_source
 
 
+def test_extract_equality_and_hash():
+    e1 = Extract(column="c", file_property=FileProperty.content, json_path="j")
+    e2 = Extract(column="c", file_property=FileProperty.content, json_path="j")
+    e3 = Extract(column="d", file_property=FileProperty.content, json_path="j")
+
+    assert e1 == e2
+    assert e1 != e3
+    assert hash(e1) == hash(e2)
+    assert hash(e1) != hash(e3)
+    assert len({e1, e2}) == 1
+
+
+def test_transform_equality_and_hash():
+    t1 = Transform(replace="\\n", separator=" ", un_archive=True, read_lines=True)
+    t2 = Transform(replace="\\n", separator=" ", un_archive=True, read_lines=True)
+    t3 = Transform(replace="\\t", separator=" ", un_archive=True, read_lines=True)
+    t4 = Transform(replace="\\n", separator=" ", un_archive=False, read_lines=True)
+    t5 = Transform(replace="\\n", separator=" ", un_archive=True, read_lines=False)
+
+    assert t1 == t2
+    assert t1 != t3
+    assert t1 != t4
+    assert t1 != t5
+    assert hash(t1) == hash(t2)
+    assert hash(t1) != hash(t3)
+    assert hash(t1) != hash(t4)
+    assert hash(t1) != hash(t5)
+    assert len({t1, t2}) == 1
+
+
+def test_source_equality_and_hash_v_0_8():
+    ctx = Context(conforms_to=CroissantVersion.V_0_8)
+    s1 = Source(ctx=ctx, distribution="d1")
+    s2 = Source(ctx=ctx, distribution="d1")
+    s3 = Source(ctx=ctx, distribution="d2")
+
+    assert s1 == s2
+    assert s1 != s3
+    assert hash(s1) == hash(s2)
+    assert len({s1, s2}) == 1
+
+
+@pytest.mark.parametrize("version", [CroissantVersion.V_1_0, CroissantVersion.V_1_1])
+def test_source_equality_and_hash_v_1(version):
+    ctx = Context(conforms_to=version)
+    s1 = Source(ctx=ctx, field="f1", format="f", sampling_rate=1)
+    s2 = Source(ctx=ctx, field="f1", format="f", sampling_rate=1)
+    s3 = Source(ctx=ctx, field="f2", format="f", sampling_rate=1)
+    s4 = Source(ctx=ctx, field="f1", format="g", sampling_rate=1)
+    s5 = Source(ctx=ctx, field="f1", format="f", sampling_rate=2)
+
+    assert s1 == s2
+    assert s1 != s3
+    assert s1 != s4
+    assert s1 != s5
+    assert hash(s1) == hash(s2)
+    assert hash(s1) != hash(s3)
+    assert hash(s1) != hash(s4)
+    assert hash(s1) != hash(s5)
+    assert len({s1, s2}) == 1
+
+
 @pytest.mark.parametrize(
     ["conforms_to", "json_ld", "expected_source"],
     [

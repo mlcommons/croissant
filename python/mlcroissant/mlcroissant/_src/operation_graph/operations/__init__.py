@@ -8,6 +8,7 @@ from mlcroissant._src.operation_graph.operations.init import InitOperation
 from mlcroissant._src.operation_graph.operations.join import Join
 from mlcroissant._src.operation_graph.operations.local_directory import LocalDirectory
 from mlcroissant._src.operation_graph.operations.read import Read
+from mlcroissant._src.operation_graph.operations.read_lines import ReadLines
 
 __all__ = [
     "Concatenate",
@@ -20,4 +21,5 @@ __all__ = [
     "LocalDirectory",
     "Read",
     "ReadFields",
+    "ReadLines",
 ]

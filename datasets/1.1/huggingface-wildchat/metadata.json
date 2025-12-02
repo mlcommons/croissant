@@ -1534,14 +1534,12 @@
   "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for WildChat\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\nPaper: https://arxiv.org/abs/2405.01470\n\nInteractive Search Tool: https://wildvisualizer.com (paper)\n\nLicense: ODC-BY\n\nLanguage(s) (NLP): multi-lingual\n\nPoint of Contact: Yuntian Deng\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nWildChat is a collection of 1 million conversations between human users and ChatGPT, alongside demographic data, including state, country, hashed IP addresses, and request headers. We collected WildChat… See the full description on the dataset page: https://huggingface.co/datasets/allenai/WildChat-1M.",
   "license": "https://choosealicense.com/licenses/odc-by/",
   "url": "https://huggingface.co/datasets/allenai/WildChat-1M",
-  "prov:wasDerivedFrom": [
-    {
-      "@type": "prov:Entity",
-      "@id": "wildChat-1m-full",
-      "prov:atLocation": "https://huggingface.co/datasets/allenai/WildChat-1M-Full",
-      "prov:label": "WildChat-1M-Full"
-    }
-  ],
+  "prov:wasDerivedFrom": {
+    "@type": "prov:Entity",
+    "@id": "wildChat-1m-full",
+    "prov:atLocation": "https://huggingface.co/datasets/allenai/WildChat-1M-Full",
+    "prov:label": "WildChat-1M-Full"
+  },
   "prov:wasGeneratedBy": [
     {
       "@type": "prov:Activity",
@@ -1549,7 +1547,9 @@
       "prov:description": "Conversations flagged by Niloofar Mireshghallah and her collaborators in 'Breaking News: Case Studies of Generative AI's Use in Journalism' for containing PII or sensitive information have been removed from this version of the dataset.",
       "prov:startedAtTime": "2024-10-17",
       "prov:wasAssociatedWith": {
-        "@id": "niloofar_mireshghallah"
+        "@id": "niloofar_mireshghallah",
+        "@type": "prov:Person",
+        "name": "Niloofar Mireshghallah"
       }
     },
     {
@@ -1558,7 +1558,9 @@
       "prov:description": "All toxic conversations identified by the OpenAI Moderations API or Detoxify have been removed from this version of the dataset.",
       "prov:startedAtTime": "2024-07-22",
       "prov:wasAssociatedWith": {
-        "@id": "openai_moderation_api"
+        "@id": "openai_moderation_api",
+        "@type": "prov:SoftwareAgent",
+        "name": "OpenAI Moderation API"
       }
     },
     {

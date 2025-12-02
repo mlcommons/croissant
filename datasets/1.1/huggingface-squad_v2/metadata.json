@@ -221,7 +221,7 @@
     "SQuAD2.0"
   ],
   "creator": {
-    "@type": "Person",
+    "@type": "sc:Person",
     "name": "Pranav R",
     "url": "https://huggingface.co/rajpurkar"
   },
@@ -229,7 +229,6 @@
     "question-answering",
     "open-domain-qa",
     "extractive-qa",
-    "crowdsourced",
     "crowdsourced",
     "monolingual",
     "original",
