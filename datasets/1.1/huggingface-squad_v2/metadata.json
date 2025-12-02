@@ -248,28 +248,36 @@
   "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
   "sameAs": "https://rajpurkar.github.io/SQuAD-explorer/",
   "url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
-  "prov:wasDerivedFrom": {
-    "@type": "prov:Entity",
-    "@id": "squad1",
-    "prov:locatedAt": "https://huggingface.co/datasets/rajpurkar/squad"
-  },
-  "prov:wasGeneratedBy": {
-    "@type": "prov:Activity",
-    "@id": "additionActivity",
-    "description": "Added 50K plausible-sounding but have no correct answer…",
-    "prov:isAssociatedWith": "crowdworkersAgent",
-    "type": "prov:Collection",
-    "usage": {
-      "@id": "squad1",
+  "prov:wasDerivedFrom": [
+    {
       "@type": "prov:Entity",
+      "@id": "squad1",
       "prov:locatedAt": "https://huggingface.co/datasets/rajpurkar/squad"
     }
-  },
-  "prov:isAssociatedWith": {
-    "@type": "prov:Agent",
-    "@id": "crowdworkersAgent",
-    "prov:label": "Crowdworkers",
-    "description": "Crowdworkers were hired through Daemo crowdsourcing platform",
-    "prov:locatedAt": "https://github.com/crowdresearch/daemo"
-  }
+  ],
+  "prov:wasGeneratedBy": [
+    {
+      "@type": "prov:Activity",
+      "@id": "additionActivity",
+      "type": [
+        "prov:Collection"
+      ],
+      "description": "Added 50K plausible-sounding but have no correct answer…",
+      "usage": {
+        "@id": "squad1"
+      },
+      "prov:isAssociatedWith": [
+        "crowdworkersAgent"
+      ]
+    }
+  ],
+  "prov:isAssociatedWith": [
+    {
+      "@type": "prov:Agent",
+      "@id": "crowdworkersAgent",
+      "prov:label": "Crowdworkers",
+      "description": "Crowdworkers were hired through Daemo crowdsourcing platform",
+      "prov:locatedAt": "https://github.com/crowdresearch/daemo"
+    }
+  ]
 }
