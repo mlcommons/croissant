@@ -191,6 +191,15 @@ Furthermore, we can describe the structure and the data types in the data using 
 
 The [RecordSets](#recordsets) section explains how to define recordsets and fields, as well as extract, transform and join their data.
 
+`name` and `description` values may also be provided in mulitple languages using BCP-47 language codes:
+
+```json
+  "description": {
+    "en": "The date the photo was taken.",
+    "de": "Das Datum, an dem das Foto aufgenommen wurde."
+  }
+```
+
 ## Prerequisites
 
 Before jumping into the main components of a Croissant dataset, we describe some constructs that are used throughout.
@@ -2163,6 +2172,9 @@ TODO: Add guidance on representing data use restrictions.
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
+    "description": {
+      "@container": "@language"
+    },
     "examples": {
       "@id": "cr:examples",
       "@type": "@json"
@@ -2179,6 +2191,9 @@ TODO: Add guidance on representing data use restrictions.
     "jsonPath": "cr:jsonPath",
     "key": "cr:key",
     "md5": "cr:md5",
+    "name": {
+      "@container": "@language"
+    },
     "parentField": "cr:parentField",
     "path": "cr:path",
     "recordSet": "cr:recordSet",
