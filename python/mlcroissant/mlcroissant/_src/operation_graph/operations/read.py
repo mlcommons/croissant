@@ -271,8 +271,8 @@ class Read(Operation):
             file_content = self._read_file_content(self.node.encoding_formats, file)
             if _should_append_line_numbers(self.fields):
                 file_content[FileProperty.lineNumbers.name] = range(len(file_content))
-            file_content[FileProperty.filepath.name] = file.filepath
-            file_content[FileProperty.filename.name] = file.filename
-            file_content[FileProperty.fullpath.name] = file.fullpath
+            file_content[FileProperty.filepath.name] = str(file.filepath)
+            file_content[FileProperty.filename.name] = str(file.filename)
+            file_content[FileProperty.fullpath.name] = str(file.fullpath)
             file_contents.append(file_content)
         return pd.concat(file_contents)
