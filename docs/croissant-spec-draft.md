@@ -250,7 +250,7 @@ Note that while the Croissant specification is versioned, the Croissant namespac
 The media type (content type or MIME type) for Croissant includes a JSON-LD [profile](https://www.w3.org/TR/json-ld/#application-ld-json) to distinguish it from other JSON-LD documents:
 
 ```
-application/ld+json; profile="http://mlcommons.org/croissant/1.0"
+application/ld+json; profile="http://mlcommons.org/croissant/1.1"
 ```
 
 ### ID and Reference Mechanism
