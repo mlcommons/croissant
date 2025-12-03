@@ -491,7 +491,7 @@ Other properties from [schema.org/Dataset](http://schema.org/Dataset) or its par
 
 ### Modified and Added Properties
 
-Croissant modifies the meaning of one [schema.org](http://schema.org) property, and requires its presence:
+Croissant modifies the meaning of one [schema.org](http://schema.org) property, and makes it required:
 
 <table>
   <thead>
@@ -507,7 +507,7 @@ Croissant modifies the meaning of one [schema.org](http://schema.org) property, 
       <a href="#fileset">FileSet</a>
     </td>
     <td>MANY</td>
-    <td>By contrast with <a href="http://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type FileObject or FileSet.</td>
+    <td>By contrast with <a href="http://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type <a href="#fileobject">FileObject</a> or <a href="#fileset">FileSet</a>. These are subclasses of <a href="http://schema.org/DataDownload">DataDownload</a>, so this definition is compatible with the original definition of the distribution property in schema.org.</td>
   </tr>
 </table>
 
@@ -533,6 +533,15 @@ The Croissant vocabulary also defines the following optional dataset-level attri
     <td>"A citation to the dataset itself, or a citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
     Note that this is different from <a href="http://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
     </td>
+  </tr>
+     <tr>
+    <td>sdVersion</a></td>
+    <td>
+      <a href="http://schema.org/Number">Number</a><br>
+      <a href="http://schema.org/Text">Text</a>
+    </td>
+    <td>ONE</td>
+    <td>The version of the dataset <i>metadata</i>, which may be distinct from the version of the dataset <i>content</i>. This property is modeled after schema.org's <a href="http://schema.org/sdLicense">sdLicense</a> and <a href="http://schema.org/sdPublisher">sdPublisher</a>, and may move to schema.org in the future.</td>
   </tr>
 </table>
 
