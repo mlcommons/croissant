@@ -270,9 +270,9 @@ class Read(Operation):
             assert self.node.encoding_formats, "Encoding format is not specified."
             file_content = self._read_file_content(self.node.encoding_formats, file)
             if _should_append_line_numbers(self.fields):
-                file_content[FileProperty.lineNumbers.value] = range(len(file_content))
-            file_content[FileProperty.filepath.value] = file.filepath
-            file_content[FileProperty.filename.value] = file.filename
-            file_content[FileProperty.fullpath.value] = file.fullpath
+                file_content[FileProperty.lineNumbers.name] = range(len(file_content))
+            file_content[FileProperty.filepath.name] = file.filepath
+            file_content[FileProperty.filename.name] = file.filename
+            file_content[FileProperty.fullpath.name] = file.fullpath
             file_contents.append(file_content)
         return pd.concat(file_contents)
