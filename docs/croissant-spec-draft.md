@@ -60,11 +60,13 @@ As AI advances at rapid speed there is increased recognition among researchers, 
 
 This is how Croissant helps address RAI:
 
-1. It proposes a machine-readable way to capture and publish metadata about ML datasets – this makes existing documentation solutions like [Data Cards](https://sites.research.google/datacardsplaybook/) easier to publish, share, discover, and reuse;
+1. **Data use and disemination**: It provides a [set of mechanisms](#responsible-ai-and-governance) to enable the responsible use and dissemination of data. This is achieved by offering a machine-actionable representation of the data's provenance, lineage, and usage conditions at various levels of granularity. These mechanisms are built upon the integration of W3C standards (such as PROV-O and ODRL), ensuring compatibility with existing solutions.
 
-2. It records at a granular level how a dataset was created, processed and enriched throughout its lifecycle – this process is meant to be automated as much as possible by integrating Croissant with popular ML frameworks. By allowing the metadata to be loaded automatically, Croissant also enables developers to compute RAI metrics automatically and systematically, identifying potential data quality issues to be fixed.
+2. **Machine-readable RAI Data Documentation**: This specification proposes a machine-readable vocabulary for capturing and publishing existing Responsible AI (RAI) documentation solutions (such as [Data Cards](https://dl.acm.org/doi/pdf/10.1145/3531146.3533231)), thereby streamlining their publishing, sharing, discovery, and reuse. Further details are available in the [Croissant RAI specification](http://mlcommons.org/croissant/RAI/1.1).
 
-Croissant is designed to be modular and extensible. One such extension is the Croissant RAI vocabulary, which addresses 7 specific use cases, starting with the data life cycle, data labeling, and participatory scenarios to AI safety and fairness evaluation, traceability, regulatory compliance and inclusion. More details are available in the [Croissant RAI specification](http://mlcommons.org/croissant/RAI/1.0). We welcome additional extensions from the community to meet the needs of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
+
+We welcome additional extensions from the community to meet the needs particular and resposible AI aspects of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
+
 
 ## Terminology
 
