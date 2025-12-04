@@ -60,7 +60,7 @@ As AI advances at rapid speed there is increased recognition among researchers, 
 
 This is how Croissant helps address RAI:
 
-1. **Data use and disemination**: It provides a [set of mechanisms](#responsible-ai-and-governance) to enable the responsible use and dissemination of data. This is achieved by offering a machine-actionable representation of the data's provenance, lineage, and usage conditions at various levels of granularity. These mechanisms are built upon the integration of W3C standards (such as PROV-O and ODRL), ensuring compatibility with existing solutions.
+1. **Data use and dissemination**: It provides a [set of mechanisms](#responsible-ai-and-governance) to enable the responsible use and dissemination of data. This is achieved by offering a machine-actionable representation of the data's provenance, lineage, and usage conditions at various levels of granularity. These mechanisms are built upon the integration of W3C standards (such as PROV-O and ODRL), ensuring compatibility with existing solutions.
 
 2. **Machine-readable RAI Data Documentation**: This specification proposes a machine-readable vocabulary for capturing and publishing existing Responsible AI (RAI) documentation solutions (such as [Data Cards](https://dl.acm.org/doi/pdf/10.1145/3531146.3533231)), thereby streamlining their publishing, sharing, discovery, and reuse. Further details are available in the [Croissant RAI specification](http://mlcommons.org/croissant/RAI/1.1).
 
