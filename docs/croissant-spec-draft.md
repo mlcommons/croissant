@@ -2145,9 +2145,133 @@ For example, consider a dataset where each image is labeled by a different human
 
 In this example, the `labeled_images/label` field has an annotation `labeled_images/label/annotator`. The `equivalentProperty` "prov:wasAttributedTo" on the annotation field indicates that each label is attributed to the corresponding person. The person's details (id, gender, age) are pulled from the same source file (`annotations.csv`) on a row-by-row basis. The `gender` and `age` fields are mapped to their corresponding FOAF properties, `foaf:gender` and `foaf:age`, via `equivalentProperty`.
 
-### Data Use Restrictions
+### Data Use Conditions
 
-TODO: Add guidance on representing data use restrictions.
+Datasets often come with restrictions on how they can be used, particularly in sensitive domains, such as healthcare. Representing these restrictions in a machine-readable format enables automated discovery and compliance checking. For instance, a healthcare dataset might be restricted to non-commercial research use only, or require specific ethics approval.
+
+Data use conditions can be attached to a dataset as a whole, or part of a dataset using [sc:usageInfo](http://schema.org/usageInfo) (an existing attribute of schema.org).
+
+### Using DUO to Represent Data Use Conditions
+
+The [DUO](http://purl.obolibrary.org/obo/duo.owl) ontology provides a set of terms that can be used to represent data use conditions in a machine-readable format. DUO is prevalent in the healthcare domain. Other vocabularies may be used in other verticals.
+
+To connect with terms from an external vocabulary, Croissant uses the [sc:DefinedTerm](http://schema.org/DefinedTerm) type, which is a schema.org type designed for that purpose.
+
+Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042) to represent the data use condition "General Research Use":
+
+```json
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "duo": "http://purl.obolibrary.org/obo/DUO_"
+  },
+  "@type": "Dataset",
+  "name": "Global Health Imagery Dataset",
+  "description": "A dataset of public health imagery for research purposes.",
+  "url": "https://example.org/dataset/global-health-1",
+  "usageInfo": [
+    {
+      "@type": "DefinedTerm",
+      "name": "General Research Use",
+      "termCode": "DUO_0000042",
+      "url": "duo:0000042"
+    }
+  ]
+}
+```
+
+### **Fine-Grained Control with ODRL**
+
+To represent more complex restrictions, such as hierarchical permissions and modifiers, Croissant recommends using [ODRL](https://www.w3.org/TR/odrl-model/), a W3C standard that provides a rich framework for representing permissions and restrictions
+
+To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. `odrl:action` represents the permission, and `odrl:constraint` represents modifiers.
+
+The following example shows how to combine DUO and ODRL to represent a data use policy that allows General  Research Use ([DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042)), but only for non-commercial purposes ([DUO_0000018](http://purl.obolibrary.org/obo/DUO_0000018)):
+
+```json
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "duo": "http://purl.obolibrary.org/obo/DUO_",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "Dataset",
+  "name": "Restricted Health Data",
+  
+  "usageInfo": {
+    "@type": ["CreativeWork", "odrl:Offer"],
+    "name": "DUO Usage Policy",
+    
+    "odrl:permission": {
+      "@type": "odrl:Permission",
+      "odrl:action": {
+        "@id": "duo:0000006",
+        "name": "Health or Medical or Biomedical Use"
+      },
+      "odrl:constraint": [
+        {
+          "@type": "odrl:Constraint",
+           "name": "Non-commercial use only",
+          "odrl:operator": { "@id": "odrl:eq" },
+          "odrl:rightOperand": { "@id": "duo:0000018" }
+        }
+      ]
+    }
+
+  }
+}
+```
+
+### Integration with Domain-Specific Ontologies
+
+In the health domain, it is often necessary to specify that a dataset can only be used for research on a specific disease. DUO recommends using the [MONDO](https://mondo.monarchinitiative.org/) ontology to specify disease-specific restrictions. 
+
+The example below shows how to use MONDO in combination with DUO and ODRL to specify that a dataset can only be used for research on Alzheimer's disease ([MONDO_0005070](http://purl.obolibrary.org/obo/MONDO_0005070)).
+
+```json
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "duo": "http://purl.obolibrary.org/obo/DUO_",
+    "mondo": "http://purl.obolibrary.org/obo/MONDO_",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "Dataset",
+  "name": "Restricted Health Data",
+  
+  "usageInfo": {
+    "@type": ["CreativeWork", "odrl:Offer"], 
+    "name": "DUO Usage Policy",
+    
+    "odrl:permission": {
+      "@type": "odrl:Permission",
+      "odrl:action": {
+        "@id": "duo:0000007",
+        "name": "Disease specific research"
+      },
+      "odrl:constraint": [
+        {
+          "@type": "odrl:Constraint",
+          "name": "Non-commercial use only",
+          "odrl:operator": { "@id": "odrl:eq" },
+          "odrl:rightOperand": { "@id": "duo:0000018" }
+        },
+        {
+           "@type": "odrl:Constraint",
+           "odrl:leftOperand": { "@id": "duo:0000010"},
+           "odrl:operator": { "@id": "odrl:eq" },
+           "odrl:rightOperand": { "@id": "mondo:0005070" }
+        }
+      ]
+    }
+  }
+}
+```
+
+This approach can be extended to other domain-specific ontologies.
 
 ## Appendix 1: JSON-LD context
 
