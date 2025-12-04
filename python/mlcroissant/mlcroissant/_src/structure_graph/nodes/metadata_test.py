@@ -66,6 +66,7 @@ def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: version,
         constants.ML_COMMONS_IS_LIVE_DATASET(ctx): False,
+        constants.ML_COMMONS_SD_VERSION(ctx): "2.0.0",
     }
     metadata = Metadata.from_jsonld(ctx, jsonld)
     assert metadata.name == "foo"
@@ -81,6 +82,7 @@ def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
     assert metadata.ctx.is_live_dataset == False
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
+    assert metadata.sd_version == "2.0.0"
     assert not ctx.issues.errors
     assert not ctx.issues.warnings
 
