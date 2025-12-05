@@ -56,16 +56,15 @@ Creating or changing the metadata is straightforward. A dataset repository can i
 
 ### Responsible AI
 
-As AI advances at rapid speed there is increased recognition among researchers, practitioners and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://doi.org/10.1007/978-3-030-30371-6). One of the main instruments to operationalise responsible AI (RAI) is dataset documentation.
-
-This is how Croissant helps address RAI:
-
-1. **Data use and dissemination**: It provides a [set of mechanisms](#responsible-ai-and-governance) to enable the responsible use and dissemination of data. This is achieved by offering a machine-actionable representation of the data's provenance, lineage, and usage conditions at various levels of granularity. These mechanisms are built upon the integration of W3C standards (such as PROV-O and ODRL), ensuring compatibility with existing solutions.
-
-2. **Machine-readable RAI Data Documentation**: This specification proposes a machine-readable vocabulary for capturing and publishing existing Responsible AI (RAI) documentation solutions (such as [Data Cards](https://dl.acm.org/doi/pdf/10.1145/3531146.3533231)), thereby streamlining their publishing, sharing, discovery, and reuse. Further details are available in the [Croissant RAI specification](http://mlcommons.org/croissant/RAI/1.1).
+As AI advances at a rapid speed, there is increased recognition among researchers, practitioners, and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://doi.org/10.1007/978-3-030-30371-6). To address these challenges, Croissant offers machine-actionable mechanisms for the responsible use and sharing of data. This includes the representation of [data provenance]((#provenance-representation)) and [usage conditions]((#data-use-restrictions)), as well as a [vocabulary extensions](http://mlcommons.org/croissant/RAI/1.0) for publishing Responsible AI (RAI) documentation, such as [Data Cards](https://dl.acm.org/doi/pdf/10.1145/3531146.3533231). The mechanisms and the vocabulary are built upon W3C standards (PROV-O, ODRL) and incorporate existing RAI practices. Their goal is to facilitate the responsible sharing, discovery, and reuse of data while also assisting AI agents in evaluating datasets against RAI criteria during discovery.
 
 
-We welcome additional extensions from the community to meet the needs particular and resposible AI aspects of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
+![Croissant provenance](images/croissant-provenance.png 'Croissant provenance') 
+
+**Figure 4:** Croissant integrates existing W3C standards as PROV-O to capture machine-readable data provenance.
+
+
+We welcome additional extensions from the community to meet the needs particular and responsible AI aspects of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
 
 
 ## Terminology
