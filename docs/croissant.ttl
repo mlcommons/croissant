@@ -8,12 +8,12 @@
 croissant:FileObject a rdf:Class ;
   rdfs:label "FileObject" ;
   rdfs:comment "An individual file that is part of a dataset." ;
-  rdfs:subClassOf schema:CreativeWork .
+  rdfs:subClassOf schema:DataDownload .
 
 croissant:FileSet a rdf:Class ;
   rdfs:label "FileSet" ;
   rdfs:comment "A set of homogeneous files extracted from a container, optionally filtered by inclusion and/or exclusion filters." ;
-  rdfs:subClassOf schema:Intangible .
+  rdfs:subClassOf schema:DataDownload .
 
 croissant:RecordSet a rdf:Class ;
   rdfs:label "RecordSet" ;
@@ -84,21 +84,27 @@ croissant:citeAs a rdf:Property ;
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes schema:Text .
 
+croissant:sdVersion a rdf:Property ;
+  rdfs:label "sdVersion" ;
+  rdfs:comment "The version of the dataset metadata, which may be distinct from the version of the dataset content." ;
+  schema:domainIncludes schema:Dataset ;
+  schema:rangeIncludes schema:Number, schema:Text .
+
 # FileObject & FileSet properties
 
 croissant:containedIn a rdf:Property ;
   rdfs:label "containedIn" ;
-  rdfs:comment "Another FileObject or FileSet that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the contentUrl is evaluated as a relative path within the container object." ;
+  rdfs:comment "Another FileObject, FileSet or DataSource that this one is contained in, e.g., in the case of a file extracted from an archive. When this property is present, the contentUrl is evaluated as a relative path within the container object." ;
   schema:domainIncludes croissant:FileObject, croissant:FileSet ;
-  schema:rangeIncludes croissant:FileObject, croissant:FileSet .
+  schema:rangeIncludes croissant:FileObject, croissant:FileSet, croissant:DataSource .
 
-croissant:includes a rdf:Property ; # Should this be named includePattern instead?
+croissant:includes a rdf:Property ;
   rdfs:label "includes" ;
   rdfs:comment "A glob pattern that specifies the files to include, e.g., \".jpg\", \"/foo/pic*.jpg\". The pattern is evaluated from the root of the containedIn contents." ;
   schema:domainIncludes croissant:FileSet ;
   schema:rangeIncludes schema:Text .
 
-croissant:excludes a rdf:Property ; # Should this be named excludePattern instead?
+croissant:excludes a rdf:Property ;
   rdfs:label "excludes" ;
   rdfs:comment "A glob pattern that specifies the files to exclude. The pattern is evaluated from the root of the containedIn contents, after the includes patterns have been evaluated." ;
   schema:domainIncludes croissant:FileSet ;
@@ -130,6 +136,12 @@ croissant:examples a rdf:Property ;
   schema:domainIncludes croissant:RecordSet ;
   schema:rangeIncludes rdf:JSON .
 
+croissant:annotation a rdf:Property ;
+  rdfs:label "annotation" ;
+  rdfs:comment "One or more data-level annotations that apply to the entire record or field." ;
+  schema:domainIncludes croissant:RecordSet, croissant:Field ;
+  schema:rangeIncludes croissant:Field .
+
 croissant:source a rdf:Property ;
   rdfs:label "source" ;
   rdfs:comment "The data source of the field. This will generally reference a FileObject or FileSet's contents (e.g., a specific column of a table)." ;
@@ -141,6 +153,12 @@ croissant:dataType a rdf:Property ;
   rdfs:comment "The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, sc:Integer) or a semantic type (e.g., sc:GeoLocation)." ;
   schema:domainIncludes croissant:RecordSet, croissant:Field ;
   schema:rangeIncludes croissant:DataType .
+
+croissant:value a rdf:Property ;
+  rdfs:label "value" ;
+  rdfs:comment "An optional constant value for the field." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes rdf:JSON .
 
 croissant:repeated a rdf:Property ;
   rdfs:label "repeated" ;
@@ -238,21 +256,27 @@ croissant:jsonPath a rdf:Property ;
 
 # Transform properties
 
-croissant:delimiter a rdf:Property ;
-  rdfs:label "delimiter" ;
-  rdfs:comment "A delimiter to use parse the data into an array." ;
+croissant:separator a rdf:Property ;
+  rdfs:label "separator" ;
+  rdfs:comment "A separator to use parse the data into an array." ;
   schema:domainIncludes croissant:Transform ;
   schema:rangeIncludes schema:Text .
+
+croissant:readLines a rdf:Property ;
+  rdfs:label "readLines" ;
+  rdfs:comment "Read the content of the file line by line." ;
+  schema:domainIncludes croissant:Transform ;
+  schema:rangeIncludes schema:Boolean .
+
+croissant:unArchive a rdf:Property ;
+  rdfs:label "unArchive" ;
+  rdfs:comment "Extract the content of the archive." ;
+  schema:domainIncludes croissant:Transform ;
+  schema:rangeIncludes schema:Boolean .
 
 croissant:regex a rdf:Property ;
   rdfs:label "regex" ;
   rdfs:comment "A regular expression to apply to the data." ;
-  schema:domainIncludes croissant:Transform ;
-  schema:rangeIncludes schema:Text .
-
-croissant:jsonQuery a rdf:Property ;
-  rdfs:label "jsonQuery" ;
-  rdfs:comment "For JSON content, a query to evaluate on the data." ;
   schema:domainIncludes croissant:Transform ;
   schema:rangeIncludes schema:Text .
 

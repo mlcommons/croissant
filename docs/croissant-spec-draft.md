@@ -1157,11 +1157,10 @@ Sometimes, not all the data from the source is needed, but only a subset. The `E
 
 Croissant supports a few simple transformations that can be applied on the source data:
 
-- delimiter: split a string into an array using the supplied character.
+- separator: split a string into an array using the supplied character.
 - readLines: read the content of the file line by line.
 - unArchive: extract the content of the archive. True by default for archive file types (zip, tgz, etc.).
-- regex: A regular expression to parse the data.
-- jsonPath: A JSON path to evaluate on the (JSON) data source.
+- regex: A regular expression to parse the data, with one capture group that corresponds to the output value.
 
 For example, to extract information from a filename using a regular expression, we can write:
 
@@ -2283,6 +2282,7 @@ This approach can be extended to other domain-specific ontologies.
     "cr": "http://mlcommons.org/croissant/",
     "rai": "http://mlcommons.org/croissant/RAI/",
     "dct": "http://purl.org/dc/terms/",
+    "annotation": "cr:annotation",
     "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
@@ -2296,10 +2296,13 @@ This approach can be extended to other domain-specific ontologies.
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
+    "separator": "cr:separator",
+    "equivalentProperty": "cr:equivalentProperty",
     "examples": {
       "@id": "cr:examples",
       "@type": "@json"
     },
+    "excludes": "cr:excludes",
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -2313,14 +2316,16 @@ This approach can be extended to other domain-specific ontologies.
     "key": "cr:key",
     "md5": "cr:md5",
     "parentField": "cr:parentField",
-    "path": "cr:path",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
-    "replace": "cr:replace",
+    "readLines": "cr:readLines",
+    "sdVersion": "cr:sdVersion",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "unArchive": "cr:unArchive",
+    "value": "cr:value",
   }
 ```
