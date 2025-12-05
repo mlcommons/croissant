@@ -58,17 +58,16 @@ Creating or changing the metadata is straightforward. A dataset repository can i
 
 ### Responsible AI
 
-As AI advances at rapid speed there is increased recognition among researchers, practitioners and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://doi.org/10.1007/978-3-030-30371-6). One of the main instruments to operationalise responsible AI (RAI) is dataset documentation.
+As AI advances at a rapid speed, there is increased recognition among researchers, practitioners, and policy makers that we need to explore, understand, manage, and assess [its economic, social, and environmental impacts](https://doi.org/10.1007/978-3-030-30371-6). To address these challenges, Croissant offers machine-actionable mechanisms for the responsible use and sharing of data. This includes the representation of [data provenance]((#provenance-representation)) and [usage conditions]((#data-use-restrictions)), as well as a [vocabulary extensions](http://mlcommons.org/croissant/RAI/1.0) for publishing Responsible AI (RAI) documentation, such as [Data Cards](https://dl.acm.org/doi/pdf/10.1145/3531146.3533231). The mechanisms and the vocabulary are built upon W3C standards (PROV-O, ODRL) and incorporate existing RAI practices. Their goal is to facilitate the responsible sharing, discovery, and reuse of data while also assisting AI agents in evaluating datasets against RAI criteria during discovery.
 
-This is how Croissant helps address RAI:
 
-1. It proposes a machine-readable way to capture and publish metadata about ML datasets – this makes existing documentation solutions like [Data Cards](https://sites.research.google/datacardsplaybook/) easier to publish, share, discover, and reuse;  
-     
-2. It records at a granular level how a dataset was created, processed and enriched throughout its lifecycle – this process is meant to be automated as much as possible by integrating Croissant with popular ML frameworks. By allowing the metadata to be loaded automatically, Croissant also enables developers to compute RAI metrics automatically and systematically, identifying potential data quality issues to be fixed;  
-     
-3. Finally, structured, machine-readable information pertaining to AI governance tasks like transparency reporting could be integrated into technical governance tools alongside reporting and other related standards
+![Croissant provenance](images/croissant-provenance.png 'Croissant provenance') 
 
-Croissant is designed to be modular and extensible. One such extension is the Croissant RAI vocabulary, which addresses 7 specific use cases, starting with the data life cycle, data labeling, and participatory scenarios to AI safety and fairness evaluation, traceability, regulatory compliance and inclusion. More details are available in the [Croissant RAI specification](http://mlcommons.org/croissant/RAI/1.0). We welcome additional extensions from the community to meet the needs of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
+**Figure 4:** Croissant integrates existing W3C standards as PROV-O to capture machine-readable data provenance.
+
+
+We welcome additional extensions from the community to meet the needs particular and responsible AI aspects of specific data modalities (e.g. audio or video) and domains (e.g. geospatial, life sciences, cultural heritage).
+
 
 ## Terminology
 
