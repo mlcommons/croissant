@@ -12,29 +12,31 @@ Version 1.1 (draft)
 Authors:
 
 - Omar Benjelloun (Google),
-- Elena Simperl (King’s College London & ODI),
+- Elena Simperl (King’s College London & Open Data Institute),
 - Pierre Marcenac (Google),
 - Pierre Ruyssen (Google),
 - Costanza Conforti (Google),
 - Michael Kuchnik (Meta),
 - Jos van der Velde (OpenML),
 - Joaquin Vanschoren (OpenML),
-- Luis Oala (brickroad.network),
+- Luis Oala (Dotphoton),
 - Steffen Vogler (Bayer),
 - Mubashara Akthar (ETH Zurich, ETH AI Center),
-- Nitisha Jain (King’s College London),
-- Slava Tykhonov (DANS-KNAW)
+- Nitisha Jain (Independent),
+- Slava Tykhonov (CODATA)
+- Pascal Heus (CODATA)
 - Joan Giner-Miguelez (Barcelona Supercomputing Center)
+- Susheel Varma (Sage Bionetworks)
 
 ## Introduction
 
 Datasets are the basis of machine learning (ML). However, a lack of standardization in the description and semantics of ML datasets has made it increasingly difficult for researchers and practitioners to explore, understand, and use all but a small fraction of popular datasets.
 
-The Croissant metadata format simplifies how data is used by ML models. It provides a vocabulary for dataset attributes, streamlining how data is loaded across ML frameworks such as PyTorch, TensorFlow or JAX. In doing so, Croissant enables the interchange of datasets between ML frameworks and beyond, tackling a variety of **discoverability**, **portability**, **reproducibility**, and **responsible AI (RAI)** challenges.
+The Croissant metadata format simplifies how data is used by ML models. It provides a vocabulary for dataset attributes, streamlining how data is loaded across ML frameworks such as PyTorch, TensorFlow or JAX. In doing so, Croissant enables the interchange of datasets between ML frameworks and beyond, tackling a variety of **discoverability**, **portability**, **reproducibility**, and **responsible AI (RAI)** challenges, while **enabling LLMs** to help users tackle these challenges.
 
 ### Discoverability
 
-Once a dataset has Croissant metadata attached to it, dataset search engines can parse this metadata, allowing users to find and use the datasets they need no matter where these datasets have been published (**Figure 1**). For dataset creators, it means their data is discoverable no matter where it is made available online, as long as they use the format.
+Once a dataset has Croissant metadata attached to it, dataset search engines can parse this metadata, allowing users to find and use the datasets they need no matter where these datasets have been published (**Figure 1**). LLMs and AI agents can also support discovery through RAG over an index of Croissant descriptions. For dataset creators, it means their data is discoverable no matter where it is made available online, as long as they use the format.
 
 ![Croissant for dataset consumers](images/consumers.png 'Croissant for dataset consumers')
 
@@ -42,7 +44,7 @@ Once a dataset has Croissant metadata attached to it, dataset search engines can
 
 ### Portability and Reproducibility
 
-Croissant provides sufficient information for an ML tool to load a dataset, allowing users to incorporate Croissant datasets in the training and evaluation of a model with just a few lines of code (**Figure 2**). Croissant can easily be added to any tools e.g., for data preprocessing, analysis and visualization, or labeling. Since the format is standardized, any Croissant-compliant tool will have an identical interpretation of the data. Furthermore, the information stored in a Croissant record attached to a dataset helps people understand its content and context and compare it with other datasets. All this leads to increased portability and reproducibility in the entire ML ecosystem.
+Croissant provides sufficient information for an ML tool to load a dataset, allowing users to incorporate Croissant datasets in the training and evaluation of a model with just a few lines of code (**Figure 2**). Croissant can easily be added to any tools e.g., for data preprocessing, analysis and visualization, or labeling. Since the format is standardized, any Croissant-compliant tool will have an identical interpretation of the data. Furthermore, the information stored in a Croissant record attached to a dataset helps people (and AI agents) understand its content and context and compare it with other datasets. All this leads to increased portability and reproducibility in the entire ML ecosystem.
 
 ![Croissant interoperability](images/cross-product.png 'Croissant interoperability')
 
@@ -247,7 +249,7 @@ Note that while the Croissant specification is versioned, the Croissant namespac
 The media type (content type or MIME type) for Croissant includes a JSON-LD [profile](https://www.w3.org/TR/json-ld/#application-ld-json) to distinguish it from other JSON-LD documents:
 
 ```
-application/ld+json; profile="http://mlcommons.org/croissant/1.0"
+application/ld+json; profile="http://mlcommons.org/croissant/1.1"
 ```
 
 ### ID and Reference Mechanism
@@ -309,7 +311,7 @@ In the above example, the `@id` of a `field` is prefixed by the `@id` of the cor
 
 ### Croissant in Web Pages
 
-Because Croissant builds on [schema.org](http://schema.org), a vocabulary for adding structured information to web pages, Croissant JSON-LD metadata needs to be embedded inside a web page in order to be indexed and crawled by search engines. You can see an example of how schema.org metadata is embedded in a web page in the schema.org [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
+Because Croissant builds on [schema.org](http://schema.org), a vocabulary for adding structured information to web pages, Croissant JSON-LD metadata needs to be embedded inside a web page in order to be indexed and crawled by search engines. An example of how schema.org metadata is embedded in a web page is available in the schema.org [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data).
 
 In the rest of this document, we only describe the actual JSON-LD of Croissant metadata, and omit the wrapping HTML.
 
@@ -488,7 +490,7 @@ Other properties from [schema.org/Dataset](http://schema.org/Dataset) or its par
 
 ### Modified and Added Properties
 
-Croissant modifies the meaning of one [schema.org](http://schema.org) property, and requires its presence:
+Croissant modifies the meaning of one [schema.org](http://schema.org) property, and makes it required:
 
 <table>
   <thead>
@@ -504,7 +506,7 @@ Croissant modifies the meaning of one [schema.org](http://schema.org) property, 
       <a href="#fileset">FileSet</a>
     </td>
     <td>MANY</td>
-    <td>By contrast with <a href="http://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type FileObject or FileSet.</td>
+    <td>By contrast with <a href="http://schema.org/Dataset">schema.org/Dataset</a>, Croissant requires the distribution property to have values of type <a href="#fileobject">FileObject</a> or <a href="#fileset">FileSet</a>. These are subclasses of <a href="http://schema.org/DataDownload">DataDownload</a>, so this definition is compatible with the original definition of the distribution property in schema.org.</td>
   </tr>
 </table>
 
@@ -530,6 +532,15 @@ The Croissant vocabulary also defines the following optional dataset-level attri
     <td>"A citation to the dataset itself, or a citation for a publication that describes the dataset. Ideally, citations should be expressed using the <a href="https://www.bibtex.org/">bibtex</a> format.<br>
     Note that this is different from <a href="http://schema.org/citation">schema.org/citation</a>, which is used to make a citation to another publication from this dataset.
     </td>
+  </tr>
+     <tr>
+    <td>sdVersion</a></td>
+    <td>
+      <a href="http://schema.org/Number">Number</a><br>
+      <a href="http://schema.org/Text">Text</a>
+    </td>
+    <td>ONE</td>
+    <td>The version of the dataset <i>metadata</i>, which may be distinct from the version of the dataset <i>content</i>. This property is modeled after schema.org's <a href="http://schema.org/sdLicense">sdLicense</a> and <a href="http://schema.org/sdPublisher">sdPublisher</a>, and may move to schema.org in the future.</td>
   </tr>
 </table>
 
@@ -729,7 +740,7 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
     <td>containedIn</td>
     <td>FileObject, FileSet or DataSource</td>
     <td>MANY</td>
-    <td>The source of data for the <code>FileSet</code>, e.g., an archive. If a <code>FileSet</code> or multiple values are provided for <code>containedIn</code>, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives). A <code>DataSource</code> can also be used in case the data needs to be filtered or transformed.</td>
+    <td>The source of data for the `FileSet`, e.g., an archive. If a `FileSet` or multiple values are provided for `containedIn`, then the union of their contents is taken (e.g., this can be used to combine files from multiple archives). A `DataSource` can also be used in case the data needs to be filtered or transformed.</td>
   </tr>
   <tr>
     <td>includes</td>
@@ -745,7 +756,7 @@ A `FileSet` is a set of files located in a container, which can be an archive `F
   </tr>
 </table>
 
-The properties `includes` and `excludes` are used to filter the content that should be part of the FileSet. They both use [glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>), a common mechanism to specify a set of files along a path, like ".jpg" for all jpg images, or "/foo/pic.jpg" for all jpg images under the "foo" directory whose filename starts with "pic". To get the set of FileObjects included in the FileSet, the include pattern(s) are evaluated first. If multiple `includes` are specified, the union of their results is taken. Then all the files corresponding to the `excludes` patterns are removed from that set. `includes` and `excludes` patterns are evaluated from the root of the `containedIn` contents (e.g., the top level directory extracted from an archive).
+The properties `includes` and `excludes` are used to filter the content that should be part of the FileSet. They both use [glob patterns](https://en.wikipedia.org/wiki/Glob_\(programming\)), a common mechanism to specify a set of files along a path, like ".jpg" for all jpg images, or "/foo/pic.jpg" for all jpg images under the "foo" directory whose filename starts with "pic". To get the set of FileObjects included in the FileSet, the include pattern(s) are evaluated first. If multiple `includes` are specified, the union of their results is taken. Then all the files corresponding to the `excludes` patterns are removed from that set. `includes` and `excludes` patterns are evaluated from the root of the `containedIn` contents (e.g., the top level directory extracted from an archive).
 
 Let's now see some examples of how `FileSet` is used:
 
@@ -891,9 +902,7 @@ In addition to `Field`s, RecordSet also supports defining a `key` for the record
   </tr>
   <tr>
     <td>annotation</td>
-    <td>
-      Field
-    </td>
+    <td>Field</td>
     <td>MANY</td>
     <td>One or more data-level annotations that apply to the entire record.</td>
   </tr>
@@ -914,9 +923,7 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
   </thead>
   <tr>
     <td>source</td>
-    <td>
-      DataSource or FileObject or FileSet
-    </td>
+    <td>DataSource or FileObject or FileSet</td>
     <td>ONE</td>
     <td>The data source of the field. This will generally reference a <code>FileObject</code> or <code>FileSet</code>'s contents (e.g., a specific column of a table).</td>
   </tr>
@@ -926,12 +933,12 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>MANY</td>
     <td>The data type of the field, identified by the URI of the corresponding class. It could be either an atomic type (e.g, <code>sc:Integer</code>) or a semantic type (e.g., <code>sc:GeoLocation</code>).</td>
   </tr>
-    <tr>
+  <tr>
     <td>value</td>
-    <td>JSON</td>>
+    <td>JSON</td>
     <td>ONE</td>
     <td>An optional constant value for the field. Fields with values can be used to attach key/value pairs to a RecordSet. The value of a field can be atomic, for fields with a simple dataType, or it can be structured, e.g., if the field has subfields. For the latter case, a JSON string can be used to represent the value.</td>
-    </tr>
+  </tr>
   <tr>
     <td>isArray</td>
     <td><a href="http://schema.org/Boolean">Boolean</a></td>
@@ -942,7 +949,7 @@ A `Field` is part of a `RecordSet`. It may represent a column of a table, or a n
     <td>arrayShape</td>
     <td><a href="http://schema.org/Text">Text</a></td>
     <td>ONE</td>
-    <td>The shape of the array as a comma-separated string. `-1` indicates dimensions of unknown/unspecified size. `(-1,)` represents a simple list. If specified,  then `is_array` must be True.</td>
+    <td>The shape of the array as a comma-separated string. `-1` indicates dimensions of unknown/unspecified size. `(-1,)` represents a simple list. If specified, then `is_array` must be True.</td>
   </tr>
   <tr>
     <td>equivalentProperty</td>
@@ -1149,11 +1156,10 @@ Sometimes, not all the data from the source is needed, but only a subset. The `E
 
 Croissant supports a few simple transformations that can be applied on the source data:
 
-- delimiter: split a string into an array using the supplied character.
+- separator: split a string into an array using the supplied character.
 - readLines: read the content of the file line by line.
 - unArchive: extract the content of the archive. True by default for archive file types (zip, tgz, etc.).
-- regex: A regular expression to parse the data.
-- jsonPath: A JSON path to evaluate on the (JSON) data source.
+- regex: A regular expression to parse the data, with one capture group that corresponds to the output value.
 
 For example, to extract information from a filename using a regular expression, we can write:
 
@@ -1531,13 +1537,13 @@ Note that the values of these fields may still come from a "flat" source, such a
 
 Furthermore the field ids "gps_coordinates/latitude" and "gps_coordinates/longitude" are not arbitrary: they correspond to the "latitude" and "longitude" properties associated with the [sc:GeoCoordinates](http://schema.org/GeoCoordinates) type. This uses the same property mapping mechanism we introduced in Section [RecordSet typing](#recordset-typing).
 
-## Using external vocabularies
+## Using External Vocabularies
 
-Croissant files can be enriched with properties from external vocabularies. This mechanism can be used to describe both dataset-level metadata and properties of the data itself, by adding external properties to `sc:Dataset`, `cr:RecordSet` or `cr:Field` definitions.
+Croissant files can be enriched with properties from external vocabularies. This mechanism can be used to describe both dataset-level metadata and properties of the data itself, by adding external properties to `sc:Dataset`, `cr:FileObject`, `cr:FileSet`, `cr:RecordSet` or `cr:Field` definitions.
 
-To use an external vocabulary, a prefix for it must be defined in the `@context` block. This allows you to add properties from that vocabulary to your dataset description.
+To use an external vocabulary, a prefix for it must be defined in the `@context` block. This allows to add properties from that vocabulary to the dataset description.
 
-For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) for provenance information, you would first define a prefix for it in the `@context`. The following example shows how to add dataset-level provenance with `prov:wasGeneratedBy`, and field-level provenance with `prov:wasDerivedFrom`:
+For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) for provenance information, one would first define a prefix for it in the `@context`. The following example shows how to add dataset-level provenance with `prov:wasGeneratedBy`, and field-level provenance with `prov:wasDerivedFrom`:
 
 ```json
 {
@@ -1569,17 +1575,17 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
 }
 ```
 
-While you can use any vocabulary, it is up to the consumer of the Croissant file to interpret these external properties.
+While Croissant can be used with any vocabulary, it is up to the consumer of the Croissant file to interpret the external properties.
 
-### Using external vocabularies with data
+### Using External Vocabularies with Data
 
 In addition to dataset-level properties, external vocabularies can be used to provide more semantic meaning to the data itself. There are three main ways to do this:
 
-#### Field typing
+#### Field Typing
 
-You can assign a `dataType` from an external vocabulary to a `cr:Field`. This indicates that each value for that field is an instance of the specified type.
+A `dataType` from an external vocabulary can be assigned to a `cr:Field`. This indicates that each value for that field is an instance of the specified type.
 
-In the following example, the `url` field is expected to be a URL, whose semantic type is City (http://www.wikidata.org/entity/Q515), so one will expect values of this field to be URLs referring to cities (e.g.: Paris is "<http://www.wikidata.org/entity/Q90>").
+In the following example, the `url` field is expected to be a URL, whose semantic type is City ([http://www.wikidata.org/entity/Q515](http://www.wikidata.org/entity/Q515)), so one will expect values of this field to be URLs referring to cities (e.g.: Paris is "[http://www.wikidata.org/entity/Q90](http://www.wikidata.org/entity/Q90)").
 
 ```json
 {
@@ -1589,9 +1595,9 @@ In the following example, the `url` field is expected to be a URL, whose semanti
 }
 ```
 
-#### RecordSet typing
+#### RecordSet Typing
 
-You can also associate entire records with classes from external vocabularies, and specific fields of records with properties applicable to those classes. This is useful for semantic mapping of data values in the dataset, and for adding semantic data annotations using standard vocabularies, e.g., to describe statistics about the data.
+Croissant allows entire records to be associated with classes from external vocabularies, and specific fields of records to be associated with properties applicable to those classes. This is useful for semantic mapping of data values in the dataset, and for adding semantic data annotations using standard vocabularies, e.g., to describe statistics about the data.
 
 Croissant supports setting the `dataType` of an entire `RecordSet`. This means that the records it contains are instances of the corresponding data type. For example, if a `RecordSet` has the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates), then its records will be geopoints with a latitude and a longitude.
 
@@ -1600,9 +1606,10 @@ More generally, when a `RecordSet` is assigned a `dataType`, some or all of its 
 - Either the `@id` of the field has the name of the property as a suffix, e.g., a field with `@id` "cities/latitude" corresponds to the property "[sc:latitude](http://schema.org/latitude)" associated with the data type [sc:GeoCoordinates](http://schema.org/GeoCoordinates).
 - Or there is an explicit mapping specified on the Field, via the property `equivalentProperty`.
 
-When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be or of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
+When a field is mapped to a property, it can inherit the range type of that property (e.g., latitude and longitude can be of type Text or Number). It may also specify a more restrictive type, as long as it doesn't contradict the range of the property (e.g., require the values of latitude and longitude to be of type Float).
 
-The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` (Wikidata City) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping:
+The following example shows a `RecordSet` where each record represents a city, typed as both a `wd:Q515` ([Wikidata City](https://www.wikidata.org/wiki/Q515)) and `sc:GeoCoordinates`. The fields of the `RecordSet` are mapped to the properties of these classes, using both explicit and implicit mapping:
+
 - The `cities/name` field corresponds to the `sc:name` property via implicit mapping
 - The `cities/population` and `cities/country` fields are mapped to `wdt:P1082` and `wdt:P17` explicitly
 - The `cities/latitude` and `cities/longitude` fields implicitly map to `sc:latitude` and `sc:longitude`.
@@ -1656,11 +1663,11 @@ The following example shows a `RecordSet` where each record represents a city, t
 }
 ```
 
-#### Data format for external entities
+#### Data Format for External Entities
 
-When a `cr:Field`'s `dataType` is an entity from an external vocabulary, the corresponding data file should contain values that can be interpreted as those entities. For a `dataType` of `prov:Agent`, the data file might contain URLs that identify the agents.
+When a `cr:Field`'s `dataType` is an entity from an external vocabulary, the corresponding data file should contain values that can be interpreted as those entities. In particular, for a `dataType` of `prov:Agent`, the data file might contain URLs that identify the agents.
 
-To keep the data files concise, you can define prefixes in the dataset's `@context` and use those prefixes in the data. For example, you could add an `ex-agent` prefix to the context:
+To keep the data files concise, prefixes should be defined in the dataset's `@context` and used in the data. The example below adds an `ex-agent` prefix to the context:
 
 ```json
   "@context": {
@@ -1972,31 +1979,28 @@ This section provides guidance on how to integrate external vocabularies with Cr
 
 ### Provenance Representation
 
-
 Tracking the provenance of a dataset is crucial for transparency, reproducibility, and responsible AI. It helps users understand where the data came from, how it has been modified over time, and who contributed to its creation. This is particularly important for datasets derived from other datasets, or those that have undergone significant transformations, such as filtering, augmentation, or annotation.
-
-
 
 Croissant recommends using the [W3C PROV Ontology (PROV-O)](https://www.w3.org/TR/prov-o/) to describe provenance. PROV-O provides a rich and standard vocabulary for describing the entities, activities, and agents involved in the lifecycle of data.
 
-To use PROV-O or other external vocabularies (like FOAF) in a Croissant dataset, you should first declare their namespace in the `@context`. Then, you can use properties from these vocabularies on any Croissant object, such as the Dataset itself, a `FileObject`, a `RecordSet`, or a `Field`.
+As noted earlier, to use PROV-O or other external vocabularies (like FOAF) in a Croissant dataset, their namespace should be first declared in the `@context`. Then, properties from these vocabularies could be used on any Croissant object, such as the Dataset itself, a `FileObject`, a `RecordSet`, or a `Field`.
 
 Key PROV-O relationships include:
 
-*   `prov:wasDerivedFrom`: Indicates that an entity (e.g., the dataset or a part of it) was derived from another entity.
-*   `prov:wasGeneratedBy`: Links an entity to the activity that generated it (e.g., a data cleaning process, a web crawl).
-*   `prov:wasAttributedTo`: Links an entity to the agent responsible for it (e.g., a person, organization, or software).
+* `prov:wasDerivedFrom`: Indicates that an entity (e.g., the dataset or a part of it) was derived from another entity.  
+* `prov:wasGeneratedBy`: Links an entity to the activity that generated it (e.g., a data cleaning process, a web crawl).  
+* `prov:wasAttributedTo`: Links an entity to the agent responsible for it (e.g., a person, organization, or software).
 
 
 
 ![Croissant provenance](images/croissant-provenance.png 'Croissant provenance') 
 
 
-Provenance can be specified at multiple levels of granularity:
+Provenance can be specified at multiple levels of granularity, as explained below.
 
 **Dataset and Resource-level Provenance**
 
-You can describe the origin of the entire dataset. For example, if a dataset is a corrupted version of ImageNet:
+Croissant can be used to describe the origin of the entire dataset. For example, if a dataset is a corrupted version of ImageNet:
 
 ```json
 {
@@ -2018,7 +2022,7 @@ You can describe the origin of the entire dataset. For example, if a dataset is 
 }
 ```
 
-Similarly, you can describe the provenance of individual resources (`FileObject` or `FileSet`). For example, to indicate that a file was downloaded from a specific URL by a crawling process:
+Similarly, Croissant can capture the provenance of individual resources (`FileObject` or `FileSet`). For example, to indicate that a file was downloaded from a specific URL by a crawling process:
 
 ```json
 {
@@ -2039,9 +2043,9 @@ Similarly, you can describe the provenance of individual resources (`FileObject`
 
 **RecordSet and Field-level Provenance**
 
-Provenance can also be attached to specific `RecordSet`s or `Field`s. This is useful when different parts of the dataset have different origins, or when you want to document the creation of specific annotations.
+Provenance can also be attached to specific `RecordSet`s or `Field`s. This is useful when different parts of the dataset have different origins, or to document the creation of specific annotations.
 
-For example, you can indicate that a set of labels was generated by a specific software agent:
+This example indicates that a set of labels was generated by a specific software agent:
 
 ```json
 {
@@ -2071,7 +2075,7 @@ For example, you can indicate that a set of labels was generated by a specific s
 
 **Data-level Provenance**
 
-For the finest level of granularity, you can attach provenance information to individual data values. This is achieved using Croissant's annotation mechanism, where an annotation field is used to hold the provenance information for another field. By setting the `equivalentProperty` of the annotation field to a PROV-O property, you can define the relationship between the data and its provenance.
+For the finest level of granularity, provenance information can be attached to individual data values. This is achieved using Croissant's annotation mechanism, where an annotation field is used to hold the provenance information for another field. The relationship between the data and its provenance can be defined by setting the `equivalentProperty` of the annotation field to a PROV-O property. .
 
 For example, consider a dataset where each image is labeled by a different human annotator, and we want to capture the information about the annotator for each label. We can combine PROV-O and FOAF (Friend of a Friend) vocabularies to describe this. We can define an annotation field that represents the `prov:Person` (the annotator) and link it to the label field using `prov:wasAttributedTo`. We can then use FOAF properties to describe the person's attributes.
 
@@ -2139,11 +2143,133 @@ For example, consider a dataset where each image is labeled by a different human
 
 In this example, the `labeled_images/label` field has an annotation `labeled_images/label/annotator`. The `equivalentProperty` "prov:wasAttributedTo" on the annotation field indicates that each label is attributed to the corresponding person. The person's details (id, gender, age) are pulled from the same source file (`annotations.csv`) on a row-by-row basis. The `gender` and `age` fields are mapped to their corresponding FOAF properties, `foaf:gender` and `foaf:age`, via `equivalentProperty`.
 
-By leveraging external vocabularies like PROV-O and FOAF, Croissant enables a standardized and machine-readable way to capture the rich history and context of ML datasets, supporting better trust and understanding.
+### Data Use Conditions
 
-### Data Use Restrictions
+Datasets often come with restrictions on how they can be used, particularly in sensitive domains, such as healthcare. Representing these restrictions in a machine-readable format enables automated discovery and compliance checking. For instance, a healthcare dataset might be restricted to non-commercial research use only, or require specific ethics approval.
 
-TODO: Add guidance on representing data use restrictions.
+Data use conditions can be attached to a dataset as a whole, or part of a dataset using [sc:usageInfo](http://schema.org/usageInfo) (an existing attribute of schema.org).
+
+### Using DUO to Represent Data Use Conditions
+
+The [DUO](http://purl.obolibrary.org/obo/duo.owl) ontology provides a set of terms that can be used to represent data use conditions in a machine-readable format. DUO is prevalent in the healthcare domain. Other vocabularies may be used in other verticals.
+
+To connect with terms from an external vocabulary, Croissant uses the [sc:DefinedTerm](http://schema.org/DefinedTerm) type, which is a schema.org type designed for that purpose.
+
+Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042) to represent the data use condition "General Research Use":
+
+```json
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "duo": "http://purl.obolibrary.org/obo/DUO_"
+  },
+  "@type": "Dataset",
+  "name": "Global Health Imagery Dataset",
+  "description": "A dataset of public health imagery for research purposes.",
+  "url": "https://example.org/dataset/global-health-1",
+  "usageInfo": [
+    {
+      "@type": "DefinedTerm",
+      "name": "General Research Use",
+      "termCode": "DUO_0000042",
+      "url": "duo:0000042"
+    }
+  ]
+}
+```
+
+### **Fine-Grained Control with ODRL**
+
+To represent more complex restrictions, such as hierarchical permissions and modifiers, Croissant recommends using [ODRL](https://www.w3.org/TR/odrl-model/), a W3C standard that provides a rich framework for representing permissions and restrictions
+
+To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. `odrl:action` represents the permission, and `odrl:constraint` represents modifiers.
+
+The following example shows how to combine DUO and ODRL to represent a data use policy that allows General  Research Use ([DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042)), but only for non-commercial purposes ([DUO_0000018](http://purl.obolibrary.org/obo/DUO_0000018)):
+
+```json
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "duo": "http://purl.obolibrary.org/obo/DUO_",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "Dataset",
+  "name": "Restricted Health Data",
+  
+  "usageInfo": {
+    "@type": ["CreativeWork", "odrl:Offer"],
+    "name": "DUO Usage Policy",
+    
+    "odrl:permission": {
+      "@type": "odrl:Permission",
+      "odrl:action": {
+        "@id": "duo:0000006",
+        "name": "Health or Medical or Biomedical Use"
+      },
+      "odrl:constraint": [
+        {
+          "@type": "odrl:Constraint",
+           "name": "Non-commercial use only",
+          "odrl:operator": { "@id": "odrl:eq" },
+          "odrl:rightOperand": { "@id": "duo:0000018" }
+        }
+      ]
+    }
+
+  }
+}
+```
+
+### Integration with Domain-Specific Ontologies
+
+In the health domain, it is often necessary to specify that a dataset can only be used for research on a specific disease. DUO recommends using the [MONDO](https://mondo.monarchinitiative.org/) ontology to specify disease-specific restrictions. 
+
+The example below shows how to use MONDO in combination with DUO and ODRL to specify that a dataset can only be used for research on Alzheimer's disease ([MONDO_0005070](http://purl.obolibrary.org/obo/MONDO_0005070)).
+
+```json
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "duo": "http://purl.obolibrary.org/obo/DUO_",
+    "mondo": "http://purl.obolibrary.org/obo/MONDO_",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "Dataset",
+  "name": "Restricted Health Data",
+  
+  "usageInfo": {
+    "@type": ["CreativeWork", "odrl:Offer"], 
+    "name": "DUO Usage Policy",
+    
+    "odrl:permission": {
+      "@type": "odrl:Permission",
+      "odrl:action": {
+        "@id": "duo:0000007",
+        "name": "Disease specific research"
+      },
+      "odrl:constraint": [
+        {
+          "@type": "odrl:Constraint",
+          "name": "Non-commercial use only",
+          "odrl:operator": { "@id": "odrl:eq" },
+          "odrl:rightOperand": { "@id": "duo:0000018" }
+        },
+        {
+           "@type": "odrl:Constraint",
+           "odrl:leftOperand": { "@id": "duo:0000010"},
+           "odrl:operator": { "@id": "odrl:eq" },
+           "odrl:rightOperand": { "@id": "mondo:0005070" }
+        }
+      ]
+    }
+  }
+}
+```
+
+This approach can be extended to other domain-specific ontologies.
 
 ## Appendix 1: JSON-LD context
 
@@ -2155,6 +2281,7 @@ TODO: Add guidance on representing data use restrictions.
     "cr": "http://mlcommons.org/croissant/",
     "rai": "http://mlcommons.org/croissant/RAI/",
     "dct": "http://purl.org/dc/terms/",
+    "annotation": "cr:annotation",
     "arrayShape": "cr:arrayShape",
     "citeAs": "cr:citeAs",
     "column": "cr:column",
@@ -2168,10 +2295,13 @@ TODO: Add guidance on representing data use restrictions.
       "@id": "cr:dataType",
       "@type": "@vocab"
     },
+    "separator": "cr:separator",
+    "equivalentProperty": "cr:equivalentProperty",
     "examples": {
       "@id": "cr:examples",
       "@type": "@json"
     },
+    "excludes": "cr:excludes",
     "extract": "cr:extract",
     "field": "cr:field",
     "fileProperty": "cr:fileProperty",
@@ -2185,14 +2315,16 @@ TODO: Add guidance on representing data use restrictions.
     "key": "cr:key",
     "md5": "cr:md5",
     "parentField": "cr:parentField",
-    "path": "cr:path",
     "recordSet": "cr:recordSet",
     "references": "cr:references",
     "regex": "cr:regex",
-    "replace": "cr:replace",
+    "readLines": "cr:readLines",
+    "sdVersion": "cr:sdVersion",
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "unArchive": "cr:unArchive",
+    "value": "cr:value",
   }
 ```
