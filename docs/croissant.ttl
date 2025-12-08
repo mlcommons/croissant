@@ -84,6 +84,12 @@ croissant:citeAs a rdf:Property ;
   schema:domainIncludes schema:Dataset ;
   schema:rangeIncludes schema:Text .
 
+croissant:md5 a rdf:Property ;
+  rdfs:label "md5" ;
+  rdfs:comment "The MD5 hash of the file." ;
+  schema:domainIncludes croissant:FileObject ;
+  schema:rangeIncludes schema:Text .
+
 croissant:sdVersion a rdf:Property ;
   rdfs:label "sdVersion" ;
   rdfs:comment "The version of the dataset metadata, which may be distinct from the version of the dataset content." ;
