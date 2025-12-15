@@ -177,6 +177,13 @@ class Metadata(Node):
         input_types=[SDO.Integer, SDO.Number, SDO.Text],
         url=constants.SCHEMA_ORG_VERSION,
     )
+    sd_version: str | None = mlc_dataclasses.jsonld_field(
+        cast_fn=cast_version,
+        default=None,
+        description="The version of the dataset metadata.",
+        input_types=[SDO.Integer, SDO.Number, SDO.Text],
+        url=constants.ML_COMMONS_SD_VERSION,
+    )
     distribution: list[FileObject | FileSet] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
