@@ -1574,6 +1574,74 @@ For example, to use the PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) 
 
 While Croissant can be used with any vocabulary, it is up to the consumer of the Croissant file to interpret the external properties.
 
+## Application: Representing Descriptive Statistics
+
+Datasets often come with statistics that describe their content, such as the number of records, the distribution of values, or the size of the dataset. Croissant provides a way to represent these statistics in a machine-readable format.
+
+Statistics are generally attached to a specific RecordSet or Field. For example, the number of records is a statistic on the RecordSet, while the distribution of values in a field is a statistic on the field.
+
+To represent statistics in Croissant, we use the annotation mechanism introduced in Section {sec:annotations}. The following example shows statistics are the RecordSet and Field level.
+
+```json
+{
+  "@context": {
+    "@vocab": "http://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "ddi-stats": "http://rdf-vocabulary.ddialliance.org/cv/SummaryStatisticType/2.1.2/"
+  },
+  "@type": "sc:Dataset",
+  "name": "My Dataset",
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "person",
+      "cr:annotation": [
+        {
+          "@type": "cr:Field",
+          "name": "person/count",
+          "value": 1450,
+          "dataType": "http://www.wikidata.org/entity/Q4049983" 
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "person/age",
+          "name": "age",
+          "description": "Age in years",
+          "dataType": "sc:Numeric",
+          "source": {
+            "fileObject": {
+              "@id": "person-table"
+            },
+            "extract": {
+              "column": "age"
+            }
+          },
+          "annotation": [
+            {
+              "@id": "person/age/mean",
+              "value": 42.51,
+              "dataType": {
+                "@type": "sc:DefinedTerm",
+                "termCode": "ArithmeticMean",
+                "name": "Arithmetic Mean",
+                "@id": "ddi-stats:7975ed0",
+                "inDefinedTermSet": "http://rdf-vocabulary.ddialliance.org/cv/SummaryStatisticType/2.1.2/"
+              }
+            }
+           ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+The total count of persons is a statistic on the RecordSet. It references Wikidata's [Cardinality](https://www.wikidata.org/wiki/Q4049983) term. The mean is a statistic on the `person/age` field. It reference the DDI-CDI `SummaryStatisticType` vocabulary. 
+
+Instead of just providing the URL of the vocabulary term, we use Schema.org's `DefinedTerm` to reference the vocabulary term. This allows us to add more information about the term, such as `termCode`, `inDefinedTermSet` to point to the vocabulary, and `name` to provide a human-readable name for the term.
+
 ### Using External Vocabularies with Data
 
 In addition to dataset-level properties, external vocabularies can be used to provide more semantic meaning to the data itself. There are three main ways to do this:
