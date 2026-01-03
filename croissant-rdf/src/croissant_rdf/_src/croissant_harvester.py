@@ -151,6 +151,32 @@ class CroissantHarvester(ABC):
         logger.info(f"Serialization completed in {time.time() - start_time:.2f}s")
         return self.fname
 
+    def convert_from_rdf(self, rdf_file: str) -> str:
+        """Convert an RDF file back to Croissant JSON-LD format.
+
+        Args:
+            rdf_file (str): Path to the RDF file (Turtle, N-Triples, XML, etc.)
+
+        Returns:
+            str: The path to the generated JSON-LD file.
+        """
+        logger.info(f"Loading RDF file: {rdf_file}")
+        g = Graph()
+        start_time = time.time()
+        g.parse(rdf_file)
+        logger.info(f"Loaded {len(g)} triples in {time.time() - start_time:.2f}s")
+
+        # Bind common prefixes for cleaner JSON-LD output
+        g.bind("cr", "http://mlcommons.org/croissant/")
+        g.bind("schema", "https://schema.org/")
+
+        # Generate output filename
+        output_file = rdf_file.rsplit(".", 1)[0] + ".jsonld"
+        start_time = time.time()
+        g.serialize(destination=output_file, format="json-ld", indent=2)
+        logger.info(f"Converted to JSON-LD and saved to {output_file} in {time.time() - start_time:.2f}s")
+        return output_file
+
     def generate_ttl(self) -> str:
         """Fetch datasets and generate a Turtle file.
 
