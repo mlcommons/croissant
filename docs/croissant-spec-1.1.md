@@ -1580,7 +1580,7 @@ Datasets often come with statistics that describe their content, such as the num
 
 Statistics are generally attached to a specific RecordSet or Field. For example, the number of records is a statistic on the RecordSet, while the distribution of values in a field is a statistic on the field.
 
-To represent statistics in Croissant, we use the annotation mechanism introduced in Section {sec:annotations}. The following example shows statistics are the RecordSet and Field level.
+To represent statistics in Croissant, we use the annotation mechanism introduced in Section [Annotations](#annotating-data). The following example shows statistics are the RecordSet and Field level.
 
 ```json
 {
@@ -1609,7 +1609,7 @@ To represent statistics in Croissant, we use the annotation mechanism introduced
           "@id": "person/age",
           "name": "age",
           "description": "Age in years",
-          "dataType": "sc:Numeric",
+          "dataType": "sc:Integer",
           "source": {
             "fileObject": {
               "@id": "person-table"
@@ -1629,8 +1629,14 @@ To represent statistics in Croissant, we use the annotation mechanism introduced
                 "@id": "ddi-stats:7975ed0",
                 "inDefinedTermSet": "http://rdf-vocabulary.ddialliance.org/cv/SummaryStatisticType/2.1.2/"
               }
+            },
+            {
+              "@id": "person/age/max",
+              "value": 75,
+              "dataType": "ddi-stats:8321e79",
+              "equivalentProperty": "sc:maxValue"
             }
-           ]
+          ]
         }
       ]
     }
@@ -1638,9 +1644,15 @@ To represent statistics in Croissant, we use the annotation mechanism introduced
 }
 ```
 
-The total count of persons is a statistic on the RecordSet. It references Wikidata's [Cardinality](https://www.wikidata.org/wiki/Q4049983) term. The mean is a statistic on the `person/age` field. It reference the DDI-CDI `SummaryStatisticType` vocabulary. 
+The total count of persons is a statistic on the RecordSet, so it is defined as an `annotation` property of the RecordSet. It references Wikidata's [Cardinality](https://www.wikidata.org/wiki/Q4049983) term as a `dataType`. 
 
-Instead of just providing the URL of the vocabulary term, we use Schema.org's `DefinedTerm` to reference the vocabulary term. This allows us to add more information about the term, such as `termCode`, `inDefinedTermSet` to point to the vocabulary, and `name` to provide a human-readable name for the term.
+The mean is a statistic on the `person/age` field, so it is defined as an `annotation` property of the `person/age` field. 
+
+It references a term from the [DDI-CDI](https://vocabularies.cessda.eu/vocabulary/SummaryStatisticType) `SummaryStatisticType` vocabulary. 
+
+Instead of just providing the URL of the vocabulary term as `dataType`, we can use Schema.org's `DefinedTerm` construct to provide more details about the vocabulary term. This allows us to specify a `termCode`, `inDefinedTermSet` to point to the vocabulary, and `name` to provide a human-readable name for the term.
+
+By contrast, the `maxValue` is defined as a `dataType` with the URL of the term in the DDI-CDI vocabulary. It also references Schema.org's `sc:maxValue` property as an `equivalentProperty` to indicate that it is the maximum value of the field.
 
 ### Using External Vocabularies with Data
 
