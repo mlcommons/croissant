@@ -1648,7 +1648,7 @@ The total count of persons is a statistic on the RecordSet, so it is defined as 
 
 The mean is a statistic on the `person/age` field, so it is defined as an `annotation` property of the `person/age` field. 
 
-It references a term from the [DDI-CDI](https://vocabularies.cessda.eu/vocabulary/SummaryStatisticType) `SummaryStatisticType` vocabulary. 
+It references a term from the [DDI-CDI](http://rdf-vocabulary.ddialliance.org/cv/SummaryStatisticType/2.1.2/) `SummaryStatisticType` vocabulary. 
 
 Instead of just providing the URL of the vocabulary term as `dataType`, we can use Schema.org's `DefinedTerm` construct to provide more details about the vocabulary term. This allows us to specify a `termCode`, `inDefinedTermSet` to point to the vocabulary, and `name` to provide a human-readable name for the term.
 
