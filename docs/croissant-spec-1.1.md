@@ -19,6 +19,9 @@ Authors:
 - Joan Giner-Miguelez (Barcelona Supercomputing Center),
 - Mubashara Akthar (ETH Zurich & ETH AI Center),
 - Nitisha Jain (Independent),
+- Joan Giner-Miguelez (Barcelona Supercomputing Center),
+- Mubashara Akthar (ETH Zurich & ETH AI Center),
+- Nitisha Jain (Independent),
 - Joaquin Vanschoren (OpenML),
 - Luis Oala (Dotphoton),
 - Pascal Heus (CODATA)
