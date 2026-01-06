@@ -14,6 +14,7 @@ Authors:
 - Elena Simperl (King’s College London & Open Data Institute),
 - Pierre Ruyssen (Google),
 - Pierre Marcenac (Google),
+- Pierre Marcenac (Google),
 - Costanza Conforti (Google),
 - Michael Kuchnik (Meta),
 - Joan Giner-Miguelez (Barcelona Supercomputing Center),
