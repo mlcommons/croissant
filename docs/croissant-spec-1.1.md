@@ -7,23 +7,33 @@ Published: 2025-12-10
 <http://mlcommons.org/croissant/1.1>
 
 Authors:
-
 - Omar Benjelloun (Google),
 - Elena Simperl (King’s College London & Open Data Institute),
-- Pierre Marcenac (Google),
 - Pierre Ruyssen (Google),
+- Pierre Marcenac (Google),
 - Costanza Conforti (Google),
 - Michael Kuchnik (Meta),
-- Jos van der Velde (OpenML),
+- Joan Giner-Miguelez (Barcelona Supercomputing Center),
+- Mubashara Akthar (ETH Zurich & ETH AI Center),
+- Nitisha Jain (Independent),
 - Joaquin Vanschoren (OpenML),
 - Luis Oala (Dotphoton),
-- Steffen Vogler (Bayer),
-- Mubashara Akthar (ETH Zurich, ETH AI Center),
-- Nitisha Jain (Independent),
-- Slava Tykhonov (CODATA)
 - Pascal Heus (CODATA)
-- Joan Giner-Miguelez (Barcelona Supercomputing Center)
-- Susheel Varma (Sage Bionetworks)
+  
+Contributors (In Alphabetical Order):
+- Brooke Byers (Iceberg Tech),
+- Hande Celikkanat (Common Crawl Foundation),
+- Philip Durbin (Harvard),
+- Greg Lindahl (Common Crawl Foundation),
+- Peter Mattson (ML Commons & Google),
+- Rajat Shinde (NASA IMPACT & UAH),
+- Goeff Thomas (Kaggle),
+- Slava Tykhonov (CODATA),
+- Jos Van Der Velde (OpenML),
+- Susheel Varma (Sage Bionetworks),
+- Steffen Vogler (Bayer),
+- Ian Ward (CKAN),
+- The Croissant Working Group
 
 ## Introduction
 
