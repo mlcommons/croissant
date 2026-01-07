@@ -719,16 +719,16 @@ def stac_to_geocroissant(
             elif "file:checksum" in asset:
                 file_object["sha256"] = asset["file:checksum"]
             else:
-                file_object["sha256"] = (
-                    "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
-                )
+                file_object[
+                    "sha256"
+                ] = "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
 
             if "checksum:md5" in asset:
                 file_object["md5"] = asset["checksum:md5"]
             else:
-                file_object["md5"] = (
-                    "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
-                )
+                file_object[
+                    "md5"
+                ] = "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
 
             distributions.append(file_object)
 
