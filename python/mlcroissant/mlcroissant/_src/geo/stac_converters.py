@@ -285,7 +285,12 @@ def extract_catalog_links(stac_dict: Dict[str, Any]) -> Dict[str, Any]:
     """Extract and categorize links from a STAC Catalog."""
     links = stac_dict.get("links", [])
 
-    categorized_links = {"collections": [], "items": [], "catalogs": [], "other": []}
+    categorized_links: Dict[str, List[Dict[str, str]]] = {
+        "collections": [],
+        "items": [],
+        "catalogs": [],
+        "other": [],
+    }
 
     for link in links:
         rel = link.get("rel", "")
@@ -334,12 +339,17 @@ def extract_catalog_links(stac_dict: Dict[str, Any]) -> Dict[str, Any]:
 def extract_catalog_extent(stac_dict: Dict[str, Any]) -> Dict[str, Any]:
     """Extract or estimate extent from a STAC Catalog based on its structure."""
     # Catalogs don't always have explicit extents, but we can try to infer
-    extent_info = {"spatial": None, "temporal": None}
+    extent_info: Dict[str, Optional[Dict[str, Any]]] = {
+        "spatial": None,
+        "temporal": None,
+    }
 
     # Check if catalog has explicit extent (some do)
     if "extent" in stac_dict:
-        extent_info["spatial"] = extract_spatial_extent(stac_dict)
-        extent_info["temporal"] = extract_temporal_extent(stac_dict)
+        spatial_extent = extract_spatial_extent(stac_dict)
+        temporal_extent = extract_temporal_extent(stac_dict)
+        extent_info["spatial"] = spatial_extent
+        extent_info["temporal"] = temporal_extent
 
     # If no explicit extent, we could potentially fetch from child collections
     # but for now, we'll leave it as None to avoid making additional HTTP requests
@@ -747,7 +757,7 @@ def stac_to_geocroissant(
         croissant["distribution"] = distributions
 
     # Add recordSet structure based on STAC type
-    record_sets = []
+    record_sets: List[Dict[str, Any]] = []
 
     if (
         stac_type == "collection"

@@ -194,7 +194,7 @@ def extract_platform_information(umm: Dict[str, Any]) -> Dict[str, Any]:
 
 def extract_distribution_info(umm: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Extract distribution information from UMM-G."""
-    distributions = []
+    distributions: List[Dict[str, Any]] = []
     related_urls = umm.get("RelatedUrls", [])
     used_ids = set()
 
@@ -509,27 +509,27 @@ def extract_coordinate_reference_system(additional_attrs: List[Dict[str, Any]]) 
 
 def extract_data_scaling_info(additional_attrs: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Extract data scaling information."""
-    scaling_info = {"@type": "geocr:DataScaling"}
+    scaling_info: Dict[str, Any] = {"@type": "geocr:DataScaling"}
 
     add_offset = find_additional_attribute(additional_attrs, "ADD_OFFSET")
     if add_offset is not None:
-        scaling_info["geocr:addOffset"] = float(add_offset)
+        scaling_info["geocr:addOffset"] = str(float(add_offset))
 
     ref_scale = find_additional_attribute(additional_attrs, "REF_SCALE_FACTOR")
     if ref_scale is not None:
-        scaling_info["geocr:refScaleFactor"] = float(ref_scale)
+        scaling_info["geocr:refScaleFactor"] = str(float(ref_scale))
 
     ang_scale = find_additional_attribute(additional_attrs, "ANG_SCALE_FACTOR")
     if ang_scale is not None:
-        scaling_info["geocr:angScaleFactor"] = float(ang_scale)
+        scaling_info["geocr:angScaleFactor"] = str(float(ang_scale))
 
     fill_value = find_additional_attribute(additional_attrs, "FILLVALUE")
     if fill_value is not None:
-        scaling_info["geocr:fillValue"] = float(fill_value)
+        scaling_info["geocr:fillValue"] = str(float(fill_value))
 
     qa_fill = find_additional_attribute(additional_attrs, "QA_FILLVALUE")
     if qa_fill is not None:
-        scaling_info["geocr:qaFillValue"] = float(qa_fill)
+        scaling_info["geocr:qaFillValue"] = str(float(qa_fill))
 
     return scaling_info
 
@@ -592,15 +592,15 @@ def extract_quality_assessment_full(
     additional_attrs: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
     """Extract full quality assessment information."""
-    quality_info = {"@type": "geocr:QualityAssessment"}
+    quality_info: Dict[str, Any] = {"@type": "geocr:QualityAssessment"}
 
     geometric_accuracy = extract_geometric_accuracy(additional_attrs)
     if geometric_accuracy:
-        quality_info["geocr:geometricAccuracy"] = geometric_accuracy
+        quality_info["geocr:geometricAccuracy"] = str(geometric_accuracy)
 
     cloud_coverage = extract_cloud_coverage(additional_attrs)
     if cloud_coverage:
-        quality_info["geocr:cloudCoverage"] = cloud_coverage
+        quality_info["geocr:cloudCoverage"] = str(cloud_coverage)
 
     return quality_info
 
@@ -936,11 +936,11 @@ def umm_to_geocroissant(
     if distributions:
         croissant["distribution"] = distributions
         # Add FileSet for TIFF files
-        tiff_files = [
+        tiff_files: List[Dict[str, Any]] = [
             d for d in distributions if d.get("encodingFormat") == "image/tiff"
         ]
         if tiff_files:
-            croissant["distribution"].append(
+            distributions.append(
                 {
                     "@type": "cr:FileSet",
                     "@id": "tiff_files",
@@ -1001,9 +1001,9 @@ def extract_spectral_band_info(umm: Dict[str, Any]) -> Dict[str, Any]:
 
 def extract_nasa_attributes(additional_attrs: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Extract NASA-specific attributes."""
-    nasa_attrs = {}
+    nasa_attrs: Dict[str, Any] = {}
     for attr in additional_attrs:
-        name = attr.get("Name")
+        name: Optional[str] = attr.get("Name")
         values = attr.get("Values", [])
         if name and values:
             value = values[0]
@@ -1025,7 +1025,7 @@ def categorize_attributes(
     additional_attrs: List[Dict[str, Any]],
 ) -> Dict[str, List[str]]:
     """Categorize NASA attributes by type."""
-    categories = {
+    categories: Dict[str, List[str]] = {
         "processing": [],
         "geometry": [],
         "quality": [],
