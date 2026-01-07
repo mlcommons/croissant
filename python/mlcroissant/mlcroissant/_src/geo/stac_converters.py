@@ -147,14 +147,12 @@ def extract_references(stac_dict: Dict[str, Any]) -> List[Dict[str, Any]]:
             "http://www.opengis.net/def/rel/ogc/1.0/queryables": "Queryables",
         }
 
-        references.append(
-            {
-                "@type": "CreativeWork",
-                "url": href,
-                "name": name_map.get(rel, rel),
-                "encodingFormat": link.get("type", "application/json"),
-            }
-        )
+        references.append({
+            "@type": "CreativeWork",
+            "url": href,
+            "name": name_map.get(rel, rel),
+            "encodingFormat": link.get("type", "application/json"),
+        })
 
     return references
 
@@ -300,38 +298,30 @@ def extract_catalog_links(stac_dict: Dict[str, Any]) -> Dict[str, Any]:
         if rel == "child" and (
             "collection" in href.lower() or "collection" in title.lower()
         ):
-            categorized_links["collections"].append(
-                {
-                    "href": href,
-                    "title": title,
-                    "type": link.get("type", "application/json"),
-                }
-            )
+            categorized_links["collections"].append({
+                "href": href,
+                "title": title,
+                "type": link.get("type", "application/json"),
+            })
         elif rel == "item":
-            categorized_links["items"].append(
-                {
-                    "href": href,
-                    "title": title,
-                    "type": link.get("type", "application/geo+json"),
-                }
-            )
+            categorized_links["items"].append({
+                "href": href,
+                "title": title,
+                "type": link.get("type", "application/geo+json"),
+            })
         elif rel == "child":
-            categorized_links["catalogs"].append(
-                {
-                    "href": href,
-                    "title": title,
-                    "type": link.get("type", "application/json"),
-                }
-            )
+            categorized_links["catalogs"].append({
+                "href": href,
+                "title": title,
+                "type": link.get("type", "application/json"),
+            })
         elif rel not in ["self", "root", "parent"]:
-            categorized_links["other"].append(
-                {
-                    "href": href,
-                    "title": title,
-                    "rel": rel,
-                    "type": link.get("type", "application/json"),
-                }
-            )
+            categorized_links["other"].append({
+                "href": href,
+                "title": title,
+                "rel": rel,
+                "type": link.get("type", "application/json"),
+            })
 
     return categorized_links
 
@@ -644,10 +634,15 @@ def stac_to_geocroissant(
                 "@type": "cr:FileObject",
                 "@id": f"collection_{i}",
                 "name": collection_link.get("title", f"Collection {i}"),
-                "description": f"STAC Collection: {collection_link.get('title', 'Unnamed Collection')}",
+                "description": (
+                    "STAC Collection:"
+                    f" {collection_link.get('title', 'Unnamed Collection')}"
+                ),
                 "contentUrl": collection_link.get("href"),
                 "encodingFormat": collection_link.get("type", "application/json"),
-                "sha256": "d41d8cd98f00b204e9800998ecf8427e",  # Placeholder for remote resources
+                "sha256": (
+                    "d41d8cd98f00b204e9800998ecf8427e"
+                ),  # Placeholder for remote resources
                 "md5": "d41d8cd98f00b204e9800998ecf8427e",
             }
             distributions.append(file_object)
@@ -658,7 +653,9 @@ def stac_to_geocroissant(
                 "@type": "cr:FileObject",
                 "@id": f"subcatalog_{i}",
                 "name": catalog_link.get("title", f"Sub-catalog {i}"),
-                "description": f"STAC Sub-catalog: {catalog_link.get('title', 'Unnamed Catalog')}",
+                "description": (
+                    f"STAC Sub-catalog: {catalog_link.get('title', 'Unnamed Catalog')}"
+                ),
                 "contentUrl": catalog_link.get("href"),
                 "encodingFormat": catalog_link.get("type", "application/json"),
                 "sha256": "d41d8cd98f00b204e9800998ecf8427e",
@@ -719,16 +716,16 @@ def stac_to_geocroissant(
             elif "file:checksum" in asset:
                 file_object["sha256"] = asset["file:checksum"]
             else:
-                file_object[
-                    "sha256"
-                ] = "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
+                file_object["sha256"] = (
+                    "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
+                )
 
             if "checksum:md5" in asset:
                 file_object["md5"] = asset["checksum:md5"]
             else:
-                file_object[
-                    "md5"
-                ] = "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
+                file_object["md5"] = (
+                    "d41d8cd98f00b204e9800998ecf8427e"  # Standard placeholder
+                )
 
             distributions.append(file_object)
 
@@ -851,7 +848,9 @@ def stac_to_geocroissant(
                 "@type": "cr:RecordSet",
                 "@id": f"collection_{i}_records",
                 "name": f"Collection {i} Records",
-                "description": f"Records for {collection_link.get('title', f'Collection {i}')}",
+                "description": (
+                    f"Records for {collection_link.get('title', f'Collection {i}')}"
+                ),
                 "field": [
                     {
                         "@type": "cr:Field",
@@ -874,7 +873,9 @@ def stac_to_geocroissant(
                 "@type": "cr:RecordSet",
                 "@id": f"subcatalog_{i}_records",
                 "name": f"Sub-catalog {i} Records",
-                "description": f"Records for {catalog_link.get('title', f'Sub-catalog {i}')}",
+                "description": (
+                    f"Records for {catalog_link.get('title', f'Sub-catalog {i}')}"
+                ),
                 "field": [
                     {
                         "@type": "cr:Field",
@@ -900,7 +901,9 @@ def stac_to_geocroissant(
                 "@type": "cr:RecordSet",
                 "@id": "features_collection",
                 "name": "Features Collection",
-                "description": "Collection of STAC features with their associated assets",
+                "description": (
+                    "Collection of STAC features with their associated assets"
+                ),
                 "field": [
                     {
                         "@type": "cr:Field",
@@ -986,8 +989,9 @@ def stac_to_geocroissant(
             "geocr:hasCollection": "collection" in stac_dict,
             "geocr:hasGeometry": "geometry" in stac_dict,
             "geocr:hasBbox": "bbox" in stac_dict,
-            "geocr:hasProperties": "properties" in stac_dict
-            and len(stac_dict.get("properties", {})) > 0,
+            "geocr:hasProperties": (
+                "properties" in stac_dict and len(stac_dict.get("properties", {})) > 0
+            ),
             "geocr:stac_extensions": str(stac_extensions),
             "geocr:summaries": str(stac_dict.get("summaries", {})),
             "geocr:stacSpecificAttributes": str(extra_fields),

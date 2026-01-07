@@ -24,7 +24,7 @@ def _check_dependencies() -> None:
     """Check if required dependencies are installed."""
     if not REQUESTS_AVAILABLE:
         raise ImportError(
-            "Requests dependency not found. " "Install with: pip install requests"
+            "Requests dependency not found. Install with: pip install requests"
         )
 
 
@@ -824,9 +824,11 @@ def umm_to_geocroissant(
         "@type": "sc:Dataset",
         "name": name,
         "alternateName": [dataset_id, f"{name}-satellite-imagery"],
-        "description": umm.get("Abstract")
-        or umm.get("CollectionReference", {}).get("Abstract")
-        or "NASA satellite imagery dataset",
+        "description": (
+            umm.get("Abstract")
+            or umm.get("CollectionReference", {}).get("Abstract")
+            or "NASA satellite imagery dataset"
+        ),
         "conformsTo": "http://mlcommons.org/croissant/1.0",
         "version": version,
         "creator": {
@@ -940,16 +942,17 @@ def umm_to_geocroissant(
             d for d in distributions if d.get("encodingFormat") == "image/tiff"
         ]
         if tiff_files:
-            distributions.append(
-                {
-                    "@type": "cr:FileSet",
-                    "@id": "tiff_files",
-                    "name": "TIFF Files",
-                    "description": f"Collection of {len(tiff_files)} TIFF files containing satellite imagery bands",
-                    "encodingFormat": "image/tiff",
-                    "includes": "**/*.tif",
-                }
-            )
+            distributions.append({
+                "@type": "cr:FileSet",
+                "@id": "tiff_files",
+                "name": "TIFF Files",
+                "description": (
+                    f"Collection of {len(tiff_files)} TIFF files containing satellite"
+                    " imagery bands"
+                ),
+                "encodingFormat": "image/tiff",
+                "includes": "**/*.tif",
+            })
 
     # Add record set for granule data
     croissant["recordSet"] = [
@@ -1138,7 +1141,10 @@ def create_granule_record_set(
     spatial_coverage = ""
     if spatial_info and spatial_info.get("bbox"):
         bbox = spatial_info["bbox"]
-        spatial_coverage = f"POLYGON(({bbox[0]} {bbox[1]}, {bbox[2]} {bbox[1]}, {bbox[2]} {bbox[3]}, {bbox[0]} {bbox[3]}, {bbox[0]} {bbox[1]}))"
+        spatial_coverage = (
+            f"POLYGON(({bbox[0]} {bbox[1]}, {bbox[2]} {bbox[1]}, {bbox[2]} {bbox[3]},"
+            f" {bbox[0]} {bbox[3]}, {bbox[0]} {bbox[1]}))"
+        )
 
     # Create universal record set names
     collection_ref = umm.get("CollectionReference", {})
