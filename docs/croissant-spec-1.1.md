@@ -6,7 +6,7 @@ Published: 2025-12-10
 
 <http://mlcommons.org/croissant/1.1>
 
-Editor: 
+Editors: 
 - Omar Benjelloun (Google),
 - Elena Simperl (King’s College London & Open Data Institute)
 
