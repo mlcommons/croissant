@@ -8,6 +8,7 @@ Published: 2025-12-10
 
 Editor: 
 - Omar Benjelloun (Google)
+- Elena Simperl (King’s College London & Open Data Institute)
 
 Authors:
 - Omar Benjelloun (Google),
