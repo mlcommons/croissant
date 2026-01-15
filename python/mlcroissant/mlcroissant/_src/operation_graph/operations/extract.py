@@ -1,8 +1,10 @@
 """Extract operation module."""
 
 import dataclasses
+import gzip
 import logging
 import os
+import shutil
 import tarfile
 import zipfile
 
@@ -26,14 +28,26 @@ def should_extract(encoding_formats: list[str] | None) -> bool:
     )
 
 
-def _extract_file(source: epath.Path, target: epath.Path) -> None:
+def _extract_file(
+    source: epath.Path, target: epath.Path, encoding_formats: list[str]
+) -> None:
     """Extracts the `source` file to `target`."""
+    is_gzip = (
+        "application/gzip" in encoding_formats or "application/x-gzip" in encoding_formats
+    ) or str(source).endswith(".gz")
     if zipfile.is_zipfile(source):
         with zipfile.ZipFile(source) as zip:
             zip.extractall(target)
     elif tarfile.is_tarfile(source):
         with tarfile.open(source) as tar:
             tar.extractall(target)
+    elif is_gzip:
+        target.mkdir(parents=True, exist_ok=True)
+        with gzip.open(source, "rb") as f_in:
+            filename = source.name[:-3] if source.name.endswith(".gz") else source.name
+            target_file = target / filename
+            with target_file.open("wb") as f_out:
+                shutil.copyfileobj(f_in, f_out)
     else:
         raise ValueError(f"Unsupported compression method for file: {source}")
 
@@ -51,7 +65,11 @@ class Extract(Operation):
         hashed_url = get_hash(url)
         extract_dir = EXTRACT_PATH / hashed_url
         if not extract_dir.exists():
-            _extract_file(archive_file.filepath, extract_dir)
+            _extract_file(
+                archive_file.filepath,
+                extract_dir,
+                self.node.encoding_formats,
+            )
         logging.info(
             "Found directory where data is extracted: %s", os.fspath(extract_dir)
         )

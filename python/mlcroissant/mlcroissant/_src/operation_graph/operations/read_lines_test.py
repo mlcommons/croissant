@@ -1,3 +1,5 @@
+import pathlib
+
 from etils import epath
 
 from mlcroissant._src.core.path import Path
@@ -23,5 +25,13 @@ def test_read_lines(tmp_path):
     # Execute operation
     lines = list(operation.call(path))
 
-    # Assertions
-    assert lines == ["line1", "line2", "line3"]
+    assert [line.filepath for line in lines] == [
+        epath.Path("line1"),
+        epath.Path("line2"),
+        epath.Path("line3"),
+    ]
+    assert [line.fullpath for line in lines] == [
+        pathlib.PurePath("line1"),
+        pathlib.PurePath("line2"),
+        pathlib.PurePath("line3"),
+    ]

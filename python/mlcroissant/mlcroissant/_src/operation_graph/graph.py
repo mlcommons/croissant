@@ -98,10 +98,11 @@ def _add_operations_for_file_object(
             operation = operation >> Extract(operations=operations, node=node)
         if isinstance(successor, FileSet) and successor.contained_in:
             for source in successor.contained_in:
-                if isinstance(source, Source) and source.file_object == node.uuid:
-                    for transform in source.transforms:
-                        if transform.read_lines:
-                            operation = operation >> ReadLines(
+                if isinstance(source, Source):
+                    if source.file_object == node.uuid:
+                        for transform in source.transforms:
+                            if transform.read_lines:
+                                operation = operation >> ReadLines(
                                 operations=operations, node=successor
                             )
             operation = (

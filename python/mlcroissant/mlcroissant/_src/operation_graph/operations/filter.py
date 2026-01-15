@@ -6,6 +6,7 @@ import functools
 import os
 import pathlib
 import re
+import types
 
 from etils import epath
 
@@ -44,18 +45,45 @@ class FilterFiles(Operation):
             raise ValueError("cannot filter files without `includes`.")
         included_files: list[Path] = []
         for path in paths:
-            for basepath, _, files in path.filepath.walk():  # type: ignore  # https://github.com/python/mypy/issues/11880
-                for file in files:
-                    filepath = epath.Path(basepath) / file
-                    fullpath = get_fullpath(filepath, path.filepath)
-                    match_includes = match_path(self.node.includes, fullpath)
+            if isinstance(path, types.GeneratorType):
+                for p in path:
+                    if p.filepath.exists() and p.filepath.is_dir():
+                        for basepath, _, files in p.filepath.walk():
+                            for file in files:
+                                filepath = epath.Path(basepath) / file
+                                fullpath = get_fullpath(filepath, p.filepath)
+                                match_includes = match_path(self.node.includes, fullpath)
+                                if match_includes:
+                                    included_files.append(
+                                        Path(
+                                            filepath=filepath,
+                                            fullpath=fullpath,
+                                        )
+                                    )
+                    else:
+                        match_includes = match_path(self.node.includes, p.fullpath)
+                        if match_includes:
+                            included_files.append(p)
+            else:
+                # If the file is a directory, we walk it.
+                if path.filepath.exists() and path.filepath.is_dir():
+                    for basepath, _, files in path.filepath.walk():  # type: ignore  # https://github.com/python/mypy/issues/11880
+                        for file in files:
+                            filepath = epath.Path(basepath) / file
+                            fullpath = get_fullpath(filepath, path.filepath)
+                            match_includes = match_path(self.node.includes, fullpath)
+                            if match_includes:
+                                included_files.append(
+                                    Path(
+                                        filepath=filepath,
+                                        fullpath=fullpath,
+                                    )
+                                )
+                # If the file is a file, we directly check if it matches the includes.
+                else:
+                    match_includes = match_path(self.node.includes, path.fullpath)
                     if match_includes:
-                        included_files.append(
-                            Path(
-                                filepath=filepath,
-                                fullpath=fullpath,
-                            )
-                        )
+                        included_files.append(path)
         # We need to sort `files` to have a deterministic/reproducible order.
         included_files.sort()
         return sorted(included_files)

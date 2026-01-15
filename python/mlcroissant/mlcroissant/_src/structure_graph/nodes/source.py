@@ -122,7 +122,6 @@ class Transform(Node):
 
     format: str | None = mlc_dataclasses.jsonld_field(
         default=None,
-        exclusive_with=["json_path", "regex", "replace", "separator"],
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_FORMAT,
     )

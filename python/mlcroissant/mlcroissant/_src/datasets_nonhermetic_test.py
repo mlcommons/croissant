@@ -74,9 +74,18 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
             2,
             None,
         ],
+        [
+            "commoncrawl-CC-MAIN-2025-43-draft/metadata.json",
+            "warc-records",
+            3,
+            None,
+        ],
     ],
 )
 def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):
+    import mlcroissant
+    print(f"DEBUG: mlcroissant location: {mlcroissant.__file__}")
+    print(f"DEBUG: Running test with {dataset_name}")
     load_records_and_test_equality(
         "1.1", dataset_name, record_set_name, num_records, filters
     )

@@ -48,8 +48,7 @@
     "subField": "cr:subField",
     "transform": "cr:transform",
     "unArchive": "cr:unArchive",
-    "value": "cr:value",
-    "@base": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/"
+    "value": "cr:value"
   },
   "@type": [
     "sc:Dataset",
@@ -81,14 +80,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "warc-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "warc.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/warc",
@@ -105,14 +103,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "wat-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "wat.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/warc",
@@ -129,14 +126,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "wet-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "wet.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/warc",
@@ -153,14 +149,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "robotstxt-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "robotstxt.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/warc",
@@ -177,14 +172,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "non200responses-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "non200responses.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/warc",
@@ -201,14 +195,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "cc-index-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "cc-index.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/gzip",
@@ -225,14 +218,13 @@
     {
       "@type": "cr:FileSet",
       "@id": "cc-index-table-files",
-      "containedIn": {
-        "@type": "cr:DataSource",
-        "fileObject": {
+      "cr:containedIn": {
+        "cr:fileObject": {
           "@id": "cc-index-table.paths.gz"
         },
-        "transform": {
-          "unArchive": true,
-          "readLines": true
+        "cr:transform": {
+          "cr:unArchive": true,
+          "cr:readLines": true
         }
       },
       "encodingFormat": "application/parquet",
@@ -246,6 +238,28 @@
       "encodingFormat": "application/gzip",
       "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664",
       "contentSize": "8813 B"
+    }
+  ],
+  "recordSet": [
+    {
+      "@id": "warc-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "warc-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "warc-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
     }
   ]
 }
