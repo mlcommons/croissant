@@ -17,6 +17,7 @@ from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.tests.nodes import create_test_node
 from mlcroissant._src.tests.versions import parametrize_conforms_to
 
@@ -65,6 +66,7 @@ def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
         constants.SCHEMA_ORG_URL: "https://mlcommons.org",
         constants.SCHEMA_ORG_VERSION: version,
         constants.ML_COMMONS_IS_LIVE_DATASET(ctx): False,
+        constants.ML_COMMONS_SD_VERSION(ctx): "2.0.0",
     }
     metadata = Metadata.from_jsonld(ctx, jsonld)
     assert metadata.name == "foo"
@@ -80,6 +82,7 @@ def test_from_jsonld(conforms_to: CroissantVersion, version: Any):
     assert metadata.ctx.is_live_dataset == False
     assert metadata.url == "https://mlcommons.org"
     assert metadata.version == "1.0.0"
+    assert metadata.sd_version == "2.0.0"
     assert not ctx.issues.errors
     assert not ctx.issues.warnings
 
@@ -183,6 +186,7 @@ def test_predecessors_are_propagated():
         id="records/name",
         name="records/name",
         data_types=constants.DataType.TEXT,
+        source=Source(field="records/name"),
     )
     record_set = RecordSet(
         id="records",
@@ -198,6 +202,7 @@ def test_parents_are_defined():
         id="records/name/subfield",
         name="records/name/subfield",
         data_types=constants.DataType.TEXT,
+        source=Source(field="records/name/subfield"),
     )
     field = Field(
         id="records/name",

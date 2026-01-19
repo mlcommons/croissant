@@ -1,17 +1,16 @@
-import os
+import os.path
+import tempfile
 
 from rdflib import Graph
 
-from croissant_rdf.providers import OpenmlHarvester
-
-OUTPUT_FILEPATH = "./tests/test_output.ttl"
-
+from croissant_rdf import OpenmlHarvester
 
 def test_openml():
-    harvester = OpenmlHarvester(fname=OUTPUT_FILEPATH, limit=5, search="blood")
-    harvester.generate_ttl()
+    with tempfile.NamedTemporaryFile(mode="w+b", suffix=".ttl", delete_on_close=False) as fp:
 
-    assert os.path.isfile(OUTPUT_FILEPATH)
-    g = Graph().parse(OUTPUT_FILEPATH, format="ttl")
-    assert len(g) > 0
-    os.remove(OUTPUT_FILEPATH)
+        harvester = OpenmlHarvester(fname=fp.name, limit=5, search="blood")
+        harvester.generate_ttl()
+
+        assert os.path.isfile(fp.name)
+        g = Graph().parse(fp.name, format="ttl")
+        assert len(g) > 0

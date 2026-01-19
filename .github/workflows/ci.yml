@@ -77,13 +77,14 @@ jobs:
     - run: pip install ipython ipykernel nbconvert
 
     # Notebooks are in the recipes/ folder.
+    # TODO(ccl-core): re-enable test with fashion-mnist once HF regression in fixed.
     - name: Run notebook
       run: |
         GITHUB_REPOSITORY="${{ env.GITHUB_REPOSITORY }}"
         ipython kernel install --user --name croissant-notebook
         for notebook in recipes/*ipynb
           do
-            if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ]
+            if [ "$notebook" = "recipes/flores200_datapipes.ipynb" ] || [ "$notebook" = "recipes/tfds_croissant_builder.ipynb" ]
             then
               echo "Skipping notebook=${notebook}"
             else
@@ -133,6 +134,7 @@ jobs:
           etils[epath] \
           GitPython \
           jsonpath_rw \
+          librosa \
           mypy \
           networkx \
           pandas \

@@ -151,8 +151,10 @@ def jsonld_field(
     **kwargs,
 ):
     """Overloads dataclasses.field with specific attributes."""
-    if cardinality not in ["ONE", "MANY"]:
-        raise ValueError(f"cardinality should be ONE or MANY. Got {cardinality}")
+    if cardinality not in ["ONE", "MANY", "LANGUAGE-TAGGED"]:
+        raise ValueError(
+            f"cardinality should be ONE, MANY or LANGUAGE-TAGGED. Got {cardinality}"
+        )
     if input_types is None:
         input_types = []
     if exclusive_with is None:
@@ -232,6 +234,8 @@ def _check_types(cls_or_instance, field: dataclasses.Field, metadata: Metadata) 
     expected_type = Union[tuple(types)]  # type: ignore
     if metadata["cardinality"] == "MANY":
         expected_type = list[expected_type]  # type: ignore
+    elif metadata["cardinality"] == "LANGUAGE-TAGGED":
+        expected_type = expected_type | dict[str, expected_type]  # type: ignore
     if field.default != dataclasses.MISSING:
         expected_type = Union[expected_type, type(field.default)]  # type: ignore
 

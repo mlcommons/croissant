@@ -51,6 +51,17 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_CITE_AS,
     )
+    conforms_to: list[str] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description=(
+            "The specifications the dataset conforms to. mlcroissant will use the first"
+            " valid CroissantVersion for validation. Note that, to use mlcroissant, at"
+            " least one valid CroissantVersion should be provided."
+        ),
+        input_types=[SDO.Text],
+        url=constants.DCTERMS_CONFORMS_TO,
+    )
     creators: list[Organization | Person] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
@@ -79,7 +90,8 @@ class Metadata(Node):
         input_types=[SDO.Date, SDO.DateTime],
         url=constants.SCHEMA_ORG_DATE_PUBLISHED,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         description="Description of the dataset.",
         input_types=[SDO.Text],
@@ -113,7 +125,8 @@ class Metadata(Node):
         input_types=[CreativeWork, SDO.Text, SDO.URL],
         url=constants.SCHEMA_ORG_LICENSE,
     )
-    name: str = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default="",
         description="The name of the dataset.",
         input_types=[SDO.Text],
@@ -163,6 +176,13 @@ class Metadata(Node):
         description="The version of the dataset following the requirements below.",
         input_types=[SDO.Integer, SDO.Number, SDO.Text],
         url=constants.SCHEMA_ORG_VERSION,
+    )
+    sd_version: str | None = mlc_dataclasses.jsonld_field(
+        cast_fn=cast_version,
+        default=None,
+        description="The version of the dataset metadata.",
+        input_types=[SDO.Integer, SDO.Number, SDO.Text],
+        url=constants.ML_COMMONS_SD_VERSION,
     )
     distribution: list[FileObject | FileSet] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
@@ -355,7 +375,13 @@ class Metadata(Node):
         jsonld = super().to_json()
         jsonld.pop("@id", None)
         jsonld["@context"] = context
-        conforms_to = self.ctx.conforms_to.to_json() if self.ctx.conforms_to else None
+        conforms_to: str | list[str] | None = None
+        if self.conforms_to:
+            conforms_to = (
+                self.conforms_to[0] if len(self.conforms_to) == 1 else self.conforms_to
+            )
+        elif self.ctx.conforms_to:
+            conforms_to = self.ctx.conforms_to.to_json()
         jsonld["conformsTo"] = conforms_to
         if self.ctx.is_live_dataset:
             jsonld["isLiveDataset"] = self.ctx.is_live_dataset

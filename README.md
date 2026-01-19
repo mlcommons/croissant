@@ -67,7 +67,7 @@ Croissant 🥐 is a high-level format for machine learning datasets. Croissant b
 
 ## Simple Format Example
 
-Here is an extremely simple example of the Croissant format, with comments showing the four layers:
+Here is an extremely simple example of the Croissant format, with comments showing the four layers. The `@context` preamble is not included for simplicity. Complete croissant definitions for a wide range of datasets are included in the `datasets` folder of this repository.
 
 ```json
 {
@@ -76,6 +76,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
   "description": "This is a minimal example, including the required and the recommended fields.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://example.com/dataset/recipes/minimal-recommended",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
   "distribution": [
     {
       "@type": "cr:FileObject",
@@ -159,6 +160,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
   - Via a `Croissant` tag button on the dataset's page (ex: <https://huggingface.co/datasets/CohereForAI/aya_collection>)
   - Via their API (ex: <https://huggingface.co/api/datasets/CohereForAI/aya_collection/croissant>)
 - [TFDS](https://www.tensorflow.org/datasets/overview) has a [`CroissantBuilder`](https://www.tensorflow.org/datasets/format_specific_dataset_builders#croissantbuilder) to transform any JSON-LD file into a TFDS dataset, which makes it possible to load the data into TensorFlow, JAX and PyTorch.
+- [CKAN](https://ckan.org) supports Croissant through the [ckanext-dcat](https://github.com/ckan/ckanext-dcat) extension starting from version 2.3.0. The metadata is embedded in the dataset's page source and is also accessible through a dedicated endpoint. For datasets imported into the CKAN DataStore, the resources will expose Croissant's RecordSet objects, detailing data fields like column names and types.
 - [Dataverse](https://dataverse.org) offers an [addon](https://github.com/gdcc/exporter-croissant) to export datasets in Croissant format and embed Croissant directly in the HTML of dataset landing pages.
 
 ## Licensing
@@ -180,19 +182,15 @@ Thank you for supporting Croissant! 🙂
 ## Citation
 
 ```
-@inproceedings{10.1145/3650203.3663326,
-    author = {Akhtar, Mubashara and Benjelloun, Omar and Conforti, Costanza and Gijsbers, Pieter and Giner-Miguelez, Joan and Jain, Nitisha and Kuchnik, Michael and Lhoest, Quentin and Marcenac, Pierre and Maskey, Manil and Mattson, Peter and Oala, Luis and Ruyssen, Pierre and Shinde, Rajat and Simperl, Elena and Thomas, Goeffry and Tykhonov, Slava and Vanschoren, Joaquin and van der Velde, Jos and Vogler, Steffen and Wu, Carole-Jean},
-    title = {Croissant: A Metadata Format for ML-Ready Datasets},
-    year = {2024},
-    isbn = {9798400706110},
-    publisher = {Association for Computing Machinery},
-    address = {New York, NY, USA},
-    url = {https://doi.org/10.1145/3650203.3663326},
-    doi = {10.1145/3650203.3663326},
-    pages = {1–6},
-    numpages = {6},
-    keywords = {ML datasets, discoverability, reproducibility, responsible AI},
-    location = {Santiago, Chile},
-    series = {DEEM '24}
+@inproceedings{NEURIPS2024_9547b09b,
+ author = {Akhtar, Mubashara and Benjelloun, Omar and Conforti, Costanza and Foschini, Luca and Gijsbers, Pieter and Giner-Miguelez, Joan and Goswami, Sujata and Jain, Nitisha and Karamousadakis, Michalis and Krishna, Satyapriya and Kuchnik, Michael and Lesage, Sylvain and Lhoest, Quentin and Marcenac, Pierre and Maskey, Manil and Mattson, Peter and Oala, Luis and Oderinwale, Hamidah and Ruyssen, Pierre and Santos, Tim and Shinde, Rajat and Simperl, Elena and Suresh, Arjun and Thomas, Goeffry and Tykhonov, Slava and Vanschoren, Joaquin and Varma, Susheel and van der Velde, Jos and Vogler, Steffen and Wu, Carole-Jean and Zhang, Luyao},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {A. Globerson and L. Mackey and D. Belgrave and A. Fan and U. Paquet and J. Tomczak and C. Zhang},
+ pages = {82133--82148},
+ publisher = {Curran Associates, Inc.},
+ title = {Croissant: A Metadata Format for ML-Ready Datasets},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2024/file/9547b09b722f2948ff3ddb5d86002bc0-Paper-Datasets_and_Benchmarks_Track.pdf},
+ volume = {37},
+ year = {2024}
 }
 ```

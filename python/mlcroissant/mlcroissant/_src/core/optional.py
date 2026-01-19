@@ -97,9 +97,19 @@ class OptionalDependencies(object):
         return _try_import("scipy", package_name="scipy")
 
     @cached_class_property
+    def pydicom(cls) -> types.ModuleType:  # pylint: disable=invalid-name
+        """Cached pydicom module."""
+        return _try_import("pydicom", package_name="pydicom")
+
+    @cached_class_property
     def torchdata_datapipes(cls) -> types.ModuleType:
         """Cached torchdata module."""
         return _try_import("torchdata.datapipes", package_name="torchdata")
+
+    @cached_class_property
+    def tifffile(cls) -> types.ModuleType:
+        """Cached tifffle module."""
+        return _try_import("tifffile", package_name="Tifffile")
 
 
 deps = OptionalDependencies

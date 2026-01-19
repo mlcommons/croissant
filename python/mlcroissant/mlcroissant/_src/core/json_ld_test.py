@@ -2,9 +2,11 @@
 
 import json
 
-from etils import epath
 import pytest
 
+from mlcroissant._src.core import constants
+from mlcroissant._src.core.context import Context
+from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.rdf import make_context
 from mlcroissant._src.datasets import Dataset
 
@@ -13,11 +15,7 @@ from mlcroissant._src.datasets import Dataset
 # Please, use scripts/migrations/migrate.py to migrate datasets.
 @pytest.mark.parametrize("version", ["0.8", "1.0", "1.1"])
 def test_expand_and_reduce_json_ld(version):
-    dataset_folder = (
-        epath.Path(__file__).parent.parent.parent.parent.parent.parent
-        / "datasets"
-        / version
-    )
+    dataset_folder = constants.DATASETS_FOLDER / version
     paths = [path for path in dataset_folder.glob("*/*.json")]
     assert paths, f"Warning: Checking an empty list of paths: {dataset_folder}"
     for path in paths:
@@ -42,6 +40,7 @@ def test_make_context():
         "data": {"@id": "cr:data", "@type": "@json"},
         "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
         "dct": "http://purl.org/dc/terms/",
+        "equivalentProperty": "cr:equivalentProperty",
         "examples": {"@id": "cr:examples", "@type": "@json"},
         "extract": "cr:extract",
         "field": "cr:field",
@@ -61,6 +60,7 @@ def test_make_context():
         "regex": "cr:regex",
         "repeated": "cr:repeated",
         "replace": "cr:replace",
+        "samplingRate": "cr:samplingRate",
         "sc": "https://schema.org/",
         "separator": "cr:separator",
         "source": "cr:source",
@@ -68,3 +68,21 @@ def test_make_context():
         "transform": "cr:transform",
         "foo": "bar",
     }
+
+
+def test_expand_and_reduce_language_tagged():
+    ctx = Context(conforms_to=CroissantVersion.V_1_1)
+    dataset = Dataset({
+        "@context": make_context(ctx),
+        "@type": "sc:Dataset",
+        "conformsTo": CroissantVersion.V_1_1.value,
+        "name": {"en": "a", "fr": "b"},
+        "description": [
+            {"@language": "en", "@value": "A"},
+            {"@language": "de", "@value": "B"},
+        ],
+    })
+    metadata = dataset.metadata
+    actual = metadata.to_json()
+    assert actual["name"] == {"en": "a", "fr": "b"}
+    assert actual["description"] == {"en": "A", "de": "B"}

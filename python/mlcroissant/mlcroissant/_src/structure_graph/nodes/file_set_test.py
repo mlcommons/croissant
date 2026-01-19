@@ -10,6 +10,8 @@ from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
+from mlcroissant._src.structure_graph.nodes.source import Source
+from mlcroissant._src.structure_graph.nodes.source import Transform
 from mlcroissant._src.tests.nodes import create_test_node
 from mlcroissant._src.tests.versions import parametrize_conforms_to
 
@@ -58,3 +60,28 @@ def test_from_jsonld(conforms_to):
     assert file_set.excludes == ["*.csv"]
     assert file_set.includes == ["*.json"]
     assert not ctx.issues.errors
+
+
+def test_contained_in_with_source():
+    ctx = Context()
+    source = Source(
+        ctx=ctx,
+        file_object="manifest.zip",
+        transforms=[Transform(un_archive=True)],
+    )
+    file_set = FileSet(
+        ctx=ctx,
+        name="test_file_set",
+        encoding_formats=["application/json"],
+        contained_in=[source],
+    )
+    assert file_set.contained_in == [source]
+    assert file_set.to_json() == {
+        "@type": "cr:FileSet",
+        "name": "test_file_set",
+        "encodingFormat": "application/json",
+        "containedIn": {
+            "fileObject": {"@id": "manifest.zip"},
+            "transform": {"cr:unArchive": True},
+        },
+    }

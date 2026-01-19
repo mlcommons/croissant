@@ -1,5 +1,7 @@
 """Field module."""
 
+from typing import Any
+
 from rdflib import term
 from rdflib.namespace import SDO
 from typing_extensions import Self
@@ -40,17 +42,25 @@ class Field(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
+    annotations: list[Self] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="A set of annotations that apply to the specific field.",
+        from_jsonld=lambda ctx, annotations: Field.from_jsonld(ctx, annotations),
+        url=constants.ML_COMMONS_ANNOTATION,
+    )
     array_shape: str | None = mlc_dataclasses.jsonld_field(
         default=None,
         description=(
-            "The shape of the array as a comma-separated string.  -1 indicates "
+            "The shape of the array as a comma-separated string. -1 indicates "
             " dimensions of unknown/unspecified size. (-1,) represents a simple list."
             " If specified,  then `is_array` must be True."
         ),
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_ARRAY_SHAPE,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
@@ -95,7 +105,8 @@ class Field(Node):
         url=constants.ML_COMMONS_IS_ENUMERATION,
         versions=[CroissantVersion.V_0_8],
     )
-    name: str = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default="",
         description="The name of the Field.",
         input_types=[SDO.Text],
@@ -131,8 +142,10 @@ class Field(Node):
     source: Source = mlc_dataclasses.jsonld_field(
         default_factory=Source,
         description=(
-            "The data source of the field. This will generally reference a `FileObject`"
-            " or `FileSet`'s contents (e.g., a specific column of a table)."
+            "The data source of the field. Leaf fields must provide either a"
+            " `source` or a constant `value`, but never both. This will generally"
+            " reference a `FileObject` or `FileSet`'s contents (e.g., a specific"
+            " column of a table)."
         ),
         input_types=[Source],
         url=constants.ML_COMMONS_SOURCE,
@@ -144,6 +157,18 @@ class Field(Node):
         from_jsonld=lambda ctx, fields: Field.from_jsonld(ctx, fields),
         url=constants.ML_COMMONS_SUB_FIELD,
     )
+    value: Any | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "A constant value applied to every record of the RecordSet. Leaf fields"
+            " must define either `value` or `source`, but never both."
+        ),
+        # Accept any JSON-serializable value (str,int,float,bool,dict,list,None).
+        # We intentionally omit input_types so non-text JSON values are allowed.
+        from_jsonld=lambda _, v: v,
+        to_jsonld=lambda _, v: v,
+        url=constants.SCHEMA_ORG_VALUE,
+    )
 
     def __post_init__(self):
         """Checks arguments of the node."""
@@ -151,7 +176,16 @@ class Field(Node):
         uuid_field = "name" if self.ctx.is_v0() else "id"
         self.validate_name()
         self.assert_has_mandatory_properties(uuid_field)
-        self.source.check_source(self.add_error)
+        has_value = self.value is not None
+        has_source = bool(self.source)
+        if has_value and has_source:
+            self.add_error(
+                f"Field {self.uuid} defines both `source` and `value`. Please specify"
+                " exactly one of them."
+            )
+            self.source.check_source(self.add_error)
+        elif has_source:
+            self.source.check_source(self.add_error)
         self._standardize_data_types()
         if self.array_shape and not self.is_array:
             self.add_error(
@@ -202,10 +236,11 @@ class Field(Node):
                 return EXPECTED_DATA_TYPES[term.URIRef(data_type)]
             # data_type is an ML semantic type:
             elif data_type in [
-                DataType.IMAGE_OBJECT,
+                DataType.AUDIO_OBJECT,
                 # For some reasons, pytype cannot infer `Any` on ctx:
                 DataType.BOUNDING_BOX,  # pytype: disable=wrong-arg-types
-                DataType.AUDIO_OBJECT,
+                DataType.IMAGE_OBJECT,
+                DataType.VIDEO_OBJECT,
             ]:
                 return term.URIRef(data_type)
         # The data_type has to be found on the source:

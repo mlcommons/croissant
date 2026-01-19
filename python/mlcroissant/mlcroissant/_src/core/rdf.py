@@ -29,11 +29,16 @@ def make_context(ctx=None, **kwargs):
         "citeAs": "cr:citeAs",
         "column": "cr:column",
         "conformsTo": "dct:conformsTo",
+        "containedIn": "cr:containedIn" if ctx is not None and ctx.is_v1_1() else None,
         "cr": "http://mlcommons.org/croissant/",
         "rai": "http://mlcommons.org/croissant/RAI/",
         "data": {"@id": "cr:data", "@type": "@json"},
         "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
         "dct": "http://purl.org/dc/terms/",
+        "description": (
+            {"@container": "@language"} if ctx is not None and ctx.is_v1_1() else None
+        ),
+        "equivalentProperty": "cr:equivalentProperty",
         "examples": {"@id": "cr:examples", "@type": "@json"},
         "extract": "cr:extract",
         "field": "cr:field",
@@ -47,6 +52,9 @@ def make_context(ctx=None, **kwargs):
         "jsonPath": "cr:jsonPath",
         "key": "sc:key" if ctx is not None and ctx.is_v0() else "cr:key",
         "md5": "sc:md5" if ctx is not None and ctx.is_v0() else "cr:md5",
+        "name": (
+            {"@container": "@language"} if ctx is not None and ctx.is_v1_1() else None
+        ),
         "parentField": "cr:parentField",
         "path": "cr:path",
         "recordSet": "cr:recordSet",
@@ -54,6 +62,7 @@ def make_context(ctx=None, **kwargs):
         "regex": "cr:regex",
         "repeated": "cr:repeated",
         "replace": "cr:replace",
+        "samplingRate": "cr:samplingRate",
         "sc": "https://schema.org/",
         "separator": "cr:separator",
         "source": "cr:source",

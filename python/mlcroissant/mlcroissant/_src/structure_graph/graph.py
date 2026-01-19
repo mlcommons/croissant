@@ -26,6 +26,7 @@ import networkx as nx
 from mlcroissant._src.core import constants
 from mlcroissant._src.core.types import Json
 from mlcroissant._src.structure_graph.base_node import Node
+from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
@@ -63,13 +64,35 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     for record_set in metadata.record_sets:
         for field in record_set.fields:
             _add_edge(graph, uuid_to_node, record_set.uuid, field)
-            for origin in [field.source, field.references]:
-                if origin:
-                    _add_edge(graph, uuid_to_node, origin.uuid, record_set)
+            if field.source:
+                _add_edge(graph, uuid_to_node, field.source.uuid, record_set)
+            if field.references:
+                referenced_node = uuid_to_node.get(field.references.uuid)
+                # If the referenced node is a "Field"
+                if isinstance(referenced_node, Field):
+                    # Dependency on references: Referenced Field -> Referencing Field
+                    _add_edge(graph, uuid_to_node, field.references.uuid, field)
+                # Backward compatible with earlier version of the Croissant spec
+                else:
+                    # If it is referencing other types of nodes such as FileObject
+                    _add_edge(graph, uuid_to_node, field.references.uuid, record_set)
             for sub_field in field.sub_fields:
-                for origin in [sub_field.source, sub_field.references]:
-                    if origin:
-                        _add_edge(graph, uuid_to_node, origin.uuid, record_set)
+                if sub_field.source:
+                    _add_edge(graph, uuid_to_node, sub_field.source.uuid, record_set)
+                if sub_field.references:
+                    referenced_node = uuid_to_node.get(field.references.uuid)
+                    # If the referenced node is a "Field"
+                    if isinstance(referenced_node, Field):
+                        # Dependency on references: Referenced Field -> Referencing Field
+                        _add_edge(
+                            graph, uuid_to_node, sub_field.references.uuid, sub_field
+                        )
+                    else:
+                        # If it is referencing other types of nodes such as FileObject
+                        _add_edge(
+                            graph, uuid_to_node, sub_field.references.uuid, record_set
+                        )
+
     # `Metadata` are used as the entry node.
     _add_node_as_entry_node(graph, metadata)
     return graph
@@ -87,12 +110,18 @@ def _get_entry_nodes(graph: nx.MultiDiGraph, node: Node) -> list[Node]:
     for node in entry_nodes:
         if isinstance(node, RecordSet) and not node.data:
             for field in node.fields:
-                if not field.source:
+                if not field.source and field.value is None and not field.sub_fields:
                     field.add_error(
-                        f'Node "{field.uuid}" is a field and has no source. Please, use'
-                        f" {constants.ML_COMMONS_SOURCE(ctx)} to specify the source."
+                        f"Field {field.uuid} does not define `source` or `value`."
+                        " Please specify exactly one of them."
                     )
-                else:
+                elif field.value is not None and not field.data_types:
+                    field.add_error(
+                        f'Field "{field.uuid}" defines a constant value but omits '
+                        f"{constants.ML_COMMONS_DATA_TYPE(ctx)}. Please declare the "
+                        "data type."
+                    )
+                elif field.source:
                     field.add_error(
                         f"Malformed source data: {field.source.uuid}. It does not refer"
                         " to any existing node. Have you used"

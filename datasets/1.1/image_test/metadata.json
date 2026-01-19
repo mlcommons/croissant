@@ -1,0 +1,202 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "GSFC_AI4QC dataset",
+  "description": "Semantic segmentation with a class assigned to each pixel.",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "citeAs": "None",
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "BVLabs"
+  },
+  "keywords": ["sky imaging", "sentinel-2", "cloud"],
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "publisher": {
+    "@type": "sc:Organization",
+    "name": "BVLabs"
+  },
+  "url": "https://zenodo.org/records/11120856",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "S2_images_all_bands_zip",
+      "name": "S2_images_all_bands.zip",
+      "contentUrl": "https://zenodo.org/records/11120856/files/S2_images_all_bands.zip?download=1",
+      "encodingFormat": "application/zip",
+      "sha256": "8a5cddd70495387f3a055590fce91fb60a6433d4eb051027a2a90d18f0466573"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "masks_zip",
+      "name": "masks.zip",
+      "contentUrl": "https://zenodo.org/records/11120856/files/masks.zip?download=1",
+      "encodingFormat": "application/zip",
+      "sha256": "c51bcbd2ec8c3f1649591b9c693ddbf99f5b464ec9c6d3b57bd7946fe455c1af"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "S2_images_true_color_zip",
+      "name": "S2_images_true_color.zip",
+      "contentUrl": "https://zenodo.org/records/11120856/files/S2_images_true_color.zip?download=1",
+      "encodingFormat": "application/zip",
+      "sha256": "f2fc2f7602087e55790a1556fac2938489b5320fde3737d90d79061447f0e340"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "band_s2_tif_set",
+      "name": "band_s2_tif_set",
+      "description": "Band files",
+      "containedIn": {
+        "@id": "S2_images_all_bands_zip"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "S2_images_all_bands/*/s2*.tif"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "image_s2_tif_set",
+      "name": "image_s2_tif_set",
+      "description": "Image files",
+      "containedIn": {
+        "@id": "S2_images_true_color_zip"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "S2_images_true_color/s2*.tif"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "mask_s2_tif_set",
+      "name": "mask_s2_tif_set",
+      "description": "Mask files",
+      "containedIn": {
+        "@id": "masks_zip"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "masks/s2*.tif"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "images",
+      "name": "Images",
+      "description": "Collection of image data",
+      "key": {
+        "@id": "image_s2_tif_id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image_s2_tif_id",
+          "name": "image_s2_tif",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "image_s2_tif_set"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "bands",
+      "name": "Spectral Bands",
+      "description": "Collection of spectral band data (e.g., Sentinel-2 bands B01-B12)",
+      "key": {
+        "@id": "band_s2_tif_id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "band_s2_tif_id",
+          "name": "band_s2_tif",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "band_s2_tif_set"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "labels",
+      "name": "Labels/Annotations",
+      "description": "Collection of segmentation masks and annotations",
+      "key": {
+        "@id": "mask_s2_tif_id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mask_s2_tif_id",
+          "name": "mask_s2_tif",
+          "dataType": ["cr:SegmentationMask", "sc:ImageObject"],
+          "source": {
+            "fileSet": {
+              "@id": "mask_s2_tif_set"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

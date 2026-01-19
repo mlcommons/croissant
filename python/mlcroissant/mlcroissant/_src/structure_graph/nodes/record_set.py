@@ -37,6 +37,13 @@ class RecordSet(Node):
 
     JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
 
+    annotations: list[Field] = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default_factory=list,
+        description="A set of annotations that apply to the entire record.",
+        from_jsonld=lambda ctx, annotations: Field.from_jsonld(ctx, annotations),
+        url=constants.ML_COMMONS_ANNOTATION,
+    )
     data: list[Json] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default=None,
@@ -54,7 +61,8 @@ class RecordSet(Node):
         to_jsonld=data_types_to_jsonld,
         url=constants.ML_COMMONS_DATA_TYPE,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_DESCRIPTION,
@@ -85,7 +93,8 @@ class RecordSet(Node):
         to_jsonld=formatted_uuid_to_json,
         url=constants.SCHEMA_ORG_KEY,
     )
-    name: str = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default="",
         description="The name of the RecordSet.",
         input_types=[SDO.Text],

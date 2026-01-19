@@ -44,6 +44,7 @@ for conforms_to in CroissantVersion:
 _PREFIX_MAP = {}
 for conforms_to in CroissantVersion:
     ctx = Context(conforms_to=conforms_to)
+    _PREFIX_MAP[constants.ML_COMMONS_ANNOTATION_TYPE(ctx)] = "annotation"
     _PREFIX_MAP[constants.ML_COMMONS_FIELD_TYPE(ctx)] = "field"
     _PREFIX_MAP[constants.ML_COMMONS_RECORD_SET_TYPE(ctx)] = "recordSet"
     _PREFIX_MAP[constants.ML_COMMONS_SUB_FIELD_TYPE(ctx)] = "subField"
@@ -59,6 +60,9 @@ for conforms_to in CroissantVersion:
     )
     _KEYS_WITH_LIST.add(
         (constants.ML_COMMONS_SUB_FIELD(ctx), constants.ML_COMMONS_FIELD_TYPE(ctx))
+    )
+    _KEYS_WITH_LIST.add(
+        (constants.ML_COMMONS_ANNOTATION(ctx), constants.ML_COMMONS_FIELD_TYPE(ctx))
     )
     _KEYS_WITH_LIST.add(
         (constants.SCHEMA_ORG_DISTRIBUTION, constants.SCHEMA_ORG_DATASET)
@@ -145,20 +149,22 @@ def box_singleton_list(element: Any) -> list[Any] | None:
         return [element]
 
 
-def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -> Any:
+def recursively_populate_jsonld(
+    entry_node: Json, id_to_node: dict[str, Json], context: dict[str, Json]
+) -> Any:
     """Changes in place `entry_node` with its children."""
-    if "@value" in entry_node:
+    if isinstance(entry_node, dict) and "@value" in entry_node:
         if entry_node.get("@type") == namespace.RDF.JSON:
             # Stringified JSON is loaded as a dict.
             return json.loads(entry_node["@value"])
         else:
             # Other values are loaded as is.
             return entry_node["@value"]
-    elif len(entry_node) == 1 and "@id" in entry_node:
+    elif isinstance(entry_node, dict) and len(entry_node) == 1 and "@id" in entry_node:
         node_id = entry_node["@id"]
         if node_id in id_to_node:
             entry_node = id_to_node[node_id]
-            return recursively_populate_jsonld(entry_node, id_to_node)
+            return recursively_populate_jsonld(entry_node, id_to_node, context)
         else:
             return entry_node
     elif isinstance(entry_node, (str, float, int, bool)):
@@ -173,7 +179,23 @@ def recursively_populate_jsonld(entry_node: Json, id_to_node: dict[str, Json]) -
             entry_node[key] = term.URIRef(value[0])
         elif isinstance(value, list):
             del entry_node[key]
-            value = [recursively_populate_jsonld(child, id_to_node) for child in value]
+            if key in ("https://schema.org/name", "https://schema.org/description"):
+                if (
+                    len(value) == 1
+                    and isinstance(value[0], dict)
+                    and "@value" in value[0]
+                    and value[0].get("@language", context["@language"])
+                    == context["@language"]
+                ):
+                    value = value[0]["@value"]
+                elif all(isinstance(v, dict) and "@language" in v for v in value):
+                    value = {d["@language"]: d["@value"] for d in value}
+                entry_node[term.URIRef(key)] = value
+                continue
+            value = [
+                recursively_populate_jsonld(child, id_to_node, context)
+                for child in value
+            ]
             node_type = entry_node.get("@type", "")
             key, node_type = term.URIRef(key), term.URIRef(node_type)
             if (key, node_type) in _KEYS_WITH_LIST:
@@ -233,7 +255,7 @@ def expand_jsonld(data: Json, ctx: Context) -> Json:
     for node in nodes:
         node_id = node.get("@id")
         id_to_node[node_id] = node
-    recursively_populate_jsonld(entry_node, id_to_node)
+    recursively_populate_jsonld(entry_node, id_to_node, context)
     entry_node["@context"] = make_context(**context)
     return entry_node
 

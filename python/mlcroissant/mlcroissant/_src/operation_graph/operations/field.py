@@ -1,6 +1,8 @@
 """Field operation module."""
 
+import copy
 import dataclasses
+import datetime
 import functools
 import io
 import logging
@@ -63,6 +65,8 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
             raise ValueError(f"`format` only applies to dates. Got {field.data_type}")
     elif transform.separator is not None:
         return value.split(transform.separator)
+    elif transform.sampling_rate is not None:
+        return deps.librosa.resample(y=value, target_sr=transform.sampling_rate)
     return value
 
 
@@ -92,12 +96,24 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         if isinstance(value, deps.PIL_Image.Image):
             return value
         elif isinstance(value, bytes):
-            return deps.PIL_Image.open(io.BytesIO(value))
+            try:
+                return deps.PIL_Image.open(io.BytesIO(value))
+            except (deps.PIL_Image.UnidentifiedImageError, OSError) as e:
+                try:
+                    return deps.PIL_Image.fromarray(
+                        (deps.tifffile.imread(io.BytesIO(value)) * 255).astype("uint8")
+                    )
+                except ModuleNotFoundError:
+                    raise NotImplementedError(
+                        "Missing dependency to read TIFF files. Pillow or tifffile"
+                        " is not installed. Please, install `pip install pillow"
+                        " tifffile`"
+                    )
+                    raise e
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
-    elif data_type == DataType.AUDIO_OBJECT:
-        output = deps.librosa.load(io.BytesIO(value))
-        return output
+    elif data_type in [DataType.AUDIO_OBJECT, DataType.VIDEO_OBJECT]:
+        return value
     elif data_type == DataType.BOUNDING_BOX:  # pytype: disable=wrong-arg-types
         return bounding_box.parse(value)
     elif not isinstance(data_type, type):
@@ -106,6 +122,15 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
         return [_cast_value(ctx=ctx, value=v, data_type=data_type) for v in value]
     elif data_type == bytes and not isinstance(value, bytes):
         return _to_bytes(value)
+    elif data_type == datetime.time:
+        if isinstance(value, str):
+            return datetime.datetime.strptime(value, "%H:%M:%S").time()
+        elif isinstance(value, datetime.time):
+            return value
+        else:
+            raise ValueError(
+                f"No special case for type: {type(value)} of data_type: {data_type}"
+            )
     else:
         return data_type(value)
 
@@ -141,6 +166,8 @@ def _extract_lines(row: pd.Series) -> pd.Series:
 def _extract_value(df: pd.DataFrame, field: Field) -> pd.DataFrame:
     """Extracts the value according to the field rules."""
     source = field.source
+    if not source:
+        return df
     column_name = source.get_column()
     if column_name in df:
         return df
@@ -214,24 +241,33 @@ class ReadFields(Operation):
             """Returns a record parsed as a dictionary of fields."""
             result: dict[str, Any] = {}
             for field in fields:
-                source = field.source
-                column = source.get_column()
-                assert column in df, (
-                    f'Column "{column}" does not exist. Inspect the ancestors of the'
-                    f" field {field} to understand why. Possible fields: {df.columns}"
-                )
-                value = apply_transforms_fn(row[column], field=field)
+                has_source = bool(field.source)
+                if has_source:
+                    column = field.source.get_column()
+                    assert column in df, (
+                        f'Column "{column}" does not exist. Inspect the ancestors of'
+                        f" the field {field} to understand why. Possible fields:"
+                        f" {df.columns}"
+                    )
+                    value = apply_transforms_fn(row[column], field=field)
+                else:
+                    value = copy.deepcopy(field.value)
                 if _is_na(value):
                     value = None
                 elif field.repeated:
-                    value = [
-                        _cast_value(self.node.ctx, v, field.data_type) for v in value
-                    ]
+                    if value is not None:
+                        value = [
+                            _cast_value(self.node.ctx, v, field.data_type)
+                            for v in value
+                        ]
                 else:
                     value = _cast_value(self.node.ctx, value, field.data_type)
 
                 if self.node.ctx.is_v0():
-                    result[field.name] = value
+                    # v0 only supports str names
+                    result[field.name] = (
+                        value  # pytype: disable=container-type-mismatch
+                    )
                 else:
                     if field in self.node.fields:
                         result[field.id] = value

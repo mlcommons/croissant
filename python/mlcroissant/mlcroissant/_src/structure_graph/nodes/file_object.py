@@ -11,6 +11,18 @@ from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
+def _contained_in_from_jsonld(ctx, contained_in):
+    return [
+        (
+            Source.from_jsonld(ctx, c)
+            if isinstance(c, dict)
+            and c.get("@type") == constants.ML_COMMONS_SOURCE(ctx)
+            else uuid_from_jsonld(c)
+        )
+        for c in (contained_in if isinstance(contained_in, list) else [contained_in])
+    ]
+
+
 @mlc_dataclasses.dataclass
 class FileObject(Node):
     """Nodes to describe a dataset FileObject (distribution)."""
@@ -33,7 +45,7 @@ class FileObject(Node):
         input_types=[SDO.Text],
         url=SDO.contentSize,
     )
-    contained_in: list[str] | None = mlc_dataclasses.jsonld_field(
+    contained_in: list[str | Source] | None = mlc_dataclasses.jsonld_field(
         cardinality="MANY",
         default_factory=list,
         description=(
@@ -42,13 +54,19 @@ class FileObject(Node):
             " the contentUrl is evaluated as a relative path within the container"
             " object"
         ),
-        from_jsonld=lambda ctx, contained_in: uuid_from_jsonld(contained_in),
+        from_jsonld=_contained_in_from_jsonld,
         to_jsonld=lambda ctx, contained_in: [
-            formatted_uuid_to_json(ctx, uuid) for uuid in contained_in
+            formatted_uuid_to_json(ctx, c) if isinstance(c, str) else c.to_json()
+            for c in contained_in
         ],
-        url=SDO.containedIn,
+        url=lambda ctx: (
+            SDO.containedIn
+            if not ctx.is_v1_1()
+            else constants.ML_COMMONS(ctx).containedIn
+        ),
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         input_types=[SDO.Text],
         url=SDO.description,
@@ -70,6 +88,7 @@ class FileObject(Node):
         url=lambda ctx: ML_COMMONS(ctx).md5,
     )
     name: str = mlc_dataclasses.jsonld_field(
+        cardinality="ONE",  # a file name is not multilingual
         default="",
         description=(
             "The name of the file.  As much as possible, the name should reflect the"

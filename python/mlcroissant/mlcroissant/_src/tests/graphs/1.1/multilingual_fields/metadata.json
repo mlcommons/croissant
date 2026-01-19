@@ -1,0 +1,155 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "description": {"@container": "@language"},
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "name": {"@container": "@language"},
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "mydataset",
+  "description": "This is a description.",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "@language": "en",
+  "citeAs": "This is a citation.",
+  "datePublished": "1990-02-01",
+  "license": "This is a license.",
+  "url": "https://www.google.com/dataset",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@id": "a-csv-table",
+      "@type": "cr:FileObject",
+      "name": "a-csv-table",
+      "description": [
+        "bad type", 42
+      ],
+      "contentSize": "117743 B",
+      "contentUrl": "https://www.example.com/data.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+    }
+  ],
+  "recordSet": [
+    {
+      "@id": "a-record-set",
+      "@type": "cr:RecordSet",
+      "name": {
+        "en": "english",
+        "fr": "français"
+      },
+      "description": [
+        {
+          "@language": "en",
+          "@value": "alternate-jsonld-form-ok"
+        },
+        {
+          "@language": "fr",
+          "@value": "forme-alternate-jsonld-marche"
+        }
+      ],
+      "field": [
+        {
+          "@id": "a-record-set/first-field",
+          "@type": "cr:Field",
+          "name": {
+            "en": "same as not declaring language"
+          },
+          "description": {
+            "fr": "sulement un langue marche"
+          },
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "a-column"
+            },
+            "fileObject": {
+              "@id": "a-csv-table"
+            }
+          }
+        },
+        {
+          "@id": "a-record-set/second-field",
+          "@type": "cr:Field",
+          "name": {
+            "en": "second",
+            "fr": "deuxieme"
+          },
+          "description": {
+            "en": "part two",
+            "fr": "part deux"
+          },
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "b-column"
+            },
+            "fileObject": {
+              "@id": "a-csv-table"
+            }
+          }
+        },
+        {
+          "@id": "a-record-set/third-field",
+          "@type": "cr:Field",
+          "name": true,
+          "description": {
+            "de": -1.5
+          },
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "c-column"
+            },
+            "fileObject": {
+              "@id": "a-csv-table"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

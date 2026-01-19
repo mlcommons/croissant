@@ -51,7 +51,7 @@ from mlcroissant._src.tests.nodes import create_test_record_set
 )
 def test_invalid_data(data, error):
     ctx = Context()
-    field = create_test_field(ctx=ctx)
+    field = create_test_field(ctx=ctx, value="constant")
     create_test_record_set(
         ctx=ctx,
         data=data,
@@ -101,6 +101,41 @@ def test_from_jsonld():
             " set(). Got: {'column1'}."
         ),
     }
+
+
+def test_from_jsonld_with_long_annotation():
+    ctx = Context()
+    jsonld = {
+        "@type": constants.ML_COMMONS_RECORD_SET_TYPE(ctx),
+        "@id": "foo_id",
+        constants.ML_COMMONS_ANNOTATION(ctx): {
+            "@type": constants.ML_COMMONS_FIELD_TYPE(ctx),
+            "@id": "annotation_id",
+            constants.ML_COMMONS_SUB_FIELD(ctx): [
+                {
+                    "@type": constants.ML_COMMONS_FIELD_TYPE(ctx),
+                    "@id": "annotation_1",
+                    constants.ML_COMMONS_DATA_TYPE(ctx): constants.DataType.TEXT,
+                },
+                {
+                    "@type": constants.ML_COMMONS_FIELD_TYPE(ctx),
+                    "@id": "annotation_2",
+                    constants.ML_COMMONS_DATA_TYPE(ctx): constants.DataType.BOOL,
+                },
+            ],
+        },
+    }
+    record_set = RecordSet.from_jsonld(ctx, jsonld)
+    assert record_set.id == "foo_id"
+    assert len(record_set.annotations[0].sub_fields) == 2
+    assert record_set.annotations[0].sub_fields[0].id == "annotation_1"
+    assert record_set.annotations[0].sub_fields[0].data_types == [
+        constants.DataType.TEXT
+    ]
+    assert record_set.annotations[0].sub_fields[1].id == "annotation_2"
+    assert record_set.annotations[0].sub_fields[1].data_types == [
+        constants.DataType.BOOL
+    ]
 
 
 @pytest.mark.parametrize(

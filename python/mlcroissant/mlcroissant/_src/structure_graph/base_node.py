@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import dataclasses
 import inspect
+import os
 import re
 from typing import Any, Callable
 
@@ -64,9 +65,10 @@ class Node:
 
     ctx: Context = dataclasses.field(default_factory=Context)
     id: str = dataclasses.field(default_factory=generate_uuid)
-    name: str | None = None
+    name: str | dict[str, str] | None = None
     parents: list[Node] = dataclasses.field(default_factory=list)
     jsonld: Any = None
+    extra_properties: dict[str, Any] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         """Checks exclusive properties."""
@@ -201,7 +203,7 @@ class Node:
         """
         if self.ctx.is_v0():
             if len(self.parents) <= 1:
-                return self.name or ""
+                return f"{self.name}" or ""
             return f"{self.parents[-1].uuid}/{self.name}"
         else:
             return self.id
@@ -279,8 +281,10 @@ class Node:
     def validate_name(self):
         """Validates the name."""
         name = self.name
-        if not isinstance(name, str):
+        if not self.ctx.is_v1_1() and not isinstance(name, str):
             self.add_error(f"The name should be a string. Got: {type(name)}.")
+        elif not isinstance(name, (str, dict)):
+            self.add_error(f"The name should be a string or dict. Got: {type(name)}.")
             return
         if not name:
             # This case is already checked for in every node's __post_init__ as `name`
@@ -358,6 +362,7 @@ class Node:
             if field.cardinality == "MANY" and field.name not in _LIST_FIELDS:
                 value = unbox_singleton_list(value)
             jsonld[key] = value
+        jsonld.update(self.extra_properties)
         jsonld = remove_empty_values(jsonld)
         return sort_dict(jsonld)
 
@@ -399,16 +404,30 @@ class Node:
                 ctx.issues.add_warning(warning)
             if value is not None:
                 kwargs[field.name] = value
+        # Collect extra properties.
+        extra_properties = {}
+        for key, value in jsonld.items():
+            if key not in [
+                field.call_url(ctx) for field in mlc_dataclasses.jsonld_fields(cls)
+            ] and key not in ["@type", "@id", "@context"]:
+                # Shorten key if possible.
+                short_key = ctx.rdf.shorten_key(key)
+                extra_properties[short_key] = _compact_jsonld_value(ctx, value)
         return cls(
             ctx=ctx,
             id=uuid_from_jsonld(jsonld),
             jsonld=jsonld,
-            **kwargs,
+            extra_properties=extra_properties,
+            **kwargs,  # type: ignore[arg-type]
         )
 
-    JSONLD_TYPE: Callable[[Context], term.URIRef] | term.URIRef | str | None = (
-        _MISSING_JSONLD_TYPE
-    )
+    JSONLD_TYPE: (
+        Callable[[Context], term.URIRef]
+        | Callable[[], term.URIRef]
+        | term.URIRef
+        | str
+        | None
+    ) = _MISSING_JSONLD_TYPE
 
     @classmethod
     def _jsonld_type(cls, ctx: Context):
@@ -416,7 +435,10 @@ class Node:
         if cls.JSONLD_TYPE == _MISSING_JSONLD_TYPE:
             raise NotImplementedError("Output the right JSON-LD type.")
         elif callable(cls.JSONLD_TYPE):
-            return cls.JSONLD_TYPE(ctx)
+            sig = inspect.signature(cls.JSONLD_TYPE)
+            if len(sig.parameters) == 1:
+                return cls.JSONLD_TYPE(ctx)  # type: ignore[call-arg]
+            return cls.JSONLD_TYPE()  # type: ignore[call-arg]
         else:
             return cls.JSONLD_TYPE
 
@@ -435,6 +457,8 @@ def _value_from_input_types(
     """Retrieves the value based on the JsonldField."""
     if value is None:
         return None
+    if isinstance(value, dict) and field.cardinality == "LANGUAGE-TAGGED":
+        return value
     input_types = field.input_types
     if not input_types:
         # This is a problem in mlcroissant, so we raise an error:
@@ -491,3 +515,32 @@ def node_by_uuid(ctx: Context, uuid: str | None) -> Node | None:
         if node.uuid == uuid:  # pytype: disable=attribute-error
             return node  # pytype: disable=bad-return-type
     return None
+
+
+def _compact_jsonld_value(ctx: Context, value: Any) -> Any:
+    """Recursively compacts values in a JSON-LD structure."""
+    if isinstance(value, (str, term.URIRef)):
+        value_str = str(value)
+        # Handle local base IRI.
+        base_iri = f"file://{os.getcwd()}/{constants.BASE_IRI}"
+        if value_str.startswith(base_iri):
+            return value_str[len(base_iri) :]
+        return ctx.rdf.shorten_value(value_str)
+    elif isinstance(value, dict):
+        new_dict = {
+            ctx.rdf.shorten_key(k): _compact_jsonld_value(ctx, v)
+            for k, v in value.items()
+        }
+        # Hack: if we have a blank node ID, remove it.
+        # This happens sometimes during expansion/shortening of unknown properties
+        # when the input didn't have an @id.
+        if (
+            "@id" in new_dict
+            and isinstance(new_dict["@id"], str)
+            and new_dict["@id"].startswith("_:")
+        ):
+            del new_dict["@id"]
+        return new_dict
+    elif isinstance(value, list):
+        return [_compact_jsonld_value(ctx, v) for v in value]
+    return value

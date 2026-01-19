@@ -17,6 +17,12 @@ ML_COMMONS_V_1_0 = rdflib.Namespace("http://mlcommons.org/croissant/")
 # Value for the base IRI used when expanding @ids in the JSON-LD.
 BASE_IRI = "cr_base_iri/"
 
+# Paths used in tests.
+DATASETS_FOLDER = (
+    epath.Path(__file__).parent.parent.parent.parent.parent.parent / "datasets"
+)
+TEST_DATASETS_FOLDER = epath.Path(__file__).parent.parent / "tests/graphs"
+
 
 # ctx: Context is untyped to avoid cyclic dependencies. A unit test tests the behaviour.
 def ML_COMMONS(ctx) -> rdflib.Namespace:
@@ -27,6 +33,8 @@ def ML_COMMONS(ctx) -> rdflib.Namespace:
         return ML_COMMONS_V_1_0
 
 
+ML_COMMONS_ANNOTATION = lambda ctx: ML_COMMONS(ctx).annotation
+ML_COMMONS_ANNOTATION_TYPE = lambda ctx: ML_COMMONS(ctx).annotation
 ML_COMMONS_ARRAY_SHAPE = lambda ctx: ML_COMMONS(ctx).arrayShape
 ML_COMMONS_CITE_AS = lambda ctx: (
     SCHEMA_ORG_CITATION if ctx.is_v0() else ML_COMMONS(ctx).citeAs
@@ -58,6 +66,7 @@ ML_COMMONS_PATH = lambda ctx: ML_COMMONS(ctx).path
 ML_COMMONS_PERSONAL_SENSITVE_INFORMATION = lambda ctx: ML_COMMONS(
     ctx
 ).personalSensitiveInformation
+ML_COMMONS_READLINES = lambda ctx: ML_COMMONS(ctx).readLines
 ML_COMMONS_RECORD_SET = lambda ctx: ML_COMMONS(ctx).recordSet
 ML_COMMONS_RECORD_SET_TYPE = lambda ctx: ML_COMMONS(ctx).RecordSet
 ML_COMMONS_REFERENCES = lambda ctx: ML_COMMONS(ctx).references
@@ -65,11 +74,14 @@ ML_COMMONS_REGEX = lambda ctx: ML_COMMONS(ctx).regex
 ML_COMMONS_REPEATED = lambda ctx: ML_COMMONS(ctx).repeated
 # ML_COMMONS.replace is understood as the `replace` method on the class Namespace.
 ML_COMMONS_REPLACE = lambda ctx: ML_COMMONS(ctx)["replace"]
+ML_COMMONS_SAMPLING_RATE = lambda ctx: ML_COMMONS(ctx).samplingRate
+ML_COMMONS_SD_VERSION = lambda ctx: ML_COMMONS(ctx).sdVersion
 ML_COMMONS_SEPARATOR = lambda ctx: ML_COMMONS(ctx).separator
 ML_COMMONS_SOURCE = lambda ctx: ML_COMMONS(ctx).source
 ML_COMMONS_SUB_FIELD = lambda ctx: ML_COMMONS(ctx).subField
 ML_COMMONS_SUB_FIELD_TYPE = lambda ctx: ML_COMMONS(ctx).SubField
 ML_COMMONS_TRANSFORM = lambda ctx: ML_COMMONS(ctx).transform
+ML_COMMONS_UNARCHIVE = lambda ctx: ML_COMMONS(ctx).unArchive
 
 # Croissant RAI extension
 # V1.0 namespace
@@ -120,11 +132,14 @@ SCHEMA_ORG_DATASET = namespace.SDO.Dataset
 SCHEMA_ORG_DATA_TYPE_AUDIO_OBJECT = namespace.SDO.AudioObject
 SCHEMA_ORG_DATA_TYPE_BOOL = namespace.SDO.Boolean
 SCHEMA_ORG_DATA_TYPE_DATE = namespace.SDO.Date
+SCHEMA_ORG_DATA_TYPE_DATETIME = namespace.SDO.DateTime
 SCHEMA_ORG_DATA_TYPE_FLOAT = namespace.SDO.Float
 SCHEMA_ORG_DATA_TYPE_IMAGE_OBJECT = namespace.SDO.ImageObject
 SCHEMA_ORG_DATA_TYPE_INTEGER = namespace.SDO.Integer
 SCHEMA_ORG_DATA_TYPE_TEXT = namespace.SDO.Text
+SCHEMA_ORG_DATA_TYPE_TIME = namespace.SDO.Time
 SCHEMA_ORG_DATA_TYPE_URL = namespace.SDO.URL
+SCHEMA_ORG_DATA_TYPE_VIDEO_OBJECT = namespace.SDO.VideoObject
 SCHEMA_ORG_DESCRIPTION = namespace.SDO.description
 SCHEMA_ORG_DISTRIBUTION = namespace.SDO.distribution
 SCHEMA_ORG_EMAIL = namespace.SDO.email
@@ -136,6 +151,7 @@ SCHEMA_ORG_PUBLISHER = namespace.SDO.publisher
 SCHEMA_ORG_SAME_AS = namespace.SDO.sameAs
 SCHEMA_ORG_SHA256 = namespace.SDO.sha256
 SCHEMA_ORG_URL = namespace.SDO.url
+SCHEMA_ORG_VALUE = namespace.SDO.value
 SCHEMA_ORG_VERSION = namespace.SDO.version
 
 # Schema.org URIs that do not exist yet in the standard.
@@ -153,6 +169,9 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_ARRAY_SHAPE(ctx): "array_shape",
     ML_COMMONS_CITE_AS(ctx): "cite_as",
     ML_COMMONS_COLUMN(ctx): "csv_column",
+    (
+        ML_COMMONS(ctx).containedIn if ctx.is_v1_1() else namespace.SDO.containedIn
+    ): "contained_in",
     ML_COMMONS_DATA_TYPE(ctx): "data_type",
     ML_COMMONS_DATA(ctx): "data",
     ML_COMMONS_EXTRACT(ctx): "extract",
@@ -166,11 +185,12 @@ TO_CROISSANT = lambda ctx: {
     ML_COMMONS_REFERENCES(ctx): "references",
     ML_COMMONS_REGEX(ctx): "regex",
     ML_COMMONS_REPLACE(ctx): "replace",
+    ML_COMMONS_SAMPLING_RATE(ctx): "sampling_rate",
     ML_COMMONS_SEPARATOR(ctx): "separator",
     ML_COMMONS_SOURCE(ctx): "source",
+    ML_COMMONS_SD_VERSION(ctx): "sd_version",
     ML_COMMONS_TRANSFORM(ctx): "transforms",
     DCTERMS_CONFORMS_TO: "conforms_to",
-    SCHEMA_ORG_CONTAINED_IN: "contained_in",
     SCHEMA_ORG_CONTENT_SIZE: "content_size",
     SCHEMA_ORG_CONTENT_URL: "content_url",
     SCHEMA_ORG_CREATOR: "creators",
@@ -220,13 +240,17 @@ class EncodingFormat:
     CSV = "text/csv"
     GIT = "git+https"
     JPG = "image/jpeg"
+    DICOM = "image/dicom"
     JSON = "application/json"
     JSON_LINES = "application/jsonlines"
     MP3 = "audio/mpeg"
+    MP4 = "video/mp4"
     PARQUET = "application/x-parquet"
-    TEXT = "text/plain"
-    TSV = "text/tab-separated-values"
+    PNG = "image/png"
     TAR = "application/x-tar"
+    TEXT = "text/plain"
+    TIF = "image/tiff"
+    TSV = "text/tab-separated-values"
     ZIP = "application/zip"
 
 
@@ -237,6 +261,7 @@ class DataType:
     BOOL = namespace.SDO.Boolean
     BOUNDING_BOX = ML_COMMONS_V_1_0.BoundingBox
     DATE = namespace.SDO.Date
+    DATETIME = namespace.SDO.DateTime
     FLOAT = namespace.SDO.Float
     FLOAT16 = ML_COMMONS_V_1_0.Float16
     FLOAT32 = ML_COMMONS_V_1_0.Float32
@@ -253,4 +278,6 @@ class DataType:
     UINT64 = ML_COMMONS_V_1_0.UInt64
     SPLIT = ML_COMMONS_V_1_0.Split
     TEXT = namespace.SDO.Text
+    TIME = namespace.SDO.Time
     URL = namespace.SDO.URL
+    VIDEO_OBJECT = namespace.SDO.VideoObject

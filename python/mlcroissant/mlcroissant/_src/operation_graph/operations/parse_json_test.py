@@ -10,10 +10,16 @@ from mlcroissant._src.tests.nodes import create_test_field
 
 def test_parse_json():
     field1 = create_test_field(
-        source=Source(extract=Extract(json_path="$.annotations[*].id"))
+        source=Source(
+            field="record_set/annotation_id",
+            extract=Extract(json_path="$.annotations[*].id"),
+        )
     )
     field2 = create_test_field(
-        source=Source(extract=Extract(json_path="$.annotations[*].value"))
+        source=Source(
+            field="record_set/annotation_value",
+            extract=Extract(json_path="$.annotations[*].value"),
+        )
     )
     fields = (field1, field2)
     json = {

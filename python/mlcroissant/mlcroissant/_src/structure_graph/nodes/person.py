@@ -12,13 +12,15 @@ class Person(Node):
 
     JSONLD_TYPE = SDO.Person
 
-    name: str | None = mlc_dataclasses.jsonld_field(
+    name: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         description="The name of the item.",
         input_types=[SDO.Text],
         url=SDO.name,
     )
-    description: str | None = mlc_dataclasses.jsonld_field(
+    description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
+        cardinality="LANGUAGE-TAGGED",
         default=None,
         description="A description of the item.",
         input_types=[SDO.Text],
