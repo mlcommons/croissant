@@ -11,12 +11,20 @@ from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
+def _is_source(ctx, jsonld):
+    return (
+        jsonld.get("@type") == constants.ML_COMMONS_SOURCE(ctx)
+        or constants.ML_COMMONS_FILE_OBJECT(ctx) in jsonld
+        or constants.ML_COMMONS_FILE_SET(ctx) in jsonld
+        or constants.ML_COMMONS_RECORD_SET(ctx) in jsonld
+    )
+
+
 def _contained_in_from_jsonld(ctx, contained_in):
     return [
         (
             Source.from_jsonld(ctx, c)
-            if isinstance(c, dict)
-            and c.get("@type") == constants.ML_COMMONS_SOURCE(ctx)
+            if isinstance(c, dict) and _is_source(ctx, c)
             else uuid_from_jsonld(c)
         )
         for c in (contained_in if isinstance(contained_in, list) else [contained_in])

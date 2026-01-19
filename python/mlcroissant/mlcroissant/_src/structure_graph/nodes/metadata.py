@@ -14,6 +14,7 @@ from mlcroissant._src.core.context import Context
 from mlcroissant._src.core.context import CroissantVersion
 from mlcroissant._src.core.dates import cast_date
 from mlcroissant._src.core.dates import cast_dates
+from mlcroissant._src.core.dates import from_datetime_to_str
 from mlcroissant._src.core.issues import ValidationError
 from mlcroissant._src.core.json_ld import expand_jsonld
 from mlcroissant._src.core.json_ld import remove_empty_values
@@ -32,6 +33,18 @@ from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.organization import Organization
 from mlcroissant._src.structure_graph.nodes.person import Person
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+
+
+def _date_to_jsonld(ctx: Context, date: datetime.datetime | None) -> str | None:
+    return from_datetime_to_str(date)
+
+
+def _dates_to_jsonld(
+    ctx: Context, dates: list[datetime.datetime] | None
+) -> list[str] | None:
+    if dates is None:
+        return None
+    return [from_datetime_to_str(date) for date in dates]
 
 
 @mlc_dataclasses.dataclass
@@ -74,6 +87,7 @@ class Metadata(Node):
         default=None,
         description="The date the dataset was initially created.",
         input_types=[SDO.Date, SDO.DateTime],
+        to_jsonld=_date_to_jsonld,
         url=constants.SCHEMA_ORG_DATE_CREATED,
     )
     date_modified: datetime.datetime | None = mlc_dataclasses.jsonld_field(
@@ -81,6 +95,7 @@ class Metadata(Node):
         default=None,
         description="The date the dataset was last modified.",
         input_types=[SDO.Date, SDO.DateTime],
+        to_jsonld=_date_to_jsonld,
         url=constants.SCHEMA_ORG_DATE_MODIFIED,
     )
     date_published: datetime.datetime | None = mlc_dataclasses.jsonld_field(
@@ -88,6 +103,7 @@ class Metadata(Node):
         default=None,
         description="The date the dataset was published.",
         input_types=[SDO.Date, SDO.DateTime],
+        to_jsonld=_date_to_jsonld,
         url=constants.SCHEMA_ORG_DATE_PUBLISHED,
     )
     description: str | dict[str, str] | None = mlc_dataclasses.jsonld_field(
@@ -226,6 +242,7 @@ class Metadata(Node):
             cast_fn=cast_dates,
             default=None,
             input_types=[SDO.Date, SDO.DateTime],
+            to_jsonld=_dates_to_jsonld,
             url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
         )
     )

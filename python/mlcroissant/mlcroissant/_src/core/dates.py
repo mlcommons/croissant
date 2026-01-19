@@ -34,7 +34,7 @@ def from_datetime_to_str(date: datetime.datetime | None) -> str | None:
         return None
     elif date.time() == datetime.time.min:
         return date.strftime("%Y-%m-%d")
-    return date.isoformat()
+    return date.isoformat().replace("+00:00", "Z")
 
 
 def cast_date(date: Any) -> datetime.datetime | None:

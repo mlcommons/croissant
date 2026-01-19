@@ -30,6 +30,7 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.source import Source
 
 
 def from_file_to_json(filepath: epath.PathLike) -> tuple[epath.Path, Json]:
@@ -59,7 +60,17 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     uuid_to_node = _check_no_duplicate(metadata)
     for node in metadata.distribution:
         if node.contained_in:
-            for uuid in node.contained_in:
+            for possible_source in node.contained_in:
+                print("DEBUG: possible_source", possible_source)
+                if isinstance(possible_source, Source):
+                    uuid = possible_source.uuid
+                else:
+                    uuid = possible_source
+                print("DEBUG: uuid", uuid)
+                print("DEBUG: node", node)
+                print(
+                    "DEBUG: Adding edge from", uuid, "to", node, " with ", uuid_to_node
+                )
                 _add_edge(graph, uuid_to_node, uuid, node)
     for record_set in metadata.record_sets:
         for field in record_set.fields:

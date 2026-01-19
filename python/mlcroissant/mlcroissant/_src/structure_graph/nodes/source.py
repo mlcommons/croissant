@@ -112,17 +112,19 @@ class Transform(Node):
         format: The format for a date (e.g. "%Y-%m-%d %H:%M:%S.%f") or for a bounding
             box (e.g., "XYXY").
         json_path: The JSONPath expression that needs to be evaluated.
+        read_lines: Whether to read the file line by line.
         regex: A regex pattern with a capturing group to extract information in a
             string.
         replace: A replace pattern, e.g. "pattern_to_remove/pattern_to_add".
+        sampling_rate: The sampling rate to apply on the file.
         separator: A separator in a string to yield a list.
+        un_archive: Whether to un-archive the file.
     """
 
     JSONLD_TYPE = None
 
     format: str | None = mlc_dataclasses.jsonld_field(
         default=None,
-        exclusive_with=["json_path", "regex", "replace", "separator"],
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_FORMAT,
     )
@@ -161,6 +163,33 @@ class Transform(Node):
         input_types=[SDO.Boolean],
         url=constants.ML_COMMONS_UNARCHIVE,
     )
+
+    def __post_init__(self):
+        """Checks arguments of the node."""
+        Node.__post_init__(self)
+        self.validate()
+
+    def validate(self):
+        """Validates the transform."""
+        string_transforms = [
+            self.format,
+            self.json_path,
+            self.regex,
+            self.replace,
+            self.separator,
+        ]
+        num_string_transforms = sum(bool(p) for p in string_transforms)
+        if num_string_transforms > 1:
+            self.add_error(
+                "Too many string transforms. Exactly one of these properties should be"
+                " defined: format, json_path, regex, replace, separator."
+            )
+        has_boolean_transform = self.read_lines or self.un_archive
+        if num_string_transforms == 0 and not has_boolean_transform:
+            self.add_error(
+                "At least one transform must be defined. Choose among: format,"
+                " json_path, regex, replace, separator, read_lines, un_archive."
+            )
 
     def __eq__(self, other):
         """Checks equality."""
