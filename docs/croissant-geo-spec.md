@@ -74,11 +74,11 @@ This namespace IRI is generally abbreviated using the prefix: **geocr**
 
 In addition, this vocabulary relies on the following namespaces:
 
-| Prefix | IRI | Description |
-|---|---|---|
-| sc | <http://schema.org/> | The schema.org namespace |
-| cr | <http://mlcommons.org/croissant/> | MLCommons Croissant base namespace |
-| geocr | <http://mlcommons.org/croissant/geo/> | GeoCroissant extension namespace |
+| Prefix | IRI                                   | Description                        |
+|------------------------|------------------------|------------------------|
+| sc     | <http://schema.org/>                  | The schema.org namespace           |
+| cr     | <http://mlcommons.org/croissant/>     | MLCommons Croissant base namespace |
+| geocr  | <http://mlcommons.org/croissant/geo/> | GeoCroissant extension namespace   |
 
 The GeoCroissant specification is versioned, and the version is included in the URI of this specification:\
 **http://mlcommons.org/croissant/geo/1.0**
@@ -130,13 +130,13 @@ While the Croissant format introduces a strong foundation for ML dataset metadat
 
 The table below summarizes representative geospatial dataset types, the complexities common to Earth observation (EO) data, and the areas where Croissant core does not prescribe geospatial conventions (e.g., CRS, resolution, modality, and band semantics). GeoCroissant addresses these gaps by extending Croissant with standardized, interoperable metadata constructs that improve discoverability, interoperability, and ML-readiness for scalable and responsible GeoAI workflows.
 
-| Types of Geospatial Datasets | Issues in GeoAI datasets as compared to “generic” datasets | How does GeoCroissant (and Croissant) address these issues? |
-|---|---|---|
-| EO imagery (multi-band; optical/SAR) | Band semantics and modality-specific acquisition parameters | Standardize sensor/band descriptors and ML task metadata (Interoperability, ML workflow) |
-| Spatiotemporal datasets (time series, in-situ, simulations) | Time indexing + spatiotemporal coverage consistency | Consistent temporal modeling and time-series support (Time-series support, Discovery) |
-| Complex geo formats (NetCDF/HDF5/Zarr) | Nested variables, chunking, multiple assets per logical sample | Clear-mapping from raw containers to AI-ready datasets |
-| Mixed geometry data (vector, raster, point clouds) | Heterogeneous geometry types and spatial reference handling | Uniform spatial semantics and discovery/query support |
-| Human-labeled / crowdsourced GeoAI datasets | Sampling choices and spatial representativeness affect outcomes | Explicit provenance and spatial bias/sampling documentation based on Croissant RAI |
+| Types of Geospatial Datasets                                | Issues in GeoAI datasets as compared to “generic” datasets      | How does GeoCroissant (and Croissant) address these issues?                              |
+|------------------------|------------------------|------------------------|
+| EO imagery (multi-band; optical/SAR)                        | Band semantics and modality-specific acquisition parameters     | Standardize sensor/band descriptors and ML task metadata (Interoperability, ML workflow) |
+| Spatiotemporal datasets (time series, in-situ, simulations) | Time indexing + spatiotemporal coverage consistency             | Consistent temporal modeling and time-series support (Time-series support, Discovery)    |
+| Complex geo formats (NetCDF/HDF5/Zarr)                      | Nested variables, chunking, multiple assets per logical sample  | Clear-mapping from raw containers to AI-ready datasets                                   |
+| Mixed geometry data (vector, raster, point clouds)          | Heterogeneous geometry types and spatial reference handling     | Uniform spatial semantics and discovery/query support                                    |
+| Human-labeled / crowdsourced GeoAI datasets                 | Sampling choices and spatial representativeness affect outcomes | Explicit provenance and spatial bias/sampling documentation based on Croissant RAI       |
 
 ## **GeoCroissant**
 
@@ -148,7 +148,7 @@ Below is an illustrative example of GeoCroissant metadata for a representative G
 
 Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging Face: <https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars>).
 
-```         
+``` json
 {
   "@context": {
     "@language": "en",
@@ -304,19 +304,18 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
 
 The following table situates GeoCroissant terms within the broader metadata ecosystem by showing, for each use case, how GeoCroissant properties align with and complement existing vocabularies and standards (e.g., schema.org, Croissant core, and domain-specific ontologies).
 
-| # GeoCroissant Use Case | # GeoCroissant Properties | # External Vocabulary Properties | # Croissant Core Properties | # Schema.org Properties |
-|---|---|---|---|---|
-| **Generic Geospatial Datasets** | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration, geocr:spectralBandMetadata | dcat:bbox, stac:bbox, proj:epsg,\
-|  |  | stac:gsd |  | sc: GeospatialGeometry, sc:spatialCoverage |
-| **Use case 1: SpaceWeather Datasets** | geocr:multiWavelengthConfiguration, geocr:solarInstrumentCharacteristics \(with geocr:channelList, geocr:observatory, geocr:instrument\) | spase:MeasurementType,\spase:Observatory, spase:Instrument, spase:NumericalData | cr:description, cr:distribution, cr:Field | sc:description, sc:encodingFormat |
-| **Use case 2: Interoperability with other standards** | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration | dct:temporal (when mapping STAC datetime, etc.) | cr:distribution, cr:Field | sc:spatialCoverage, sc:temporalCoverage, sc:contentUrl, sc:encodingFormat |
-| **Use case 3: Programmatic Metadata Access** | geocr:recordEndpoint | FeatureCollection, Feature, geometry, bbox | cr:distribution, cr:description | sc:url, sc:locationCreated |
-| **Use case 4: Search and Discovery (GeoSPARQL)** | geocr:spatialIndex | geosparql:hasGeometry, geosparql:asWKT | cr:recordSet | — |
-| **Use case 5: ML Pipeline Integration** | \- | tdml-ai/: AI_EOTask\(OGC Training DML\) | cr:FileObject, cr:RecordSet, cr:Field | sc:encodingFormat, sc:name |
-| **Use case 6: Responsible GeoAI** | geocr:spatialBias, geocr:samplingStrategy | rai:dataCollection, rai:dataBiases, rai:annotatorDemographics, rai:dataUseCases | cr:description, cr:distribution | sc:creator, sc:license, sc:description |
-| **Use case 7: Time-Series Support** | geocr:temporalResolution, geocr:timeSeriesIndex | \- | cr:RecordSet, cr:Field | sc:temporalCoverage, sc:datePublished |
-| **Use case 8: Adding custom properties** | \- |  |  | sc:additionalProperty |
-| **Use case 9: Caching AI-ready transformations of large geospatial data** | \- |  | cr:transform, cr:extract, cr:FileSet / cr:FileObject | sc:encodingFormat, sc:contentUrl |
+| \# GeoCroissant Use Case                                                  | \# GeoCroissant Properties                                                                                                             | \# External Vocabulary Properties                                               | \# Croissant Core Properties                         | \# Schema.org Properties                                                  |
+|---------------|---------------|---------------|---------------|---------------|
+| **Generic Geospatial Datasets**                                           | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration, geocr:spectralBandMetadata                          | dcat:bbox, stac:bbox, proj:epsg,\\                                              |                                                      |                                                                           |
+| **Use case 1: SpaceWeather Datasets**                                     | geocr:multiWavelengthConfiguration, geocr:solarInstrumentCharacteristics (with geocr:channelList, geocr:observatory, geocr:instrument) | spase:MeasurementType,\spase:Observatory, spase:Instrument, spase:NumericalData | cr:description, cr:distribution, cr:Field            | sc:description, sc:encodingFormat                                         |
+| **Use case 2: Interoperability with other standards**                     | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration                                                      | dct:temporal (when mapping STAC datetime, etc.)                                 | cr:distribution, cr:Field                            | sc:spatialCoverage, sc:temporalCoverage, sc:contentUrl, sc:encodingFormat |
+| **Use case 3: Programmatic Metadata Access**                              | geocr:recordEndpoint                                                                                                                   | FeatureCollection, Feature, geometry, bbox                                      | cr:distribution, cr:description                      | sc:url, sc:locationCreated                                                |
+| **Use case 4: Search and Discovery (GeoSPARQL)**                          | geocr:spatialIndex                                                                                                                     | geosparql:hasGeometry, geosparql:asWKT                                          | cr:recordSet                                         | —                                                                         |
+| **Use case 5: ML Pipeline Integration**                                   | \-                                                                                                                                     | tdml-ai/: AI_EOTask(OGC Training DML)                                           | cr:FileObject, cr:RecordSet, cr:Field                | sc:encodingFormat, sc:name                                                |
+| **Use case 6: Responsible GeoAI**                                         | geocr:spatialBias, geocr:samplingStrategy                                                                                              | rai:dataCollection, rai:dataBiases, rai:annotatorDemographics, rai:dataUseCases | cr:description, cr:distribution                      | sc:creator, sc:license, sc:description                                    |
+| **Use case 7: Time-Series Support**                                       | geocr:temporalResolution, geocr:timeSeriesIndex                                                                                        | \-                                                                              | cr:RecordSet, cr:Field                               | sc:temporalCoverage, sc:datePublished                                     |
+| **Use case 8: Adding custom properties**                                  | \-                                                                                                                                     |                                                                                 |                                                      | sc:additionalProperty                                                     |
+| **Use case 9: Caching AI-ready transformations of large geospatial data** | \-                                                                                                                                     |                                                                                 | cr:transform, cr:extract, cr:FileSet / cr:FileObject | sc:encodingFormat, sc:contentUrl                                          |
 
 The concepts which cannot be cleanly expressed using existing, widely adopted vocabularies are introduced as GeoCroissant (geocr:) properties. Below, we provide concise definitions and illustrative examples for each GeoCroissant property introduced in this specification grouped by specific geospatial metadata.
 
@@ -330,7 +329,7 @@ Range: `sc:Text`\
 Cardinality: ONE\
 Example:
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset",
@@ -347,7 +346,7 @@ Cardinality: ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (dataset-level resolution)",
@@ -357,7 +356,7 @@ Example: Dataset-level
 
 Example: Data-level (spatial resolution varies per record, for eg. [Harmonized Landsat and Sentinel-2 Product](https://www.earthdata.nasa.gov/data/projects/hls/spectral-bands))
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (data-level resolution)",
@@ -392,7 +391,7 @@ Cardinality: MANY
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (dataset-level spatial index)",
@@ -402,7 +401,7 @@ Example: Dataset-level
 
 Example: Record-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (data-level spatial index)",
@@ -439,7 +438,7 @@ Cardinality: ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (dataset-level band configuration)",
@@ -453,7 +452,7 @@ Example: Dataset-level
 
 Example: Data-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (field-level band configuration)",
@@ -518,7 +517,7 @@ Cardinality: MANY
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (dataset-level spectral band metadata)",
@@ -540,7 +539,7 @@ Example: Dataset-level
 
 Example: Data-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (field-level spectral band metadata)",
@@ -607,7 +606,7 @@ Cardinality: ZERO or ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset with an API records endpoint",
@@ -626,7 +625,7 @@ Cardinality: ZERO or ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (spatial bias)",
@@ -643,7 +642,7 @@ Cardinality: ZERO or ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {    "@type": "Dataset",  "name": "Example dataset (sampling strategy)",  "geocr:samplingStrategy": "512×512 chips centered on burn polygons; cloudy scenes removed."}
 ```
 
@@ -659,13 +658,13 @@ Example: `"geocr:temporalResolution": { "@type":"QuantitativeValue","value":1,"u
 
 Example: Dataset-level
 
-```         
+``` json
 {  "@type": "Dataset",  "name": "Example dataset (dataset-level temporal resolution)",  "geocr:temporalResolution": { "@type": "QuantitativeValue", "value": 1, "unitText": "month" }}
 ```
 
 Example: Data-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset (record-level temporal resolution)",
@@ -700,7 +699,7 @@ Cardinality: ZERO or ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example dataset",
@@ -741,7 +740,7 @@ Cardinality: ZERO or ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example Space Weather dataset (multi-wavelength configuration)",
@@ -761,7 +760,7 @@ Cardinality: ZERO or ONE
 
 Example: Dataset-level
 
-```         
+``` json
 {
   "@type": "Dataset",
   "name": "Example Space Weather dataset (solar instrument characteristics)",
@@ -811,9 +810,9 @@ Furthermore, the use case identifies opportunities to support multiple data form
 
 ### **Key Properties in Use:**
 
-| GeoCroissant Property | Notes |
-|---|---|
-| `geocr:multiWavelengthConfiguration` | Structured GeoCroissant property (typed as `geocr:MultiWavelengthConfiguration`) that captures the set of wavelength channels (e.g., via `geocr:channelList`) to simplify authoring and support subsequent mapping to SPASE |
+| GeoCroissant Property                  | Notes                                                                                                                                                                                                                                                           |
+|------------------------------------|------------------------------------|
+| `geocr:multiWavelengthConfiguration`   | Structured GeoCroissant property (typed as `geocr:MultiWavelengthConfiguration`) that captures the set of wavelength channels (e.g., via `geocr:channelList`) to simplify authoring and support subsequent mapping to SPASE                                     |
 | `geocr:solarInstrumentCharacteristics` | Structured GeoCroissant property (typed as `geocr:SolarInstrumentCharacteristics`) that captures observatory/platform and instrument identifiers (e.g., `geocr:observatory`, `geocr:instrument`) to simplify authoring and support subsequent mapping to SPASE. |
 
 ## **Use case 2: Interoperability with other standards**
@@ -822,28 +821,28 @@ This use case addresses the need for interoperability between the GeoCroissant m
 
 The table below demonstrates a mapping between commonly used metadata fields in STAC, GeoCroissant, and GeoDCAT. This mapping enables metadata interoperability, facilitates automated format conversion, and supports integration with existing data catalogs, search engines, and metadata brokers.
 
-| STAC field | GeoCroissant field | External vocabulary field |
-|---|---|---|
-| id | @id | N/A |
-| type | @type | N/A |
-| title | name | dcat:title |
-| description | description | dcat:description |
-| datetime (or properties.datetime) | \- | schema:temporalCoverage, dct:temporal |
-| bbox | \- | schema:spatialCoverage (schema:GeoShape) / dcat:bbox |
-| geometry | \- | geosparql:hasGeometry, geosparql:asWKT |
-| assets | distribution | dcat:distribution |
-| assets\[\<key\>\].href | distribution\[\].contentUrl | schema:contentUrl |
-| assets\[\<key\>\].type | distribution\[\].encodingFormat | schema:encodingFormat |
-| proj:epsg | geocr:coordinateReferenceSystem | proj:epsg |
-| gsd (or properties.gsd) | geocr:spatialResolution | stac:gsd |
-| eo:bands (or band list in assets) | geocr:bandConfiguration and/or geocr:spectralBandMetadata | STAC EO extension (eo:bands) |
+| STAC field                        | GeoCroissant field                                        | External vocabulary field                            |
+|------------------------|------------------------|------------------------|
+| id                                | @id                                                       | N/A                                                  |
+| type                              | @type                                                     | N/A                                                  |
+| title                             | name                                                      | dcat:title                                           |
+| description                       | description                                               | dcat:description                                     |
+| datetime (or properties.datetime) | \-                                                        | schema:temporalCoverage, dct:temporal                |
+| bbox                              | \-                                                        | schema:spatialCoverage (schema:GeoShape) / dcat:bbox |
+| geometry                          | \-                                                        | geosparql:hasGeometry, geosparql:asWKT               |
+| assets                            | distribution                                              | dcat:distribution                                    |
+| assets\[\<key\>\].href            | distribution\[\].contentUrl                               | schema:contentUrl                                    |
+| assets\[\<key\>\].type            | distribution\[\].encodingFormat                           | schema:encodingFormat                                |
+| proj:epsg                         | geocr:coordinateReferenceSystem                           | proj:epsg                                            |
+| gsd (or properties.gsd)           | geocr:spatialResolution                                   | stac:gsd                                             |
+| eo:bands (or band list in assets) | geocr:bandConfiguration and/or geocr:spectralBandMetadata | STAC EO extension (eo:bands)                         |
 
 ### **Key Properties in Use:**
 
-| Property | Purpose |
-|---|---|
-| `geocr:coordinateReferenceSystem` | Specifies the dataset CRS/projection (e.g., EPSG code) to ensure consistent spatial referencing and interoperability across geospatial tools and standards. |
-| `geocr:spatialResolution` | Captures the dataset’s nominal spatial resolution (e.g., ground sampling distance) to support discovery, interoperability, and ML-readiness. |
+| Property                                                           | Purpose                                                                                                                                                                                                                                                      |
+|------------------------------------|------------------------------------|
+| `geocr:coordinateReferenceSystem`                                  | Specifies the dataset CRS/projection (e.g., EPSG code) to ensure consistent spatial referencing and interoperability across geospatial tools and standards.                                                                                                  |
+| `geocr:spatialResolution`                                          | Captures the dataset’s nominal spatial resolution (e.g., ground sampling distance) to support discovery, interoperability, and ML-readiness.                                                                                                                 |
 | `geocr:bandConfiguration (value typed as geocr:BandConfiguration)` | Describes raster band organization and semantics (e.g., band count and ordered band names) to support interoperable use of multi-band imagery. Spectral descriptors are represented separately via geocr:spectralBandMetadata (typed as geocr:SpectralBand). |
 
 ## **Use case 3: Programmatic Metadata Access (OGC APIs)**
@@ -854,7 +853,7 @@ When a GeoCroissant dataset exposes its record-level metadata through an OGC API
 
 Below is an example JSON response from a `/records` endpoint showing how GeoCroissant-style metadata can be represented in a **GeoJSON FeatureCollection**, making it suitable for direct spatial querying and client-side rendering.
 
-```         
+``` json
 {
   "@context": {
     "@language": "en",
@@ -965,8 +964,8 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
 
 ### **Key Properties in Use:**
 
-| Property | Purpose |
-|---|---|
+| Property               | Purpose                                                                                                                                       |
+|------------------------------------|------------------------------------|
 | `geocr:recordEndpoint` | Declares the OGC API – Records endpoint (e.g., /records) where the dataset’s metadata records can be programmatically retrieved and filtered. |
 
 ## **Use case 4: Search and Discovery - GeoSPARQL**
@@ -977,12 +976,12 @@ To complement GeoSPARQL reasoning, GeoCroissant introduces `geocr:spatialIndex` 
 
 ### **Key Properties in Use:**
 
-| Property | Purpose |
-|---|---|
-| `geocr:spatialIndex` | Stores precomputed spatial index tokens (e.g., DGGS/H3/geohash-like keys) for scalable coarse spatial filtering prior to exact geometry operations. |
-| `geosparql:hasGeometry` | Links a dataset/record to a GeoSPARQL geometry node to enable spatial predicates (e.g., intersects, within). |
-| `geosparql:asWKT` | Encodes geometry as WKT (typed literal) for standardized GeoSPARQL queries. |
-| `cr:recordSet` | Exposes record-level (atomic) metadata entries that can be individually queried and filtered. |
+| Property                | Purpose                                                                                                                                             |
+|------------------------------------|------------------------------------|
+| `geocr:spatialIndex`    | Stores precomputed spatial index tokens (e.g., DGGS/H3/geohash-like keys) for scalable coarse spatial filtering prior to exact geometry operations. |
+| `geosparql:hasGeometry` | Links a dataset/record to a GeoSPARQL geometry node to enable spatial predicates (e.g., intersects, within).                                        |
+| `geosparql:asWKT`       | Encodes geometry as WKT (typed literal) for standardized GeoSPARQL queries.                                                                         |
+| `cr:recordSet`          | Exposes record-level (atomic) metadata entries that can be individually queried and filtered.                                                       |
 
 ***Note: Refer to Appendix C for examples showing querying in GeoCroissant format using GeoSPARQL.***
 
@@ -1003,7 +1002,7 @@ print(dataset.metadata.to_json())
 
 Output-
 
-```         
+``` json
 {'@context': {'@language': 'en', '@vocab': 'https://schema.org/', 'column': 'ml:column', 'data': {'@id': 'ml:data', '@type': '@json'}, 'dataType': {'@id': 'ml:dataType', '@type': '@vocab'}, 'extract': 'ml:extract', 'field': 'ml:field', 'fileProperty': 'ml:fileProperty', 'format': 'ml:format', 'includes': 'ml:includes', 'isEnumeration': 'ml:isEnumeration', 'jsonPath': 'ml:jsonPath', 'ml': 'http://mlcommons.org/schema/', 'parentField': 'ml:parentField', 'path': 'ml:path', 'recordSet': 'ml:recordSet', 'references': 'ml:references', 'regex': 'ml:regex', 'repeated': 'ml:repeated', 'replace': 'ml:replace', 'sc': 'https://schema.org/', 'separator': 'ml:separator', 'source': 'ml:source', 'subField': 'ml:subField', 'transform': 'ml:transform', 'geocr': 'http://mlcommons.org/croissant/geo/', 'cr': 'http://mlcommons.org/croissant/', 'dct': 'http://purl.org/dc/terms/', 'version': '1.0'}, '@type': 'sc:Dataset', 'name': 'Example_GeoCroissant_Dataset', 'description': 'An example dataset following the GeoCroissant format.', 'url': 'https://example.com/geocroissant', 'distribution': [{'@type': 'sc:FileObject', 'name': 'satellite_image', 'contentUrl': 'https://example.com/image.tif', 'encodingFormat': 'image/tiff', 'sha256': 'your_checksum_here'}]}
 ```
 
@@ -1211,9 +1210,9 @@ RAI fields such as `rai:dataCollection`, `rai:dataCollectionType`, `rai:dataUseC
 
 ### **Mapped RAI Attributes**
 
-| Property | Purpose |
-|---|---|
-| `geocr:spatialBias` | Documents spatial representativeness limitations (e.g., geographic concentration, under-sampled regions/biomes) that may affect model generalization and evaluation. |
+| Property                 | Purpose                                                                                                                                                                             |
+|------------------------------------|------------------------------------|
+| `geocr:spatialBias`      | Documents spatial representativeness limitations (e.g., geographic concentration, under-sampled regions/biomes) that may affect model generalization and evaluation.                |
 | `geocr:samplingStrategy` | Describes how samples were selected or constructed (e.g., chip/windowing strategy, filtering criteria), enabling reproducible dataset creation and interpretation of training data. |
 
 ## **Use case 7: Support for Time-Series Data**
@@ -1363,7 +1362,7 @@ Example notebook recipes demonstrating GeoCroissant usage are available on the M
 
 The "mlcroissant\[geo\]" is an optional /extra dependency package for mlcroissant that adds geospatial data processing capabilities. When you install "mlcroissant\[geo\]", you get additional functionality specifically designed for working with converters that convert your current metadata into geocroissant metadata format.
 
-```         
+``` shell
 !pip install mlcroissant[geo]
 
 # Installed through `pip install -e .[geo]` -- while development
@@ -1385,14 +1384,13 @@ This appendix summarizes responses from the GeoCroissant user adoption survey an
 
 Overall, most spatial machine learning dataset fields received an average rating of **“Important.”** No spatial or non-spatial fields were rated **“Very unimportant.”** Across both spatial and non-spatial metadata, **description** was consistently identified as the most important field. Respondents noted that the description provides critical context required to interpret and responsibly use a dataset, including information on provenance, background, assumptions, and limitations (Refer table below).
 
-
-| Rank | Top five most important ML fields | Top five most important Geospatial fields |
-|---:|---|---|
-| 1 | Description | Description |
-| 2 | License | Sensor (e.g., optical, thermal) |
-| 3 | Distribution (file representation/format) | Annotation type (e.g., mask, bbox) |
-| 4 | Name | Distribution (file representation/format) |
-| 5 | URL | Model category (e.g., classification) |
+| Rank | Top five most important ML fields         | Top five most important Geospatial fields |
+|----------------------------:|----------------------|----------------------|
+|    1 | Description                               | Description                               |
+|    2 | License                                   | Sensor (e.g., optical, thermal)           |
+|    3 | Distribution (file representation/format) | Annotation type (e.g., mask, bbox)        |
+|    4 | Name                                      | Distribution (file representation/format) |
+|    5 | URL                                       | Model category (e.g., classification)     |
 
 : Top five metadata fields ranked by survey respondents for machine learning and geospatial dataset description in GeoCroissant.
 
@@ -1405,7 +1403,7 @@ Together, these figures report the mean importance (1–5, excluding NA) assigne
 
 *Query 1: Finding GeoCroissant dataset by querying via GeoSPARQL Geometry*
 
-```         
+``` sql
 PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
 PREFIX geocr:     <http://mlcommons.org/croissant/geo/1.0/>
 PREFIX dct:       <http://purl.org/dc/terms/>
@@ -1424,7 +1422,7 @@ WHERE {
 
 *Query 2: Discovering GeoCroissant Datasets by Exact Bounding Box Match*
 
-```         
+``` sql
 PREFIX geocr: <http://mlcommons.org/croissant/geo/1.0/>
 
 SELECT ?dataset ?record ?bbox
