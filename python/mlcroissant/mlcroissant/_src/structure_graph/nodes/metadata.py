@@ -41,7 +41,7 @@ def _date_to_jsonld(ctx: Context, date: datetime.datetime | None) -> str | None:
 
 def _dates_to_jsonld(
     ctx: Context, dates: list[datetime.datetime] | None
-) -> list[str] | None:
+) -> list[str | None] | None:
     if dates is None:
         return None
     return [from_datetime_to_str(date) for date in dates]

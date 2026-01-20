@@ -61,17 +61,12 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     for node in metadata.distribution:
         if node.contained_in:
             for possible_source in node.contained_in:
-                print("DEBUG: possible_source", possible_source)
                 if isinstance(possible_source, Source):
                     uuid = possible_source.uuid
                 else:
                     uuid = possible_source
-                print("DEBUG: uuid", uuid)
-                print("DEBUG: node", node)
-                print(
-                    "DEBUG: Adding edge from", uuid, "to", node, " with ", uuid_to_node
-                )
-                _add_edge(graph, uuid_to_node, uuid, node)
+                if uuid:
+                    _add_edge(graph, uuid_to_node, uuid, node)
     for record_set in metadata.record_sets:
         for field in record_set.fields:
             _add_edge(graph, uuid_to_node, record_set.uuid, field)
