@@ -74,15 +74,15 @@ This namespace IRI is generally abbreviated using the prefix: **geocr**
 
 In addition, this vocabulary relies on the following namespaces:
 
-+----------------------+---------------------------------------+------------------------------------+
-| Prefix               | IRI                                   | Description                        |
-+======================+=======================================+====================================+
-| sc                   | <http://schema.org/>                  | The schema.org namespace           |
-+----------------------+---------------------------------------+------------------------------------+
-| cr                   | <http://mlcommons.org/croissant/>     | MLCommons Croissant base namespace |
-+----------------------+---------------------------------------+------------------------------------+
-| geocr                | <http://mlcommons.org/croissant/geo/> | GeoCroissant extension namespace   |
-+----------------------+---------------------------------------+------------------------------------+
++----------------+---------------------------------------+------------------------------------+
+| Prefix         | IRI                                   | Description                        |
++================+=======================================+====================================+
+| sc             | <http://schema.org/>                  | The schema.org namespace           |
++----------------+---------------------------------------+------------------------------------+
+| cr             | <http://mlcommons.org/croissant/>     | MLCommons Croissant base namespace |
++----------------+---------------------------------------+------------------------------------+
+| geocr          | <http://mlcommons.org/croissant/geo/> | GeoCroissant extension namespace   |
++----------------+---------------------------------------+------------------------------------+
 
 The GeoCroissant specification is versioned, and the version is included in the URI of this specification:\
 **http://mlcommons.org/croissant/geo/1.0**
@@ -315,8 +315,8 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
 The following table situates GeoCroissant terms within the broader metadata ecosystem by showing, for each use case, how GeoCroissant properties align with and complement existing vocabularies and standards (e.g., schema.org, Croissant core, and domain-specific ontologies).
 
 +---------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+------------------------------------------------------+---------------------------------------------------------------------------+
-| GeoCroissant Use Case                                                     | GeoCroissant Properties                                                                                                                | External Vocabulary Properties                                                  | Croissant Core Properties                            | Schema.org Properties                                                     |
-+===========================================================================+========================================================================================================================================+=================================================================================+======================================================+===========================================================================+
+| # GeoCroissant Use Case                                                   | # GeoCroissant Properties                                                                                                              | # External Vocabulary Properties                                                | # Croissant Core Properties                          | # Schema.org Properties                                                   |
+|                                                                           |                                                                                                                                        |                                                                                 |                                                      |                                                                           |
 | **Generic Geospatial Datasets**                                           | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration, geocr:spectralBandMetadata                          | dcat:bbox, stac:bbox, proj:epsg,\                                               |                                                      | sc: GeospatialGeometry, sc:spatialCoverage                                |
 |                                                                           |                                                                                                                                        | stac:gsd                                                                        |                                                      |                                                                           |
 +---------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+------------------------------------------------------+---------------------------------------------------------------------------+
@@ -1007,11 +1007,11 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
 
 ### **Key Properties in Use:**
 
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| Property                          | Purpose                                                                                                                                       |
-+===================================+===============================================================================================================================================+
-| `geocr:recordEndpoint`            | Declares the OGC API – Records endpoint (e.g., /records) where the dataset’s metadata records can be programmatically retrieved and filtered. |
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
++------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| Property               | Purpose                                                                                                                                       |
++========================+===============================================================================================================================================+
+| `geocr:recordEndpoint` | Declares the OGC API – Records endpoint (e.g., /records) where the dataset’s metadata records can be programmatically retrieved and filtered. |
++------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 
 ## **Use case 4: Search and Discovery - GeoSPARQL**
 
@@ -1021,17 +1021,17 @@ To complement GeoSPARQL reasoning, GeoCroissant introduces `geocr:spatialIndex` 
 
 ### **Key Properties in Use:**
 
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| Property                          | Purpose                                                                                                                                             |
-+===================================+=====================================================================================================================================================+
-| `geocr:spatialIndex`              | Stores precomputed spatial index tokens (e.g., DGGS/H3/geohash-like keys) for scalable coarse spatial filtering prior to exact geometry operations. |
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| `geosparql:hasGeometry`           | Links a dataset/record to a GeoSPARQL geometry node to enable spatial predicates (e.g., intersects, within).                                        |
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| `geosparql:asWKT`                 | Encodes geometry as WKT (typed literal) for standardized GeoSPARQL queries.                                                                         |
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| `cr:recordSet`                    | Exposes record-level (atomic) metadata entries that can be individually queried and filtered.                                                       |
-+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Property                | Purpose                                                                                                                                             |
++=========================+=====================================================================================================================================================+
+| `geocr:spatialIndex`    | Stores precomputed spatial index tokens (e.g., DGGS/H3/geohash-like keys) for scalable coarse spatial filtering prior to exact geometry operations. |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| `geosparql:hasGeometry` | Links a dataset/record to a GeoSPARQL geometry node to enable spatial predicates (e.g., intersects, within).                                        |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| `geosparql:asWKT`       | Encodes geometry as WKT (typed literal) for standardized GeoSPARQL queries.                                                                         |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| `cr:recordSet`          | Exposes record-level (atomic) metadata entries that can be individually queried and filtered.                                                       |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ***Note: Refer to Appendix C for examples showing querying in GeoCroissant format using GeoSPARQL.***
 
@@ -1260,13 +1260,13 @@ RAI fields such as `rai:dataCollection`, `rai:dataCollectionType`, `rai:dataUseC
 
 ### **Mapped RAI Attributes**
 
-+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Property                          | Purpose                                                                                                                                                                             |
-+===================================+=====================================================================================================================================================================================+
-| `geocr:spatialBias`               | Documents spatial representativeness limitations (e.g., geographic concentration, under-sampled regions/biomes) that may affect model generalization and evaluation.                |
-+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| `geocr:samplingStrategy`          | Describes how samples were selected or constructed (e.g., chip/windowing strategy, filtering criteria), enabling reproducible dataset creation and interpretation of training data. |
-+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Property                 | Purpose                                                                                                                                                                             |
++==========================+=====================================================================================================================================================================================+
+| `geocr:spatialBias`      | Documents spatial representativeness limitations (e.g., geographic concentration, under-sampled regions/biomes) that may affect model generalization and evaluation.                |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `geocr:samplingStrategy` | Describes how samples were selected or constructed (e.g., chip/windowing strategy, filtering criteria), enabling reproducible dataset creation and interpretation of training data. |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ## **Use case 7: Support for Time-Series Data**
 
@@ -1438,19 +1438,19 @@ This appendix summarizes responses from the GeoCroissant user adoption survey an
 
 Overall, most spatial machine learning dataset fields received an average rating of **“Important.”** No spatial or non-spatial fields were rated **“Very unimportant.”** Across both spatial and non-spatial metadata, **description** was consistently identified as the most important field. Respondents noted that the description provides critical context required to interpret and responsibly use a dataset, including information on provenance, background, assumptions, and limitations (Refer table below).
 
-+----------------------+-------------------------------------------+-------------------------------------------+
-| Rank                 | Top five most important ML fields         | Top five most important Geospatial fields |
-+======================+===========================================+===========================================+
-| 1                    | Description                               | Description                               |
-+----------------------+-------------------------------------------+-------------------------------------------+
-| 2                    | License                                   | Sensor (e.g., optical, thermal)           |
-+----------------------+-------------------------------------------+-------------------------------------------+
-| 3                    | Distribution (file representation/format) | Annotation type (e.g., mask, bbox)        |
-+----------------------+-------------------------------------------+-------------------------------------------+
-| 4                    | Name                                      | Distribution (file representation/format) |
-+----------------------+-------------------------------------------+-------------------------------------------+
-| 5                    | URL                                       | Model category (e.g., classification)     |
-+----------------------+-------------------------------------------+-------------------------------------------+
++---------------+-------------------------------------------+-------------------------------------------+
+| Rank          | Top five most important ML fields         | Top five most important Geospatial fields |
++===============+===========================================+===========================================+
+| 1             | Description                               | Description                               |
++---------------+-------------------------------------------+-------------------------------------------+
+| 2             | License                                   | Sensor (e.g., optical, thermal)           |
++---------------+-------------------------------------------+-------------------------------------------+
+| 3             | Distribution (file representation/format) | Annotation type (e.g., mask, bbox)        |
++---------------+-------------------------------------------+-------------------------------------------+
+| 4             | Name                                      | Distribution (file representation/format) |
++---------------+-------------------------------------------+-------------------------------------------+
+| 5             | URL                                       | Model category (e.g., classification)     |
++---------------+-------------------------------------------+-------------------------------------------+
 
 : Top five metadata fields ranked by survey respondents for machine learning and geospatial dataset description in GeoCroissant.
 
