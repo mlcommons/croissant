@@ -74,6 +74,12 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
             2,
             None,
         ],
+        [
+            "commoncrawl-CC-MAIN-2025-43-draft/metadata.json",
+            "warc-records",
+            3,
+            None,
+        ],
     ],
 )
 def test_nonhermetic_loading_1_1(dataset_name, record_set_name, num_records, filters):

@@ -1,8 +1,10 @@
 """Extract operation module."""
 
 import dataclasses
+import gzip
 import logging
 import os
+import shutil
 import tarfile
 import zipfile
 
@@ -26,6 +28,12 @@ def should_extract(encoding_formats: list[str] | None) -> bool:
     )
 
 
+def is_gzip(file: epath.Path) -> bool:
+    """Whether the given file is GZIP compressed by examining its magic number."""
+    with file.open("rb") as f:
+        return f.read(2) == b"\x1f\x8b"
+
+
 def _extract_file(source: epath.Path, target: epath.Path) -> None:
     """Extracts the `source` file to `target`."""
     if zipfile.is_zipfile(source):
@@ -34,6 +42,11 @@ def _extract_file(source: epath.Path, target: epath.Path) -> None:
     elif tarfile.is_tarfile(source):
         with tarfile.open(source) as tar:
             tar.extractall(target)
+    elif is_gzip(source):
+        target.mkdir(parents=True, exist_ok=True)
+        with gzip.open(source, "rb") as f_in:
+            with open(target / source.stem, "wb") as f_out:
+                shutil.copyfileobj(f_in, f_out)
     else:
         raise ValueError(f"Unsupported compression method for file: {source}")
 

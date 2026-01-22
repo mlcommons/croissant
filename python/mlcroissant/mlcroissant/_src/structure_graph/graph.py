@@ -61,8 +61,6 @@ def from_nodes_to_graph(metadata) -> nx.MultiDiGraph:
     for node in metadata.distribution:
         if node.contained_in:
             for possible_source in node.contained_in:
-
-
                 if isinstance(possible_source, Source):
                     uuid = possible_source.uuid
                 else:
