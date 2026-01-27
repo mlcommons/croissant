@@ -10,6 +10,7 @@
     "citeAs": "cr:citeAs",
     "column": "cr:column",
     "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
     "data": {
       "@id": "cr:data",
       "@type": "@json"
@@ -48,20 +49,16 @@
     "subField": "cr:subField",
     "transform": "cr:transform",
     "unArchive": "cr:unArchive",
-    "value": "cr:value",
-    "@base": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/"
+    "value": "cr:value"
   },
-  "@type": [
-    "sc:Dataset",
-    "prov:Entity"
-  ],
+  "@type": "sc:Dataset",
   "conformsTo": "http://mlcommons.org/croissant/1.1",
   "name": "CC-MAIN-2025-43",
   "description": "Common Crawl October 2025 Crawl Archive",
   "license": "https://commoncrawl.org/terms-of-use",
   "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/index.html",
   "creator": {
-    "@type": "Organization",
+    "@type": "sc:Organization",
     "name": "The Common Crawl Foundation",
     "url": "https://commoncrawl.org/"
   },
@@ -82,7 +79,6 @@
       "@type": "cr:FileSet",
       "@id": "warc-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "warc.paths.gz"
         },
@@ -106,7 +102,6 @@
       "@type": "cr:FileSet",
       "@id": "wat-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "wat.paths.gz"
         },
@@ -130,7 +125,6 @@
       "@type": "cr:FileSet",
       "@id": "wet-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "wet.paths.gz"
         },
@@ -154,7 +148,6 @@
       "@type": "cr:FileSet",
       "@id": "robotstxt-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "robotstxt.paths.gz"
         },
@@ -178,7 +171,6 @@
       "@type": "cr:FileSet",
       "@id": "non200responses-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "non200responses.paths.gz"
         },
@@ -202,7 +194,6 @@
       "@type": "cr:FileSet",
       "@id": "cc-index-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "cc-index.paths.gz"
         },
@@ -226,7 +217,6 @@
       "@type": "cr:FileSet",
       "@id": "cc-index-table-files",
       "containedIn": {
-        "@type": "cr:DataSource",
         "fileObject": {
           "@id": "cc-index-table.paths.gz"
         },

@@ -41,6 +41,28 @@ def test_from_str_to_datetime(date: str, expected: datetime.datetime, errors: se
             datetime.datetime(year=2024, month=1, day=1, hour=12, minute=20),
             "2024-01-01T12:20:00",
         ],
+        [
+            datetime.datetime(
+                year=2024,
+                month=1,
+                day=1,
+                hour=12,
+                minute=0,
+                tzinfo=datetime.timezone.utc,
+            ),
+            "2024-01-01T12:00:00Z",
+        ],
+        [
+            datetime.datetime(
+                year=2024,
+                month=1,
+                day=1,
+                hour=12,
+                minute=0,
+                tzinfo=datetime.timezone(datetime.timedelta(hours=1)),
+            ),
+            "2024-01-01T12:00:00+01:00",
+        ],
     ],
 )
 def test_from_datetime_to_str(date: datetime.datetime | None, expected: str):

@@ -149,7 +149,7 @@ def test_source_parses_list(conforms_to, json_ld, expected_source):
         ],
         [
             [{"not": "the right keys"}],
-            "Transform should have one of the following properties",
+            "At least one transform must be defined",
         ],
     ],
 )
