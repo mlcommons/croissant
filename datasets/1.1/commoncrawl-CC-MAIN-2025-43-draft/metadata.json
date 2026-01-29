@@ -237,5 +237,27 @@
       "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664",
       "contentSize": "8813 B"
     }
+  ],
+  "recordSet": [
+    {
+      "@id": "warc-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "warc-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "warc-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    }
   ]
 }

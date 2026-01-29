@@ -7,6 +7,7 @@ import concurrent.futures
 import functools
 import json
 import sys
+import types
 from typing import Any, Generator
 
 from absl import logging
@@ -113,6 +114,21 @@ def execute_operations_in_streaming(
                         )
 
                 yield from read_all_files()
+                return
+            elif isinstance(result, types.GeneratorType):
+
+                def read_all_items():
+                    for item in result:
+                        # Read items separately and keep executing subsequent operations
+                        logging.info("Executing %s", operation)
+                        yield from execute_operations_in_streaming(
+                            record_set=record_set,
+                            operations=operations,
+                            list_of_operations=list_of_operations[i + 1 :],
+                            result=operation.call(item),
+                        )
+
+                yield from read_all_items()
                 return
             else:
                 logging.info("Executing %s", operation)
