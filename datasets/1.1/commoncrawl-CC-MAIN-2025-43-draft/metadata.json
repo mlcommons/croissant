@@ -234,7 +234,8 @@
       "@id": "CC-MAIN-2025-43.domains-top-1000",
       "contentUrl": "s3://commoncrawl-dev/test-top-1000-domains-v1/CC-MAIN-2025-43.domains-top-1000.csv.gz",
       "encodingFormat": "application/gzip",
-      "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664"
+      "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664",
+      "contentSize": "8813 B"
     }
   ],
   "recordSet": [
