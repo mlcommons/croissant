@@ -64,7 +64,7 @@
   },
   "citeAs": "https://commoncrawl.org/",
   "version": "1.0.0",
-  "sdVersion": "0.1.0",
+  "sdVersion": "1.0.0",
   "datePublished": "2025-10-19T01:06:58Z",
   "temporalCoverage": "2025-10-05T11:42:39Z/2025-10-19T01:06:58Z",
   "distribution": [
@@ -89,7 +89,7 @@
       },
       "encodingFormat": "application/warc",
       "includes": "*.warc.gz",
-      "size": "97.73 GB"
+      "contentSize": "97.73 TiB"
     },
     {
       "@type": "cr:FileObject",
@@ -112,7 +112,7 @@
       },
       "encodingFormat": "application/warc",
       "includes": "*.warc.wat.gz",
-      "size": "18.39 GB"
+      "contentSize": "18.39 TiB"
     },
     {
       "@type": "cr:FileObject",
@@ -135,7 +135,7 @@
       },
       "encodingFormat": "application/warc",
       "includes": "*.warc.wet.gz",
-      "size": "7.38 GB"
+      "contentSize": "7.38 TiB"
     },
     {
       "@type": "cr:FileObject",
@@ -158,7 +158,7 @@
       },
       "encodingFormat": "application/warc",
       "includes": "*.warc.gz",
-      "size": "0.15 GB"
+      "contentSize": "0.15 TiB"
     },
     {
       "@type": "cr:FileObject",
@@ -181,7 +181,7 @@
       },
       "encodingFormat": "application/warc",
       "includes": "*.warc.gz",
-      "size": "3.07 GB"
+      "contentSize": "3.07 TiB"
     },
     {
       "@type": "cr:FileObject",
@@ -204,7 +204,7 @@
       },
       "encodingFormat": "application/gzip",
       "includes": "*.gz",
-      "size": "0.20 GB"
+      "contentSize": "0.20 TiB"
     },
     {
       "@type": "cr:FileObject",
@@ -227,15 +227,14 @@
       },
       "encodingFormat": "application/parquet",
       "includes": "*.gz.parquet",
-      "size": "0.23 GB"
+      "contentSize": "0.23 TiB"
     },
     {
       "@type": "cr:FileObject",
       "@id": "CC-MAIN-2025-43.domains-top-1000",
       "contentUrl": "s3://commoncrawl-dev/test-top-1000-domains-v1/CC-MAIN-2025-43.domains-top-1000.csv.gz",
       "encodingFormat": "application/gzip",
-      "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664",
-      "contentSize": "8813 B"
+      "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664"
     }
   ],
   "recordSet": [
