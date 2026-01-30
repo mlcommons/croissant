@@ -338,6 +338,46 @@
           }
         }
       ]
+    },
+    {
+      "@id": "cc-index-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "cc-index-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "cc-index-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@id": "cc-index-table-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "cc-index-table-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "cc-index-table-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
     }
   ]
 }
