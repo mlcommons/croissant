@@ -459,10 +459,6 @@ class Metadata(Node):
         The rules are the following:
         - The graph is directed.
         - All fields have a data type: either directly specified, or on a parent.
-
-        Args:
-            issues: The issues to populate in case of problem.
-            graph: The structure graph to be checked.
         """
         # Check that the graph is directed.
         if not self.ctx.graph.is_directed():
@@ -476,9 +472,7 @@ class Metadata(Node):
     def from_file(cls, ctx: Context, file: epath.PathLike) -> Self:
         """Creates the Metadata from a Croissant file."""
         if is_url(file):
-            response = requests.get(file)
-            json_ = response.json()
-            return cls.from_json(ctx=ctx, json_=json_)
+            return cls.from_json(ctx=ctx, json_=requests.get(file).json())
         folder, json_ = from_file_to_json(file)
         ctx.folder = folder
         return cls.from_json(ctx=ctx, json_=json_)
@@ -491,5 +485,4 @@ class Metadata(Node):
     ) -> Self:
         """Creates a `Metadata` from JSON."""
         ctx.rdf = Rdf.from_json(ctx, json_)
-        jsonld = expand_jsonld(json_, ctx=ctx)
-        return cls.from_jsonld(ctx=ctx, jsonld=jsonld)
+        return cls.from_jsonld(ctx=ctx, jsonld=expand_jsonld(json_, ctx=ctx))

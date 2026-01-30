@@ -62,7 +62,7 @@ def _cast_file_property(file_property: Any) -> FileProperty | None:
 class Extract(Node):
     """Container for possible ways of extracting the data.
 
-    Args:
+    Attributes:
         column: The column in a columnar format (e.g., CSV).
         file_property: The property of a file to extract.
         json_path: The JSON path if the source is a JSON.
@@ -108,7 +108,7 @@ class Extract(Node):
 class Transform(Node):
     """Container for transformation.
 
-    Args:
+    Attributes:
         format: The format for a date (e.g. "%Y-%m-%d %H:%M:%S.%f") or for a bounding
             box (e.g., "XYXY").
         json_path: The JSONPath expression that needs to be evaluated.
