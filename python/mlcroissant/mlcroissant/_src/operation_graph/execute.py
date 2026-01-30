@@ -135,7 +135,7 @@ def execute_operations_in_streaming(
                 result = operation.call(result)
         except Exception as e:
             raise GenerationError(
-                "An error occured during the streaming generation of the dataset, more"
+                "An error occurred during the streaming generation of the dataset, more"
                 f" specifically during the operation {operation}"
             ) from e
 
