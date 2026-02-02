@@ -2,9 +2,7 @@
 
 Version 1.0
 
-Status: Release Candidate
-
-Published: 01/20/2025
+Published: 01/29/2026
 
 <http://mlcommons.org/croissant/geo/1.0>
 
@@ -54,6 +52,10 @@ Acknowledgements
 -   MLCommons GeoCroissant Working Group
 -   MLCommons Croissant Working Group
 -   Open Geospatial Consortium (OGC) GeoAI Domain Working Group
+
+[GeoCroissant](http://mlcommons.org/croissant/geo/1.0), [Croissant](https://mlcommons.org/croissant/1.1) © 2024–2026 by [MLCommons Association and contributors](https://mlcommons.org) is licensed under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/).
+
+Note: The CC BY-ND license was selected to facilitate widespread adoption and use of the Croissant specification while maintaining a canonical reference version. However, this license can raise questions around what downstream uses are permissible. MLCommons wants to assure all prospective users that they are free to remix and adapt the Croissant specification for their internal use. If users want to distribute something they have created based on or that adds to the specification, they can as long as the Croissant specification is referenced through a link (i.e., not incorporated directly) and the specification itself isn't changed. Remember to include the attribution. Don’t hesitate to reach out if you have any questions.
 
 # **Introduction & overview**
 
@@ -304,14 +306,14 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
 
 The following table situates GeoCroissant terms within the broader metadata ecosystem by showing, for each use case, how GeoCroissant properties align with and complement existing vocabularies and standards (e.g., schema.org, Croissant core, and domain-specific ontologies).
 
-|  GeoCroissant Use Case                                                  |  GeoCroissant Properties                                                                                                             |  External Vocabulary Properties                                               |  Croissant Core Properties                         |  Schema.org Properties                                                  |
+| GeoCroissant Use Case                                                     | GeoCroissant Properties                                                                                                                | External Vocabulary Properties                                                  | Croissant Core Properties                            | Schema.org Properties                                                     |
 |---------------|---------------|---------------|---------------|---------------|
 | **Generic Geospatial Datasets**                                           | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration, geocr:spectralBandMetadata                          | dcat:bbox, stac:bbox, proj:epsg,\\                                              |                                                      |                                                                           |
 | **Use case 1: SpaceWeather Datasets**                                     | geocr:multiWavelengthConfiguration, geocr:solarInstrumentCharacteristics (with geocr:channelList, geocr:observatory, geocr:instrument) | spase:MeasurementType, spase:Observatory, spase:Instrument, spase:NumericalData | cr:description, cr:distribution, cr:Field            | sc:description, sc:encodingFormat                                         |
 | **Use case 2: Interoperability with other standards**                     | geocr:coordinateReferenceSystem, geocr:spatialResolution, geocr:bandConfiguration                                                      | dct:temporal (when mapping STAC datetime, etc.)                                 | cr:distribution, cr:Field                            | sc:spatialCoverage, sc:temporalCoverage, sc:contentUrl, sc:encodingFormat |
 | **Use case 3: Programmatic Metadata Access**                              | geocr:recordEndpoint                                                                                                                   | FeatureCollection, Feature, geometry, bbox                                      | cr:distribution, cr:description                      | sc:url, sc:locationCreated                                                |
 | **Use case 4: Search and Discovery (GeoSPARQL)**                          | geocr:spatialIndex                                                                                                                     | geosparql:hasGeometry, geosparql:asWKT                                          | cr:recordSet                                         | —                                                                         |
-| **Use case 5: ML Pipeline Integration**                                   | \-                                                                                                                                     | tdml-ai: AI_EOTask(OGC Training DML)                                           | cr:FileObject, cr:RecordSet, cr:Field                | sc:encodingFormat, sc:name                                                |
+| **Use case 5: ML Pipeline Integration**                                   | \-                                                                                                                                     | tdml-ai: AI_EOTask(OGC Training DML)                                            | cr:FileObject, cr:RecordSet, cr:Field                | sc:encodingFormat, sc:name                                                |
 | **Use case 6: Responsible GeoAI**                                         | geocr:spatialBias, geocr:samplingStrategy                                                                                              | rai:dataCollection, rai:dataBiases, rai:annotatorDemographics, rai:dataUseCases | cr:description, cr:distribution                      | sc:creator, sc:license, sc:description                                    |
 | **Use case 7: Time-Series Support**                                       | geocr:temporalResolution, geocr:timeSeriesIndex                                                                                        | \-                                                                              | cr:RecordSet, cr:Field                               | sc:temporalCoverage, sc:datePublished                                     |
 | **Use case 8: Adding custom properties**                                  | \-                                                                                                                                     |                                                                                 |                                                      | sc:additionalProperty                                                     |
@@ -831,8 +833,8 @@ The table below demonstrates a mapping between commonly used metadata fields in 
 | bbox                              | \-                                                        | schema:spatialCoverage (schema:GeoShape) / dcat:bbox |
 | geometry                          | \-                                                        | geosparql:hasGeometry, geosparql:asWKT               |
 | assets                            | distribution                                              | dcat:distribution                                    |
-| assets\[\<key\>\].href            | distribution\[ \].contentUrl                               | schema:contentUrl                                    |
-| assets\[\<key\>\].type            | distribution\[ \].encodingFormat                           | schema:encodingFormat                                |
+| assets\[\<key\>\].href            | distribution\[ \].contentUrl                              | schema:contentUrl                                    |
+| assets\[\<key\>\].type            | distribution\[ \].encodingFormat                          | schema:encodingFormat                                |
 | proj:epsg                         | geocr:coordinateReferenceSystem                           | proj:epsg                                            |
 | gsd (or properties.gsd)           | geocr:spatialResolution                                   | stac:gsd                                             |
 | eo:bands (or band list in assets) | geocr:bandConfiguration and/or geocr:spectralBandMetadata | STAC EO extension (eo:bands)                         |
@@ -1385,7 +1387,7 @@ This appendix summarizes responses from the GeoCroissant user adoption survey an
 Overall, most spatial machine learning dataset fields received an average rating of **“Important.”** No spatial or non-spatial fields were rated **“Very unimportant.”** Across both spatial and non-spatial metadata, **description** was consistently identified as the most important field. Respondents noted that the description provides critical context required to interpret and responsibly use a dataset, including information on provenance, background, assumptions, and limitations (Refer table below).
 
 | Rank | Top five most important ML fields         | Top five most important Geospatial fields |
-|----------------------------:|----------------------|----------------------|
+|---------------------------:|----------------------|----------------------|
 |    1 | Description                               | Description                               |
 |    2 | License                                   | Sensor (e.g., optical, thermal)           |
 |    3 | Distribution (file representation/format) | Annotation type (e.g., mask, bbox)        |
@@ -1394,9 +1396,9 @@ Overall, most spatial machine learning dataset fields received an average rating
 
 : Top five metadata fields ranked by survey respondents for machine learning and geospatial dataset description in GeoCroissant.
 
-![Survey of Geo-AI datasets properties based on geospatial and ML fields.](images/croissant-geo-user_survey1.png 'GeoCroissant Survey 1')
+![Survey of Geo-AI datasets properties based on geospatial and ML fields.](images/croissant-geo-user_survey1.png "GeoCroissant Survey 1")
 
-![Survey of Geo-AI datasets properties based on geospatial and ML fields.](images/croissant-geo-user_survey2.png 'GeoCroissant Survey 2')
+![Survey of Geo-AI datasets properties based on geospatial and ML fields.](images/croissant-geo-user_survey2.png "GeoCroissant Survey 2")
 
 **Figure: Summary of mean importance ratings from the GeoCroissant user adoption survey.**
 
@@ -1436,3 +1438,5 @@ WHERE {
   FILTER(STR(?bbox) = "[-120.0, 30.0, -110.0, 40.0]")
 }
 ```
+
+[GeoCroissant](http://mlcommons.org/croissant/geo/1.0), [Croissant](https://mlcommons.org/croissant/1.1) © 2024-2026 by [MLCommons Association and contributors](https://mlcommons.org) is licensed under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/). ![CC](https://mirrors.creativecommons.org/presskit/icons/cc.svg) ![BY](https://mirrors.creativecommons.org/presskit/icons/by.svg) ![ND](https://mirrors.creativecommons.org/presskit/icons/nd.svg)
