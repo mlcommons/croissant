@@ -1,8 +1,8 @@
 # Croissant Format Specification
 
-Version 1.1 (Release Candidate)
+Version 1.1
 
-Published: 2025-12-10
+Published: 2026-01-29
 
 <http://mlcommons.org/croissant/1.1>
 
@@ -40,6 +40,12 @@ Contributors (In Alphabetical Order):
 
 Acknowledgements:
 - The Croissant Working Group
+
+<a href="https://mlcommons.org/croissant/1.1">Croissant</a> © 2024-2026 by <a href="https://mlcommons.org">MLCommons Association and contributors</a> is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/">CC BY-ND 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+
+Note: The CC BY-ND license was selected to facilitate widespread adoption and use of the Croissant specification while maintaining a canonical reference version. However, this license can raise questions around what downstream uses are permissible. MLCommons wants to assure all prospective users that they are free to remix and adapt the Croissant specification for their internal use. If users want to distribute something they have created based on or that adds to the specification, they can as long as the Croissant specification is referenced through a link, (i.e., not incorporated directly) and the specification itself isn't changed. Just remember to include the attribution. Don’t hesitate to reach out if you have any questions.
+
+
 
 ## Introduction
 
@@ -2420,3 +2426,4 @@ This approach can be extended to other domain-specific ontologies.
     "value": "cr:value",
   }
 ```
+<a href="https://mlcommons.org/croissant/1.1">Croissant</a> © 2024-2026 by <a href="https://mlcommons.org">MLCommons Association and contributors</a> is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/">CC BY-ND 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
