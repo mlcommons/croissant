@@ -50,7 +50,7 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
   "license": "mit",
-  "url": "https://huggingface.co/datasets/mnist",
+  "url": "https://huggingface.co/datasets/ylecun/mnist",
   "version": "1.0.0",
   "distribution": [
     {
@@ -58,7 +58,7 @@
       "@id": "repo",
       "name": "repo",
       "description": "The Hugging Face git repository.",
-      "contentUrl": "https://huggingface.co/datasets/mnist/tree/refs%2Fconvert%2Fparquet",
+      "contentUrl": "https://huggingface.co/datasets/ylecun/mnist/tree/refs%2Fconvert%2Fparquet",
       "encodingFormat": "git+https",
       "sha256": "https://github.com/mlcommons/croissant/issues/80"
     },

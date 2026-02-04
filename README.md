@@ -35,14 +35,14 @@ Use it in your ML workflow:
 ```python3
 # 1. Point to a local or remote Croissant file
 import mlcroissant as mlc
-url = "https://huggingface.co/api/datasets/fashion_mnist/croissant"
+url = "https://huggingface.co/api/datasets/zalando-datasets/fashion_mnist/croissant"
 # 2. Inspect metadata
 print(mlc.Dataset(url).metadata.to_json())
 # 3. Use Croissant dataset in your ML workload
 import tensorflow_datasets as tfds
 builder = tfds.core.dataset_builders.CroissantBuilder(
     jsonld=url,
-    record_set_ids=["record_set_fashion_mnist"],
+    record_set_ids=["fashion_mnist"],
     file_format='array_record',
 )
 builder.download_and_prepare()
