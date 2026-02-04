@@ -163,10 +163,6 @@ Here is an extremely simple example of the Croissant format, with comments showi
 - [CKAN](https://ckan.org) supports Croissant through the [ckanext-dcat](https://github.com/ckan/ckanext-dcat) extension starting from version 2.3.0. The metadata is embedded in the dataset's page source and is also accessible through a dedicated endpoint. For datasets imported into the CKAN DataStore, the resources will expose Croissant's RecordSet objects, detailing data fields like column names and types.
 - [Dataverse](https://dataverse.org) offers an [addon](https://github.com/gdcc/exporter-croissant) to export datasets in Croissant format and embed Croissant directly in the HTML of dataset landing pages.
 
-## Licensing
-
-Croissant project code and examples are licensed under Apache 2.
-
 ## Governance
 
 Croissant is being developed by the community as a Task Force of the [MLCommons Association](http://mlcommons.org) Datasets Working Group.
@@ -194,6 +190,7 @@ Thank you for supporting Croissant! 🙂
  year = {2024}
 }
 ```
-<a href="https://mlcommons.org/croissant/1.1">Croissant</a> © 2024-2026 by <a href="https://mlcommons.org">MLCommons Association and contributors</a> is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/">CC BY-ND 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
 
-Note: The CC BY-ND license was selected to facilitate widespread adoption and use of the Croissant specification while maintaining a canonical reference version. However, this license can raise questions around what downstream uses are permissible. MLCommons wants to assure all prospective users that they are free to remix and adapt the Croissant specification for their internal use. If users want to distribute something they have created based on or that adds to the specification, they can as long as the Croissant specification is referenced through a link, (i.e., not incorporated directly) and the specification itself isn't changed. Just remember to include the attribution. Don’t hesitate to reach out if you have any questions.
+## Licensing
+- Croissant implementation and examples are licensed under Apache 2.
+- <a href="https://mlcommons.org/croissant/1.1">Croissant specification</a>© 2024-2026 by <a href="https://mlcommons.org">MLCommons Association and contributors</a> is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/">CC BY-ND 4.0</a> <br> <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"> <br>Note: The CC BY-ND license was selected to facilitate widespread adoption and use of the Croissant specification while maintaining a canonical reference version. However, this license can raise questions around what downstream uses are permissible. MLCommons wants to assure all prospective users that they are free to remix and adapt the Croissant specification for their internal use. If users want to distribute something they have created based on or that adds to the specification, they can as long as the Croissant specification is referenced through a link, (i.e., not incorporated directly) and the specification itself isn't changed. Just remember to include the attribution. Don’t hesitate to reach out if you have any questions.
