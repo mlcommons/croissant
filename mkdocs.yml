@@ -1,0 +1,112 @@
+site_name: Croissant
+site_description: Documentation for the MLCommons Croissant metadata format and ecosystem.
+site_url: https://docs.mlcommons.org/croissant/
+repo_url: https://github.com/mlcommons/croissant
+repo_name: mlcommons/croissant
+
+# Theme configuration
+theme:
+  name: material
+  logo: https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f950.svg
+  favicon: https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f950.svg
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: light-green
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: light-green
+      accent: green
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+  # This plugin runs the script to pull in outside files
+  - gen-files:
+      scripts:
+        - gen_pages.py
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [python, src]
+
+# Navigation Structure
+nav:
+  # 'README.md' was copied to 'index.md' by our script
+  - Croissant:
+      - Overview: index.md
+      - Specification:
+          # These files are physically in docs/, so we REMOVE the 'docs/' prefix
+          - 'Croissant v1.1': croissant-spec-1.1.md
+          - 'Croissant v1.0': croissant-spec-1.0.md
+      - Extensions:
+          - 'Responsible AI (RAI)': croissant-rai-spec.md
+
+  - Library:
+      - 'Python Package': python/mlcroissant/README.md
+ 
+  - Tools:
+      - 'Croissant Editor': editor/README.md
+      - 'Health Monitor': health/README.md
+      - 'Online Validator': health/croissant-validator-neurips/README.md
+      - 'Croissant RDF': croissant-rdf/README.md
+
+  - Eclair:
+      - Getting Started:
+          - Welcome: eclair/docs/index.md
+          - Installation and Setup: eclair/docs/getting-started/installation.md
+          - Running the Server: eclair/docs/getting-started/running-server.md
+      - Usage Guides:
+          - Overview: eclair/docs/usage/overview.md
+          - AI Agents:
+              - Gemini CLI: eclair/docs/usage/ai-agents/gemini-cli.md
+              - Claude Code: eclair/docs/usage/ai-agents/claude-code.md
+          - IDE Integration:
+              - VS Code + Gemini Code Assist: eclair/docs/usage/ide/vscode-gemini.md
+              - VS Code + Copilot: eclair/docs/usage/ide/vscode-copilot.md
+          - Python API: eclair/docs/usage/python-api.md
+          - Command Line Interface: eclair/docs/usage/cli.md
+      - API Reference:
+          - Available Tools: eclair/docs/api/tools.md
+          - Python Client: eclair/docs/api/python-client.md
+      - Development:
+          - Getting Started: eclair/docs/development/index.md
+
+# Markdown Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+# Optional: Exclude build artifacts from scanning
+exclude_docs: |
+  *.py
+  __pycache__/
