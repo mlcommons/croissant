@@ -51,6 +51,7 @@ dev = [
   "mlcroissant[image]",
   "mlcroissant[dicom]",
   "mlcroissant[parquet]",
+  "mlcroissant[geo]",
   "mypy",
   "pyflakes",
   "pygraphviz",
@@ -65,6 +66,15 @@ audio = [
 ]
 beam = [
   "apache-beam",
+]
+geo = [
+  "geopandas",
+  "shapely",
+  "pyproj",
+  "rasterio",
+  "pystac",
+  "earthaccess",
+  "requests",
 ]
 git = ["GitPython"]
 image = ["Pillow"]
