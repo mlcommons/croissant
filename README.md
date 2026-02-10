@@ -47,7 +47,7 @@ builder = tfds.core.dataset_builders.CroissantBuilder(
 )
 builder.download_and_prepare()
 # 4. Split for training/testing
-train, test = builder.as_data_source(split=['default[:80%]', 'default[80%:]'])
+train, test = builder.as_data_source(split=['train', 'test'])
 ```
 
 Please see the [notebook recipes](python/mlcroissant/recipes) for more examples.
