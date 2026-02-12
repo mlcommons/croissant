@@ -319,3 +319,10 @@ croissant:BoundingBox a rdf:class ;
   rdfs:label "Label" ;
   rdfs:comment "A data type representing a bounding box." ;
   rdfs:subClassOf schema:Text .
+
+croissant:arrayShape a rdf:Property ;
+  rdfs:label "arrayShape" ;
+  rdfs:comment "Shape of the data tensor/array associated with a field (e.g., [height, width, bands] for imagery)." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes schema:Text .
+
