@@ -177,12 +177,11 @@ class JsonlReader:
         self.fields = fields
 
         # Add FHIR validator if needed
+        self.fhir_validator: Any = None
         if validate_fhir:
             from mlcroissant._src.operation_graph.operations import fhir_validator
 
             self.fhir_validator = fhir_validator.FhirValidator(validate_fhir=True)
-        else:
-            self.fhir_validator = None
 
     def parse(self, fh):
         """Parses a file-like object containing JSON objects (one per line).
