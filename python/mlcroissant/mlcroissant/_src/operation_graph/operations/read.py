@@ -4,6 +4,7 @@ import dataclasses
 import enum
 import gzip
 import io
+import os
 import pathlib
 from typing import Any
 
@@ -183,8 +184,15 @@ class Read(Operation):
                     EncodingFormat.JSON_LINES,
                     EncodingFormat.FHIR,
                 ):
-                    # JSON_LINES and FHIR do the same thing
-                    reader = JsonlReader(self.fields)
+                    # Enable FHIR validation if env var set
+                    validate_fhir = (
+                        encoding_format == EncodingFormat.FHIR
+                        and os.getenv("CROISSANT_VALIDATE_FHIR", "").lower()
+                        in ("1", "true")
+                    )
+                    reader = JsonlReader(
+                        self.fields, validate_fhir=validate_fhir
+                    )
                     if reading_method == ReadingMethod.JSON:
                         return reader.parse(read_file)
                     return reader.raw(read_file)

@@ -116,5 +116,20 @@ class OptionalDependencies(object):
         """Cached tifffle module."""
         return _try_import("tifffile", package_name="Tifffile")
 
+    @cached_class_property
+    def jsonpath_rw(cls) -> types.ModuleType:
+        """Cached jsonpath_rw module."""
+        return _try_import("jsonpath_rw", package_name="jsonpath-rw")
+
+    @cached_class_property
+    def jmespath(cls) -> types.ModuleType:
+        """Cached jmespath module."""
+        return _try_import("jmespath", package_name="jmespath")
+
+    @cached_class_property
+    def fhir_resources(cls) -> types.ModuleType:
+        """Cached fhir.resources module."""
+        return _try_import("fhir.resources", package_name="fhir.resources")
+
 
 deps = OptionalDependencies

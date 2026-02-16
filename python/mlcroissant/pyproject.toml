@@ -74,6 +74,7 @@ beam = [
 git = ["GitPython"]
 image = ["Pillow"]
 dicom = ["pydicom>=2.4.0"]
+fhir = ["fhir.resources>=7.1.0"]
 parquet = ["pyarrow"]
 
 [project.scripts]
@@ -112,6 +113,7 @@ module = [
   "scipy",
   "torchdata",
   "torchdata.datapipes",
+  "fhir.resources",
 ]
 ignore_missing_imports = true
 
