@@ -56,8 +56,6 @@ def test_jsonreader_parse():
 
 
 def test_jsonreader_parse_deep():
-    import orjson
-
     # Test nested JSONPath ($.level1.level2[*].value)
     field = create_test_field(
         source=Source(extract=Extract(json_path="$.level1.level2[*].value"))
@@ -65,7 +63,7 @@ def test_jsonreader_parse_deep():
     fields = (field,)
     json_obj = {"level1": {"level2": [{"value": 100}, {"value": 200}]}}
     expected_df = pd.DataFrame({"$.level1.level2[*].value": [[100, 200]]})
-    raw_str = orjson.dumps(json_obj).decode("utf-8")
+    raw_str = json.dumps(json_obj)
     fh = io.StringIO(raw_str)
     reader = JsonReader(fields=fields)
     df = reader.parse(fh)

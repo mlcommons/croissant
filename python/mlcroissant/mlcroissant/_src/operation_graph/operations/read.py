@@ -188,9 +188,7 @@ class Read(Operation):
                         and os.getenv("CROISSANT_VALIDATE_FHIR", "").lower()
                         in ("1", "true")
                     )
-                    reader = JsonlReader(
-                        self.fields, validate_fhir=validate_fhir
-                    )
+                    reader = JsonlReader(self.fields, validate_fhir=validate_fhir)
                     if reading_method == ReadingMethod.JSON:
                         return reader.parse(file)
                     return reader.raw(file)

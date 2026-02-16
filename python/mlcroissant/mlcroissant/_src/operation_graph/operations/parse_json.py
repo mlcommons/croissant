@@ -9,11 +9,6 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 
-try:
-    orjson = deps.orjson
-except ModuleNotFoundError:
-    orjson = None
-
 
 def _unwrap_single_item(value: Any) -> Any:
     """Unwraps a single-item list to its value, or returns the value as is."""
@@ -99,7 +94,7 @@ class JsonReader:
         """
         # Load entire JSON file (could be a list or a single dict).
         raw = fh.read()
-        data = orjson.loads(raw) if orjson else json.loads(raw)
+        data = json.loads(raw)
 
         # Always treat as list of records.
         records = data if isinstance(data, list) else [data]
@@ -137,7 +132,7 @@ class JsonReader:
         """
         # Raw JSON fallback: one‐cell DataFrame.
         raw = fh.read()
-        content = orjson.loads(raw) if orjson else json.loads(raw)
+        content = json.loads(raw)
         return pd.DataFrame({FileProperty.content: [content]})
 
 
@@ -183,9 +178,9 @@ class JsonlReader:
 
         # Add FHIR validator if needed
         if validate_fhir:
-            from mlcroissant._src.operation_graph.operations.fhir_validator import FhirValidator
+            from mlcroissant._src.operation_graph.operations import fhir_validator
 
-            self.fhir_validator = FhirValidator(validate_fhir=True)
+            self.fhir_validator = fhir_validator.FhirValidator(validate_fhir=True)
         else:
             self.fhir_validator = None
 
@@ -211,7 +206,7 @@ class JsonlReader:
             line = line.strip()
             if not line:
                 continue
-            rec = orjson.loads(line) if orjson else json.loads(line)
+            rec = json.loads(line)
             # Optional FHIR validation
             if self.fhir_validator:
                 rec = self.fhir_validator.validate_resource(rec)
