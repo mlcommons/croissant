@@ -3,7 +3,6 @@
 import json
 from typing import Any, TextIO
 
-import jsonpath_rw
 import pandas as pd
 
 from mlcroissant._src.core.optional import deps
@@ -32,7 +31,7 @@ def parse_json_content(json_obj, fields):
         json_path = field.source.extract.json_path
         if not json_path:
             continue
-        expr = jsonpath_rw.parse(json_path)
+        expr = deps.jsonpath_rw.parse(json_path)
         vals = []
         for match in expr.find(json_obj):
             v = match.value
@@ -67,8 +66,6 @@ class JsonReader:
 
         Fields without a JSON path are skipped.
         """
-        import jmespath
-
         # Build a list of (original_jsonpath, engine, compiled_expr).
         self.exprs: list[tuple[str, str, Any]] = []
         for field in fields:
@@ -80,11 +77,11 @@ class JsonReader:
             stripped = json_path.lstrip("$.")
             if ".." in json_path:
                 # Uses recursive‐descent → fall back to jsonpath_ng.
-                expr = jsonpath_rw.parse(json_path)
+                expr = deps.jsonpath_rw.parse(json_path)
                 engine = "jsonpath"
             else:
                 # Simple direct path → use JMESPath.
-                expr = jmespath.compile(stripped)
+                expr = deps.jmespath.compile(stripped)
                 engine = "jmespath"
 
             self.exprs.append((json_path, engine, expr))
@@ -147,12 +144,13 @@ class JsonReader:
 class JsonlReader:
     """Parser for JSON Lines files, supporting both JSONPath and JMESPath."""
 
-    def __init__(self, fields):
+    def __init__(self, fields, validate_fhir: bool = False):
         """Initializes the parser with a list of fields.
 
         Args:
             fields (list): A list of field objects, each expected to have a
             `source.extract.json_path` attribute.
+            validate_fhir (bool): Whether to validate FHIR resources.
 
         The constructor processes each field's JSON path:
             - If the path is a simple JSONPath (starts with "$." and does not
@@ -164,8 +162,6 @@ class JsonlReader:
         used, are stored in `self.exprs`. The original list of fields is stored
         in `self.fields`.
         """
-        import jmespath
-
         self.exprs = []  # list of (orig_path, engine, compiled_expr)
         for field in fields:
             json_path = field.source.extract.json_path
@@ -175,15 +171,23 @@ class JsonlReader:
             if json_path.startswith("$.") and ".." not in json_path:
                 # simple JSONPath → JMESPath
                 jm = json_path.lstrip("$.")  # drop the "$."
-                expr = jmespath.compile(jm)
+                expr = deps.jmespath.compile(jm)
                 engine = "jmespath"
             else:
                 # anything with recursive‐descent or complex filters
-                expr = jsonpath_rw.parse(json_path)
+                expr = deps.jsonpath_rw.parse(json_path)
                 engine = "jsonpath"
 
             self.exprs.append((json_path, engine, expr))
         self.fields = fields
+
+        # Add FHIR validator if needed
+        if validate_fhir:
+            from mlcroissant._src.operation_graph.operations.fhir_validator import FhirValidator
+
+            self.fhir_validator = FhirValidator(validate_fhir=True)
+        else:
+            self.fhir_validator = None
 
     def parse(self, fh):
         """Parses a file-like object containing JSON objects (one per line).
@@ -208,6 +212,9 @@ class JsonlReader:
             if not line:
                 continue
             rec = orjson.loads(line) if orjson else json.loads(line)
+            # Optional FHIR validation
+            if self.fhir_validator:
+                rec = self.fhir_validator.validate_resource(rec)
             row: dict[str, object] = {}
             for json_path, engine, expr in self.exprs:
                 if engine == "jmespath":
