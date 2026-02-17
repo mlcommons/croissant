@@ -442,58 +442,7 @@ def extract_spatial_resolution(additional_attrs: List[Dict[str, Any]]) -> str:
     return spatial_res
 
 
-def extract_access_methods(umm: Dict[str, Any]) -> Dict[str, int]:
-    """Extract access methods from related URLs."""
-    related_urls = umm.get("RelatedUrls", [])
-    access_methods = {"https": 0, "s3": 0, "other": 0}
-    for url_info in related_urls:
-        url = url_info.get("URL", "")
-        if url.startswith("https"):
-            access_methods["https"] += 1
-        elif "s3://" in url:
-            access_methods["s3"] += 1
-        else:
-            access_methods["other"] += 1
-    return access_methods
 
-
-def extract_add_offset(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract ADD_OFFSET value."""
-    add_offset = find_additional_attribute(additional_attrs, "ADD_OFFSET")
-    return float(add_offset) if add_offset is not None else None
-
-
-def extract_ang_scale_factor(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract ANG_SCALE_FACTOR value."""
-    ang_scale = find_additional_attribute(additional_attrs, "ANG_SCALE_FACTOR")
-    return float(ang_scale) if ang_scale is not None else None
-
-
-def extract_byte_order(umm: Dict[str, Any], distributions: List[Dict[str, Any]]) -> str:
-    """Extract byte order information."""
-    raster_info = extract_raster_data_info(umm, distributions)
-    return raster_info.get("byteOrder", "unknown")
-
-
-def extract_cloud_coverage(
-    additional_attrs: List[Dict[str, Any]],
-) -> Optional[Dict[str, Any]]:
-    """Extract cloud coverage information."""
-    cloud_coverage = find_additional_attribute(additional_attrs, "CLOUD_COVERAGE")
-    if cloud_coverage is not None:
-        return {
-            "geocr:value": float(cloud_coverage),
-            "geocr:unit": "percentage",
-        }
-    return None
-
-
-def extract_compression(
-    umm: Dict[str, Any], distributions: List[Dict[str, Any]]
-) -> str:
-    """Extract compression information."""
-    raster_info = extract_raster_data_info(umm, distributions)
-    return raster_info.get("compression", "unknown")
 
 
 def extract_coordinate_reference_system(additional_attrs: List[Dict[str, Any]]) -> str:
@@ -507,189 +456,93 @@ def extract_coordinate_reference_system(additional_attrs: List[Dict[str, Any]]) 
     )
 
 
-def extract_data_scaling_info(additional_attrs: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Extract data scaling information."""
-    scaling_info: Dict[str, Any] = {"@type": "geocr:DataScaling"}
-
-    add_offset = find_additional_attribute(additional_attrs, "ADD_OFFSET")
-    if add_offset is not None:
-        scaling_info["geocr:addOffset"] = str(float(add_offset))
-
-    ref_scale = find_additional_attribute(additional_attrs, "REF_SCALE_FACTOR")
-    if ref_scale is not None:
-        scaling_info["geocr:refScaleFactor"] = str(float(ref_scale))
-
-    ang_scale = find_additional_attribute(additional_attrs, "ANG_SCALE_FACTOR")
-    if ang_scale is not None:
-        scaling_info["geocr:angScaleFactor"] = str(float(ang_scale))
-
-    fill_value = find_additional_attribute(additional_attrs, "FILLVALUE")
-    if fill_value is not None:
-        scaling_info["geocr:fillValue"] = str(float(fill_value))
-
-    qa_fill = find_additional_attribute(additional_attrs, "QA_FILLVALUE")
-    if qa_fill is not None:
-        scaling_info["geocr:qaFillValue"] = str(float(qa_fill))
-
-    return scaling_info
 
 
-def extract_fill_value(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract fill value."""
-    fill_value = find_additional_attribute(additional_attrs, "FILLVALUE")
-    return float(fill_value) if fill_value is not None else None
 
-
-def extract_format(umm: Dict[str, Any], distributions: List[Dict[str, Any]]) -> str:
-    """Extract format information."""
-    raster_info = extract_raster_data_info(umm, distributions)
-    return raster_info.get("format", "unknown")
-
-
-def extract_geometric_accuracy(
-    additional_attrs: List[Dict[str, Any]],
-) -> Dict[str, Any]:
-    """Extract geometric accuracy information."""
-    geometric_accuracy = {}
-    for attr_pattern in ["XSHIFT", "YSHIFT", "RMSE", "ACCURACY", "AROP"]:
-        for attr in additional_attrs:
-            attr_name = attr.get("Name", "")
-            if attr_pattern in attr_name and attr.get("Values"):
-                try:
-                    value = float(attr["Values"][0])
-                    if "XSHIFT" in attr_name or "X_SHIFT" in attr_name:
-                        geometric_accuracy["geocr:xShift"] = value
-                    elif "YSHIFT" in attr_name or "Y_SHIFT" in attr_name:
-                        geometric_accuracy["geocr:yShift"] = value
-                    elif "RMSE" in attr_name:
-                        geometric_accuracy["geocr:rmse"] = value
-                except (ValueError, TypeError):
-                    continue
-    return geometric_accuracy
-
-
-def extract_calibration_offset(
-    additional_attrs: List[Dict[str, Any]],
-) -> Optional[float]:
-    """Extract calibration offset value."""
-    for attr in additional_attrs:
-        name = attr.get("Name", "")
-        if "OFFSET" in name and attr.get("Values"):
-            try:
-                return float(attr["Values"][0])
-            except (ValueError, TypeError):
-                continue
-    return None
-
-
-def extract_qa_fill_value(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract QA fill value."""
-    qa_fill = find_additional_attribute(additional_attrs, "QA_FILLVALUE")
-    return float(qa_fill) if qa_fill is not None else None
-
-
-def extract_quality_assessment_full(
-    additional_attrs: List[Dict[str, Any]],
-) -> Dict[str, Any]:
-    """Extract full quality assessment information."""
-    quality_info: Dict[str, Any] = {"@type": "geocr:QualityAssessment"}
-
-    geometric_accuracy = extract_geometric_accuracy(additional_attrs)
-    if geometric_accuracy:
-        quality_info["geocr:geometricAccuracy"] = str(geometric_accuracy)
-
-    cloud_coverage = extract_cloud_coverage(additional_attrs)
-    if cloud_coverage:
-        quality_info["geocr:cloudCoverage"] = str(cloud_coverage)
-
-    return quality_info
-
-
-def extract_ref_scale_factor(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract REF_SCALE_FACTOR value."""
-    ref_scale = find_additional_attribute(additional_attrs, "REF_SCALE_FACTOR")
-    return float(ref_scale) if ref_scale is not None else None
-
-
-def extract_rmse_value(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract RMSE value from geometric accuracy."""
-    for attr in additional_attrs:
-        attr_name = attr.get("Name", "")
-        if "RMSE" in attr_name and attr.get("Values"):
-            try:
-                return float(attr["Values"][0])
-            except (ValueError, TypeError):
-                continue
-    return None
-
-
-def extract_calibration_slope(
-    additional_attrs: List[Dict[str, Any]],
-) -> Optional[float]:
-    """Extract calibration slope value."""
-    for attr in additional_attrs:
-        name = attr.get("Name", "")
-        if ("SCALE" in name or "SLOPE" in name) and attr.get("Values"):
-            try:
-                return float(attr["Values"][0])
-            except (ValueError, TypeError):
-                continue
-    return None
-
-
-def extract_spectral_bands_info(umm: Dict[str, Any]) -> Dict[str, Any]:
-    """Extract spectral bands information."""
+def extract_spectral_band_metadata(
+    umm: Dict[str, Any], additional_attrs: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
+    """Extract spectral band metadata in geocr:SpectralBand format per geocr.ttl.
+    
+    Returns a list of SpectralBand entries with centerWavelength and bandwidth.
+    """
+    spectral_bands = []
+    
+    # Get detected bands
     band_info = extract_actual_bands_from_umm(umm)
-    if band_info["bands"]:
-        return {
-            "@type": "geocr:SpectralBands",
-            "geocr:totalBands": band_info["count"],
-            "geocr:bandInfo": band_info["configuration"],
-        }
-    else:
-        return {
-            "@type": "geocr:SpectralBands",
-            "geocr:totalBands": 0,
-            "geocr:bandInfo": {},
-        }
-
-
-# NOTE: URL categories should only be in distribution section, not in custom properties
-# This function is removed to prevent duplication in GeoCroissant output
-
-
-def extract_generic_value(additional_attrs: List[Dict[str, Any]]) -> Optional[str]:
-    """Extract a generic value from attributes."""
-    # Return the first non-empty value found
-    for attr in additional_attrs:
-        values = attr.get("Values", [])
-        if values and values[0]:
-            return str(values[0])
-    return None
-
-
-def extract_x_shift(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract X shift value."""
-    for attr in additional_attrs:
-        attr_name = attr.get("Name", "")
-        if ("XSHIFT" in attr_name or "X_SHIFT" in attr_name) and attr.get("Values"):
+    detected_bands = band_info.get("bands", [])
+    
+    # Common wavelength ranges for known bands (in nanometers)
+    # This is a fallback when wavelength info is not in metadata
+    known_wavelengths = {
+        "B01": {"center": 443, "bandwidth": 20, "name": "Coastal Aerosol"},
+        "B02": {"center": 490, "bandwidth": 65, "name": "Blue"},
+        "B03": {"center": 560, "bandwidth": 35, "name": "Green"},
+        "B04": {"center": 665, "bandwidth": 30, "name": "Red"},
+        "B05": {"center": 705, "bandwidth": 15, "name": "Red Edge 1"},
+        "B06": {"center": 740, "bandwidth": 15, "name": "Red Edge 2"},
+        "B07": {"center": 783, "bandwidth": 20, "name": "Red Edge 3"},
+        "B08": {"center": 842, "bandwidth": 115, "name": "NIR"},
+        "B8A": {"center": 865, "bandwidth": 20, "name": "NIR Narrow"},
+        "B09": {"center": 945, "bandwidth": 20, "name": "Water Vapor"},
+        "B10": {"center": 1375, "bandwidth": 30, "name": "SWIR Cirrus"},
+        "B11": {"center": 1610, "bandwidth": 90, "name": "SWIR 1"},
+        "B12": {"center": 2190, "bandwidth": 180, "name": "SWIR 2"},
+    }
+    
+    for band in detected_bands:
+        band_entry = {"@type": "geocr:SpectralBand", "name": band}
+        
+        # Try to find wavelength info in additional attributes
+        wavelength_attr = find_additional_attribute(
+            additional_attrs, f"{band}_WAVELENGTH"
+        )
+        bandwidth_attr = find_additional_attribute(
+            additional_attrs, f"{band}_BANDWIDTH"
+        )
+        
+        if wavelength_attr:
+            # Convert to QuantitativeValue per schema.org
             try:
-                return float(attr["Values"][0])
+                band_entry["geocr:centerWavelength"] = {
+                    "@type": "QuantitativeValue",
+                    "value": float(wavelength_attr),
+                    "unitCode": "nm",
+                }
             except (ValueError, TypeError):
-                continue
-    return None
-
-
-def extract_y_shift(additional_attrs: List[Dict[str, Any]]) -> Optional[float]:
-    """Extract Y shift value."""
-    for attr in additional_attrs:
-        attr_name = attr.get("Name", "")
-        if ("YSHIFT" in attr_name or "Y_SHIFT" in attr_name) and attr.get("Values"):
+                pass
+        elif band.upper() in known_wavelengths:
+            # Use known wavelength
+            info = known_wavelengths[band.upper()]
+            band_entry["geocr:centerWavelength"] = {
+                "@type": "QuantitativeValue",
+                "value": info["center"],
+                "unitCode": "nm",
+            }
+            band_entry["name"] = info["name"]
+        
+        if bandwidth_attr:
             try:
-                return float(attr["Values"][0])
+                band_entry["geocr:bandwidth"] = {
+                    "@type": "QuantitativeValue",
+                    "value": float(bandwidth_attr),
+                    "unitCode": "nm",
+                }
             except (ValueError, TypeError):
-                continue
-    return None
+                pass
+        elif band.upper() in known_wavelengths:
+            info = known_wavelengths[band.upper()]
+            band_entry["geocr:bandwidth"] = {
+                "@type": "QuantitativeValue",
+                "value": info["bandwidth"],
+                "unitCode": "nm",
+            }
+        
+        # Only add band entry if it has wavelength info
+        if "geocr:centerWavelength" in band_entry:
+            spectral_bands.append(band_entry)
+    
+    return spectral_bands
 
 
 def umm_to_geocroissant(
@@ -783,19 +636,18 @@ def umm_to_geocroissant(
         "@context": {
             "@language": "en",
             "@vocab": "https://schema.org/",
+            "sc": "https://schema.org/",
+            "cr": "http://mlcommons.org/croissant/",
+            "geocr": "http://mlcommons.org/croissant/geo/",
+            "rai": "http://mlcommons.org/croissant/RAI/",
+            "dct": "http://purl.org/dc/terms/",
             "citeAs": "cr:citeAs",
             "column": "cr:column",
             "conformsTo": "dct:conformsTo",
-            "cr": "http://mlcommons.org/croissant/",
-            "geocr": "http://mlcommons.org/croissant/geocr/",
-            "rai": "http://mlcommons.org/croissant/RAI/",
-            "dct": "http://purl.org/dc/terms/",
-            "sc": "https://schema.org/",
             "data": {"@id": "cr:data", "@type": "@json"},
-            "examples": {"@id": "cr:examples", "@type": "@json"},
-            "dataBiases": "cr:dataBiases",
-            "dataCollection": "cr:dataCollection",
             "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
+            "equivalentProperty": "cr:equivalentProperty",
+            "examples": {"@id": "cr:examples", "@type": "@json"},
             "extract": "cr:extract",
             "field": "cr:field",
             "fileProperty": "cr:fileProperty",
@@ -809,7 +661,6 @@ def umm_to_geocroissant(
             "md5": "cr:md5",
             "parentField": "cr:parentField",
             "path": "cr:path",
-            "personalSensitiveInformation": "cr:personalSensitiveInformation",
             "recordSet": "cr:recordSet",
             "references": "cr:references",
             "regex": "cr:regex",
@@ -845,94 +696,73 @@ def umm_to_geocroissant(
         "license": "https://creativecommons.org/licenses/by/4.0/",
     }
 
-    # Add GeoCroissant spatial and temporal extensions
-    if spatial_info:
-        if spatial_info.get("bbox"):
-            croissant["geocr:BoundingBox"] = spatial_info["bbox"]
-        if spatial_info.get("geometry"):
-            croissant["geocr:Geometry"] = spatial_info["geometry"]
-
-    if temporal_info:
-        croissant["geocr:temporalExtent"] = {
-            "startDate": temporal_info.get("start"),
-            "endDate": temporal_info.get("end"),
-        }
-
     # Get additional attributes for processing
     additional_attrs = umm.get("AdditionalAttributes", [])
 
-    # Add core GeoCroissant properties (mandatory)
-    croissant["geocr:spatialResolution"] = extract_spatial_resolution(additional_attrs)
+    # Add spatialCoverage using schema:GeoShape (per schema.org standard)
+    if spatial_info:
+        geo_shape = {"@type": "schema:GeoShape"}
+        if spatial_info.get("bbox"):
+            bbox = spatial_info["bbox"]
+            # Format: "west, south, east, north" per schema.org GeoShape box property
+            geo_shape["box"] = f"{bbox[0]}, {bbox[1]}, {bbox[2]}, {bbox[3]}"
+        if spatial_info.get("geometry"):
+            geo_shape["polygon"] = spatial_info["geometry"]
+        croissant["spatialCoverage"] = geo_shape
 
-    # Add comprehensive GeoCroissant extensions via Custom Properties
+    # Add temporalCoverage using ISO 8601 interval format (per schema.org standard)
+    if temporal_info:
+        start = temporal_info.get("start", "")
+        end = temporal_info.get("end", "")
+        if start and end:
+            croissant["temporalCoverage"] = f"{start}/{end}"
+        elif start:
+            croissant["temporalCoverage"] = start
 
-    # NASA UMM Custom Properties - Group 1: Administrative & Metadata
-    croissant["geocr:CustomProperty1"] = {
-        "@type": "geocr:AdministrativeMetadata",
-        "geocr:accessMethods": extract_access_methods(umm),
-        "geocr:addOffset": extract_add_offset(additional_attrs),
-        "geocr:administrativeMetadata": {
-            "geocr:conceptType": meta.get("concept-type"),
-            "geocr:revisionId": meta.get("revision-id"),
-            "geocr:nativeId": meta.get("native-id"),
-            "geocr:collectionConceptId": meta.get("collection-concept-id"),
-            "geocr:providerId": meta.get("provider-id"),
-            "geocr:metadataFormat": meta.get("format"),
+    # Add geocr:spatialResolution (required GeoCroissant property)
+    spatial_res = extract_spatial_resolution(additional_attrs)
+    if spatial_res and spatial_res != "unknown":
+        croissant["geocr:spatialResolution"] = spatial_res
+
+    # Add geocr:coordinateReferenceSystem (GeoCroissant property from geocr.ttl)
+    crs = extract_coordinate_reference_system(additional_attrs)
+    if crs and crs != "unknown":
+        croissant["geocr:coordinateReferenceSystem"] = crs
+
+    # Add geocr:temporalResolution (GeoCroissant property from geocr.ttl)
+    temporal_res = extract_temporal_resolution(umm)
+    if temporal_res and temporal_res != "unknown":
+        croissant["geocr:temporalResolution"] = temporal_res
+
+    # Add geocr:bandConfiguration (structured per geocr:BandConfiguration class)
+    band_info = extract_actual_bands_from_umm(umm)
+    if band_info.get("bands"):
+        croissant["geocr:bandConfiguration"] = {
+            "@type": "geocr:BandConfiguration",
+            "geocr:totalBands": band_info.get("count", 0),
+            "geocr:bandNamesList": ", ".join(band_info.get("bands", [])),
+        }
+
+    # Add geocr:spectralBandMetadata (array of geocr:SpectralBand per geocr.ttl)
+    spectral_bands = extract_spectral_band_metadata(umm, additional_attrs)
+    if spectral_bands:
+        croissant["geocr:spectralBandMetadata"] = spectral_bands
+
+    # Add NASA-specific metadata as additionalProperty (schema.org standard)
+    nasa_metadata = {
+        "@type": "PropertyValue",
+        "name": "NASA UMM Metadata",
+        "value": {
+            "conceptId": meta.get("concept-id"),
+            "revisionId": meta.get("revision-id"),
+            "providerId": meta.get("provider-id"),
+            "nativeId": meta.get("native-id"),
+            "collectionConceptId": meta.get("collection-concept-id"),
+            "granuleUR": umm.get("GranuleUR"),
+            "additionalAttributes": extract_nasa_attributes(additional_attrs),
         },
-        "geocr:angScaleFactor": extract_ang_scale_factor(additional_attrs),
-        "geocr:attributeCategories": categorize_attributes(additional_attrs),
-        "geocr:byteOrder": extract_byte_order(umm, distributions),
-        "geocr:cloudCoverage": extract_cloud_coverage(additional_attrs),
-        "geocr:collectionConceptId": meta.get("collection-concept-id"),
-        "geocr:compression": extract_compression(umm, distributions),
-        "geocr:conceptType": meta.get("concept-type"),
-        "geocr:coordinateReferenceSystem": extract_coordinate_reference_system(
-            additional_attrs
-        ),
-        "geocr:dataScaling": extract_data_scaling_info(additional_attrs),
-        "geocr:fillValue": extract_fill_value(additional_attrs),
-        "geocr:format": extract_format(umm, distributions),
-        "geocr:geometricAccuracy": extract_geometric_accuracy(additional_attrs),
-        "geocr:metadataFormat": meta.get("format"),
-        "geocr:mgrsTileId": find_additional_attribute(additional_attrs, "MGRS_TILE_ID"),
-        "geocr:nasaSpecificAttributes": extract_nasa_attributes(additional_attrs),
-        "geocr:nativeId": meta.get("native-id"),
     }
-
-    # NASA UMM Custom Properties - Group 2: Product & Quality
-    croissant["geocr:CustomProperty2"] = {
-        "@type": "geocr:ProductInformation",
-        "geocr:offset": extract_calibration_offset(additional_attrs),
-        "geocr:productInformation": {
-            "geocr:productUri": find_additional_attribute(
-                additional_attrs, "PRODUCT_URI"
-            ),
-            "geocr:mgrsTileId": find_additional_attribute(
-                additional_attrs, "MGRS_TILE_ID"
-            ),
-            "geocr:spatialCoverage": float(
-                find_additional_attribute(additional_attrs, "SPATIAL_COVERAGE") or 99.0
-            ),
-        },
-        "geocr:providerId": meta.get("provider-id"),
-        "geocr:qaFillValue": extract_qa_fill_value(additional_attrs),
-        "geocr:qualityAssessment": extract_quality_assessment_full(additional_attrs),
-        "geocr:rasterData": extract_raster_data_info(umm, distributions),
-        "geocr:refScaleFactor": extract_ref_scale_factor(additional_attrs),
-        "geocr:revisionId": meta.get("revision-id"),
-        "geocr:rmse": extract_rmse_value(additional_attrs),
-        "geocr:sensorCharacteristics": extract_sensor_characteristics(umm),
-        "geocr:slope": extract_calibration_slope(additional_attrs),
-        "geocr:spatialCoverage": float(
-            find_additional_attribute(additional_attrs, "SPATIAL_COVERAGE") or 99.0
-        ),
-        "geocr:spectralBands": extract_spectral_bands_info(umm),
-        "geocr:totalAttributes": len(additional_attrs),
-        "geocr:unit": "percentage",  # Default unit for most measurements
-        "geocr:value": extract_generic_value(additional_attrs),
-        "geocr:xShift": extract_x_shift(additional_attrs),
-        "geocr:yShift": extract_y_shift(additional_attrs),
-    }
+    croissant.setdefault("additionalProperty", []).append(nasa_metadata)
 
     # Add distribution
     if distributions:
@@ -970,36 +800,7 @@ def umm_to_geocroissant(
     return croissant
 
 
-def extract_spectral_band_info(umm: Dict[str, Any]) -> Dict[str, Any]:
-    """Extract spectral band information universally from UMM data."""
-    band_info_dict = {}
 
-    # Get detected bands
-    band_info = extract_actual_bands_from_umm(umm)
-    detected_bands = band_info.get("bands", [])
-
-    # Extract resolution from additional attributes or files
-    additional_attrs = umm.get("AdditionalAttributes", [])
-    default_resolution = (
-        find_additional_attribute(additional_attrs, "SPATIAL_RESOLUTION") or "unknown"
-    )
-    if default_resolution != "unknown" and not default_resolution.endswith("m"):
-        default_resolution = f"{default_resolution}m"
-
-    # Create band info for each detected band
-    for band in detected_bands:
-        band_info_dict[band] = {
-            "name": f"Band {band}",
-            "identifier": band,
-            "resolution": default_resolution,
-        }
-
-        # Look for wavelength information in additional attributes
-        wavelength = find_additional_attribute(additional_attrs, f"{band}_WAVELENGTH")
-        if wavelength:
-            band_info_dict[band]["wavelength"] = wavelength
-
-    return band_info_dict
 
 
 def extract_nasa_attributes(additional_attrs: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -1024,96 +825,7 @@ def extract_nasa_attributes(additional_attrs: List[Dict[str, Any]]) -> Dict[str,
     return nasa_attrs
 
 
-def categorize_attributes(
-    additional_attrs: List[Dict[str, Any]],
-) -> Dict[str, List[str]]:
-    """Categorize NASA attributes by type."""
-    categories: Dict[str, List[str]] = {
-        "processing": [],
-        "geometry": [],
-        "quality": [],
-        "raster": [],
-        "scaling": [],
-    }
 
-    for attr in additional_attrs:
-        name = attr.get("Name", "")
-        if "PROCESSING" in name or "SENSING" in name or "BASELINE" in name:
-            categories["processing"].append(name)
-        elif "ANGLE" in name:
-            categories["geometry"].append(name)
-        elif "AROP" in name or "SHIFT" in name or "RMSE" in name:
-            categories["quality"].append(name)
-        elif name in ["NCOLS", "NROWS", "ULX", "ULY"]:
-            categories["raster"].append(name)
-        elif "SCALE" in name or "OFFSET" in name:
-            categories["scaling"].append(name)
-
-    return categories
-
-
-def extract_raster_data_info(
-    umm: Dict[str, Any], distributions: List[Dict[str, Any]]
-) -> Dict[str, Any]:
-    """Extract raster data format information from UMM data and distributions."""
-    raster_info = {}
-
-    # Determine format from file extensions in distributions
-    formats = set()
-    for dist in distributions:
-        encoding_format = dist.get("encodingFormat", "")
-        if encoding_format == "image/tiff":
-            formats.add("GeoTIFF")
-        elif encoding_format == "application/x-hdf":
-            formats.add("HDF")
-        elif encoding_format == "application/x-netcdf":
-            formats.add("NetCDF")
-        elif encoding_format == "image/jpeg":
-            formats.add("JPEG")
-
-    # Use most common format or default
-    if "GeoTIFF" in formats:
-        raster_info["format"] = "GeoTIFF"
-        raster_info["compression"] = "LZW"  # Common for GeoTIFF
-        raster_info["byteOrder"] = "little-endian"
-    elif "HDF" in formats:
-        raster_info["format"] = "HDF"
-        raster_info["compression"] = "unknown"
-        raster_info["byteOrder"] = "unknown"
-    elif "NetCDF" in formats:
-        raster_info["format"] = "NetCDF"
-        raster_info["compression"] = "unknown"
-        raster_info["byteOrder"] = "unknown"
-    else:
-        raster_info["format"] = "unknown"
-        raster_info["compression"] = "unknown"
-        raster_info["byteOrder"] = "unknown"
-
-    # Determine data type from additional attributes or platform
-    additional_attrs = umm.get("AdditionalAttributes", [])
-    data_type = find_additional_attribute(additional_attrs, "DATA_TYPE")
-
-    if not data_type:
-        # Infer from platform/instrument
-        platforms = umm.get("Platforms", [])
-        if platforms:
-            platform_name = platforms[0].get("ShortName", "").lower()
-            if "sentinel" in platform_name or "landsat" in platform_name:
-                data_type = "surface reflectance"
-            elif "modis" in platform_name:
-                data_type = "radiance"
-            elif "radar" in platform_name or "sar" in platform_name:
-                data_type = "backscatter"
-            else:
-                data_type = "unknown"
-
-    raster_info["dataType"] = data_type or "unknown"
-
-    return raster_info
-
-
-# NOTE: URL information should only be in distribution section, not in custom properties
-# This function is removed to prevent duplication in GeoCroissant output
 
 
 def determine_access_method(url: str) -> str:
