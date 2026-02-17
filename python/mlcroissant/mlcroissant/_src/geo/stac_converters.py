@@ -257,13 +257,15 @@ def stac_to_geocroissant(
     if is_collection:
         collection_name = stac_dict.get("title", name)
         croissant["citeAs"] = (
-            f"@misc{{{dataset_id}, title={{{collection_name}}}, year={{{datetime.utcnow().year}}}}}"
+            f"@misc{{{dataset_id}, title={{{collection_name}}},"
+            f" year={{{datetime.utcnow().year}}}}}"
         )
     else:
         # For items, try to get collection info
         collection_id = stac_dict.get("collection", dataset_id)
         croissant["citeAs"] = (
-            f"@misc{{{collection_id}, title={{{name}}}, year={{{datetime.utcnow().year}}}}}"
+            f"@misc{{{collection_id}, title={{{name}}},"
+            f" year={{{datetime.utcnow().year}}}}}"
         )
 
     if "sci:citation" in stac_dict:
@@ -301,14 +303,12 @@ def stac_to_geocroissant(
             "http://www.opengis.net/def/rel/ogc/1.0/queryables": "Queryables",
         }
 
-        references.append(
-            {
-                "@type": "CreativeWork",
-                "url": href,
-                "name": name_map.get(rel, rel),
-                "encodingFormat": link.get("type", "application/json"),
-            }
-        )
+        references.append({
+            "@type": "CreativeWork",
+            "url": href,
+            "name": name_map.get(rel, rel),
+            "encodingFormat": link.get("type", "application/json"),
+        })
 
     if references:
         croissant["references"] = references
@@ -419,8 +419,9 @@ def stac_to_geocroissant(
         total_assets = len(stac_dict.get("assets", {}))
         croissant["isLiveDataset"] = True
         logger.info(
-            f"Note: {assets_without_checksums}/{total_assets} assets do not have checksums. "
-            f"Marked as 'isLiveDataset: true' to allow validation without checksums."
+            f"Note: {assets_without_checksums}/{total_assets} assets do not have"
+            " checksums. Marked as 'isLiveDataset: true' to allow validation without"
+            " checksums."
         )
 
     # item_assets as fileSet templates

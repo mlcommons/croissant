@@ -768,19 +768,17 @@ def umm_to_geocroissant(
             d for d in distributions if d.get("encodingFormat") == "image/tiff"
         ]
         if tiff_files:
-            distributions.append(
-                {
-                    "@type": "cr:FileSet",
-                    "@id": "tiff_files",
-                    "name": "TIFF Files",
-                    "description": (
-                        f"Collection of {len(tiff_files)} TIFF files containing satellite"
-                        " imagery bands"
-                    ),
-                    "encodingFormat": "image/tiff",
-                    "includes": "**/*.tif",
-                }
-            )
+            distributions.append({
+                "@type": "cr:FileSet",
+                "@id": "tiff_files",
+                "name": "TIFF Files",
+                "description": (
+                    f"Collection of {len(tiff_files)} TIFF files containing satellite"
+                    " imagery bands"
+                ),
+                "encodingFormat": "image/tiff",
+                "includes": "**/*.tif",
+            })
 
     # Add record set for granule data
     croissant["recordSet"] = [
