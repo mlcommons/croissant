@@ -13,6 +13,7 @@ class FhirValidator:
     """
 
     def __init__(self, validate_fhir: bool = False):
+        """Initialize FhirValidator."""
         self.validate_fhir = validate_fhir
         if validate_fhir:
             # Lazy load fhir.resources only when validation enabled
