@@ -85,6 +85,10 @@ class JsonReader:
     def parse(self, fh: TextIO) -> pd.DataFrame:
         """Parses a JSON file-like object and extracts data into a pandas DataFrame.
 
+        Runs each expression against the entire JSON object and creates one row
+        per match, matching the behavior of parse_json_content on standard JSON
+        datasets (e.g., COCO).
+
         Args:
             fh (TextIO): A file-like object containing JSON data.
 
@@ -92,29 +96,20 @@ class JsonReader:
             pd.DataFrame: DataFrame with extracted data,
             where each column corresponds to an expression.
         """
-        # Load entire JSON file (could be a list or a single dict).
         raw = fh.read()
         data = json.loads(raw)
 
-        # Always treat as list of records.
-        records = data if isinstance(data, list) else [data]
-
         series: dict[str, list] = {}
         for jp, engine, expr in self.exprs:
-            vals: list = []
-            for rec in records:
-                if engine == "jmespath":
-                    out = expr.search(rec)
-                    # Unwrap single‐item lists.
-                    out = _unwrap_single_item(out)
-                else:  # Engine jsonpath_ng.
-                    matches = expr.find(rec)
-                    out = [m.value for m in matches]
-                    out = _unwrap_single_item(out)
-
-                vals.append(out)
-
-            series[jp] = vals
+            if engine == "jmespath":
+                out = expr.search(data)
+                if isinstance(out, list):
+                    series[jp] = out
+                else:
+                    series[jp] = [out]
+            else:
+                matches = expr.find(data)
+                series[jp] = [m.value for m in matches]
 
         return pd.DataFrame(series)
 
