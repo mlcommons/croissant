@@ -41,28 +41,39 @@ def test_parse_json():
 
 
 def test_jsonreader_parse():
-    # JsonReader.parse should extract values according to JSONPath
-    field = create_test_field(
-        source=Source(extract=Extract(json_path="$.item[*].value"))
+    # JsonReader.parse should produce one row per jsonpath match (like COCO).
+    field1 = create_test_field(
+        source=Source(extract=Extract(json_path="$.annotations[*].id"))
     )
-    fields = (field,)
-    data = [{"item": [{"value": 10}]}, {"item": [{"value": 20}, {"value": 30}]}]
+    field2 = create_test_field(
+        source=Source(extract=Extract(json_path="$.annotations[*].bbox"))
+    )
+    fields = (field1, field2)
+    data = {
+        "annotations": [
+            {"id": 1, "bbox": [10.0, 20.0, 30.0, 40.0]},
+            {"id": 2, "bbox": [50.0, 60.0, 70.0, 80.0]},
+        ]
+    }
     raw_str = json.dumps(data)
     fh = io.StringIO(raw_str)
     reader = JsonReader(fields=fields)
     df = reader.parse(fh)
-    expected = pd.DataFrame({"$.item[*].value": [10, [20, 30]]})
+    expected = pd.DataFrame({
+        "$.annotations[*].id": [1, 2],
+        "$.annotations[*].bbox": [[10.0, 20.0, 30.0, 40.0], [50.0, 60.0, 70.0, 80.0]],
+    })
     pd.testing.assert_frame_equal(df, expected)
 
 
 def test_jsonreader_parse_deep():
-    # Test nested JSONPath ($.level1.level2[*].value)
+    # One row per match for nested paths.
     field = create_test_field(
         source=Source(extract=Extract(json_path="$.level1.level2[*].value"))
     )
     fields = (field,)
     json_obj = {"level1": {"level2": [{"value": 100}, {"value": 200}]}}
-    expected_df = pd.DataFrame({"$.level1.level2[*].value": [[100, 200]]})
+    expected_df = pd.DataFrame({"$.level1.level2[*].value": [100, 200]})
     raw_str = json.dumps(json_obj)
     fh = io.StringIO(raw_str)
     reader = JsonReader(fields=fields)
