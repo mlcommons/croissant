@@ -1434,7 +1434,7 @@ SELECT ?dataset ?record ?bbox
 WHERE {
   ?dataset a geocr:Dataset ;
            geocr:recordSet ?record .
-  ?record geocr:BoundingBox ?bbox .
+  ?record sc:spatialCoverage ?bbox .
   FILTER(STR(?bbox) = "[-120.0, 30.0, -110.0, 40.0]")
 }
 ```
