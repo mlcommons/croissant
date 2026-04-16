@@ -71,8 +71,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install library
-      run: sudo apt-get install -y libgraphviz-dev
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-dev graphviz libgraphviz-dev pkg-config
 
     - run: pip install ipython ipykernel nbconvert
 
