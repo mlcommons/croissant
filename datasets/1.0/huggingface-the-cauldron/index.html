@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movielens-25M — Croissant Visualizer</title>
+    <title>the_cauldron — Croissant Visualizer</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -653,32 +653,24 @@
                 <h4>Resources</h4>
                 <ul>
                     
-                    <li><a href="#res-ml-25m-archive">📄 ml-25m-archive</a></li>
+                    <li><a href="#res-repo">📄 repo</a></li>
                     
-                    <li><a href="#res-ratings-table">📄 ratings-table</a></li>
+                    <li><a href="#res-parquet-files-for-config-ai2d">📁 parquet-files-for-config-ai2d</a></li>
                     
-                    <li><a href="#res-movies-table">📄 movies-table</a></li>
+                    <li><a href="#res-parquet-files-for-config-aokvqa">📁 parquet-files-for-config-aokvqa</a></li>
                     
-                    <li><a href="#res-tags-table">📄 tags-table</a></li>
-                    
-                    <li><a href="#res-links-table">📄 links-table</a></li>
-                    
-                    <li><a href="#res-genome-scores-table">📄 genome-scores-table</a></li>
-                    
-                    <li><a href="#res-genome-tags-table">📄 genome-tags-table</a></li>
+                    <li><a href="#res-parquet-files-for-config-chart2text">📁 parquet-files-for-config-chart2text</a></li>
                     
                 </ul>
 
                 <h4>Record Sets</h4>
                 <ul>
                     
-                    <li><a href="#rs-movies">movies</a></li>
+                    <li><a href="#rs-ai2d">ai2d</a></li>
                     
-                    <li><a href="#rs-ratings">ratings</a></li>
+                    <li><a href="#rs-aokvqa">aokvqa</a></li>
                     
-                    <li><a href="#rs-tags">tags</a></li>
-                    
-                    <li><a href="#rs-movies_with_ratings_with_tags">movies_with_ratings_with_tags</a></li>
+                    <li><a href="#rs-chart2text">chart2text</a></li>
                     
                 </ul>
             </div>
@@ -693,17 +685,46 @@
 
             <!-- Hero -->
             <div class="hero" id="top">
-                <h1>🥐 Movielens-25M</h1>
+                <h1>🥐 the_cauldron</h1>
                 
-                <div class="description markdown">MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019</div>
+                <div class="description markdown">
+
+
+
+
+  Dataset Card for The Cauldron
+
+
+
+
+
+
+  Dataset description
+
+
+The Cauldron is part of the Idefics2 release.
+It is a massive collection of 50 vision-language datasets (training sets only) that were used for the fine-tuning of the vision-language model Idefics2.
+
+
+
+
+
+  Load the dataset
+
+
+To load the dataset, install the library datasets with pip install datasets. Then,
+from datasets import load_dataset
+ds = load_dataset(&#34;HuggingFaceM4/the_cauldron&#34;, &#34;ai2d&#34;)
+
+to download… See the full description on the dataset page: https://huggingface.co/datasets/HuggingFaceM4/the_cauldron.</div>
                 
                 <div class="hero-meta">
                     
                     
-                    <span class="hero-badge">🔗 <a href="https://grouplens.org/datasets/movielens/25m/" target="_blank">Dataset URL</a></span>
+                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/HuggingFaceM4/the_cauldron" target="_blank">Dataset URL</a></span>
                     
-                    <span class="hero-badge">📦 7 resources</span>
-                    <span class="hero-badge">📋 4 record sets</span>
+                    <span class="hero-badge">📦 4 resources</span>
+                    <span class="hero-badge">📋 3 record sets</span>
                     <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
                 </div>
             </div>
@@ -736,6 +757,62 @@
                         </td>
                     </tr>
                     
+                    <tr>
+                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            1M - 10M, parquet, Image, Text, Datasets, Dask, Croissant, Polars, arxiv:1603.07396, arxiv:2206.01718, arxiv:2208.05358, arxiv:1612.06890, arxiv:2310.00367, arxiv:1710.07300, arxiv:2312.12241, arxiv:1912.03098, arxiv:2211.08545, arxiv:2306.05425, arxiv:1709.00103, arxiv:2003.12462, arxiv:1612.00837, arxiv:2205.00363, arxiv:2403.09029, arxiv:2405.02246, 🇺🇸 Region: US
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;keywords&#34;: [
+    &#34;1M - 10M&#34;,
+    &#34;parquet&#34;,
+    &#34;Image&#34;,
+    &#34;Text&#34;,
+    &#34;Datasets&#34;,
+    &#34;Dask&#34;,
+    &#34;Croissant&#34;,
+    &#34;Polars&#34;,
+    &#34;arxiv:1603.07396&#34;,
+    &#34;arxiv:2206.01718&#34;,
+    &#34;arxiv:2208.05358&#34;,
+    &#34;arxiv:1612.06890&#34;,
+    &#34;arxiv:2310.00367&#34;,
+    &#34;arxiv:1710.07300&#34;,
+    &#34;arxiv:2312.12241&#34;,
+    &#34;arxiv:1912.03098&#34;,
+    &#34;arxiv:2211.08545&#34;,
+    &#34;arxiv:2306.05425&#34;,
+    &#34;arxiv:1709.00103&#34;,
+    &#34;arxiv:2003.12462&#34;,
+    &#34;arxiv:1612.00837&#34;,
+    &#34;arxiv:2205.00363&#34;,
+    &#34;arxiv:2403.09029&#34;,
+    &#34;arxiv:2405.02246&#34;,
+    &#34;🇺🇸 Region: US&#34;
+  ]
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="kv-key" title="The creator(s) of the dataset.">Creators</td>
+                        <td class="kv-val">
+                            
+                            
+                            Organization(uuid=&#34;_:N4354ccfee414470bbe58c5a13050a9ee&#34;)
+                            
+                            
+                        </td>
+                    </tr>
+                    
                 </table>
             </div>
             
@@ -751,207 +828,132 @@
                 <div class="mermaid-wrap">
                     <div class="mermaid">
 graph TD
-    ml_25m_archive["ml-25m-archive<br/><small>File</small>"]
-    ratings_table["ratings-table<br/><small>File</small>"]
-    movies_table["movies-table<br/><small>File</small>"]
-    tags_table["tags-table<br/><small>File</small>"]
-    links_table["links-table<br/><small>File</small>"]
-    genome_scores_table["genome-scores-table<br/><small>File</small>"]
-    genome_tags_table["genome-tags-table<br/><small>File</small>"]
-    ml_25m_archive --> ratings_table
-    ml_25m_archive --> movies_table
-    ml_25m_archive --> tags_table
-    ml_25m_archive --> links_table
-    ml_25m_archive --> genome_scores_table
-    ml_25m_archive --> genome_tags_table
+    repo["repo<br/><small>File</small>"]
+    parquet_files_for_config_ai2d["parquet-files-for-config-ai2d<br/><small>File Set</small>"]
+    parquet_files_for_config_aokvqa["parquet-files-for-config-aokvqa<br/><small>File Set</small>"]
+    parquet_files_for_config_chart2text["parquet-files-for-config-chart2text<br/><small>File Set</small>"]
+    repo --> parquet_files_for_config_ai2d
+    repo --> parquet_files_for_config_aokvqa
+    repo --> parquet_files_for_config_chart2text
                     </div>
                 </div>
                 
 
                 <div class="resource-grid">
                     
-                    <div class="resource-card" id="res-ml-25m-archive">
+                    <div class="resource-card" id="res-repo">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">ml-25m-archive</span>
+                            <span class="rc-name">repo</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File</span>
                         
+                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
+                        
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;ml-25m-archive&#34;,
-  &#34;name&#34;: &#34;ml-25m-archive&#34;,
-  &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
+  &#34;@id&#34;: &#34;repo&#34;,
+  &#34;name&#34;: &#34;repo&#34;,
+  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/HuggingFaceM4/the_cauldron/tree/refs%2Fconvert%2Fparquet&#34;,
+  &#34;encodingFormat&#34;: &#34;git+https&#34;,
+  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-ratings-table">
+                    <div class="resource-card" id="res-parquet-files-for-config-ai2d">
                         <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">ratings-table</span>
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-ai2d</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                        <span class="rc-type">File</span>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;ratings-table&#34;,
-  &#34;name&#34;: &#34;ratings-table&#34;,
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;ai2d/*/*.parquet&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-movies-table">
+                    <div class="resource-card" id="res-parquet-files-for-config-aokvqa">
                         <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">movies-table</span>
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-aokvqa</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                        <span class="rc-type">File</span>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;movies-table&#34;,
-  &#34;name&#34;: &#34;movies-table&#34;,
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-aokvqa&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-aokvqa&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;aokvqa/*/*.parquet&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-tags-table">
+                    <div class="resource-card" id="res-parquet-files-for-config-chart2text">
                         <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">tags-table</span>
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-chart2text</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                        <span class="rc-type">File</span>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;tags-table&#34;,
-  &#34;name&#34;: &#34;tags-table&#34;,
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-chart2text&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-chart2text&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-links-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">links-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;links-table&#34;,
-  &#34;name&#34;: &#34;links-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-scores-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-scores-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;genome-scores-table&#34;,
-  &#34;name&#34;: &#34;genome-scores-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-tags-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-tags-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;genome-tags-table&#34;,
-  &#34;name&#34;: &#34;genome-tags-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;chart2text/*/*.parquet&#34;
 }</code></pre>
                         </div>
                         
@@ -968,69 +970,43 @@ graph TD
                 </div>
 
                 
-                <div class="rs-section" id="rs-movies">
+                <div class="rs-section" id="rs-ai2d">
                     <div class="rs-header">
-                        <h3>movies</h3>
+                        <h3>ai2d</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
                     </div>
                     
+                    <div class="rs-desc markdown">HuggingFaceM4/the_cauldron - &#39;ai2d&#39; subset
+
+Additional information:
+- 1 skipped column: texts</div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;movies&#34;,
-  &#34;name&#34;: &#34;movies&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;movie_id&#34;
-  },
+  &#34;@id&#34;: &#34;ai2d&#34;,
+  &#34;name&#34;: &#34;ai2d&#34;,
+  &#34;description&#34;: &#34;HuggingFaceM4/the_cauldron - &#39;ai2d&#39; subset\n\nAdditional information:\n- 1 skipped column: texts&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/movie_id&#34;,
-      &#34;name&#34;: &#34;movies/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/title&#34;,
-      &#34;name&#34;: &#34;movies/title&#34;,
-      &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;title&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/genre&#34;,
-      &#34;name&#34;: &#34;movies/genre&#34;,
-      &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;@id&#34;: &#34;ai2d/images&#34;,
+      &#34;name&#34;: &#34;ai2d/images&#34;,
+      &#34;description&#34;: &#34;Image column &#39;images&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
       &#34;repeated&#34;: true,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;genres&#34;
+          &#34;column&#34;: &#34;images&#34;
         },
         &#34;transform&#34;: {
-          &#34;separator&#34;: &#34;|&#34;
+          &#34;jsonPath&#34;: &#34;bytes&#34;
         }
       }
     }
@@ -1050,21 +1026,9 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The title of the  movie with the release year in parentheses.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>genre</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>A sequence of genres to which the rated movie belongs.</td>
+                                    <td><strong>images</strong></td>
+                                    <td><span class="type-badge">ImageObject</span></td>
+                                    <td>Image column &#39;images&#39; from the Hugging Face parquet file.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1075,88 +1039,43 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-ratings">
+                <div class="rs-section" id="rs-aokvqa">
                     <div class="rs-header">
-                        <h3>ratings</h3>
+                        <h3>aokvqa</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
                     </div>
                     
+                    <div class="rs-desc markdown">HuggingFaceM4/the_cauldron - &#39;aokvqa&#39; subset
+
+Additional information:
+- 1 skipped column: texts</div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;ratings&#34;,
-  &#34;name&#34;: &#34;ratings&#34;,
-  &#34;key&#34;: [
-    {
-      &#34;@id&#34;: &#34;user_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;movie_id&#34;
-    }
-  ],
+  &#34;@id&#34;: &#34;aokvqa&#34;,
+  &#34;name&#34;: &#34;aokvqa&#34;,
+  &#34;description&#34;: &#34;HuggingFaceM4/the_cauldron - &#39;aokvqa&#39; subset\n\nAdditional information:\n- 1 skipped column: texts&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/user_id&#34;,
-      &#34;name&#34;: &#34;ratings/user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;@id&#34;: &#34;aokvqa/images&#34;,
+      &#34;name&#34;: &#34;aokvqa/images&#34;,
+      &#34;description&#34;: &#34;Image column &#39;images&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;repeated&#34;: true,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-aokvqa&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/movie_id&#34;,
-      &#34;name&#34;: &#34;ratings/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
+          &#34;column&#34;: &#34;images&#34;
         },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/rating&#34;,
-      &#34;name&#34;: &#34;ratings/rating&#34;,
-      &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;rating&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/timestamp&#34;,
-      &#34;name&#34;: &#34;ratings/timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
+        &#34;transform&#34;: {
+          &#34;jsonPath&#34;: &#34;bytes&#34;
         }
       }
     }
@@ -1176,27 +1095,9 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>rating</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The score of the rating on a five-star scale.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
+                                    <td><strong>images</strong></td>
+                                    <td><span class="type-badge">ImageObject</span></td>
+                                    <td>Image column &#39;images&#39; from the Hugging Face parquet file.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1207,91 +1108,43 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-tags">
+                <div class="rs-section" id="rs-chart2text">
                     <div class="rs-header">
-                        <h3>tags</h3>
+                        <h3>chart2text</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
                     </div>
                     
+                    <div class="rs-desc markdown">HuggingFaceM4/the_cauldron - &#39;chart2text&#39; subset
+
+Additional information:
+- 1 skipped column: texts</div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;tags&#34;,
-  &#34;name&#34;: &#34;tags&#34;,
-  &#34;key&#34;: [
-    {
-      &#34;@id&#34;: &#34;user_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;movie_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;timestamp&#34;
-    }
-  ],
+  &#34;@id&#34;: &#34;chart2text&#34;,
+  &#34;name&#34;: &#34;chart2text&#34;,
+  &#34;description&#34;: &#34;HuggingFaceM4/the_cauldron - &#39;chart2text&#39; subset\n\nAdditional information:\n- 1 skipped column: texts&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/user_id&#34;,
-      &#34;name&#34;: &#34;tags/user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;@id&#34;: &#34;chart2text/images&#34;,
+      &#34;name&#34;: &#34;chart2text/images&#34;,
+      &#34;description&#34;: &#34;Image column &#39;images&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;repeated&#34;: true,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-chart2text&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/movie_id&#34;,
-      &#34;name&#34;: &#34;tags/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
+          &#34;column&#34;: &#34;images&#34;
         },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/tag&#34;,
-      &#34;name&#34;: &#34;tags/tag&#34;,
-      &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;tag&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/timestamp&#34;,
-      &#34;name&#34;: &#34;tags/timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
+        &#34;transform&#34;: {
+          &#34;jsonPath&#34;: &#34;bytes&#34;
         }
       }
     }
@@ -1311,228 +1164,9 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tag</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Tags assigned to the movie.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-movies_with_ratings_with_tags">
-                    <div class="rs-header">
-                        <h3>movies_with_ratings_with_tags</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;movies_with_ratings_with_tags&#34;,
-  &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;movie_id&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/title&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/genre&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-      &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;movies/movie_id&#34;
-          }
-        },
-        &#34;source&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;ratings/movie_id&#34;
-          }
-        }
-      },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/user_id&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/user_id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/rating&#34;,
-          &#34;name&#34;: &#34;rating&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/rating&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/timestamp&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-      &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;movies/movie_id&#34;
-          }
-        },
-        &#34;source&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;tags/movie_id&#34;
-          }
-        }
-      },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/user_id&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/user_id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/tag&#34;,
-          &#34;name&#34;: &#34;tag&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/tag&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/timestamp&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/timestamp&#34;
-            }
-          }
-        }
-      ]
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_genres</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>ratings</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tags</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
+                                    <td><strong>images</strong></td>
+                                    <td><span class="type-badge">ImageObject</span></td>
+                                    <td>Image column &#39;images&#39; from the Hugging Face parquet file.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1614,134 +1248,109 @@ graph TD
     &#34;transform&#34;: &#34;cr:transform&#34;
   },
   &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;Movielens-25M&#34;,
-  &#34;description&#34;: &#34;MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019&#34;,
+  &#34;name&#34;: &#34;the_cauldron&#34;,
+  &#34;description&#34;: &#34;\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for The Cauldron\n\t\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset description\n\t\n\nThe Cauldron is part of the Idefics2 release.\nIt is a massive collection of 50 vision-language datasets (training sets only) that were used for the fine-tuning of the vision-language model Idefics2.\n\n\t\n\t\t\n\t\n\t\n\t\tLoad the dataset\n\t\n\nTo load the dataset, install the library datasets with pip install datasets. Then,\nfrom datasets import load_dataset\nds = load_dataset(\&#34;HuggingFaceM4/the_cauldron\&#34;, \&#34;ai2d\&#34;)\n\nto download… See the full description on the dataset page: https://huggingface.co/datasets/HuggingFaceM4/the_cauldron.&#34;,
   &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;url&#34;: &#34;https://grouplens.org/datasets/movielens/25m/&#34;,
+  &#34;creator&#34;: {
+    &#34;@type&#34;: &#34;sc:Organization&#34;,
+    &#34;name&#34;: &#34;HuggingFaceM4&#34;,
+    &#34;url&#34;: &#34;https://huggingface.co/HuggingFaceM4&#34;
+  },
+  &#34;keywords&#34;: [
+    &#34;1M - 10M&#34;,
+    &#34;parquet&#34;,
+    &#34;Image&#34;,
+    &#34;Text&#34;,
+    &#34;Datasets&#34;,
+    &#34;Dask&#34;,
+    &#34;Croissant&#34;,
+    &#34;Polars&#34;,
+    &#34;arxiv:1603.07396&#34;,
+    &#34;arxiv:2206.01718&#34;,
+    &#34;arxiv:2208.05358&#34;,
+    &#34;arxiv:1612.06890&#34;,
+    &#34;arxiv:2310.00367&#34;,
+    &#34;arxiv:1710.07300&#34;,
+    &#34;arxiv:2312.12241&#34;,
+    &#34;arxiv:1912.03098&#34;,
+    &#34;arxiv:2211.08545&#34;,
+    &#34;arxiv:2306.05425&#34;,
+    &#34;arxiv:1709.00103&#34;,
+    &#34;arxiv:2003.12462&#34;,
+    &#34;arxiv:1612.00837&#34;,
+    &#34;arxiv:2205.00363&#34;,
+    &#34;arxiv:2403.09029&#34;,
+    &#34;arxiv:2405.02246&#34;,
+    &#34;🇺🇸 Region: US&#34;
+  ],
+  &#34;url&#34;: &#34;https://huggingface.co/datasets/HuggingFaceM4/the_cauldron&#34;,
   &#34;distribution&#34;: [
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;ml-25m-archive&#34;,
-      &#34;name&#34;: &#34;ml-25m-archive&#34;,
-      &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
+      &#34;@id&#34;: &#34;repo&#34;,
+      &#34;name&#34;: &#34;repo&#34;,
+      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/HuggingFaceM4/the_cauldron/tree/refs%2Fconvert%2Fparquet&#34;,
+      &#34;encodingFormat&#34;: &#34;git+https&#34;,
+      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
     },
     {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;ratings-table&#34;,
-      &#34;name&#34;: &#34;ratings-table&#34;,
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;ai2d/*/*.parquet&#34;
     },
     {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;movies-table&#34;,
-      &#34;name&#34;: &#34;movies-table&#34;,
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-aokvqa&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-aokvqa&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;aokvqa/*/*.parquet&#34;
     },
     {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;tags-table&#34;,
-      &#34;name&#34;: &#34;tags-table&#34;,
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-chart2text&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-chart2text&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;links-table&#34;,
-      &#34;name&#34;: &#34;links-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;genome-scores-table&#34;,
-      &#34;name&#34;: &#34;genome-scores-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;genome-tags-table&#34;,
-      &#34;name&#34;: &#34;genome-tags-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;chart2text/*/*.parquet&#34;
     }
   ],
   &#34;recordSet&#34;: [
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;movies&#34;,
-      &#34;name&#34;: &#34;movies&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;movie_id&#34;
-      },
+      &#34;@id&#34;: &#34;ai2d&#34;,
+      &#34;name&#34;: &#34;ai2d&#34;,
+      &#34;description&#34;: &#34;HuggingFaceM4/the_cauldron - &#39;ai2d&#39; subset\n\nAdditional information:\n- 1 skipped column: texts&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/movie_id&#34;,
-          &#34;name&#34;: &#34;movies/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/title&#34;,
-          &#34;name&#34;: &#34;movies/title&#34;,
-          &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;title&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/genre&#34;,
-          &#34;name&#34;: &#34;movies/genre&#34;,
-          &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;@id&#34;: &#34;ai2d/images&#34;,
+          &#34;name&#34;: &#34;ai2d/images&#34;,
+          &#34;description&#34;: &#34;Image column &#39;images&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
           &#34;repeated&#34;: true,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;genres&#34;
+              &#34;column&#34;: &#34;images&#34;
             },
             &#34;transform&#34;: {
-              &#34;separator&#34;: &#34;|&#34;
+              &#34;jsonPath&#34;: &#34;bytes&#34;
             }
           }
         }
@@ -1749,76 +1358,26 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;ratings&#34;,
-      &#34;name&#34;: &#34;ratings&#34;,
-      &#34;key&#34;: [
-        {
-          &#34;@id&#34;: &#34;user_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;movie_id&#34;
-        }
-      ],
+      &#34;@id&#34;: &#34;aokvqa&#34;,
+      &#34;name&#34;: &#34;aokvqa&#34;,
+      &#34;description&#34;: &#34;HuggingFaceM4/the_cauldron - &#39;aokvqa&#39; subset\n\nAdditional information:\n- 1 skipped column: texts&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/user_id&#34;,
-          &#34;name&#34;: &#34;ratings/user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;@id&#34;: &#34;aokvqa/images&#34;,
+          &#34;name&#34;: &#34;aokvqa/images&#34;,
+          &#34;description&#34;: &#34;Image column &#39;images&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+          &#34;repeated&#34;: true,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-aokvqa&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/movie_id&#34;,
-          &#34;name&#34;: &#34;ratings/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
+              &#34;column&#34;: &#34;images&#34;
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/rating&#34;,
-          &#34;name&#34;: &#34;ratings/rating&#34;,
-          &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;rating&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/timestamp&#34;,
-          &#34;name&#34;: &#34;ratings/timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;bytes&#34;
             }
           }
         }
@@ -1826,221 +1385,28 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;tags&#34;,
-      &#34;name&#34;: &#34;tags&#34;,
-      &#34;key&#34;: [
-        {
-          &#34;@id&#34;: &#34;user_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;movie_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;timestamp&#34;
-        }
-      ],
+      &#34;@id&#34;: &#34;chart2text&#34;,
+      &#34;name&#34;: &#34;chart2text&#34;,
+      &#34;description&#34;: &#34;HuggingFaceM4/the_cauldron - &#39;chart2text&#39; subset\n\nAdditional information:\n- 1 skipped column: texts&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/user_id&#34;,
-          &#34;name&#34;: &#34;tags/user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;@id&#34;: &#34;chart2text/images&#34;,
+          &#34;name&#34;: &#34;chart2text/images&#34;,
+          &#34;description&#34;: &#34;Image column &#39;images&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+          &#34;repeated&#34;: true,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-chart2text&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
+              &#34;column&#34;: &#34;images&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;bytes&#34;
             }
           }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/movie_id&#34;,
-          &#34;name&#34;: &#34;tags/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/tag&#34;,
-          &#34;name&#34;: &#34;tags/tag&#34;,
-          &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;tag&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/timestamp&#34;,
-          &#34;name&#34;: &#34;tags/timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;movie_id&#34;
-      },
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/title&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/genre&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-          &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;movies/movie_id&#34;
-              }
-            },
-            &#34;source&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;ratings/movie_id&#34;
-              }
-            }
-          },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/user_id&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/user_id&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/rating&#34;,
-              &#34;name&#34;: &#34;rating&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/rating&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/timestamp&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/timestamp&#34;
-                }
-              }
-            }
-          ]
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-          &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;movies/movie_id&#34;
-              }
-            },
-            &#34;source&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;tags/movie_id&#34;
-              }
-            }
-          },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/user_id&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/user_id&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/tag&#34;,
-              &#34;name&#34;: &#34;tag&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/tag&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/timestamp&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/timestamp&#34;
-                }
-              }
-            }
-          ]
         }
       ]
     }

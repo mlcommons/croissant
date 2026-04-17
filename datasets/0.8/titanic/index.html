@@ -1,351 +1,1837 @@
-<html>
-  <head>Titanic dataset</title>
-    <script type="application/ld+json">
-{
-  "@context": {
-    "@language": "en",
-    "@vocab": "https://schema.org/",
-    "column": "ml:column",
-    "data": {
-      "@id": "ml:data",
-      "@type": "@json"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titanic — Croissant Visualizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <style>
+        /* ── Reset & Base ──────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-bg: #f4f5f7;
+            --color-surface: #ffffff;
+            --color-primary: #b45309;
+            --color-primary-light: #fef3c7;
+            --color-text: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-border: #e2e8f0;
+            --color-border-light: #f1f5f9;
+            --sidebar-width: 260px;
+            --sidebar-collapsed-width: 0px;
+            --radius: 10px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--color-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* ── Layout ────────────────────────────────────── */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ───────────────────────────────────── */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--color-surface);
+            border-right: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: width 0.25s ease, padding 0.25s ease;
+            z-index: 10;
+        }
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+        .sidebar-inner {
+            padding: 24px 20px;
+            opacity: 1;
+            transition: opacity 0.15s ease;
+        }
+        .sidebar.collapsed .sidebar-inner {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .sidebar-brand svg { flex-shrink: 0; }
+        .sidebar h4 {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--color-text-secondary);
+            margin: 20px 0 8px;
+        }
+        .sidebar ul { list-style: none; }
+        .sidebar > .sidebar-inner > ul > li > a,
+        .sidebar ul li a {
+            display: block;
+            padding: 5px 10px;
+            font-size: 0.82rem;
+            color: var(--color-text-secondary);
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar ul li a:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        .sidebar ul ul { padding-left: 14px; }
+        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
+
+        /* ── Toggle Button (inside sidebar) ───────────── */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .sidebar-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, color 0.15s;
+            flex-shrink: 0;
+        }
+        .sidebar-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+        /* Floating open button when sidebar is collapsed */
+        .sidebar-open-btn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 20;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .sidebar-open-btn:hover { background: var(--color-bg); }
+        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
+
+        /* ── Full JSON-LD Modal ──────────────────────────── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--color-surface);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            flex: 1;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .modal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-btn:hover {
+            background: var(--color-bg);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+        .modal-btn.copied {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.15s;
+        }
+        .modal-close:hover { background: var(--color-bg); }
+        .modal-body {
+            overflow-y: auto;
+            padding: 0;
+        }
+        .modal-body pre {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            margin: 0;
+            line-height: 1.55;
+            overflow-x: auto;
+        }
+
+        /* ── Main Content ──────────────────────────────── */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 32px 40px 64px;
+            max-width: 960px;
+        }
+
+        /* ── Hero Header ───────────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
+            color: white;
+            padding: 40px 36px;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .hero h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .hero .description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.92;
+            max-width: 720px;
+        }
+        /* Markdown overrides for dark hero background */
+        .hero .markdown a {
+            color: var(--color-primary-light);
+            text-decoration: underline;
+        }
+        .hero .markdown blockquote {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .hero .markdown code {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.18);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .hero-badge a { color: white; }
+        .hero-badge a:hover { text-decoration: underline; }
+
+        /* ── Cards ──────────────────────────────────────── */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .card-header h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+        .card-header .icon {
+            font-size: 1.3rem;
+        }
+
+        /* ── Tables ─────────────────────────────────────── */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        thead th {
+            text-align: left;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            background: var(--color-bg);
+            border-bottom: 2px solid var(--color-border);
+        }
+        tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--color-border-light);
+            vertical-align: top;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #fafbfc; }
+
+        /* Key-value metadata table */
+        .kv-table { width: 100%; }
+        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
+        .kv-table tr:last-child td { border-bottom: none; }
+        .kv-table .kv-key {
+            font-weight: 600;
+            font-size: 0.84rem;
+            color: var(--color-text-secondary);
+            width: 160px;
+            padding-right: 24px;
+            vertical-align: top;
+            white-space: nowrap;
+        }
+        .kv-table .kv-val {
+            font-size: 0.88rem;
+            word-break: break-word;
+        }
+        .kv-table .kv-val .jsonld-toggle {
+            float: right;
+            margin-left: 12px;
+        }
+
+        /* ── Resource Cards ─────────────────────────────── */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .resource-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 18px 20px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .resource-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+        .resource-card .rc-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .resource-card .rc-icon { font-size: 1.4rem; }
+        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
+        .resource-card .rc-type {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .resource-card .rc-desc {
+            font-size: 0.82rem;
+            color: var(--color-text-secondary);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ── Code / Preview ─────────────────────────────── */
+        pre.preview {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-width: 100%;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+        .cite-block {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 14px 16px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            line-height: 1.5;
+            max-width: 100%;
+        }
+
+        /* ── Mermaid ────────────────────────────────────── */
+        .mermaid-wrap {
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 16px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* ── RecordSet Sections ──────────────────────────── */
+        .rs-section { margin-bottom: 28px; }
+        .rs-section:last-child { margin-bottom: 0; }
+        .rs-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .rs-header h3 { font-size: 1rem; font-weight: 600; }
+        .rs-desc {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 14px;
+        }
+        .rs-divider {
+            border: none;
+            border-top: 1px solid var(--color-border-light);
+            margin: 24px 0;
+        }
+
+        /* ── Type Badges in Tables ──────────────────────── */
+        .type-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 1px 8px;
+            border-radius: 4px;
+            color: var(--color-text-secondary);
+        }
+
+        /* ── Markdown Content ───────────────────────────── */
+        .markdown p { margin-bottom: 0.6em; }
+        .markdown p:last-child { margin-bottom: 0; }
+        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
+        .markdown code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+        .markdown pre { margin: 0.6em 0; }
+        .markdown a { color: var(--color-primary); }
+        .markdown h1, .markdown h2, .markdown h3 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0.8em 0 0.3em;
+        }
+        .markdown blockquote {
+            border-left: 3px solid var(--color-border);
+            padding-left: 12px;
+            color: var(--color-text-secondary);
+            margin: 0.4em 0;
+        }
+
+        /* ── Footer ─────────────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            padding: 32px 0 16px;
+        }
+
+        /* ── Responsive ─────────────────────────────────── */
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .sidebar-toggle { display: none; }
+            .main { padding: 20px 16px 48px; }
+            .hero { padding: 28px 24px; }
+            .hero h1 { font-size: 1.4rem; }
+            .card { padding: 20px; }
+            .resource-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── JSON-LD Toggle ──────────────────────────────── */
+        .jsonld-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+            vertical-align: middle;
+        }
+        .jsonld-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .jsonld-toggle.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        .jsonld-panel {
+            display: none;
+            margin-top: 8px;
+        }
+        .jsonld-panel.open {
+            display: block;
+        }
+        .jsonld-panel pre {
+            border-radius: 8px;
+            max-width: 100%;
+            margin: 0;
+        }
+        /* Prism.js overrides to match our dark theme */
+        .jsonld-panel pre[class*="language-"],
+        .jsonld-panel code[class*="language-"],
+        .modal-body pre[class*="language-"],
+        .modal-body code[class*="language-"] {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            line-height: 1.55;
+            background: #1e293b;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .jsonld-panel pre[class*="language-"] {
+            padding: 16px;
+            border-radius: 8px;
+        }
+        .modal-body pre[class*="language-"] {
+            padding: 20px 24px;
+            margin: 0;
+            border-radius: 0;
+        }
+        /* Card-header toggle */
+        .card-header .jsonld-toggle { margin-left: auto; }
+        .rs-header .jsonld-toggle { margin-left: auto; }
+        .rc-header .jsonld-toggle { margin-left: auto; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-header">
+                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="sidebar-brand">
+                        🥐
+                        Croissant Visualizer
+                    </div>
+                </div>
+
+                <h4>Dataset</h4>
+                <ul>
+                    <li><a href="#top">Overview</a></li>
+                    <li><a href="#metadata">Metadata</a></li>
+                </ul>
+
+                <h4>Resources</h4>
+                <ul>
+                    
+                    <li><a href="#res-passengers.csv">📄 passengers.csv</a></li>
+                    
+                    <li><a href="#res-genders.csv">📄 genders.csv</a></li>
+                    
+                    <li><a href="#res-embarkation_ports.csv">📄 embarkation_ports.csv</a></li>
+                    
+                </ul>
+
+                <h4>Record Sets</h4>
+                <ul>
+                    
+                    <li><a href="#rs-genders">genders</a></li>
+                    
+                    <li><a href="#rs-embarkation_ports">embarkation_ports</a></li>
+                    
+                    <li><a href="#rs-passengers">passengers</a></li>
+                    
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Floating open button (visible when sidebar is collapsed) -->
+            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <!-- Hero -->
+            <div class="hero" id="top">
+                <h1>🥐 Titanic</h1>
+                
+                <div class="description markdown">The original Titanic dataset, describing the status of individual passengers on the Titanic.
+
+ The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. 
+
+ For more information about how this dataset was constructed: 
+https://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt
+
+Other useful information (useful for prices description for example):
+http://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf
+
+ Also see the following article describing shortcomings of the dataset data:
+https://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7
+</div>
+                
+                <div class="hero-meta">
+                    
+                    <span class="hero-badge">🏷️ v1.0.0</span>
+                    
+                    
+                    <span class="hero-badge">🔗 <a href="https://www.openml.org/d/40945" target="_blank">Dataset URL</a></span>
+                    
+                    <span class="hero-badge">📦 3 resources</span>
+                    <span class="hero-badge">📋 3 record sets</span>
+                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
+                </div>
+            </div>
+
+            <!-- Metadata -->
+            
+            <div class="card" id="metadata">
+                <div class="card-header">
+                    <span class="icon">ℹ️</span>
+                    <h2>Metadata</h2>
+                </div>
+                <table class="kv-table">
+                    
+                    <tr>
+                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            afl-3.0
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;license&#34;: &#34;afl-3.0&#34;
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="kv-key" title="A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset.">Cite As</td>
+                        <td class="kv-val">
+                            
+                            
+                            <div class="cite-block">The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton &amp; Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.
+
+Thomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.</div>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+            
+
+            <!-- Resources -->
+            <div class="card" id="resources">
+                <div class="card-header">
+                    <span class="icon">📦</span>
+                    <h2>Resources</h2>
+                </div>
+
+                
+                <div class="mermaid-wrap">
+                    <div class="mermaid">
+graph TD
+    passengers_csv["passengers.csv<br/><small>File</small>"]
+    genders_csv["genders.csv<br/><small>File</small>"]
+    embarkation_ports_csv["embarkation_ports.csv<br/><small>File</small>"]
+
+                    </div>
+                </div>
+                
+
+                <div class="resource-grid">
+                    
+                    <div class="resource-card" id="res-passengers.csv">
+                        <div class="rc-header">
+                            <span class="rc-icon">📄</span>
+                            <span class="rc-name">passengers.csv</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File</span>
+                        
+                        
+                        <pre class="preview">&#34;pclass&#34;,&#34;survived&#34;,&#34;name&#34;,&#34;sex&#34;,&#34;age&#34;,&#34;sibsp&#34;,&#34;parch&#34;,&#34;ticket&#34;,&#34;fare&#34;,&#34;cabin&#34;,&#34;embarked&#34;,&#34;boat&#34;,&#34;body&#34;,&#34;home.dest&#34;
+1,1,&#34;Allen, Miss. Elisabeth Walton&#34;,&#34;female&#34;,29,0,0,&#34;24160&#34;,211.3375,&#34;B5&#34;,&#34;S&#34;,&#34;2&#34;,?,&#34;St Louis, MO&#34;
+1,1,&#34;Allison, Master. Hudson Trevor&#34;,&#34;male&#34;,0.9167,1,2,&#34;113781&#34;,151.55,&#34;C22 C26&#34;,&#34;S&#34;,&#34;11&#34;,?,&#34;Montreal, PQ / Chesterville, ON&#34;
+1,0,&#34;Allison, Miss. Helen Loraine&#34;,&#34;female&#34;,2,1,2,&#34;113781&#34;,151.55,&#34;C22 C26&#34;,&#34;S&#34;,?,?,&#34;Montreal, PQ / Chesterville, ON&#34;
+1,0,&#34;Allison, Mr. Hudson Joshua Creighton&#34;,&#34;male&#34;,30,1,2,&#34;113781&#34;,151.55,&#34;C22 C26&#34;,&#34;S&#34;,?,135,&#34;Montreal, PQ / Chesterville, ON&#34;
+</pre>
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;sc:FileObject&#34;,
+  &#34;name&#34;: &#34;passengers.csv&#34;,
+  &#34;contentSize&#34;: &#34;117743 B&#34;,
+  &#34;contentUrl&#34;: &#34;data/titanic.csv&#34;,
+  &#34;encodingFormat&#34;: &#34;text/csv&#34;,
+  &#34;sha256&#34;: &#34;c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-genders.csv">
+                        <div class="rc-header">
+                            <span class="rc-icon">📄</span>
+                            <span class="rc-name">genders.csv</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File</span>
+                        
+                        <div class="rc-desc markdown">Maps gender values (&#34;male&#34;, &#34;female&#34;) to semantic URLs.</div>
+                        
+                        
+                        <pre class="preview">label,url
+male,https://www.wikidata.org/wiki/Q6581097
+female,https://www.wikidata.org/wiki/Q6581072
+</pre>
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;sc:FileObject&#34;,
+  &#34;name&#34;: &#34;genders.csv&#34;,
+  &#34;description&#34;: &#34;Maps gender values (\&#34;male\&#34;, \&#34;female\&#34;) to semantic URLs.&#34;,
+  &#34;contentSize&#34;: &#34;117743 B&#34;,
+  &#34;contentUrl&#34;: &#34;data/genders.csv&#34;,
+  &#34;encodingFormat&#34;: &#34;text/csv&#34;,
+  &#34;sha256&#34;: &#34;c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-embarkation_ports.csv">
+                        <div class="rc-header">
+                            <span class="rc-icon">📄</span>
+                            <span class="rc-name">embarkation_ports.csv</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File</span>
+                        
+                        <div class="rc-desc markdown">Maps Embarkation port initial to labeled values.</div>
+                        
+                        
+                        <pre class="preview">key,label,url
+C,Cherbourg,wd:Q3667188
+Q,Queenstown,wd:Q733093
+S,Southampton,wd:Q79848
+?,Unknown,wd:Q24238356
+</pre>
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;sc:FileObject&#34;,
+  &#34;name&#34;: &#34;embarkation_ports.csv&#34;,
+  &#34;description&#34;: &#34;Maps Embarkation port initial to labeled values.&#34;,
+  &#34;contentSize&#34;: &#34;117743 B&#34;,
+  &#34;contentUrl&#34;: &#34;data/embarkation_ports.csv&#34;,
+  &#34;encodingFormat&#34;: &#34;text/csv&#34;,
+  &#34;sha256&#34;: &#34;c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Record Sets -->
+            <div class="card" id="recordsets">
+                <div class="card-header">
+                    <span class="icon">📋</span>
+                    <h2>Record Sets</h2>
+                </div>
+
+                
+                <div class="rs-section" id="rs-genders">
+                    <div class="rs-header">
+                        <h3>genders</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">Maps gender labels to semantic definitions.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+  &#34;name&#34;: &#34;genders&#34;,
+  &#34;description&#34;: &#34;Maps gender labels to semantic definitions.&#34;,
+  &#34;isEnumeration&#34;: true,
+  &#34;key&#34;: &#34;label&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;label&#34;,
+      &#34;description&#34;: &#34;One of {\&#34;male\&#34;, \&#34;female\&#34;}&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:Text&#34;,
+        &#34;sc:name&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;genders.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;label&#34;
+        }
+      }
     },
-    "dataType": {
-      "@id": "ml:dataType",
-      "@type": "@vocab"
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;url&#34;,
+      &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:URL&#34;,
+        &#34;wd:Q48277&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;genders.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;url&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>label</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>One of {&#34;male&#34;, &#34;female&#34;}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>url</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Corresponding WikiData URL</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-embarkation_ports">
+                    <div class="rs-header">
+                        <h3>embarkation_ports</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">Maps Embarkation port initial to labeled values.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+  &#34;name&#34;: &#34;embarkation_ports&#34;,
+  &#34;description&#34;: &#34;Maps Embarkation port initial to labeled values.&#34;,
+  &#34;isEnumeration&#34;: true,
+  &#34;key&#34;: &#34;key&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;key&#34;,
+      &#34;description&#34;: &#34;C, Q, S or ?&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;embarkation_ports.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;key&#34;
+        }
+      }
     },
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
-    "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform",
-    "wd": "https://www.wikidata.org/wiki/"
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;label&#34;,
+      &#34;description&#34;: &#34;Human-readable label&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:Text&#34;,
+        &#34;sc:name&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;embarkation_ports.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;label&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;url&#34;,
+      &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:URL&#34;,
+        &#34;wd:Q515&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;embarkation_ports.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;url&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>key</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>C, Q, S or ?</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>label</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Human-readable label</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>url</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Corresponding WikiData URL</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-passengers">
+                    <div class="rs-header">
+                        <h3>passengers</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">The list of passengers. Does not include crew members.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+  &#34;name&#34;: &#34;passengers&#34;,
+  &#34;description&#34;: &#34;The list of passengers. Does not include crew members.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;name&#34;,
+      &#34;description&#34;: &#34;Name of the passenger&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;name&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;gender&#34;,
+      &#34;description&#34;: &#34;Gender of passenger (male or female)&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: &#34;genders/label&#34;
+      },
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;sex&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;age&#34;,
+      &#34;description&#34;: &#34;Age of passenger at time of death. It&#39;s a string, because some values can be `?`.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;age&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;survived&#34;,
+      &#34;description&#34;: &#34;Survival status of passenger (0: Lost, 1: Saved)&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;survived&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;pclass&#34;,
+      &#34;description&#34;: &#34;Passenger Class (1st/2nd/3rd)&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;pclass&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;cabin&#34;,
+      &#34;description&#34;: &#34;Passenger cabin.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;cabin&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;embarked&#34;,
+      &#34;description&#34;: &#34;Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: &#34;embarkation_ports/key&#34;
+      },
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;embarked&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;fare&#34;,
+      &#34;description&#34;: &#34;Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;fare&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;home_destination&#34;,
+      &#34;description&#34;: &#34;Home and destination&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;home.dest&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;ticket&#34;,
+      &#34;description&#34;: &#34;Ticket Number, may include a letter.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;ticket&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;num_parents_children&#34;,
+      &#34;description&#34;: &#34;Number of Parents/Children Aboard&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;parch&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;num_siblings_spouses&#34;,
+      &#34;description&#34;: &#34;Number of Siblings/Spouses Aboard&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;sibsp&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;boat&#34;,
+      &#34;description&#34;: &#34;Lifeboat used by passenger&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;boat&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;body&#34;,
+      &#34;description&#34;: &#34;Body Identification Number&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;passengers.csv&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;body&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Name of the passenger</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>gender</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Gender of passenger (male or female)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>age</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Age of passenger at time of death. It&#39;s a string, because some values can be `?`.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>survived</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Survival status of passenger (0: Lost, 1: Saved)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>pclass</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Passenger Class (1st/2nd/3rd)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>cabin</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Passenger cabin.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>embarked</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>fare</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>home_destination</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Home and destination</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>ticket</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Ticket Number, may include a letter.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>num_parents_children</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Number of Parents/Children Aboard</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>num_siblings_spouses</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Number of Siblings/Spouses Aboard</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>boat</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Lifeboat used by passenger</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>body</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Body Identification Number</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+            </div>
+
+            <div class="footer">
+                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full JSON-LD Modal -->
+    <div class="modal-overlay" id="jsonld-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🥐 metadata.json</h2>
+                <div class="modal-actions">
+                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        Copy
+                    </button>
+                    <button class="modal-btn" onclick="downloadFullJsonld()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download
+                    </button>
+                </div>
+                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
+  &#34;@context&#34;: {
+    &#34;@language&#34;: &#34;en&#34;,
+    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
+    &#34;column&#34;: &#34;ml:column&#34;,
+    &#34;data&#34;: {
+      &#34;@id&#34;: &#34;ml:data&#34;,
+      &#34;@type&#34;: &#34;@json&#34;
+    },
+    &#34;dataBiases&#34;: &#34;ml:dataBiases&#34;,
+    &#34;dataCollection&#34;: &#34;ml:dataCollection&#34;,
+    &#34;dataType&#34;: {
+      &#34;@id&#34;: &#34;ml:dataType&#34;,
+      &#34;@type&#34;: &#34;@vocab&#34;
+    },
+    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
+    &#34;extract&#34;: &#34;ml:extract&#34;,
+    &#34;field&#34;: &#34;ml:field&#34;,
+    &#34;fileProperty&#34;: &#34;ml:fileProperty&#34;,
+    &#34;format&#34;: &#34;ml:format&#34;,
+    &#34;includes&#34;: &#34;ml:includes&#34;,
+    &#34;isEnumeration&#34;: &#34;ml:isEnumeration&#34;,
+    &#34;jsonPath&#34;: &#34;ml:jsonPath&#34;,
+    &#34;ml&#34;: &#34;http://mlcommons.org/schema/&#34;,
+    &#34;parentField&#34;: &#34;ml:parentField&#34;,
+    &#34;path&#34;: &#34;ml:path&#34;,
+    &#34;personalSensitiveInformation&#34;: &#34;ml:personalSensitiveInformation&#34;,
+    &#34;recordSet&#34;: &#34;ml:recordSet&#34;,
+    &#34;references&#34;: &#34;ml:references&#34;,
+    &#34;regex&#34;: &#34;ml:regex&#34;,
+    &#34;repeated&#34;: &#34;ml:repeated&#34;,
+    &#34;replace&#34;: &#34;ml:replace&#34;,
+    &#34;sc&#34;: &#34;https://schema.org/&#34;,
+    &#34;separator&#34;: &#34;ml:separator&#34;,
+    &#34;source&#34;: &#34;ml:source&#34;,
+    &#34;subField&#34;: &#34;ml:subField&#34;,
+    &#34;transform&#34;: &#34;ml:transform&#34;,
+    &#34;wd&#34;: &#34;https://www.wikidata.org/wiki/&#34;
   },
-  "@type": "sc:Dataset",
-  "name": "Titanic",
-  "description": "The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n",
-  "citation": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
-  "license": "Public",
-  "url": "https://www.openml.org/d/40945",
-  "distribution": [
+  &#34;@type&#34;: &#34;sc:Dataset&#34;,
+  &#34;name&#34;: &#34;Titanic&#34;,
+  &#34;description&#34;: &#34;The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n&#34;,
+  &#34;citation&#34;: &#34;The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton &amp; Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n&#34;,
+  &#34;license&#34;: &#34;afl-3.0&#34;,
+  &#34;url&#34;: &#34;https://www.openml.org/d/40945&#34;,
+  &#34;version&#34;: &#34;1.0.0&#34;,
+  &#34;distribution&#34;: [
     {
-      "@type": "sc:FileObject",
-      "name": "passengers.csv",
-      "contentSize": "117743 B",
-      "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
-      "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      &#34;@type&#34;: &#34;sc:FileObject&#34;,
+      &#34;name&#34;: &#34;passengers.csv&#34;,
+      &#34;contentSize&#34;: &#34;117743 B&#34;,
+      &#34;contentUrl&#34;: &#34;data/titanic.csv&#34;,
+      &#34;encodingFormat&#34;: &#34;text/csv&#34;,
+      &#34;sha256&#34;: &#34;c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737&#34;
     },
     {
-      "@type": "sc:FileObject",
-      "name": "genders.csv",
-      "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
-      "contentSize": "117743 B",
-      "contentUrl": "data/genders.csv",
-      "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      &#34;@type&#34;: &#34;sc:FileObject&#34;,
+      &#34;name&#34;: &#34;genders.csv&#34;,
+      &#34;description&#34;: &#34;Maps gender values (\&#34;male\&#34;, \&#34;female\&#34;) to semantic URLs.&#34;,
+      &#34;contentSize&#34;: &#34;117743 B&#34;,
+      &#34;contentUrl&#34;: &#34;data/genders.csv&#34;,
+      &#34;encodingFormat&#34;: &#34;text/csv&#34;,
+      &#34;sha256&#34;: &#34;c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737&#34;
     },
     {
-      "@type": "sc:FileObject",
-      "name": "embarkation_ports.csv",
-      "description": "Maps Embarkation port initial to labeled values.",
-      "contentSize": "117743 B",
-      "contentUrl": "data/embarkation_ports.csv",
-      "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      &#34;@type&#34;: &#34;sc:FileObject&#34;,
+      &#34;name&#34;: &#34;embarkation_ports.csv&#34;,
+      &#34;description&#34;: &#34;Maps Embarkation port initial to labeled values.&#34;,
+      &#34;contentSize&#34;: &#34;117743 B&#34;,
+      &#34;contentUrl&#34;: &#34;data/embarkation_ports.csv&#34;,
+      &#34;encodingFormat&#34;: &#34;text/csv&#34;,
+      &#34;sha256&#34;: &#34;c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737&#34;
     }
   ],
-  "recordSet": [
+  &#34;recordSet&#34;: [
     {
-      "@type": "ml:RecordSet",
-      "name": "genders",
-      "description": "Maps gender labels to semantic definitions.",
-      "isEnumeration": true,
-      "key": "label",
-      "field": [
+      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+      &#34;name&#34;: &#34;genders&#34;,
+      &#34;description&#34;: &#34;Maps gender labels to semantic definitions.&#34;,
+      &#34;isEnumeration&#34;: true,
+      &#34;key&#34;: &#34;label&#34;,
+      &#34;field&#34;: [
         {
-          "@type": "ml:Field",
-          "name": "label",
-          "description": "One of {\"male\", \"female\"}",
-          "dataType": [
-            "sc:Text",
-            "sc:name"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;label&#34;,
+          &#34;description&#34;: &#34;One of {\&#34;male\&#34;, \&#34;female\&#34;}&#34;,
+          &#34;dataType&#34;: [
+            &#34;sc:Text&#34;,
+            &#34;sc:name&#34;
           ],
-          "source": {
-            "distribution": "genders.csv",
-            "extract": {
-              "column": "label"
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;genders.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;label&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "url",
-          "description": "Corresponding WikiData URL",
-          "dataType": [
-            "sc:URL",
-            "wd:Q48277"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;url&#34;,
+          &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
+          &#34;dataType&#34;: [
+            &#34;sc:URL&#34;,
+            &#34;wd:Q48277&#34;
           ],
-          "source": {
-            "distribution": "genders.csv",
-            "extract": {
-              "column": "url"
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;genders.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;url&#34;
             }
           }
         }
       ]
     },
     {
-      "@type": "ml:RecordSet",
-      "name": "embarkation_ports",
-      "description": "Maps Embarkation port initial to labeled values.",
-      "isEnumeration": true,
-      "key": "key",
-      "field": [
+      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+      &#34;name&#34;: &#34;embarkation_ports&#34;,
+      &#34;description&#34;: &#34;Maps Embarkation port initial to labeled values.&#34;,
+      &#34;isEnumeration&#34;: true,
+      &#34;key&#34;: &#34;key&#34;,
+      &#34;field&#34;: [
         {
-          "@type": "ml:Field",
-          "name": "key",
-          "description": "C, Q, S or ?",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "embarkation_ports.csv",
-            "extract": {
-              "column": "key"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;key&#34;,
+          &#34;description&#34;: &#34;C, Q, S or ?&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;embarkation_ports.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;key&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "label",
-          "description": "Human-readable label",
-          "dataType": [
-            "sc:Text",
-            "sc:name"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;label&#34;,
+          &#34;description&#34;: &#34;Human-readable label&#34;,
+          &#34;dataType&#34;: [
+            &#34;sc:Text&#34;,
+            &#34;sc:name&#34;
           ],
-          "source": {
-            "distribution": "embarkation_ports.csv",
-            "extract": {
-              "column": "label"
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;embarkation_ports.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;label&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "url",
-          "description": "Corresponding WikiData URL",
-          "dataType": [
-            "sc:URL",
-            "wd:Q515"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;url&#34;,
+          &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
+          &#34;dataType&#34;: [
+            &#34;sc:URL&#34;,
+            &#34;wd:Q515&#34;
           ],
-          "source": {
-            "distribution": "embarkation_ports.csv",
-            "extract": {
-              "column": "url"
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;embarkation_ports.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;url&#34;
             }
           }
         }
       ]
     },
     {
-      "@type": "ml:RecordSet",
-      "name": "passengers",
-      "description": "The list of passengers. Does not include crew members.",
-      "field": [
+      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+      &#34;name&#34;: &#34;passengers&#34;,
+      &#34;description&#34;: &#34;The list of passengers. Does not include crew members.&#34;,
+      &#34;field&#34;: [
         {
-          "@type": "ml:Field",
-          "name": "name",
-          "description": "Name of the passenger",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "name"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;name&#34;,
+          &#34;description&#34;: &#34;Name of the passenger&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;name&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "gender",
-          "description": "Gender of passenger (male or female)",
-          "dataType": "sc:Text",
-          "references": {
-            "field": "genders/label"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;gender&#34;,
+          &#34;description&#34;: &#34;Gender of passenger (male or female)&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;references&#34;: {
+            &#34;field&#34;: &#34;genders/label&#34;
           },
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "sex"
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;sex&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "age",
-          "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "age"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;age&#34;,
+          &#34;description&#34;: &#34;Age of passenger at time of death. It&#39;s a string, because some values can be `?`.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;age&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "survived",
-          "description": "Survival status of passenger (0: Lost, 1: Saved)",
-          "dataType": "sc:Integer",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "survived"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;survived&#34;,
+          &#34;description&#34;: &#34;Survival status of passenger (0: Lost, 1: Saved)&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;survived&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "pclass",
-          "description": "Passenger Class (1st/2nd/3rd)",
-          "dataType": "sc:Integer",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "pclass"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;pclass&#34;,
+          &#34;description&#34;: &#34;Passenger Class (1st/2nd/3rd)&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;pclass&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "cabin",
-          "description": "Passenger cabin.",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "cabin"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;cabin&#34;,
+          &#34;description&#34;: &#34;Passenger cabin.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;cabin&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "embarked",
-          "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
-          "dataType": "sc:Text",
-          "references": {
-            "field": "embarkation_ports/key"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;embarked&#34;,
+          &#34;description&#34;: &#34;Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;references&#34;: {
+            &#34;field&#34;: &#34;embarkation_ports/key&#34;
           },
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "embarked"
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;embarked&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "fare",
-          "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "fare"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;fare&#34;,
+          &#34;description&#34;: &#34;Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;fare&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "home_destination",
-          "description": "Home and destination",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "home.dest"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;home_destination&#34;,
+          &#34;description&#34;: &#34;Home and destination&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;home.dest&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "ticket",
-          "description": "Ticket Number, may include a letter.",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "ticket"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;ticket&#34;,
+          &#34;description&#34;: &#34;Ticket Number, may include a letter.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;ticket&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "num_parents_children",
-          "description": "Number of Parents/Children Aboard",
-          "dataType": "sc:Integer",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "parch"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;num_parents_children&#34;,
+          &#34;description&#34;: &#34;Number of Parents/Children Aboard&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;parch&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "num_siblings_spouses",
-          "description": "Number of Siblings/Spouses Aboard",
-          "dataType": "sc:Integer",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "sibsp"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;num_siblings_spouses&#34;,
+          &#34;description&#34;: &#34;Number of Siblings/Spouses Aboard&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;sibsp&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "boat",
-          "description": "Lifeboat used by passenger",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "boat"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;boat&#34;,
+          &#34;description&#34;: &#34;Lifeboat used by passenger&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;boat&#34;
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "body",
-          "description": "Body Identification Number",
-          "dataType": "sc:Text",
-          "source": {
-            "distribution": "passengers.csv",
-            "extract": {
-              "column": "body"
+          &#34;@type&#34;: &#34;ml:Field&#34;,
+          &#34;name&#34;: &#34;body&#34;,
+          &#34;description&#34;: &#34;Body Identification Number&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;distribution&#34;: &#34;passengers.csv&#34;,
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;body&#34;
             }
           }
         }
       ]
     }
   ]
-}
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.add('collapsed');
+        });
+        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('collapsed');
+        });
+
+        // Render markdown descriptions
+        document.querySelectorAll('.markdown').forEach(function(el) {
+            var raw = el.textContent;
+            if (raw && typeof marked !== 'undefined') {
+                el.innerHTML = marked.parse(raw);
+            }
+        });
+
+        function toggleJsonld(btn) {
+            var container = btn.closest('.rs-section, .resource-card, tr, .card');
+            var panel = container.querySelector('.jsonld-panel');
+            if (!panel) {
+                var row = btn.closest('tr');
+                if (row) panel = row.querySelector('.jsonld-panel');
+            }
+            if (panel) {
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
+                // Highlight with Prism on first open
+                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
+                    var code = panel.querySelector('code');
+                    if (code) Prism.highlightElement(code);
+                    panel.dataset.highlighted = 'true';
+                }
+            }
+        }
+
+        // Full JSON-LD modal
+        var modalHighlighted = false;
+        function openJsonldModal() {
+            var modal = document.getElementById('jsonld-modal');
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            if (!modalHighlighted) {
+                var code = document.getElementById('full-jsonld-code');
+                if (code) Prism.highlightElement(code);
+                modalHighlighted = true;
+            }
+        }
+        function closeJsonldModal() {
+            document.getElementById('jsonld-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeJsonldModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeJsonldModal();
+        });
+
+        function copyFullJsonld() {
+            var code = document.getElementById('full-jsonld-code');
+            var text = code.textContent;
+            navigator.clipboard.writeText(text).then(function() {
+                var btn = document.getElementById('copy-jsonld-btn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+                setTimeout(function() {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+                }, 2000);
+            });
+        }
+
+        function downloadFullJsonld() {
+            var code = document.getElementById('full-jsonld-code');
+            var text = code.textContent;
+            var blob = new Blob([text], {type: 'application/ld+json'});
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'metadata.json';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
     </script>
-  </head>
-  <body>
-  </body>
+</body>
 </html>

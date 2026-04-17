@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movielens-25M — Croissant Visualizer</title>
+    <title>Mini-COCO — Croissant Visualizer</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -653,32 +653,26 @@
                 <h4>Resources</h4>
                 <ul>
                     
-                    <li><a href="#res-ml-25m-archive">📄 ml-25m-archive</a></li>
+                    <li><a href="#res-train2014.zip">📄 train2014.zip</a></li>
                     
-                    <li><a href="#res-ratings-table">📄 ratings-table</a></li>
+                    <li><a href="#res-image-files">📁 image-files</a></li>
                     
-                    <li><a href="#res-movies-table">📄 movies-table</a></li>
+                    <li><a href="#res-caption_annotations-files">📄 caption_annotations-files</a></li>
                     
-                    <li><a href="#res-tags-table">📄 tags-table</a></li>
-                    
-                    <li><a href="#res-links-table">📄 links-table</a></li>
-                    
-                    <li><a href="#res-genome-scores-table">📄 genome-scores-table</a></li>
-                    
-                    <li><a href="#res-genome-tags-table">📄 genome-tags-table</a></li>
+                    <li><a href="#res-bbox_annotations-files">📄 bbox_annotations-files</a></li>
                     
                 </ul>
 
                 <h4>Record Sets</h4>
                 <ul>
                     
-                    <li><a href="#rs-movies">movies</a></li>
+                    <li><a href="#rs-split_enums">split_enums</a></li>
                     
-                    <li><a href="#rs-ratings">ratings</a></li>
+                    <li><a href="#rs-images">images</a></li>
                     
-                    <li><a href="#rs-tags">tags</a></li>
+                    <li><a href="#rs-captions">captions</a></li>
                     
-                    <li><a href="#rs-movies_with_ratings_with_tags">movies_with_ratings_with_tags</a></li>
+                    <li><a href="#rs-bounding_boxes">bounding_boxes</a></li>
                     
                 </ul>
             </div>
@@ -693,16 +687,18 @@
 
             <!-- Hero -->
             <div class="hero" id="top">
-                <h1>🥐 Movielens-25M</h1>
+                <h1>🥐 Mini-COCO</h1>
                 
-                <div class="description markdown">MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019</div>
+                <div class="description markdown">Smaller downloadable version of COCO to be used in unit tests.</div>
                 
                 <div class="hero-meta">
                     
+                    <span class="hero-badge">🏷️ v1.0.0</span>
                     
-                    <span class="hero-badge">🔗 <a href="https://grouplens.org/datasets/movielens/25m/" target="_blank">Dataset URL</a></span>
                     
-                    <span class="hero-badge">📦 7 resources</span>
+                    <span class="hero-badge">🔗 <a href="None" target="_blank">Dataset URL</a></span>
+                    
+                    <span class="hero-badge">📦 4 resources</span>
                     <span class="hero-badge">📋 4 record sets</span>
                     <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
                 </div>
@@ -716,6 +712,25 @@
                     <h2>Metadata</h2>
                 </div>
                 <table class="kv-table">
+                    
+                    <tr>
+                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            cc-by-4.0
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;license&#34;: &#34;cc-by-4.0&#34;
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
                     
                     <tr>
                         <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
@@ -751,29 +766,21 @@
                 <div class="mermaid-wrap">
                     <div class="mermaid">
 graph TD
-    ml_25m_archive["ml-25m-archive<br/><small>File</small>"]
-    ratings_table["ratings-table<br/><small>File</small>"]
-    movies_table["movies-table<br/><small>File</small>"]
-    tags_table["tags-table<br/><small>File</small>"]
-    links_table["links-table<br/><small>File</small>"]
-    genome_scores_table["genome-scores-table<br/><small>File</small>"]
-    genome_tags_table["genome-tags-table<br/><small>File</small>"]
-    ml_25m_archive --> ratings_table
-    ml_25m_archive --> movies_table
-    ml_25m_archive --> tags_table
-    ml_25m_archive --> links_table
-    ml_25m_archive --> genome_scores_table
-    ml_25m_archive --> genome_tags_table
+    train2014_zip["train2014.zip<br/><small>File</small>"]
+    image_files["image-files<br/><small>File Set</small>"]
+    caption_annotations_files["caption_annotations-files<br/><small>File</small>"]
+    bbox_annotations_files["bbox_annotations-files<br/><small>File</small>"]
+    train2014_zip --> image_files
                     </div>
                 </div>
                 
 
                 <div class="resource-grid">
                     
-                    <div class="resource-card" id="res-ml-25m-archive">
+                    <div class="resource-card" id="res-train2014.zip">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">ml-25m-archive</span>
+                            <span class="rc-name">train2014.zip</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
@@ -785,20 +792,48 @@ graph TD
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;ml-25m-archive&#34;,
-  &#34;name&#34;: &#34;ml-25m-archive&#34;,
-  &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
+  &#34;@id&#34;: &#34;train2014.zip&#34;,
+  &#34;name&#34;: &#34;train2014.zip&#34;,
+  &#34;contentSize&#34;: &#34; B&#34;,
+  &#34;contentUrl&#34;: &#34;data/train2014.zip&#34;,
   &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
+  &#34;sha256&#34;: &#34;d010037fee9416bdcc187a37a4aec7bef798316147da2753bd86e78fc0d469a5&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-ratings-table">
+                    <div class="resource-card" id="res-image-files">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">image-files</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;image-files&#34;,
+  &#34;name&#34;: &#34;image-files&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;train2014.zip&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;image/jpeg&#34;,
+  &#34;includes&#34;: &#34;*.jpg&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-caption_annotations-files">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">ratings-table</span>
+                            <span class="rc-name">caption_annotations-files</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
@@ -810,22 +845,21 @@ graph TD
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;ratings-table&#34;,
-  &#34;name&#34;: &#34;ratings-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;@id&#34;: &#34;caption_annotations-files&#34;,
+  &#34;name&#34;: &#34;caption_annotations-files&#34;,
+  &#34;contentSize&#34;: &#34; B&#34;,
+  &#34;contentUrl&#34;: &#34;data/captions_train2014.json&#34;,
+  &#34;encodingFormat&#34;: &#34;application/json&#34;,
+  &#34;sha256&#34;: &#34;6f3755cb987413021018525cbb4c484d696ff41269e6b0b43c5f63eaf576e09f&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-movies-table">
+                    <div class="resource-card" id="res-bbox_annotations-files">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">movies-table</span>
+                            <span class="rc-name">bbox_annotations-files</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
@@ -837,121 +871,11 @@ graph TD
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;movies-table&#34;,
-  &#34;name&#34;: &#34;movies-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-tags-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">tags-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;tags-table&#34;,
-  &#34;name&#34;: &#34;tags-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-links-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">links-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;links-table&#34;,
-  &#34;name&#34;: &#34;links-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-scores-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-scores-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;genome-scores-table&#34;,
-  &#34;name&#34;: &#34;genome-scores-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-tags-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-tags-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;genome-tags-table&#34;,
-  &#34;name&#34;: &#34;genome-tags-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;@id&#34;: &#34;bbox_annotations-files&#34;,
+  &#34;name&#34;: &#34;bbox_annotations-files&#34;,
+  &#34;contentUrl&#34;: &#34;data/instances_train2014.json&#34;,
+  &#34;encodingFormat&#34;: &#34;application/json&#34;,
+  &#34;sha256&#34;: &#34;df2760cf1d55e37b9cde91499286a3cac52efc31d95a9d21ba34dbbbcf693654&#34;
 }</code></pre>
                         </div>
                         
@@ -968,9 +892,96 @@ graph TD
                 </div>
 
                 
-                <div class="rs-section" id="rs-movies">
+                <div class="rs-section" id="rs-split_enums">
                     <div class="rs-header">
-                        <h3>movies</h3>
+                        <h3>split_enums</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">Maps split names to semantic values.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;split_enums&#34;,
+  &#34;name&#34;: &#34;split_enums&#34;,
+  &#34;description&#34;: &#34;Maps split names to semantic values.&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;name&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;split_enums/name&#34;,
+      &#34;name&#34;: &#34;split_enums/name&#34;,
+      &#34;description&#34;: &#34;One of: train, val, test.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;split_enums/url&#34;,
+      &#34;name&#34;: &#34;split_enums/url&#34;,
+      &#34;description&#34;: &#34;Corresponding mlcommons.org definition URL&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:URL&#34;
+      ]
+    }
+  ],
+  &#34;data&#34;: [
+    {
+      &#34;split_enums/name&#34;: &#34;train&#34;,
+      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/training_split&#34;
+    },
+    {
+      &#34;split_enums/name&#34;: &#34;val&#34;,
+      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/validation_split&#34;
+    },
+    {
+      &#34;split_enums/name&#34;: &#34;test&#34;,
+      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/test_split&#34;
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>One of: train, val, test.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>url</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Corresponding mlcommons.org definition URL</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-images">
+                    <div class="rs-header">
+                        <h3>images</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
@@ -980,57 +991,64 @@ graph TD
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;movies&#34;,
-  &#34;name&#34;: &#34;movies&#34;,
+  &#34;@id&#34;: &#34;images&#34;,
+  &#34;name&#34;: &#34;images&#34;,
   &#34;key&#34;: {
-    &#34;@id&#34;: &#34;movie_id&#34;
+    &#34;@id&#34;: &#34;img_id&#34;
   },
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/movie_id&#34;,
-      &#34;name&#34;: &#34;movies/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;@id&#34;: &#34;images/image_filename&#34;,
+      &#34;name&#34;: &#34;images/image_filename&#34;,
+      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
+          &#34;fileProperty&#34;: &#34;filename&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/title&#34;,
-      &#34;name&#34;: &#34;movies/title&#34;,
-      &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;@id&#34;: &#34;images/image_content&#34;,
+      &#34;name&#34;: &#34;images/image_content&#34;,
+      &#34;description&#34;: &#34;The content of the image.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;title&#34;
+          &#34;fileProperty&#34;: &#34;content&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/genre&#34;,
-      &#34;name&#34;: &#34;movies/genre&#34;,
-      &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;repeated&#34;: true,
+      &#34;@id&#34;: &#34;images/split&#34;,
+      &#34;name&#34;: &#34;images/split&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;split_enums/name&#34;
+        }
+      },
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;genres&#34;
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
         },
         &#34;transform&#34;: {
-          &#34;separator&#34;: &#34;|&#34;
+          &#34;regex&#34;: &#34;^(train|val|test)2014/.*\\.jpg$&#34;
         }
       }
     }
@@ -1050,152 +1068,20 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>title</strong></td>
+                                    <td><strong>image_filename</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>The title of the  movie with the release year in parentheses.</td>
+                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>genre</strong></td>
+                                    <td><strong>image_content</strong></td>
+                                    <td><span class="type-badge">ImageObject</span></td>
+                                    <td>The content of the image.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>A sequence of genres to which the rated movie belongs.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-ratings">
-                    <div class="rs-header">
-                        <h3>ratings</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;ratings&#34;,
-  &#34;name&#34;: &#34;ratings&#34;,
-  &#34;key&#34;: [
-    {
-      &#34;@id&#34;: &#34;user_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;movie_id&#34;
-    }
-  ],
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/user_id&#34;,
-      &#34;name&#34;: &#34;ratings/user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/movie_id&#34;,
-      &#34;name&#34;: &#34;ratings/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/rating&#34;,
-      &#34;name&#34;: &#34;ratings/rating&#34;,
-      &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;rating&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/timestamp&#34;,
-      &#34;name&#34;: &#34;ratings/timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>rating</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The score of the rating on a five-star scale.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
                                     <td></td>
                                 </tr>
                                 
@@ -1207,9 +1093,9 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-tags">
+                <div class="rs-section" id="rs-captions">
                     <div class="rs-header">
-                        <h3>tags</h3>
+                        <h3>captions</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
@@ -1219,276 +1105,84 @@ graph TD
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;tags&#34;,
-  &#34;name&#34;: &#34;tags&#34;,
-  &#34;key&#34;: [
-    {
-      &#34;@id&#34;: &#34;user_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;movie_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;timestamp&#34;
-    }
-  ],
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/user_id&#34;,
-      &#34;name&#34;: &#34;tags/user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/movie_id&#34;,
-      &#34;name&#34;: &#34;tags/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/tag&#34;,
-      &#34;name&#34;: &#34;tags/tag&#34;,
-      &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;tag&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/timestamp&#34;,
-      &#34;name&#34;: &#34;tags/timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tag</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Tags assigned to the movie.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-movies_with_ratings_with_tags">
-                    <div class="rs-header">
-                        <h3>movies_with_ratings_with_tags</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;movies_with_ratings_with_tags&#34;,
-  &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
+  &#34;@id&#34;: &#34;captions&#34;,
+  &#34;name&#34;: &#34;captions&#34;,
   &#34;key&#34;: {
-    &#34;@id&#34;: &#34;movie_id&#34;
+    &#34;@id&#34;: &#34;id&#34;
   },
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
+      &#34;@id&#34;: &#34;captions/id&#34;,
+      &#34;name&#34;: &#34;captions/id&#34;,
+      &#34;description&#34;: &#34;The ID of the caption&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
       &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/title&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/genre&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-      &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;movies/movie_id&#34;
-          }
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
         },
-        &#34;source&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;ratings/movie_id&#34;
-          }
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/image_id&#34;,
+      &#34;name&#34;: &#34;captions/image_id&#34;,
+      &#34;description&#34;: &#34;The ID of the image&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/caption&#34;,
+      &#34;name&#34;: &#34;captions/caption&#34;,
+      &#34;description&#34;: &#34;The caption&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q18585177&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].caption&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/split&#34;,
+      &#34;name&#34;: &#34;captions/split&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;split_enums/name&#34;
         }
       },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/user_id&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/user_id&#34;
-            }
-          }
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
         },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/rating&#34;,
-          &#34;name&#34;: &#34;rating&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/rating&#34;
-            }
-          }
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
         },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/timestamp&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/timestamp&#34;
-            }
-          }
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;.*_(val|train)2014\\.json$&#34;
         }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-      &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;movies/movie_id&#34;
-          }
-        },
-        &#34;source&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;tags/movie_id&#34;
-          }
-        }
-      },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/user_id&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/user_id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/tag&#34;,
-          &#34;name&#34;: &#34;tag&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/tag&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/timestamp&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/timestamp&#34;
-            }
-          }
-        }
-      ]
+      }
     }
   ]
 }</code></pre>
@@ -1506,33 +1200,149 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>movie_id</strong></td>
+                                    <td><strong>id</strong></td>
                                     <td><span class="type-badge">int</span></td>
-                                    <td></td>
+                                    <td>The ID of the caption</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>movie_title</strong></td>
+                                    <td><strong>image_id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the image</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>caption</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The caption</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
                                     <td></td>
                                 </tr>
                                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-bounding_boxes">
+                    <div class="rs-header">
+                        <h3>bounding_boxes</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;bounding_boxes&#34;,
+  &#34;name&#34;: &#34;bounding_boxes&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/id&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/id&#34;,
+      &#34;description&#34;: &#34;The ID of the annotation.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/image_id&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/image_id&#34;,
+      &#34;description&#34;: &#34;The ID of the image.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/bbox&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/bbox&#34;,
+      &#34;description&#34;: &#34;The bounding box on the image.&#34;,
+      &#34;dataType&#34;: &#34;cr:BoundingBox&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].bbox&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/area&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/area&#34;,
+      &#34;description&#34;: &#34;The area of the bounding box.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].area&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td><strong>movie_genres</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the annotation.</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>ratings</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
+                                    <td><strong>image_id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the image.</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>tags</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
+                                    <td><strong>bbox</strong></td>
+                                    <td><span class="type-badge">http://mlcommons.org/croissant/BoundingBox</span></td>
+                                    <td>The bounding box on the image.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>area</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The area of the bounding box.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1611,137 +1421,158 @@ graph TD
     &#34;separator&#34;: &#34;cr:separator&#34;,
     &#34;source&#34;: &#34;cr:source&#34;,
     &#34;subField&#34;: &#34;cr:subField&#34;,
-    &#34;transform&#34;: &#34;cr:transform&#34;
+    &#34;transform&#34;: &#34;cr:transform&#34;,
+    &#34;wd&#34;: &#34;https://www.wikidata.org/wiki/&#34;
   },
   &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;Movielens-25M&#34;,
-  &#34;description&#34;: &#34;MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019&#34;,
+  &#34;name&#34;: &#34;Mini-COCO&#34;,
+  &#34;description&#34;: &#34;Smaller downloadable version of COCO to be used in unit tests.&#34;,
   &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;url&#34;: &#34;https://grouplens.org/datasets/movielens/25m/&#34;,
+  &#34;citeAs&#34;: &#34;None&#34;,
+  &#34;license&#34;: &#34;cc-by-4.0&#34;,
+  &#34;url&#34;: &#34;None&#34;,
+  &#34;version&#34;: &#34;1.0.0&#34;,
   &#34;distribution&#34;: [
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;ml-25m-archive&#34;,
-      &#34;name&#34;: &#34;ml-25m-archive&#34;,
-      &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
+      &#34;@id&#34;: &#34;train2014.zip&#34;,
+      &#34;name&#34;: &#34;train2014.zip&#34;,
+      &#34;contentSize&#34;: &#34; B&#34;,
+      &#34;contentUrl&#34;: &#34;data/train2014.zip&#34;,
       &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
+      &#34;sha256&#34;: &#34;d010037fee9416bdcc187a37a4aec7bef798316147da2753bd86e78fc0d469a5&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;image-files&#34;,
+      &#34;name&#34;: &#34;image-files&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;train2014.zip&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;image/jpeg&#34;,
+      &#34;includes&#34;: &#34;*.jpg&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;ratings-table&#34;,
-      &#34;name&#34;: &#34;ratings-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;@id&#34;: &#34;caption_annotations-files&#34;,
+      &#34;name&#34;: &#34;caption_annotations-files&#34;,
+      &#34;contentSize&#34;: &#34; B&#34;,
+      &#34;contentUrl&#34;: &#34;data/captions_train2014.json&#34;,
+      &#34;encodingFormat&#34;: &#34;application/json&#34;,
+      &#34;sha256&#34;: &#34;6f3755cb987413021018525cbb4c484d696ff41269e6b0b43c5f63eaf576e09f&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;movies-table&#34;,
-      &#34;name&#34;: &#34;movies-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;tags-table&#34;,
-      &#34;name&#34;: &#34;tags-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;links-table&#34;,
-      &#34;name&#34;: &#34;links-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;genome-scores-table&#34;,
-      &#34;name&#34;: &#34;genome-scores-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;genome-tags-table&#34;,
-      &#34;name&#34;: &#34;genome-tags-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;@id&#34;: &#34;bbox_annotations-files&#34;,
+      &#34;name&#34;: &#34;bbox_annotations-files&#34;,
+      &#34;contentUrl&#34;: &#34;data/instances_train2014.json&#34;,
+      &#34;encodingFormat&#34;: &#34;application/json&#34;,
+      &#34;sha256&#34;: &#34;df2760cf1d55e37b9cde91499286a3cac52efc31d95a9d21ba34dbbbcf693654&#34;
     }
   ],
   &#34;recordSet&#34;: [
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;movies&#34;,
-      &#34;name&#34;: &#34;movies&#34;,
+      &#34;@id&#34;: &#34;split_enums&#34;,
+      &#34;name&#34;: &#34;split_enums&#34;,
+      &#34;description&#34;: &#34;Maps split names to semantic values.&#34;,
       &#34;key&#34;: {
-        &#34;@id&#34;: &#34;movie_id&#34;
+        &#34;@id&#34;: &#34;name&#34;
       },
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/movie_id&#34;,
-          &#34;name&#34;: &#34;movies/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;@id&#34;: &#34;split_enums/name&#34;,
+          &#34;name&#34;: &#34;split_enums/name&#34;,
+          &#34;description&#34;: &#34;One of: train, val, test.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;split_enums/url&#34;,
+          &#34;name&#34;: &#34;split_enums/url&#34;,
+          &#34;description&#34;: &#34;Corresponding mlcommons.org definition URL&#34;,
+          &#34;dataType&#34;: [
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:URL&#34;
+          ]
+        }
+      ],
+      &#34;data&#34;: [
+        {
+          &#34;split_enums/name&#34;: &#34;train&#34;,
+          &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/training_split&#34;
+        },
+        {
+          &#34;split_enums/name&#34;: &#34;val&#34;,
+          &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/validation_split&#34;
+        },
+        {
+          &#34;split_enums/name&#34;: &#34;test&#34;,
+          &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/test_split&#34;
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;images&#34;,
+      &#34;name&#34;: &#34;images&#34;,
+      &#34;key&#34;: {
+        &#34;@id&#34;: &#34;img_id&#34;
+      },
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;images/image_filename&#34;,
+          &#34;name&#34;: &#34;images/image_filename&#34;,
+          &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;image-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
+              &#34;fileProperty&#34;: &#34;filename&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/title&#34;,
-          &#34;name&#34;: &#34;movies/title&#34;,
-          &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;@id&#34;: &#34;images/image_content&#34;,
+          &#34;name&#34;: &#34;images/image_content&#34;,
+          &#34;description&#34;: &#34;The content of the image.&#34;,
+          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;image-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;title&#34;
+              &#34;fileProperty&#34;: &#34;content&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/genre&#34;,
-          &#34;name&#34;: &#34;movies/genre&#34;,
-          &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;repeated&#34;: true,
+          &#34;@id&#34;: &#34;images/split&#34;,
+          &#34;name&#34;: &#34;images/split&#34;,
+          &#34;dataType&#34;: [
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:Text&#34;
+          ],
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;split_enums/name&#34;
+            }
+          },
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;image-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;genres&#34;
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
             },
             &#34;transform&#34;: {
-              &#34;separator&#34;: &#34;|&#34;
+              &#34;regex&#34;: &#34;^(train|val|test)2014/.*\\.jpg$&#34;
             }
           }
         }
@@ -1749,298 +1580,151 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;ratings&#34;,
-      &#34;name&#34;: &#34;ratings&#34;,
-      &#34;key&#34;: [
-        {
-          &#34;@id&#34;: &#34;user_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;movie_id&#34;
-        }
-      ],
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/user_id&#34;,
-          &#34;name&#34;: &#34;ratings/user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/movie_id&#34;,
-          &#34;name&#34;: &#34;ratings/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/rating&#34;,
-          &#34;name&#34;: &#34;ratings/rating&#34;,
-          &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;rating&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/timestamp&#34;,
-          &#34;name&#34;: &#34;ratings/timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;tags&#34;,
-      &#34;name&#34;: &#34;tags&#34;,
-      &#34;key&#34;: [
-        {
-          &#34;@id&#34;: &#34;user_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;movie_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;timestamp&#34;
-        }
-      ],
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/user_id&#34;,
-          &#34;name&#34;: &#34;tags/user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/movie_id&#34;,
-          &#34;name&#34;: &#34;tags/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/tag&#34;,
-          &#34;name&#34;: &#34;tags/tag&#34;,
-          &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;tag&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/timestamp&#34;,
-          &#34;name&#34;: &#34;tags/timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
+      &#34;@id&#34;: &#34;captions&#34;,
+      &#34;name&#34;: &#34;captions&#34;,
       &#34;key&#34;: {
-        &#34;@id&#34;: &#34;movie_id&#34;
+        &#34;@id&#34;: &#34;id&#34;
       },
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
+          &#34;@id&#34;: &#34;captions/id&#34;,
+          &#34;name&#34;: &#34;captions/id&#34;,
+          &#34;description&#34;: &#34;The ID of the caption&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
           &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/title&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/genre&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-          &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;movies/movie_id&#34;
-              }
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;caption_annotations-files&#34;
             },
-            &#34;source&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;ratings/movie_id&#34;
-              }
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;captions/image_id&#34;,
+          &#34;name&#34;: &#34;captions/image_id&#34;,
+          &#34;description&#34;: &#34;The ID of the image&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;caption_annotations-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;captions/caption&#34;,
+          &#34;name&#34;: &#34;captions/caption&#34;,
+          &#34;description&#34;: &#34;The caption&#34;,
+          &#34;dataType&#34;: [
+            &#34;wd:Q18585177&#34;,
+            &#34;sc:Text&#34;
+          ],
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;caption_annotations-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].caption&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;captions/split&#34;,
+          &#34;name&#34;: &#34;captions/split&#34;,
+          &#34;dataType&#34;: [
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:Text&#34;
+          ],
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;split_enums/name&#34;
             }
           },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/user_id&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/user_id&#34;
-                }
-              }
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;caption_annotations-files&#34;
             },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/rating&#34;,
-              &#34;name&#34;: &#34;rating&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/rating&#34;
-                }
-              }
+            &#34;extract&#34;: {
+              &#34;fileProperty&#34;: &#34;filename&#34;
             },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/timestamp&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/timestamp&#34;
-                }
-              }
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;.*_(val|train)2014\\.json$&#34;
             }
-          ]
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes&#34;,
+      &#34;name&#34;: &#34;bounding_boxes&#34;,
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;bounding_boxes/id&#34;,
+          &#34;name&#34;: &#34;bounding_boxes/id&#34;,
+          &#34;description&#34;: &#34;The ID of the annotation.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
+            }
+          }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-          &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;movies/movie_id&#34;
-              }
+          &#34;@id&#34;: &#34;bounding_boxes/image_id&#34;,
+          &#34;name&#34;: &#34;bounding_boxes/image_id&#34;,
+          &#34;description&#34;: &#34;The ID of the image.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;bbox_annotations-files&#34;
             },
-            &#34;source&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;tags/movie_id&#34;
-              }
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
             }
-          },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/user_id&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/user_id&#34;
-                }
-              }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;bounding_boxes/bbox&#34;,
+          &#34;name&#34;: &#34;bounding_boxes/bbox&#34;,
+          &#34;description&#34;: &#34;The bounding box on the image.&#34;,
+          &#34;dataType&#34;: &#34;cr:BoundingBox&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;bbox_annotations-files&#34;
             },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/tag&#34;,
-              &#34;name&#34;: &#34;tag&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/tag&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/timestamp&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/timestamp&#34;
-                }
-              }
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].bbox&#34;
             }
-          ]
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;bounding_boxes/area&#34;,
+          &#34;name&#34;: &#34;bounding_boxes/area&#34;,
+          &#34;description&#34;: &#34;The area of the bounding box.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$.annotations[*].area&#34;
+            }
+          }
         }
       ]
     }

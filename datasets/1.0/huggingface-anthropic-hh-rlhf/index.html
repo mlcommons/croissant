@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COCO — Croissant Visualizer</title>
+    <title>Anthropic/hh-rlhf — Croissant Visualizer</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -653,25 +653,17 @@
                 <h4>Resources</h4>
                 <ul>
                     
-                    <li><a href="#res-train2014.zip">📄 train2014.zip</a></li>
+                    <li><a href="#res-repo">📄 repo</a></li>
                     
-                    <li><a href="#res-val2014.zip">📄 val2014.zip</a></li>
+                    <li><a href="#res-red-team-attempts-file-object">📄 red-team-attempts-file-object</a></li>
                     
-                    <li><a href="#res-test2014.zip">📄 test2014.zip</a></li>
+                    <li><a href="#res-harmless-base-files">📁 harmless-base-files</a></li>
                     
-                    <li><a href="#res-image-files">📁 image-files</a></li>
+                    <li><a href="#res-helpful-base-files">📁 helpful-base-files</a></li>
                     
-                    <li><a href="#res-annotations_trainval2014.zip">📄 annotations_trainval2014.zip</a></li>
+                    <li><a href="#res-helpful-online-files">📁 helpful-online-files</a></li>
                     
-                    <li><a href="#res-caption_annotations-files">📁 caption_annotations-files</a></li>
-                    
-                    <li><a href="#res-person_keypoints_annotations">📁 person_keypoints_annotations</a></li>
-                    
-                    <li><a href="#res-instancesperson_keypoints_annotations">📁 instancesperson_keypoints_annotations</a></li>
-                    
-                    <li><a href="#res-image_info_test2014.zip">📄 image_info_test2014.zip</a></li>
-                    
-                    <li><a href="#res-imageinfo">📁 imageinfo</a></li>
+                    <li><a href="#res-helpful-rejection-sampled-files">📁 helpful-rejection-sampled-files</a></li>
                     
                 </ul>
 
@@ -680,13 +672,15 @@
                     
                     <li><a href="#rs-split_enums">split_enums</a></li>
                     
-                    <li><a href="#rs-images">images</a></li>
+                    <li><a href="#rs-red-team-attempts">red-team-attempts</a></li>
                     
-                    <li><a href="#rs-captions">captions</a></li>
+                    <li><a href="#rs-harmless-base">harmless-base</a></li>
                     
-                    <li><a href="#rs-categories">categories</a></li>
+                    <li><a href="#rs-helpful-base">helpful-base</a></li>
                     
-                    <li><a href="#rs-annotations">annotations</a></li>
+                    <li><a href="#rs-helpful-online">helpful-online</a></li>
+                    
+                    <li><a href="#rs-helpful-rejection-sampled">helpful-rejection-sampled</a></li>
                     
                 </ul>
             </div>
@@ -701,17 +695,59 @@
 
             <!-- Hero -->
             <div class="hero" id="top">
-                <h1>🥐 COCO</h1>
+                <h1>🥐 Anthropic/hh-rlhf</h1>
                 
-                <div class="description markdown">COCO is a large-scale object detection, segmentation, and captioning dataset.  WARNING: `metadata.json` is incomplete and does not fully define the COCO2014 dataset. It lacks `recordSet` definitions that would enable automatic loading of all the annotations.</div>
+                <div class="description markdown"># Dataset Card for HH-RLHF
+
+## Dataset Summary
+
+This repository provides access to two different kinds of data:
+1. Human preference data about helpfulness and harmlessness from [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862). These data are meant to train preference (or reward) models for subsequent RLHF training. These data are *not* meant for supervised training of dialogue agents. Training dialogue agents on these data is likely to lead to harmful models and this shold be avoided.
+2. Human-generated and annotated red teaming dialogues from [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://www.anthropic.com/red_teaming.pdf). These data are meant to understand how crowdworkers red team models and what types of red team attacks are succesful or not. The data are *not* meant for fine-tuning or preference modeling (use the data above for preference modeling). These data are entire transcripts of conversations that are derived from the harmlessness preference modeling data described above, where only the chosen response is incorporated into the overall transcript. Furthermore, the transcripts are annotated with human and automated measurements of how harmful the overall dialogues are.
+
+**Disclaimer**: The data (especially the harmlessness preference data and the red team data) contain content that may be offensive or upsetting. Topics include, but are not limited to, discriminatory language and discussions of abuse, violence, self-harm, exploitation, and other potentially upsetting subject matter. Please only engage with the data in accordance with your own personal risk tolerance. The data are intended for research purposes, especially research that can make models *less* harmful. The views expressed in the data do not reflect the views of Anthropic or any of its employees. As mentioned above, these data are *not* intended for training dialogue agents as this will likely lead to harmful model behavior.
+
+Each of these datasets are described further below.
+
+## Human preference data about helpfulness and harmlessness (PM Data)
+
+The data are described in the paper: [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862). If you find the data useful, please cite the paper. The data format is very simple -- each line of the jsonl files contains a pair of texts, one &#34;chosen&#34; and one &#34;rejected&#34;.
+
+For **helpfulness**, the data are grouped into train/test splits in three tranches: from our base models (context-distilled 52B language models), via rejection sampling (mostly with best-of-16 sampling) against an early preference model, and a dataset sampled during our iterated &#34;online&#34; process.
+
+For **harmlessness**, the data are only collected for our base models, but otherwise formatted in the same way.
+
+Details about the data collection process and crowdworker population can be found in the paper, specifically in section 2 and appendix D.
+
+## Red teaming data (not PM Data)
+
+The data are described in the paper: [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://www.anthropic.com/red_teaming.pdf). If you find the data useful, please cite the paper. At a high level these data can be examined to understand what succesful red team attempts look like.
+
+Details about the data and data collection procedures can be found in the Datasheet in the appendix of the paper.
+
+Each line of the jsonl file contains a dictionary with the following fields:
+- `transcript` a text transcript of a conversation between a human adversary (red team member) and an AI assistant
+- `min_harmlessness_score_transcript` a real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model
+- `num_params` number of parameters in the language model powering the AI assistant
+- `model_type` type of model powering the AI assistant
+- `rating` the red team member&#39;s rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful)
+- `task_description` a short text description written by the red team member about how they tried to red team the AI assistant
+- `task_description_harmlessness_score` a real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model
+- `red_team_member_id` an arbitrary identifier of the red team member. one red team member can generate multiple red team attacks
+- `is_upworker` a binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk
+- `tags` a list of up to 6 tags per transcript. tags are short descriptions of the red team attempts generated by crowdworkers who reviewed red team data post-hoc. tags were only provided for a random sample of 1000 red team attempts for two of four model types.
+
+</div>
                 
                 <div class="hero-meta">
                     
+                    <span class="hero-badge">🏷️ v1.0.0</span>
                     
-                    <span class="hero-badge">🔗 <a href="https://cocodataset.org/" target="_blank">Dataset URL</a></span>
                     
-                    <span class="hero-badge">📦 10 resources</span>
-                    <span class="hero-badge">📋 5 record sets</span>
+                    <span class="hero-badge">🔗 <a href="https://github.com/anthropics/hh-rlhf" target="_blank">Dataset URL</a></span>
+                    
+                    <span class="hero-badge">📦 6 resources</span>
+                    <span class="hero-badge">📋 6 record sets</span>
                     <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
                 </div>
             </div>
@@ -732,12 +768,12 @@
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                             
-                            cc-by-4.0
+                            mit
                             
                             
                             <div class="jsonld-panel">
                                 <pre class="language-json"><code class="language-json">{
-  &#34;license&#34;: &#34;cc-by-4.0&#34;
+  &#34;license&#34;: &#34;mit&#34;
 }</code></pre>
                             </div>
                             
@@ -751,33 +787,12 @@
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                             
-                            <div class="cite-block">@article{DBLP:journals/corr/LinMBHPRDZ14,
- author = {Tsung{-}Yi Lin and
- Michael Maire and
- Serge J. Belongie and
- Lubomir D. Bourdev and
- Ross B. Girshick and
- James Hays and
- Pietro Perona and
- Deva Ramanan and
- Piotr Doll{&#39;{a}}r and
- C. Lawrence Zitnick},
- title = {Microsoft {COCO:} Common Objects in Context},
- journal = {CoRR},
- volume = {abs/1405.0312},
- year = {2014},
- url = {http://arxiv.org/abs/1405.0312},
- archivePrefix = {arXiv},
- eprint = {1405.0312},
- timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},
- biburl = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},
- bibsource = {dblp computer science bibliography, https://dblp.org}
-}</div>
+                            <div class="cite-block">@inproceedings{perez-etal-2022-red, title = &#34;Red Teaming Language Models with Language Models&#34;, author = &#34;Perez, Ethan  and Huang, Saffron  and Song, Francis  and Cai, Trevor  and Ring, Roman  and Aslanides, John  and Glaese, Amelia  and McAleese, Nat  and Irving, Geoffrey&#34;, editor = &#34;Goldberg, Yoav  and Kozareva, Zornitsa  and Zhang, Yue&#34;, booktitle = &#34;Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing&#34;, month = dec, year = &#34;2022&#34;, address = &#34;Abu Dhabi, United Arab Emirates&#34;, publisher = &#34;Association for Computational Linguistics&#34;, url = &#34;https://aclanthology.org/2022.emnlp-main.225&#34;, doi = &#34;10.18653/v1/2022.emnlp-main.225&#34;, pages = &#34;3419--3448&#34;, abstract = &#34;Language Models (LMs) often cannot be deployed because of their potential to harm users in hard-to-predict ways. Prior work identifies harmful behaviors before deployment by using human annotators to hand-write test cases. However, human annotation is expensive, limiting the number and diversity of test cases. In this work, we automatically find cases where a target LM behaves in a harmful way, by generating test cases ({``}red teaming{&#39;&#39;}) using another LM. We evaluate the target LM{&#39;}s replies to generated test questions using a classifier trained to detect offensive content, uncovering tens of thousands of offensive replies in a 280B parameter LM chatbot. We explore several methods, from zero-shot generation to reinforcement learning, for generating test cases with varying levels of diversity and difficulty. Furthermore, we use prompt engineering to control LM-generated test cases to uncover a variety of other harms, automatically finding groups of people that the chatbot discusses in offensive ways, personal and hospital phone numbers generated as the chatbot{&#39;}s own contact info, leakage of private training data in generated text, and harms that occur over the course of a conversation. Overall, LM-based red teaming is one promising tool (among many needed) for finding and fixing diverse, undesirable LM behaviors before impacting users.&#34;, }</div>
                             
                             
                             <div class="jsonld-panel">
                                 <pre class="language-json"><code class="language-json">{
-  &#34;citeAs&#34;: &#34;@article{DBLP:journals/corr/LinMBHPRDZ14,\n author = {Tsung{-}Yi Lin and\n Michael Maire and\n Serge J. Belongie and\n Lubomir D. Bourdev and\n Ross B. Girshick and\n James Hays and\n Pietro Perona and\n Deva Ramanan and\n Piotr Doll{&#39;{a}}r and\n C. Lawrence Zitnick},\n title = {Microsoft {COCO:} Common Objects in Context},\n journal = {CoRR},\n volume = {abs/1405.0312},\n year = {2014},\n url = {http://arxiv.org/abs/1405.0312},\n archivePrefix = {arXiv},\n eprint = {1405.0312},\n timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n biburl = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n bibsource = {dblp computer science bibliography, https://dblp.org}\n}&#34;
+  &#34;citeAs&#34;: &#34;@inproceedings{perez-etal-2022-red, title = \&#34;Red Teaming Language Models with Language Models\&#34;, author = \&#34;Perez, Ethan  and Huang, Saffron  and Song, Francis  and Cai, Trevor  and Ring, Roman  and Aslanides, John  and Glaese, Amelia  and McAleese, Nat  and Irving, Geoffrey\&#34;, editor = \&#34;Goldberg, Yoav  and Kozareva, Zornitsa  and Zhang, Yue\&#34;, booktitle = \&#34;Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing\&#34;, month = dec, year = \&#34;2022\&#34;, address = \&#34;Abu Dhabi, United Arab Emirates\&#34;, publisher = \&#34;Association for Computational Linguistics\&#34;, url = \&#34;https://aclanthology.org/2022.emnlp-main.225\&#34;, doi = \&#34;10.18653/v1/2022.emnlp-main.225\&#34;, pages = \&#34;3419--3448\&#34;, abstract = \&#34;Language Models (LMs) often cannot be deployed because of their potential to harm users in hard-to-predict ways. Prior work identifies harmful behaviors before deployment by using human annotators to hand-write test cases. However, human annotation is expensive, limiting the number and diversity of test cases. In this work, we automatically find cases where a target LM behaves in a harmful way, by generating test cases ({``}red teaming{&#39;&#39;}) using another LM. We evaluate the target LM{&#39;}s replies to generated test questions using a classifier trained to detect offensive content, uncovering tens of thousands of offensive replies in a 280B parameter LM chatbot. We explore several methods, from zero-shot generation to reinforcement learning, for generating test cases with varying levels of diversity and difficulty. Furthermore, we use prompt engineering to control LM-generated test cases to uncover a variety of other harms, automatically finding groups of people that the chatbot discusses in offensive ways, personal and hospital phone numbers generated as the chatbot{&#39;}s own contact info, leakage of private training data in generated text, and harms that occur over the course of a conversation. Overall, LM-based red teaming is one promising tool (among many needed) for finding and fixing diverse, undesirable LM behaviors before impacting users.\&#34;, }&#34;
 }</code></pre>
                             </div>
                             
@@ -818,297 +833,196 @@
                 <div class="mermaid-wrap">
                     <div class="mermaid">
 graph TD
-    train2014_zip["train2014.zip<br/><small>File</small>"]
-    val2014_zip["val2014.zip<br/><small>File</small>"]
-    test2014_zip["test2014.zip<br/><small>File</small>"]
-    image_files["image-files<br/><small>File Set</small>"]
-    annotations_trainval2014_zip["annotations_trainval2014.zip<br/><small>File</small>"]
-    caption_annotations_files["caption_annotations-files<br/><small>File Set</small>"]
-    person_keypoints_annotations["person_keypoints_annotations<br/><small>File Set</small>"]
-    instancesperson_keypoints_annotations["instancesperson_keypoints_annotations<br/><small>File Set</small>"]
-    image_info_test2014_zip["image_info_test2014.zip<br/><small>File</small>"]
-    imageinfo["imageinfo<br/><small>File Set</small>"]
-    train2014_zip --> image_files
-    val2014_zip --> image_files
-    test2014_zip --> image_files
-    annotations_trainval2014_zip --> caption_annotations_files
-    annotations_trainval2014_zip --> person_keypoints_annotations
-    annotations_trainval2014_zip --> instancesperson_keypoints_annotations
-    image_info_test2014_zip --> imageinfo
+    repo["repo<br/><small>File</small>"]
+    red_team_attempts_file_object["red-team-attempts-file-object<br/><small>File</small>"]
+    harmless_base_files["harmless-base-files<br/><small>File Set</small>"]
+    helpful_base_files["helpful-base-files<br/><small>File Set</small>"]
+    helpful_online_files["helpful-online-files<br/><small>File Set</small>"]
+    helpful_rejection_sampled_files["helpful-rejection-sampled-files<br/><small>File Set</small>"]
+    repo --> red_team_attempts_file_object
+    repo --> harmless_base_files
+    repo --> helpful_base_files
+    repo --> helpful_online_files
+    repo --> helpful_rejection_sampled_files
                     </div>
                 </div>
                 
 
                 <div class="resource-grid">
                     
-                    <div class="resource-card" id="res-train2014.zip">
+                    <div class="resource-card" id="res-repo">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">train2014.zip</span>
+                            <span class="rc-name">repo</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File</span>
                         
+                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
+                        
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;train2014.zip&#34;,
-  &#34;name&#34;: &#34;train2014.zip&#34;,
-  &#34;contentSize&#34;: &#34;13510573713 B&#34;,
-  &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/zips/train2014.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;sha256&#34;
+  &#34;@id&#34;: &#34;repo&#34;,
+  &#34;name&#34;: &#34;repo&#34;,
+  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/Anthropic/hh-rlhf&#34;,
+  &#34;encodingFormat&#34;: &#34;git+https&#34;,
+  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-val2014.zip">
+                    <div class="resource-card" id="res-red-team-attempts-file-object">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">val2014.zip</span>
+                            <span class="rc-name">red-team-attempts-file-object</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File</span>
                         
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;val2014.zip&#34;,
-  &#34;name&#34;: &#34;val2014.zip&#34;,
-  &#34;contentSize&#34;: &#34;6645013297 B&#34;,
-  &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/zips/val2014.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;sha256&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-test2014.zip">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">test2014.zip</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
+                        <div class="rc-desc markdown">The file for red-team-attempts</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;test2014.zip&#34;,
-  &#34;name&#34;: &#34;test2014.zip&#34;,
-  &#34;contentSize&#34;: &#34;6660437059 B&#34;,
-  &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/zips/test2014.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;sha256&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-image-files">
-                        <div class="rc-header">
-                            <span class="rc-icon">📁</span>
-                            <span class="rc-name">image-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File Set</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;image-files&#34;,
-  &#34;name&#34;: &#34;image-files&#34;,
-  &#34;containedIn&#34;: [
-    {
-      &#34;@id&#34;: &#34;train2014.zip&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;val2014.zip&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;test2014.zip&#34;
-    }
-  ],
-  &#34;encodingFormat&#34;: &#34;image/jpeg&#34;,
-  &#34;includes&#34;: &#34;*.jpg&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-annotations_trainval2014.zip">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">annotations_trainval2014.zip</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;,
-  &#34;name&#34;: &#34;annotations_trainval2014.zip&#34;,
-  &#34;contentSize&#34;: &#34;252872794 B&#34;,
-  &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/annotations/annotations_trainval2014.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;sha256&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-caption_annotations-files">
-                        <div class="rc-header">
-                            <span class="rc-icon">📁</span>
-                            <span class="rc-name">caption_annotations-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File Set</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;caption_annotations-files&#34;,
-  &#34;name&#34;: &#34;caption_annotations-files&#34;,
+  &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;,
+  &#34;name&#34;: &#34;red-team-attempts-file-object&#34;,
+  &#34;description&#34;: &#34;The file for red-team-attempts&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;encodingFormat&#34;: &#34;application/json&#34;,
-  &#34;includes&#34;: &#34;annotations/captions_(val|train)2014.json&#34;
+  &#34;contentUrl&#34;: &#34;red-team-attempts/red_team_attempts.jsonl.gz&#34;,
+  &#34;encodingFormat&#34;: &#34;application/json&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-person_keypoints_annotations">
+                    <div class="resource-card" id="res-harmless-base-files">
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
-                            <span class="rc-name">person_keypoints_annotations</span>
+                            <span class="rc-name">harmless-base-files</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File Set</span>
                         
+                        <div class="rc-desc markdown">The files for harmless-base</div>
+                        
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;person_keypoints_annotations&#34;,
-  &#34;name&#34;: &#34;person_keypoints_annotations&#34;,
+  &#34;@id&#34;: &#34;harmless-base-files&#34;,
+  &#34;name&#34;: &#34;harmless-base-files&#34;,
+  &#34;description&#34;: &#34;The files for harmless-base&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;encodingFormat&#34;: &#34;application/json&#34;,
-  &#34;includes&#34;: &#34;annotations/person_keypoints_(val|train)2014.json&#34;
+  &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+  &#34;includes&#34;: &#34;harmless-base/*.jsonl.gz&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-instancesperson_keypoints_annotations">
+                    <div class="resource-card" id="res-helpful-base-files">
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
-                            <span class="rc-name">instancesperson_keypoints_annotations</span>
+                            <span class="rc-name">helpful-base-files</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File Set</span>
                         
+                        <div class="rc-desc markdown">The files for helpful-base</div>
+                        
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;,
-  &#34;name&#34;: &#34;instancesperson_keypoints_annotations&#34;,
+  &#34;@id&#34;: &#34;helpful-base-files&#34;,
+  &#34;name&#34;: &#34;helpful-base-files&#34;,
+  &#34;description&#34;: &#34;The files for helpful-base&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;encodingFormat&#34;: &#34;application/json&#34;,
-  &#34;includes&#34;: &#34;annotations/instances_(val|train)2014.json&#34;
+  &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+  &#34;includes&#34;: &#34;helpful-base/*.jsonl.gz&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-image_info_test2014.zip">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">image_info_test2014.zip</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;image_info_test2014.zip&#34;,
-  &#34;name&#34;: &#34;image_info_test2014.zip&#34;,
-  &#34;contentSize&#34;: &#34;763464 B&#34;,
-  &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/annotations/image_info_test2014.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;sha256&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-imageinfo">
+                    <div class="resource-card" id="res-helpful-online-files">
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
-                            <span class="rc-name">imageinfo</span>
+                            <span class="rc-name">helpful-online-files</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File Set</span>
                         
+                        <div class="rc-desc markdown">The files for helpful-online</div>
+                        
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;imageinfo&#34;,
-  &#34;name&#34;: &#34;imageinfo&#34;,
+  &#34;@id&#34;: &#34;helpful-online-files&#34;,
+  &#34;name&#34;: &#34;helpful-online-files&#34;,
+  &#34;description&#34;: &#34;The files for helpful-online&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;image_info_test2014.zip&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;encodingFormat&#34;: &#34;application/json&#34;,
-  &#34;includes&#34;: &#34;annotations/image_info_test.json&#34;
+  &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+  &#34;includes&#34;: &#34;helpful-online/*.jsonl.gz&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-helpful-rejection-sampled-files">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">helpful-rejection-sampled-files</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The files for helpful-rejection-sampled</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;,
+  &#34;name&#34;: &#34;helpful-rejection-sampled-files&#34;,
+  &#34;description&#34;: &#34;The files for helpful-rejection-sampled&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+  &#34;includes&#34;: &#34;helpful-rejection-sampled/*.jsonl.gz&#34;
 }</code></pre>
                         </div>
                         
@@ -1133,15 +1047,13 @@ graph TD
                         
                     </div>
                     
-                    <div class="rs-desc markdown">Maps split names to semantic values.</div>
-                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
   &#34;@id&#34;: &#34;split_enums&#34;,
   &#34;name&#34;: &#34;split_enums&#34;,
-  &#34;description&#34;: &#34;Maps split names to semantic values.&#34;,
+  &#34;dataType&#34;: &#34;cr:Split&#34;,
   &#34;key&#34;: {
     &#34;@id&#34;: &#34;name&#34;
   },
@@ -1150,7 +1062,7 @@ graph TD
       &#34;@type&#34;: &#34;cr:Field&#34;,
       &#34;@id&#34;: &#34;split_enums/name&#34;,
       &#34;name&#34;: &#34;split_enums/name&#34;,
-      &#34;description&#34;: &#34;One of: train, val, test.&#34;,
+      &#34;description&#34;: &#34;One of train or test.&#34;,
       &#34;dataType&#34;: &#34;sc:Text&#34;
     },
     {
@@ -1159,8 +1071,8 @@ graph TD
       &#34;name&#34;: &#34;split_enums/url&#34;,
       &#34;description&#34;: &#34;Corresponding mlcommons.org definition URL&#34;,
       &#34;dataType&#34;: [
-        &#34;sc:URL&#34;,
-        &#34;wd:Q3985153&#34;
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:URL&#34;
       ]
     }
   ],
@@ -1168,10 +1080,6 @@ graph TD
     {
       &#34;split_enums/name&#34;: &#34;train&#34;,
       &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/training_split&#34;
-    },
-    {
-      &#34;split_enums/name&#34;: &#34;val&#34;,
-      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/validation_split&#34;
     },
     {
       &#34;split_enums/name&#34;: &#34;test&#34;,
@@ -1195,7 +1103,7 @@ graph TD
                                 <tr>
                                     <td><strong>name</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>One of: train, val, test.</td>
+                                    <td>One of train or test.</td>
                                 </tr>
                                 
                                 <tr>
@@ -1212,9 +1120,9 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-images">
+                <div class="rs-section" id="rs-red-team-attempts">
                     <div class="rs-header">
-                        <h3>images</h3>
+                        <h3>red-team-attempts</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
@@ -1224,67 +1132,243 @@ graph TD
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;images&#34;,
-  &#34;name&#34;: &#34;images&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;image_id&#34;
-  },
+  &#34;@id&#34;: &#34;red-team-attempts&#34;,
+  &#34;name&#34;: &#34;red-team-attempts&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_id&#34;,
-      &#34;name&#34;: &#34;images/image_id&#34;,
-      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/transcript&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/transcript&#34;,
+      &#34;description&#34;: &#34;A text transcript of a conversation between a human adversary (red team member) and an AI assistant.&#34;,
       &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
         },
         &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;^COCO_[train|val|test]2014_(\\d+)\\.jpg$&#34;
+          &#34;jsonPath&#34;: &#34;$..transcript&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_filename&#34;,
-      &#34;name&#34;: &#34;images/image_filename&#34;,
-      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/is_upworker&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/is_upworker&#34;,
+      &#34;description&#34;: &#34;A binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk.&#34;,
+      &#34;dataType&#34;: &#34;sc:Boolean&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$..is_upworker&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/min_harmlessness_score_transcript&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/min_harmlessness_score_transcript&#34;,
+      &#34;description&#34;: &#34;A real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model.&#34;,
+      &#34;dataType&#34;: &#34;sc:Float&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$..min_harmlessness_score_transcript&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/task_descripton_harmlessness_score&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/task_descripton_harmlessness_score&#34;,
+      &#34;description&#34;: &#34;A real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model.&#34;,
+      &#34;dataType&#34;: &#34;sc:Float&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$..task_descripton_harmlessness_score&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/red_team_member_id&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/red_team_member_id&#34;,
+      &#34;description&#34;: &#34;An arbitrary identifier of the red team member. one red team member can generate multiple red team attacks.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$..red_team_member_id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/rating&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/rating&#34;,
+      &#34;description&#34;: &#34;The red team member&#39;s rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful).&#34;,
+      &#34;dataType&#34;: &#34;sc:Float&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$..rating&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/num_params&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/num_params&#34;,
+      &#34;description&#34;: &#34;Number of parameters in the language model powering the AI assistant.&#34;,
       &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
         },
         &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
+          &#34;jsonPath&#34;: &#34;$..num_params&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_content&#34;,
-      &#34;name&#34;: &#34;images/image_content&#34;,
-      &#34;description&#34;: &#34;The content of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/model_type&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/model_type&#34;,
+      &#34;description&#34;: &#34;Type of model powering the AI assistant.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
         },
         &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;content&#34;
+          &#34;jsonPath&#34;: &#34;$..model_type&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/split&#34;,
-      &#34;name&#34;: &#34;images/split&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts/task_description&#34;,
+      &#34;name&#34;: &#34;red-team-attempts/task_description&#34;,
+      &#34;description&#34;: &#34;A short text description written by the red team member about how they tried to red team the AI assistant.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$..task_description&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>transcript</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>A text transcript of a conversation between a human adversary (red team member) and an AI assistant.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>is_upworker</strong></td>
+                                    <td><span class="type-badge">bool</span></td>
+                                    <td>A binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>min_harmlessness_score_transcript</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>A real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>task_descripton_harmlessness_score</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>A real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>red_team_member_id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>An arbitrary identifier of the red team member. one red team member can generate multiple red team attacks.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>rating</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The red team member&#39;s rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful).</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>num_params</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Number of parameters in the language model powering the AI assistant.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>model_type</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Type of model powering the AI assistant.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>task_description</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>A short text description written by the red team member about how they tried to red team the AI assistant.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-harmless-base">
+                    <div class="rs-header">
+                        <h3>harmless-base</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;harmless-base&#34;,
+  &#34;name&#34;: &#34;harmless-base&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;harmless-base/split&#34;,
+      &#34;name&#34;: &#34;harmless-base/split&#34;,
       &#34;dataType&#34;: [
-        &#34;sc:Text&#34;,
-        &#34;wd:Q3985153&#34;
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
       ],
       &#34;references&#34;: {
         &#34;field&#34;: {
@@ -1293,13 +1377,43 @@ graph TD
       },
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
+          &#34;@id&#34;: &#34;harmless-base-files&#34;
         },
         &#34;extract&#34;: {
           &#34;fileProperty&#34;: &#34;fullpath&#34;
         },
         &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;^(train|val|test)2014/.*\\.jpg$&#34;
+          &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;harmless-base/chosen&#34;,
+      &#34;name&#34;: &#34;harmless-base/chosen&#34;,
+      &#34;description&#34;: &#34;Chosen text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;harmless-base-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;chosen&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;harmless-base/rejected&#34;,
+      &#34;name&#34;: &#34;harmless-base/rejected&#34;,
+      &#34;description&#34;: &#34;Rejected text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;harmless-base-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;rejected&#34;
         }
       }
     }
@@ -1319,27 +1433,21 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>image_id</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_filename</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_content</strong></td>
-                                    <td><span class="type-badge">ImageObject</span></td>
-                                    <td>The content of the image.</td>
-                                </tr>
-                                
-                                <tr>
                                     <td><strong>split</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
                                     <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>chosen</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Chosen text.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>rejected</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Rejected text.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1350,9 +1458,9 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-captions">
+                <div class="rs-section" id="rs-helpful-base">
                     <div class="rs-header">
-                        <h3>captions</h3>
+                        <h3>helpful-base</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
@@ -1362,67 +1470,16 @@ graph TD
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;captions&#34;,
-  &#34;name&#34;: &#34;captions&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;id&#34;
-  },
+  &#34;@id&#34;: &#34;helpful-base&#34;,
+  &#34;name&#34;: &#34;helpful-base&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/id&#34;,
-      &#34;name&#34;: &#34;captions/id&#34;,
-      &#34;description&#34;: &#34;The ID of the caption&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/image_id&#34;,
-      &#34;name&#34;: &#34;captions/image_id&#34;,
-      &#34;description&#34;: &#34;The ID of the image&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;image_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/caption&#34;,
-      &#34;name&#34;: &#34;captions/caption&#34;,
-      &#34;description&#34;: &#34;The caption&#34;,
+      &#34;@id&#34;: &#34;helpful-base/split&#34;,
+      &#34;name&#34;: &#34;helpful-base/split&#34;,
       &#34;dataType&#34;: [
-        &#34;sc:Text&#34;,
-        &#34;wd:Q18585177&#34;
-      ],
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;caption&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/split&#34;,
-      &#34;name&#34;: &#34;captions/split&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Text&#34;,
-        &#34;wd:Q3985153&#34;
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
       ],
       &#34;references&#34;: {
         &#34;field&#34;: {
@@ -1431,13 +1488,43 @@ graph TD
       },
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+          &#34;@id&#34;: &#34;helpful-base-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
         },
         &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;.*_(val|train)2014\\.json$&#34;
+          &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;helpful-base/chosen&#34;,
+      &#34;name&#34;: &#34;helpful-base/chosen&#34;,
+      &#34;description&#34;: &#34;Chosen text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;helpful-base-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;chosen&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;helpful-base/rejected&#34;,
+      &#34;name&#34;: &#34;helpful-base/rejected&#34;,
+      &#34;description&#34;: &#34;Rejected text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;helpful-base-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;rejected&#34;
         }
       }
     }
@@ -1455,24 +1542,6 @@ graph TD
                                 </tr>
                             </thead>
                             <tbody>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the caption</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the image</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>caption</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The caption</td>
-                                </tr>
                                 
                                 <tr>
                                     <td><strong>split</strong></td>
@@ -1480,6 +1549,18 @@ graph TD
                                     <td></td>
                                 </tr>
                                 
+                                <tr>
+                                    <td><strong>chosen</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Chosen text.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>rejected</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Rejected text.</td>
+                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -1488,9 +1569,9 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-categories">
+                <div class="rs-section" id="rs-helpful-online">
                     <div class="rs-header">
-                        <h3>categories</h3>
+                        <h3>helpful-online</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
@@ -1500,62 +1581,61 @@ graph TD
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;categories&#34;,
-  &#34;name&#34;: &#34;categories&#34;,
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;id&#34;
-  },
+  &#34;@id&#34;: &#34;helpful-online&#34;,
+  &#34;name&#34;: &#34;helpful-online&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;categories/id&#34;,
-      &#34;name&#34;: &#34;categories/id&#34;,
-      &#34;description&#34;: &#34;The ID of the category&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;@id&#34;: &#34;helpful-online/split&#34;,
+      &#34;name&#34;: &#34;helpful-online/split&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;split_enums/name&#34;
+        }
+      },
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+          &#34;@id&#34;: &#34;helpful-online-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;id&#34;
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;categories/name&#34;,
-      &#34;name&#34;: &#34;categories/name&#34;,
-      &#34;description&#34;: &#34;The name of the category.&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Text&#34;,
-        &#34;sc:name&#34;
-      ],
+      &#34;@id&#34;: &#34;helpful-online/chosen&#34;,
+      &#34;name&#34;: &#34;helpful-online/chosen&#34;,
+      &#34;description&#34;: &#34;Chosen text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+          &#34;@id&#34;: &#34;helpful-online-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;name&#34;
+          &#34;column&#34;: &#34;chosen&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;categories/supercategory&#34;,
-      &#34;name&#34;: &#34;categories/supercategory&#34;,
-      &#34;description&#34;: &#34;The name of the supercategory.&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Enumeration&#34;,
-        &#34;sc:Text&#34;,
-        &#34;sc:name&#34;
-      ],
+      &#34;@id&#34;: &#34;helpful-online/rejected&#34;,
+      &#34;name&#34;: &#34;helpful-online/rejected&#34;,
+      &#34;description&#34;: &#34;Rejected text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+          &#34;@id&#34;: &#34;helpful-online-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;supercategory&#34;
+          &#34;column&#34;: &#34;rejected&#34;
         }
       }
     }
@@ -1575,21 +1655,21 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the category</td>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>name</strong></td>
+                                    <td><strong>chosen</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the category.</td>
+                                    <td>Chosen text.</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>supercategory</strong></td>
+                                    <td><strong>rejected</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the supercategory.</td>
+                                    <td>Rejected text.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1600,9 +1680,9 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-annotations">
+                <div class="rs-section" id="rs-helpful-rejection-sampled">
                     <div class="rs-header">
-                        <h3>annotations</h3>
+                        <h3>helpful-rejection-sampled</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
@@ -1612,79 +1692,61 @@ graph TD
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;annotations&#34;,
-  &#34;name&#34;: &#34;annotations&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;id&#34;
-  },
+  &#34;@id&#34;: &#34;helpful-rejection-sampled&#34;,
+  &#34;name&#34;: &#34;helpful-rejection-sampled&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;annotations/id&#34;,
-      &#34;name&#34;: &#34;annotations/id&#34;,
-      &#34;description&#34;: &#34;The ID of the annotation.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;annotations/category_id&#34;,
-      &#34;name&#34;: &#34;annotations/category_id&#34;,
-      &#34;description&#34;: &#34;The ID of the category.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;@id&#34;: &#34;helpful-rejection-sampled/split&#34;,
+      &#34;name&#34;: &#34;helpful-rejection-sampled/split&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
+      ],
       &#34;references&#34;: {
         &#34;field&#34;: {
-          &#34;@id&#34;: &#34;categories/id&#34;
+          &#34;@id&#34;: &#34;split_enums/name&#34;
         }
       },
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+          &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;category_id&#34;
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;annotations/image_id&#34;,
-      &#34;name&#34;: &#34;annotations/image_id&#34;,
-      &#34;description&#34;: &#34;The ID of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;images/image_id&#34;
-        }
-      },
+      &#34;@id&#34;: &#34;helpful-rejection-sampled/chosen&#34;,
+      &#34;name&#34;: &#34;helpful-rejection-sampled/chosen&#34;,
+      &#34;description&#34;: &#34;Chosen text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+          &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;image_id&#34;
+          &#34;column&#34;: &#34;chosen&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;annotations/bbox&#34;,
-      &#34;name&#34;: &#34;annotations/bbox&#34;,
-      &#34;description&#34;: &#34;The bounding box around annotated object[s].&#34;,
-      &#34;dataType&#34;: &#34;cr:BoundingBox&#34;,
+      &#34;@id&#34;: &#34;helpful-rejection-sampled/rejected&#34;,
+      &#34;name&#34;: &#34;helpful-rejection-sampled/rejected&#34;,
+      &#34;description&#34;: &#34;Rejected text.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+          &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;bbox&#34;
+          &#34;column&#34;: &#34;rejected&#34;
         }
       }
     }
@@ -1704,27 +1766,21 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the annotation.</td>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>category_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the category.</td>
+                                    <td><strong>chosen</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Chosen text.</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>image_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the image.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>bbox</strong></td>
-                                    <td><span class="type-badge">http://mlcommons.org/croissant/BoundingBox</span></td>
-                                    <td>The bounding box around annotated object[s].</td>
+                                    <td><strong>rejected</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Rejected text.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1807,115 +1863,77 @@ graph TD
     &#34;wd&#34;: &#34;https://www.wikidata.org/wiki/&#34;
   },
   &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;COCO&#34;,
-  &#34;description&#34;: &#34;COCO is a large-scale object detection, segmentation, and captioning dataset.  WARNING: `metadata.json` is incomplete and does not fully define the COCO2014 dataset. It lacks `recordSet` definitions that would enable automatic loading of all the annotations.&#34;,
+  &#34;name&#34;: &#34;Anthropic/hh-rlhf&#34;,
+  &#34;description&#34;: &#34;# Dataset Card for HH-RLHF\n\n## Dataset Summary\n\n\nThis repository provides access to two different kinds of data:\n1. Human preference data about helpfulness and harmlessness from [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862). These data are meant to train preference (or reward) models for subsequent RLHF training. These data are *not* meant for supervised training of dialogue agents. Training dialogue agents on these data is likely to lead to harmful models and this shold be avoided.\n2. Human-generated and annotated red teaming dialogues from [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://www.anthropic.com/red_teaming.pdf). These data are meant to understand how crowdworkers red team models and what types of red team attacks are succesful or not. The data are *not* meant for fine-tuning or preference modeling (use the data above for preference modeling). These data are entire transcripts of conversations that are derived from the harmlessness preference modeling data described above, where only the chosen response is incorporated into the overall transcript. Furthermore, the transcripts are annotated with human and automated measurements of how harmful the overall dialogues are.\n\n**Disclaimer**: The data (especially the harmlessness preference data and the red team data) contain content that may be offensive or upsetting. Topics include, but are not limited to, discriminatory language and discussions of abuse, violence, self-harm, exploitation, and other potentially upsetting subject matter. Please only engage with the data in accordance with your own personal risk tolerance. The data are intended for research purposes, especially research that can make models *less* harmful. The views expressed in the data do not reflect the views of Anthropic or any of its employees. As mentioned above, these data are *not* intended for training dialogue agents as this will likely lead to harmful model behavior.\n\nEach of these datasets are described further below.\n\n## Human preference data about helpfulness and harmlessness (PM Data)\n\nThe data are described in the paper: [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862). If you find the data useful, please cite the paper. The data format is very simple -- each line of the jsonl files contains a pair of texts, one \&#34;chosen\&#34; and one \&#34;rejected\&#34;.\n\nFor **helpfulness**, the data are grouped into train/test splits in three tranches: from our base models (context-distilled 52B language models), via rejection sampling (mostly with best-of-16 sampling) against an early preference model, and a dataset sampled during our iterated \&#34;online\&#34; process.\n\nFor **harmlessness**, the data are only collected for our base models, but otherwise formatted in the same way.\n\nDetails about the data collection process and crowdworker population can be found in the paper, specifically in section 2 and appendix D.\n\n## Red teaming data (not PM Data)\n\nThe data are described in the paper: [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://www.anthropic.com/red_teaming.pdf). If you find the data useful, please cite the paper. At a high level these data can be examined to understand what succesful red team attempts look like.\n\nDetails about the data and data collection procedures can be found in the Datasheet in the appendix of the paper.\n\nEach line of the jsonl file contains a dictionary with the following fields:\n- `transcript` a text transcript of a conversation between a human adversary (red team member) and an AI assistant\n- `min_harmlessness_score_transcript` a real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model\n- `num_params` number of parameters in the language model powering the AI assistant\n- `model_type` type of model powering the AI assistant\n- `rating` the red team member&#39;s rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful)\n- `task_description` a short text description written by the red team member about how they tried to red team the AI assistant\n- `task_description_harmlessness_score` a real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model\n- `red_team_member_id` an arbitrary identifier of the red team member. one red team member can generate multiple red team attacks\n- `is_upworker` a binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk\n- `tags` a list of up to 6 tags per transcript. tags are short descriptions of the red team attempts generated by crowdworkers who reviewed red team data post-hoc. tags were only provided for a random sample of 1000 red team attempts for two of four model types.\n\n&#34;,
   &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;citeAs&#34;: &#34;@article{DBLP:journals/corr/LinMBHPRDZ14,\n author = {Tsung{-}Yi Lin and\n Michael Maire and\n Serge J. Belongie and\n Lubomir D. Bourdev and\n Ross B. Girshick and\n James Hays and\n Pietro Perona and\n Deva Ramanan and\n Piotr Doll{&#39;{a}}r and\n C. Lawrence Zitnick},\n title = {Microsoft {COCO:} Common Objects in Context},\n journal = {CoRR},\n volume = {abs/1405.0312},\n year = {2014},\n url = {http://arxiv.org/abs/1405.0312},\n archivePrefix = {arXiv},\n eprint = {1405.0312},\n timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},\n biburl = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},\n bibsource = {dblp computer science bibliography, https://dblp.org}\n}&#34;,
-  &#34;license&#34;: &#34;cc-by-4.0&#34;,
-  &#34;url&#34;: &#34;https://cocodataset.org/&#34;,
+  &#34;citeAs&#34;: &#34;@inproceedings{perez-etal-2022-red, title = \&#34;Red Teaming Language Models with Language Models\&#34;, author = \&#34;Perez, Ethan  and Huang, Saffron  and Song, Francis  and Cai, Trevor  and Ring, Roman  and Aslanides, John  and Glaese, Amelia  and McAleese, Nat  and Irving, Geoffrey\&#34;, editor = \&#34;Goldberg, Yoav  and Kozareva, Zornitsa  and Zhang, Yue\&#34;, booktitle = \&#34;Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing\&#34;, month = dec, year = \&#34;2022\&#34;, address = \&#34;Abu Dhabi, United Arab Emirates\&#34;, publisher = \&#34;Association for Computational Linguistics\&#34;, url = \&#34;https://aclanthology.org/2022.emnlp-main.225\&#34;, doi = \&#34;10.18653/v1/2022.emnlp-main.225\&#34;, pages = \&#34;3419--3448\&#34;, abstract = \&#34;Language Models (LMs) often cannot be deployed because of their potential to harm users in hard-to-predict ways. Prior work identifies harmful behaviors before deployment by using human annotators to hand-write test cases. However, human annotation is expensive, limiting the number and diversity of test cases. In this work, we automatically find cases where a target LM behaves in a harmful way, by generating test cases ({``}red teaming{&#39;&#39;}) using another LM. We evaluate the target LM{&#39;}s replies to generated test questions using a classifier trained to detect offensive content, uncovering tens of thousands of offensive replies in a 280B parameter LM chatbot. We explore several methods, from zero-shot generation to reinforcement learning, for generating test cases with varying levels of diversity and difficulty. Furthermore, we use prompt engineering to control LM-generated test cases to uncover a variety of other harms, automatically finding groups of people that the chatbot discusses in offensive ways, personal and hospital phone numbers generated as the chatbot{&#39;}s own contact info, leakage of private training data in generated text, and harms that occur over the course of a conversation. Overall, LM-based red teaming is one promising tool (among many needed) for finding and fixing diverse, undesirable LM behaviors before impacting users.\&#34;, }&#34;,
+  &#34;license&#34;: &#34;mit&#34;,
+  &#34;url&#34;: &#34;https://github.com/anthropics/hh-rlhf&#34;,
+  &#34;version&#34;: &#34;1.0.0&#34;,
   &#34;distribution&#34;: [
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;train2014.zip&#34;,
-      &#34;name&#34;: &#34;train2014.zip&#34;,
-      &#34;contentSize&#34;: &#34;13510573713 B&#34;,
-      &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/zips/train2014.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;sha256&#34;
+      &#34;@id&#34;: &#34;repo&#34;,
+      &#34;name&#34;: &#34;repo&#34;,
+      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/Anthropic/hh-rlhf&#34;,
+      &#34;encodingFormat&#34;: &#34;git+https&#34;,
+      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;val2014.zip&#34;,
-      &#34;name&#34;: &#34;val2014.zip&#34;,
-      &#34;contentSize&#34;: &#34;6645013297 B&#34;,
-      &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/zips/val2014.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;sha256&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;test2014.zip&#34;,
-      &#34;name&#34;: &#34;test2014.zip&#34;,
-      &#34;contentSize&#34;: &#34;6660437059 B&#34;,
-      &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/zips/test2014.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;sha256&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;image-files&#34;,
-      &#34;name&#34;: &#34;image-files&#34;,
-      &#34;containedIn&#34;: [
-        {
-          &#34;@id&#34;: &#34;train2014.zip&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;val2014.zip&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;test2014.zip&#34;
-        }
-      ],
-      &#34;encodingFormat&#34;: &#34;image/jpeg&#34;,
-      &#34;includes&#34;: &#34;*.jpg&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;,
-      &#34;name&#34;: &#34;annotations_trainval2014.zip&#34;,
-      &#34;contentSize&#34;: &#34;252872794 B&#34;,
-      &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/annotations/annotations_trainval2014.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;sha256&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;caption_annotations-files&#34;,
-      &#34;name&#34;: &#34;caption_annotations-files&#34;,
+      &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;,
+      &#34;name&#34;: &#34;red-team-attempts-file-object&#34;,
+      &#34;description&#34;: &#34;The file for red-team-attempts&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;encodingFormat&#34;: &#34;application/json&#34;,
-      &#34;includes&#34;: &#34;annotations/captions_(val|train)2014.json&#34;
+      &#34;contentUrl&#34;: &#34;red-team-attempts/red_team_attempts.jsonl.gz&#34;,
+      &#34;encodingFormat&#34;: &#34;application/json&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;person_keypoints_annotations&#34;,
-      &#34;name&#34;: &#34;person_keypoints_annotations&#34;,
+      &#34;@id&#34;: &#34;harmless-base-files&#34;,
+      &#34;name&#34;: &#34;harmless-base-files&#34;,
+      &#34;description&#34;: &#34;The files for harmless-base&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;encodingFormat&#34;: &#34;application/json&#34;,
-      &#34;includes&#34;: &#34;annotations/person_keypoints_(val|train)2014.json&#34;
+      &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+      &#34;includes&#34;: &#34;harmless-base/*.jsonl.gz&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;,
-      &#34;name&#34;: &#34;instancesperson_keypoints_annotations&#34;,
+      &#34;@id&#34;: &#34;helpful-base-files&#34;,
+      &#34;name&#34;: &#34;helpful-base-files&#34;,
+      &#34;description&#34;: &#34;The files for helpful-base&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;annotations_trainval2014.zip&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;encodingFormat&#34;: &#34;application/json&#34;,
-      &#34;includes&#34;: &#34;annotations/instances_(val|train)2014.json&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;image_info_test2014.zip&#34;,
-      &#34;name&#34;: &#34;image_info_test2014.zip&#34;,
-      &#34;contentSize&#34;: &#34;763464 B&#34;,
-      &#34;contentUrl&#34;: &#34;http://images.cocodataset.org/annotations/image_info_test2014.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;sha256&#34;
+      &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+      &#34;includes&#34;: &#34;helpful-base/*.jsonl.gz&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;imageinfo&#34;,
-      &#34;name&#34;: &#34;imageinfo&#34;,
+      &#34;@id&#34;: &#34;helpful-online-files&#34;,
+      &#34;name&#34;: &#34;helpful-online-files&#34;,
+      &#34;description&#34;: &#34;The files for helpful-online&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;image_info_test2014.zip&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;encodingFormat&#34;: &#34;application/json&#34;,
-      &#34;includes&#34;: &#34;annotations/image_info_test.json&#34;
+      &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+      &#34;includes&#34;: &#34;helpful-online/*.jsonl.gz&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;,
+      &#34;name&#34;: &#34;helpful-rejection-sampled-files&#34;,
+      &#34;description&#34;: &#34;The files for helpful-rejection-sampled&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/jsonlines&#34;,
+      &#34;includes&#34;: &#34;helpful-rejection-sampled/*.jsonl.gz&#34;
     }
   ],
   &#34;recordSet&#34;: [
@@ -1923,7 +1941,7 @@ graph TD
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
       &#34;@id&#34;: &#34;split_enums&#34;,
       &#34;name&#34;: &#34;split_enums&#34;,
-      &#34;description&#34;: &#34;Maps split names to semantic values.&#34;,
+      &#34;dataType&#34;: &#34;cr:Split&#34;,
       &#34;key&#34;: {
         &#34;@id&#34;: &#34;name&#34;
       },
@@ -1932,7 +1950,7 @@ graph TD
           &#34;@type&#34;: &#34;cr:Field&#34;,
           &#34;@id&#34;: &#34;split_enums/name&#34;,
           &#34;name&#34;: &#34;split_enums/name&#34;,
-          &#34;description&#34;: &#34;One of: train, val, test.&#34;,
+          &#34;description&#34;: &#34;One of train or test.&#34;,
           &#34;dataType&#34;: &#34;sc:Text&#34;
         },
         {
@@ -1941,8 +1959,8 @@ graph TD
           &#34;name&#34;: &#34;split_enums/url&#34;,
           &#34;description&#34;: &#34;Corresponding mlcommons.org definition URL&#34;,
           &#34;dataType&#34;: [
-            &#34;sc:URL&#34;,
-            &#34;wd:Q3985153&#34;
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:URL&#34;
           ]
         }
       ],
@@ -1952,10 +1970,6 @@ graph TD
           &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/training_split&#34;
         },
         {
-          &#34;split_enums/name&#34;: &#34;val&#34;,
-          &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/validation_split&#34;
-        },
-        {
           &#34;split_enums/name&#34;: &#34;test&#34;,
           &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/test_split&#34;
         }
@@ -1963,67 +1977,158 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;images&#34;,
-      &#34;name&#34;: &#34;images&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;image_id&#34;
-      },
+      &#34;@id&#34;: &#34;red-team-attempts&#34;,
+      &#34;name&#34;: &#34;red-team-attempts&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/image_id&#34;,
-          &#34;name&#34;: &#34;images/image_id&#34;,
-          &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/transcript&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/transcript&#34;,
+          &#34;description&#34;: &#34;A text transcript of a conversation between a human adversary (red team member) and an AI assistant.&#34;,
           &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;image-files&#34;
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
             },
             &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;filename&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;regex&#34;: &#34;^COCO_[train|val|test]2014_(\\d+)\\.jpg$&#34;
+              &#34;jsonPath&#34;: &#34;$..transcript&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/image_filename&#34;,
-          &#34;name&#34;: &#34;images/image_filename&#34;,
-          &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/is_upworker&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/is_upworker&#34;,
+          &#34;description&#34;: &#34;A binary indicator that is true if the red team member was from the crowd platform Upwork or false if they were from MTurk.&#34;,
+          &#34;dataType&#34;: &#34;sc:Boolean&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$..is_upworker&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/min_harmlessness_score_transcript&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/min_harmlessness_score_transcript&#34;,
+          &#34;description&#34;: &#34;A real value score of the harmlessness of the AI assistant (lower is more harmful) as obtained from a preference model.&#34;,
+          &#34;dataType&#34;: &#34;sc:Float&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$..min_harmlessness_score_transcript&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/task_descripton_harmlessness_score&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/task_descripton_harmlessness_score&#34;,
+          &#34;description&#34;: &#34;A real value score of the harmlessness of the task description (lower is more harmful) as obtained from a preference model.&#34;,
+          &#34;dataType&#34;: &#34;sc:Float&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$..task_descripton_harmlessness_score&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/red_team_member_id&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/red_team_member_id&#34;,
+          &#34;description&#34;: &#34;An arbitrary identifier of the red team member. one red team member can generate multiple red team attacks.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$..red_team_member_id&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/rating&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/rating&#34;,
+          &#34;description&#34;: &#34;The red team member&#39;s rating of how successful they were at breaking the AI assistant (Likert scale, higher is more successful).&#34;,
+          &#34;dataType&#34;: &#34;sc:Float&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$..rating&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/num_params&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/num_params&#34;,
+          &#34;description&#34;: &#34;Number of parameters in the language model powering the AI assistant.&#34;,
           &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;image-files&#34;
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
             },
             &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;filename&#34;
+              &#34;jsonPath&#34;: &#34;$..num_params&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/image_content&#34;,
-          &#34;name&#34;: &#34;images/image_content&#34;,
-          &#34;description&#34;: &#34;The content of the image.&#34;,
-          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/model_type&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/model_type&#34;,
+          &#34;description&#34;: &#34;Type of model powering the AI assistant.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;image-files&#34;
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
             },
             &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;content&#34;
+              &#34;jsonPath&#34;: &#34;$..model_type&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/split&#34;,
-          &#34;name&#34;: &#34;images/split&#34;,
+          &#34;@id&#34;: &#34;red-team-attempts/task_description&#34;,
+          &#34;name&#34;: &#34;red-team-attempts/task_description&#34;,
+          &#34;description&#34;: &#34;A short text description written by the red team member about how they tried to red team the AI assistant.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;red-team-attempts-file-object&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;jsonPath&#34;: &#34;$..task_description&#34;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;harmless-base&#34;,
+      &#34;name&#34;: &#34;harmless-base&#34;,
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;harmless-base/split&#34;,
+          &#34;name&#34;: &#34;harmless-base/split&#34;,
           &#34;dataType&#34;: [
-            &#34;sc:Text&#34;,
-            &#34;wd:Q3985153&#34;
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:Text&#34;
           ],
           &#34;references&#34;: {
             &#34;field&#34;: {
@@ -2032,13 +2137,43 @@ graph TD
           },
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;image-files&#34;
+              &#34;@id&#34;: &#34;harmless-base-files&#34;
             },
             &#34;extract&#34;: {
               &#34;fileProperty&#34;: &#34;fullpath&#34;
             },
             &#34;transform&#34;: {
-              &#34;regex&#34;: &#34;^(train|val|test)2014/.*\\.jpg$&#34;
+              &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;harmless-base/chosen&#34;,
+          &#34;name&#34;: &#34;harmless-base/chosen&#34;,
+          &#34;description&#34;: &#34;Chosen text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;harmless-base-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;chosen&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;harmless-base/rejected&#34;,
+          &#34;name&#34;: &#34;harmless-base/rejected&#34;,
+          &#34;description&#34;: &#34;Rejected text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;harmless-base-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;rejected&#34;
             }
           }
         }
@@ -2046,67 +2181,16 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;captions&#34;,
-      &#34;name&#34;: &#34;captions&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;id&#34;
-      },
+      &#34;@id&#34;: &#34;helpful-base&#34;,
+      &#34;name&#34;: &#34;helpful-base&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;captions/id&#34;,
-          &#34;name&#34;: &#34;captions/id&#34;,
-          &#34;description&#34;: &#34;The ID of the caption&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;caption_annotations-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;captions/image_id&#34;,
-          &#34;name&#34;: &#34;captions/image_id&#34;,
-          &#34;description&#34;: &#34;The ID of the image&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;caption_annotations-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;image_id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;captions/caption&#34;,
-          &#34;name&#34;: &#34;captions/caption&#34;,
-          &#34;description&#34;: &#34;The caption&#34;,
+          &#34;@id&#34;: &#34;helpful-base/split&#34;,
+          &#34;name&#34;: &#34;helpful-base/split&#34;,
           &#34;dataType&#34;: [
-            &#34;sc:Text&#34;,
-            &#34;wd:Q18585177&#34;
-          ],
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;caption_annotations-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;caption&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;captions/split&#34;,
-          &#34;name&#34;: &#34;captions/split&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Text&#34;,
-            &#34;wd:Q3985153&#34;
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:Text&#34;
           ],
           &#34;references&#34;: {
             &#34;field&#34;: {
@@ -2115,13 +2199,43 @@ graph TD
           },
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;caption_annotations-files&#34;
+              &#34;@id&#34;: &#34;helpful-base-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;filename&#34;
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
             },
             &#34;transform&#34;: {
-              &#34;regex&#34;: &#34;.*_(val|train)2014\\.json$&#34;
+              &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;helpful-base/chosen&#34;,
+          &#34;name&#34;: &#34;helpful-base/chosen&#34;,
+          &#34;description&#34;: &#34;Chosen text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;helpful-base-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;chosen&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;helpful-base/rejected&#34;,
+          &#34;name&#34;: &#34;helpful-base/rejected&#34;,
+          &#34;description&#34;: &#34;Rejected text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;helpful-base-files&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;rejected&#34;
             }
           }
         }
@@ -2129,62 +2243,61 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;categories&#34;,
-      &#34;name&#34;: &#34;categories&#34;,
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;id&#34;
-      },
+      &#34;@id&#34;: &#34;helpful-online&#34;,
+      &#34;name&#34;: &#34;helpful-online&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;categories/id&#34;,
-          &#34;name&#34;: &#34;categories/id&#34;,
-          &#34;description&#34;: &#34;The ID of the category&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;@id&#34;: &#34;helpful-online/split&#34;,
+          &#34;name&#34;: &#34;helpful-online/split&#34;,
+          &#34;dataType&#34;: [
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:Text&#34;
+          ],
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;split_enums/name&#34;
+            }
+          },
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+              &#34;@id&#34;: &#34;helpful-online-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;id&#34;
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;categories/name&#34;,
-          &#34;name&#34;: &#34;categories/name&#34;,
-          &#34;description&#34;: &#34;The name of the category.&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Text&#34;,
-            &#34;sc:name&#34;
-          ],
+          &#34;@id&#34;: &#34;helpful-online/chosen&#34;,
+          &#34;name&#34;: &#34;helpful-online/chosen&#34;,
+          &#34;description&#34;: &#34;Chosen text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+              &#34;@id&#34;: &#34;helpful-online-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;name&#34;
+              &#34;column&#34;: &#34;chosen&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;categories/supercategory&#34;,
-          &#34;name&#34;: &#34;categories/supercategory&#34;,
-          &#34;description&#34;: &#34;The name of the supercategory.&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Enumeration&#34;,
-            &#34;sc:Text&#34;,
-            &#34;sc:name&#34;
-          ],
+          &#34;@id&#34;: &#34;helpful-online/rejected&#34;,
+          &#34;name&#34;: &#34;helpful-online/rejected&#34;,
+          &#34;description&#34;: &#34;Rejected text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+              &#34;@id&#34;: &#34;helpful-online-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;supercategory&#34;
+              &#34;column&#34;: &#34;rejected&#34;
             }
           }
         }
@@ -2192,79 +2305,61 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;annotations&#34;,
-      &#34;name&#34;: &#34;annotations&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;id&#34;
-      },
+      &#34;@id&#34;: &#34;helpful-rejection-sampled&#34;,
+      &#34;name&#34;: &#34;helpful-rejection-sampled&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;annotations/id&#34;,
-          &#34;name&#34;: &#34;annotations/id&#34;,
-          &#34;description&#34;: &#34;The ID of the annotation.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;id&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;annotations/category_id&#34;,
-          &#34;name&#34;: &#34;annotations/category_id&#34;,
-          &#34;description&#34;: &#34;The ID of the category.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;@id&#34;: &#34;helpful-rejection-sampled/split&#34;,
+          &#34;name&#34;: &#34;helpful-rejection-sampled/split&#34;,
+          &#34;dataType&#34;: [
+            &#34;wd:Q3985153&#34;,
+            &#34;sc:Text&#34;
+          ],
           &#34;references&#34;: {
             &#34;field&#34;: {
-              &#34;@id&#34;: &#34;categories/id&#34;
+              &#34;@id&#34;: &#34;split_enums/name&#34;
             }
           },
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+              &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;category_id&#34;
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;.*/(train|test)\\.jsonl\\.gz$&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;annotations/image_id&#34;,
-          &#34;name&#34;: &#34;annotations/image_id&#34;,
-          &#34;description&#34;: &#34;The ID of the image.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;images/image_id&#34;
-            }
-          },
+          &#34;@id&#34;: &#34;helpful-rejection-sampled/chosen&#34;,
+          &#34;name&#34;: &#34;helpful-rejection-sampled/chosen&#34;,
+          &#34;description&#34;: &#34;Chosen text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+              &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;image_id&#34;
+              &#34;column&#34;: &#34;chosen&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;annotations/bbox&#34;,
-          &#34;name&#34;: &#34;annotations/bbox&#34;,
-          &#34;description&#34;: &#34;The bounding box around annotated object[s].&#34;,
-          &#34;dataType&#34;: &#34;cr:BoundingBox&#34;,
+          &#34;@id&#34;: &#34;helpful-rejection-sampled/rejected&#34;,
+          &#34;name&#34;: &#34;helpful-rejection-sampled/rejected&#34;,
+          &#34;description&#34;: &#34;Rejected text.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;instancesperson_keypoints_annotations&#34;
+              &#34;@id&#34;: &#34;helpful-rejection-sampled-files&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;bbox&#34;
+              &#34;column&#34;: &#34;rejected&#34;
             }
           }
         }

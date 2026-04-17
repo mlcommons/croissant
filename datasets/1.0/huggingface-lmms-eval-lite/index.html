@@ -1,0 +1,3263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMMs-Eval-Lite — Croissant Visualizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <style>
+        /* ── Reset & Base ──────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-bg: #f4f5f7;
+            --color-surface: #ffffff;
+            --color-primary: #b45309;
+            --color-primary-light: #fef3c7;
+            --color-text: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-border: #e2e8f0;
+            --color-border-light: #f1f5f9;
+            --sidebar-width: 260px;
+            --sidebar-collapsed-width: 0px;
+            --radius: 10px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--color-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* ── Layout ────────────────────────────────────── */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ───────────────────────────────────── */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--color-surface);
+            border-right: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: width 0.25s ease, padding 0.25s ease;
+            z-index: 10;
+        }
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+        .sidebar-inner {
+            padding: 24px 20px;
+            opacity: 1;
+            transition: opacity 0.15s ease;
+        }
+        .sidebar.collapsed .sidebar-inner {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .sidebar-brand svg { flex-shrink: 0; }
+        .sidebar h4 {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--color-text-secondary);
+            margin: 20px 0 8px;
+        }
+        .sidebar ul { list-style: none; }
+        .sidebar > .sidebar-inner > ul > li > a,
+        .sidebar ul li a {
+            display: block;
+            padding: 5px 10px;
+            font-size: 0.82rem;
+            color: var(--color-text-secondary);
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar ul li a:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        .sidebar ul ul { padding-left: 14px; }
+        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
+
+        /* ── Toggle Button (inside sidebar) ───────────── */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .sidebar-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, color 0.15s;
+            flex-shrink: 0;
+        }
+        .sidebar-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+        /* Floating open button when sidebar is collapsed */
+        .sidebar-open-btn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 20;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .sidebar-open-btn:hover { background: var(--color-bg); }
+        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
+
+        /* ── Full JSON-LD Modal ──────────────────────────── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--color-surface);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            flex: 1;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .modal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-btn:hover {
+            background: var(--color-bg);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+        .modal-btn.copied {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.15s;
+        }
+        .modal-close:hover { background: var(--color-bg); }
+        .modal-body {
+            overflow-y: auto;
+            padding: 0;
+        }
+        .modal-body pre {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            margin: 0;
+            line-height: 1.55;
+            overflow-x: auto;
+        }
+
+        /* ── Main Content ──────────────────────────────── */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 32px 40px 64px;
+            max-width: 960px;
+        }
+
+        /* ── Hero Header ───────────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
+            color: white;
+            padding: 40px 36px;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .hero h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .hero .description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.92;
+            max-width: 720px;
+        }
+        /* Markdown overrides for dark hero background */
+        .hero .markdown a {
+            color: var(--color-primary-light);
+            text-decoration: underline;
+        }
+        .hero .markdown blockquote {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .hero .markdown code {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.18);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .hero-badge a { color: white; }
+        .hero-badge a:hover { text-decoration: underline; }
+
+        /* ── Cards ──────────────────────────────────────── */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .card-header h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+        .card-header .icon {
+            font-size: 1.3rem;
+        }
+
+        /* ── Tables ─────────────────────────────────────── */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        thead th {
+            text-align: left;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            background: var(--color-bg);
+            border-bottom: 2px solid var(--color-border);
+        }
+        tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--color-border-light);
+            vertical-align: top;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #fafbfc; }
+
+        /* Key-value metadata table */
+        .kv-table { width: 100%; }
+        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
+        .kv-table tr:last-child td { border-bottom: none; }
+        .kv-table .kv-key {
+            font-weight: 600;
+            font-size: 0.84rem;
+            color: var(--color-text-secondary);
+            width: 160px;
+            padding-right: 24px;
+            vertical-align: top;
+            white-space: nowrap;
+        }
+        .kv-table .kv-val {
+            font-size: 0.88rem;
+            word-break: break-word;
+        }
+        .kv-table .kv-val .jsonld-toggle {
+            float: right;
+            margin-left: 12px;
+        }
+
+        /* ── Resource Cards ─────────────────────────────── */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .resource-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 18px 20px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .resource-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+        .resource-card .rc-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .resource-card .rc-icon { font-size: 1.4rem; }
+        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
+        .resource-card .rc-type {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .resource-card .rc-desc {
+            font-size: 0.82rem;
+            color: var(--color-text-secondary);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ── Code / Preview ─────────────────────────────── */
+        pre.preview {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-width: 100%;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+        .cite-block {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 14px 16px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            line-height: 1.5;
+            max-width: 100%;
+        }
+
+        /* ── Mermaid ────────────────────────────────────── */
+        .mermaid-wrap {
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 16px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* ── RecordSet Sections ──────────────────────────── */
+        .rs-section { margin-bottom: 28px; }
+        .rs-section:last-child { margin-bottom: 0; }
+        .rs-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .rs-header h3 { font-size: 1rem; font-weight: 600; }
+        .rs-desc {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 14px;
+        }
+        .rs-divider {
+            border: none;
+            border-top: 1px solid var(--color-border-light);
+            margin: 24px 0;
+        }
+
+        /* ── Type Badges in Tables ──────────────────────── */
+        .type-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 1px 8px;
+            border-radius: 4px;
+            color: var(--color-text-secondary);
+        }
+
+        /* ── Markdown Content ───────────────────────────── */
+        .markdown p { margin-bottom: 0.6em; }
+        .markdown p:last-child { margin-bottom: 0; }
+        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
+        .markdown code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+        .markdown pre { margin: 0.6em 0; }
+        .markdown a { color: var(--color-primary); }
+        .markdown h1, .markdown h2, .markdown h3 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0.8em 0 0.3em;
+        }
+        .markdown blockquote {
+            border-left: 3px solid var(--color-border);
+            padding-left: 12px;
+            color: var(--color-text-secondary);
+            margin: 0.4em 0;
+        }
+
+        /* ── Footer ─────────────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            padding: 32px 0 16px;
+        }
+
+        /* ── Responsive ─────────────────────────────────── */
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .sidebar-toggle { display: none; }
+            .main { padding: 20px 16px 48px; }
+            .hero { padding: 28px 24px; }
+            .hero h1 { font-size: 1.4rem; }
+            .card { padding: 20px; }
+            .resource-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── JSON-LD Toggle ──────────────────────────────── */
+        .jsonld-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+            vertical-align: middle;
+        }
+        .jsonld-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .jsonld-toggle.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        .jsonld-panel {
+            display: none;
+            margin-top: 8px;
+        }
+        .jsonld-panel.open {
+            display: block;
+        }
+        .jsonld-panel pre {
+            border-radius: 8px;
+            max-width: 100%;
+            margin: 0;
+        }
+        /* Prism.js overrides to match our dark theme */
+        .jsonld-panel pre[class*="language-"],
+        .jsonld-panel code[class*="language-"],
+        .modal-body pre[class*="language-"],
+        .modal-body code[class*="language-"] {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            line-height: 1.55;
+            background: #1e293b;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .jsonld-panel pre[class*="language-"] {
+            padding: 16px;
+            border-radius: 8px;
+        }
+        .modal-body pre[class*="language-"] {
+            padding: 20px 24px;
+            margin: 0;
+            border-radius: 0;
+        }
+        /* Card-header toggle */
+        .card-header .jsonld-toggle { margin-left: auto; }
+        .rs-header .jsonld-toggle { margin-left: auto; }
+        .rc-header .jsonld-toggle { margin-left: auto; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-header">
+                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="sidebar-brand">
+                        🥐
+                        Croissant Visualizer
+                    </div>
+                </div>
+
+                <h4>Dataset</h4>
+                <ul>
+                    <li><a href="#top">Overview</a></li>
+                    <li><a href="#metadata">Metadata</a></li>
+                </ul>
+
+                <h4>Resources</h4>
+                <ul>
+                    
+                    <li><a href="#res-repo">📄 repo</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-ai2d">📁 parquet-files-for-config-ai2d</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-chartqa">📁 parquet-files-for-config-chartqa</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-coco2017_cap_val">📁 parquet-files-for-config-coco2017_cap_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-docvqa_val">📁 parquet-files-for-config-docvqa_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-flickr30k_test">📁 parquet-files-for-config-flickr30k_test</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-gqa">📁 parquet-files-for-config-gqa</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-infovqa_val">📁 parquet-files-for-config-infovqa_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-mmbench_cn_dev">📁 parquet-files-for-config-mmbench_cn_dev</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-mmbench_en_dev">📁 parquet-files-for-config-mmbench_en_dev</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-nocaps_val">📁 parquet-files-for-config-nocaps_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-ok_vqa_val2014">📁 parquet-files-for-config-ok_vqa_val2014</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-refcoco_bbox_val">📁 parquet-files-for-config-refcoco_bbox_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-seedbench">📁 parquet-files-for-config-seedbench</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-textcaps_val">📁 parquet-files-for-config-textcaps_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-textvqa_val">📁 parquet-files-for-config-textvqa_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-vizwiz_vqa_val">📁 parquet-files-for-config-vizwiz_vqa_val</a></li>
+                    
+                    <li><a href="#res-parquet-files-for-config-vqav2_val">📁 parquet-files-for-config-vqav2_val</a></li>
+                    
+                </ul>
+
+                <h4>Record Sets</h4>
+                <ul>
+                    
+                    <li><a href="#rs-ai2d_splits">ai2d_splits</a></li>
+                    
+                    <li><a href="#rs-ai2d">ai2d</a></li>
+                    
+                    <li><a href="#rs-gqa_splits">gqa_splits</a></li>
+                    
+                    <li><a href="#rs-gqa">gqa</a></li>
+                    
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Floating open button (visible when sidebar is collapsed) -->
+            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <!-- Hero -->
+            <div class="hero" id="top">
+                <h1>🥐 LMMs-Eval-Lite</h1>
+                
+                <div class="description markdown">lmms-lab/LMMs-Eval-Lite dataset hosted on Hugging Face and contributed by the HF Datasets community</div>
+                
+                <div class="hero-meta">
+                    
+                    
+                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite" target="_blank">Dataset URL</a></span>
+                    
+                    <span class="hero-badge">📦 18 resources</span>
+                    <span class="hero-badge">📋 4 record sets</span>
+                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
+                </div>
+            </div>
+
+            <!-- Metadata -->
+            
+            <div class="card" id="metadata">
+                <div class="card-header">
+                    <span class="icon">ℹ️</span>
+                    <h2>Metadata</h2>
+                </div>
+                <table class="kv-table">
+                    
+                    <tr>
+                        <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            <a href="http://mlcommons.org/croissant/1.0" target="_blank">http://mlcommons.org/croissant/1.0</a>
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            1K - 10K, parquet, Image, Text, Time-series, Datasets, Dask, Croissant, Polars, 🇺🇸 Region: US
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;keywords&#34;: [
+    &#34;1K - 10K&#34;,
+    &#34;parquet&#34;,
+    &#34;Image&#34;,
+    &#34;Text&#34;,
+    &#34;Time-series&#34;,
+    &#34;Datasets&#34;,
+    &#34;Dask&#34;,
+    &#34;Croissant&#34;,
+    &#34;Polars&#34;,
+    &#34;🇺🇸 Region: US&#34;
+  ]
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+            
+
+            <!-- Resources -->
+            <div class="card" id="resources">
+                <div class="card-header">
+                    <span class="icon">📦</span>
+                    <h2>Resources</h2>
+                </div>
+
+                
+                <div class="mermaid-wrap">
+                    <div class="mermaid">
+graph TD
+    repo["repo<br/><small>File</small>"]
+    parquet_files_for_config_ai2d["parquet-files-for-config-ai2d<br/><small>File Set</small>"]
+    parquet_files_for_config_chartqa["parquet-files-for-config-chartqa<br/><small>File Set</small>"]
+    parquet_files_for_config_coco2017_cap_val["parquet-files-for-config-coco2017_cap_val<br/><small>File Set</small>"]
+    parquet_files_for_config_docvqa_val["parquet-files-for-config-docvqa_val<br/><small>File Set</small>"]
+    parquet_files_for_config_flickr30k_test["parquet-files-for-config-flickr30k_test<br/><small>File Set</small>"]
+    parquet_files_for_config_gqa["parquet-files-for-config-gqa<br/><small>File Set</small>"]
+    parquet_files_for_config_infovqa_val["parquet-files-for-config-infovqa_val<br/><small>File Set</small>"]
+    parquet_files_for_config_mmbench_cn_dev["parquet-files-for-config-mmbench_cn_dev<br/><small>File Set</small>"]
+    parquet_files_for_config_mmbench_en_dev["parquet-files-for-config-mmbench_en_dev<br/><small>File Set</small>"]
+    parquet_files_for_config_nocaps_val["parquet-files-for-config-nocaps_val<br/><small>File Set</small>"]
+    parquet_files_for_config_ok_vqa_val2014["parquet-files-for-config-ok_vqa_val2014<br/><small>File Set</small>"]
+    parquet_files_for_config_refcoco_bbox_val["parquet-files-for-config-refcoco_bbox_val<br/><small>File Set</small>"]
+    parquet_files_for_config_seedbench["parquet-files-for-config-seedbench<br/><small>File Set</small>"]
+    parquet_files_for_config_textcaps_val["parquet-files-for-config-textcaps_val<br/><small>File Set</small>"]
+    parquet_files_for_config_textvqa_val["parquet-files-for-config-textvqa_val<br/><small>File Set</small>"]
+    parquet_files_for_config_vizwiz_vqa_val["parquet-files-for-config-vizwiz_vqa_val<br/><small>File Set</small>"]
+    parquet_files_for_config_vqav2_val["parquet-files-for-config-vqav2_val<br/><small>File Set</small>"]
+    repo --> parquet_files_for_config_ai2d
+    repo --> parquet_files_for_config_chartqa
+    repo --> parquet_files_for_config_coco2017_cap_val
+    repo --> parquet_files_for_config_docvqa_val
+    repo --> parquet_files_for_config_flickr30k_test
+    repo --> parquet_files_for_config_gqa
+    repo --> parquet_files_for_config_infovqa_val
+    repo --> parquet_files_for_config_mmbench_cn_dev
+    repo --> parquet_files_for_config_mmbench_en_dev
+    repo --> parquet_files_for_config_nocaps_val
+    repo --> parquet_files_for_config_ok_vqa_val2014
+    repo --> parquet_files_for_config_refcoco_bbox_val
+    repo --> parquet_files_for_config_seedbench
+    repo --> parquet_files_for_config_textcaps_val
+    repo --> parquet_files_for_config_textvqa_val
+    repo --> parquet_files_for_config_vizwiz_vqa_val
+    repo --> parquet_files_for_config_vqav2_val
+                    </div>
+                </div>
+                
+
+                <div class="resource-grid">
+                    
+                    <div class="resource-card" id="res-repo">
+                        <div class="rc-header">
+                            <span class="rc-icon">📄</span>
+                            <span class="rc-name">repo</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File</span>
+                        
+                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileObject&#34;,
+  &#34;@id&#34;: &#34;repo&#34;,
+  &#34;name&#34;: &#34;repo&#34;,
+  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite/tree/refs%2Fconvert%2Fparquet&#34;,
+  &#34;encodingFormat&#34;: &#34;git+https&#34;,
+  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-ai2d">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-ai2d</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;ai2d/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-chartqa">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-chartqa</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-chartqa&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-chartqa&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;chartqa/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-coco2017_cap_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-coco2017_cap_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-coco2017_cap_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-coco2017_cap_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;coco2017_cap_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-docvqa_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-docvqa_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-docvqa_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-docvqa_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;docvqa_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-flickr30k_test">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-flickr30k_test</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-flickr30k_test&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-flickr30k_test&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;flickr30k_test/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-gqa">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-gqa</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-gqa&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;gqa/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-infovqa_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-infovqa_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-infovqa_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-infovqa_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;infovqa_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-mmbench_cn_dev">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-mmbench_cn_dev</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-mmbench_cn_dev&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-mmbench_cn_dev&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;mmbench_cn_dev/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-mmbench_en_dev">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-mmbench_en_dev</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-mmbench_en_dev&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-mmbench_en_dev&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;mmbench_en_dev/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-nocaps_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-nocaps_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-nocaps_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-nocaps_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;nocaps_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-ok_vqa_val2014">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-ok_vqa_val2014</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-ok_vqa_val2014&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-ok_vqa_val2014&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;ok_vqa_val2014/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-refcoco_bbox_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-refcoco_bbox_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-refcoco_bbox_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-refcoco_bbox_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;refcoco_bbox_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-seedbench">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-seedbench</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-seedbench&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-seedbench&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;seedbench/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-textcaps_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-textcaps_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-textcaps_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-textcaps_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;textcaps_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-textvqa_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-textvqa_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-textvqa_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-textvqa_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;textvqa_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-vizwiz_vqa_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-vizwiz_vqa_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-vizwiz_vqa_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-vizwiz_vqa_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;vizwiz_vqa_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="resource-card" id="res-parquet-files-for-config-vqav2_val">
+                        <div class="rc-header">
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-vqav2_val</span>
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
+                        
+                        
+                        
+                        <div class="jsonld-panel">
+                            <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-vqav2_val&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-vqav2_val&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;vqav2_val/*/*.parquet&#34;
+}</code></pre>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Record Sets -->
+            <div class="card" id="recordsets">
+                <div class="card-header">
+                    <span class="icon">📋</span>
+                    <h2>Record Sets</h2>
+                </div>
+
+                
+                <div class="rs-section" id="rs-ai2d_splits">
+                    <div class="rs-header">
+                        <h3>ai2d_splits</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">Splits for the ai2d config.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;ai2d_splits&#34;,
+  &#34;name&#34;: &#34;ai2d_splits&#34;,
+  &#34;description&#34;: &#34;Splits for the ai2d config.&#34;,
+  &#34;dataType&#34;: &#34;cr:Split&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;ai2d_splits/split_name&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;ai2d_splits/split_name&#34;,
+      &#34;name&#34;: &#34;split_name&#34;,
+      &#34;description&#34;: &#34;The name of the split.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    }
+  ],
+  &#34;data&#34;: {
+    &#34;ai2d_splits/split_name&#34;: &#34;lite&#34;
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-ai2d">
+                    <div class="rs-header">
+                        <h3>ai2d</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">lmms-lab/LMMs-Eval-Lite - &#39;ai2d&#39; subset</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;ai2d&#34;,
+  &#34;name&#34;: &#34;ai2d&#34;,
+  &#34;description&#34;: &#34;lmms-lab/LMMs-Eval-Lite - &#39;ai2d&#39; subset&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;ai2d/split&#34;,
+      &#34;name&#34;: &#34;ai2d/split&#34;,
+      &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;ai2d_splits/split_name&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;ai2d/(?:partial-)?(lite)/.+parquet$&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;ai2d/question&#34;,
+      &#34;name&#34;: &#34;ai2d/question&#34;,
+      &#34;description&#34;: &#34;Column &#39;question&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;question&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;ai2d/options&#34;,
+      &#34;name&#34;: &#34;ai2d/options&#34;,
+      &#34;description&#34;: &#34;Column &#39;options&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;repeated&#34;: true,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;options&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;ai2d/answer&#34;,
+      &#34;name&#34;: &#34;ai2d/answer&#34;,
+      &#34;description&#34;: &#34;Column &#39;answer&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;answer&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;ai2d/image&#34;,
+      &#34;name&#34;: &#34;ai2d/image&#34;,
+      &#34;description&#34;: &#34;Image column &#39;image&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;image&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;jsonPath&#34;: &#34;bytes&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>question</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;question&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>options</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;options&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>answer</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;answer&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>image</strong></td>
+                                    <td><span class="type-badge">ImageObject</span></td>
+                                    <td>Image column &#39;image&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-gqa_splits">
+                    <div class="rs-header">
+                        <h3>gqa_splits</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">Splits for the gqa config.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;gqa_splits&#34;,
+  &#34;name&#34;: &#34;gqa_splits&#34;,
+  &#34;description&#34;: &#34;Splits for the gqa config.&#34;,
+  &#34;dataType&#34;: &#34;cr:Split&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;gqa_splits/split_name&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa_splits/split_name&#34;,
+      &#34;name&#34;: &#34;split_name&#34;,
+      &#34;description&#34;: &#34;The name of the split.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    }
+  ],
+  &#34;data&#34;: {
+    &#34;gqa_splits/split_name&#34;: &#34;lite&#34;
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-gqa">
+                    <div class="rs-header">
+                        <h3>gqa</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">lmms-lab/LMMs-Eval-Lite - &#39;gqa&#39; subset</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;gqa&#34;,
+  &#34;name&#34;: &#34;gqa&#34;,
+  &#34;description&#34;: &#34;lmms-lab/LMMs-Eval-Lite - &#39;gqa&#39; subset&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/split&#34;,
+      &#34;name&#34;: &#34;gqa/split&#34;,
+      &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;gqa_splits/split_name&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;gqa/(?:partial-)?(lite)/.+parquet$&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/id&#34;,
+      &#34;name&#34;: &#34;gqa/id&#34;,
+      &#34;description&#34;: &#34;Column &#39;id&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/imageId&#34;,
+      &#34;name&#34;: &#34;gqa/imageId&#34;,
+      &#34;description&#34;: &#34;Column &#39;imageId&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;imageId&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/question&#34;,
+      &#34;name&#34;: &#34;gqa/question&#34;,
+      &#34;description&#34;: &#34;Column &#39;question&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;question&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/answer&#34;,
+      &#34;name&#34;: &#34;gqa/answer&#34;,
+      &#34;description&#34;: &#34;Column &#39;answer&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;answer&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/fullAnswer&#34;,
+      &#34;name&#34;: &#34;gqa/fullAnswer&#34;,
+      &#34;description&#34;: &#34;Column &#39;fullAnswer&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;fullAnswer&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/isBalanced&#34;,
+      &#34;name&#34;: &#34;gqa/isBalanced&#34;,
+      &#34;description&#34;: &#34;Column &#39;isBalanced&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Boolean&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;isBalanced&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/groups&#34;,
+      &#34;name&#34;: &#34;gqa/groups&#34;,
+      &#34;description&#34;: &#34;Column &#39;groups&#39; from the Hugging Face parquet file.&#34;,
+      &#34;subField&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/groups/global&#34;,
+          &#34;name&#34;: &#34;gqa/groups/global&#34;,
+          &#34;description&#34;: &#34;Column &#39;groups&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;groups&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;global&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/groups/local&#34;,
+          &#34;name&#34;: &#34;gqa/groups/local&#34;,
+          &#34;description&#34;: &#34;Column &#39;groups&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;groups&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;local&#34;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/entailed&#34;,
+      &#34;name&#34;: &#34;gqa/entailed&#34;,
+      &#34;description&#34;: &#34;Column &#39;entailed&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;entailed&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/equivalent&#34;,
+      &#34;name&#34;: &#34;gqa/equivalent&#34;,
+      &#34;description&#34;: &#34;Column &#39;equivalent&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;equivalent&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/types&#34;,
+      &#34;name&#34;: &#34;gqa/types&#34;,
+      &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+      &#34;subField&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/types/structural&#34;,
+          &#34;name&#34;: &#34;gqa/types/structural&#34;,
+          &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;types&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;structural&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/types/semantic&#34;,
+          &#34;name&#34;: &#34;gqa/types/semantic&#34;,
+          &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;types&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;semantic&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/types/detailed&#34;,
+          &#34;name&#34;: &#34;gqa/types/detailed&#34;,
+          &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;types&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;detailed&#34;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/annotations&#34;,
+      &#34;name&#34;: &#34;gqa/annotations&#34;,
+      &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+      &#34;repeated&#34;: true,
+      &#34;subField&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/annotations/question&#34;,
+          &#34;name&#34;: &#34;gqa/annotations/question&#34;,
+          &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/question/objectId&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/question/objectId&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;annotations&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;objectId&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/question/value&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/question/value&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;annotations&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;value&#34;
+                }
+              }
+            }
+          ]
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/annotations/answer&#34;,
+          &#34;name&#34;: &#34;gqa/annotations/answer&#34;,
+          &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/answer/objectId&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/answer/objectId&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;annotations&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;objectId&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/answer/value&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/answer/value&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;annotations&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;value&#34;
+                }
+              }
+            }
+          ]
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/annotations/fullAnswer&#34;,
+          &#34;name&#34;: &#34;gqa/annotations/fullAnswer&#34;,
+          &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/fullAnswer/objectId&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/fullAnswer/objectId&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;annotations&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;objectId&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/fullAnswer/value&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/fullAnswer/value&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;annotations&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;value&#34;
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/semantic&#34;,
+      &#34;name&#34;: &#34;gqa/semantic&#34;,
+      &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+      &#34;repeated&#34;: true,
+      &#34;subField&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/semantic/operation&#34;,
+          &#34;name&#34;: &#34;gqa/semantic/operation&#34;,
+          &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;semantic&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;operation&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/semantic/argument&#34;,
+          &#34;name&#34;: &#34;gqa/semantic/argument&#34;,
+          &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;semantic&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;argument&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/semantic/dependencies&#34;,
+          &#34;name&#34;: &#34;gqa/semantic/dependencies&#34;,
+          &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;repeated&#34;: true,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;semantic&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;dependencies&#34;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;gqa/semanticStr&#34;,
+      &#34;name&#34;: &#34;gqa/semanticStr&#34;,
+      &#34;description&#34;: &#34;Column &#39;semanticStr&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;semanticStr&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;id&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>imageId</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;imageId&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>question</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;question&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>answer</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;answer&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>fullAnswer</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;fullAnswer&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>isBalanced</strong></td>
+                                    <td><span class="type-badge">bool</span></td>
+                                    <td>Column &#39;isBalanced&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>groups</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;groups&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>entailed</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;entailed&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>equivalent</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;equivalent&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>types</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;types&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>annotations</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;annotations&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>semantic</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;semantic&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>semanticStr</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;semanticStr&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+            </div>
+
+            <div class="footer">
+                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full JSON-LD Modal -->
+    <div class="modal-overlay" id="jsonld-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🥐 metadata.json</h2>
+                <div class="modal-actions">
+                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        Copy
+                    </button>
+                    <button class="modal-btn" onclick="downloadFullJsonld()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download
+                    </button>
+                </div>
+                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
+  &#34;@context&#34;: {
+    &#34;@language&#34;: &#34;en&#34;,
+    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
+    &#34;citeAs&#34;: &#34;cr:citeAs&#34;,
+    &#34;column&#34;: &#34;cr:column&#34;,
+    &#34;conformsTo&#34;: &#34;dct:conformsTo&#34;,
+    &#34;cr&#34;: &#34;http://mlcommons.org/croissant/&#34;,
+    &#34;rai&#34;: &#34;http://mlcommons.org/croissant/RAI/&#34;,
+    &#34;data&#34;: {
+      &#34;@id&#34;: &#34;cr:data&#34;,
+      &#34;@type&#34;: &#34;@json&#34;
+    },
+    &#34;dataType&#34;: {
+      &#34;@id&#34;: &#34;cr:dataType&#34;,
+      &#34;@type&#34;: &#34;@vocab&#34;
+    },
+    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
+    &#34;examples&#34;: {
+      &#34;@id&#34;: &#34;cr:examples&#34;,
+      &#34;@type&#34;: &#34;@json&#34;
+    },
+    &#34;extract&#34;: &#34;cr:extract&#34;,
+    &#34;field&#34;: &#34;cr:field&#34;,
+    &#34;fileProperty&#34;: &#34;cr:fileProperty&#34;,
+    &#34;fileObject&#34;: &#34;cr:fileObject&#34;,
+    &#34;fileSet&#34;: &#34;cr:fileSet&#34;,
+    &#34;format&#34;: &#34;cr:format&#34;,
+    &#34;includes&#34;: &#34;cr:includes&#34;,
+    &#34;isLiveDataset&#34;: &#34;cr:isLiveDataset&#34;,
+    &#34;jsonPath&#34;: &#34;cr:jsonPath&#34;,
+    &#34;key&#34;: &#34;cr:key&#34;,
+    &#34;md5&#34;: &#34;cr:md5&#34;,
+    &#34;parentField&#34;: &#34;cr:parentField&#34;,
+    &#34;path&#34;: &#34;cr:path&#34;,
+    &#34;recordSet&#34;: &#34;cr:recordSet&#34;,
+    &#34;references&#34;: &#34;cr:references&#34;,
+    &#34;regex&#34;: &#34;cr:regex&#34;,
+    &#34;repeated&#34;: &#34;cr:repeated&#34;,
+    &#34;replace&#34;: &#34;cr:replace&#34;,
+    &#34;sc&#34;: &#34;https://schema.org/&#34;,
+    &#34;separator&#34;: &#34;cr:separator&#34;,
+    &#34;source&#34;: &#34;cr:source&#34;,
+    &#34;subField&#34;: &#34;cr:subField&#34;,
+    &#34;transform&#34;: &#34;cr:transform&#34;
+  },
+  &#34;@type&#34;: &#34;sc:Dataset&#34;,
+  &#34;name&#34;: &#34;LMMs-Eval-Lite&#34;,
+  &#34;description&#34;: &#34;lmms-lab/LMMs-Eval-Lite dataset hosted on Hugging Face and contributed by the HF Datasets community&#34;,
+  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
+  &#34;keywords&#34;: [
+    &#34;1K - 10K&#34;,
+    &#34;parquet&#34;,
+    &#34;Image&#34;,
+    &#34;Text&#34;,
+    &#34;Time-series&#34;,
+    &#34;Datasets&#34;,
+    &#34;Dask&#34;,
+    &#34;Croissant&#34;,
+    &#34;Polars&#34;,
+    &#34;🇺🇸 Region: US&#34;
+  ],
+  &#34;url&#34;: &#34;https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite&#34;,
+  &#34;distribution&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:FileObject&#34;,
+      &#34;@id&#34;: &#34;repo&#34;,
+      &#34;name&#34;: &#34;repo&#34;,
+      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/lmms-lab/LMMs-Eval-Lite/tree/refs%2Fconvert%2Fparquet&#34;,
+      &#34;encodingFormat&#34;: &#34;git+https&#34;,
+      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-ai2d&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;ai2d/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-chartqa&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-chartqa&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;chartqa/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-coco2017_cap_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-coco2017_cap_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;coco2017_cap_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-docvqa_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-docvqa_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;docvqa_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-flickr30k_test&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-flickr30k_test&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;flickr30k_test/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-gqa&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;gqa/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-infovqa_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-infovqa_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;infovqa_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-mmbench_cn_dev&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-mmbench_cn_dev&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;mmbench_cn_dev/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-mmbench_en_dev&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-mmbench_en_dev&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;mmbench_en_dev/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-nocaps_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-nocaps_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;nocaps_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-ok_vqa_val2014&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-ok_vqa_val2014&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;ok_vqa_val2014/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-refcoco_bbox_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-refcoco_bbox_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;refcoco_bbox_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-seedbench&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-seedbench&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;seedbench/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-textcaps_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-textcaps_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;textcaps_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-textvqa_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-textvqa_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;textvqa_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-vizwiz_vqa_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-vizwiz_vqa_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;vizwiz_vqa_val/*/*.parquet&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-vqav2_val&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-vqav2_val&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;vqav2_val/*/*.parquet&#34;
+    }
+  ],
+  &#34;recordSet&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;ai2d_splits&#34;,
+      &#34;name&#34;: &#34;ai2d_splits&#34;,
+      &#34;description&#34;: &#34;Splits for the ai2d config.&#34;,
+      &#34;dataType&#34;: &#34;cr:Split&#34;,
+      &#34;key&#34;: {
+        &#34;@id&#34;: &#34;ai2d_splits/split_name&#34;
+      },
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;ai2d_splits/split_name&#34;,
+          &#34;name&#34;: &#34;split_name&#34;,
+          &#34;description&#34;: &#34;The name of the split.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;
+        }
+      ],
+      &#34;data&#34;: {
+        &#34;ai2d_splits/split_name&#34;: &#34;lite&#34;
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;ai2d&#34;,
+      &#34;name&#34;: &#34;ai2d&#34;,
+      &#34;description&#34;: &#34;lmms-lab/LMMs-Eval-Lite - &#39;ai2d&#39; subset&#34;,
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;ai2d/split&#34;,
+          &#34;name&#34;: &#34;ai2d/split&#34;,
+          &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;ai2d_splits/split_name&#34;
+            }
+          },
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;ai2d/(?:partial-)?(lite)/.+parquet$&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;ai2d/question&#34;,
+          &#34;name&#34;: &#34;ai2d/question&#34;,
+          &#34;description&#34;: &#34;Column &#39;question&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;question&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;ai2d/options&#34;,
+          &#34;name&#34;: &#34;ai2d/options&#34;,
+          &#34;description&#34;: &#34;Column &#39;options&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;repeated&#34;: true,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;options&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;ai2d/answer&#34;,
+          &#34;name&#34;: &#34;ai2d/answer&#34;,
+          &#34;description&#34;: &#34;Column &#39;answer&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;answer&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;ai2d/image&#34;,
+          &#34;name&#34;: &#34;ai2d/image&#34;,
+          &#34;description&#34;: &#34;Image column &#39;image&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-ai2d&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;image&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;jsonPath&#34;: &#34;bytes&#34;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;gqa_splits&#34;,
+      &#34;name&#34;: &#34;gqa_splits&#34;,
+      &#34;description&#34;: &#34;Splits for the gqa config.&#34;,
+      &#34;dataType&#34;: &#34;cr:Split&#34;,
+      &#34;key&#34;: {
+        &#34;@id&#34;: &#34;gqa_splits/split_name&#34;
+      },
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa_splits/split_name&#34;,
+          &#34;name&#34;: &#34;split_name&#34;,
+          &#34;description&#34;: &#34;The name of the split.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;
+        }
+      ],
+      &#34;data&#34;: {
+        &#34;gqa_splits/split_name&#34;: &#34;lite&#34;
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;gqa&#34;,
+      &#34;name&#34;: &#34;gqa&#34;,
+      &#34;description&#34;: &#34;lmms-lab/LMMs-Eval-Lite - &#39;gqa&#39; subset&#34;,
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/split&#34;,
+          &#34;name&#34;: &#34;gqa/split&#34;,
+          &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;gqa_splits/split_name&#34;
+            }
+          },
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;gqa/(?:partial-)?(lite)/.+parquet$&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/id&#34;,
+          &#34;name&#34;: &#34;gqa/id&#34;,
+          &#34;description&#34;: &#34;Column &#39;id&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;id&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/imageId&#34;,
+          &#34;name&#34;: &#34;gqa/imageId&#34;,
+          &#34;description&#34;: &#34;Column &#39;imageId&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;imageId&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/question&#34;,
+          &#34;name&#34;: &#34;gqa/question&#34;,
+          &#34;description&#34;: &#34;Column &#39;question&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;question&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/answer&#34;,
+          &#34;name&#34;: &#34;gqa/answer&#34;,
+          &#34;description&#34;: &#34;Column &#39;answer&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;answer&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/fullAnswer&#34;,
+          &#34;name&#34;: &#34;gqa/fullAnswer&#34;,
+          &#34;description&#34;: &#34;Column &#39;fullAnswer&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;fullAnswer&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/isBalanced&#34;,
+          &#34;name&#34;: &#34;gqa/isBalanced&#34;,
+          &#34;description&#34;: &#34;Column &#39;isBalanced&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Boolean&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;isBalanced&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/groups&#34;,
+          &#34;name&#34;: &#34;gqa/groups&#34;,
+          &#34;description&#34;: &#34;Column &#39;groups&#39; from the Hugging Face parquet file.&#34;,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/groups/global&#34;,
+              &#34;name&#34;: &#34;gqa/groups/global&#34;,
+              &#34;description&#34;: &#34;Column &#39;groups&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;groups&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;global&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/groups/local&#34;,
+              &#34;name&#34;: &#34;gqa/groups/local&#34;,
+              &#34;description&#34;: &#34;Column &#39;groups&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;groups&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;local&#34;
+                }
+              }
+            }
+          ]
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/entailed&#34;,
+          &#34;name&#34;: &#34;gqa/entailed&#34;,
+          &#34;description&#34;: &#34;Column &#39;entailed&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;entailed&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/equivalent&#34;,
+          &#34;name&#34;: &#34;gqa/equivalent&#34;,
+          &#34;description&#34;: &#34;Column &#39;equivalent&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;equivalent&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/types&#34;,
+          &#34;name&#34;: &#34;gqa/types&#34;,
+          &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/types/structural&#34;,
+              &#34;name&#34;: &#34;gqa/types/structural&#34;,
+              &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;types&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;structural&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/types/semantic&#34;,
+              &#34;name&#34;: &#34;gqa/types/semantic&#34;,
+              &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;types&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;semantic&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/types/detailed&#34;,
+              &#34;name&#34;: &#34;gqa/types/detailed&#34;,
+              &#34;description&#34;: &#34;Column &#39;types&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;types&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;detailed&#34;
+                }
+              }
+            }
+          ]
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/annotations&#34;,
+          &#34;name&#34;: &#34;gqa/annotations&#34;,
+          &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+          &#34;repeated&#34;: true,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/question&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/question&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;subField&#34;: [
+                {
+                  &#34;@type&#34;: &#34;cr:Field&#34;,
+                  &#34;@id&#34;: &#34;gqa/annotations/question/objectId&#34;,
+                  &#34;name&#34;: &#34;gqa/annotations/question/objectId&#34;,
+                  &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+                  &#34;dataType&#34;: &#34;sc:Text&#34;,
+                  &#34;source&#34;: {
+                    &#34;fileSet&#34;: {
+                      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                    },
+                    &#34;extract&#34;: {
+                      &#34;column&#34;: &#34;annotations&#34;
+                    },
+                    &#34;transform&#34;: {
+                      &#34;jsonPath&#34;: &#34;objectId&#34;
+                    }
+                  }
+                },
+                {
+                  &#34;@type&#34;: &#34;cr:Field&#34;,
+                  &#34;@id&#34;: &#34;gqa/annotations/question/value&#34;,
+                  &#34;name&#34;: &#34;gqa/annotations/question/value&#34;,
+                  &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+                  &#34;dataType&#34;: &#34;sc:Text&#34;,
+                  &#34;source&#34;: {
+                    &#34;fileSet&#34;: {
+                      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                    },
+                    &#34;extract&#34;: {
+                      &#34;column&#34;: &#34;annotations&#34;
+                    },
+                    &#34;transform&#34;: {
+                      &#34;jsonPath&#34;: &#34;value&#34;
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/answer&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/answer&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;subField&#34;: [
+                {
+                  &#34;@type&#34;: &#34;cr:Field&#34;,
+                  &#34;@id&#34;: &#34;gqa/annotations/answer/objectId&#34;,
+                  &#34;name&#34;: &#34;gqa/annotations/answer/objectId&#34;,
+                  &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+                  &#34;dataType&#34;: &#34;sc:Text&#34;,
+                  &#34;source&#34;: {
+                    &#34;fileSet&#34;: {
+                      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                    },
+                    &#34;extract&#34;: {
+                      &#34;column&#34;: &#34;annotations&#34;
+                    },
+                    &#34;transform&#34;: {
+                      &#34;jsonPath&#34;: &#34;objectId&#34;
+                    }
+                  }
+                },
+                {
+                  &#34;@type&#34;: &#34;cr:Field&#34;,
+                  &#34;@id&#34;: &#34;gqa/annotations/answer/value&#34;,
+                  &#34;name&#34;: &#34;gqa/annotations/answer/value&#34;,
+                  &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+                  &#34;dataType&#34;: &#34;sc:Text&#34;,
+                  &#34;source&#34;: {
+                    &#34;fileSet&#34;: {
+                      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                    },
+                    &#34;extract&#34;: {
+                      &#34;column&#34;: &#34;annotations&#34;
+                    },
+                    &#34;transform&#34;: {
+                      &#34;jsonPath&#34;: &#34;value&#34;
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/annotations/fullAnswer&#34;,
+              &#34;name&#34;: &#34;gqa/annotations/fullAnswer&#34;,
+              &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+              &#34;subField&#34;: [
+                {
+                  &#34;@type&#34;: &#34;cr:Field&#34;,
+                  &#34;@id&#34;: &#34;gqa/annotations/fullAnswer/objectId&#34;,
+                  &#34;name&#34;: &#34;gqa/annotations/fullAnswer/objectId&#34;,
+                  &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+                  &#34;dataType&#34;: &#34;sc:Text&#34;,
+                  &#34;source&#34;: {
+                    &#34;fileSet&#34;: {
+                      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                    },
+                    &#34;extract&#34;: {
+                      &#34;column&#34;: &#34;annotations&#34;
+                    },
+                    &#34;transform&#34;: {
+                      &#34;jsonPath&#34;: &#34;objectId&#34;
+                    }
+                  }
+                },
+                {
+                  &#34;@type&#34;: &#34;cr:Field&#34;,
+                  &#34;@id&#34;: &#34;gqa/annotations/fullAnswer/value&#34;,
+                  &#34;name&#34;: &#34;gqa/annotations/fullAnswer/value&#34;,
+                  &#34;description&#34;: &#34;Column &#39;annotations&#39; from the Hugging Face parquet file.&#34;,
+                  &#34;dataType&#34;: &#34;sc:Text&#34;,
+                  &#34;source&#34;: {
+                    &#34;fileSet&#34;: {
+                      &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                    },
+                    &#34;extract&#34;: {
+                      &#34;column&#34;: &#34;annotations&#34;
+                    },
+                    &#34;transform&#34;: {
+                      &#34;jsonPath&#34;: &#34;value&#34;
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/semantic&#34;,
+          &#34;name&#34;: &#34;gqa/semantic&#34;,
+          &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+          &#34;repeated&#34;: true,
+          &#34;subField&#34;: [
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/semantic/operation&#34;,
+              &#34;name&#34;: &#34;gqa/semantic/operation&#34;,
+              &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;semantic&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;operation&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/semantic/argument&#34;,
+              &#34;name&#34;: &#34;gqa/semantic/argument&#34;,
+              &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Text&#34;,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;semantic&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;argument&#34;
+                }
+              }
+            },
+            {
+              &#34;@type&#34;: &#34;cr:Field&#34;,
+              &#34;@id&#34;: &#34;gqa/semantic/dependencies&#34;,
+              &#34;name&#34;: &#34;gqa/semantic/dependencies&#34;,
+              &#34;description&#34;: &#34;Column &#39;semantic&#39; from the Hugging Face parquet file.&#34;,
+              &#34;dataType&#34;: &#34;sc:Integer&#34;,
+              &#34;repeated&#34;: true,
+              &#34;source&#34;: {
+                &#34;fileSet&#34;: {
+                  &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+                },
+                &#34;extract&#34;: {
+                  &#34;column&#34;: &#34;semantic&#34;
+                },
+                &#34;transform&#34;: {
+                  &#34;jsonPath&#34;: &#34;dependencies&#34;
+                }
+              }
+            }
+          ]
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;gqa/semanticStr&#34;,
+          &#34;name&#34;: &#34;gqa/semanticStr&#34;,
+          &#34;description&#34;: &#34;Column &#39;semanticStr&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-gqa&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;semanticStr&#34;
+            }
+          }
+        }
+      ]
+    }
+  ]
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.add('collapsed');
+        });
+        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('collapsed');
+        });
+
+        // Render markdown descriptions
+        document.querySelectorAll('.markdown').forEach(function(el) {
+            var raw = el.textContent;
+            if (raw && typeof marked !== 'undefined') {
+                el.innerHTML = marked.parse(raw);
+            }
+        });
+
+        function toggleJsonld(btn) {
+            var container = btn.closest('.rs-section, .resource-card, tr, .card');
+            var panel = container.querySelector('.jsonld-panel');
+            if (!panel) {
+                var row = btn.closest('tr');
+                if (row) panel = row.querySelector('.jsonld-panel');
+            }
+            if (panel) {
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
+                // Highlight with Prism on first open
+                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
+                    var code = panel.querySelector('code');
+                    if (code) Prism.highlightElement(code);
+                    panel.dataset.highlighted = 'true';
+                }
+            }
+        }
+
+        // Full JSON-LD modal
+        var modalHighlighted = false;
+        function openJsonldModal() {
+            var modal = document.getElementById('jsonld-modal');
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            if (!modalHighlighted) {
+                var code = document.getElementById('full-jsonld-code');
+                if (code) Prism.highlightElement(code);
+                modalHighlighted = true;
+            }
+        }
+        function closeJsonldModal() {
+            document.getElementById('jsonld-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeJsonldModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeJsonldModal();
+        });
+
+        function copyFullJsonld() {
+            var code = document.getElementById('full-jsonld-code');
+            var text = code.textContent;
+            navigator.clipboard.writeText(text).then(function() {
+                var btn = document.getElementById('copy-jsonld-btn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+                setTimeout(function() {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+                }, 2000);
+            });
+        }
+
+        function downloadFullJsonld() {
+            var code = document.getElementById('full-jsonld-code');
+            var text = code.textContent;
+            var blob = new Blob([text], {type: 'application/ld+json'});
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'metadata.json';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+    </script>
+</body>
+</html>

@@ -293,6 +293,20 @@
             opacity: 0.92;
             max-width: 720px;
         }
+        /* Markdown overrides for dark hero background */
+        .hero .markdown a {
+            color: var(--color-primary-light);
+            text-decoration: underline;
+        }
+        .hero .markdown blockquote {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .hero .markdown code {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
         .hero-meta {
             display: flex;
             flex-wrap: wrap;

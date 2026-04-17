@@ -15,13 +15,11 @@ flags.DEFINE_string(
     "jsonld",
     None,
     "The path or URL to the Croissant JSON-LD file.",
-    required=True,
 )
 flags.DEFINE_string(
     "output",
     None,
     "The output HTML file.",
-    required=True,
 )
 
 FLAGS = flags.FLAGS
@@ -41,6 +39,20 @@ def _format_value(value):
     if not s or s == "[]" or s == "None":
         return None
     return s
+
+
+def _clean_description(desc: str) -> str:
+    """Clean up descriptions by removing tabs and collapsing excessive newlines."""
+    if not desc:
+        return ""
+    # Replace tabs with spaces
+    desc = desc.replace("\t", " ")
+    # Collapse multiple newlines (more than 2) into 2 newlines
+    import re
+    desc = re.sub(r"\n{3,}", "\n\n", desc)
+    # Strip whitespace from lines that only contain whitespace
+    lines = [line if line.strip() else "" for line in desc.split("\n")]
+    return "\n".join(lines)
 
 
 def _python_name_to_jsonld_key(python_name: str) -> str:
@@ -84,6 +96,9 @@ def _find_jsonld_entry(entries: list, name: str) -> str:
 def main(argv):
     """Main function launched by the script."""
     del argv
+    if not FLAGS.jsonld or not FLAGS.output:
+        logging.fatal("Both --jsonld and --output are required when running this script directly.")
+        sys.exit(1)
     jsonld = FLAGS.jsonld
     output = epath.Path(FLAGS.output)
     return visualize(jsonld=jsonld, output=output)
@@ -205,12 +220,13 @@ def visualize(jsonld: str, output: epath.Path):
             type_icon = "📦"
 
         # Find the JSON-LD snippet for this resource
+        res_name = res.name or res.uuid or "Unnamed"
         res_jsonld = _find_jsonld_entry(
-            raw_jsonld.get("distribution", []), res.name
+            raw_jsonld.get("distribution", []), res_name
         )
 
         res_data = {
-            "name": res.name,
+            "name": res_name,
             "type": res_type,
             "type_label": type_label,
             "type_icon": type_icon,
@@ -221,20 +237,20 @@ def visualize(jsonld: str, output: epath.Path):
         resources.append(res_data)
 
         # Mermaid node - sanitize name for valid mermaid IDs
-        safe_name = res.name.replace("-", "_").replace(" ", "_")
+        safe_name = res_name.replace("-", "_").replace(" ", "_").replace(".", "_")
         mermaid_nodes.append(
-            f'    {safe_name}["{res.name}<br/><small>{type_label}</small>"]'
+            f'    {safe_name}["{res_name}<br/><small>{type_label}</small>"]'
         )
 
         # Mermaid edge for contained_in
         if hasattr(res, "contained_in") and res.contained_in:
             for parent in res.contained_in:
                 if isinstance(parent, str):
-                    safe_parent = parent.replace("-", "_").replace(" ", "_")
+                    safe_parent = parent.replace("-", "_").replace(" ", "_").replace(".", "_")
                     mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
                 elif hasattr(parent, "uuid"):
                     safe_parent = (
-                        parent.uuid.replace("-", "_").replace(" ", "_")
+                        parent.uuid.replace("-", "_").replace(" ", "_").replace(".", "_")
                     )
                     mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
 
@@ -249,12 +265,13 @@ def visualize(jsonld: str, output: epath.Path):
     record_sets = []
     for rs in metadata.record_sets:
         # Find the JSON-LD snippet for this record set
+        rs_name = rs.name or rs.uuid or "Unnamed"
         rs_jsonld = _find_jsonld_entry(
-            raw_jsonld.get("recordSet", []), rs.name
+            raw_jsonld.get("recordSet", []), rs_name
         )
 
         rs_data = {
-            "name": rs.name,
+            "name": rs_name,
             "description": rs.description or "",
             "fields": [],
             "jsonld": rs_jsonld,
@@ -280,7 +297,7 @@ def visualize(jsonld: str, output: epath.Path):
 
     data = {
         "name": metadata.name,
-        "description": metadata.description or "",
+        "description": _clean_description(metadata.description),
         "url": metadata.url,
         "version": _format_value(metadata.version),
         "metadata_fields": metadata_fields,

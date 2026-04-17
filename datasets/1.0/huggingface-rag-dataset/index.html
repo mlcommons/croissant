@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movielens-25M — Croissant Visualizer</title>
+    <title>rag-mini-wikipedia — Croissant Visualizer</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -653,32 +653,24 @@
                 <h4>Resources</h4>
                 <ul>
                     
-                    <li><a href="#res-ml-25m-archive">📄 ml-25m-archive</a></li>
+                    <li><a href="#res-repo">📄 repo</a></li>
                     
-                    <li><a href="#res-ratings-table">📄 ratings-table</a></li>
+                    <li><a href="#res-parquet-files-for-config-question-answer">📁 parquet-files-for-config-question-answer</a></li>
                     
-                    <li><a href="#res-movies-table">📄 movies-table</a></li>
-                    
-                    <li><a href="#res-tags-table">📄 tags-table</a></li>
-                    
-                    <li><a href="#res-links-table">📄 links-table</a></li>
-                    
-                    <li><a href="#res-genome-scores-table">📄 genome-scores-table</a></li>
-                    
-                    <li><a href="#res-genome-tags-table">📄 genome-tags-table</a></li>
+                    <li><a href="#res-parquet-files-for-config-text-corpus">📁 parquet-files-for-config-text-corpus</a></li>
                     
                 </ul>
 
                 <h4>Record Sets</h4>
                 <ul>
                     
-                    <li><a href="#rs-movies">movies</a></li>
+                    <li><a href="#rs-question-answer_splits">question-answer_splits</a></li>
                     
-                    <li><a href="#rs-ratings">ratings</a></li>
+                    <li><a href="#rs-question-answer">question-answer</a></li>
                     
-                    <li><a href="#rs-tags">tags</a></li>
+                    <li><a href="#rs-text-corpus_splits">text-corpus_splits</a></li>
                     
-                    <li><a href="#rs-movies_with_ratings_with_tags">movies_with_ratings_with_tags</a></li>
+                    <li><a href="#rs-text-corpus">text-corpus</a></li>
                     
                 </ul>
             </div>
@@ -693,16 +685,18 @@
 
             <!-- Hero -->
             <div class="hero" id="top">
-                <h1>🥐 Movielens-25M</h1>
+                <h1>🥐 rag-mini-wikipedia</h1>
                 
-                <div class="description markdown">MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019</div>
+                <div class="description markdown">In this huggingface discussion you can share what you used the dataset for.
+Derives from https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download we generated our own subset using generate.py.
+</div>
                 
                 <div class="hero-meta">
                     
                     
-                    <span class="hero-badge">🔗 <a href="https://grouplens.org/datasets/movielens/25m/" target="_blank">Dataset URL</a></span>
+                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia" target="_blank">Dataset URL</a></span>
                     
-                    <span class="hero-badge">📦 7 resources</span>
+                    <span class="hero-badge">📦 3 resources</span>
                     <span class="hero-badge">📋 4 record sets</span>
                     <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
                 </div>
@@ -716,6 +710,25 @@
                     <h2>Metadata</h2>
                 </div>
                 <table class="kv-table">
+                    
+                    <tr>
+                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            <a href="https://choosealicense.com/licenses/cc-by-3.0/" target="_blank">https://choosealicense.com/licenses/cc-by-3.0/</a>
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;license&#34;: &#34;https://choosealicense.com/licenses/cc-by-3.0/&#34;
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
                     
                     <tr>
                         <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
@@ -736,6 +749,54 @@
                         </td>
                     </tr>
                     
+                    <tr>
+                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            question-answering, sentence-similarity, English, cc-by-3.0, 1K - 10K, parquet, Text, Datasets, pandas, Croissant, Polars, 🇺🇸 Region: US, rag, wikipedia, open-domain, information-retrieval, dpr
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;keywords&#34;: [
+    &#34;question-answering&#34;,
+    &#34;sentence-similarity&#34;,
+    &#34;English&#34;,
+    &#34;cc-by-3.0&#34;,
+    &#34;1K - 10K&#34;,
+    &#34;parquet&#34;,
+    &#34;Text&#34;,
+    &#34;Datasets&#34;,
+    &#34;pandas&#34;,
+    &#34;Croissant&#34;,
+    &#34;Polars&#34;,
+    &#34;🇺🇸 Region: US&#34;,
+    &#34;rag&#34;,
+    &#34;wikipedia&#34;,
+    &#34;open-domain&#34;,
+    &#34;information-retrieval&#34;,
+    &#34;dpr&#34;
+  ]
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="kv-key" title="The creator(s) of the dataset.">Creators</td>
+                        <td class="kv-val">
+                            
+                            
+                            Organization(uuid=&#34;_:N166b0b1515e440698485235ddce4a32b&#34;)
+                            
+                            
+                        </td>
+                    </tr>
+                    
                 </table>
             </div>
             
@@ -751,207 +812,100 @@
                 <div class="mermaid-wrap">
                     <div class="mermaid">
 graph TD
-    ml_25m_archive["ml-25m-archive<br/><small>File</small>"]
-    ratings_table["ratings-table<br/><small>File</small>"]
-    movies_table["movies-table<br/><small>File</small>"]
-    tags_table["tags-table<br/><small>File</small>"]
-    links_table["links-table<br/><small>File</small>"]
-    genome_scores_table["genome-scores-table<br/><small>File</small>"]
-    genome_tags_table["genome-tags-table<br/><small>File</small>"]
-    ml_25m_archive --> ratings_table
-    ml_25m_archive --> movies_table
-    ml_25m_archive --> tags_table
-    ml_25m_archive --> links_table
-    ml_25m_archive --> genome_scores_table
-    ml_25m_archive --> genome_tags_table
+    repo["repo<br/><small>File</small>"]
+    parquet_files_for_config_question_answer["parquet-files-for-config-question-answer<br/><small>File Set</small>"]
+    parquet_files_for_config_text_corpus["parquet-files-for-config-text-corpus<br/><small>File Set</small>"]
+    repo --> parquet_files_for_config_question_answer
+    repo --> parquet_files_for_config_text_corpus
                     </div>
                 </div>
                 
 
                 <div class="resource-grid">
                     
-                    <div class="resource-card" id="res-ml-25m-archive">
+                    <div class="resource-card" id="res-repo">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">ml-25m-archive</span>
+                            <span class="rc-name">repo</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File</span>
                         
+                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
+                        
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;ml-25m-archive&#34;,
-  &#34;name&#34;: &#34;ml-25m-archive&#34;,
-  &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
+  &#34;@id&#34;: &#34;repo&#34;,
+  &#34;name&#34;: &#34;repo&#34;,
+  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia/tree/refs%2Fconvert%2Fparquet&#34;,
+  &#34;encodingFormat&#34;: &#34;git+https&#34;,
+  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-ratings-table">
+                    <div class="resource-card" id="res-parquet-files-for-config-question-answer">
                         <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">ratings-table</span>
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-question-answer</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                        <span class="rc-type">File</span>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;ratings-table&#34;,
-  &#34;name&#34;: &#34;ratings-table&#34;,
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-question-answer&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;question-answer/*/*.parquet&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-movies-table">
+                    <div class="resource-card" id="res-parquet-files-for-config-text-corpus">
                         <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">movies-table</span>
+                            <span class="rc-icon">📁</span>
+                            <span class="rc-name">parquet-files-for-config-text-corpus</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                        <span class="rc-type">File</span>
+                        <span class="rc-type">File Set</span>
+                        
+                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;movies-table&#34;,
-  &#34;name&#34;: &#34;movies-table&#34;,
+  &#34;@type&#34;: &#34;cr:FileSet&#34;,
+  &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;,
+  &#34;name&#34;: &#34;parquet-files-for-config-text-corpus&#34;,
+  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
   &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
+    &#34;@id&#34;: &#34;repo&#34;
   },
-  &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-tags-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">tags-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;tags-table&#34;,
-  &#34;name&#34;: &#34;tags-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-links-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">links-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;links-table&#34;,
-  &#34;name&#34;: &#34;links-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-scores-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-scores-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;genome-scores-table&#34;,
-  &#34;name&#34;: &#34;genome-scores-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-tags-table">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-tags-table</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;genome-tags-table&#34;,
-  &#34;name&#34;: &#34;genome-tags-table&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;ml-25m-archive&#34;
-  },
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;text-corpus/*/*.parquet&#34;
 }</code></pre>
                         </div>
                         
@@ -968,330 +922,150 @@ graph TD
                 </div>
 
                 
-                <div class="rs-section" id="rs-movies">
+                <div class="rs-section" id="rs-question-answer_splits">
                     <div class="rs-header">
-                        <h3>movies</h3>
+                        <h3>question-answer_splits</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
                     </div>
                     
+                    <div class="rs-desc markdown">Splits for the question-answer config.</div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;movies&#34;,
-  &#34;name&#34;: &#34;movies&#34;,
+  &#34;@id&#34;: &#34;question-answer_splits&#34;,
+  &#34;name&#34;: &#34;question-answer_splits&#34;,
+  &#34;description&#34;: &#34;Splits for the question-answer config.&#34;,
+  &#34;dataType&#34;: &#34;cr:Split&#34;,
   &#34;key&#34;: {
-    &#34;@id&#34;: &#34;movie_id&#34;
+    &#34;@id&#34;: &#34;question-answer_splits/split_name&#34;
   },
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/movie_id&#34;,
-      &#34;name&#34;: &#34;movies/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
+      &#34;@id&#34;: &#34;question-answer_splits/split_name&#34;,
+      &#34;name&#34;: &#34;split_name&#34;,
+      &#34;description&#34;: &#34;The name of the split.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    }
+  ],
+  &#34;data&#34;: {
+    &#34;question-answer_splits/split_name&#34;: &#34;test&#34;
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-question-answer">
+                    <div class="rs-header">
+                        <h3>question-answer</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">rag-datasets/rag-mini-wikipedia - &#39;question-answer&#39; subset</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;question-answer&#34;,
+  &#34;name&#34;: &#34;question-answer&#34;,
+  &#34;description&#34;: &#34;rag-datasets/rag-mini-wikipedia - &#39;question-answer&#39; subset&#34;,
+  &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/title&#34;,
-      &#34;name&#34;: &#34;movies/title&#34;,
-      &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
+      &#34;@id&#34;: &#34;question-answer/split&#34;,
+      &#34;name&#34;: &#34;question-answer/split&#34;,
+      &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
       &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;title&#34;
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;question-answer_splits/split_name&#34;
         }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies/genre&#34;,
-      &#34;name&#34;: &#34;movies/genre&#34;,
-      &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;repeated&#34;: true,
+      },
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;movies-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;genres&#34;
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
         },
         &#34;transform&#34;: {
-          &#34;separator&#34;: &#34;|&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The title of the  movie with the release year in parentheses.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>genre</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>A sequence of genres to which the rated movie belongs.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-ratings">
-                    <div class="rs-header">
-                        <h3>ratings</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;ratings&#34;,
-  &#34;name&#34;: &#34;ratings&#34;,
-  &#34;key&#34;: [
-    {
-      &#34;@id&#34;: &#34;user_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;movie_id&#34;
-    }
-  ],
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/user_id&#34;,
-      &#34;name&#34;: &#34;ratings/user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
+          &#34;regex&#34;: &#34;question\\-answer/(?:partial-)?(test)/.+parquet$&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/movie_id&#34;,
-      &#34;name&#34;: &#34;ratings/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/rating&#34;,
-      &#34;name&#34;: &#34;ratings/rating&#34;,
-      &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;rating&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;ratings/timestamp&#34;,
-      &#34;name&#34;: &#34;ratings/timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;ratings-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>rating</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The score of the rating on a five-star scale.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-tags">
-                    <div class="rs-header">
-                        <h3>tags</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;tags&#34;,
-  &#34;name&#34;: &#34;tags&#34;,
-  &#34;key&#34;: [
-    {
-      &#34;@id&#34;: &#34;user_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;movie_id&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;timestamp&#34;
-    }
-  ],
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/user_id&#34;,
-      &#34;name&#34;: &#34;tags/user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/movie_id&#34;,
-      &#34;name&#34;: &#34;tags/movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/tag&#34;,
-      &#34;name&#34;: &#34;tags/tag&#34;,
-      &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
+      &#34;@id&#34;: &#34;question-answer/question&#34;,
+      &#34;name&#34;: &#34;question-answer/question&#34;,
+      &#34;description&#34;: &#34;Column &#39;question&#39; from the Hugging Face parquet file.&#34;,
       &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;tag&#34;
+          &#34;column&#34;: &#34;question&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;tags/timestamp&#34;,
-      &#34;name&#34;: &#34;tags/timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;@id&#34;: &#34;question-answer/answer&#34;,
+      &#34;name&#34;: &#34;question-answer/answer&#34;,
+      &#34;description&#34;: &#34;Column &#39;answer&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
       &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;tags-table&#34;
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
+          &#34;column&#34;: &#34;answer&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;question-answer/id&#34;,
+      &#34;name&#34;: &#34;question-answer/id&#34;,
+      &#34;description&#34;: &#34;Column &#39;id&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;id&#34;
         }
       }
     }
@@ -1311,27 +1085,27 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tag</strong></td>
+                                    <td><strong>split</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>Tags assigned to the movie.</td>
+                                    <td>Split to which the example belongs to.</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>timestamp</strong></td>
+                                    <td><strong>question</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;question&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>answer</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;answer&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
                                     <td><span class="type-badge">int</span></td>
-                                    <td></td>
+                                    <td>Column &#39;id&#39; from the Hugging Face parquet file.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1342,153 +1116,137 @@ graph TD
                 <hr class="rs-divider">
                 
                 
-                <div class="rs-section" id="rs-movies_with_ratings_with_tags">
+                <div class="rs-section" id="rs-text-corpus_splits">
                     <div class="rs-header">
-                        <h3>movies_with_ratings_with_tags</h3>
+                        <h3>text-corpus_splits</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
                     </div>
                     
+                    <div class="rs-desc markdown">Splits for the text-corpus config.</div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;movies_with_ratings_with_tags&#34;,
-  &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
+  &#34;@id&#34;: &#34;text-corpus_splits&#34;,
+  &#34;name&#34;: &#34;text-corpus_splits&#34;,
+  &#34;description&#34;: &#34;Splits for the text-corpus config.&#34;,
+  &#34;dataType&#34;: &#34;cr:Split&#34;,
   &#34;key&#34;: {
-    &#34;@id&#34;: &#34;movie_id&#34;
+    &#34;@id&#34;: &#34;text-corpus_splits/split_name&#34;
   },
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/movie_id&#34;
-        }
-      }
-    },
+      &#34;@id&#34;: &#34;text-corpus_splits/split_name&#34;,
+      &#34;name&#34;: &#34;split_name&#34;,
+      &#34;description&#34;: &#34;The name of the split.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    }
+  ],
+  &#34;data&#34;: {
+    &#34;text-corpus_splits/split_name&#34;: &#34;passages&#34;
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-text-corpus">
+                    <div class="rs-header">
+                        <h3>text-corpus</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">rag-datasets/rag-mini-wikipedia - &#39;text-corpus&#39; subset</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;text-corpus&#34;,
+  &#34;name&#34;: &#34;text-corpus&#34;,
+  &#34;description&#34;: &#34;rag-datasets/rag-mini-wikipedia - &#39;text-corpus&#39; subset&#34;,
+  &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-      &#34;source&#34;: {
+      &#34;@id&#34;: &#34;text-corpus/split&#34;,
+      &#34;name&#34;: &#34;text-corpus/split&#34;,
+      &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
         &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/title&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;movies/genre&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-      &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;movies/movie_id&#34;
-          }
-        },
-        &#34;source&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;ratings/movie_id&#34;
-          }
+          &#34;@id&#34;: &#34;text-corpus_splits/split_name&#34;
         }
       },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/user_id&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/user_id&#34;
-            }
-          }
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;
         },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/rating&#34;,
-          &#34;name&#34;: &#34;rating&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/rating&#34;
-            }
-          }
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
         },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/timestamp&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;ratings/timestamp&#34;
-            }
-          }
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;text\\-corpus/(?:partial-)?(passages)/.+parquet$&#34;
         }
-      ]
+      }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-      &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;movies/movie_id&#34;
-          }
+      &#34;@id&#34;: &#34;text-corpus/passage&#34;,
+      &#34;name&#34;: &#34;text-corpus/passage&#34;,
+      &#34;description&#34;: &#34;Column &#39;passage&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;
         },
-        &#34;source&#34;: {
-          &#34;field&#34;: {
-            &#34;@id&#34;: &#34;tags/movie_id&#34;
-          }
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;passage&#34;
         }
-      },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/user_id&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/user_id&#34;
-            }
-          }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;text-corpus/id&#34;,
+      &#34;name&#34;: &#34;text-corpus/id&#34;,
+      &#34;description&#34;: &#34;Column &#39;id&#39; from the Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;
         },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/tag&#34;,
-          &#34;name&#34;: &#34;tag&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/tag&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/timestamp&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;tags/timestamp&#34;
-            }
-          }
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;id&#34;
         }
-      ]
+      }
     }
   ]
 }</code></pre>
@@ -1506,33 +1264,21 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>movie_id</strong></td>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>passage</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;passage&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
                                     <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_genres</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>ratings</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tags</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
+                                    <td>Column &#39;id&#39; from the Hugging Face parquet file.</td>
                                 </tr>
                                 
                             </tbody>
@@ -1614,291 +1360,162 @@ graph TD
     &#34;transform&#34;: &#34;cr:transform&#34;
   },
   &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;Movielens-25M&#34;,
-  &#34;description&#34;: &#34;MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019&#34;,
+  &#34;name&#34;: &#34;rag-mini-wikipedia&#34;,
+  &#34;description&#34;: &#34;In this huggingface discussion you can share what you used the dataset for.\nDerives from https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download we generated our own subset using generate.py.\n&#34;,
   &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;url&#34;: &#34;https://grouplens.org/datasets/movielens/25m/&#34;,
+  &#34;creator&#34;: {
+    &#34;@type&#34;: &#34;sc:Organization&#34;,
+    &#34;name&#34;: &#34;RAG Datasets&#34;,
+    &#34;url&#34;: &#34;https://huggingface.co/rag-datasets&#34;
+  },
+  &#34;keywords&#34;: [
+    &#34;question-answering&#34;,
+    &#34;sentence-similarity&#34;,
+    &#34;English&#34;,
+    &#34;cc-by-3.0&#34;,
+    &#34;1K - 10K&#34;,
+    &#34;parquet&#34;,
+    &#34;Text&#34;,
+    &#34;Datasets&#34;,
+    &#34;pandas&#34;,
+    &#34;Croissant&#34;,
+    &#34;Polars&#34;,
+    &#34;🇺🇸 Region: US&#34;,
+    &#34;rag&#34;,
+    &#34;wikipedia&#34;,
+    &#34;open-domain&#34;,
+    &#34;information-retrieval&#34;,
+    &#34;dpr&#34;
+  ],
+  &#34;license&#34;: &#34;https://choosealicense.com/licenses/cc-by-3.0/&#34;,
+  &#34;url&#34;: &#34;https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia&#34;,
   &#34;distribution&#34;: [
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;ml-25m-archive&#34;,
-      &#34;name&#34;: &#34;ml-25m-archive&#34;,
-      &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
+      &#34;@id&#34;: &#34;repo&#34;,
+      &#34;name&#34;: &#34;repo&#34;,
+      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/rag-datasets/rag-mini-wikipedia/tree/refs%2Fconvert%2Fparquet&#34;,
+      &#34;encodingFormat&#34;: &#34;git+https&#34;,
+      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
     },
     {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;ratings-table&#34;,
-      &#34;name&#34;: &#34;ratings-table&#34;,
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-question-answer&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;question-answer/*/*.parquet&#34;
     },
     {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;movies-table&#34;,
-      &#34;name&#34;: &#34;movies-table&#34;,
+      &#34;@type&#34;: &#34;cr:FileSet&#34;,
+      &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;,
+      &#34;name&#34;: &#34;parquet-files-for-config-text-corpus&#34;,
+      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
       &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
+        &#34;@id&#34;: &#34;repo&#34;
       },
-      &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;tags-table&#34;,
-      &#34;name&#34;: &#34;tags-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;links-table&#34;,
-      &#34;name&#34;: &#34;links-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;genome-scores-table&#34;,
-      &#34;name&#34;: &#34;genome-scores-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;genome-tags-table&#34;,
-      &#34;name&#34;: &#34;genome-tags-table&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;ml-25m-archive&#34;
-      },
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;text-corpus/*/*.parquet&#34;
     }
   ],
   &#34;recordSet&#34;: [
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;movies&#34;,
-      &#34;name&#34;: &#34;movies&#34;,
+      &#34;@id&#34;: &#34;question-answer_splits&#34;,
+      &#34;name&#34;: &#34;question-answer_splits&#34;,
+      &#34;description&#34;: &#34;Splits for the question-answer config.&#34;,
+      &#34;dataType&#34;: &#34;cr:Split&#34;,
       &#34;key&#34;: {
-        &#34;@id&#34;: &#34;movie_id&#34;
+        &#34;@id&#34;: &#34;question-answer_splits/split_name&#34;
       },
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/movie_id&#34;,
-          &#34;name&#34;: &#34;movies/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
+          &#34;@id&#34;: &#34;question-answer_splits/split_name&#34;,
+          &#34;name&#34;: &#34;split_name&#34;,
+          &#34;description&#34;: &#34;The name of the split.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;
+        }
+      ],
+      &#34;data&#34;: {
+        &#34;question-answer_splits/split_name&#34;: &#34;test&#34;
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;question-answer&#34;,
+      &#34;name&#34;: &#34;question-answer&#34;,
+      &#34;description&#34;: &#34;rag-datasets/rag-mini-wikipedia - &#39;question-answer&#39; subset&#34;,
+      &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/title&#34;,
-          &#34;name&#34;: &#34;movies/title&#34;,
-          &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
+          &#34;@id&#34;: &#34;question-answer/split&#34;,
+          &#34;name&#34;: &#34;question-answer/split&#34;,
+          &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
           &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;title&#34;
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;question-answer_splits/split_name&#34;
             }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies/genre&#34;,
-          &#34;name&#34;: &#34;movies/genre&#34;,
-          &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;repeated&#34;: true,
+          },
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;movies-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;genres&#34;
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
             },
             &#34;transform&#34;: {
-              &#34;separator&#34;: &#34;|&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;ratings&#34;,
-      &#34;name&#34;: &#34;ratings&#34;,
-      &#34;key&#34;: [
-        {
-          &#34;@id&#34;: &#34;user_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;movie_id&#34;
-        }
-      ],
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/user_id&#34;,
-          &#34;name&#34;: &#34;ratings/user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
+              &#34;regex&#34;: &#34;question\\-answer/(?:partial-)?(test)/.+parquet$&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/movie_id&#34;,
-          &#34;name&#34;: &#34;ratings/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/rating&#34;,
-          &#34;name&#34;: &#34;ratings/rating&#34;,
-          &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;rating&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;ratings/timestamp&#34;,
-          &#34;name&#34;: &#34;ratings/timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;ratings-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;tags&#34;,
-      &#34;name&#34;: &#34;tags&#34;,
-      &#34;key&#34;: [
-        {
-          &#34;@id&#34;: &#34;user_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;movie_id&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;timestamp&#34;
-        }
-      ],
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/user_id&#34;,
-          &#34;name&#34;: &#34;tags/user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/movie_id&#34;,
-          &#34;name&#34;: &#34;tags/movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/tag&#34;,
-          &#34;name&#34;: &#34;tags/tag&#34;,
-          &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
+          &#34;@id&#34;: &#34;question-answer/question&#34;,
+          &#34;name&#34;: &#34;question-answer/question&#34;,
+          &#34;description&#34;: &#34;Column &#39;question&#39; from the Hugging Face parquet file.&#34;,
           &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;tag&#34;
+              &#34;column&#34;: &#34;question&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;tags/timestamp&#34;,
-          &#34;name&#34;: &#34;tags/timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;@id&#34;: &#34;question-answer/answer&#34;,
+          &#34;name&#34;: &#34;question-answer/answer&#34;,
+          &#34;description&#34;: &#34;Column &#39;answer&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
           &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;tags-table&#34;
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
+              &#34;column&#34;: &#34;answer&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;question-answer/id&#34;,
+          &#34;name&#34;: &#34;question-answer/id&#34;,
+          &#34;description&#34;: &#34;Column &#39;id&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-question-answer&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;id&#34;
             }
           }
         }
@@ -1906,141 +1523,84 @@ graph TD
     },
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;movies_with_ratings_with_tags&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
+      &#34;@id&#34;: &#34;text-corpus_splits&#34;,
+      &#34;name&#34;: &#34;text-corpus_splits&#34;,
+      &#34;description&#34;: &#34;Splits for the text-corpus config.&#34;,
+      &#34;dataType&#34;: &#34;cr:Split&#34;,
       &#34;key&#34;: {
-        &#34;@id&#34;: &#34;movie_id&#34;
+        &#34;@id&#34;: &#34;text-corpus_splits/split_name&#34;
       },
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/movie_id&#34;
-            }
-          }
-        },
+          &#34;@id&#34;: &#34;text-corpus_splits/split_name&#34;,
+          &#34;name&#34;: &#34;split_name&#34;,
+          &#34;description&#34;: &#34;The name of the split.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;
+        }
+      ],
+      &#34;data&#34;: {
+        &#34;text-corpus_splits/split_name&#34;: &#34;passages&#34;
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;text-corpus&#34;,
+      &#34;name&#34;: &#34;text-corpus&#34;,
+      &#34;description&#34;: &#34;rag-datasets/rag-mini-wikipedia - &#39;text-corpus&#39; subset&#34;,
+      &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_title&#34;,
-          &#34;source&#34;: {
+          &#34;@id&#34;: &#34;text-corpus/split&#34;,
+          &#34;name&#34;: &#34;text-corpus/split&#34;,
+          &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;references&#34;: {
             &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/title&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/movie_genres&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;movies/genre&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/ratings&#34;,
-          &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;movies/movie_id&#34;
-              }
-            },
-            &#34;source&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;ratings/movie_id&#34;
-              }
+              &#34;@id&#34;: &#34;text-corpus_splits/split_name&#34;
             }
           },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/user_id&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/user_id&#34;
-                }
-              }
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;
             },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/rating&#34;,
-              &#34;name&#34;: &#34;rating&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/rating&#34;
-                }
-              }
+            &#34;extract&#34;: {
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
             },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/ratings/timestamp&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;ratings/timestamp&#34;
-                }
-              }
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;text\\-corpus/(?:partial-)?(passages)/.+parquet$&#34;
             }
-          ]
+          }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-          &#34;name&#34;: &#34;movies_with_ratings_with_tags/tags&#34;,
-          &#34;dataType&#34;: &#34;cr:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;movies/movie_id&#34;
-              }
+          &#34;@id&#34;: &#34;text-corpus/passage&#34;,
+          &#34;name&#34;: &#34;text-corpus/passage&#34;,
+          &#34;description&#34;: &#34;Column &#39;passage&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;
             },
-            &#34;source&#34;: {
-              &#34;field&#34;: {
-                &#34;@id&#34;: &#34;tags/movie_id&#34;
-              }
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;passage&#34;
             }
-          },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/user_id&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/user_id&#34;
-                }
-              }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;text-corpus/id&#34;,
+          &#34;name&#34;: &#34;text-corpus/id&#34;,
+          &#34;description&#34;: &#34;Column &#39;id&#39; from the Hugging Face parquet file.&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-text-corpus&#34;
             },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/tag&#34;,
-              &#34;name&#34;: &#34;tag&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/tag&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;movies_with_ratings_with_tags/tags/timestamp&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: {
-                  &#34;@id&#34;: &#34;tags/timestamp&#34;
-                }
-              }
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;id&#34;
             }
-          ]
+          }
         }
       ]
     }

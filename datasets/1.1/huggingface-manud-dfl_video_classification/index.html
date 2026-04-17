@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PASS — Croissant Visualizer</title>
+    <title>DFL_video_classification — Croissant Visualizer</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -653,36 +653,18 @@
                 <h4>Resources</h4>
                 <ul>
                     
-                    <li><a href="#res-metadata">📄 metadata</a></li>
+                    <li><a href="#res-repo">📄 repo</a></li>
                     
-                    <li><a href="#res-pass0">📄 pass0</a></li>
-                    
-                    <li><a href="#res-pass1">📄 pass1</a></li>
-                    
-                    <li><a href="#res-pass2">📄 pass2</a></li>
-                    
-                    <li><a href="#res-pass3">📄 pass3</a></li>
-                    
-                    <li><a href="#res-pass4">📄 pass4</a></li>
-                    
-                    <li><a href="#res-pass5">📄 pass5</a></li>
-                    
-                    <li><a href="#res-pass6">📄 pass6</a></li>
-                    
-                    <li><a href="#res-pass7">📄 pass7</a></li>
-                    
-                    <li><a href="#res-pass8">📄 pass8</a></li>
-                    
-                    <li><a href="#res-pass9">📄 pass9</a></li>
-                    
-                    <li><a href="#res-image-files">📁 image-files</a></li>
+                    <li><a href="#res-parquet-files-for-config-default">📁 parquet-files-for-config-default</a></li>
                     
                 </ul>
 
                 <h4>Record Sets</h4>
                 <ul>
                     
-                    <li><a href="#rs-images">images</a></li>
+                    <li><a href="#rs-default_splits">default_splits</a></li>
+                    
+                    <li><a href="#rs-default">default</a></li>
                     
                 </ul>
             </div>
@@ -697,17 +679,17 @@
 
             <!-- Hero -->
             <div class="hero" id="top">
-                <h1>🥐 PASS</h1>
+                <h1>🥐 DFL_video_classification</h1>
                 
-                <div class="description markdown">PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.</div>
+                <div class="description markdown">Simplified version for the mlcroissant repo. ManuD/DFL_video_classification dataset hosted on Hugging Face and contributed by the HF Datasets community</div>
                 
                 <div class="hero-meta">
                     
                     
-                    <span class="hero-badge">🔗 <a href="https://www.robots.ox.ac.uk/~vgg/data/pass/" target="_blank">Dataset URL</a></span>
+                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/ManuD/DFL_video_classification" target="_blank">Dataset URL</a></span>
                     
-                    <span class="hero-badge">📦 12 resources</span>
-                    <span class="hero-badge">📋 1 record set</span>
+                    <span class="hero-badge">📦 2 resources</span>
+                    <span class="hero-badge">📋 2 record sets</span>
                     <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
                 </div>
             </div>
@@ -722,56 +704,43 @@
                 <table class="kv-table">
                     
                     <tr>
-                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            cc-by-4.0
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;license&#34;: &#34;cc-by-4.0&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset.">Cite As</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <div class="cite-block">@Article{asano21pass, author = &#34;Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi&#34;, title = &#34;PASS: An ImageNet replacement for self-supervised pretraining without humans&#34;, journal = &#34;NeurIPS Track on Datasets and Benchmarks&#34;, year = &#34;2021&#34; }</div>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;citeAs&#34;: &#34;@Article{asano21pass, author = \&#34;Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\&#34;, title = \&#34;PASS: An ImageNet replacement for self-supervised pretraining without humans\&#34;, journal = \&#34;NeurIPS Track on Datasets and Benchmarks\&#34;, year = \&#34;2021\&#34; }&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
                         <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
                         <td class="kv-val">
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                             
-                            <a href="http://mlcommons.org/croissant/1.0" target="_blank">http://mlcommons.org/croissant/1.0</a>
+                            <a href="http://mlcommons.org/croissant/1.1" target="_blank">http://mlcommons.org/croissant/1.1</a>
                             
                             
                             <div class="jsonld-panel">
                                 <pre class="language-json"><code class="language-json">{
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;
+  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.1&#34;
+}</code></pre>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
+                        <td class="kv-val">
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                            
+                            1K - 10K, Video, Datasets, Croissant, 🇺🇸 Region: US
+                            
+                            
+                            <div class="jsonld-panel">
+                                <pre class="language-json"><code class="language-json">{
+  &#34;keywords&#34;: [
+    &#34;1K - 10K&#34;,
+    &#34;Video&#34;,
+    &#34;Datasets&#34;,
+    &#34;Croissant&#34;,
+    &#34;🇺🇸 Region: US&#34;
+  ]
 }</code></pre>
                             </div>
                             
@@ -793,313 +762,47 @@
                 <div class="mermaid-wrap">
                     <div class="mermaid">
 graph TD
-    metadata["metadata<br/><small>File</small>"]
-    pass0["pass0<br/><small>File</small>"]
-    pass1["pass1<br/><small>File</small>"]
-    pass2["pass2<br/><small>File</small>"]
-    pass3["pass3<br/><small>File</small>"]
-    pass4["pass4<br/><small>File</small>"]
-    pass5["pass5<br/><small>File</small>"]
-    pass6["pass6<br/><small>File</small>"]
-    pass7["pass7<br/><small>File</small>"]
-    pass8["pass8<br/><small>File</small>"]
-    pass9["pass9<br/><small>File</small>"]
-    image_files["image-files<br/><small>File Set</small>"]
-    pass0 --> image_files
-    pass1 --> image_files
-    pass2 --> image_files
-    pass3 --> image_files
-    pass4 --> image_files
-    pass5 --> image_files
-    pass6 --> image_files
-    pass7 --> image_files
-    pass8 --> image_files
-    pass9 --> image_files
+    repo["repo<br/><small>File</small>"]
+    parquet_files_for_config_default["parquet-files-for-config-default<br/><small>File Set</small>"]
+    repo --> parquet_files_for_config_default
                     </div>
                 </div>
                 
 
                 <div class="resource-grid">
                     
-                    <div class="resource-card" id="res-metadata">
+                    <div class="resource-card" id="res-repo">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
-                            <span class="rc-name">metadata</span>
+                            <span class="rc-name">repo</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
                         <span class="rc-type">File</span>
                         
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;metadata&#34;,
-  &#34;name&#34;: &#34;metadata&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/pass_metadata.csv&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;,
-  &#34;sha256&#34;: &#34;0b033707ea49365a5ffdd14615825511&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass0">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass0</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
+                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
                         
                         
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass0&#34;,
-  &#34;name&#34;: &#34;pass0&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.0.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;0be3a104d6257d83296460b419f82c71&#34;
+  &#34;@id&#34;: &#34;repo&#34;,
+  &#34;name&#34;: &#34;repo&#34;,
+  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/ManuD/DFL_video_classification/tree/refs%2Fconvert%2Fparquet&#34;,
+  &#34;encodingFormat&#34;: &#34;git+https&#34;,
+  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
 }</code></pre>
                         </div>
                         
                     </div>
                     
-                    <div class="resource-card" id="res-pass1">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass1</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass1&#34;,
-  &#34;name&#34;: &#34;pass1&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.1.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;dddaf2840997cb181572863587899b53&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass2">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass2</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass2&#34;,
-  &#34;name&#34;: &#34;pass2&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.2.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;dddaf2840997cb181572863587899b53&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass3">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass3</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass3&#34;,
-  &#34;name&#34;: &#34;pass3&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.3.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;9b9b9e1ee65747e47ad835a4f99c8e70&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass4">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass4</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass4&#34;,
-  &#34;name&#34;: &#34;pass4&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.4.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;e2c85293cbe6178477eea7d277d95dd7&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass5">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass5</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass5&#34;,
-  &#34;name&#34;: &#34;pass5&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.5.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;a2d174f7042d98ad037cda0e3313ea00&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass6">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass6</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass6&#34;,
-  &#34;name&#34;: &#34;pass6&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.6.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;2be85748c184b058f8d95a886dab161b&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass7">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass7</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass7&#34;,
-  &#34;name&#34;: &#34;pass7&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.7.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;83e07eee33df5fcc63a4b0db4e94abb4&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass8">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass8</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass8&#34;,
-  &#34;name&#34;: &#34;pass8&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.8.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;3f708993aa168b57306e5de08ba71373&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-pass9">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">pass9</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;pass9&#34;,
-  &#34;name&#34;: &#34;pass9&#34;,
-  &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.9.tar&#34;,
-  &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-  &#34;sha256&#34;: &#34;f4f87af4327fd1a66dd7944b9f59cbcc&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-image-files">
+                    <div class="resource-card" id="res-parquet-files-for-config-default">
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
-                            <span class="rc-name">image-files</span>
+                            <span class="rc-name">parquet-files-for-config-default</span>
                             
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
@@ -1111,42 +814,12 @@ graph TD
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;image-files&#34;,
-  &#34;name&#34;: &#34;image-files&#34;,
-  &#34;containedIn&#34;: [
-    {
-      &#34;@id&#34;: &#34;pass0&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass1&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass2&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass3&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass4&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass5&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass6&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass7&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass8&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;pass9&#34;
-    }
-  ],
-  &#34;encodingFormat&#34;: &#34;image/jpeg&#34;,
-  &#34;includes&#34;: &#34;*.jpg&#34;
+  &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;,
+  &#34;containedIn&#34;: {
+    &#34;@id&#34;: &#34;repo&#34;
+  },
+  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+  &#34;includes&#34;: &#34;default/*/*.parquet&#34;
 }</code></pre>
                         </div>
                         
@@ -1163,132 +836,126 @@ graph TD
                 </div>
 
                 
-                <div class="rs-section" id="rs-images">
+                <div class="rs-section" id="rs-default_splits">
                     <div class="rs-header">
-                        <h3>images</h3>
+                        <h3>default_splits</h3>
                         
                         <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                         
                     </div>
                     
+                    <div class="rs-desc markdown">Splits for the default config.</div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
   &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;images&#34;,
-  &#34;name&#34;: &#34;images&#34;,
+  &#34;dataType&#34;: &#34;cr:Split&#34;,
   &#34;key&#34;: {
-    &#34;@id&#34;: &#34;hash&#34;
+    &#34;@id&#34;: &#34;default_splits/split_name&#34;
   },
+  &#34;@id&#34;: &#34;default_splits&#34;,
+  &#34;name&#34;: &#34;default_splits&#34;,
+  &#34;description&#34;: &#34;Splits for the default config.&#34;,
   &#34;field&#34;: [
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/hash&#34;,
-      &#34;name&#34;: &#34;images/hash&#34;,
-      &#34;description&#34;: &#34;The hash of the image, as computed from YFCC-100M.&#34;,
+      &#34;@id&#34;: &#34;default_splits/split_name&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    }
+  ],
+  &#34;data&#34;: {
+    &#34;default_splits/split_name&#34;: &#34;validation&#34;
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong></strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-default">
+                    <div class="rs-header">
+                        <h3>default</h3>
+                        
+                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                        
+                    </div>
+                    
+                    <div class="rs-desc markdown">ManuD/DFL_video_classification - &#39;default&#39; subset.</div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;default&#34;,
+  &#34;description&#34;: &#34;ManuD/DFL_video_classification - &#39;default&#39; subset.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;default/split&#34;,
       &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;references&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata&#34;
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
         },
         &#34;extract&#34;: {
-          &#34;column&#34;: &#34;hash&#34;
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;default/(?:partial-)?(validation)/.+parquet$&#34;
         }
       },
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;default_splits/split_name&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;default/label&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
+          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
         },
         &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;([^\\/]*)\\.jpg&#34;
+          &#34;column&#34;: &#34;label&#34;
         }
       }
     },
     {
       &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_content&#34;,
-      &#34;name&#34;: &#34;images/image_content&#34;,
-      &#34;description&#34;: &#34;The content of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;@id&#34;: &#34;default/video&#34;,
+      &#34;dataType&#34;: &#34;sc:VideoObject&#34;,
       &#34;source&#34;: {
         &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
+          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
         },
         &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;content&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/creator_uname&#34;,
-      &#34;name&#34;: &#34;images/creator_uname&#34;,
-      &#34;description&#34;: &#34;Unique name of photo creator.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;unickname&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/gps_coordinates&#34;,
-      &#34;name&#34;: &#34;images/gps_coordinates&#34;,
-      &#34;description&#34;: &#34;GPS coordinates where the image was taken.&#34;,
-      &#34;dataType&#34;: &#34;sc:GeoCoordinates&#34;,
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/latitude&#34;,
-          &#34;name&#34;: &#34;latitude&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;latitude&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/longitude&#34;,
-          &#34;name&#34;: &#34;longitude&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;longitude&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/date_taken&#34;,
-      &#34;name&#34;: &#34;images/date_taken&#34;,
-      &#34;description&#34;: &#34;The date the photo was taken.&#34;,
-      &#34;dataType&#34;: &#34;sc:Date&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;datetaken&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;format&#34;: &#34;%Y-%m-%d %H:%M:%S.%f&#34;
+          &#34;column&#34;: &#34;video&#34;
         }
       }
     }
@@ -1308,33 +975,21 @@ graph TD
                             <tbody>
                                 
                                 <tr>
-                                    <td><strong>hash</strong></td>
+                                    <td><strong></strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>The hash of the image, as computed from YFCC-100M.</td>
+                                    <td></td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>image_content</strong></td>
-                                    <td><span class="type-badge">ImageObject</span></td>
-                                    <td>The content of the image.</td>
+                                    <td><strong></strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td></td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>creator_uname</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Unique name of photo creator.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>gps_coordinates</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>GPS coordinates where the image was taken.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>date_taken</strong></td>
-                                    <td><span class="type-badge">pandas.Timestamp</span></td>
-                                    <td>The date the photo was taken.</td>
+                                    <td><strong></strong></td>
+                                    <td><span class="type-badge">VideoObject</span></td>
+                                    <td></td>
                                 </tr>
                                 
                             </tbody>
@@ -1373,24 +1028,23 @@ graph TD
   &#34;@context&#34;: {
     &#34;@language&#34;: &#34;en&#34;,
     &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
+    &#34;arrayShape&#34;: &#34;cr:arrayShape&#34;,
     &#34;citeAs&#34;: &#34;cr:citeAs&#34;,
     &#34;column&#34;: &#34;cr:column&#34;,
     &#34;conformsTo&#34;: &#34;dct:conformsTo&#34;,
+    &#34;containedIn&#34;: &#34;cr:containedIn&#34;,
     &#34;cr&#34;: &#34;http://mlcommons.org/croissant/&#34;,
-    &#34;rai&#34;: &#34;http://mlcommons.org/croissant/RAI/&#34;,
     &#34;data&#34;: {
       &#34;@id&#34;: &#34;cr:data&#34;,
       &#34;@type&#34;: &#34;@json&#34;
     },
+    &#34;dataBiases&#34;: &#34;cr:dataBiases&#34;,
+    &#34;dataCollection&#34;: &#34;cr:dataCollection&#34;,
     &#34;dataType&#34;: {
       &#34;@id&#34;: &#34;cr:dataType&#34;,
       &#34;@type&#34;: &#34;@vocab&#34;
     },
     &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
-    &#34;examples&#34;: {
-      &#34;@id&#34;: &#34;cr:examples&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
     &#34;extract&#34;: &#34;cr:extract&#34;,
     &#34;field&#34;: &#34;cr:field&#34;,
     &#34;fileProperty&#34;: &#34;cr:fileProperty&#34;,
@@ -1398,17 +1052,20 @@ graph TD
     &#34;fileSet&#34;: &#34;cr:fileSet&#34;,
     &#34;format&#34;: &#34;cr:format&#34;,
     &#34;includes&#34;: &#34;cr:includes&#34;,
+    &#34;isArray&#34;: &#34;cr:isArray&#34;,
     &#34;isLiveDataset&#34;: &#34;cr:isLiveDataset&#34;,
     &#34;jsonPath&#34;: &#34;cr:jsonPath&#34;,
     &#34;key&#34;: &#34;cr:key&#34;,
     &#34;md5&#34;: &#34;cr:md5&#34;,
     &#34;parentField&#34;: &#34;cr:parentField&#34;,
     &#34;path&#34;: &#34;cr:path&#34;,
+    &#34;personalSensitiveInformation&#34;: &#34;cr:personalSensitiveInformation&#34;,
     &#34;recordSet&#34;: &#34;cr:recordSet&#34;,
     &#34;references&#34;: &#34;cr:references&#34;,
     &#34;regex&#34;: &#34;cr:regex&#34;,
     &#34;repeated&#34;: &#34;cr:repeated&#34;,
     &#34;replace&#34;: &#34;cr:replace&#34;,
+    &#34;samplingRate&#34;: &#34;cr:samplingRate&#34;,
     &#34;sc&#34;: &#34;https://schema.org/&#34;,
     &#34;separator&#34;: &#34;cr:separator&#34;,
     &#34;source&#34;: &#34;cr:source&#34;,
@@ -1416,264 +1073,113 @@ graph TD
     &#34;transform&#34;: &#34;cr:transform&#34;
   },
   &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;PASS&#34;,
-  &#34;description&#34;: &#34;PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.&#34;,
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;citeAs&#34;: &#34;@Article{asano21pass, author = \&#34;Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\&#34;, title = \&#34;PASS: An ImageNet replacement for self-supervised pretraining without humans\&#34;, journal = \&#34;NeurIPS Track on Datasets and Benchmarks\&#34;, year = \&#34;2021\&#34; }&#34;,
-  &#34;license&#34;: &#34;cc-by-4.0&#34;,
-  &#34;url&#34;: &#34;https://www.robots.ox.ac.uk/~vgg/data/pass/&#34;,
   &#34;distribution&#34;: [
     {
       &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;metadata&#34;,
-      &#34;name&#34;: &#34;metadata&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/pass_metadata.csv&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;,
-      &#34;sha256&#34;: &#34;0b033707ea49365a5ffdd14615825511&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass0&#34;,
-      &#34;name&#34;: &#34;pass0&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.0.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;0be3a104d6257d83296460b419f82c71&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass1&#34;,
-      &#34;name&#34;: &#34;pass1&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.1.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;dddaf2840997cb181572863587899b53&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass2&#34;,
-      &#34;name&#34;: &#34;pass2&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.2.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;dddaf2840997cb181572863587899b53&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass3&#34;,
-      &#34;name&#34;: &#34;pass3&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.3.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;9b9b9e1ee65747e47ad835a4f99c8e70&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass4&#34;,
-      &#34;name&#34;: &#34;pass4&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.4.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;e2c85293cbe6178477eea7d277d95dd7&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass5&#34;,
-      &#34;name&#34;: &#34;pass5&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.5.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;a2d174f7042d98ad037cda0e3313ea00&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass6&#34;,
-      &#34;name&#34;: &#34;pass6&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.6.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;2be85748c184b058f8d95a886dab161b&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass7&#34;,
-      &#34;name&#34;: &#34;pass7&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.7.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;83e07eee33df5fcc63a4b0db4e94abb4&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass8&#34;,
-      &#34;name&#34;: &#34;pass8&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.8.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;3f708993aa168b57306e5de08ba71373&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;pass9&#34;,
-      &#34;name&#34;: &#34;pass9&#34;,
-      &#34;contentUrl&#34;: &#34;https://zenodo.org/record/6615455/files/PASS.9.tar&#34;,
-      &#34;encodingFormat&#34;: &#34;application/x-tar&#34;,
-      &#34;sha256&#34;: &#34;f4f87af4327fd1a66dd7944b9f59cbcc&#34;
+      &#34;@id&#34;: &#34;repo&#34;,
+      &#34;name&#34;: &#34;repo&#34;,
+      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
+      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/ManuD/DFL_video_classification/tree/refs%2Fconvert%2Fparquet&#34;,
+      &#34;encodingFormat&#34;: &#34;git+https&#34;,
+      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
     },
     {
       &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;image-files&#34;,
-      &#34;name&#34;: &#34;image-files&#34;,
-      &#34;containedIn&#34;: [
-        {
-          &#34;@id&#34;: &#34;pass0&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass1&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass2&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass3&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass4&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass5&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass6&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass7&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass8&#34;
-        },
-        {
-          &#34;@id&#34;: &#34;pass9&#34;
-        }
-      ],
-      &#34;encodingFormat&#34;: &#34;image/jpeg&#34;,
-      &#34;includes&#34;: &#34;*.jpg&#34;
+      &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;,
+      &#34;containedIn&#34;: {
+        &#34;@id&#34;: &#34;repo&#34;
+      },
+      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
+      &#34;includes&#34;: &#34;default/*/*.parquet&#34;
     }
   ],
   &#34;recordSet&#34;: [
     {
       &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;images&#34;,
-      &#34;name&#34;: &#34;images&#34;,
+      &#34;dataType&#34;: &#34;cr:Split&#34;,
       &#34;key&#34;: {
-        &#34;@id&#34;: &#34;hash&#34;
+        &#34;@id&#34;: &#34;default_splits/split_name&#34;
       },
+      &#34;@id&#34;: &#34;default_splits&#34;,
+      &#34;name&#34;: &#34;default_splits&#34;,
+      &#34;description&#34;: &#34;Splits for the default config.&#34;,
       &#34;field&#34;: [
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/hash&#34;,
-          &#34;name&#34;: &#34;images/hash&#34;,
-          &#34;description&#34;: &#34;The hash of the image, as computed from YFCC-100M.&#34;,
+          &#34;@id&#34;: &#34;default_splits/split_name&#34;,
+          &#34;dataType&#34;: &#34;sc:Text&#34;
+        }
+      ],
+      &#34;data&#34;: {
+        &#34;default_splits/split_name&#34;: &#34;validation&#34;
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+      &#34;@id&#34;: &#34;default&#34;,
+      &#34;description&#34;: &#34;ManuD/DFL_video_classification - &#39;default&#39; subset.&#34;,
+      &#34;field&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;default/split&#34;,
           &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;references&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
+          &#34;source&#34;: {
+            &#34;fileSet&#34;: {
+              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
             },
             &#34;extract&#34;: {
-              &#34;column&#34;: &#34;hash&#34;
+              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            },
+            &#34;transform&#34;: {
+              &#34;regex&#34;: &#34;default/(?:partial-)?(validation)/.+parquet$&#34;
             }
           },
+          &#34;references&#34;: {
+            &#34;field&#34;: {
+              &#34;@id&#34;: &#34;default_splits/split_name&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;default/label&#34;,
+          &#34;dataType&#34;: &#34;sc:Integer&#34;,
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;image-files&#34;
+              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
             },
             &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;filename&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;regex&#34;: &#34;([^\\/]*)\\.jpg&#34;
+              &#34;column&#34;: &#34;label&#34;
             }
           }
         },
         {
           &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/image_content&#34;,
-          &#34;name&#34;: &#34;images/image_content&#34;,
-          &#34;description&#34;: &#34;The content of the image.&#34;,
-          &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+          &#34;@id&#34;: &#34;default/video&#34;,
+          &#34;dataType&#34;: &#34;sc:VideoObject&#34;,
           &#34;source&#34;: {
             &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;image-files&#34;
+              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
             },
             &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;content&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/creator_uname&#34;,
-          &#34;name&#34;: &#34;images/creator_uname&#34;,
-          &#34;description&#34;: &#34;Unique name of photo creator.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;unickname&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/gps_coordinates&#34;,
-          &#34;name&#34;: &#34;images/gps_coordinates&#34;,
-          &#34;description&#34;: &#34;GPS coordinates where the image was taken.&#34;,
-          &#34;dataType&#34;: &#34;sc:GeoCoordinates&#34;,
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;images/latitude&#34;,
-              &#34;name&#34;: &#34;latitude&#34;,
-              &#34;dataType&#34;: &#34;sc:Float&#34;,
-              &#34;source&#34;: {
-                &#34;fileObject&#34;: {
-                  &#34;@id&#34;: &#34;metadata&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;latitude&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;images/longitude&#34;,
-              &#34;name&#34;: &#34;longitude&#34;,
-              &#34;dataType&#34;: &#34;sc:Float&#34;,
-              &#34;source&#34;: {
-                &#34;fileObject&#34;: {
-                  &#34;@id&#34;: &#34;metadata&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;longitude&#34;
-                }
-              }
-            }
-          ]
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/date_taken&#34;,
-          &#34;name&#34;: &#34;images/date_taken&#34;,
-          &#34;description&#34;: &#34;The date the photo was taken.&#34;,
-          &#34;dataType&#34;: &#34;sc:Date&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;datetaken&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;format&#34;: &#34;%Y-%m-%d %H:%M:%S.%f&#34;
+              &#34;column&#34;: &#34;video&#34;
             }
           }
         }
       ]
     }
-  ]
+  ],
+  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.1&#34;,
+  &#34;name&#34;: &#34;DFL_video_classification&#34;,
+  &#34;description&#34;: &#34;Simplified version for the mlcroissant repo. ManuD/DFL_video_classification dataset hosted on Hugging Face and contributed by the HF Datasets community&#34;,
+  &#34;keywords&#34;: [
+    &#34;1K - 10K&#34;,
+    &#34;Video&#34;,
+    &#34;Datasets&#34;,
+    &#34;Croissant&#34;,
+    &#34;🇺🇸 Region: US&#34;
+  ],
+  &#34;url&#34;: &#34;https://huggingface.co/datasets/ManuD/DFL_video_classification&#34;
 }</code></pre>
             </div>
         </div>
