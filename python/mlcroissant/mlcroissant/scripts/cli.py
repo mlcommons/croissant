@@ -12,12 +12,14 @@ class Commands:
     DOCUMENTATION = "documentation"
     LOAD = "load"
     VALIDATE = "validate"
+    VISUALIZE = "visualize"
 
 
 choices = set([
     Commands.DOCUMENTATION,
     Commands.LOAD,
     Commands.VALIDATE,
+    Commands.VISUALIZE,
 ])
 
 
