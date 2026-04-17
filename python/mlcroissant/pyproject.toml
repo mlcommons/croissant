@@ -22,6 +22,7 @@ authors = [
 dependencies = [
   "absl-py",
   "etils[epath]>=1.7.0",
+  "jinja2",
   "jsonpath-rw",
   "networkx",
   "pandas",
