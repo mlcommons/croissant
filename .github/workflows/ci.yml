@@ -135,6 +135,7 @@ jobs:
           apache-beam \
           etils[epath] \
           GitPython \
+          jmespath \
           jsonpath_rw \
           librosa \
           mypy \
@@ -171,6 +172,7 @@ jobs:
             apache-beam \
             etils[epath] \
             GitPython \
+            jmespath \
             jsonpath_rw \
             mypy \
             networkx \

@@ -243,6 +243,7 @@ class EncodingFormat:
     DICOM = "image/dicom"
     JSON = "application/json"
     JSON_LINES = "application/jsonlines"
+    FHIR = "application/fhir+json"
     MP3 = "audio/mpeg"
     MP4 = "video/mp4"
     PARQUET = "application/x-parquet"

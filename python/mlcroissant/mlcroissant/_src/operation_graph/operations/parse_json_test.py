@@ -1,7 +1,12 @@
 """parse_json_test module."""
 
+import io
+import json
+
 import pandas as pd
 
+from mlcroissant._src.operation_graph.operations.parse_json import JsonlReader
+from mlcroissant._src.operation_graph.operations.parse_json import JsonReader
 from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
 from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import Source
@@ -33,3 +38,86 @@ def test_parse_json():
         data={"$.annotations[*].id": [1, 2], "$.annotations[*].value": [3, 4]}
     )
     pd.testing.assert_frame_equal(parse_json_content(json, fields), expected_df)
+
+
+def test_jsonreader_parse():
+    # JsonReader.parse should produce one row per jsonpath match (like COCO).
+    field1 = create_test_field(
+        source=Source(extract=Extract(json_path="$.annotations[*].id"))
+    )
+    field2 = create_test_field(
+        source=Source(extract=Extract(json_path="$.annotations[*].bbox"))
+    )
+    fields = (field1, field2)
+    data = {
+        "annotations": [
+            {"id": 1, "bbox": [10.0, 20.0, 30.0, 40.0]},
+            {"id": 2, "bbox": [50.0, 60.0, 70.0, 80.0]},
+        ]
+    }
+    raw_str = json.dumps(data)
+    fh = io.StringIO(raw_str)
+    reader = JsonReader(fields=fields)
+    df = reader.parse(fh)
+    expected = pd.DataFrame({
+        "$.annotations[*].id": [1, 2],
+        "$.annotations[*].bbox": [[10.0, 20.0, 30.0, 40.0], [50.0, 60.0, 70.0, 80.0]],
+    })
+    pd.testing.assert_frame_equal(df, expected)
+
+
+def test_jsonreader_parse_deep():
+    # One row per match for nested paths.
+    field = create_test_field(
+        source=Source(extract=Extract(json_path="$.level1.level2[*].value"))
+    )
+    fields = (field,)
+    json_obj = {"level1": {"level2": [{"value": 100}, {"value": 200}]}}
+    expected_df = pd.DataFrame({"$.level1.level2[*].value": [100, 200]})
+    raw_str = json.dumps(json_obj)
+    fh = io.StringIO(raw_str)
+    reader = JsonReader(fields=fields)
+    df = reader.parse(fh)
+    pd.testing.assert_frame_equal(df, expected_df)
+
+
+def test_jsonlreader_raw():
+    # JsonlReader.raw should read JSON Lines into a DataFrame
+    lines = [{"a": 1}, {"a": 2}]
+    raw_text = "\n".join(json.dumps(rec) for rec in lines)
+    fh = io.StringIO(raw_text)
+    reader = JsonlReader(fields=())
+    df = reader.raw(fh)
+    expected = pd.DataFrame(lines)
+    pd.testing.assert_frame_equal(df, expected)
+
+
+def test_jsonlreader_parse():
+    # JsonlReader.parse should extract values across lines
+    field = create_test_field(source=Source(extract=Extract(json_path="$.x")))
+    fields = (field,)
+    lines = [{"x": 5}, {"x": 6}]
+    raw_text = "\n".join(json.dumps(rec) for rec in lines)
+    fh = io.StringIO(raw_text)
+    reader = JsonlReader(fields=fields)
+    df = reader.parse(fh)
+    expected = pd.DataFrame({"$.x": [5, 6]})
+    pd.testing.assert_frame_equal(df, expected)
+
+
+def test_jsonlreader_deeper_path():
+    # JsonlReader.parse should handle nested deeper JSONPath
+    field = create_test_field(
+        source=Source(extract=Extract(json_path="$.meta.detail[*].info"))
+    )
+    fields = (field,)
+    records = [
+        {"meta": {"detail": [{"info": "a"}, {"info": "b"}]}},
+        {"meta": {"detail": [{"info": "c"}]}},
+    ]
+    raw_text = "\n".join(json.dumps(rec) for rec in records)
+    fh = io.StringIO(raw_text)
+    reader = JsonlReader(fields=fields)
+    df = reader.parse(fh)
+    expected = pd.DataFrame({"$.meta.detail[*].info": [["a", "b"], "c"]})
+    pd.testing.assert_frame_equal(df, expected)

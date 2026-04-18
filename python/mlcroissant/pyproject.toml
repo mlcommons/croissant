@@ -22,6 +22,7 @@ authors = [
 dependencies = [
   "absl-py",
   "etils[epath]>=1.7.0",
+  "jmespath",
   "jsonpath-rw",
   "networkx",
   "pandas",
@@ -69,6 +70,7 @@ beam = [
 git = ["GitPython"]
 image = ["Pillow"]
 dicom = ["pydicom>=2.4.0"]
+fhir = ["fhir.resources>=7.1.0"]
 parquet = ["pyarrow"]
 
 [project.scripts]
@@ -97,6 +99,7 @@ module = [
   "absl",
   "apache-beam",
   "etils.*",
+  "jmespath",
   "jsonpath_rw",
   "librosa",
   "networkx",
@@ -105,6 +108,7 @@ module = [
   "scipy",
   "torchdata",
   "torchdata.datapipes",
+  "fhir.resources",
 ]
 ignore_missing_imports = true
 

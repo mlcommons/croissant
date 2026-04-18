@@ -3,13 +3,12 @@
 import enum
 from typing import Any
 
-import jsonpath_rw
-from jsonpath_rw import lexer
 from rdflib.namespace import SDO
 
 from mlcroissant._src.core import constants
 from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core.context import CroissantVersion
+from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.uuid import formatted_uuid_to_json
 from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
@@ -393,8 +392,8 @@ class Source(Node):
         """Checks if the source is valid and adds error otherwise."""
         if self.extract.json_path:
             try:
-                jsonpath_rw.parse(self.extract.json_path)
-            except lexer.JsonPathLexerError as exception:
+                deps.jsonpath_rw.parse(self.extract.json_path)
+            except deps.jsonpath_rw.lexer.JsonPathLexerError as exception:
                 add_error(
                     "Wrong JSONPath (https://goessner.net/articles/JsonPath/):"
                     f" {exception}"
