@@ -473,9 +473,9 @@ def visualize(jsonld: str, output: epath.Path):
         res_jsonld = _find_jsonld_entry(raw_jsonld.get("distribution", []), res_name)
 
         # For FileSets, resolve file listings from archives
-        file_list = []
+        file_list: list[str] = []
         file_count = 0
-        includes = []
+        includes: list[str] = []
         if res_type == "FileSet":
             includes = getattr(res, "includes", []) or []
             file_list, file_count = _resolve_fileset_files(
