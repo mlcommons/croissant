@@ -3,10 +3,12 @@
 import os
 import pathlib
 import sys
+
 from absl import app
 from absl import flags
 from absl import logging
 from etils import epath
+
 from mlcroissant.scripts.visualize import visualize
 
 flags.DEFINE_string(
