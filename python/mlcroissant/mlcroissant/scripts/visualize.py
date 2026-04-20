@@ -120,9 +120,7 @@ def _list_archive_entries(file_path: str, encoding_formats: list[str]) -> list[s
     return entries
 
 
-def _resolve_fileset_files(
-    res, distribution, folder
-) -> tuple[list[str], int]:
+def _resolve_fileset_files(res, distribution, folder) -> tuple[list[str], int]:
     """Resolve the actual files in a FileSet by inspecting its container archives.
 
     Returns a tuple of (file_list, total_count) where file_list is capped at
@@ -174,7 +172,6 @@ def _resolve_fileset_files(
 
     total = len(all_matched)
     return all_matched[:_MAX_PREVIEW_FILES], total
-
 
 
 def _is_local_dataset(distribution) -> bool:
@@ -285,9 +282,7 @@ def _get_or_generate_recordset_preview(
             output_dir.mkdir(parents=True, exist_ok=True)
             with jsonl_path.open("w", encoding="utf-8") as fout:
                 for row in dataset.records(record_set=rs_name):
-                    serialized = {
-                        str(k): _serialize_value(v) for k, v in row.items()
-                    }
+                    serialized = {str(k): _serialize_value(v) for k, v in row.items()}
                     fout.write(json.dumps(serialized, ensure_ascii=False) + "\n")
                     if len(rows_raw) < _MAX_PREVIEW_ROWS:
                         rows_raw.append(serialized)
@@ -321,12 +316,13 @@ def _get_or_generate_recordset_preview(
             if c not in all_cols:
                 all_cols.append(c)
     cols = all_cols[:_MAX_PREVIEW_COLS]
+
     # Strip rs_name/ prefix from column headers for display
     def _short_col(c: str) -> str:
         prefix = rs_name.lower().split("/")[-1].strip() + "/"
         cl = c.lower()
         if cl.startswith(prefix):
-            return c[len(prefix):]
+            return c[len(prefix) :]
         # Also strip if column is "recordset/field" style
         if "/" in c:
             return c.split("/", 1)[-1]
@@ -402,13 +398,15 @@ def visualize(jsonld: str, output: epath.Path):
         jsonld_key = _python_name_to_jsonld_key(name)
         jsonld_snippet = _extract_jsonld_value(raw_jsonld, jsonld_key)
 
-        metadata_fields.append({
-            "name": name.replace("_", " ").title(),
-            "raw_name": name,
-            "value": value_str,
-            "description": field.description or "",
-            "jsonld": jsonld_snippet,
-        })
+        metadata_fields.append(
+            {
+                "name": name.replace("_", " ").title(),
+                "raw_name": name,
+                "value": value_str,
+                "description": field.description or "",
+                "jsonld": jsonld_snippet,
+            }
+        )
 
     # Sort fields in a sensible way
     preferred_order = [
@@ -533,11 +531,14 @@ def visualize(jsonld: str, output: epath.Path):
     )
 
 
-
 def _html_escape(s: str) -> str:
     """Minimally escape a string for use in SVG/HTML attributes."""
-    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
-
+    return (
+        s.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
 
 
 def _build_svg_graph(
@@ -555,8 +556,8 @@ def _build_svg_graph(
 
     # ── Layout constants ────────────────────────────────────────────────
     NODE_W, NODE_H = 180, 52
-    COL_GAP = 220          # horizontal gap between left and right columns
-    ROW_GAP = 24           # vertical gap between nodes in same column
+    COL_GAP = 220  # horizontal gap between left and right columns
+    ROW_GAP = 24  # vertical gap between nodes in same column
     PAD_X, PAD_Y = 60, 24  # outer padding (increased PAD_X to allow arcs on left)
     LEFT_X = PAD_X
     RIGHT_X = PAD_X + NODE_W + COL_GAP
@@ -584,9 +585,24 @@ def _build_svg_graph(
 
     # ── Colour palette ───────────────────────────────────────────────────
     COLORS = {
-        "FileObject": {"fill": "#fff7ed", "stroke": "#f97316", "icon_bg": "#fed7aa", "icon": "📄"},
-        "FileSet":    {"fill": "#eef2ff", "stroke": "#6366f1", "icon_bg": "#c7d2fe", "icon": "📁"},
-        "RecordSet":  {"fill": "#f0fdf4", "stroke": "#22c55e", "icon_bg": "#bbf7d0", "icon": "📋"},
+        "FileObject": {
+            "fill": "#fff7ed",
+            "stroke": "#f97316",
+            "icon_bg": "#fed7aa",
+            "icon": "📄",
+        },
+        "FileSet": {
+            "fill": "#eef2ff",
+            "stroke": "#6366f1",
+            "icon_bg": "#c7d2fe",
+            "icon": "📁",
+        },
+        "RecordSet": {
+            "fill": "#f0fdf4",
+            "stroke": "#22c55e",
+            "icon_bg": "#bbf7d0",
+            "icon": "📋",
+        },
     }
 
     # ── SVG parts ────────────────────────────────────────────────────────
@@ -599,14 +615,14 @@ def _build_svg_graph(
 
     # Arrow-head markers — one for resource→resource, one for resource→recordset
     parts.append(
-        '<defs>'
+        "<defs>"
         '<marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
         '<path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>'
-        '</marker>'
+        "</marker>"
         '<marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
         '<path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/>'
-        '</marker>'
-        '</defs>'
+        "</marker>"
+        "</defs>"
     )
 
     def _node(cx: int, cy: int, label: str, node_type: str, href: str) -> str:
@@ -617,7 +633,7 @@ def _build_svg_graph(
         esc_full = _html_escape(label)
         return (
             f'<a xlink:href="{href}" href="{href}">'
-            f'<title>{esc_full}</title>'
+            f"<title>{esc_full}</title>"
             f'<rect x="{x}" y="{y}" width="{NODE_W}" height="{NODE_H}" '
             f'  rx="8" fill="{c["fill"]}" stroke="{c["stroke"]}" stroke-width="1.5"/>'
             # icon pill
@@ -626,7 +642,7 @@ def _build_svg_graph(
             # label
             f'<text x="{x+40}" y="{cy+4}" font-size="12" font-weight="500" '
             f'  fill="#1e293b" dominant-baseline="middle">{esc_label}</text>'
-            f'</a>'
+            f"</a>"
         )
 
     def _edge(x1: int, y1: int, x2: int, y2: int) -> str:
@@ -664,14 +680,14 @@ def _build_svg_graph(
                 y_start = p_cy
                 x_end = child_cx - NODE_W // 2
                 y_end = child_cy
-                
+
                 # Control points shifted left by 40px
                 ctrl_x = x_start - 40
-                
+
                 parts.append(
                     f'<path d="M{x_start},{y_start} '
-                    f'C{ctrl_x},{y_start} '
-                    f'{ctrl_x},{y_end} '
+                    f"C{ctrl_x},{y_start} "
+                    f"{ctrl_x},{y_end} "
                     f'{x_end},{y_end}" '
                     f'fill="none" stroke="#c7d2fe" stroke-width="1.5" '
                     f'stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/>'
@@ -684,7 +700,9 @@ def _build_svg_graph(
             if src_name in res_positions:
                 r_cx, r_cy = res_positions[src_name]
                 # edge from right-edge of resource node to left-edge of recordset node
-                parts.append(_edge(r_cx + NODE_W // 2, r_cy, rs_cx - NODE_W // 2, rs_cy))
+                parts.append(
+                    _edge(r_cx + NODE_W // 2, r_cy, rs_cx - NODE_W // 2, rs_cy)
+                )
 
     # Draw resource nodes
     for res in resources:
