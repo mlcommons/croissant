@@ -459,6 +459,49 @@
             margin-top: 10px;
             line-height: 1.6;
         }
+
+        /* ── File Listing (FileSet preview) ────────────── */
+        .file-listing {
+            margin-top: 10px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        .file-listing-header {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        .file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .file-list li {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 2px 0 2px 16px;
+            position: relative;
+            color: var(--color-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-list li::before {
+            content: "📄";
+            position: absolute;
+            left: 0;
+            font-size: 0.7rem;
+        }
+        .file-listing-more {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            font-style: italic;
+            margin-top: 4px;
+            padding-left: 16px;
+        }
         .cite-block {
             font-family: var(--font-mono);
             font-size: 0.78rem;
@@ -862,6 +905,30 @@ graph TD
                         </div>
                         <span class="rc-type">File Set</span>
                         
+                        
+                        <div class="file-listing">
+                            <div class="file-listing-header">📂 8 files</div>
+                            <ul class="file-list">
+                                
+                                <li>PASS_dataset/1/ff379727f52bcec4dfb237ace41627.jpg</li>
+                                
+                                <li>PASS_dataset/1/fedefe9f11bf2a749a749bfca8bf28.jpg</li>
+                                
+                                <li>PASS_dataset/0/ffd3eb12a16cb83138f26e6f36dec967.jpg</li>
+                                
+                                <li>PASS_dataset/0/fff0eece99cc71c2e91fe716051599.jpg</li>
+                                
+                                <li>PASS_dataset/10/dd571a41a015354d92a859f7ef31201.jpg</li>
+                                
+                                <li>PASS_dataset/10/75f7305b1fd94044e14bdcdde469dbb2.jpg</li>
+                                
+                                <li>PASS_dataset/11/598ad3bc7e6e876e61af116693c7ad9.jpg</li>
+                                
+                                <li>PASS_dataset/11/e48d6d552465c5728585b82a53d6e02c.jpg</li>
+                                
+                            </ul>
+                            
+                        </div>
                         
                         
                         <div class="jsonld-panel">

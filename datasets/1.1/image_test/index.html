@@ -459,6 +459,49 @@
             margin-top: 10px;
             line-height: 1.6;
         }
+
+        /* ── File Listing (FileSet preview) ────────────── */
+        .file-listing {
+            margin-top: 10px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        .file-listing-header {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        .file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .file-list li {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 2px 0 2px 16px;
+            position: relative;
+            color: var(--color-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-list li::before {
+            content: "📄";
+            position: absolute;
+            left: 0;
+            font-size: 0.7rem;
+        }
+        .file-listing-more {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            font-style: italic;
+            margin-top: 4px;
+            padding-left: 16px;
+        }
         .cite-block {
             font-family: var(--font-mono);
             font-size: 0.78rem;
@@ -781,7 +824,7 @@
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:Na3b4ddcf561b477c8a4bdfe22b78fcbc&#34;)
+                            Organization(uuid=&#34;_:N69441b5f421541a99b40897ce894c043&#34;)
                             
                             
                         </td>
@@ -794,7 +837,7 @@
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                             
-                            Organization(uuid=&#34;_:Nbca7f57420ff4c03ab9920c0bd489b1a&#34;)
+                            Organization(uuid=&#34;_:N6ff28a9419de412b86a6649f1649cc16&#34;)
                             
                             
                             <div class="jsonld-panel">
@@ -927,6 +970,8 @@ graph TD
                         <div class="rc-desc markdown">Band files</div>
                         
                         
+                        <pre class="preview">Pattern: S2_images_all_bands/*/s2*.tif</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -957,6 +1002,8 @@ graph TD
                         <div class="rc-desc markdown">Image files</div>
                         
                         
+                        <pre class="preview">Pattern: S2_images_true_color/s2*.tif</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -986,6 +1033,8 @@ graph TD
                         
                         <div class="rc-desc markdown">Mask files</div>
                         
+                        
+                        <pre class="preview">Pattern: masks/s2*.tif</pre>
                         
                         
                         <div class="jsonld-panel">

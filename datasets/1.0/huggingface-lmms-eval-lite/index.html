@@ -459,6 +459,49 @@
             margin-top: 10px;
             line-height: 1.6;
         }
+
+        /* ── File Listing (FileSet preview) ────────────── */
+        .file-listing {
+            margin-top: 10px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        .file-listing-header {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        .file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .file-list li {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 2px 0 2px 16px;
+            position: relative;
+            color: var(--color-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-list li::before {
+            content: "📄";
+            position: absolute;
+            left: 0;
+            font-size: 0.7rem;
+        }
+        .file-listing-more {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            font-style: italic;
+            margin-top: 4px;
+            padding-left: 16px;
+        }
         .cite-block {
             font-family: var(--font-mono);
             font-size: 0.78rem;
@@ -885,6 +928,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: ai2d/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -914,6 +959,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: chartqa/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -945,6 +992,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: coco2017_cap_val/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -974,6 +1023,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: docvqa_val/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -1005,6 +1056,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: flickr30k_test/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1034,6 +1087,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: gqa/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -1065,6 +1120,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: infovqa_val/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1094,6 +1151,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: mmbench_cn_dev/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -1125,6 +1184,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: mmbench_en_dev/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1154,6 +1215,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: nocaps_val/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -1185,6 +1248,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: ok_vqa_val2014/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1214,6 +1279,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: refcoco_bbox_val/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -1245,6 +1312,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: seedbench/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1274,6 +1343,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: textcaps_val/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">
@@ -1305,6 +1376,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: textvqa_val/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1335,6 +1408,8 @@ graph TD
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
                         
+                        <pre class="preview">Pattern: vizwiz_vqa_val/*/*.parquet</pre>
+                        
                         
                         <div class="jsonld-panel">
                             <pre class="language-json"><code class="language-json">{
@@ -1364,6 +1439,8 @@ graph TD
                         
                         <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
                         
+                        
+                        <pre class="preview">Pattern: vqav2_val/*/*.parquet</pre>
                         
                         
                         <div class="jsonld-panel">

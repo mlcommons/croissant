@@ -1,9 +1,12 @@
 """Visualizes a Croissant dataset."""
 
+import fnmatch
 import json
 import re
 import sys
+import tarfile
 from typing import Any
+import zipfile
 
 from absl import app
 from absl import flags
@@ -94,6 +97,80 @@ def _find_jsonld_entry(entries: list, name: str) -> str:
             if entry.get("@id") == name or entry.get("name") == name:
                 return json.dumps(entry, indent=2, ensure_ascii=False)
     return ""
+
+
+_MAX_PREVIEW_FILES = 10
+
+
+def _list_archive_entries(file_path: str, encoding_formats: list[str]) -> list[str]:
+    """List file entries inside a local archive (tar or zip)."""
+    entries = []
+    try:
+        if any("tar" in fmt for fmt in encoding_formats):
+            with tarfile.open(file_path) as t:
+                entries = [m.name for m in t.getmembers() if m.isfile()]
+        elif any("zip" in fmt for fmt in encoding_formats):
+            with zipfile.ZipFile(file_path) as z:
+                entries = [n for n in z.namelist() if not n.endswith("/")]
+    except Exception as e:
+        logging.warning(f"Failed to list archive entries for {file_path}: {e}")
+    return entries
+
+
+def _resolve_fileset_files(
+    res, distribution, folder
+) -> tuple[list[str], int]:
+    """Resolve the actual files in a FileSet by inspecting its container archives.
+
+    Returns a tuple of (file_list, total_count) where file_list is capped at
+    _MAX_PREVIEW_FILES entries and total_count is the full number of matching files.
+    """
+    if not hasattr(res, "includes") or not res.includes:
+        return [], 0
+    if not hasattr(res, "contained_in") or not res.contained_in:
+        return [], 0
+
+    # Build lookup from name/uuid -> resource
+    res_by_id = {}
+    for r in distribution:
+        if r.name:
+            res_by_id[r.name] = r
+        if r.uuid:
+            res_by_id[r.uuid] = r
+
+    all_matched = []
+    for parent_ref in res.contained_in:
+        if not isinstance(parent_ref, str):
+            continue  # Skip Source objects (remote/transform-based refs)
+        parent = res_by_id.get(parent_ref)
+        if not parent or not hasattr(parent, "content_url") or not parent.content_url:
+            continue
+        content_url = str(parent.content_url)
+        if content_url.startswith("http") or content_url.startswith("s3://"):
+            continue  # Remote file, can't inspect locally
+        if not folder:
+            continue
+        file_path = folder / content_url
+        if not file_path.exists():
+            continue
+
+        enc = getattr(parent, "encoding_formats", []) or []
+        if isinstance(enc, str):
+            enc = [enc]
+        archive_entries = _list_archive_entries(str(file_path), enc)
+        if not archive_entries:
+            continue
+
+        for pattern in res.includes:
+            for entry in archive_entries:
+                basename = entry.split("/")[-1]
+                if fnmatch.fnmatch(basename, pattern) or fnmatch.fnmatch(
+                    entry, pattern
+                ):
+                    all_matched.append(entry)
+
+    total = len(all_matched)
+    return all_matched[:_MAX_PREVIEW_FILES], total
 
 
 def main(argv):
@@ -233,6 +310,19 @@ def visualize(jsonld: str, output: epath.Path):
         res_name = res.name or res.uuid or "Unnamed"
         res_jsonld = _find_jsonld_entry(raw_jsonld.get("distribution", []), res_name)
 
+        # For FileSets, resolve file listings from archives
+        file_list = []
+        file_count = 0
+        includes = []
+        if res_type == "FileSet":
+            includes = getattr(res, "includes", []) or []
+            file_list, file_count = _resolve_fileset_files(
+                res, metadata.distribution, folder
+            )
+            # If we couldn't resolve files locally, generate a descriptive preview
+            if not file_list and includes:
+                preview = "Pattern: " + ", ".join(includes)
+
         res_data = {
             "name": res_name,
             "type": res_type,
@@ -240,6 +330,8 @@ def visualize(jsonld: str, output: epath.Path):
             "type_icon": type_icon,
             "description": res.description or "",
             "preview": preview,
+            "file_list": file_list,
+            "file_count": file_count,
             "jsonld": res_jsonld,
         }
         resources.append(res_data)
