@@ -493,6 +493,17 @@ def visualize(jsonld: str, output: epath.Path):
             enc_fmts = [enc_fmts]
         encoding_format = ", ".join(enc_fmts) if enc_fmts else ""
 
+        # Collect contained_in parents (resource name strings)
+        contained_in_names: list[str] = []
+        if hasattr(res, "contained_in") and res.contained_in:
+            for parent in res.contained_in:
+                if isinstance(parent, str):
+                    contained_in_names.append(parent)
+                elif hasattr(parent, "name") and parent.name:
+                    contained_in_names.append(str(parent.name))
+                elif hasattr(parent, "uuid") and parent.uuid:
+                    contained_in_names.append(str(parent.uuid))
+
         res_data = {
             "name": res_name,
             "type": res_type,
@@ -504,6 +515,8 @@ def visualize(jsonld: str, output: epath.Path):
             "file_list": file_list,
             "file_count": file_count,
             "jsonld": res_jsonld,
+            "contained_in": contained_in_names,
+            "uuid": getattr(res, "uuid", res_name),
         }
         resources.append(res_data)
 
@@ -549,10 +562,13 @@ def _build_svg_graph(
     RIGHT_X = PAD_X + NODE_W + COL_GAP
 
     # ── Position each resource node ─────────────────────────────────────
-    res_positions: dict[str, tuple[int, int]] = {}  # name -> (cx, cy)
+    res_positions: dict[str, tuple[int, int]] = {}  # name or uuid -> (cx, cy)
     for i, res in enumerate(resources):
         cy = PAD_Y + i * (NODE_H + ROW_GAP) + NODE_H // 2
-        res_positions[res["name"]] = (LEFT_X + NODE_W // 2, cy)
+        pos = (LEFT_X + NODE_W // 2, cy)
+        res_positions[res["name"]] = pos
+        if "uuid" in res and res["uuid"] != res["name"]:
+            res_positions[res["uuid"]] = pos
 
     # ── Position each recordset node ────────────────────────────────────
     rs_positions: dict[str, tuple[int, int]] = {}  # name -> (cx, cy)
@@ -581,11 +597,14 @@ def _build_svg_graph(
         f'style="max-width:100%;font-family:Inter,sans-serif;">'
     )
 
-    # Arrow-head marker
+    # Arrow-head markers — one for resource→resource, one for resource→recordset
     parts.append(
         '<defs>'
         '<marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
         '<path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>'
+        '</marker>'
+        '<marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
+        '<path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/>'
         '</marker>'
         '</defs>'
     )
@@ -633,7 +652,25 @@ def _build_svg_graph(
             f'font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text>'
         )
 
-    # Draw edges first (below nodes)
+    # Draw resource→resource edges (contained_in, e.g. FileObject inside FileSet)
+    for res in resources:
+        child_cx, child_cy = res_positions[res["name"]]
+        for parent_name in res.get("contained_in", []):
+            if parent_name in res_positions:
+                p_cx, p_cy = res_positions[parent_name]
+                # Short vertical/diagonal edge within left column
+                # from bottom-center of parent to top-center of child
+                mx = p_cx  # stay in the same column
+                parts.append(
+                    f'<path d="M{p_cx},{p_cy + NODE_H // 2} '
+                    f'C{mx},{p_cy + NODE_H // 2 + 12} '
+                    f'{mx},{child_cy - NODE_H // 2 - 12} '
+                    f'{child_cx},{child_cy - NODE_H // 2}" '
+                    f'fill="none" stroke="#c7d2fe" stroke-width="1.5" '
+                    f'stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/>'
+                )
+
+    # Draw RecordSet→resource edges
     for rs in record_sets:
         rs_cx, rs_cy = rs_positions[rs["name"]]
         for src_name in rs.get("source_distributions", []):

@@ -347,6 +347,9 @@
             background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
             border-radius: var(--radius) 0 0 var(--radius);
         }
+        .card--green::before {
+            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
+        }
         .card-header {
             display: flex;
             align-items: center;
@@ -919,7 +922,7 @@
             </div>
 
             <!-- Record Sets -->
-            <div class="card" id="recordsets">
+            <div class="card card--green" id="recordsets">
                 <div class="card-header">
                     <span class="icon">📋</span>
                     <h2>Record Sets</h2>

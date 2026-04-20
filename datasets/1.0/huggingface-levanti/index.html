@@ -347,6 +347,9 @@
             background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
             border-radius: var(--radius) 0 0 var(--radius);
         }
+        .card--green::before {
+            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
+        }
         .card-header {
             display: flex;
             align-items: center;
@@ -889,7 +892,7 @@ Levanti is a dataset of 500K sentences in Levantine colloquial Arabic (Palestini
 
                 
                 <div class="svg-graph-wrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 628 176" width="628" height="176" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker></defs><text x="114" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="514" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M204,126 C314,126 314,50 424,50" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-repo" href="#res-repo"><title>repo</title><rect x="24" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="32" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="44" y="55" text-anchor="middle" font-size="13">📄</text><text x="64" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">repo</text></a><a xlink:href="#res-levanti-csv" href="#res-levanti-csv"><title>levanti-csv</title><rect x="24" y="100" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="32" y="114" width="24" height="24" rx="5" fill="#fed7aa"/><text x="44" y="131" text-anchor="middle" font-size="13">📄</text><text x="64" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">levanti-csv</text></a><a xlink:href="#rs-levanti_train" href="#rs-levanti_train"><title>levanti_train</title><rect x="424" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="432" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="444" y="55" text-anchor="middle" font-size="13">📋</text><text x="464" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">levanti_train</text></a></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 628 176" width="628" height="176" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs><text x="114" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="514" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M114,76 C114,88 114,88 114,100" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M204,126 C314,126 314,50 424,50" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-repo" href="#res-repo"><title>repo</title><rect x="24" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="32" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="44" y="55" text-anchor="middle" font-size="13">📄</text><text x="64" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">repo</text></a><a xlink:href="#res-levanti-csv" href="#res-levanti-csv"><title>levanti-csv</title><rect x="24" y="100" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="32" y="114" width="24" height="24" rx="5" fill="#fed7aa"/><text x="44" y="131" text-anchor="middle" font-size="13">📄</text><text x="64" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">levanti-csv</text></a><a xlink:href="#rs-levanti_train" href="#rs-levanti_train"><title>levanti_train</title><rect x="424" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="432" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="444" y="55" text-anchor="middle" font-size="13">📋</text><text x="464" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">levanti_train</text></a></svg>
                 </div>
                 
 
@@ -969,7 +972,7 @@ Levanti is a dataset of 500K sentences in Levantine colloquial Arabic (Palestini
             </div>
 
             <!-- Record Sets -->
-            <div class="card" id="recordsets">
+            <div class="card card--green" id="recordsets">
                 <div class="card-header">
                     <span class="icon">📋</span>
                     <h2>Record Sets</h2>
