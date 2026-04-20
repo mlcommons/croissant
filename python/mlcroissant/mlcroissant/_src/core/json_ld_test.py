@@ -72,18 +72,16 @@ def test_make_context():
 
 def test_expand_and_reduce_language_tagged():
     ctx = Context(conforms_to=CroissantVersion.V_1_1)
-    dataset = Dataset(
-        {
-            "@context": make_context(ctx),
-            "@type": "sc:Dataset",
-            "conformsTo": CroissantVersion.V_1_1.value,
-            "name": {"en": "a", "fr": "b"},
-            "description": [
-                {"@language": "en", "@value": "A"},
-                {"@language": "de", "@value": "B"},
-            ],
-        }
-    )
+    dataset = Dataset({
+        "@context": make_context(ctx),
+        "@type": "sc:Dataset",
+        "conformsTo": CroissantVersion.V_1_1.value,
+        "name": {"en": "a", "fr": "b"},
+        "description": [
+            {"@language": "en", "@value": "A"},
+            {"@language": "de", "@value": "B"},
+        ],
+    })
     metadata = dataset.metadata
     actual = metadata.to_json()
     assert actual["name"] == {"en": "a", "fr": "b"}

@@ -21,10 +21,8 @@ class Concatenate(Operation):
         """See class' docstring."""
         assert len(args) > 0, "No dataframe to merge."
         files = [file for files in args for file in files]
-        return pd.DataFrame(
-            {
-                FileProperty.filepath: [os.fspath(file.filepath) for file in files],
-                FileProperty.filename: [file.filename for file in files],
-                FileProperty.fullpath: [os.fspath(file.fullpath) for file in files],
-            }
-        )
+        return pd.DataFrame({
+            FileProperty.filepath: [os.fspath(file.filepath) for file in files],
+            FileProperty.filename: [file.filename for file in files],
+            FileProperty.fullpath: [os.fspath(file.fullpath) for file in files],
+        })

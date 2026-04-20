@@ -15,14 +15,12 @@ class Commands:
     VISUALIZE = "visualize"
 
 
-choices = set(
-    [
-        Commands.DOCUMENTATION,
-        Commands.LOAD,
-        Commands.VALIDATE,
-        Commands.VISUALIZE,
-    ]
-)
+choices = set([
+    Commands.DOCUMENTATION,
+    Commands.LOAD,
+    Commands.VALIDATE,
+    Commands.VISUALIZE,
+])
 
 
 def main():

@@ -236,15 +236,15 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA,
     )
-    data_collection_timeframe: list[
-        datetime.datetime
-    ] | None = mlc_dataclasses.jsonld_field(
-        cardinality="MANY",
-        cast_fn=cast_dates,
-        default=None,
-        input_types=[SDO.Date, SDO.DateTime],
-        to_jsonld=_dates_to_jsonld,
-        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
+    data_collection_timeframe: list[datetime.datetime] | None = (
+        mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            cast_fn=cast_dates,
+            default=None,
+            input_types=[SDO.Date, SDO.DateTime],
+            to_jsonld=_dates_to_jsonld,
+            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
+        )
     )
     data_imputation_protocol: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",
