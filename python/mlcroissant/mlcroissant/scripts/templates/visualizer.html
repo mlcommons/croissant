@@ -920,11 +920,6 @@
                     {% if rs.description %}
                     <div class="rs-desc markdown">{{ rs.description }}</div>
                     {% endif %}
-                    {% if rs.jsonld %}
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{{ rs.jsonld }}</code></pre>
-                    </div>
-                    {% endif %}
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -968,6 +963,11 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    {% endif %}
+                    {% if rs.jsonld %}
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{{ rs.jsonld }}</code></pre>
                     </div>
                     {% endif %}
                 </div>
@@ -1039,6 +1039,9 @@
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1048,6 +1051,9 @@
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

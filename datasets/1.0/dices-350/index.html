@@ -881,7 +881,7 @@ The DICES dataset and accompanying analyses is available at https://github.com/g
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:Ne494cc700a7b4f46a4d3fe4e169372f6&#34;)
+                            Organization(uuid=&#34;_:Na5c2889fc629445a9d6ff5af2853fd4a&#34;)
                             
                             
                         </td>
@@ -1089,15 +1089,6 @@ graph TD
                         </div>
                     </div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;new-record-set&#34;,
-  &#34;name&#34;: &#34;new-record-set&#34;
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1111,6 +1102,15 @@ graph TD
                                 
                             </tbody>
                         </table>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;new-record-set&#34;,
+  &#34;name&#34;: &#34;new-record-set&#34;
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1274,6 +1274,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1283,6 +1286,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

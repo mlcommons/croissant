@@ -953,6 +953,177 @@ graph TD
                         </div>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>content</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The content of the file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>language</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Programming language of the file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>hexsha</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Unique git hash of file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>size</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Size of the uncompressed file..</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>ext</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>File extension.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>lang</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Hash of the file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_stars_repo_path</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Path to file in repo containing this file with maximum number of stars.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_stars_repo_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Name of repo containing this file with maximum number of stars.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_stars_repo_head_hexsha</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Hexsha of repository head with the maximum of stars.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_stars_count</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Number of stars in repository.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_stars_repo_stars_event_min_datetime</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>First timestamp of a stars event.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_stars_repo_stars_event_max_datetime</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Last timestamp of a stars event.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_issues_repo_path</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Path to file in repo containing this file with maximum number of issues.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_issues_repo_head_hexsha</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Hexsha of repository head with the maximum of issues.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_issues_count</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Number of issues in repository.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_issues_repo_issues_event_min_datetime</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>First timestamp of an issues event.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_issues_repo_issues_event_max_datetime</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Last timestamp of an issues event.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_forks_repo_path</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Path to file in repo containing this file with maximum number of forks.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_forks_repo_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Name of repo containing this file with maximum number of forks.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_forks_repo_head_hexsha</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Hexsha of repository head with the maximum of forks.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_forks_count</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Number of forks in repository.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_forks_repo_forks_event_min_datetime</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>First timestamp of a forks event.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_forks_repo_forks_event_max_datetime</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Last timestamp of a forks event.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>avg_line_length</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The average line-length of the file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>max_line_length</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The maximum line-length of the file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>alphanum_fraction</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The fraction of characters in the file that are alphabetical or numerical characters.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1276,177 +1447,6 @@ graph TD
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>content</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The content of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Programming language of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Unique git hash of file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>size</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Size of the uncompressed file..</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>ext</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>File extension.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>lang</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hash of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_path</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Path to file in repo containing this file with maximum number of stars.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of repo containing this file with maximum number of stars.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_head_hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hexsha of repository head with the maximum of stars.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_count</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Number of stars in repository.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_stars_event_min_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>First timestamp of a stars event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_stars_event_max_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Last timestamp of a stars event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_path</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Path to file in repo containing this file with maximum number of issues.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_head_hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hexsha of repository head with the maximum of issues.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_count</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Number of issues in repository.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_issues_event_min_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>First timestamp of an issues event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_issues_event_max_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Last timestamp of an issues event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_path</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Path to file in repo containing this file with maximum number of forks.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of repo containing this file with maximum number of forks.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_head_hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hexsha of repository head with the maximum of forks.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_count</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Number of forks in repository.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_forks_event_min_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>First timestamp of a forks event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_forks_event_max_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Last timestamp of a forks event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>avg_line_length</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The average line-length of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_line_length</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The maximum line-length of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>alphanum_fraction</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The fraction of characters in the file that are alphabetical or numerical characters.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
                     </div>
                     
                 </div>
@@ -1900,6 +1900,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1909,6 +1912,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

@@ -880,29 +880,6 @@ graph TD
                     
                     <div class="rs-desc markdown">These are the records.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-  &#34;name&#34;: &#34;records&#34;,
-  &#34;description&#34;: &#34;These are the records.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;audio&#34;,
-      &#34;description&#34;: &#34;These are the sounds.&#34;,
-      &#34;dataType&#34;: &#34;sc:AudioObject&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;files&#34;,
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;content&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -957,6 +934,29 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+  &#34;name&#34;: &#34;records&#34;,
+  &#34;description&#34;: &#34;These are the records.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;audio&#34;,
+      &#34;description&#34;: &#34;These are the sounds.&#34;,
+      &#34;dataType&#34;: &#34;sc:AudioObject&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;files&#34;,
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;content&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1098,6 +1098,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1107,6 +1110,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

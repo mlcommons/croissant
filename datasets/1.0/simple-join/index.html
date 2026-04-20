@@ -936,50 +936,6 @@ The Use of Machine Learning to Predict the Stock Market,david.lee@outlook.com
                     
                     <div class="rs-desc markdown">List of users.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;users&#34;,
-  &#34;name&#34;: &#34;users&#34;,
-  &#34;description&#34;: &#34;List of users.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;users/email&#34;,
-      &#34;name&#34;: &#34;users/email&#34;,
-      &#34;description&#34;: &#34;Email of the author.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;users/fullname&#34;,
-      &#34;name&#34;: &#34;users/fullname&#34;,
-      &#34;description&#34;: &#34;Full name of the author.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;
-    }
-  ],
-  &#34;data&#34;: [
-    {
-      &#34;users/email&#34;: &#34;john.smith@gmail.com&#34;,
-      &#34;users/fullname&#34;: &#34;John Smith&#34;
-    },
-    {
-      &#34;users/email&#34;: &#34;jane.doe@yahoo.com&#34;,
-      &#34;users/fullname&#34;: &#34;Jane Doe&#34;
-    },
-    {
-      &#34;users/email&#34;: &#34;david.lee@outlook.com&#34;,
-      &#34;users/fullname&#34;: &#34;David Lee&#34;
-    },
-    {
-      &#34;users/email&#34;: &#34;mary.jones@hotmail.com&#34;,
-      &#34;users/fullname&#34;: &#34;Mary Jones&#34;
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1059,6 +1015,50 @@ The Use of Machine Learning to Predict the Stock Market,david.lee@outlook.com
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;users&#34;,
+  &#34;name&#34;: &#34;users&#34;,
+  &#34;description&#34;: &#34;List of users.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;users/email&#34;,
+      &#34;name&#34;: &#34;users/email&#34;,
+      &#34;description&#34;: &#34;Email of the author.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;users/fullname&#34;,
+      &#34;name&#34;: &#34;users/fullname&#34;,
+      &#34;description&#34;: &#34;Full name of the author.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    }
+  ],
+  &#34;data&#34;: [
+    {
+      &#34;users/email&#34;: &#34;john.smith@gmail.com&#34;,
+      &#34;users/fullname&#34;: &#34;John Smith&#34;
+    },
+    {
+      &#34;users/email&#34;: &#34;jane.doe@yahoo.com&#34;,
+      &#34;users/fullname&#34;: &#34;Jane Doe&#34;
+    },
+    {
+      &#34;users/email&#34;: &#34;david.lee@outlook.com&#34;,
+      &#34;users/fullname&#34;: &#34;David Lee&#34;
+    },
+    {
+      &#34;users/email&#34;: &#34;mary.jones@hotmail.com&#34;,
+      &#34;users/fullname&#34;: &#34;Mary Jones&#34;
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1078,65 +1078,6 @@ The Use of Machine Learning to Predict the Stock Market,david.lee@outlook.com
                     </div>
                     
                     <div class="rs-desc markdown">List of publications by user.</div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;publications_by_user&#34;,
-  &#34;name&#34;: &#34;publications_by_user&#34;,
-  &#34;description&#34;: &#34;List of publications by user.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;publications_by_user/title&#34;,
-      &#34;name&#34;: &#34;publications_by_user/title&#34;,
-      &#34;description&#34;: &#34;Full title of the publication.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;publications&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;title&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;publications_by_user/author_email&#34;,
-      &#34;name&#34;: &#34;publications_by_user/author_email&#34;,
-      &#34;description&#34;: &#34;Email of the author.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;users/email&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;publications&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;by&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;publications_by_user/author_fullname&#34;,
-      &#34;name&#34;: &#34;publications_by_user/author_fullname&#34;,
-      &#34;description&#34;: &#34;Full name of the author.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;users/fullname&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
                     
                     <div class="table-wrap">
                         <table>
@@ -1221,6 +1162,65 @@ The Use of Machine Learning to Predict the Stock Market,david.lee@outlook.com
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;publications_by_user&#34;,
+  &#34;name&#34;: &#34;publications_by_user&#34;,
+  &#34;description&#34;: &#34;List of publications by user.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;publications_by_user/title&#34;,
+      &#34;name&#34;: &#34;publications_by_user/title&#34;,
+      &#34;description&#34;: &#34;Full title of the publication.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;publications&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;title&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;publications_by_user/author_email&#34;,
+      &#34;name&#34;: &#34;publications_by_user/author_email&#34;,
+      &#34;description&#34;: &#34;Email of the author.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;users/email&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;publications&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;by&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;publications_by_user/author_fullname&#34;,
+      &#34;name&#34;: &#34;publications_by_user/author_fullname&#34;,
+      &#34;description&#34;: &#34;Full name of the author.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;users/fullname&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1449,6 +1449,9 @@ The Use of Machine Learning to Predict the Stock Market,david.lee@outlook.com
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1458,6 +1461,9 @@ The Use of Machine Learning to Predict the Stock Market,david.lee@outlook.com
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

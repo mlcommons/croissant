@@ -949,6 +949,27 @@ graph TD
                     
                     <div class="rs-desc markdown">Splits for the record_set_plain_text config.</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -980,27 +1001,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the split.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1020,6 +1020,141 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">record set plain text.</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;id&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>title</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;title&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>context</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;context&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>question</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;question&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>answers</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;answers&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>split</th>
+                                        
+                                        <th>id</th>
+                                        
+                                        <th>title</th>
+                                        
+                                        <th>context</th>
+                                        
+                                        <th>question</th>
+                                        
+                                        <th>answers/record_set_plain_text/answers/text</th>
+                                        
+                                        <th>answers/record_set_plain_text/answers/answer_start</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="5733be284776f41900661182">5733be284776f41900661182</td>
+                                        
+                                        <td title="University_of_Notre_Dame">University_of_Notre_Dame</td>
+                                        
+                                        <td title="Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.">Architecturally, the school has a Catholic character. Atop the Main Building&#39;s g…</td>
+                                        
+                                        <td title="To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?">To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?</td>
+                                        
+                                        <td title="[b&#39;Saint Bernadette Soubirous&#39;]">[b&#39;Saint Bernadette Soubirous&#39;]</td>
+                                        
+                                        <td title="[515]">[515]</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="5733be284776f4190066117f">5733be284776f4190066117f</td>
+                                        
+                                        <td title="University_of_Notre_Dame">University_of_Notre_Dame</td>
+                                        
+                                        <td title="Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.">Architecturally, the school has a Catholic character. Atop the Main Building&#39;s g…</td>
+                                        
+                                        <td title="What is in front of the Notre Dame Main Building?">What is in front of the Notre Dame Main Building?</td>
+                                        
+                                        <td title="[b&#39;a copper statue of Christ&#39;]">[b&#39;a copper statue of Christ&#39;]</td>
+                                        
+                                        <td title="[188]">[188]</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="5733be284776f41900661180">5733be284776f41900661180</td>
+                                        
+                                        <td title="University_of_Notre_Dame">University_of_Notre_Dame</td>
+                                        
+                                        <td title="Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.">Architecturally, the school has a Catholic character. Atop the Main Building&#39;s g…</td>
+                                        
+                                        <td title="The Basilica of the Sacred heart at Notre Dame is beside to which structure?">The Basilica of the Sacred heart at Notre Dame is beside to which structure?</td>
+                                        
+                                        <td title="[b&#39;the Main Building&#39;]">[b&#39;the Main Building&#39;]</td>
+                                        
+                                        <td title="[279]">[279]</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -1160,141 +1295,6 @@ graph TD
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Split to which the example belongs to.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;id&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;title&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>context</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;context&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>question</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;question&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>answers</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column &#39;answers&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="rs-preview">
-                        <div class="rs-preview-label">🔍 Data preview</div>
-                        <div class="table-wrap">
-                            <table class="preview-table">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>split</th>
-                                        
-                                        <th>id</th>
-                                        
-                                        <th>title</th>
-                                        
-                                        <th>context</th>
-                                        
-                                        <th>question</th>
-                                        
-                                        <th>answers/record_set_plain_text/answers/text</th>
-                                        
-                                        <th>answers/record_set_plain_text/answers/answer_start</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="5733be284776f41900661182">5733be284776f41900661182</td>
-                                        
-                                        <td title="University_of_Notre_Dame">University_of_Notre_Dame</td>
-                                        
-                                        <td title="Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.">Architecturally, the school has a Catholic character. Atop the Main Building&#39;s g…</td>
-                                        
-                                        <td title="To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?">To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?</td>
-                                        
-                                        <td title="[b&#39;Saint Bernadette Soubirous&#39;]">[b&#39;Saint Bernadette Soubirous&#39;]</td>
-                                        
-                                        <td title="[515]">[515]</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="5733be284776f4190066117f">5733be284776f4190066117f</td>
-                                        
-                                        <td title="University_of_Notre_Dame">University_of_Notre_Dame</td>
-                                        
-                                        <td title="Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.">Architecturally, the school has a Catholic character. Atop the Main Building&#39;s g…</td>
-                                        
-                                        <td title="What is in front of the Notre Dame Main Building?">What is in front of the Notre Dame Main Building?</td>
-                                        
-                                        <td title="[b&#39;a copper statue of Christ&#39;]">[b&#39;a copper statue of Christ&#39;]</td>
-                                        
-                                        <td title="[188]">[188]</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="5733be284776f41900661180">5733be284776f41900661180</td>
-                                        
-                                        <td title="University_of_Notre_Dame">University_of_Notre_Dame</td>
-                                        
-                                        <td title="Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &#34;Venite Ad Me Omnes&#34;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.">Architecturally, the school has a Catholic character. Atop the Main Building&#39;s g…</td>
-                                        
-                                        <td title="The Basilica of the Sacred heart at Notre Dame is beside to which structure?">The Basilica of the Sacred heart at Notre Dame is beside to which structure?</td>
-                                        
-                                        <td title="[b&#39;the Main Building&#39;]">[b&#39;the Main Building&#39;]</td>
-                                        
-                                        <td title="[279]">[279]</td>
-                                        
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                     
                 </div>
@@ -1600,6 +1600,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1609,6 +1612,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

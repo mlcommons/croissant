@@ -1069,131 +1069,6 @@ graph TD
                         </div>
                     </div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;images&#34;,
-  &#34;name&#34;: &#34;images&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;hash&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/hash&#34;,
-      &#34;name&#34;: &#34;images/hash&#34;,
-      &#34;description&#34;: &#34;The hash of the image, as computed from YFCC-100M.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;references&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;hash&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;([^\\/]*)\\.jpg&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_content&#34;,
-      &#34;name&#34;: &#34;images/image_content&#34;,
-      &#34;description&#34;: &#34;The content of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;content&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/creator_uname&#34;,
-      &#34;name&#34;: &#34;images/creator_uname&#34;,
-      &#34;description&#34;: &#34;Unique name of photo creator.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;unickname&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/gps_coordinates&#34;,
-      &#34;name&#34;: &#34;images/gps_coordinates&#34;,
-      &#34;description&#34;: &#34;GPS coordinates where the image was taken.&#34;,
-      &#34;dataType&#34;: &#34;sc:GeoCoordinates&#34;,
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/latitude&#34;,
-          &#34;name&#34;: &#34;images/latitude&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;latitude&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;images/longitude&#34;,
-          &#34;name&#34;: &#34;images/longitude&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;metadata&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;longitude&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/date_taken&#34;,
-      &#34;name&#34;: &#34;images/date_taken&#34;,
-      &#34;description&#34;: &#34;The date the photo was taken.&#34;,
-      &#34;dataType&#34;: &#34;sc:Date&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;datetaken&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;format&#34;: &#34;%Y-%m-%d %H:%M:%S.%f&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1345,6 +1220,131 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;images&#34;,
+  &#34;name&#34;: &#34;images&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;hash&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/hash&#34;,
+      &#34;name&#34;: &#34;images/hash&#34;,
+      &#34;description&#34;: &#34;The hash of the image, as computed from YFCC-100M.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;hash&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;([^\\/]*)\\.jpg&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/image_content&#34;,
+      &#34;name&#34;: &#34;images/image_content&#34;,
+      &#34;description&#34;: &#34;The content of the image.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;content&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/creator_uname&#34;,
+      &#34;name&#34;: &#34;images/creator_uname&#34;,
+      &#34;description&#34;: &#34;Unique name of photo creator.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;unickname&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/gps_coordinates&#34;,
+      &#34;name&#34;: &#34;images/gps_coordinates&#34;,
+      &#34;description&#34;: &#34;GPS coordinates where the image was taken.&#34;,
+      &#34;dataType&#34;: &#34;sc:GeoCoordinates&#34;,
+      &#34;subField&#34;: [
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;images/latitude&#34;,
+          &#34;name&#34;: &#34;images/latitude&#34;,
+          &#34;dataType&#34;: &#34;sc:Float&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;metadata&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;latitude&#34;
+            }
+          }
+        },
+        {
+          &#34;@type&#34;: &#34;cr:Field&#34;,
+          &#34;@id&#34;: &#34;images/longitude&#34;,
+          &#34;name&#34;: &#34;images/longitude&#34;,
+          &#34;dataType&#34;: &#34;sc:Float&#34;,
+          &#34;source&#34;: {
+            &#34;fileObject&#34;: {
+              &#34;@id&#34;: &#34;metadata&#34;
+            },
+            &#34;extract&#34;: {
+              &#34;column&#34;: &#34;longitude&#34;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/date_taken&#34;,
+      &#34;name&#34;: &#34;images/date_taken&#34;,
+      &#34;description&#34;: &#34;The date the photo was taken.&#34;,
+      &#34;dataType&#34;: &#34;sc:Date&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;datetaken&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;format&#34;: &#34;%Y-%m-%d %H:%M:%S.%f&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1631,6 +1631,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1640,6 +1643,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

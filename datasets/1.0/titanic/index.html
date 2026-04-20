@@ -1067,58 +1067,6 @@ S,Southampton,wd:Q79848
                     
                     <div class="rs-desc markdown">Maps gender labels to semantic definitions.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;genders&#34;,
-  &#34;name&#34;: &#34;genders&#34;,
-  &#34;description&#34;: &#34;Maps gender labels to semantic definitions.&#34;,
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;genders/label&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;genders/label&#34;,
-      &#34;name&#34;: &#34;genders/label&#34;,
-      &#34;description&#34;: &#34;One of {\&#34;male\&#34;, \&#34;female\&#34;}&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Text&#34;,
-        &#34;sc:name&#34;
-      ],
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;genders.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;label&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;genders/url&#34;,
-      &#34;name&#34;: &#34;genders/url&#34;,
-      &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:URL&#34;,
-        &#34;wd:Q48277&#34;
-      ],
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;genders.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;url&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1182,6 +1130,58 @@ S,Southampton,wd:Q79848
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;genders&#34;,
+  &#34;name&#34;: &#34;genders&#34;,
+  &#34;description&#34;: &#34;Maps gender labels to semantic definitions.&#34;,
+  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;genders/label&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;genders/label&#34;,
+      &#34;name&#34;: &#34;genders/label&#34;,
+      &#34;description&#34;: &#34;One of {\&#34;male\&#34;, \&#34;female\&#34;}&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:Text&#34;,
+        &#34;sc:name&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;genders.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;label&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;genders/url&#34;,
+      &#34;name&#34;: &#34;genders/url&#34;,
+      &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:URL&#34;,
+        &#34;wd:Q48277&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;genders.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;url&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1201,73 +1201,6 @@ S,Southampton,wd:Q79848
                     </div>
                     
                     <div class="rs-desc markdown">Maps Embarkation port initial to labeled values.</div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;embarkation_ports&#34;,
-  &#34;name&#34;: &#34;embarkation_ports&#34;,
-  &#34;description&#34;: &#34;Maps Embarkation port initial to labeled values.&#34;,
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;embarkation_ports/key&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;embarkation_ports/key&#34;,
-      &#34;name&#34;: &#34;embarkation_ports/key&#34;,
-      &#34;description&#34;: &#34;C, Q, S or ?&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;embarkation_ports.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;key&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;embarkation_ports/label&#34;,
-      &#34;name&#34;: &#34;embarkation_ports/label&#34;,
-      &#34;description&#34;: &#34;Human-readable label&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Text&#34;,
-        &#34;sc:name&#34;
-      ],
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;embarkation_ports.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;label&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;embarkation_ports/url&#34;,
-      &#34;name&#34;: &#34;embarkation_ports/url&#34;,
-      &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:URL&#34;,
-        &#34;wd:Q515&#34;
-      ],
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;embarkation_ports.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;url&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
                     
                     <div class="table-wrap">
                         <table>
@@ -1364,6 +1297,73 @@ S,Southampton,wd:Q79848
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;embarkation_ports&#34;,
+  &#34;name&#34;: &#34;embarkation_ports&#34;,
+  &#34;description&#34;: &#34;Maps Embarkation port initial to labeled values.&#34;,
+  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;embarkation_ports/key&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;embarkation_ports/key&#34;,
+      &#34;name&#34;: &#34;embarkation_ports/key&#34;,
+      &#34;description&#34;: &#34;C, Q, S or ?&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;embarkation_ports.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;key&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;embarkation_ports/label&#34;,
+      &#34;name&#34;: &#34;embarkation_ports/label&#34;,
+      &#34;description&#34;: &#34;Human-readable label&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:Text&#34;,
+        &#34;sc:name&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;embarkation_ports.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;label&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;embarkation_ports/url&#34;,
+      &#34;name&#34;: &#34;embarkation_ports/url&#34;,
+      &#34;description&#34;: &#34;Corresponding WikiData URL&#34;,
+      &#34;dataType&#34;: [
+        &#34;sc:URL&#34;,
+        &#34;wd:Q515&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;embarkation_ports.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;url&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1383,238 +1383,6 @@ S,Southampton,wd:Q79848
                     </div>
                     
                     <div class="rs-desc markdown">The list of passengers. Does not include crew members.</div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;passengers&#34;,
-  &#34;name&#34;: &#34;passengers&#34;,
-  &#34;description&#34;: &#34;The list of passengers. Does not include crew members.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/name&#34;,
-      &#34;name&#34;: &#34;passengers/name&#34;,
-      &#34;description&#34;: &#34;Name of the passenger&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;name&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/gender&#34;,
-      &#34;name&#34;: &#34;passengers/gender&#34;,
-      &#34;description&#34;: &#34;Gender of passenger (male or female)&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;genders/label&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;sex&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/age&#34;,
-      &#34;name&#34;: &#34;passengers/age&#34;,
-      &#34;description&#34;: &#34;Age of passenger at time of death. It&#39;s a string, because some values can be `?`.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;age&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/survived&#34;,
-      &#34;name&#34;: &#34;passengers/survived&#34;,
-      &#34;description&#34;: &#34;Survival status of passenger (0: Lost, 1: Saved)&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;survived&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/pclass&#34;,
-      &#34;name&#34;: &#34;passengers/pclass&#34;,
-      &#34;description&#34;: &#34;Passenger Class (1st/2nd/3rd)&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;pclass&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/cabin&#34;,
-      &#34;name&#34;: &#34;passengers/cabin&#34;,
-      &#34;description&#34;: &#34;Passenger cabin.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;cabin&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/embarked&#34;,
-      &#34;name&#34;: &#34;passengers/embarked&#34;,
-      &#34;description&#34;: &#34;Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;embarkation_ports/key&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;embarked&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/fare&#34;,
-      &#34;name&#34;: &#34;passengers/fare&#34;,
-      &#34;description&#34;: &#34;Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;fare&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/home_destination&#34;,
-      &#34;name&#34;: &#34;passengers/home_destination&#34;,
-      &#34;description&#34;: &#34;Home and destination&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;home.dest&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/ticket&#34;,
-      &#34;name&#34;: &#34;passengers/ticket&#34;,
-      &#34;description&#34;: &#34;Ticket Number, may include a letter.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;ticket&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/num_parents_children&#34;,
-      &#34;name&#34;: &#34;passengers/num_parents_children&#34;,
-      &#34;description&#34;: &#34;Number of Parents/Children Aboard&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;parch&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/num_siblings_spouses&#34;,
-      &#34;name&#34;: &#34;passengers/num_siblings_spouses&#34;,
-      &#34;description&#34;: &#34;Number of Siblings/Spouses Aboard&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;sibsp&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/boat&#34;,
-      &#34;name&#34;: &#34;passengers/boat&#34;,
-      &#34;description&#34;: &#34;Lifeboat used by passenger&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;boat&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;passengers/body&#34;,
-      &#34;name&#34;: &#34;passengers/body&#34;,
-      &#34;description&#34;: &#34;Body Identification Number&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;passengers.csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;body&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
                     
                     <div class="table-wrap">
                         <table>
@@ -1869,6 +1637,238 @@ S,Southampton,wd:Q79848
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;passengers&#34;,
+  &#34;name&#34;: &#34;passengers&#34;,
+  &#34;description&#34;: &#34;The list of passengers. Does not include crew members.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/name&#34;,
+      &#34;name&#34;: &#34;passengers/name&#34;,
+      &#34;description&#34;: &#34;Name of the passenger&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;name&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/gender&#34;,
+      &#34;name&#34;: &#34;passengers/gender&#34;,
+      &#34;description&#34;: &#34;Gender of passenger (male or female)&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;genders/label&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;sex&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/age&#34;,
+      &#34;name&#34;: &#34;passengers/age&#34;,
+      &#34;description&#34;: &#34;Age of passenger at time of death. It&#39;s a string, because some values can be `?`.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;age&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/survived&#34;,
+      &#34;name&#34;: &#34;passengers/survived&#34;,
+      &#34;description&#34;: &#34;Survival status of passenger (0: Lost, 1: Saved)&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;survived&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/pclass&#34;,
+      &#34;name&#34;: &#34;passengers/pclass&#34;,
+      &#34;description&#34;: &#34;Passenger Class (1st/2nd/3rd)&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;pclass&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/cabin&#34;,
+      &#34;name&#34;: &#34;passengers/cabin&#34;,
+      &#34;description&#34;: &#34;Passenger cabin.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;cabin&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/embarked&#34;,
+      &#34;name&#34;: &#34;passengers/embarked&#34;,
+      &#34;description&#34;: &#34;Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;embarkation_ports/key&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;embarked&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/fare&#34;,
+      &#34;name&#34;: &#34;passengers/fare&#34;,
+      &#34;description&#34;: &#34;Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;fare&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/home_destination&#34;,
+      &#34;name&#34;: &#34;passengers/home_destination&#34;,
+      &#34;description&#34;: &#34;Home and destination&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;home.dest&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/ticket&#34;,
+      &#34;name&#34;: &#34;passengers/ticket&#34;,
+      &#34;description&#34;: &#34;Ticket Number, may include a letter.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;ticket&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/num_parents_children&#34;,
+      &#34;name&#34;: &#34;passengers/num_parents_children&#34;,
+      &#34;description&#34;: &#34;Number of Parents/Children Aboard&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;parch&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/num_siblings_spouses&#34;,
+      &#34;name&#34;: &#34;passengers/num_siblings_spouses&#34;,
+      &#34;description&#34;: &#34;Number of Siblings/Spouses Aboard&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;sibsp&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/boat&#34;,
+      &#34;name&#34;: &#34;passengers/boat&#34;,
+      &#34;description&#34;: &#34;Lifeboat used by passenger&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;boat&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;passengers/body&#34;,
+      &#34;name&#34;: &#34;passengers/body&#34;,
+      &#34;description&#34;: &#34;Body Identification Number&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;passengers.csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;body&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -2365,6 +2365,9 @@ S,Southampton,wd:Q79848
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -2374,6 +2377,9 @@ S,Southampton,wd:Q79848
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

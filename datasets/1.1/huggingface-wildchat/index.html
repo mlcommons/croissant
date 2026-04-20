@@ -1004,6 +1004,27 @@ graph TD
                     
                     <div class="rs-desc markdown">Splits for the default config.</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1030,27 +1051,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the split.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1073,6 +1073,189 @@ graph TD
 
 Additional information:
 - 1 skipped column: timestamp</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>conversation_hash</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;conversation_hash&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>model</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;model&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>conversation</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;conversation&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>turn</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Column &#39;turn&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>language</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;language&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>openai_moderation</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;openai_moderation&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>detoxify_moderation</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;detoxify_moderation&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>toxic</strong></td>
+                                    <td><span class="type-badge">bool</span></td>
+                                    <td>Column &#39;toxic&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>redacted</strong></td>
+                                    <td><span class="type-badge">bool</span></td>
+                                    <td>Column &#39;redacted&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>state</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;state&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>country</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;country&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>hashed_ip</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Column &#39;hashed_ip&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>header</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td>Column &#39;header&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>split</th>
+                                        
+                                        <th>conversation_hash</th>
+                                        
+                                        <th>model</th>
+                                        
+                                        <th>conversation</th>
+                                        
+                                        <th>conversation/header/default/conversation/header/accept-language</th>
+                                        
+                                        <th>conversation/header/default/conversation/header/user-agent</th>
+                                        
+                                        <th>turn</th>
+                                        
+                                        <th>language</th>
+                                        
+                                        <th>openai_moderation/categories/default/openai_moderation/categories/harassment</th>
+                                        
+                                        <th>openai_moderation/categories/default/openai_moderation/categories/harassment/threatening</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="c9ec5b440fbdd2a269333dd241f32f64">c9ec5b440fbdd2a269333dd241f32f64</td>
+                                        
+                                        <td title="gpt-4-0314">gpt-4-0314</td>
+                                        
+                                        <td title="[{&#39;default/conversation/content&#39;: b&#39;Hey there! Are you familiar with reality shifting? So, I\xe2\x80\x99m refining a foolproof method for reality shifting and want to pick a destination. Want to help me? I\xe2\x80\x99m thinking something pretty personalized. There are a few things that are required of my destination. 1. The quest. I have to have a clear overarching goal in my reality, and don\xe2\x80\x99t make it too crazy. It should be more along the lines of \xe2\x80\x9csave the president\xe2\x80\x99s daughter\xe2\x80\x9d or \xe2\x80\x9cescape this weird wacky sinister place\xe2\x80\x9d NOT \xe2\x80\x9cget an artifact that literally controls reality\xe2\x80\x9d. Seriously, don\xe2\x80\x99t make me fetch an artifact, or fetch anything. Instead, make me DO something. 2. Babes. I need pretty girls. 3. The entry. I need to get to lose consciousness in order to begin my journey in my desired reality, preferably by having it knocked out by one of the aforementioned babes. 4. Action. It needs to be cool. 5. Unconsciousness. Myself and the babes need to pass out in this place, preferably by being knocked out in some way or fainting. And it should happen, like, a lot. With these requirements in mind, you got any unique refined ideas? Don\xe2\x80\x99t be vague, be extremely specific. Also, make your response as long and detailed as possible. Be super specific, especially when describing the world. The world should be self-contained and relatively small/understandable. Also, try to be conversational. Describe the world well.&#39;, &#39;default/conversation/country&#39;: b&#39;United States&#39;, &#39;default/conversation/hashed_ip&#39;: b&#39;22fd87ba9b98f3d379b23c7b52961f2d4a8505127e58b3104b227a8ca1ce7260&#39;, &#39;default/conversation/language&#39;: b&#39;English&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;user&#39;, &#39;default/conversation/state&#39;: b&#39;Texas&#39;, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101001}, {&#39;default/conversation/content&#39;: b&#39;Hey there! I\&#39;m more than happy to help you plan your reality-shifting adventure, and I\&#39;ve got just the destination in mind for you based on your requirements. Let\&#39;s dive in, shall we?\n\nWelcome to the breathtaking world of Adrenalina! Picture a stunning landscape with a blend of tropical islands, majestic mountains, and lush rainforests filled with breathtaking waterfalls - all surrounded by crystal clear waters teeming with marine life. It\&#39;s a world of adventure and excitement, designed to thrill all who dare to explore its locales.\n\n1. The Quest: As the newly appointed Head Protector of Adrenalina, your mission is to protect the inhabitants and maintain balance in the environment. There\&#39;s a rare flower, known as the &#34;Harmony Bloom,&#34; that maintains balance across the islands in Adrenalina. However, it has been stolen, and if not restored to its pedestal in the Temple of Equilibrium by the next full moon, the consequences could be disastrous. Your task is to locate the thief, restore the Harmony Bloom to its rightful place, and ensure the ongoing prosperity of the land.\n\n2. Babes: Fear not, for Adrenalina is full of stunning people who are as talented as they are beautiful. Some of the most captivating females, like the fierce island warriors and enchanting sirens, will make your heart race as you embark on your thrilling adventure.\n\n3. The Entry: While sunbathing on an idyllic beach, one of the island\&#39;s talented warriors playfully surprises you with a friendly sparring match. They\&#39;re testing your skills to see if you\&#39;re worthy of being the Head Protector of Adrenalina. She lands a well-placed (yet gentle) blow, causing you to lose consciousness and wake up in a luscious jungle teeming with life, where your quest officially begins.\n\n4. Action: Adrenalina is a non-stop action-packed world with a little bit of everything for the thrill-seekers. From skirmishes with rogue pirates and chasing down the thief on off-road vehicles and zip lines through the jungle, to navigating a maze made up of massive corals under the sea, you\&#39;ll never be short of exhilarating experiences. But you\&#39;ll also find moments of peace and serenity, where you can watch the sunset while lounging in a hammock, listening to the melodies of the nocturnal creatures of the rainforest.\n\n5. Unconsciousness: Throughout your journey, you and your companions will encounter various challenges that lead to bouts of unconsciousness. One moment all of you may be knocked out by the fragrant pollen of a colossal Venus Flytrap-like plant, and another time enchanted by a charming melody sung by an alluring siren, causing everyone to faint. But do not worry \xe2\x80\x93 you will always awaken refreshed, invigorated, and ready to continue your quest.\n\nIn Adrenalina, you\&#39;ll discover a world of beauty and adrenaline-fueled adventure, and your tale will be one of valiance, strength, friendship, and the thrills that await you in this high-octane reality. I hope this creates an unforgettable experience for you as you embark on your reality-shifting journey. Good luck, and have fun!&#39;, &#39;default/conversation/country&#39;: None, &#39;default/conversation/hashed_ip&#39;: None, &#39;default/conversation/language&#39;: b&#39;English&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;assistant&#39;, &#39;default/conversation/state&#39;: None, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101001}]">[{&#39;default/conversation/content&#39;: b&#39;Hey there! Are you familiar with reality shi…</td>
+                                        
+                                        <td title="[b&#39;en-US,en;q=0.9,es;q=0.8&#39;, None]">[b&#39;en-US,en;q=0.9,es;q=0.8&#39;, None]</td>
+                                        
+                                        <td title="[b&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36&#39;, None]">[b&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gec…</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="English">English</td>
+                                        
+                                        <td title="[False, False]">[False, False]</td>
+                                        
+                                        <td title="[False, False]">[False, False]</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="34f1581760df304d539e2fe4653b40d3">34f1581760df304d539e2fe4653b40d3</td>
+                                        
+                                        <td title="gpt-4-0314">gpt-4-0314</td>
+                                        
+                                        <td title="[{&#39;default/conversation/content&#39;: b&#39;Crea una imagen de una mujer corriente por la playa en bikini &#39;, &#39;default/conversation/country&#39;: b&#39;Spain&#39;, &#39;default/conversation/hashed_ip&#39;: b&#39;58369722cd0bdf7fc027a67491ba65b74576df6994c36cfbc1978776e97fe587&#39;, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;user&#39;, &#39;default/conversation/state&#39;: b&#39;A Coru\xc3\xb1a&#39;, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 100999}, {&#39;default/conversation/content&#39;: b&#39;Como inteligencia artificial basada en texto, no puedo crear im\xc3\xa1genes visuales directamente. Sin embargo, puedo describir la imagen que tienes en mente.\n\nImagina una mujer con una figura promedio, disfrutando del sol y la arena en un hermoso d\xc3\xada de playa. Lleva un bikini de dos piezas de color turquesa que se adapta c\xc3\xb3modamente a su cuerpo. El sol brilla sobre su piel bronceada y el viento juega con sus cabellos casta\xc3\xb1os, que flotan suavemente a su alrededor.\n\nCamina descalza sobre la orilla de la playa, donde el agua toca sus pies y la arena c\xc3\xa1lida se filtra entre sus dedos. Hay una sonrisa genuina en su rostro, reflejando su alegr\xc3\xada por el entorno id\xc3\xadlico que la rodea. Todo el paisaje desprende serenidad y bienestar, mientras disfruta de su tiempo en la playa.&#39;, &#39;default/conversation/country&#39;: None, &#39;default/conversation/hashed_ip&#39;: None, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;assistant&#39;, &#39;default/conversation/state&#39;: None, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 100999}, {&#39;default/conversation/content&#39;: b&#39;Aceede a Amazon y dame una lista de lo TV m\xc3\xa1s vendido y cu\xc3\xa1l es el m\xc3\xa1s recomendado &#39;, &#39;default/conversation/country&#39;: b&#39;Spain&#39;, &#39;default/conversation/hashed_ip&#39;: b&#39;58369722cd0bdf7fc027a67491ba65b74576df6994c36cfbc1978776e97fe587&#39;, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;user&#39;, &#39;default/conversation/state&#39;: b&#39;A Coru\xc3\xb1a&#39;, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101003}, {&#39;default/conversation/content&#39;: b&#39;Lo siento, pero como inteligencia artificial basada en texto, no tengo la capacidad de acceder a sitios web directamente ni interactuar con ellos. Sin embargo, puedo darte algunas sugerencias de televisores populares y recomendados basados en rese\xc3\xb1as y opiniones de diversos sitios web.\n\n1. LG OLED55CXPUA Serie CX 4K 55&#34; Smart OLED TV.\n2. Samsung 65&#34; Q80T QLED 4K UHD HDR Smart TV.\n3. Sony Bravia X950H Series 65&#34; 4K Ultra HD Smart LED TV.\n4. TCL 65&#34; 6-Series 4K UHD Dolby Vision HDR QLED ROKU Smart TV.\n5. Hisense 50&#34; H8G Quantum Series 4K ULED Android Smart TV.\n\nEl m\xc3\xa1s recomendado suele variar seg\xc3\xban las preferencias y necesidades del usuario. Sin embargo, generalmente, los televisores LG OLED y Samsung QLED suelen ser altamente recomendados debido a su calidad de imagen y caracter\xc3\xadsticas avanzadas.\n\nTe recomiendo que visites Amazon u otros sitios de rese\xc3\xb1as de productos para obtener recomendaciones actualizadas y m\xc3\xa1s espec\xc3\xadficas seg\xc3\xban tus necesidades y presupuesto.&#39;, &#39;default/conversation/country&#39;: None, &#39;default/conversation/hashed_ip&#39;: None, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;assistant&#39;, &#39;default/conversation/state&#39;: None, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101003}]">[{&#39;default/conversation/content&#39;: b&#39;Crea una imagen de una mujer corriente por l…</td>
+                                        
+                                        <td title="[b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None, b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None]">[b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None, b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None]</td>
+                                        
+                                        <td title="[b&#39;Mozilla/5.0 (Linux; Android 12; 21061119DG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36&#39;, None, b&#39;Mozilla/5.0 (Linux; Android 12; 21061119DG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36&#39;, None]">[b&#39;Mozilla/5.0 (Linux; Android 12; 21061119DG) AppleWebKit/537.36 (KHTML, like G…</td>
+                                        
+                                        <td title="2">2</td>
+                                        
+                                        <td title="Spanish">Spanish</td>
+                                        
+                                        <td title="[False, False, False, False]">[False, False, False, False]</td>
+                                        
+                                        <td title="[False, False, False, False]">[False, False, False, False]</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -2517,189 +2700,6 @@ Additional information:
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Split to which the example belongs to.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>conversation_hash</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;conversation_hash&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>model</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;model&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>conversation</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column &#39;conversation&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>turn</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Column &#39;turn&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;language&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>openai_moderation</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column &#39;openai_moderation&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>detoxify_moderation</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column &#39;detoxify_moderation&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>toxic</strong></td>
-                                    <td><span class="type-badge">bool</span></td>
-                                    <td>Column &#39;toxic&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>redacted</strong></td>
-                                    <td><span class="type-badge">bool</span></td>
-                                    <td>Column &#39;redacted&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>state</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;state&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>country</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;country&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>hashed_ip</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column &#39;hashed_ip&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>header</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column &#39;header&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="rs-preview">
-                        <div class="rs-preview-label">🔍 Data preview</div>
-                        <div class="table-wrap">
-                            <table class="preview-table">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>split</th>
-                                        
-                                        <th>conversation_hash</th>
-                                        
-                                        <th>model</th>
-                                        
-                                        <th>conversation</th>
-                                        
-                                        <th>conversation/header/default/conversation/header/accept-language</th>
-                                        
-                                        <th>conversation/header/default/conversation/header/user-agent</th>
-                                        
-                                        <th>turn</th>
-                                        
-                                        <th>language</th>
-                                        
-                                        <th>openai_moderation/categories/default/openai_moderation/categories/harassment</th>
-                                        
-                                        <th>openai_moderation/categories/default/openai_moderation/categories/harassment/threatening</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="c9ec5b440fbdd2a269333dd241f32f64">c9ec5b440fbdd2a269333dd241f32f64</td>
-                                        
-                                        <td title="gpt-4-0314">gpt-4-0314</td>
-                                        
-                                        <td title="[{&#39;default/conversation/content&#39;: b&#39;Hey there! Are you familiar with reality shifting? So, I\xe2\x80\x99m refining a foolproof method for reality shifting and want to pick a destination. Want to help me? I\xe2\x80\x99m thinking something pretty personalized. There are a few things that are required of my destination. 1. The quest. I have to have a clear overarching goal in my reality, and don\xe2\x80\x99t make it too crazy. It should be more along the lines of \xe2\x80\x9csave the president\xe2\x80\x99s daughter\xe2\x80\x9d or \xe2\x80\x9cescape this weird wacky sinister place\xe2\x80\x9d NOT \xe2\x80\x9cget an artifact that literally controls reality\xe2\x80\x9d. Seriously, don\xe2\x80\x99t make me fetch an artifact, or fetch anything. Instead, make me DO something. 2. Babes. I need pretty girls. 3. The entry. I need to get to lose consciousness in order to begin my journey in my desired reality, preferably by having it knocked out by one of the aforementioned babes. 4. Action. It needs to be cool. 5. Unconsciousness. Myself and the babes need to pass out in this place, preferably by being knocked out in some way or fainting. And it should happen, like, a lot. With these requirements in mind, you got any unique refined ideas? Don\xe2\x80\x99t be vague, be extremely specific. Also, make your response as long and detailed as possible. Be super specific, especially when describing the world. The world should be self-contained and relatively small/understandable. Also, try to be conversational. Describe the world well.&#39;, &#39;default/conversation/country&#39;: b&#39;United States&#39;, &#39;default/conversation/hashed_ip&#39;: b&#39;22fd87ba9b98f3d379b23c7b52961f2d4a8505127e58b3104b227a8ca1ce7260&#39;, &#39;default/conversation/language&#39;: b&#39;English&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;user&#39;, &#39;default/conversation/state&#39;: b&#39;Texas&#39;, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101001}, {&#39;default/conversation/content&#39;: b&#39;Hey there! I\&#39;m more than happy to help you plan your reality-shifting adventure, and I\&#39;ve got just the destination in mind for you based on your requirements. Let\&#39;s dive in, shall we?\n\nWelcome to the breathtaking world of Adrenalina! Picture a stunning landscape with a blend of tropical islands, majestic mountains, and lush rainforests filled with breathtaking waterfalls - all surrounded by crystal clear waters teeming with marine life. It\&#39;s a world of adventure and excitement, designed to thrill all who dare to explore its locales.\n\n1. The Quest: As the newly appointed Head Protector of Adrenalina, your mission is to protect the inhabitants and maintain balance in the environment. There\&#39;s a rare flower, known as the &#34;Harmony Bloom,&#34; that maintains balance across the islands in Adrenalina. However, it has been stolen, and if not restored to its pedestal in the Temple of Equilibrium by the next full moon, the consequences could be disastrous. Your task is to locate the thief, restore the Harmony Bloom to its rightful place, and ensure the ongoing prosperity of the land.\n\n2. Babes: Fear not, for Adrenalina is full of stunning people who are as talented as they are beautiful. Some of the most captivating females, like the fierce island warriors and enchanting sirens, will make your heart race as you embark on your thrilling adventure.\n\n3. The Entry: While sunbathing on an idyllic beach, one of the island\&#39;s talented warriors playfully surprises you with a friendly sparring match. They\&#39;re testing your skills to see if you\&#39;re worthy of being the Head Protector of Adrenalina. She lands a well-placed (yet gentle) blow, causing you to lose consciousness and wake up in a luscious jungle teeming with life, where your quest officially begins.\n\n4. Action: Adrenalina is a non-stop action-packed world with a little bit of everything for the thrill-seekers. From skirmishes with rogue pirates and chasing down the thief on off-road vehicles and zip lines through the jungle, to navigating a maze made up of massive corals under the sea, you\&#39;ll never be short of exhilarating experiences. But you\&#39;ll also find moments of peace and serenity, where you can watch the sunset while lounging in a hammock, listening to the melodies of the nocturnal creatures of the rainforest.\n\n5. Unconsciousness: Throughout your journey, you and your companions will encounter various challenges that lead to bouts of unconsciousness. One moment all of you may be knocked out by the fragrant pollen of a colossal Venus Flytrap-like plant, and another time enchanted by a charming melody sung by an alluring siren, causing everyone to faint. But do not worry \xe2\x80\x93 you will always awaken refreshed, invigorated, and ready to continue your quest.\n\nIn Adrenalina, you\&#39;ll discover a world of beauty and adrenaline-fueled adventure, and your tale will be one of valiance, strength, friendship, and the thrills that await you in this high-octane reality. I hope this creates an unforgettable experience for you as you embark on your reality-shifting journey. Good luck, and have fun!&#39;, &#39;default/conversation/country&#39;: None, &#39;default/conversation/hashed_ip&#39;: None, &#39;default/conversation/language&#39;: b&#39;English&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;assistant&#39;, &#39;default/conversation/state&#39;: None, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101001}]">[{&#39;default/conversation/content&#39;: b&#39;Hey there! Are you familiar with reality shi…</td>
-                                        
-                                        <td title="[b&#39;en-US,en;q=0.9,es;q=0.8&#39;, None]">[b&#39;en-US,en;q=0.9,es;q=0.8&#39;, None]</td>
-                                        
-                                        <td title="[b&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36&#39;, None]">[b&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gec…</td>
-                                        
-                                        <td title="1">1</td>
-                                        
-                                        <td title="English">English</td>
-                                        
-                                        <td title="[False, False]">[False, False]</td>
-                                        
-                                        <td title="[False, False]">[False, False]</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="34f1581760df304d539e2fe4653b40d3">34f1581760df304d539e2fe4653b40d3</td>
-                                        
-                                        <td title="gpt-4-0314">gpt-4-0314</td>
-                                        
-                                        <td title="[{&#39;default/conversation/content&#39;: b&#39;Crea una imagen de una mujer corriente por la playa en bikini &#39;, &#39;default/conversation/country&#39;: b&#39;Spain&#39;, &#39;default/conversation/hashed_ip&#39;: b&#39;58369722cd0bdf7fc027a67491ba65b74576df6994c36cfbc1978776e97fe587&#39;, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;user&#39;, &#39;default/conversation/state&#39;: b&#39;A Coru\xc3\xb1a&#39;, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 100999}, {&#39;default/conversation/content&#39;: b&#39;Como inteligencia artificial basada en texto, no puedo crear im\xc3\xa1genes visuales directamente. Sin embargo, puedo describir la imagen que tienes en mente.\n\nImagina una mujer con una figura promedio, disfrutando del sol y la arena en un hermoso d\xc3\xada de playa. Lleva un bikini de dos piezas de color turquesa que se adapta c\xc3\xb3modamente a su cuerpo. El sol brilla sobre su piel bronceada y el viento juega con sus cabellos casta\xc3\xb1os, que flotan suavemente a su alrededor.\n\nCamina descalza sobre la orilla de la playa, donde el agua toca sus pies y la arena c\xc3\xa1lida se filtra entre sus dedos. Hay una sonrisa genuina en su rostro, reflejando su alegr\xc3\xada por el entorno id\xc3\xadlico que la rodea. Todo el paisaje desprende serenidad y bienestar, mientras disfruta de su tiempo en la playa.&#39;, &#39;default/conversation/country&#39;: None, &#39;default/conversation/hashed_ip&#39;: None, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;assistant&#39;, &#39;default/conversation/state&#39;: None, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 100999}, {&#39;default/conversation/content&#39;: b&#39;Aceede a Amazon y dame una lista de lo TV m\xc3\xa1s vendido y cu\xc3\xa1l es el m\xc3\xa1s recomendado &#39;, &#39;default/conversation/country&#39;: b&#39;Spain&#39;, &#39;default/conversation/hashed_ip&#39;: b&#39;58369722cd0bdf7fc027a67491ba65b74576df6994c36cfbc1978776e97fe587&#39;, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;user&#39;, &#39;default/conversation/state&#39;: b&#39;A Coru\xc3\xb1a&#39;, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101003}, {&#39;default/conversation/content&#39;: b&#39;Lo siento, pero como inteligencia artificial basada en texto, no tengo la capacidad de acceder a sitios web directamente ni interactuar con ellos. Sin embargo, puedo darte algunas sugerencias de televisores populares y recomendados basados en rese\xc3\xb1as y opiniones de diversos sitios web.\n\n1. LG OLED55CXPUA Serie CX 4K 55&#34; Smart OLED TV.\n2. Samsung 65&#34; Q80T QLED 4K UHD HDR Smart TV.\n3. Sony Bravia X950H Series 65&#34; 4K Ultra HD Smart LED TV.\n4. TCL 65&#34; 6-Series 4K UHD Dolby Vision HDR QLED ROKU Smart TV.\n5. Hisense 50&#34; H8G Quantum Series 4K ULED Android Smart TV.\n\nEl m\xc3\xa1s recomendado suele variar seg\xc3\xban las preferencias y necesidades del usuario. Sin embargo, generalmente, los televisores LG OLED y Samsung QLED suelen ser altamente recomendados debido a su calidad de imagen y caracter\xc3\xadsticas avanzadas.\n\nTe recomiendo que visites Amazon u otros sitios de rese\xc3\xb1as de productos para obtener recomendaciones actualizadas y m\xc3\xa1s espec\xc3\xadficas seg\xc3\xban tus necesidades y presupuesto.&#39;, &#39;default/conversation/country&#39;: None, &#39;default/conversation/hashed_ip&#39;: None, &#39;default/conversation/language&#39;: b&#39;Spanish&#39;, &#39;default/conversation/redacted&#39;: False, &#39;default/conversation/role&#39;: b&#39;assistant&#39;, &#39;default/conversation/state&#39;: None, &#39;default/conversation/toxic&#39;: False, &#39;default/conversation/turn_identifier&#39;: 101003}]">[{&#39;default/conversation/content&#39;: b&#39;Crea una imagen de una mujer corriente por l…</td>
-                                        
-                                        <td title="[b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None, b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None]">[b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None, b&#39;es-ES,es;q=0.9,en;q=0.8&#39;, None]</td>
-                                        
-                                        <td title="[b&#39;Mozilla/5.0 (Linux; Android 12; 21061119DG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36&#39;, None, b&#39;Mozilla/5.0 (Linux; Android 12; 21061119DG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36&#39;, None]">[b&#39;Mozilla/5.0 (Linux; Android 12; 21061119DG) AppleWebKit/537.36 (KHTML, like G…</td>
-                                        
-                                        <td title="2">2</td>
-                                        
-                                        <td title="Spanish">Spanish</td>
-                                        
-                                        <td title="[False, False, False, False]">[False, False, False, False]</td>
-                                        
-                                        <td title="[False, False, False, False]">[False, False, False, False]</td>
-                                        
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                     
                 </div>
@@ -4360,6 +4360,9 @@ Additional information:
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -4369,6 +4372,9 @@ Additional information:
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

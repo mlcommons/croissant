@@ -954,56 +954,6 @@ graph TD
                     
                     <div class="rs-desc markdown">Contexts and completions.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-  &#34;name&#34;: &#34;default&#34;,
-  &#34;description&#34;: &#34;Contexts and completions.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;context&#34;,
-      &#34;description&#34;: &#34;The context in the promt.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;jsonl&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;context&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;completion&#34;,
-      &#34;description&#34;: &#34;The expected completion of the promt.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;jsonl&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;completion&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;task&#34;,
-      &#34;description&#34;: &#34;The machine learning task appearing as the name of the file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;jsonl&#34;,
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;^(.*)\\.jsonl$&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1147,6 +1097,56 @@ A:</td>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
+  &#34;name&#34;: &#34;default&#34;,
+  &#34;description&#34;: &#34;Contexts and completions.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;context&#34;,
+      &#34;description&#34;: &#34;The context in the promt.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;jsonl&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;context&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;completion&#34;,
+      &#34;description&#34;: &#34;The expected completion of the promt.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;jsonl&#34;,
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;completion&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;ml:Field&#34;,
+      &#34;name&#34;: &#34;task&#34;,
+      &#34;description&#34;: &#34;The machine learning task appearing as the name of the file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;distribution&#34;: &#34;jsonl&#34;,
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;^(.*)\\.jsonl$&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1324,6 +1324,9 @@ A:</td>
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1333,6 +1336,9 @@ A:</td>
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

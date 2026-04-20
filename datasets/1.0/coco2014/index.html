@@ -1327,6 +1327,33 @@ graph TD
                     
                     <div class="rs-desc markdown">Maps split names to semantic values.</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>One of: train, val, test.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>url</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Corresponding mlcommons.org definition URL</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1373,33 +1400,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>One of: train, val, test.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>url</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Corresponding mlcommons.org definition URL</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1414,6 +1414,45 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>image_id</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>image_filename</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>image_content</strong></td>
+                                    <td><span class="type-badge">ImageObject</span></td>
+                                    <td>The content of the image.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
                     </div>
                     
                     
@@ -1503,45 +1542,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>image_id</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_filename</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The filename of the image. eg: COCO_train2014_000000000003.jpg</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_content</strong></td>
-                                    <td><span class="type-badge">ImageObject</span></td>
-                                    <td>The content of the image.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1556,6 +1556,45 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the caption</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>image_id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the image</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>caption</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The caption</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
                     </div>
                     
                     
@@ -1645,45 +1684,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the caption</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the image</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>caption</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The caption</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1698,6 +1698,39 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the category</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the category.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>supercategory</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the supercategory.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
                     </div>
                     
                     
@@ -1767,39 +1800,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the category</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the category.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>supercategory</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the supercategory.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1814,6 +1814,45 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
+                    </div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the annotation.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>category_id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the category.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>image_id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The ID of the image.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>bbox</strong></td>
+                                    <td><span class="type-badge">http://mlcommons.org/croissant/BoundingBox</span></td>
+                                    <td>The bounding box around annotated object[s].</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
                     </div>
                     
                     
@@ -1898,45 +1937,6 @@ graph TD
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the annotation.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>category_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the category.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>image_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The ID of the image.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>bbox</strong></td>
-                                    <td><span class="type-badge">http://mlcommons.org/croissant/BoundingBox</span></td>
-                                    <td>The bounding box around annotated object[s].</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
                     </div>
                     
                 </div>
@@ -2518,6 +2518,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -2527,6 +2530,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

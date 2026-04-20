@@ -1005,81 +1005,6 @@ graph TD
                     
                     <div class="rs-desc markdown">The en set of records in the dataset.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;data&#34;,
-  &#34;name&#34;: &#34;data&#34;,
-  &#34;description&#34;: &#34;The en set of records in the dataset.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;data/variant&#34;,
-      &#34;name&#34;: &#34;data/variant&#34;,
-      &#34;description&#34;: &#34;The name of the variant (e.g., en or en.noclean).&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;fullpath&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;(.+)/.+/.+\\.parquet&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;data/text&#34;,
-      &#34;name&#34;: &#34;data/text&#34;,
-      &#34;description&#34;: &#34;Column from Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;text&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;data/timestamp&#34;,
-      &#34;name&#34;: &#34;data/timestamp&#34;,
-      &#34;description&#34;: &#34;Column from Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;data/url&#34;,
-      &#34;name&#34;: &#34;data/url&#34;,
-      &#34;description&#34;: &#34;Column from Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;url&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1157,6 +1082,81 @@ Do you want to get better at makin…</td>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;data&#34;,
+  &#34;name&#34;: &#34;data&#34;,
+  &#34;description&#34;: &#34;The en set of records in the dataset.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;data/variant&#34;,
+      &#34;name&#34;: &#34;data/variant&#34;,
+      &#34;description&#34;: &#34;The name of the variant (e.g., en or en.noclean).&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;(.+)/.+/.+\\.parquet&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;data/text&#34;,
+      &#34;name&#34;: &#34;data/text&#34;,
+      &#34;description&#34;: &#34;Column from Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;text&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;data/timestamp&#34;,
+      &#34;name&#34;: &#34;data/timestamp&#34;,
+      &#34;description&#34;: &#34;Column from Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;timestamp&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;data/url&#34;,
+      &#34;name&#34;: &#34;data/url&#34;,
+      &#34;description&#34;: &#34;Column from Hugging Face parquet file.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;parquet-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;url&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1375,6 +1375,9 @@ Do you want to get better at makin…</td>
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1384,6 +1387,9 @@ Do you want to get better at makin…</td>
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

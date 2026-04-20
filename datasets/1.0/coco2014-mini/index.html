@@ -1054,52 +1054,6 @@ graph TD
                     
                     <div class="rs-desc markdown">Maps split names to semantic values.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;split_enums&#34;,
-  &#34;name&#34;: &#34;split_enums&#34;,
-  &#34;description&#34;: &#34;Maps split names to semantic values.&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;name&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;split_enums/name&#34;,
-      &#34;name&#34;: &#34;split_enums/name&#34;,
-      &#34;description&#34;: &#34;One of: train, val, test.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;split_enums/url&#34;,
-      &#34;name&#34;: &#34;split_enums/url&#34;,
-      &#34;description&#34;: &#34;Corresponding mlcommons.org definition URL&#34;,
-      &#34;dataType&#34;: [
-        &#34;wd:Q3985153&#34;,
-        &#34;sc:URL&#34;
-      ]
-    }
-  ],
-  &#34;data&#34;: [
-    {
-      &#34;split_enums/name&#34;: &#34;train&#34;,
-      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/training_split&#34;
-    },
-    {
-      &#34;split_enums/name&#34;: &#34;val&#34;,
-      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/validation_split&#34;
-    },
-    {
-      &#34;split_enums/name&#34;: &#34;test&#34;,
-      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/test_split&#34;
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1171,6 +1125,52 @@ graph TD
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;split_enums&#34;,
+  &#34;name&#34;: &#34;split_enums&#34;,
+  &#34;description&#34;: &#34;Maps split names to semantic values.&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;name&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;split_enums/name&#34;,
+      &#34;name&#34;: &#34;split_enums/name&#34;,
+      &#34;description&#34;: &#34;One of: train, val, test.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;split_enums/url&#34;,
+      &#34;name&#34;: &#34;split_enums/url&#34;,
+      &#34;description&#34;: &#34;Corresponding mlcommons.org definition URL&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:URL&#34;
+      ]
+    }
+  ],
+  &#34;data&#34;: [
+    {
+      &#34;split_enums/name&#34;: &#34;train&#34;,
+      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/training_split&#34;
+    },
+    {
+      &#34;split_enums/name&#34;: &#34;val&#34;,
+      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/validation_split&#34;
+    },
+    {
+      &#34;split_enums/name&#34;: &#34;test&#34;,
+      &#34;split_enums/url&#34;: &#34;https://mlcommons.org/definitions/test_split&#34;
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1187,75 +1187,6 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;images&#34;,
-  &#34;name&#34;: &#34;images&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;img_id&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_filename&#34;,
-      &#34;name&#34;: &#34;images/image_filename&#34;,
-      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_content&#34;,
-      &#34;name&#34;: &#34;images/image_content&#34;,
-      &#34;description&#34;: &#34;The content of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;content&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/split&#34;,
-      &#34;name&#34;: &#34;images/split&#34;,
-      &#34;dataType&#34;: [
-        &#34;wd:Q3985153&#34;,
-        &#34;sc:Text&#34;
-      ],
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;split_enums/name&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;fullpath&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;^(train|val|test)2014/.*\\.jpg$&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
                     </div>
                     
                     <div class="table-wrap">
@@ -1333,6 +1264,75 @@ graph TD
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;images&#34;,
+  &#34;name&#34;: &#34;images&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;img_id&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/image_filename&#34;,
+      &#34;name&#34;: &#34;images/image_filename&#34;,
+      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/image_content&#34;,
+      &#34;name&#34;: &#34;images/image_content&#34;,
+      &#34;description&#34;: &#34;The content of the image.&#34;,
+      &#34;dataType&#34;: &#34;sc:ImageObject&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;content&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/split&#34;,
+      &#34;name&#34;: &#34;images/split&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;split_enums/name&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;fullpath&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;^(train|val|test)2014/.*\\.jpg$&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1349,93 +1349,6 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;captions&#34;,
-  &#34;name&#34;: &#34;captions&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;id&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/id&#34;,
-      &#34;name&#34;: &#34;captions/id&#34;,
-      &#34;description&#34;: &#34;The ID of the caption&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/image_id&#34;,
-      &#34;name&#34;: &#34;captions/image_id&#34;,
-      &#34;description&#34;: &#34;The ID of the image&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/caption&#34;,
-      &#34;name&#34;: &#34;captions/caption&#34;,
-      &#34;description&#34;: &#34;The caption&#34;,
-      &#34;dataType&#34;: [
-        &#34;wd:Q18585177&#34;,
-        &#34;sc:Text&#34;
-      ],
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].caption&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;captions/split&#34;,
-      &#34;name&#34;: &#34;captions/split&#34;,
-      &#34;dataType&#34;: [
-        &#34;wd:Q3985153&#34;,
-        &#34;sc:Text&#34;
-      ],
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;split_enums/name&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;caption_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;.*_(val|train)2014\\.json$&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
                     </div>
                     
                     <div class="table-wrap">
@@ -1549,6 +1462,93 @@ graph TD
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;captions&#34;,
+  &#34;name&#34;: &#34;captions&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;id&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/id&#34;,
+      &#34;name&#34;: &#34;captions/id&#34;,
+      &#34;description&#34;: &#34;The ID of the caption&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/image_id&#34;,
+      &#34;name&#34;: &#34;captions/image_id&#34;,
+      &#34;description&#34;: &#34;The ID of the image&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/caption&#34;,
+      &#34;name&#34;: &#34;captions/caption&#34;,
+      &#34;description&#34;: &#34;The caption&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q18585177&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].caption&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;captions/split&#34;,
+      &#34;name&#34;: &#34;captions/split&#34;,
+      &#34;dataType&#34;: [
+        &#34;wd:Q3985153&#34;,
+        &#34;sc:Text&#34;
+      ],
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;split_enums/name&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;caption_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;.*_(val|train)2014\\.json$&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1565,77 +1565,6 @@ graph TD
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                         </div>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;bounding_boxes&#34;,
-  &#34;name&#34;: &#34;bounding_boxes&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;bounding_boxes/id&#34;,
-      &#34;name&#34;: &#34;bounding_boxes/id&#34;,
-      &#34;description&#34;: &#34;The ID of the annotation.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;bounding_boxes/image_id&#34;,
-      &#34;name&#34;: &#34;bounding_boxes/image_id&#34;,
-      &#34;description&#34;: &#34;The ID of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;bounding_boxes/bbox&#34;,
-      &#34;name&#34;: &#34;bounding_boxes/bbox&#34;,
-      &#34;description&#34;: &#34;The bounding box on the image.&#34;,
-      &#34;dataType&#34;: &#34;cr:BoundingBox&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].bbox&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;bounding_boxes/area&#34;,
-      &#34;name&#34;: &#34;bounding_boxes/area&#34;,
-      &#34;description&#34;: &#34;The area of the bounding box.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;jsonPath&#34;: &#34;$.annotations[*].area&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
                     </div>
                     
                     <div class="table-wrap">
@@ -1747,6 +1676,77 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;bounding_boxes&#34;,
+  &#34;name&#34;: &#34;bounding_boxes&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/id&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/id&#34;,
+      &#34;description&#34;: &#34;The ID of the annotation.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/image_id&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/image_id&#34;,
+      &#34;description&#34;: &#34;The ID of the image.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].image_id&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/bbox&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/bbox&#34;,
+      &#34;description&#34;: &#34;The bounding box on the image.&#34;,
+      &#34;dataType&#34;: &#34;cr:BoundingBox&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].bbox&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;bounding_boxes/area&#34;,
+      &#34;name&#34;: &#34;bounding_boxes/area&#34;,
+      &#34;description&#34;: &#34;The area of the bounding box.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;bbox_annotations-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;jsonPath&#34;: &#34;$.annotations[*].area&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -2168,6 +2168,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -2177,6 +2180,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

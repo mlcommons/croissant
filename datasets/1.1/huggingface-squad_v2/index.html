@@ -905,7 +905,7 @@ SQuAD 2.0 combines the 100,000 questions in SQuAD1.1 with over 50,000 unanswerab
                         <td class="kv-val">
                             
                             
-                            Person(uuid=&#34;_:N45d42551ffda4fcd8390f2bc301a76a8&#34;)
+                            Person(uuid=&#34;_:N6d9908ad9f1743e68fa71c57b0ce8a85&#34;)
                             
                             
                         </td>
@@ -1048,6 +1048,27 @@ graph TD
                     
                     <div class="rs-desc markdown">Splits for the squad_v2 config.</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1077,27 +1098,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1118,6 +1118,57 @@ graph TD
 
 Additional information:
 - 2 splits: train, validation</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>title</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>context</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>question</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>answers</strong></td>
+                                    <td><span class="type-badge"></span></td>
+                                    <td></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -1243,57 +1294,6 @@ Additional information:
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>context</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>question</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>answers</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
                     </div>
                     
                 </div>
@@ -1637,6 +1637,9 @@ Additional information:
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1646,6 +1649,9 @@ Additional information:
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

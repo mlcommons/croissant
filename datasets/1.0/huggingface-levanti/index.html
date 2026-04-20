@@ -971,137 +971,6 @@ graph TD
                         </div>
                     </div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;levanti_train&#34;,
-  &#34;name&#34;: &#34;levanti_train&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/dialect&#34;,
-      &#34;name&#34;: &#34;levanti/dialect&#34;,
-      &#34;description&#34;: &#34;Palestinian, Syrian, Lebnese, Jordanian, Egyptian or Levantine (if exact dialect unknown).&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;dialect&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/arabic&#34;,
-      &#34;name&#34;: &#34;levanti/arabic&#34;,
-      &#34;description&#34;: &#34;Sentence text in Arabic, without diacritics.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;arabic&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/hebrew&#34;,
-      &#34;name&#34;: &#34;levanti/hebrew&#34;,
-      &#34;description&#34;: &#34;Hebrew translation.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;hebrew&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/english&#34;,
-      &#34;name&#34;: &#34;levanti/english&#34;,
-      &#34;description&#34;: &#34;English translation.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;english&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/synthesized&#34;,
-      &#34;name&#34;: &#34;levanti/synthesized&#34;,
-      &#34;description&#34;: &#34;Whether sentence is generated with LLM based on definitions and example (True) or found in the wild (False).&#34;,
-      &#34;dataType&#34;: &#34;sc:Boolean&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;synthesized&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/diacritized&#34;,
-      &#34;name&#34;: &#34;levanti/diacritized&#34;,
-      &#34;description&#34;: &#34;Diacritized version of Arabic sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;diacritized&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/hebrew_taatik_EXP&#34;,
-      &#34;name&#34;: &#34;levanti/hebrew_taatik_EXP&#34;,
-      &#34;description&#34;: &#34;Transliteration into Hebrew of diacritized sentence (after disambiguation of diacritics).&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;hebrew_taatik_EXP&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;levanti/english_translit_EXP&#34;,
-      &#34;name&#34;: &#34;levanti/english_translit_EXP&#34;,
-      &#34;description&#34;: &#34;Transliteration into English of diacritized sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;levanti-csv&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;english_translit_EXP&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1295,6 +1164,137 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;levanti_train&#34;,
+  &#34;name&#34;: &#34;levanti_train&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/dialect&#34;,
+      &#34;name&#34;: &#34;levanti/dialect&#34;,
+      &#34;description&#34;: &#34;Palestinian, Syrian, Lebnese, Jordanian, Egyptian or Levantine (if exact dialect unknown).&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;dialect&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/arabic&#34;,
+      &#34;name&#34;: &#34;levanti/arabic&#34;,
+      &#34;description&#34;: &#34;Sentence text in Arabic, without diacritics.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;arabic&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/hebrew&#34;,
+      &#34;name&#34;: &#34;levanti/hebrew&#34;,
+      &#34;description&#34;: &#34;Hebrew translation.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;hebrew&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/english&#34;,
+      &#34;name&#34;: &#34;levanti/english&#34;,
+      &#34;description&#34;: &#34;English translation.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;english&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/synthesized&#34;,
+      &#34;name&#34;: &#34;levanti/synthesized&#34;,
+      &#34;description&#34;: &#34;Whether sentence is generated with LLM based on definitions and example (True) or found in the wild (False).&#34;,
+      &#34;dataType&#34;: &#34;sc:Boolean&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;synthesized&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/diacritized&#34;,
+      &#34;name&#34;: &#34;levanti/diacritized&#34;,
+      &#34;description&#34;: &#34;Diacritized version of Arabic sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;diacritized&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/hebrew_taatik_EXP&#34;,
+      &#34;name&#34;: &#34;levanti/hebrew_taatik_EXP&#34;,
+      &#34;description&#34;: &#34;Transliteration into Hebrew of diacritized sentence (after disambiguation of diacritics).&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;hebrew_taatik_EXP&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;levanti/english_translit_EXP&#34;,
+      &#34;name&#34;: &#34;levanti/english_translit_EXP&#34;,
+      &#34;description&#34;: &#34;Transliteration into English of diacritized sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;levanti-csv&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;english_translit_EXP&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1568,6 +1568,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1577,6 +1580,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

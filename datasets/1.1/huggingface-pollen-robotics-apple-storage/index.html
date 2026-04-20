@@ -1029,6 +1029,27 @@ graph TD
                     
                     <div class="rs-desc markdown">Splits for the default config.</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split_name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The name of the split.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1055,27 +1076,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the split.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1095,6 +1095,141 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">pollen-robotics/apple_storage - &#39;default&#39; subset</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>observation.state</strong></td>
+                                    <td><span class="type-badge">numpy.float32</span></td>
+                                    <td>Column &#39;observation.state&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>action</strong></td>
+                                    <td><span class="type-badge">numpy.float32</span></td>
+                                    <td>Column &#39;action&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>timestamp</strong></td>
+                                    <td><span class="type-badge">numpy.float32</span></td>
+                                    <td>Column &#39;timestamp&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>frame_index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;frame_index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>episode_index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;episode_index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>task_index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;task_index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>split</th>
+                                        
+                                        <th>observation.state</th>
+                                        
+                                        <th>action</th>
+                                        
+                                        <th>timestamp</th>
+                                        
+                                        <th>frame_index</th>
+                                        
+                                        <th>episode_index</th>
+                                        
+                                        <th>index</th>
+                                        
+                                        <th>task_index</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.float32(-1.7795527), np.float32(0.1938768), np.float32(0.23834093), np.float32(0.57367307), np.float32(2.2687576), np.float32(0.3638584), np.float32(-0.107093), np.float32(0.17650287), np.float32(-1.7178313), np.float32(-0.23304716), np.float32(-0.01350467), np.float32(-0.23764093), np.float32(0.71483517), np.float32(0.3042807), np.float32(0.45039922), np.float32(-0.35615972)]">[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.flo…</td>
+                                        
+                                        <td title="[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.float32(-1.7781453), np.float32(0.19254662), np.float32(0.23872802), np.float32(0.57288104), np.float32(2.268928), np.float32(0.33798987), np.float32(-0.12289332), np.float32(0.123407446), np.float32(-1.7406771), np.float32(-0.21982414), np.float32(-0.007903008), np.float32(-0.23672596), np.float32(2.268928), np.float32(0.3065606), np.float32(0.45012394), np.float32(-0.3588098)]">[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.fl…</td>
+                                        
+                                        <td title="0.0">0.0</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.float32(-1.7792873), np.float32(0.19340634), np.float32(0.23852363), np.float32(0.573371), np.float32(2.2687576), np.float32(0.35963702), np.float32(-0.10983807), np.float32(0.16703357), np.float32(-1.7218335), np.float32(-0.22976868), np.float32(-0.011929522), np.float32(-0.23680514), np.float32(0.8973787), np.float32(0.30457938), np.float32(0.45057604), np.float32(-0.3568391)]">[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.flo…</td>
+                                        
+                                        <td title="[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.float32(-1.7790642), np.float32(0.19158067), np.float32(0.2376576), np.float32(0.5730079), np.float32(2.268928), np.float32(0.3229675), np.float32(-0.13125515), np.float32(0.096074685), np.float32(-1.7481365), np.float32(-0.20632753), np.float32(-0.004209509), np.float32(-0.23626004), np.float32(2.268928), np.float32(0.3067648), np.float32(0.4495879), np.float32(-0.3593738)]">[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.flo…</td>
+                                        
+                                        <td title="0.033333335">0.033333335</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -1238,141 +1373,6 @@ graph TD
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Split to which the example belongs to.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>observation.state</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;observation.state&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>action</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;action&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;timestamp&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>frame_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;frame_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>episode_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;episode_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>task_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;task_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="rs-preview">
-                        <div class="rs-preview-label">🔍 Data preview</div>
-                        <div class="table-wrap">
-                            <table class="preview-table">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>split</th>
-                                        
-                                        <th>observation.state</th>
-                                        
-                                        <th>action</th>
-                                        
-                                        <th>timestamp</th>
-                                        
-                                        <th>frame_index</th>
-                                        
-                                        <th>episode_index</th>
-                                        
-                                        <th>index</th>
-                                        
-                                        <th>task_index</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.float32(-1.7795527), np.float32(0.1938768), np.float32(0.23834093), np.float32(0.57367307), np.float32(2.2687576), np.float32(0.3638584), np.float32(-0.107093), np.float32(0.17650287), np.float32(-1.7178313), np.float32(-0.23304716), np.float32(-0.01350467), np.float32(-0.23764093), np.float32(0.71483517), np.float32(0.3042807), np.float32(0.45039922), np.float32(-0.35615972)]">[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.flo…</td>
-                                        
-                                        <td title="[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.float32(-1.7781453), np.float32(0.19254662), np.float32(0.23872802), np.float32(0.57288104), np.float32(2.268928), np.float32(0.33798987), np.float32(-0.12289332), np.float32(0.123407446), np.float32(-1.7406771), np.float32(-0.21982414), np.float32(-0.007903008), np.float32(-0.23672596), np.float32(2.268928), np.float32(0.3065606), np.float32(0.45012394), np.float32(-0.3588098)]">[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.fl…</td>
-                                        
-                                        <td title="0.0">0.0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.float32(-1.7792873), np.float32(0.19340634), np.float32(0.23852363), np.float32(0.573371), np.float32(2.2687576), np.float32(0.35963702), np.float32(-0.10983807), np.float32(0.16703357), np.float32(-1.7218335), np.float32(-0.22976868), np.float32(-0.011929522), np.float32(-0.23680514), np.float32(0.8973787), np.float32(0.30457938), np.float32(0.45057604), np.float32(-0.3568391)]">[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.flo…</td>
-                                        
-                                        <td title="[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.float32(-1.7790642), np.float32(0.19158067), np.float32(0.2376576), np.float32(0.5730079), np.float32(2.268928), np.float32(0.3229675), np.float32(-0.13125515), np.float32(0.096074685), np.float32(-1.7481365), np.float32(-0.20632753), np.float32(-0.004209509), np.float32(-0.23626004), np.float32(2.268928), np.float32(0.3067648), np.float32(0.4495879), np.float32(-0.3593738)]">[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.flo…</td>
-                                        
-                                        <td title="0.033333335">0.033333335</td>
-                                        
-                                        <td title="1">1</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="1">1</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                     
                 </div>
@@ -1696,6 +1696,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1705,6 +1708,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

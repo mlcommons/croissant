@@ -1100,6 +1100,93 @@ graph TD
                     
                     <div class="rs-desc markdown">Happiness rank and scores by country, 2015</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>Country</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Name of the country.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Region</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Region the country belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Happiness-Rank</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Rank of the country based on the Happiness Score.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Happiness-Score</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>A metric measured in 2015 by asking the sampled people the question: &#34;How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest.&#34;</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Standard-Error</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The standard error of the happiness score.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Economy--GDP-per-Capita-</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which GDP contributes to the calculation of the Happiness Score.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Family</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which Family contributes to the calculation of the Happiness Score</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Health--Life-Expectancy-</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which Life expectancy contributed to the calculation of the Happiness Score</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Freedom</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which Freedom contributed to the calculation of the Happiness Score.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Trust--Government-Corruption-</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which Perception of Corruption contributes to Happiness Score.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Generosity</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which Generosity contributed to the calculation of the Happiness Score.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Dystopia-Residual</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>The extent to which Dystopia Residual contributed to the calculation of the Happiness Score.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1255,6 +1342,24 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-2016.csv_records">
+                    <div class="rs-header">
+                        <h3>2016.csv_records</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="rs-desc markdown">Happiness rank and scores by country, 2016</div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1269,13 +1374,13 @@ graph TD
                                 <tr>
                                     <td><strong>Country</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of the country.</td>
+                                    <td>Name of the country</td>
                                 </tr>
                                 
                                 <tr>
                                     <td><strong>Region</strong></td>
                                     <td><span class="type-badge">bytes</span></td>
-                                    <td>Region the country belongs to.</td>
+                                    <td>Region the country belongs to</td>
                                 </tr>
                                 
                                 <tr>
@@ -1287,13 +1392,19 @@ graph TD
                                 <tr>
                                     <td><strong>Happiness-Score</strong></td>
                                     <td><span class="type-badge">float</span></td>
-                                    <td>A metric measured in 2015 by asking the sampled people the question: &#34;How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest.&#34;</td>
+                                    <td>A metric measured in 2016 by asking the sampled people the question: &#34;How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest&#34;</td>
                                 </tr>
                                 
                                 <tr>
-                                    <td><strong>Standard-Error</strong></td>
+                                    <td><strong>Lower-Confidence-Interval</strong></td>
                                     <td><span class="type-badge">float</span></td>
-                                    <td>The standard error of the happiness score.</td>
+                                    <td>Lower Confidence Interval of the Happiness Score</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Upper-Confidence-Interval</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Upper Confidence Interval of the Happiness Score</td>
                                 </tr>
                                 
                                 <tr>
@@ -1317,19 +1428,19 @@ graph TD
                                 <tr>
                                     <td><strong>Freedom</strong></td>
                                     <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Freedom contributed to the calculation of the Happiness Score.</td>
+                                    <td>The extent to which Freedom contributed to the calculation of the Happiness Score</td>
                                 </tr>
                                 
                                 <tr>
                                     <td><strong>Trust--Government-Corruption-</strong></td>
                                     <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Perception of Corruption contributes to Happiness Score.</td>
+                                    <td>The extent to which Perception of Corruption contributes to Happiness Score</td>
                                 </tr>
                                 
                                 <tr>
                                     <td><strong>Generosity</strong></td>
                                     <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Generosity contributed to the calculation of the Happiness Score.</td>
+                                    <td>The extent to which Generosity contributed to the calculation of the Happiness Score</td>
                                 </tr>
                                 
                                 <tr>
@@ -1341,24 +1452,6 @@ graph TD
                             </tbody>
                         </table>
                     </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-2016.csv_records">
-                    <div class="rs-header">
-                        <h3>2016.csv_records</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Happiness rank and scores by country, 2016</div>
                     
                     
                     <div class="jsonld-panel">
@@ -1527,99 +1620,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>Country</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of the country</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Region</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Region the country belongs to</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Happiness-Rank</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Rank of the country based on the Happiness Score.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Happiness-Score</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>A metric measured in 2016 by asking the sampled people the question: &#34;How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest&#34;</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Lower-Confidence-Interval</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Lower Confidence Interval of the Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Upper-Confidence-Interval</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Upper Confidence Interval of the Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Economy--GDP-per-Capita-</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which GDP contributes to the calculation of the Happiness Score.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Family</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Family contributes to the calculation of the Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Health--Life-Expectancy-</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Life expectancy contributed to the calculation of the Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Freedom</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Freedom contributed to the calculation of the Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Trust--Government-Corruption-</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Perception of Corruption contributes to Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Generosity</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Generosity contributed to the calculation of the Happiness Score</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Dystopia-Residual</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The extent to which Dystopia Residual contributed to the calculation of the Happiness Score.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1637,6 +1637,93 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">Happiness rank and scores by country, 2017</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>Country</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Country column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Happiness.Rank</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Happiness.Rank column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Happiness.Score</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>A metric measured in 2016 by asking the sampled people the question: &#34;How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest&#34;</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Whisker.high</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Whisker.high column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Whisker.low</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Whisker.low column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Economy..GDP.per.Capita.</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Economy..GDP.per.Capita. column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Family</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Family column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Health..Life.Expectancy.</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Health..Life.Expectancy. column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Freedom</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Freedom column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Generosity</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Generosity column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Trust..Government.Corruption.</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Trust..Government.Corruption. column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Dystopia.Residual</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Dystopia.Residual column</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -1793,93 +1880,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>Country</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Country column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Happiness.Rank</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Happiness.Rank column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Happiness.Score</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>A metric measured in 2016 by asking the sampled people the question: &#34;How would you rate your happiness on a scale of 0 to 10 where 10 is the happiest&#34;</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Whisker.high</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Whisker.high column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Whisker.low</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Whisker.low column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Economy..GDP.per.Capita.</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Economy..GDP.per.Capita. column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Family</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Family column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Health..Life.Expectancy.</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Health..Life.Expectancy. column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Freedom</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Freedom column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Generosity</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Generosity column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Trust..Government.Corruption.</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Trust..Government.Corruption. column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Dystopia.Residual</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Dystopia.Residual column</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1897,6 +1897,75 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">Happiness rank and scores by country, 2018</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>Overall-rank</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Overall rank column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Country-or-region</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Country or region column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Score</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Score column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>GDP-per-capita</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>GDP per capita column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Social-support</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Social support column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Healthy-life-expectancy</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Healthy life expectancy column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Freedom-to-make-life-choices</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Freedom to make life choices column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Generosity</strong></td>
+                                    <td><span class="type-badge">float</span></td>
+                                    <td>Generosity column</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Perceptions-of-corruption</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Perceptions of corruption column</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -2017,6 +2086,24 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-2019.csv_records">
+                    <div class="rs-header">
+                        <h3>2019.csv_records</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="rs-desc markdown">Happiness rank and scores by country, 2019</div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -2078,31 +2165,13 @@ graph TD
                                 
                                 <tr>
                                     <td><strong>Perceptions-of-corruption</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
+                                    <td><span class="type-badge">float</span></td>
                                     <td>Perceptions of corruption column</td>
                                 </tr>
                                 
                             </tbody>
                         </table>
                     </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-2019.csv_records">
-                    <div class="rs-header">
-                        <h3>2019.csv_records</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Happiness rank and scores by country, 2019</div>
                     
                     
                     <div class="jsonld-panel">
@@ -2221,75 +2290,6 @@ graph TD
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>Overall-rank</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Overall rank column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Country-or-region</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Country or region column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Score</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Score column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>GDP-per-capita</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>GDP per capita column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Social-support</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Social support column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Healthy-life-expectancy</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Healthy life expectancy column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Freedom-to-make-life-choices</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Freedom to make life choices column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Generosity</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Generosity column</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Perceptions-of-corruption</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Perceptions of corruption column</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
                     </div>
                     
                 </div>
@@ -3151,6 +3151,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -3160,6 +3163,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

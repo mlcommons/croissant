@@ -883,7 +883,7 @@
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:N5955df666a1a447e8bf689e7d690741a&#34;)
+                            Organization(uuid=&#34;_:N203e81c2ee6c4665aa2d9351e9fedc55&#34;)
                             
                             
                         </td>
@@ -1051,50 +1051,6 @@ graph TD
                         </div>
                     </div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;images&#34;,
-  &#34;name&#34;: &#34;images&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;img_id&#34;
-  },
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_filename&#34;,
-      &#34;name&#34;: &#34;images/image_filename&#34;,
-      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;images/image_content&#34;,
-      &#34;name&#34;: &#34;images/image_content&#34;,
-      &#34;description&#34;: &#34;The content of the image.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;image-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;content&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1156,6 +1112,50 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;images&#34;,
+  &#34;name&#34;: &#34;images&#34;,
+  &#34;key&#34;: {
+    &#34;@id&#34;: &#34;img_id&#34;
+  },
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/image_filename&#34;,
+      &#34;name&#34;: &#34;images/image_filename&#34;,
+      &#34;description&#34;: &#34;The filename of the image. eg: COCO_train2014_000000000003.jpg&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;images/image_content&#34;,
+      &#34;name&#34;: &#34;images/image_content&#34;,
+      &#34;description&#34;: &#34;The content of the image.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;image-files&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;content&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1369,6 +1369,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1378,6 +1381,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

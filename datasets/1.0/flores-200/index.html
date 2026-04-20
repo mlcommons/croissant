@@ -1122,6 +1122,39 @@ graph TD
                     
                     <div class="rs-desc markdown">Training data for translations to different languages.</div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>line_number</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The line number for extracted sentences.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>translation</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The translation of the sentence in the target language.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>language</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1182,39 +1215,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>line_number</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The line number for extracted sentences.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>translation</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The translation of the sentence in the target language.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1234,137 +1234,6 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">Training data and metadata for translations to different languages.</div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;language_translations_train_data_with_metadata&#34;,
-  &#34;name&#34;: &#34;language_translations_train_data_with_metadata&#34;,
-  &#34;description&#34;: &#34;Training data and metadata for translations to different languages.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/line_number&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/line_number&#34;,
-      &#34;description&#34;: &#34;The line number for extracted sentences.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;language_translations_train_data/line_number&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-dev&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;lineNumbers&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/translation&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/translation&#34;,
-      &#34;description&#34;: &#34;The translation of the sentence in the target language.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;language_translations_train_data/translation&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/language&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/language&#34;,
-      &#34;description&#34;: &#34;The language of the sentence translation in ISO 639-3 along with a code for the script used.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;language_translations_train_data/language&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/URL&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/URL&#34;,
-      &#34;description&#34;: &#34;The URL of the English source of the sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-dev&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;URL&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/domain&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/domain&#34;,
-      &#34;description&#34;: &#34;The domain of the English source of the sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-dev&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;domain&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/topic&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/topic&#34;,
-      &#34;description&#34;: &#34;The topic of the sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-dev&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;topic&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/has_image&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/has_image&#34;,
-      &#34;description&#34;: &#34;Whether the source of the sentence has an image.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-dev&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;has_image&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/has_hyperlink&#34;,
-      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/has_hyperlink&#34;,
-      &#34;description&#34;: &#34;Whether the sentence has a hyperlink.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-dev&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;has_hyperlink&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
                     
                     <div class="table-wrap">
                         <table>
@@ -1561,6 +1430,137 @@ graph TD
                         </div>
                     </div>
                     
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;language_translations_train_data_with_metadata&#34;,
+  &#34;name&#34;: &#34;language_translations_train_data_with_metadata&#34;,
+  &#34;description&#34;: &#34;Training data and metadata for translations to different languages.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/line_number&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/line_number&#34;,
+      &#34;description&#34;: &#34;The line number for extracted sentences.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;language_translations_train_data/line_number&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-dev&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;lineNumbers&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/translation&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/translation&#34;,
+      &#34;description&#34;: &#34;The translation of the sentence in the target language.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;language_translations_train_data/translation&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/language&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/language&#34;,
+      &#34;description&#34;: &#34;The language of the sentence translation in ISO 639-3 along with a code for the script used.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;language_translations_train_data/language&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/URL&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/URL&#34;,
+      &#34;description&#34;: &#34;The URL of the English source of the sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-dev&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;URL&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/domain&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/domain&#34;,
+      &#34;description&#34;: &#34;The domain of the English source of the sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-dev&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;domain&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/topic&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/topic&#34;,
+      &#34;description&#34;: &#34;The topic of the sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-dev&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;topic&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/has_image&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/has_image&#34;,
+      &#34;description&#34;: &#34;Whether the source of the sentence has an image.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-dev&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;has_image&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_train_data_with_metadata/has_hyperlink&#34;,
+      &#34;name&#34;: &#34;language_translations_train_data_with_metadata/has_hyperlink&#34;,
+      &#34;description&#34;: &#34;Whether the sentence has a hyperlink.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-dev&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;has_hyperlink&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1578,6 +1578,39 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">Testing data for translations to different languages.</div>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>line_number</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The line number for extracted sentences.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>translation</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The translation of the sentence in the target language.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>language</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     
                     <div class="jsonld-panel">
@@ -1639,39 +1672,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>line_number</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The line number for extracted sentences.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>translation</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The translation of the sentence in the target language.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1691,137 +1691,6 @@ graph TD
                     </div>
                     
                     <div class="rs-desc markdown">Testing data and metadata for translations to different languages.</div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;language_translations_test_data_with_metadata&#34;,
-  &#34;name&#34;: &#34;language_translations_test_data_with_metadata&#34;,
-  &#34;description&#34;: &#34;Testing data and metadata for translations to different languages.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/line_number&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/line_number&#34;,
-      &#34;description&#34;: &#34;The line number for extracted sentences.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;language_translations_test_data/line_number&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-devtest&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;lineNumbers&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/translation&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/translation&#34;,
-      &#34;description&#34;: &#34;The translation of the sentence in the target language.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;language_translations_test_data/translation&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/language&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/language&#34;,
-      &#34;description&#34;: &#34;The language of the sentence translation in ISO 639-3 along with a code for the script used.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;language_translations_test_data/language&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/URL&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/URL&#34;,
-      &#34;description&#34;: &#34;The URL of the English source of the sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-devtest&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;URL&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/domain&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/domain&#34;,
-      &#34;description&#34;: &#34;The domain of the English source of the sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-devtest&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;domain&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/topic&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/topic&#34;,
-      &#34;description&#34;: &#34;The topic of the sentence.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-devtest&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;topic&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/has_image&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/has_image&#34;,
-      &#34;description&#34;: &#34;Whether the source of the sentence has an image.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-devtest&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;has_image&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/has_hyperlink&#34;,
-      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/has_hyperlink&#34;,
-      &#34;description&#34;: &#34;Whether the sentence has a hyperlink.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;metadata-devtest&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;has_hyperlink&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
                     
                     <div class="table-wrap">
                         <table>
@@ -2016,6 +1885,137 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;language_translations_test_data_with_metadata&#34;,
+  &#34;name&#34;: &#34;language_translations_test_data_with_metadata&#34;,
+  &#34;description&#34;: &#34;Testing data and metadata for translations to different languages.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/line_number&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/line_number&#34;,
+      &#34;description&#34;: &#34;The line number for extracted sentences.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;references&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;language_translations_test_data/line_number&#34;
+        }
+      },
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-devtest&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;lineNumbers&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/translation&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/translation&#34;,
+      &#34;description&#34;: &#34;The translation of the sentence in the target language.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;language_translations_test_data/translation&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/language&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/language&#34;,
+      &#34;description&#34;: &#34;The language of the sentence translation in ISO 639-3 along with a code for the script used.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;field&#34;: {
+          &#34;@id&#34;: &#34;language_translations_test_data/language&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/URL&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/URL&#34;,
+      &#34;description&#34;: &#34;The URL of the English source of the sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-devtest&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;URL&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/domain&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/domain&#34;,
+      &#34;description&#34;: &#34;The domain of the English source of the sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-devtest&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;domain&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/topic&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/topic&#34;,
+      &#34;description&#34;: &#34;The topic of the sentence.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-devtest&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;topic&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/has_image&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/has_image&#34;,
+      &#34;description&#34;: &#34;Whether the source of the sentence has an image.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-devtest&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;has_image&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;language_translations_test_data_with_metadata/has_hyperlink&#34;,
+      &#34;name&#34;: &#34;language_translations_test_data_with_metadata/has_hyperlink&#34;,
+      &#34;description&#34;: &#34;Whether the sentence has a hyperlink.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileObject&#34;: {
+          &#34;@id&#34;: &#34;metadata-devtest&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;has_hyperlink&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -2563,6 +2563,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -2572,6 +2575,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

@@ -929,51 +929,6 @@ graph TD
                     
                     <div class="rs-desc markdown">Data in the split.</div>
                     
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;data&#34;,
-  &#34;name&#34;: &#34;data&#34;,
-  &#34;description&#34;: &#34;Data in the split.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;data/data&#34;,
-      &#34;name&#34;: &#34;data/data&#34;,
-      &#34;description&#34;: &#34;Data in the record.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;dataframes&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;data&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;data/split&#34;,
-      &#34;name&#34;: &#34;data/split&#34;,
-      &#34;description&#34;: &#34;Data in the record.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;dataframes&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;filename&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;^(train|test)\\.parquet$&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1043,6 +998,51 @@ graph TD
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="jsonld-panel">
+                        <pre class="language-json"><code class="language-json">{
+  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
+  &#34;@id&#34;: &#34;data&#34;,
+  &#34;name&#34;: &#34;data&#34;,
+  &#34;description&#34;: &#34;Data in the split.&#34;,
+  &#34;field&#34;: [
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;data/data&#34;,
+      &#34;name&#34;: &#34;data/data&#34;,
+      &#34;description&#34;: &#34;Data in the record.&#34;,
+      &#34;dataType&#34;: &#34;sc:Integer&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;dataframes&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;column&#34;: &#34;data&#34;
+        }
+      }
+    },
+    {
+      &#34;@type&#34;: &#34;cr:Field&#34;,
+      &#34;@id&#34;: &#34;data/split&#34;,
+      &#34;name&#34;: &#34;data/split&#34;,
+      &#34;description&#34;: &#34;Data in the record.&#34;,
+      &#34;dataType&#34;: &#34;sc:Text&#34;,
+      &#34;source&#34;: {
+        &#34;fileSet&#34;: {
+          &#34;@id&#34;: &#34;dataframes&#34;
+        },
+        &#34;extract&#34;: {
+          &#34;fileProperty&#34;: &#34;filename&#34;
+        },
+        &#34;transform&#34;: {
+          &#34;regex&#34;: &#34;^(train|test)\\.parquet$&#34;
+        }
+      }
+    }
+  ]
+}</code></pre>
                     </div>
                     
                 </div>
@@ -1216,6 +1216,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -1225,6 +1228,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 

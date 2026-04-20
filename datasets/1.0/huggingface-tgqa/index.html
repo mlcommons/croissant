@@ -1204,6 +1204,75 @@ graph TD
                         </div>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>story</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Story id.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>TG</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Temporal graph corresponding to the story.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>question</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>question</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>answer</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>answer</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>candidates</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Candidate answers.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>Q-Type</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Candidate answers.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>EK</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>External knowledge.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>CoT</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Chain of thought</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     
                     <div class="jsonld-panel">
                         <pre class="language-json"><code class="language-json">{
@@ -1352,6 +1421,22 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-TGSR_validation">
+                    <div class="rs-header">
+                        <h3>TGSR_validation</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1419,22 +1504,6 @@ graph TD
                                 
                             </tbody>
                         </table>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-TGSR_validation">
-                    <div class="rs-header">
-                        <h3>TGSR_validation</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
                     </div>
                     
                     
@@ -1585,6 +1654,22 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-TGSR_test">
+                    <div class="rs-header">
+                        <h3>TGSR_test</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1644,30 +1729,8 @@ graph TD
                                     <td>External knowledge.</td>
                                 </tr>
                                 
-                                <tr>
-                                    <td><strong>CoT</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Chain of thought</td>
-                                </tr>
-                                
                             </tbody>
                         </table>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-TGSR_test">
-                    <div class="rs-header">
-                        <h3>TGSR_test</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
                     </div>
                     
                     
@@ -1802,6 +1865,22 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-Story_TG_Trans_train">
+                    <div class="rs-header">
+                        <h3>Story_TG_Trans_train</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1831,54 +1910,8 @@ graph TD
                                     <td>Temporal graph corresponding to the story.</td>
                                 </tr>
                                 
-                                <tr>
-                                    <td><strong>question</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>question</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>answer</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>answer</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>candidates</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Candidate answers.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>Q-Type</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Candidate answers.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>EK</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>External knowledge.</td>
-                                </tr>
-                                
                             </tbody>
                         </table>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-Story_TG_Trans_train">
-                    <div class="rs-header">
-                        <h3>Story_TG_Trans_train</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
                     </div>
                     
                     
@@ -1936,6 +1969,22 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-Story_TG_Trans_validation">
+                    <div class="rs-header">
+                        <h3>Story_TG_Trans_validation</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1967,22 +2016,6 @@ graph TD
                                 
                             </tbody>
                         </table>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-Story_TG_Trans_validation">
-                    <div class="rs-header">
-                        <h3>Story_TG_Trans_validation</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
                     </div>
                     
                     
@@ -2040,6 +2073,22 @@ graph TD
 }</code></pre>
                     </div>
                     
+                </div>
+                
+                <hr class="rs-divider">
+                
+                
+                <div class="rs-section" id="rs-Story_TG_Trans_test">
+                    <div class="rs-header">
+                        <h3>Story_TG_Trans_test</h3>
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -2071,22 +2120,6 @@ graph TD
                                 
                             </tbody>
                         </table>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-Story_TG_Trans_test">
-                    <div class="rs-header">
-                        <h3>Story_TG_Trans_test</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
                     </div>
                     
                     
@@ -2142,39 +2175,6 @@ graph TD
     }
   ]
 }</code></pre>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>story</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Story id.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>TG</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Temporal graph corresponding to the story.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
                     </div>
                     
                 </div>
@@ -2946,6 +2946,9 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
@@ -2955,6 +2958,9 @@ graph TD
             if (panel) {
                 panel.classList.toggle('open');
                 btn.classList.toggle('active');
+                if (panel.classList.contains('open')) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
         }
 
