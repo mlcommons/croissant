@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -1145,6 +1176,91 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>Event</th>
+                                        
+                                        <th>Site</th>
+                                        
+                                        <th>White</th>
+                                        
+                                        <th>Black</th>
+                                        
+                                        <th>Result</th>
+                                        
+                                        <th>WhiteTitle</th>
+                                        
+                                        <th>BlackTitle</th>
+                                        
+                                        <th>WhiteElo</th>
+                                        
+                                        <th>BlackElo</th>
+                                        
+                                        <th>WhiteRatingDiff</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Rated Classical game">Rated Classical game</td>
+                                        
+                                        <td title="https://lichess.org/9tp6v4ps">https://lichess.org/9tp6v4ps</td>
+                                        
+                                        <td title="Smok">Smok</td>
+                                        
+                                        <td title="McCoy">McCoy</td>
+                                        
+                                        <td title="1-0">1-0</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="1452">1452</td>
+                                        
+                                        <td title="1227">1227</td>
+                                        
+                                        <td title="5">5</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Rated Blitz game">Rated Blitz game</td>
+                                        
+                                        <td title="https://lichess.org/b9tstv2z">https://lichess.org/b9tstv2z</td>
+                                        
+                                        <td title="dvorak">dvorak</td>
+                                        
+                                        <td title="Kiriush">Kiriush</td>
+                                        
+                                        <td title="1-0">1-0</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="1796">1796</td>
+                                        
+                                        <td title="1876">1876</td>
+                                        
+                                        <td title="13">13</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

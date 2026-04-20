@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -1015,6 +1046,51 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>name</th>
+                                        
+                                        <th>url</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="https://mlcommons.org/definitions/training_split">https://mlcommons.org/definitions/training_split</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="val">val</td>
+                                        
+                                        <td title="https://mlcommons.org/definitions/validation_split">https://mlcommons.org/definitions/validation_split</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="test">test</td>
+                                        
+                                        <td title="https://mlcommons.org/definitions/test_split">https://mlcommons.org/definitions/test_split</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1121,6 +1197,49 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>image_filename</th>
+                                        
+                                        <th>image_content</th>
+                                        
+                                        <th>split</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="COCO_train2014_000000467840.jpg">COCO_train2014_000000467840.jpg</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="COCO_train2014_000000533055.jpg">COCO_train2014_000000533055.jpg</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">
@@ -1255,6 +1374,79 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>id</th>
+                                        
+                                        <th>image_id</th>
+                                        
+                                        <th>caption</th>
+                                        
+                                        <th>split</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="48">48</td>
+                                        
+                                        <td title="318556">318556</td>
+                                        
+                                        <td title="A very clean and well decorated empty bathroom">A very clean and well decorated empty bathroom</td>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="67">67</td>
+                                        
+                                        <td title="116100">116100</td>
+                                        
+                                        <td title="A panoramic view of a kitchen and all of its appliances.">A panoramic view of a kitchen and all of its appliances.</td>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="126">126</td>
+                                        
+                                        <td title="318556">318556</td>
+                                        
+                                        <td title="A blue and white bathroom with butterfly themed wall tiles.">A blue and white bathroom with butterfly themed wall tiles.</td>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="148">148</td>
+                                        
+                                        <td title="116100">116100</td>
+                                        
+                                        <td title="A panoramic photo of a kitchen and dining room">A panoramic photo of a kitchen and dining room</td>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1375,6 +1567,79 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>id</th>
+                                        
+                                        <th>image_id</th>
+                                        
+                                        <th>bbox</th>
+                                        
+                                        <th>area</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="86">86</td>
+                                        
+                                        <td title="318556">318556</td>
+                                        
+                                        <td title="[116.95, 305.86, 285.3, 266.03]">[116.95, 305.86, 285.3, 266.03]</td>
+                                        
+                                        <td title="54652">54652</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="89">89</td>
+                                        
+                                        <td title="116100">116100</td>
+                                        
+                                        <td title="[245.54, 208.17, 40.14, 19.1]">[245.54, 208.17, 40.14, 19.1]</td>
+                                        
+                                        <td title="421">421</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="93">93</td>
+                                        
+                                        <td title="318556">318556</td>
+                                        
+                                        <td title="[288.4, 18.07, 211.6, 331.33]">[288.4, 18.07, 211.6, 331.33]</td>
+                                        
+                                        <td title="53535">53535</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="113">113</td>
+                                        
+                                        <td title="116100">116100</td>
+                                        
+                                        <td title="[126.5, 475.24, 77.68, 76.73]">[126.5, 475.24, 77.68, 76.73]</td>
+                                        
+                                        <td title="3892">3892</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

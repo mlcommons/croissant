@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -853,7 +884,7 @@
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:N677b9250411943d4b35c7be7930c9230&#34;)
+                            Organization(uuid=&#34;_:N76bcf8524dac4e00a47371af091fac1e&#34;)
                             
                             
                         </td>
@@ -1438,6 +1469,7 @@ graph TD
   ]
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>

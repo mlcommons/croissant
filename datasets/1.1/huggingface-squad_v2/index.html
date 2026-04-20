@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -839,7 +870,7 @@ SQuAD 2.0 combines the 100,000 questions in SQuAD1.1 with over 50,000 unanswerab
                         <td class="kv-val">
                             
                             
-                            Person(uuid=&#34;_:N27c36a1bbf114fd285eefe2069042733&#34;)
+                            Person(uuid=&#34;_:Ncd01f007a1174fc68f520dc05f1b1fd1&#34;)
                             
                             
                         </td>
@@ -999,6 +1030,7 @@ graph TD
   ]
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>
@@ -1163,6 +1195,7 @@ Additional information:
   ]
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>

@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -1560,6 +1591,7 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1694,6 +1726,7 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1778,6 +1811,7 @@ graph TD
   }
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>
@@ -2293,6 +2327,115 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>split</th>
+                                        
+                                        <th>id</th>
+                                        
+                                        <th>imageId</th>
+                                        
+                                        <th>question</th>
+                                        
+                                        <th>answer</th>
+                                        
+                                        <th>fullAnswer</th>
+                                        
+                                        <th>isBalanced</th>
+                                        
+                                        <th>groups/gqa/groups/global</th>
+                                        
+                                        <th>groups/gqa/groups/local</th>
+                                        
+                                        <th>entailed</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="lite">lite</td>
+                                        
+                                        <td title="201307251">201307251</td>
+                                        
+                                        <td title="n161313">n161313</td>
+                                        
+                                        <td title="Is it overcast?">Is it overcast?</td>
+                                        
+                                        <td title="no">no</td>
+                                        
+                                        <td title="No, it is clear.">No, it is clear.</td>
+                                        
+                                        <td title="True">True</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="01-weather_overcast">01-weather_overcast</td>
+                                        
+                                        <td title="[]">[]</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="lite">lite</td>
+                                        
+                                        <td title="20171139">20171139</td>
+                                        
+                                        <td title="n379991">n379991</td>
+                                        
+                                        <td title="What cooking utensil is round?">What cooking utensil is round?</td>
+                                        
+                                        <td title="baking pan">baking pan</td>
+                                        
+                                        <td title="The cooking utensil is a baking pan.">The cooking utensil is a baking pan.</td>
+                                        
+                                        <td title="True">True</td>
+                                        
+                                        <td title="cooking utensil">cooking utensil</td>
+                                        
+                                        <td title="12q-cooking utensil_round">12q-cooking utensil_round</td>
+                                        
+                                        <td title="[&#39;20171137&#39;, &#39;20171138&#39;]">[&#39;20171137&#39;, &#39;20171138&#39;]</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="lite">lite</td>
+                                        
+                                        <td title="201303338">201303338</td>
+                                        
+                                        <td title="n518912">n518912</td>
+                                        
+                                        <td title="What ethnic group is the person that is wearing a jacket?">What ethnic group is the person that is wearing a jacket?</td>
+                                        
+                                        <td title="caucasian">caucasian</td>
+                                        
+                                        <td title="The man is caucasian.">The man is caucasian.</td>
+                                        
+                                        <td title="True">True</td>
+                                        
+                                        <td title="race">race</td>
+                                        
+                                        <td title="10q-man_race">10q-man_race</td>
+                                        
+                                        <td title="[&#39;201303332&#39;, &#39;201303333&#39;, &#39;201303334&#39;, &#39;201303335&#39;, &#39;201303336&#39;, &#39;201303337&#39;, &#39;201303339&#39;, &#39;201303316&#39;, &#39;201303317&#39;, &#39;201303341&#39;, &#39;201303340&#39;, &#39;201303343&#39;, &#39;201303342&#39;, &#39;201303344&#39;]">[&#39;201303332&#39;, &#39;201303333&#39;, &#39;201303334&#39;, &#39;201303335&#39;, &#39;201303336&#39;, &#39;201303337&#39;, &#39;…</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

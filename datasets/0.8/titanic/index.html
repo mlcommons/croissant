@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -994,6 +1025,43 @@ S,Southampton,wd:Q79848
 }</code></pre>
                     </div>
                     
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>label</th>
+                                        
+                                        <th>url</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="male">male</td>
+                                        
+                                        <td title="https://www.wikidata.org/wiki/Q6581097">https://www.wikidata.org/wiki/Q6581097</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="female">female</td>
+                                        
+                                        <td title="https://www.wikidata.org/wiki/Q6581072">https://www.wikidata.org/wiki/Q6581072</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1088,6 +1156,69 @@ S,Southampton,wd:Q79848
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>key</th>
+                                        
+                                        <th>label</th>
+                                        
+                                        <th>url</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="C">C</td>
+                                        
+                                        <td title="Cherbourg">Cherbourg</td>
+                                        
+                                        <td title="wd:Q3667188">wd:Q3667188</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Q">Q</td>
+                                        
+                                        <td title="Queenstown">Queenstown</td>
+                                        
+                                        <td title="wd:Q733093">wd:Q733093</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="S">S</td>
+                                        
+                                        <td title="Southampton">Southampton</td>
+                                        
+                                        <td title="wd:Q79848">wd:Q79848</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="?">?</td>
+                                        
+                                        <td title="Unknown">Unknown</td>
+                                        
+                                        <td title="wd:Q24238356">wd:Q24238356</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">
@@ -1320,6 +1451,163 @@ S,Southampton,wd:Q79848
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>name</th>
+                                        
+                                        <th>age</th>
+                                        
+                                        <th>survived</th>
+                                        
+                                        <th>pclass</th>
+                                        
+                                        <th>cabin</th>
+                                        
+                                        <th>fare</th>
+                                        
+                                        <th>home_destination</th>
+                                        
+                                        <th>ticket</th>
+                                        
+                                        <th>num_parents_children</th>
+                                        
+                                        <th>num_siblings_spouses</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Allen, Miss. Elisabeth Walton">Allen, Miss. Elisabeth Walton</td>
+                                        
+                                        <td title="29">29</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="B5">B5</td>
+                                        
+                                        <td title="211.3375">211.3375</td>
+                                        
+                                        <td title="St Louis, MO">St Louis, MO</td>
+                                        
+                                        <td title="24160">24160</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Allison, Master. Hudson Trevor">Allison, Master. Hudson Trevor</td>
+                                        
+                                        <td title="0.9167">0.9167</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="C22 C26">C22 C26</td>
+                                        
+                                        <td title="151.55">151.55</td>
+                                        
+                                        <td title="Montreal, PQ / Chesterville, ON">Montreal, PQ / Chesterville, ON</td>
+                                        
+                                        <td title="113781">113781</td>
+                                        
+                                        <td title="2">2</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Allison, Miss. Helen Loraine">Allison, Miss. Helen Loraine</td>
+                                        
+                                        <td title="2">2</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="C22 C26">C22 C26</td>
+                                        
+                                        <td title="151.55">151.55</td>
+                                        
+                                        <td title="Montreal, PQ / Chesterville, ON">Montreal, PQ / Chesterville, ON</td>
+                                        
+                                        <td title="113781">113781</td>
+                                        
+                                        <td title="2">2</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Allison, Mr. Hudson Joshua Creighton">Allison, Mr. Hudson Joshua Creighton</td>
+                                        
+                                        <td title="30">30</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="C22 C26">C22 C26</td>
+                                        
+                                        <td title="151.55">151.55</td>
+                                        
+                                        <td title="Montreal, PQ / Chesterville, ON">Montreal, PQ / Chesterville, ON</td>
+                                        
+                                        <td title="113781">113781</td>
+                                        
+                                        <td title="2">2</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Allison, Mrs. Hudson J C (Bessie Waldo Daniels)">Allison, Mrs. Hudson J C (Bessie Waldo Daniels)</td>
+                                        
+                                        <td title="25">25</td>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                        <td title="C22 C26">C22 C26</td>
+                                        
+                                        <td title="151.55">151.55</td>
+                                        
+                                        <td title="Montreal, PQ / Chesterville, ON">Montreal, PQ / Chesterville, ON</td>
+                                        
+                                        <td title="113781">113781</td>
+                                        
+                                        <td title="2">2</td>
+                                        
+                                        <td title="1">1</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

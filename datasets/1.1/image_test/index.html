@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -824,7 +855,7 @@
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:N89a040ab1416407baef6ef75c1f12c7c&#34;)
+                            Organization(uuid=&#34;_:Nd1eb07a21e87447397610074837edd13&#34;)
                             
                             
                         </td>
@@ -837,7 +868,7 @@
                             <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
                             
                             
-                            Organization(uuid=&#34;_:N2cca6407bb8f43b5ba2e695b001f58e3&#34;)
+                            Organization(uuid=&#34;_:N8a646a56f3e847139562f5ef6128a6ad&#34;)
                             
                             
                             <div class="jsonld-panel">
@@ -1121,6 +1152,55 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>image_s2_tif_id</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1393x1277 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1393x1277 at &lt;MEMORY_ADDR…</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1493x1535 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1493x1535 at &lt;MEMORY_ADDR…</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1432x1282 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1432x1282 at &lt;MEMORY_ADDR…</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1395x1275 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1395x1275 at &lt;MEMORY_ADDR…</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1389x1265 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.TiffImagePlugin.TiffImageFile image mode=RGB size=1389x1265 at &lt;MEMORY_ADDR…</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1184,6 +1264,7 @@ graph TD
   ]
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>
@@ -1251,6 +1332,7 @@ graph TD
   ]
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>

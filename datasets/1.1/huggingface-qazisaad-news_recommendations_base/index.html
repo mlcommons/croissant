@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -937,6 +968,7 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1078,6 +1110,67 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>split</th>
+                                        
+                                        <th>category</th>
+                                        
+                                        <th>sub-category</th>
+                                        
+                                        <th>title</th>
+                                        
+                                        <th>times</th>
+                                        
+                                        <th>url</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="lifestyle">lifestyle</td>
+                                        
+                                        <td title="lifestyle">lifestyle</td>
+                                        
+                                        <td title="Man tests biohacker Bryan Johnson&#39;s insane $2 MILLION anti-aging lifestyle for 75 DAYS to see if it&#39;s really possible to ... - Daily Mail">Man tests biohacker Bryan Johnson&#39;s insane $2 MILLION anti-aging lifestyle for 7…</td>
+                                        
+                                        <td title="2023-10-09 02:27:36">2023-10-09 02:27:36</td>
+                                        
+                                        <td title="https://news.google.com/rss/articles/CBMibGh0dHBzOi8vd3d3LmRhaWx5bWFpbC5jby51ay9mZW1haWwvYXJ0aWNsZS0xMjU4OTc0NS9JLXNwZW50LTc1LWRheXMtZm9sbG93aW5nLUJyeWFuLUpvaG5zb24tSU5TQU5FLWRpZXQuaHRtbNIBAA?oc=5&amp;hl=en-US&amp;gl=US&amp;ceid=US:en">https://news.google.com/rss/articles/CBMibGh0dHBzOi8vd3d3LmRhaWx5bWFpbC5jby51ay9…</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="train">train</td>
+                                        
+                                        <td title="lifestyle">lifestyle</td>
+                                        
+                                        <td title="lifestyle">lifestyle</td>
+                                        
+                                        <td title="Gestational diabetes care plan: Monitoring and lifestyle measures - Medical News Today">Gestational diabetes care plan: Monitoring and lifestyle measures - Medical News…</td>
+                                        
+                                        <td title="2023-10-09 11:08:57">2023-10-09 11:08:57</td>
+                                        
+                                        <td title="https://news.google.com/rss/articles/CBMiSGh0dHBzOi8vd3d3Lm1lZGljYWxuZXdzdG9kYXkuY29tL2FydGljbGVzL2dlc3RhdGlvbmFsLWRpYWJldGVzLWNhcmUtcGxhbtIBAA?oc=5&amp;hl=en-US&amp;gl=US&amp;ceid=US:en">https://news.google.com/rss/articles/CBMiSGh0dHBzOi8vd3d3Lm1lZGljYWxuZXdzdG9kYXk…</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

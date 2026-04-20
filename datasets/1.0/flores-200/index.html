@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -1094,6 +1125,7 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1272,6 +1304,139 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>line_number</th>
+                                        
+                                        <th>translation</th>
+                                        
+                                        <th>language</th>
+                                        
+                                        <th>URL</th>
+                                        
+                                        <th>domain</th>
+                                        
+                                        <th>topic</th>
+                                        
+                                        <th>has_image</th>
+                                        
+                                        <th>has_hyperlink</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="يق أورو سنين، اوق علمون دري فکولتس کدوکترن يونيۏرسيتس ستانفورد ݢڤعموم اکن جتومى الت دياݢنوستيک بارو ڽڠ جوت ݢڤيليه اتو سيل منوروت جنيهجيه: چيڤ اوبيت ڽڠ جوت ݢچيتق ڽڠ جوت ݢڤݢت دڠون ڤرينتر ايڠ‌کجيت ستندر دڠون يوم موڠکين نا سابوه سين ا.س. لم تيڤ سابوه.">يق أورو سنين، اوق علمون دري فکولتس کدوکترن يونيۏرسيتس ستانفورد ݢڤعموم اکن جتومى …</td>
+                                        
+                                        <td title="ace_Arab">ace_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort_cells_anywhere_with_an_inkjet">https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="health">health</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="Bak uroe Senin, awak ilmuwan dari Fakultas Kedokteran Universitas Stanford geu peuumum akan jiteumèe alat diagnostik baro nyang jeuet geupileh atoe sel meunurot jeunèhjih: chip ubit nyang jeuet geucetak nyang jeuet geupeuget deungôn printer inkjèt standar deungôn yum mungken na sabôh sen AS lam tiep sabôh.">Bak uroe Senin, awak ilmuwan dari Fakultas Kedokteran Universitas Stanford geu p…</td>
+                                        
+                                        <td title="ace_Latn">ace_Latn</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort_cells_anywhere_with_an_inkjet">https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="health">health</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="يوم الأثنين، أعلن علماء من كلية الطب بجامعة ستانفورد عن اختراع أداة تشخيصية جديدة تكَدر تصنف الخلايا حسب النوع: شريحة زغيرة قابلة للطباعة ممكن تصنيعها باستخدام طابعات نفاثة للحبر قياسية وسعرها حوالي سنت أمريكي واحد لكل وحدة.">يوم الأثنين، أعلن علماء من كلية الطب بجامعة ستانفورد عن اختراع أداة تشخيصية جديد…</td>
+                                        
+                                        <td title="acm_Arab">acm_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort_cells_anywhere_with_an_inkjet">https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="health">health</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="بيوم الاثنين، أعلن علماء من حق كلية الطب بجامعة ستانفورد عن اختراع أداة تشخيصية جديدة تقدر تصنف الخلايا حسب النوع: شريحة صغيرة قابلة للطباعة يمكن تصنيعها باستخدام طابعات نفاثة للحبر قياسية قيمتها حوالي سنت أمريكي واحد لكل واحدة منهن.">بيوم الاثنين، أعلن علماء من حق كلية الطب بجامعة ستانفورد عن اختراع أداة تشخيصية …</td>
+                                        
+                                        <td title="acq_Arab">acq_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort_cells_anywhere_with_an_inkjet">https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="health">health</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="يوم الاثنين، أعلن علماء من كلية الطب بجامعة ستانفورد على اختراع أداة تشخيصية جديدة تنجم تصنّف الخلايا حسب النوع: بيس صغيرة تتطبع ينجموايصنعوها كيف يستعملوا طابعات نفاثة للحبار قياسية  بتقريب سنت أمريكي واحد لكل واحد منها.">يوم الاثنين، أعلن علماء من كلية الطب بجامعة ستانفورد على اختراع أداة تشخيصية جدي…</td>
+                                        
+                                        <td title="aeb_Arab">aeb_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort_cells_anywhere_with_an_inkjet">https://en.wikinews.org/wiki/Scientists_say_new_medical_diagnostic_chip_can_sort…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="health">health</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1408,6 +1573,7 @@ graph TD
   ]
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>
@@ -1585,6 +1751,139 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>line_number</th>
+                                        
+                                        <th>translation</th>
+                                        
+                                        <th>language</th>
+                                        
+                                        <th>URL</th>
+                                        
+                                        <th>domain</th>
+                                        
+                                        <th>topic</th>
+                                        
+                                        <th>has_image</th>
+                                        
+                                        <th>has_hyperlink</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="&#34;کامو جينو نا تيكويه عمو ٤ بولن ڽڠ هانا ديابيتيس ڽڠ اوايجيه ساکيت ديابيتيس،&#34; غتامه لى غوبڽن. ">&#34;کامو جينو نا تيكويه عمو ٤ بولن ڽڠ هانا ديابيتيس ڽڠ اوايجيه ساکيت ديابيتيس،&#34; غتا…</td>
+                                        
+                                        <td title="ace_Arab">ace_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27groundbreaking%27">https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27gro…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="disease, research, canada">disease, research, canada</td>
+                                        
+                                        <td title="no">no</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="&#34;Kamöe jinoe na tikoih umu 4 buleuen nyang hana diabetes nyang awaijih saket diabetes,&#34; geutamah le gobnyan. ">&#34;Kamöe jinoe na tikoih umu 4 buleuen nyang hana diabetes nyang awaijih saket dia…</td>
+                                        
+                                        <td title="ace_Latn">ace_Latn</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27groundbreaking%27">https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27gro…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="disease, research, canada">disease, research, canada</td>
+                                        
+                                        <td title="no">no</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="أضاف بكلامه وكَال، &#34;عدنا هسه فيران عمرها 4 أشهر، وكانت سابقاً مصابة بمرض السكر، بس هسه تعافت منه.">أضاف بكلامه وكَال، &#34;عدنا هسه فيران عمرها 4 أشهر، وكانت سابقاً مصابة بمرض السكر، …</td>
+                                        
+                                        <td title="acm_Arab">acm_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27groundbreaking%27">https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27gro…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="disease, research, canada">disease, research, canada</td>
+                                        
+                                        <td title="no">no</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="وزاد قال، &#34;معنا الآن عكابر يصل عمرها 4 أشهر، وكانت تعاني بالأول من مرض السكري، ولكنها ماعاد تعانيش منه الآن.">وزاد قال، &#34;معنا الآن عكابر يصل عمرها 4 أشهر، وكانت تعاني بالأول من مرض السكري، و…</td>
+                                        
+                                        <td title="acq_Arab">acq_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27groundbreaking%27">https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27gro…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="disease, research, canada">disease, research, canada</td>
+                                        
+                                        <td title="no">no</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="0">0</td>
+                                        
+                                        <td title="وزاد قال، عندنا فيران عمرها 4 شهور كانت مريضة بالسكر وتوة برات.">وزاد قال، عندنا فيران عمرها 4 شهور كانت مريضة بالسكر وتوة برات.</td>
+                                        
+                                        <td title="aeb_Arab">aeb_Arab</td>
+                                        
+                                        <td title="https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27groundbreaking%27">https://en.wikinews.org/wiki/Toronto_team-led_research_on_Type_1_Diabetes_%27gro…</td>
+                                        
+                                        <td title="wikinews">wikinews</td>
+                                        
+                                        <td title="disease, research, canada">disease, research, canada</td>
+                                        
+                                        <td title="no">no</td>
+                                        
+                                        <td title="yes">yes</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

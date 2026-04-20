@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -964,6 +995,119 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>context</th>
+                                        
+                                        <th>completion</th>
+                                        
+                                        <th>task</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="
+
+Q: What is 65360 plus 16204?
+
+A:">
+
+Q: What is 65360 plus 16204?
+
+A:</td>
+                                        
+                                        <td title="81564">81564</td>
+                                        
+                                        <td title="five_digit_addition">five_digit_addition</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="
+
+Q: What is 91169 plus 57223?
+
+A:">
+
+Q: What is 91169 plus 57223?
+
+A:</td>
+                                        
+                                        <td title="148392">148392</td>
+                                        
+                                        <td title="five_digit_addition">five_digit_addition</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="
+
+Q: What is 52888 plus 52240?
+
+A:">
+
+Q: What is 52888 plus 52240?
+
+A:</td>
+                                        
+                                        <td title="105128">105128</td>
+                                        
+                                        <td title="five_digit_addition">five_digit_addition</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="
+
+Q: What is 35742 plus 78660?
+
+A:">
+
+Q: What is 35742 plus 78660?
+
+A:</td>
+                                        
+                                        <td title="114402">114402</td>
+                                        
+                                        <td title="five_digit_addition">five_digit_addition</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="
+
+Q: What is 69074 plus 90431?
+
+A:">
+
+Q: What is 69074 plus 90431?
+
+A:</td>
+                                        
+                                        <td title="159505">159505</td>
+                                        
+                                        <td title="five_digit_addition">five_digit_addition</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

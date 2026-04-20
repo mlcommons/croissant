@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -817,7 +848,7 @@
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:Ne5dbc2748f194035b521c9c380f50251&#34;)
+                            Organization(uuid=&#34;_:N7e2ddcb789fe457babfa68a525d2f92a&#34;)
                             
                             
                         </td>
@@ -1009,6 +1040,43 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>image_filename</th>
+                                        
+                                        <th>image_content</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="1.3.46.670589.11.0.0.11.4.2.0.12098.5.4500.2015011413255023689">1.3.46.670589.11.0.0.11.4.2.0.12098.5.4500.2015011413255023689</td>
+                                        
+                                        <td title="&lt;BINARY md5=b93d756ebc325e1b8af45f601ccb1c7a size=140220B&gt;">&lt;BINARY md5=b93d756ebc325e1b8af45f601ccb1c7a size=140220B&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="1.3.46.670589.11.0.0.11.4.2.0.12098.5.4500.2015011413255023690">1.3.46.670589.11.0.0.11.4.2.0.12098.5.4500.2015011413255023690</td>
+                                        
+                                        <td title="&lt;BINARY md5=053b226037c6f0cb0b72d44ad7c4fc91 size=140218B&gt;">&lt;BINARY md5=053b226037c6f0cb0b72d44ad7c4fc91 size=140218B&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -813,7 +844,7 @@ Specifically, we filter the data according to these criteria: contains English l
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:N9d9f0096496048868bcf1de00bdc281b&#34;)
+                            Organization(uuid=&#34;_:Ne001406ef21b4506bf207d82454e4fcb&#34;)
                             
                             
                         </td>
@@ -949,6 +980,7 @@ graph TD
   }
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>
@@ -1194,6 +1226,7 @@ graph TD
   }
 }</code></pre>
                     </div>
+                    
                     
                     <div class="table-wrap">
                         <table>

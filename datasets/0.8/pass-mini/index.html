@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -1054,6 +1085,115 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>creator_uname</th>
+                                        
+                                        <th>latitude</th>
+                                        
+                                        <th>longitude</th>
+                                        
+                                        <th>date_taken</th>
+                                        
+                                        <th>hash</th>
+                                        
+                                        <th>image_content</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="PaperBird+Photography%3C3">PaperBird+Photography%3C3</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="2007-05-06 06:11:48">2007-05-06 06:11:48</td>
+                                        
+                                        <td title="75f7305b1fd94044e14bdcdde469dbb2">75f7305b1fd94044e14bdcdde469dbb2</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="Chiara+Marra">Chiara+Marra</td>
+                                        
+                                        <td title="38.23818">38.23818</td>
+                                        
+                                        <td title="13.183593">13.183593</td>
+                                        
+                                        <td title="2007-05-04 15:46:43">2007-05-04 15:46:43</td>
+                                        
+                                        <td title="dd571a41a015354d92a859f7ef31201">dd571a41a015354d92a859f7ef31201</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="maplesbranch">maplesbranch</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="2006-05-01 07:34:13">2006-05-01 07:34:13</td>
+                                        
+                                        <td title="598ad3bc7e6e876e61af116693c7ad9">598ad3bc7e6e876e61af116693c7ad9</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="maplesbranch">maplesbranch</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="2006-04-23 19:20:40">2006-04-23 19:20:40</td>
+                                        
+                                        <td title="e48d6d552465c5728585b82a53d6e02c">e48d6d552465c5728585b82a53d6e02c</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="quinnums">quinnums</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                        <td title="2004-05-17 00:44:29">2004-05-17 00:44:29</td>
+                                        
+                                        <td title="ffd3eb12a16cb83138f26e6f36dec967">ffd3eb12a16cb83138f26e6f36dec967</td>
+                                        
+                                        <td title="&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;">&lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=3x2 at &lt;MEMORY_ADDRESS&gt;&gt;</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">

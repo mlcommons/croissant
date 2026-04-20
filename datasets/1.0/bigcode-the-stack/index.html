@@ -548,6 +548,37 @@
             margin: 24px 0;
         }
 
+        /* ── Record Set Data Preview ────────────────────── */
+        .rs-preview {
+            margin-bottom: 16px;
+        }
+        .rs-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        table.preview-table {
+            font-size: 0.80rem;
+        }
+        table.preview-table thead th {
+            background: #eef4ff;
+            color: #3b5bdb;
+            border-bottom-color: #c5d8ff;
+            white-space: nowrap;
+        }
+        table.preview-table tbody td {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+        }
+        table.preview-table tbody tr:nth-child(even) { background: #f8faff; }
+
         /* ── Type Badges in Tables ──────────────────────── */
         .type-badge {
             display: inline-block;
@@ -828,7 +859,7 @@
                         <td class="kv-val">
                             
                             
-                            Person(uuid=&#34;_:N07ae75af9caf41b096bea9166cbaf386&#34;), Person(uuid=&#34;_:N6a13648799c54367be0512de1fd3115a&#34;)
+                            Person(uuid=&#34;_:N2191f166ae8b4505aba1da775b2cadb8&#34;), Person(uuid=&#34;_:N66420b2783684d648e557c04701c327c&#34;)
                             
                             
                         </td>
@@ -1457,6 +1488,535 @@ graph TD
     }
   ]
 }</code></pre>
+                    </div>
+                    
+                    
+                    <div class="rs-preview">
+                        <div class="rs-preview-label">🔍 Data preview</div>
+                        <div class="table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>content</th>
+                                        
+                                        <th>language</th>
+                                        
+                                        <th>hexsha</th>
+                                        
+                                        <th>size</th>
+                                        
+                                        <th>ext</th>
+                                        
+                                        <th>lang</th>
+                                        
+                                        <th>max_stars_repo_path</th>
+                                        
+                                        <th>max_stars_repo_name</th>
+                                        
+                                        <th>max_stars_repo_head_hexsha</th>
+                                        
+                                        <th>max_stars_count</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                        <td title="*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZIS_EXAMPLE
+*&amp;---------------------------------------------------------------------*
+report zis_example.
+
+include zis_example_top.
+include zis_example_f01.
+
+start-of-selection.
+
+include = &#39;X&#39;.
+perform perform_write.
+">*&amp;---------------------------------------------------------------------*
+*&amp; Repo…</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="f702dd98900e80f27b0ff4729f38a8f72faf6284">f702dd98900e80f27b0ff4729f38a8f72faf6284</td>
+                                        
+                                        <td title="300">300</td>
+                                        
+                                        <td title="abap">abap</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="zis_example.prog.abap">zis_example.prog.abap</td>
+                                        
+                                        <td title="sbcgua/abap_include_assembler">sbcgua/abap_include_assembler</td>
+                                        
+                                        <td title="5660773df238668bf654ec322dc46fe8c0757dbb">5660773df238668bf654ec322dc46fe8c0757dbb</td>
+                                        
+                                        <td title="3.0">3.0</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="FUNCTION zcafm_customer_delete.
+*&#34;----------------------------------------------------------------------
+*&#34;*&#34;Local Interface:
+*&#34;  IMPORTING
+*&#34;     VALUE(PI_CUSTOMER) TYPE  KNA1-KUNNR
+*&#34;     VALUE(PI_TEST) TYPE  CHAR1
+*&#34;  EXPORTING
+*&#34;     VALUE(SE_RETURN) TYPE  BAPIRET2
+*&#34;----------------------------------------------------------------------
+
+*----------------------------------------------------------------------*
+*  Function Module ZCAFM_CUSTOMER_DELETE *
+* *----------------------------------------------------------------------*
+* * *
+* * ID-Reference: MuleSoft templates *
+* * *
+* * This BAPI aims to set deletion flag for particular customer. If par. *
+* * PI_TEST is provided no change is performed. *
+* *----------------------------------------------------------------------*
+* * Change Log: *
+* * *
+* * Who Date Text *
+* * MMARUSKIN 03.07.2014 Init creation. *
+* *----------------------------------------------------------------------*
+
+* Global data declarations
+
+
+  CONSTANTS: lc_obj_task TYPE cmd_ei_object_task VALUE &#39;M&#39;, &#34;M=Create/Change
+             lc_msg_cls  TYPE sy-msgid VALUE &#39;ZMULESOFTINTEGRATION&#39;.
+  DATA: ls_customer  TYPE cmds_ei_extern,
+        lt_customers TYPE cmds_ei_main,
+        ls_mes_error TYPE cvis_message,
+        lv_par       TYPE sy-msgv1.
+
+
+
+*- Prepare data
+
+
+  ls_customer-header-object_instance-kunnr = pi_customer.
+  ls_customer-header-object_task = lc_obj_task.
+  ls_customer-central_data-central-data-loevm = &#39;X&#39;.
+  ls_customer-central_data-central-datax-loevm = &#39;X&#39;.
+  APPEND ls_customer TO lt_customers-customers.
+  lv_par = pi_customer.
+
+
+*- Run change of material via standard functionality
+
+
+  CALL METHOD cmd_ei_api=&gt;maintain_bapi
+    EXPORTING
+      iv_test_run          = pi_test
+      iv_collect_messages  = &#39;X&#39;
+      is_master_data       = lt_customers
+    IMPORTING
+      es_message_defective = ls_mes_error.
+
+
+*- Error handling
+
+
+  IF ls_mes_error-is_error IS INITIAL AND pi_test IS INITIAL.
+    COMMIT WORK AND WAIT.
+    CALL FUNCTION &#39;BALW_BAPIRETURN_GET2&#39;     &#34;okay: flag set!
+      EXPORTING
+        type      = &#39;I&#39;
+        cl        = lc_msg_cls
+        number    = 100
+        par1      = lv_par
+        parameter = &#39;&#39;
+        field     = &#39;&#39;
+      IMPORTING
+        return    = se_return.
+  ELSE.
+    ROLLBACK WORK.                                     &#34;#EC CI_ROLLBACK
+    CALL FUNCTION &#39;BALW_BAPIRETURN_GET2&#39;     &#34;problem: flag NOT set!
+      EXPORTING
+        type      = &#39;E&#39;
+        cl        = lc_msg_cls
+        number    = 101
+        par1      = lv_par
+        parameter = &#39;&#39;
+        field     = &#39;&#39;
+      IMPORTING
+        return    = se_return.
+  ENDIF.
+
+ENDFUNCTION.">FUNCTION zcafm_customer_delete.
+*&#34;----------------------------------------------…</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="f7059ca25a13836de140134550b96c66d4d503dc">f7059ca25a13836de140134550b96c66d4d503dc</td>
+                                        
+                                        <td title="2640">2640</td>
+                                        
+                                        <td title="abap">abap</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="sap-data-retrieval/src/test/resources/sap/ZCAFM_CUSTOMER_DELETE.abap">sap-data-retrieval/src/test/resources/sap/ZCAFM_CUSTOMER_DELETE.abap</td>
+                                        
+                                        <td title="mulesoft-consulting/anypoint-examples">mulesoft-consulting/anypoint-examples</td>
+                                        
+                                        <td title="20f17b2f162c7a81787aafddd54b0ba196edd8d7">20f17b2f162c7a81787aafddd54b0ba196edd8d7</td>
+                                        
+                                        <td title="1.0">1.0</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="*&amp;---------------------------------------------------------------------*
+*&amp; Report zdemo_ain_cl25
+*&amp;---------------------------------------------------------------------*
+*&amp; This is the demo program written for book:
+*&amp; ALV grid in nutshell by Łukasz Pęgiel
+*&amp;---------------------------------------------------------------------*
+*&amp;- 1st character =&#39;C&#39; if we&#39;re using custom colour or &#39;X&#39; for default *
+*&amp;- 2nd character = colour code (from 0 to 7)                          *
+*&amp;                                  0 = background colour              *
+*&amp;                                  1 = blue                           *
+*&amp;                                  2 = gray                           *
+*&amp;                                  3 = yellow                         *
+*&amp;                                  4 = blue/gray                      *
+*&amp;                                  5 = green                          *
+*&amp;                                  6 = red                            *
+*&amp;                                  7 = orange                         *
+*&amp;- 3rd character = intensified (0=off, 1=on)                          *
+*&amp;- 4th character = inverse display (0=off, 1=on)                      *
+*&amp;---------------------------------------------------------------------*
+report zdemo_ain_cl25.
+
+include zdemo_ain_include_screen.
+
+start-of-selection.
+
+  types: begin of t_data,
+           no_emphasize type spfli-carrid,
+           standard     type spfli-carrid,
+           c100         type spfli-carrid,
+           c101         type spfli-carrid,
+           c110         type spfli-carrid,
+           c111         type spfli-carrid,
+           c200         type spfli-carrid,
+           c201         type spfli-carrid,
+           c210         type spfli-carrid,
+           c211         type spfli-carrid,
+           c300         type spfli-carrid,
+           c301         type spfli-carrid,
+           c310         type spfli-carrid,
+           c311         type spfli-carrid,
+           c400         type spfli-carrid,
+           c401         type spfli-carrid,
+           c410         type spfli-carrid,
+           c411         type spfli-carrid,
+           c500         type spfli-carrid,
+           c501         type spfli-carrid,
+           c510         type spfli-carrid,
+           c511         type spfli-carrid,
+           c600         type spfli-carrid,
+           c601         type spfli-carrid,
+           c610         type spfli-carrid,
+           c611         type spfli-carrid,
+           c700         type spfli-carrid,
+           c701         type spfli-carrid,
+           c710         type spfli-carrid,
+           c711         type spfli-carrid,
+           c000         type spfli-carrid,
+           c001         type spfli-carrid,
+           c010         type spfli-carrid,
+           c011         type spfli-carrid,
+         end of t_data.
+  data flights type standard table of t_data.
+
+  select carrid as no_emphasize
+    up to 50 rows from spfli
+    into corresponding fields of table @flights.
+
+  loop at flights assigning field-symbol(&lt;fl&gt;).
+    &lt;fl&gt;-standard = &lt;fl&gt;-c100 = &lt;fl&gt;-c101 = &lt;fl&gt;-c110 = &lt;fl&gt;-c111 =
+                &lt;fl&gt;-c200 = &lt;fl&gt;-c201 = &lt;fl&gt;-c210 = &lt;fl&gt;-c211 =
+                &lt;fl&gt;-c300 = &lt;fl&gt;-c301 = &lt;fl&gt;-c310 = &lt;fl&gt;-c311 =
+                &lt;fl&gt;-c400 = &lt;fl&gt;-c401 = &lt;fl&gt;-c410 = &lt;fl&gt;-c411 =
+                &lt;fl&gt;-c500 = &lt;fl&gt;-c501 = &lt;fl&gt;-c510 = &lt;fl&gt;-c511 =
+                &lt;fl&gt;-c600 = &lt;fl&gt;-c601 = &lt;fl&gt;-c610 = &lt;fl&gt;-c611 =
+                &lt;fl&gt;-c700 = &lt;fl&gt;-c701 = &lt;fl&gt;-c710 = &lt;fl&gt;-c711 =
+                &lt;fl&gt;-c000 = &lt;fl&gt;-c001 = &lt;fl&gt;-c010 = &lt;fl&gt;-c011 = &lt;fl&gt;-no_emphasize.
+
+  endloop.
+
+  data(grid) = new cl_gui_alv_grid(
+                    i_parent = new cl_gui_custom_container( container_name = &#39;CC&#39; )
+                                   ).
+  data(fcat) = value lvc_t_fcat(
+                                 ( fieldname = &#39;NO_EMPHASIZE&#39; reptext = &#39;NO_EMPHASIZE&#39; )
+                                 ( fieldname = &#39;STANDARD&#39; emphasize = abap_true reptext = &#39;STANDARD&#39; )
+                                 ( fieldname = &#39;C100&#39; emphasize = &#39;C100&#39; reptext = &#39;C100&#39;)
+                                 ( fieldname = &#39;C101&#39; emphasize = &#39;C101&#39; reptext = &#39;C101&#39;)
+                                 ( fieldname = &#39;C110&#39; emphasize = &#39;C110&#39; reptext = &#39;C110&#39;)
+                                 ( fieldname = &#39;C111&#39; emphasize = &#39;C111&#39; reptext = &#39;C111&#39;)
+                                 ( fieldname = &#39;C200&#39; emphasize = &#39;C200&#39; reptext = &#39;C200&#39;)
+                                 ( fieldname = &#39;C201&#39; emphasize = &#39;C201&#39; reptext = &#39;C201&#39;)
+                                 ( fieldname = &#39;C210&#39; emphasize = &#39;C210&#39; reptext = &#39;C210&#39;)
+                                 ( fieldname = &#39;C211&#39; emphasize = &#39;C211&#39; reptext = &#39;C211&#39;)
+                                 ( fieldname = &#39;C300&#39; emphasize = &#39;C300&#39; reptext = &#39;C300&#39;)
+                                 ( fieldname = &#39;C301&#39; emphasize = &#39;C301&#39; reptext = &#39;C301&#39;)
+                                 ( fieldname = &#39;C310&#39; emphasize = &#39;C310&#39; reptext = &#39;C310&#39;)
+                                 ( fieldname = &#39;C311&#39; emphasize = &#39;C311&#39; reptext = &#39;C311&#39;)
+                                 ( fieldname = &#39;C400&#39; emphasize = &#39;C400&#39; reptext = &#39;C400&#39;)
+                                 ( fieldname = &#39;C401&#39; emphasize = &#39;C401&#39; reptext = &#39;C401&#39;)
+                                 ( fieldname = &#39;C410&#39; emphasize = &#39;C410&#39; reptext = &#39;C410&#39;)
+                                 ( fieldname = &#39;C411&#39; emphasize = &#39;C411&#39; reptext = &#39;C411&#39;)
+                                 ( fieldname = &#39;C500&#39; emphasize = &#39;C500&#39; reptext = &#39;C500&#39;)
+                                 ( fieldname = &#39;C501&#39; emphasize = &#39;C501&#39; reptext = &#39;C501&#39;)
+                                 ( fieldname = &#39;C510&#39; emphasize = &#39;C510&#39; reptext = &#39;C510&#39;)
+                                 ( fieldname = &#39;C511&#39; emphasize = &#39;C511&#39; reptext = &#39;C511&#39;)
+                                 ( fieldname = &#39;C600&#39; emphasize = &#39;C600&#39; reptext = &#39;C600&#39;)
+                                 ( fieldname = &#39;C601&#39; emphasize = &#39;C601&#39; reptext = &#39;C601&#39;)
+                                 ( fieldname = &#39;C610&#39; emphasize = &#39;C610&#39; reptext = &#39;C610&#39;)
+                                 ( fieldname = &#39;C611&#39; emphasize = &#39;C611&#39; reptext = &#39;C611&#39;)
+                                 ( fieldname = &#39;C700&#39; emphasize = &#39;C700&#39; reptext = &#39;C700&#39;)
+                                 ( fieldname = &#39;C701&#39; emphasize = &#39;C701&#39; reptext = &#39;C701&#39;)
+                                 ( fieldname = &#39;C710&#39; emphasize = &#39;C710&#39; reptext = &#39;C710&#39;)
+                                 ( fieldname = &#39;C711&#39; emphasize = &#39;C711&#39; reptext = &#39;C711&#39;)
+                                 ( fieldname = &#39;C000&#39; emphasize = &#39;C000&#39; reptext = &#39;C000&#39;)
+                                 ( fieldname = &#39;C001&#39; emphasize = &#39;C001&#39; reptext = &#39;C001&#39;)
+                                 ( fieldname = &#39;C010&#39; emphasize = &#39;C010&#39; reptext = &#39;C010&#39;)
+                                 ( fieldname = &#39;C011&#39; emphasize = &#39;C011&#39; reptext = &#39;C011&#39;)
+                               ).
+  grid-&gt;set_table_for_first_display(
+    exporting
+        is_layout = value #( col_opt = abap_true )
+    changing
+      it_fieldcatalog               = fcat
+      it_outtab                     = flights
+    exceptions
+      invalid_parameter_combination = 1
+      program_error                 = 2
+      too_many_lines                = 3
+      others                        = 4
+  ).
+  if sy-subrc eq 0.
+    call screen 0100.
+  endif.
+">*&amp;---------------------------------------------------------------------*
+*&amp; Repo…</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="f706c5d249ab3a4ce3d3753967774b9920a31554">f706c5d249ab3a4ce3d3753967774b9920a31554</td>
+                                        
+                                        <td title="7390">7390</td>
+                                        
+                                        <td title="abap">abap</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="src/fcat/zdemo_ain_cl25.prog.abap">src/fcat/zdemo_ain_cl25.prog.abap</td>
+                                        
+                                        <td title="fidley/ALVGridInNutschell">fidley/ALVGridInNutschell</td>
+                                        
+                                        <td title="d3c95d7f31afbff001fff50edae0c2e09e51fe90">d3c95d7f31afbff001fff50edae0c2e09e51fe90</td>
+                                        
+                                        <td title="5.0">5.0</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="**********************************************************************
+*  FILTER EMPTY VALUES
+**********************************************************************
+
+CLASS lcl_empty_filter DEFINITION FINAL.
+  PUBLIC SECTION.
+    INTERFACES /mbtools/if_ajson_filter.
+ENDCLASS.
+
+CLASS lcl_empty_filter IMPLEMENTATION.
+  METHOD /mbtools/if_ajson_filter~keep_node.
+
+    rv_keep = boolc(
+      ( iv_visit = /mbtools/if_ajson_filter=&gt;visit_type-value AND is_node-value IS NOT INITIAL ) OR
+      ( iv_visit &lt;&gt; /mbtools/if_ajson_filter=&gt;visit_type-value AND is_node-children &gt; 0 ) ).
+    &#34; children = 0 on open for initially empty nodes and on close for filtered ones
+
+  ENDMETHOD.
+ENDCLASS.
+
+**********************************************************************
+*  FILTER PREDEFINED PATHS
+**********************************************************************
+
+CLASS lcl_paths_filter DEFINITION FINAL.
+  PUBLIC SECTION.
+    INTERFACES /mbtools/if_ajson_filter.
+    METHODS constructor
+      IMPORTING
+        it_skip_paths TYPE string_table OPTIONAL
+        iv_skip_paths TYPE string OPTIONAL
+      RAISING
+        /mbtools/cx_ajson_error.
+  PRIVATE SECTION.
+    DATA mt_skip_paths TYPE HASHED TABLE OF string WITH UNIQUE KEY table_line.
+ENDCLASS.
+
+CLASS lcl_paths_filter IMPLEMENTATION.
+
+  METHOD /mbtools/if_ajson_filter~keep_node.
+
+    DATA lv_path TYPE string.
+
+    lv_path = is_node-path &amp;&amp; is_node-name.
+    READ TABLE mt_skip_paths WITH KEY table_line = lv_path TRANSPORTING NO FIELDS.
+    rv_keep = boolc( sy-subrc &lt;&gt; 0 ).
+
+  ENDMETHOD.
+
+  METHOD constructor.
+
+    DATA lv_s TYPE string.
+    DATA lt_tab TYPE string_table.
+    FIELD-SYMBOLS &lt;s&gt; TYPE string.
+
+    IF boolc( iv_skip_paths IS INITIAL ) = boolc( it_skip_paths IS INITIAL ). &#34; XOR
+      /mbtools/cx_ajson_error=&gt;raise( &#39;no filter path specified&#39; ).
+    ENDIF.
+
+    LOOP AT it_skip_paths INTO lv_s.
+      lv_s = to_lower( lv_s ).
+      APPEND lv_s TO lt_tab.
+    ENDLOOP.
+
+    IF iv_skip_paths IS NOT INITIAL.
+      SPLIT iv_skip_paths AT &#39;,&#39; INTO TABLE lt_tab.
+      LOOP AT lt_tab ASSIGNING &lt;s&gt;.
+        IF &lt;s&gt; IS INITIAL.
+          DELETE lt_tab INDEX sy-tabix.
+          CONTINUE.
+        ENDIF.
+        &lt;s&gt; = condense( to_lower( &lt;s&gt; ) ).
+      ENDLOOP.
+    ENDIF.
+
+    SORT lt_tab BY table_line.
+    DELETE ADJACENT DUPLICATES FROM lt_tab.
+
+    mt_skip_paths = lt_tab.
+
+  ENDMETHOD.
+
+ENDCLASS.
+
+**********************************************************************
+* MULTI FILTER
+**********************************************************************
+
+CLASS lcl_and_filter DEFINITION FINAL.
+  PUBLIC SECTION.
+    INTERFACES /mbtools/if_ajson_filter.
+    METHODS constructor
+      IMPORTING
+        it_filters TYPE /mbtools/if_ajson_filter=&gt;ty_filter_tab
+      RAISING
+        /mbtools/cx_ajson_error.
+  PRIVATE SECTION.
+    DATA mt_filters TYPE /mbtools/if_ajson_filter=&gt;ty_filter_tab.
+ENDCLASS.
+
+CLASS lcl_and_filter IMPLEMENTATION.
+
+  METHOD /mbtools/if_ajson_filter~keep_node.
+
+    DATA li_filter LIKE LINE OF mt_filters.
+
+    rv_keep = abap_true.
+    LOOP AT mt_filters INTO li_filter.
+      rv_keep = li_filter-&gt;keep_node(
+        is_node  = is_node
+        iv_visit = iv_visit ).
+      IF rv_keep = abap_false.
+        RETURN.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+  METHOD constructor.
+
+    DATA li_filter LIKE LINE OF it_filters.
+
+    LOOP AT it_filters INTO li_filter WHERE table_line IS BOUND.
+      APPEND li_filter TO mt_filters.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+ENDCLASS.
+">**********************************************************************
+*  FILTER…</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="f707aa256126ec981696b25d4cbe9173d6a74a1f">f707aa256126ec981696b25d4cbe9173d6a74a1f</td>
+                                        
+                                        <td title="3452">3452</td>
+                                        
+                                        <td title="abap">abap</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="src/#mbtools#cl_ajson_filter_lib.clas.locals_imp.abap">src/#mbtools#cl_ajson_filter_lib.clas.locals_imp.abap</td>
+                                        
+                                        <td title="Marc-Bernard-Tools/Mirror-AJSON">Marc-Bernard-Tools/Mirror-AJSON</td>
+                                        
+                                        <td title="4bc1b5b661a6e0197770da766293d9434c75e559">4bc1b5b661a6e0197770da766293d9434c75e559</td>
+                                        
+                                        <td title="None">None</td>
+                                        
+                                    </tr>
+                                    
+                                    <tr>
+                                        
+                                        <td title="FUNCTION-POOL ZEXPIMP_VX_GENER_TEST_CODE.   &#34;MESSAGE-ID ..
+
+* INCLUDE LZEXPIMP_GENERATE_TEST_CODED...    &#34; Local class definition
+">FUNCTION-POOL ZEXPIMP_VX_GENER_TEST_CODE.   &#34;MESSAGE-ID ..
+
+* INCLUDE LZEXPIMP_G…</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="f70ff1b7c91543804aad129c14175a625e0efafb">f70ff1b7c91543804aad129c14175a625e0efafb</td>
+                                        
+                                        <td title="130">130</td>
+                                        
+                                        <td title="abap">abap</td>
+                                        
+                                        <td title="ABAP">ABAP</td>
+                                        
+                                        <td title="src/zexpimp_vx_gener_test_code.fugr.lzexpimp_vx_gener_test_codetop.abap">src/zexpimp_vx_gener_test_code.fugr.lzexpimp_vx_gener_test_codetop.abap</td>
+                                        
+                                        <td title="sandraros/export-import-vx">sandraros/export-import-vx</td>
+                                        
+                                        <td title="a818910f825f6a19105bb1f6ad3563e93a477c38">a818910f825f6a19105bb1f6ad3563e93a477c38</td>
+                                        
+                                        <td title="1.0">1.0</td>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="table-wrap">
