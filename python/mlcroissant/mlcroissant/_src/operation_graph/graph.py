@@ -110,9 +110,13 @@ def _add_operations_for_file_object(
                 >> Concatenate(operations=operations, node=successor)
             )
         if node.encoding_formats and not should_extract(node.encoding_formats):
-            fields = tuple([
-                field for field in node.recursive_successors if isinstance(field, Field)
-            ])
+            fields = tuple(
+                [
+                    field
+                    for field in node.recursive_successors
+                    if isinstance(field, Field)
+                ]
+            )
             operation >> Read(
                 operations=operations,
                 node=node,
@@ -153,9 +157,9 @@ def _add_operations_for_local_file_sets(
     folder: epath.Path,
 ):
     """Adds all operations for a FileSet reading from local files."""
-    fields = tuple([
-        field for field in node.recursive_successors if isinstance(field, Field)
-    ])
+    fields = tuple(
+        [field for field in node.recursive_successors if isinstance(field, Field)]
+    )
     (
         LocalDirectory(
             operations=operations,

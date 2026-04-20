@@ -18,10 +18,12 @@ from mlcroissant._src.core.issues import Issues
         [
             "foo",
             None,
-            set([
-                "Dates or DateTimes should follow the [ISO 8601"
-                " format](https://en.wikipedia.org/wiki/ISO_8601). Got foo"
-            ]),
+            set(
+                [
+                    "Dates or DateTimes should follow the [ISO 8601"
+                    " format](https://en.wikipedia.org/wiki/ISO_8601). Got foo"
+                ]
+            ),
         ],
     ],
 )

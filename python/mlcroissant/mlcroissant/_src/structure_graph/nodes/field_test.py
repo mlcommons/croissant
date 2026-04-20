@@ -96,9 +96,9 @@ def test_from_jsonld():
     annotation = field.annotations[0]
     assert annotation.name == "annotation"
     assert annotation.description == "annotation description"
-    assert set(annotation.data_types) == set([
-        constants.DataType.TEXT, constants.DataType.URL
-    ])
+    assert set(annotation.data_types) == set(
+        [constants.DataType.TEXT, constants.DataType.URL]
+    )
 
 
 def test_value_atomic_to_json():
