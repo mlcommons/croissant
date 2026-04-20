@@ -450,23 +450,31 @@
         pre.preview {
             font-family: var(--font-mono);
             font-size: 0.78rem;
-            background: #1e293b;
-            color: #e2e8f0;
+            background: #f1f3f5;
+            color: #212529;
             padding: 16px;
             border-radius: 8px;
             overflow-x: auto;
             max-width: 100%;
             margin-top: 10px;
             line-height: 1.6;
+            display: none;
+        }
+        pre.preview.open {
+            display: block;
         }
 
         /* ── File Listing (FileSet preview) ────────────── */
         .file-listing {
             margin-top: 10px;
-            background: var(--color-bg);
+            background: #f1f3f5;
             border: 1px solid var(--color-border);
             border-radius: 8px;
             padding: 12px 16px;
+            display: none;
+        }
+        .file-listing.open {
+            display: block;
         }
         .file-listing-header {
             font-size: 0.78rem;
@@ -550,7 +558,16 @@
 
         /* ── Record Set Data Preview ────────────────────── */
         .rs-preview {
+            margin-top: 16px;
             margin-bottom: 16px;
+            background: #f1f3f5;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: none;
+        }
+        .rs-preview.open {
+            display: block;
         }
         .rs-preview-label {
             font-size: 0.75rem;
@@ -697,10 +714,38 @@
             margin: 0;
             border-radius: 0;
         }
-        /* Card-header toggle */
-        .card-header .jsonld-toggle { margin-left: auto; }
-        .rs-header .jsonld-toggle { margin-left: auto; }
-        .rc-header .jsonld-toggle { margin-left: auto; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .preview-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+            vertical-align: middle;
+        }
+        .preview-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .preview-toggle.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
     </style>
 </head>
 <body>
@@ -853,9 +898,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">tinyurl-repository</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -884,9 +932,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">files-dev</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -916,9 +969,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">metadata-dev</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -946,9 +1002,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">metadata-devtest</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -976,9 +1035,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">files-devtest</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1018,9 +1082,12 @@ graph TD
                 <div class="rs-section" id="rs-language_translations_train_data">
                     <div class="rs-header">
                         <h3>language_translations_train_data</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Training data for translations to different languages.</div>
@@ -1075,7 +1142,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1108,6 +1174,7 @@ graph TD
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1116,9 +1183,14 @@ graph TD
                 <div class="rs-section" id="rs-language_translations_train_data_with_metadata">
                     <div class="rs-header">
                         <h3>language_translations_train_data_with_metadata</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Training data and metadata for translations to different languages.</div>
@@ -1227,6 +1299,68 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>line_number</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The line number for extracted sentences.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>translation</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The translation of the sentence in the target language.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>language</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>URL</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The URL of the English source of the sentence.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>domain</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The domain of the English source of the sentence.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>topic</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The topic of the sentence.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>has_image</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Whether the source of the sentence has an image.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>has_hyperlink</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Whether the sentence has a hyperlink.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="rs-preview">
                         <div class="rs-preview-label">🔍 Data preview</div>
@@ -1360,68 +1494,6 @@ graph TD
                         </div>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>line_number</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The line number for extracted sentences.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>translation</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The translation of the sentence in the target language.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>URL</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The URL of the English source of the sentence.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>domain</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The domain of the English source of the sentence.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>topic</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The topic of the sentence.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>has_image</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Whether the source of the sentence has an image.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>has_hyperlink</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Whether the sentence has a hyperlink.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
                 <hr class="rs-divider">
@@ -1430,9 +1502,12 @@ graph TD
                 <div class="rs-section" id="rs-language_translations_test_data">
                     <div class="rs-header">
                         <h3>language_translations_test_data</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Testing data for translations to different languages.</div>
@@ -1487,7 +1562,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1520,6 +1594,7 @@ graph TD
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1528,9 +1603,14 @@ graph TD
                 <div class="rs-section" id="rs-language_translations_test_data_with_metadata">
                     <div class="rs-header">
                         <h3>language_translations_test_data_with_metadata</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Testing data and metadata for translations to different languages.</div>
@@ -1639,6 +1719,68 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>line_number</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>The line number for extracted sentences.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>translation</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The translation of the sentence in the target language.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>language</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>URL</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The URL of the English source of the sentence.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>domain</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The domain of the English source of the sentence.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>topic</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>The topic of the sentence.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>has_image</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Whether the source of the sentence has an image.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>has_hyperlink</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Whether the sentence has a hyperlink.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="rs-preview">
                         <div class="rs-preview-label">🔍 Data preview</div>
@@ -1772,68 +1914,6 @@ graph TD
                         </div>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>line_number</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The line number for extracted sentences.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>translation</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The translation of the sentence in the target language.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The language of the sentence translation in ISO 639-3 along with a code for the script used.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>URL</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The URL of the English source of the sentence.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>domain</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The domain of the English source of the sentence.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>topic</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The topic of the sentence.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>has_image</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Whether the source of the sentence has an image.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>has_hyperlink</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Whether the sentence has a hyperlink.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
                 
@@ -2283,6 +2363,15 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+            }
+        }
+
+        function togglePreview(btn) {
+            var container = btn.closest('.rs-section, .resource-card');
+            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
+            if (panel) {
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
             }
         }
 

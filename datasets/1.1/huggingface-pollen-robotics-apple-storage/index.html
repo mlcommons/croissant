@@ -450,23 +450,31 @@
         pre.preview {
             font-family: var(--font-mono);
             font-size: 0.78rem;
-            background: #1e293b;
-            color: #e2e8f0;
+            background: #f1f3f5;
+            color: #212529;
             padding: 16px;
             border-radius: 8px;
             overflow-x: auto;
             max-width: 100%;
             margin-top: 10px;
             line-height: 1.6;
+            display: none;
+        }
+        pre.preview.open {
+            display: block;
         }
 
         /* ── File Listing (FileSet preview) ────────────── */
         .file-listing {
             margin-top: 10px;
-            background: var(--color-bg);
+            background: #f1f3f5;
             border: 1px solid var(--color-border);
             border-radius: 8px;
             padding: 12px 16px;
+            display: none;
+        }
+        .file-listing.open {
+            display: block;
         }
         .file-listing-header {
             font-size: 0.78rem;
@@ -550,7 +558,16 @@
 
         /* ── Record Set Data Preview ────────────────────── */
         .rs-preview {
+            margin-top: 16px;
             margin-bottom: 16px;
+            background: #f1f3f5;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: none;
+        }
+        .rs-preview.open {
+            display: block;
         }
         .rs-preview-label {
             font-size: 0.75rem;
@@ -697,10 +714,38 @@
             margin: 0;
             border-radius: 0;
         }
-        /* Card-header toggle */
-        .card-header .jsonld-toggle { margin-left: auto; }
-        .rs-header .jsonld-toggle { margin-left: auto; }
-        .rc-header .jsonld-toggle { margin-left: auto; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .preview-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+            vertical-align: middle;
+        }
+        .preview-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .preview-toggle.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
     </style>
 </head>
 <body>
@@ -900,9 +945,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">repo</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -931,9 +979,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">parquet-files-for-config-default</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -976,9 +1029,12 @@ graph TD
                 <div class="rs-section" id="rs-default_splits">
                     <div class="rs-header">
                         <h3>default_splits</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Splits for the default config.</div>
@@ -1009,7 +1065,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1030,6 +1085,7 @@ graph TD
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
                 
                 <hr class="rs-divider">
@@ -1038,9 +1094,14 @@ graph TD
                 <div class="rs-section" id="rs-default">
                     <div class="rs-header">
                         <h3>default</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">pollen-robotics/apple_storage - &#39;default&#39; subset</div>
@@ -1189,6 +1250,68 @@ graph TD
 }</code></pre>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>split</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Split to which the example belongs to.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>observation.state</strong></td>
+                                    <td><span class="type-badge">numpy.float32</span></td>
+                                    <td>Column &#39;observation.state&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>action</strong></td>
+                                    <td><span class="type-badge">numpy.float32</span></td>
+                                    <td>Column &#39;action&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>timestamp</strong></td>
+                                    <td><span class="type-badge">numpy.float32</span></td>
+                                    <td>Column &#39;timestamp&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>frame_index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;frame_index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>episode_index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;episode_index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>task_index</strong></td>
+                                    <td><span class="type-badge">numpy.int64</span></td>
+                                    <td>Column &#39;task_index&#39; from the Hugging Face parquet file.</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="rs-preview">
                         <div class="rs-preview-label">🔍 Data preview</div>
@@ -1262,68 +1385,6 @@ graph TD
                         </div>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Split to which the example belongs to.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>observation.state</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;observation.state&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>action</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;action&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;timestamp&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>frame_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;frame_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>episode_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;episode_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>task_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;task_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
                 
@@ -1645,6 +1706,15 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+            }
+        }
+
+        function togglePreview(btn) {
+            var container = btn.closest('.rs-section, .resource-card');
+            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
+            if (panel) {
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
             }
         }
 

@@ -450,23 +450,31 @@
         pre.preview {
             font-family: var(--font-mono);
             font-size: 0.78rem;
-            background: #1e293b;
-            color: #e2e8f0;
+            background: #f1f3f5;
+            color: #212529;
             padding: 16px;
             border-radius: 8px;
             overflow-x: auto;
             max-width: 100%;
             margin-top: 10px;
             line-height: 1.6;
+            display: none;
+        }
+        pre.preview.open {
+            display: block;
         }
 
         /* ── File Listing (FileSet preview) ────────────── */
         .file-listing {
             margin-top: 10px;
-            background: var(--color-bg);
+            background: #f1f3f5;
             border: 1px solid var(--color-border);
             border-radius: 8px;
             padding: 12px 16px;
+            display: none;
+        }
+        .file-listing.open {
+            display: block;
         }
         .file-listing-header {
             font-size: 0.78rem;
@@ -550,7 +558,16 @@
 
         /* ── Record Set Data Preview ────────────────────── */
         .rs-preview {
+            margin-top: 16px;
             margin-bottom: 16px;
+            background: #f1f3f5;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: none;
+        }
+        .rs-preview.open {
+            display: block;
         }
         .rs-preview-label {
             font-size: 0.75rem;
@@ -697,10 +714,38 @@
             margin: 0;
             border-radius: 0;
         }
-        /* Card-header toggle */
-        .card-header .jsonld-toggle { margin-left: auto; }
-        .rs-header .jsonld-toggle { margin-left: auto; }
-        .rc-header .jsonld-toggle { margin-left: auto; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .preview-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+            vertical-align: middle;
+        }
+        .preview-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .preview-toggle.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
     </style>
 </head>
 <body>
@@ -884,7 +929,7 @@
                         <td class="kv-val">
                             
                             
-                            Organization(uuid=&#34;_:N76bcf8524dac4e00a47371af091fac1e&#34;)
+                            Organization(uuid=&#34;_:N8bf487b88cfb41b5a497b3162989b953&#34;)
                             
                             
                         </td>
@@ -948,9 +993,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">warc.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -975,9 +1023,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">warc-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1013,9 +1066,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">wat.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1040,9 +1096,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">wat-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1078,9 +1139,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">wet.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1105,9 +1169,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">wet-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1143,9 +1212,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">robotstxt.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1170,9 +1242,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">robotstxt-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1208,9 +1285,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">non200responses.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1235,9 +1315,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">non200responses-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1273,9 +1358,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">cc-index.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1300,9 +1388,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">cc-index-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1338,9 +1431,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">cc-index-table.paths.gz</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1365,9 +1461,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">cc-index-table-files</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File Set</span>
                         
@@ -1403,9 +1504,12 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">CC-MAIN-2025-43.domains-top-1000</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1441,9 +1545,12 @@ graph TD
                 <div class="rs-section" id="rs-warc-records">
                     <div class="rs-header">
                         <h3>warc-records</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     
@@ -1470,7 +1577,6 @@ graph TD
 }</code></pre>
                     </div>
                     
-                    
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1491,6 +1597,7 @@ graph TD
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
                 
                 
@@ -1820,6 +1927,15 @@ graph TD
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+            }
+        }
+
+        function togglePreview(btn) {
+            var container = btn.closest('.rs-section, .resource-card');
+            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
+            if (panel) {
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
             }
         }
 

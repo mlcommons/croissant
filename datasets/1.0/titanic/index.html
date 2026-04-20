@@ -450,23 +450,31 @@
         pre.preview {
             font-family: var(--font-mono);
             font-size: 0.78rem;
-            background: #1e293b;
-            color: #e2e8f0;
+            background: #f1f3f5;
+            color: #212529;
             padding: 16px;
             border-radius: 8px;
             overflow-x: auto;
             max-width: 100%;
             margin-top: 10px;
             line-height: 1.6;
+            display: none;
+        }
+        pre.preview.open {
+            display: block;
         }
 
         /* ── File Listing (FileSet preview) ────────────── */
         .file-listing {
             margin-top: 10px;
-            background: var(--color-bg);
+            background: #f1f3f5;
             border: 1px solid var(--color-border);
             border-radius: 8px;
             padding: 12px 16px;
+            display: none;
+        }
+        .file-listing.open {
+            display: block;
         }
         .file-listing-header {
             font-size: 0.78rem;
@@ -550,7 +558,16 @@
 
         /* ── Record Set Data Preview ────────────────────── */
         .rs-preview {
+            margin-top: 16px;
             margin-bottom: 16px;
+            background: #f1f3f5;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: none;
+        }
+        .rs-preview.open {
+            display: block;
         }
         .rs-preview-label {
             font-size: 0.75rem;
@@ -697,10 +714,38 @@
             margin: 0;
             border-radius: 0;
         }
-        /* Card-header toggle */
-        .card-header .jsonld-toggle { margin-left: auto; }
-        .rs-header .jsonld-toggle { margin-left: auto; }
-        .rc-header .jsonld-toggle { margin-left: auto; }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .preview-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.15s;
+            vertical-align: middle;
+        }
+        .preview-toggle:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .preview-toggle.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
     </style>
 </head>
 <body>
@@ -883,9 +928,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">passengers.csv</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -919,9 +969,14 @@ graph TD
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">genders.csv</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -956,9 +1011,14 @@ female,https://www.wikidata.org/wiki/Q6581072
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">embarkation_ports.csv</span>
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
+                            <div class="header-actions">
+                                
+                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                                
+                                
+                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                                
+                            </div>
                         </div>
                         <span class="rc-type">File</span>
                         
@@ -1005,9 +1065,14 @@ S,Southampton,wd:Q79848
                 <div class="rs-section" id="rs-genders">
                     <div class="rs-header">
                         <h3>genders</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Maps gender labels to semantic definitions.</div>
@@ -1064,6 +1129,32 @@ S,Southampton,wd:Q79848
 }</code></pre>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>label</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>One of {&#34;male&#34;, &#34;female&#34;}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>url</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Corresponding WikiData URL</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="rs-preview">
                         <div class="rs-preview-label">🔍 Data preview</div>
@@ -1101,32 +1192,6 @@ S,Southampton,wd:Q79848
                         </div>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>label</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>One of {&#34;male&#34;, &#34;female&#34;}</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>url</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Corresponding WikiData URL</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
                 <hr class="rs-divider">
@@ -1135,9 +1200,14 @@ S,Southampton,wd:Q79848
                 <div class="rs-section" id="rs-embarkation_ports">
                     <div class="rs-header">
                         <h3>embarkation_ports</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">Maps Embarkation port initial to labeled values.</div>
@@ -1209,6 +1279,38 @@ S,Southampton,wd:Q79848
 }</code></pre>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>key</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>C, Q, S or ?</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>label</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Human-readable label</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>url</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Corresponding WikiData URL</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="rs-preview">
                         <div class="rs-preview-label">🔍 Data preview</div>
@@ -1272,38 +1374,6 @@ S,Southampton,wd:Q79848
                         </div>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>key</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>C, Q, S or ?</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>label</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Human-readable label</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>url</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Corresponding WikiData URL</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
                 <hr class="rs-divider">
@@ -1312,9 +1382,14 @@ S,Southampton,wd:Q79848
                 <div class="rs-section" id="rs-passengers">
                     <div class="rs-header">
                         <h3>passengers</h3>
-                        
-                        <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                        
+                        <div class="header-actions">
+                            
+                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
+                            
+                            
+                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
+                            
+                        </div>
                     </div>
                     
                     <div class="rs-desc markdown">The list of passengers. Does not include crew members.</div>
@@ -1551,6 +1626,104 @@ S,Southampton,wd:Q79848
 }</code></pre>
                     </div>
                     
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td><strong>name</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Name of the passenger</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>gender</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Gender of passenger (male or female)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>age</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Age of passenger at time of death. It&#39;s a string, because some values can be `?`.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>survived</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Survival status of passenger (0: Lost, 1: Saved)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>pclass</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Passenger Class (1st/2nd/3rd)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>cabin</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Passenger cabin.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>embarked</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>fare</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>home_destination</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Home and destination</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>ticket</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Ticket Number, may include a letter.</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>num_parents_children</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Number of Parents/Children Aboard</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>num_siblings_spouses</strong></td>
+                                    <td><span class="type-badge">int</span></td>
+                                    <td>Number of Siblings/Spouses Aboard</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>boat</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Lifeboat used by passenger</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><strong>body</strong></td>
+                                    <td><span class="type-badge">bytes</span></td>
+                                    <td>Body Identification Number</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="rs-preview">
                         <div class="rs-preview-label">🔍 Data preview</div>
@@ -1708,104 +1881,6 @@ S,Southampton,wd:Q79848
                         </div>
                     </div>
                     
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of the passenger</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>gender</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Gender of passenger (male or female)</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>age</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Age of passenger at time of death. It&#39;s a string, because some values can be `?`.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>survived</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Survival status of passenger (0: Lost, 1: Saved)</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>pclass</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Passenger Class (1st/2nd/3rd)</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>cabin</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Passenger cabin.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>embarked</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>fare</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Passenger Fare (British pound). It&#39;s a string, because some values can be `?`.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>home_destination</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Home and destination</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>ticket</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Ticket Number, may include a letter.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>num_parents_children</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Number of Parents/Children Aboard</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>num_siblings_spouses</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Number of Siblings/Spouses Aboard</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>boat</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Lifeboat used by passenger</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>body</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Body Identification Number</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
                 
@@ -2300,6 +2375,15 @@ S,Southampton,wd:Q79848
                     if (code) Prism.highlightElement(code);
                     panel.dataset.highlighted = 'true';
                 }
+            }
+        }
+
+        function togglePreview(btn) {
+            var container = btn.closest('.rs-section, .resource-card');
+            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
+            if (panel) {
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
             }
         }
 
