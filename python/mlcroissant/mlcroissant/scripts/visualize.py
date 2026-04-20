@@ -398,15 +398,13 @@ def visualize(jsonld: str, output: epath.Path):
         jsonld_key = _python_name_to_jsonld_key(name)
         jsonld_snippet = _extract_jsonld_value(raw_jsonld, jsonld_key)
 
-        metadata_fields.append(
-            {
-                "name": name.replace("_", " ").title(),
-                "raw_name": name,
-                "value": value_str,
-                "description": field.description or "",
-                "jsonld": jsonld_snippet,
-            }
-        )
+        metadata_fields.append({
+            "name": name.replace("_", " ").title(),
+            "raw_name": name,
+            "value": value_str,
+            "description": field.description or "",
+            "jsonld": jsonld_snippet,
+        })
 
     # Sort fields in a sensible way
     preferred_order = [
@@ -608,21 +606,18 @@ def _build_svg_graph(
     # ── SVG parts ────────────────────────────────────────────────────────
     parts: list[str] = []
     parts.append(
-        f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
-        f'viewBox="0 0 {total_w} {total_h}" width="{total_w}" height="{total_h}" '
-        f'style="max-width:100%;font-family:Inter,sans-serif;">'
+        '<svg xmlns="http://www.w3.org/2000/svg"'
+        f' xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {total_w} {total_h}"'
+        f' width="{total_w}" height="{total_h}"'
+        ' style="max-width:100%;font-family:Inter,sans-serif;">'
     )
 
     # Arrow-head markers — one for resource→resource, one for resource→recordset
     parts.append(
-        "<defs>"
-        '<marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
-        '<path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>'
-        "</marker>"
-        '<marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
-        '<path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/>'
-        "</marker>"
-        "</defs>"
+        '<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3"'
+        ' orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker'
+        ' id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3"'
+        ' orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs>'
     )
 
     def _node(cx: int, cy: int, label: str, node_type: str, href: str) -> str:
@@ -637,8 +632,10 @@ def _build_svg_graph(
             f'<rect x="{x}" y="{y}" width="{NODE_W}" height="{NODE_H}" '
             f'  rx="8" fill="{c["fill"]}" stroke="{c["stroke"]}" stroke-width="1.5"/>'
             # icon pill
-            f'<rect x="{x + 8}" y="{cy - 12}" width="24" height="24" rx="5" fill="{c["icon_bg"]}"/>'
-            f'<text x="{x + 20}" y="{cy + 5}" text-anchor="middle" font-size="13">{c["icon"]}</text>'
+            f'<rect x="{x + 8}" y="{cy - 12}" width="24" height="24" rx="5"'
+            f' fill="{c["icon_bg"]}"/>'
+            f'<text x="{x + 20}" y="{cy + 5}" text-anchor="middle"'
+            f' font-size="13">{c["icon"]}</text>'
             # label
             f'<text x="{x + 40}" y="{cy + 4}" font-size="12" font-weight="500" '
             f'  fill="#1e293b" dominant-baseline="middle">{esc_label}</text>'
@@ -650,22 +647,24 @@ def _build_svg_graph(
         mx = (x1 + x2) // 2
         return (
             f'<path d="M{x1},{y1} C{mx},{y1} {mx},{y2} {x2},{y2}" '
-            f'fill="none" stroke="#94a3b8" stroke-width="1.5" '
-            f'marker-end="url(#arr)" opacity="0.7"/>'
+            'fill="none" stroke="#94a3b8" stroke-width="1.5" '
+            'marker-end="url(#arr)" opacity="0.7"/>'
         )
 
     # Column headers
     if resources:
         mid_left = LEFT_X + NODE_W // 2
         parts.append(
-            f'<text x="{mid_left}" y="10" text-anchor="middle" '
-            f'font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text>'
+            f'<text x="{mid_left}" y="10" text-anchor="middle" font-size="10"'
+            ' font-weight="600" fill="#94a3b8"'
+            ' letter-spacing="0.06em">RESOURCES</text>'
         )
     if record_sets:
         mid_right = RIGHT_X + NODE_W // 2
         parts.append(
-            f'<text x="{mid_right}" y="10" text-anchor="middle" '
-            f'font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text>'
+            f'<text x="{mid_right}" y="10" text-anchor="middle" font-size="10"'
+            ' font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD'
+            " SETS</text>"
         )
 
     # Draw resource→resource edges (contained_in, e.g. FileObject inside FileSet)
@@ -689,8 +688,8 @@ def _build_svg_graph(
                     f"C{ctrl_x},{y_start} "
                     f"{ctrl_x},{y_end} "
                     f'{x_end},{y_end}" '
-                    f'fill="none" stroke="#c7d2fe" stroke-width="1.5" '
-                    f'stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/>'
+                    'fill="none" stroke="#c7d2fe" stroke-width="1.5" '
+                    'stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/>'
                 )
 
     # Draw RecordSet→resource edges
