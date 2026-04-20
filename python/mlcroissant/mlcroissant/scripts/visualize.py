@@ -637,10 +637,10 @@ def _build_svg_graph(
             f'<rect x="{x}" y="{y}" width="{NODE_W}" height="{NODE_H}" '
             f'  rx="8" fill="{c["fill"]}" stroke="{c["stroke"]}" stroke-width="1.5"/>'
             # icon pill
-            f'<rect x="{x+8}" y="{cy-12}" width="24" height="24" rx="5" fill="{c["icon_bg"]}"/>'
-            f'<text x="{x+20}" y="{cy+5}" text-anchor="middle" font-size="13">{c["icon"]}</text>'
+            f'<rect x="{x + 8}" y="{cy - 12}" width="24" height="24" rx="5" fill="{c["icon_bg"]}"/>'
+            f'<text x="{x + 20}" y="{cy + 5}" text-anchor="middle" font-size="13">{c["icon"]}</text>'
             # label
-            f'<text x="{x+40}" y="{cy+4}" font-size="12" font-weight="500" '
+            f'<text x="{x + 40}" y="{cy + 4}" font-size="12" font-weight="500" '
             f'  fill="#1e293b" dominant-baseline="middle">{esc_label}</text>'
             f"</a>"
         )
