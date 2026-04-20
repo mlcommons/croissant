@@ -1,7 +1,7 @@
 """Visualizes a Croissant dataset."""
 
-import html
 import json
+import re
 import sys
 from absl import app
 from absl import flags
@@ -48,7 +48,6 @@ def _clean_description(desc: str) -> str:
     # Replace tabs with spaces
     desc = desc.replace("\t", " ")
     # Collapse multiple newlines (more than 2) into 2 newlines
-    import re
     desc = re.sub(r"\n{3,}", "\n\n", desc)
     # Strip whitespace from lines that only contain whitespace
     lines = [line if line.strip() else "" for line in desc.split("\n")]

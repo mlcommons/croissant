@@ -41,7 +41,7 @@ def get_all_datasets(datasets_dir_str: str):
 def main(argv):
     """Main function launched by the script."""
     del argv
-    
+
     datasets_dir = epath.Path(FLAGS.datasets_dir)
     if not datasets_dir.exists():
         logging.error(f"Datasets directory not found: {datasets_dir}")
@@ -58,7 +58,7 @@ def main(argv):
         "python/mlcroissant/mlcroissant/scripts/templates/visualizer.html",
         "python/mlcroissant/mlcroissant/scripts/visualize_all.py",
     ]
-    
+
     for vf in visualizer_files:
         if vf in changed_files:
             logging.info(f"Visualizer file {vf} changed. Forcing full run.")
@@ -66,7 +66,7 @@ def main(argv):
             break
 
     all_datasets = get_all_datasets(FLAGS.datasets_dir)
-    
+
     to_process = []
     if force_all or not FLAGS.changed_files:
         to_process = all_datasets
@@ -81,7 +81,7 @@ def main(argv):
             rel_path = os.path.relpath(dataset_path, os.getcwd())
             if rel_path in changed_files:
                 to_process.append(dataset_path)
-        
+
         logging.info(f"Incremental run. Processing {len(to_process)} changed datasets.")
 
     success_count = 0
