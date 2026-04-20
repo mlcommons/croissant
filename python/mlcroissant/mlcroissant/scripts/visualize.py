@@ -557,7 +557,7 @@ def _build_svg_graph(
     NODE_W, NODE_H = 180, 52
     COL_GAP = 220          # horizontal gap between left and right columns
     ROW_GAP = 24           # vertical gap between nodes in same column
-    PAD_X, PAD_Y = 24, 24  # outer padding
+    PAD_X, PAD_Y = 60, 24  # outer padding (increased PAD_X to allow arcs on left)
     LEFT_X = PAD_X
     RIGHT_X = PAD_X + NODE_W + COL_GAP
 
@@ -658,14 +658,21 @@ def _build_svg_graph(
         for parent_name in res.get("contained_in", []):
             if parent_name in res_positions:
                 p_cx, p_cy = res_positions[parent_name]
-                # Short vertical/diagonal edge within left column
-                # from bottom-center of parent to top-center of child
-                mx = p_cx  # stay in the same column
+                # Arc edge on the left side of the resource column
+                # From left-middle of parent to left-middle of child
+                x_start = p_cx - NODE_W // 2
+                y_start = p_cy
+                x_end = child_cx - NODE_W // 2
+                y_end = child_cy
+                
+                # Control points shifted left by 40px
+                ctrl_x = x_start - 40
+                
                 parts.append(
-                    f'<path d="M{p_cx},{p_cy + NODE_H // 2} '
-                    f'C{mx},{p_cy + NODE_H // 2 + 12} '
-                    f'{mx},{child_cy - NODE_H // 2 - 12} '
-                    f'{child_cx},{child_cy - NODE_H // 2}" '
+                    f'<path d="M{x_start},{y_start} '
+                    f'C{ctrl_x},{y_start} '
+                    f'{ctrl_x},{y_end} '
+                    f'{x_end},{y_end}" '
                     f'fill="none" stroke="#c7d2fe" stroke-width="1.5" '
                     f'stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/>'
                 )
