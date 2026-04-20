@@ -3,6 +3,7 @@
 import json
 import re
 import sys
+from typing import Any
 from absl import app
 from absl import flags
 from absl import logging
@@ -41,16 +42,17 @@ def _format_value(value):
     return s
 
 
-def _clean_description(desc: str) -> str:
+def _clean_description(desc: Any) -> str:
     """Clean up descriptions by removing tabs and collapsing excessive newlines."""
     if not desc:
         return ""
+    desc_str = str(desc)
     # Replace tabs with spaces
-    desc = desc.replace("\t", " ")
+    desc_str = desc_str.replace("\t", " ")
     # Collapse multiple newlines (more than 2) into 2 newlines
-    desc = re.sub(r"\n{3,}", "\n\n", desc)
+    desc_str = re.sub(r"\n{3,}", "\n\n", desc_str)
     # Strip whitespace from lines that only contain whitespace
-    lines = [line if line.strip() else "" for line in desc.split("\n")]
+    lines = [line if line.strip() else "" for line in desc_str.split("\n")]
     return "\n".join(lines)
 
 
@@ -96,7 +98,9 @@ def main(argv):
     """Main function launched by the script."""
     del argv
     if not FLAGS.jsonld or not FLAGS.output:
-        logging.fatal("Both --jsonld and --output are required when running this script directly.")
+        logging.fatal(
+            "Both --jsonld and --output are required when running this script directly."
+        )
         sys.exit(1)
     jsonld = FLAGS.jsonld
     output = epath.Path(FLAGS.output)
@@ -126,9 +130,17 @@ def visualize(jsonld: str, output: epath.Path):
 
     # Fields to exclude from the metadata table (shown elsewhere or internal)
     excluded_fields = {
-        "name", "description", "url", "version",
-        "distribution", "record_sets",
-        "ctx", "folder", "uuid", "rdf", "issues",
+        "name",
+        "description",
+        "url",
+        "version",
+        "distribution",
+        "record_sets",
+        "ctx",
+        "folder",
+        "uuid",
+        "rdf",
+        "issues",
     }
 
     # Extract all metadata fields
@@ -193,14 +205,11 @@ def visualize(jsonld: str, output: epath.Path):
                     if isinstance(encoding_formats, str):
                         encoding_formats = [encoding_formats]
                     if encoding_formats and any(
-                        fmt in ["text/csv", "text/plain"]
-                        for fmt in encoding_formats
+                        fmt in ["text/csv", "text/plain"] for fmt in encoding_formats
                     ):
                         try:
                             with file_path.open("r") as f:
-                                preview = "".join(
-                                    [f.readline() for _ in range(5)]
-                                )
+                                preview = "".join([f.readline() for _ in range(5)])
                         except Exception as e:
                             logging.warning(
                                 f"Failed to read preview for {res.name}: {e}"
@@ -220,9 +229,7 @@ def visualize(jsonld: str, output: epath.Path):
 
         # Find the JSON-LD snippet for this resource
         res_name = res.name or res.uuid or "Unnamed"
-        res_jsonld = _find_jsonld_entry(
-            raw_jsonld.get("distribution", []), res_name
-        )
+        res_jsonld = _find_jsonld_entry(raw_jsonld.get("distribution", []), res_name)
 
         res_data = {
             "name": res_name,
@@ -245,11 +252,15 @@ def visualize(jsonld: str, output: epath.Path):
         if hasattr(res, "contained_in") and res.contained_in:
             for parent in res.contained_in:
                 if isinstance(parent, str):
-                    safe_parent = parent.replace("-", "_").replace(" ", "_").replace(".", "_")
-                    mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
-                elif hasattr(parent, "uuid"):
                     safe_parent = (
-                        parent.uuid.replace("-", "_").replace(" ", "_").replace(".", "_")
+                        parent.replace("-", "_").replace(" ", "_").replace(".", "_")
+                    )
+                    mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
+                elif hasattr(parent, "uuid") and parent.uuid:
+                    safe_parent = (
+                        parent.uuid.replace("-", "_")
+                        .replace(" ", "_")
+                        .replace(".", "_")
                     )
                     mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
 
@@ -264,31 +275,32 @@ def visualize(jsonld: str, output: epath.Path):
     record_sets = []
     for rs in metadata.record_sets:
         # Find the JSON-LD snippet for this record set
-        rs_name = rs.name or rs.uuid or "Unnamed"
-        rs_jsonld = _find_jsonld_entry(
-            raw_jsonld.get("recordSet", []), rs_name
-        )
+        rs_name = str(rs.name or rs.uuid or "Unnamed")
+        rs_jsonld = _find_jsonld_entry(raw_jsonld.get("recordSet", []), rs_name)
 
-        rs_data = {
+        rs_data: dict[str, Any] = {
             "name": rs_name,
             "description": rs.description or "",
             "fields": [],
             "jsonld": rs_jsonld,
         }
-        for field in rs.fields:
-            data_type_raw = str(field.data_type) if field.data_type else ""
+        for rs_field in rs.fields:
+            data_type_raw = str(rs_field.data_type) if rs_field.data_type else ""
             # Clean up ugly Python class strings
             data_type_display = data_type_raw
             if data_type_raw.startswith("<class '"):
-                data_type_display = data_type_raw.replace("<class '", "").replace("'>", "")
+                data_type_display = data_type_raw.replace("<class '", "").replace(
+                    "'>", ""
+                )
             # Shorten schema.org URLs
             if "schema.org/" in data_type_display:
                 data_type_display = data_type_display.split("/")[-1]
 
+            field_name = str(rs_field.name) if rs_field.name else "Unnamed"
             field_data = {
-                "name": field.name.split("/")[-1] if "/" in field.name else field.name,
-                "full_name": field.name,
-                "description": field.description or "",
+                "name": field_name.split("/")[-1] if "/" in field_name else field_name,
+                "full_name": field_name,
+                "description": rs_field.description or "",
                 "data_type": data_type_display,
             }
             rs_data["fields"].append(field_data)
