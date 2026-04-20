@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mnist — Croissant Visualizer</title>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
+    <script>/* mermaid removed */</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -20,19 +19,22 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --color-bg: #f4f5f7;
+            --color-bg: #f8f7f4;
             --color-surface: #ffffff;
             --color-primary: #b45309;
             --color-primary-light: #fef3c7;
-            --color-text: #1e293b;
-            --color-text-secondary: #64748b;
-            --color-border: #e2e8f0;
-            --color-border-light: #f1f5f9;
+            --color-text: #1a1a2e;
+            --color-text-secondary: #6b7280;
+            --color-border: #e5e7eb;
+            --color-border-light: #f3f4f6;
+            --color-fo: #f97316;   /* FileObject accent */
+            --color-fs: #6366f1;   /* FileSet accent */
+            --color-rs: #22c55e;   /* RecordSet accent */
             --sidebar-width: 260px;
             --sidebar-collapsed-width: 0px;
-            --radius: 10px;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --radius: 12px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px -1px rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05);
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
         }
@@ -335,6 +337,15 @@
             padding: 28px 32px;
             margin-bottom: 24px;
             box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
+            border-radius: var(--radius) 0 0 var(--radius);
         }
         .card-header {
             display: flex;
@@ -345,17 +356,24 @@
             border-bottom: 1px solid var(--color-border-light);
         }
         .card-header h2 {
-            font-size: 1.15rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
         }
         .card-header .icon {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
 
         /* ── Tables ─────────────────────────────────────── */
         .table-wrap {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+        .rs-preview .table-wrap,
+        .file-listing .table-wrap {
+            border: none;
         }
         table {
             width: 100%;
@@ -364,22 +382,22 @@
         }
         thead th {
             text-align: left;
-            padding: 10px 14px;
+            padding: 11px 16px;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.05em;
             color: var(--color-text-secondary);
-            background: var(--color-bg);
-            border-bottom: 2px solid var(--color-border);
+            background: #f9fafb;
+            border-bottom: 1px solid var(--color-border);
         }
         tbody td {
-            padding: 10px 14px;
+            padding: 11px 16px;
             border-bottom: 1px solid var(--color-border-light);
             vertical-align: top;
         }
         tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafbfc; }
+        tbody tr:hover { background: #fafafa; }
 
         /* Key-value metadata table */
         .kv-table { width: 100%; }
@@ -403,23 +421,24 @@
             margin-left: 12px;
         }
 
-        /* ── Resource Cards ─────────────────────────────── */
-        .resource-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+        /* ── Resource Cards (full-width list) ───────────── */
+        .resource-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         .resource-card {
-            background: var(--color-bg);
+            background: var(--color-surface);
             border: 1px solid var(--color-border);
+            border-left-width: 4px;
             border-radius: 8px;
-            padding: 18px 20px;
-            transition: border-color 0.15s, box-shadow 0.15s;
+            padding: 16px 20px;
+            transition: box-shadow 0.15s;
         }
-        .resource-card:hover {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px var(--color-primary-light);
-        }
+        .resource-card[data-type="FileObject"] { border-left-color: var(--color-fo); }
+        .resource-card[data-type="FileSet"]    { border-left-color: var(--color-fs); }
+        .resource-card[data-type="other"]      { border-left-color: #94a3b8; }
+        .resource-card:hover { box-shadow: var(--shadow-md); }
         .resource-card .rc-header {
             display: flex;
             align-items: center;
@@ -524,15 +543,18 @@
             max-width: 100%;
         }
 
-        /* ── Mermaid ────────────────────────────────────── */
-        .mermaid-wrap {
+        /* ── SVG Dependency Graph ────────────────────────── */
+        .svg-graph-wrap {
             overflow-x: auto;
             max-width: 100%;
             padding: 16px;
             background: var(--color-bg);
             border: 1px solid var(--color-border);
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        .svg-graph-wrap svg a:hover rect {
+            filter: brightness(0.93);
         }
 
         /* ── RecordSet Sections ──────────────────────────── */
@@ -650,8 +672,8 @@
             .main { padding: 20px 16px 48px; }
             .hero { padding: 28px 24px; }
             .hero h1 { font-size: 1.4rem; }
-            .card { padding: 20px; }
-            .resource-grid { grid-template-columns: 1fr; }
+            .card { padding: 20px 18px; }
+            .resource-list { gap: 10px; }
         }
 
         /* ── JSON-LD Toggle ──────────────────────────────── */
@@ -863,19 +885,14 @@ images per class. There are 60,000 training images and 10,000 test images.
                 </div>
 
                 
-                <div class="mermaid-wrap">
-                    <div class="mermaid">
-graph TD
-    repo["repo<br/><small>File</small>"]
-    parquet_files["parquet-files<br/><small>File Set</small>"]
-    repo --> parquet_files
-                    </div>
+                <div class="svg-graph-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 628 176" width="628" height="176" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker></defs><text x="114" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="514" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M204,126 C314,126 314,50 424,50" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-repo" href="#res-repo"><title>repo</title><rect x="24" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="32" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="44" y="55" text-anchor="middle" font-size="13">📄</text><text x="64" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">repo</text></a><a xlink:href="#res-parquet-files" href="#res-parquet-files"><title>parquet-files</title><rect x="24" y="100" width="180" height="52"   rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/><rect x="32" y="114" width="24" height="24" rx="5" fill="#c7d2fe"/><text x="44" y="131" text-anchor="middle" font-size="13">📁</text><text x="64" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">parquet-files</text></a><a xlink:href="#rs-default" href="#rs-default"><title>default</title><rect x="424" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="432" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="444" y="55" text-anchor="middle" font-size="13">📋</text><text x="464" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">default</text></a></svg>
                 </div>
                 
 
-                <div class="resource-grid">
+                <div class="resource-list">
                     
-                    <div class="resource-card" id="res-repo">
+                    <div class="resource-card" id="res-repo" data-type="FileObject">
                         <div class="rc-header">
                             <span class="rc-icon">📄</span>
                             <span class="rc-name">repo</span>
@@ -908,7 +925,7 @@ graph TD
                         
                     </div>
                     
-                    <div class="resource-card" id="res-parquet-files">
+                    <div class="resource-card" id="res-parquet-files" data-type="FileSet">
                         <div class="rc-header">
                             <span class="rc-icon">📁</span>
                             <span class="rc-name">parquet-files</span>

@@ -433,10 +433,8 @@ def visualize(jsonld: str, output: epath.Path):
 
     metadata_fields.sort(key=sort_key)
 
-    # Extract resources and build Mermaid graph
+    # Extract resources and build SVG dependency graph
     resources = []
-    mermaid_nodes = []
-    mermaid_edges = []
 
     folder = metadata.ctx.folder
     for res in metadata.distribution:
@@ -509,35 +507,169 @@ def visualize(jsonld: str, output: epath.Path):
         }
         resources.append(res_data)
 
-        # Mermaid node - sanitize name for valid mermaid IDs
-        safe_name = res_name.replace("-", "_").replace(" ", "_").replace(".", "_")
-        mermaid_nodes.append(
-            f'    {safe_name}["{res_name}<br/><small>{type_label}</small>"]'
+    _run_visualize_pipeline(
+        dataset=dataset,
+        metadata=metadata,
+        resources=resources,
+        metadata_fields=metadata_fields,
+        raw_jsonld=raw_jsonld,
+        env=env,
+        output=output,
+        jsonld_path=jsonld_path,
+        folder=folder,
+    )
+
+
+
+def _html_escape(s: str) -> str:
+    """Minimally escape a string for use in SVG/HTML attributes."""
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+
+def _build_svg_graph(
+    resources: list[dict],
+    record_sets: list[dict],
+) -> str:
+    """Build a static SVG dependency graph.
+
+    Resources are placed on the left column; RecordSets on the right.
+    Curved edges connect each RecordSet to the resource(s) it reads from.
+    Nodes are anchor links to the corresponding page sections.
+    """
+    if not resources and not record_sets:
+        return ""
+
+    # ── Layout constants ────────────────────────────────────────────────
+    NODE_W, NODE_H = 180, 52
+    COL_GAP = 220          # horizontal gap between left and right columns
+    ROW_GAP = 24           # vertical gap between nodes in same column
+    PAD_X, PAD_Y = 24, 24  # outer padding
+    LEFT_X = PAD_X
+    RIGHT_X = PAD_X + NODE_W + COL_GAP
+
+    # ── Position each resource node ─────────────────────────────────────
+    res_positions: dict[str, tuple[int, int]] = {}  # name -> (cx, cy)
+    for i, res in enumerate(resources):
+        cy = PAD_Y + i * (NODE_H + ROW_GAP) + NODE_H // 2
+        res_positions[res["name"]] = (LEFT_X + NODE_W // 2, cy)
+
+    # ── Position each recordset node ────────────────────────────────────
+    rs_positions: dict[str, tuple[int, int]] = {}  # name -> (cx, cy)
+    for i, rs in enumerate(record_sets):
+        cy = PAD_Y + i * (NODE_H + ROW_GAP) + NODE_H // 2
+        rs_positions[rs["name"]] = (RIGHT_X + NODE_W // 2, cy)
+
+    # ── Compute total SVG dimensions ─────────────────────────────────────
+    left_h = len(resources) * (NODE_H + ROW_GAP) - ROW_GAP if resources else 0
+    right_h = len(record_sets) * (NODE_H + ROW_GAP) - ROW_GAP if record_sets else 0
+    total_h = max(left_h, right_h) + 2 * PAD_Y
+    total_w = RIGHT_X + NODE_W + PAD_X if record_sets else LEFT_X + NODE_W + PAD_X
+
+    # ── Colour palette ───────────────────────────────────────────────────
+    COLORS = {
+        "FileObject": {"fill": "#fff7ed", "stroke": "#f97316", "icon_bg": "#fed7aa", "icon": "📄"},
+        "FileSet":    {"fill": "#eef2ff", "stroke": "#6366f1", "icon_bg": "#c7d2fe", "icon": "📁"},
+        "RecordSet":  {"fill": "#f0fdf4", "stroke": "#22c55e", "icon_bg": "#bbf7d0", "icon": "📋"},
+    }
+
+    # ── SVG parts ────────────────────────────────────────────────────────
+    parts: list[str] = []
+    parts.append(
+        f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
+        f'viewBox="0 0 {total_w} {total_h}" width="{total_w}" height="{total_h}" '
+        f'style="max-width:100%;font-family:Inter,sans-serif;">'
+    )
+
+    # Arrow-head marker
+    parts.append(
+        '<defs>'
+        '<marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">'
+        '<path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>'
+        '</marker>'
+        '</defs>'
+    )
+
+    def _node(cx: int, cy: int, label: str, node_type: str, href: str) -> str:
+        c = COLORS.get(node_type, COLORS["RecordSet"])
+        x, y = cx - NODE_W // 2, cy - NODE_H // 2
+        short = label if len(label) <= 22 else label[:20] + "…"
+        esc_label = _html_escape(short)
+        esc_full = _html_escape(label)
+        return (
+            f'<a xlink:href="{href}" href="{href}">'
+            f'<title>{esc_full}</title>'
+            f'<rect x="{x}" y="{y}" width="{NODE_W}" height="{NODE_H}" '
+            f'  rx="8" fill="{c["fill"]}" stroke="{c["stroke"]}" stroke-width="1.5"/>'
+            # icon pill
+            f'<rect x="{x+8}" y="{cy-12}" width="24" height="24" rx="5" fill="{c["icon_bg"]}"/>'
+            f'<text x="{x+20}" y="{cy+5}" text-anchor="middle" font-size="13">{c["icon"]}</text>'
+            # label
+            f'<text x="{x+40}" y="{cy+4}" font-size="12" font-weight="500" '
+            f'  fill="#1e293b" dominant-baseline="middle">{esc_label}</text>'
+            f'</a>'
         )
 
-        # Mermaid edge for contained_in
-        if hasattr(res, "contained_in") and res.contained_in:
-            for parent in res.contained_in:
-                if isinstance(parent, str):
-                    safe_parent = (
-                        parent.replace("-", "_").replace(" ", "_").replace(".", "_")
-                    )
-                    mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
-                elif hasattr(parent, "uuid") and parent.uuid:
-                    safe_parent = (
-                        parent.uuid.replace("-", "_")
-                        .replace(" ", "_")
-                        .replace(".", "_")
-                    )
-                    mermaid_edges.append(f"    {safe_parent} --> {safe_name}")
+    def _edge(x1: int, y1: int, x2: int, y2: int) -> str:
+        # Cubic bezier: control points at midpoint x
+        mx = (x1 + x2) // 2
+        return (
+            f'<path d="M{x1},{y1} C{mx},{y1} {mx},{y2} {x2},{y2}" '
+            f'fill="none" stroke="#94a3b8" stroke-width="1.5" '
+            f'marker-end="url(#arr)" opacity="0.7"/>'
+        )
 
-    mermaid_graph = ""
-    if mermaid_nodes:
-        mermaid_graph = "graph TD\n"
-        mermaid_graph += "\n".join(mermaid_nodes) + "\n"
-        if mermaid_edges:
-            mermaid_graph += "\n".join(mermaid_edges)
+    # Column headers
+    if resources:
+        mid_left = LEFT_X + NODE_W // 2
+        parts.append(
+            f'<text x="{mid_left}" y="10" text-anchor="middle" '
+            f'font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text>'
+        )
+    if record_sets:
+        mid_right = RIGHT_X + NODE_W // 2
+        parts.append(
+            f'<text x="{mid_right}" y="10" text-anchor="middle" '
+            f'font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text>'
+        )
 
+    # Draw edges first (below nodes)
+    for rs in record_sets:
+        rs_cx, rs_cy = rs_positions[rs["name"]]
+        for src_name in rs.get("source_distributions", []):
+            if src_name in res_positions:
+                r_cx, r_cy = res_positions[src_name]
+                # edge from right-edge of resource node to left-edge of recordset node
+                parts.append(_edge(r_cx + NODE_W // 2, r_cy, rs_cx - NODE_W // 2, rs_cy))
+
+    # Draw resource nodes
+    for res in resources:
+        cx, cy = res_positions[res["name"]]
+        href = f"#res-{_html_escape(res['name'])}"
+        parts.append(_node(cx, cy, res["name"], res["type"], href))
+
+    # Draw recordset nodes
+    for rs in record_sets:
+        cx, cy = rs_positions[rs["name"]]
+        href = f"#rs-{_html_escape(rs['name'])}"
+        parts.append(_node(cx, cy, rs["name"], "RecordSet", href))
+
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def _run_visualize_pipeline(
+    dataset,
+    metadata,
+    resources: list[dict],
+    metadata_fields: list[dict],
+    raw_jsonld: dict,
+    env,
+    output,
+    jsonld_path,
+    folder,
+) -> None:
+    """Extracts record sets, builds SVG graph, renders and writes the template."""
     # Extract record sets
     record_sets = []
     for rs in metadata.record_sets:
@@ -550,12 +682,23 @@ def visualize(jsonld: str, output: epath.Path):
             dataset, rs_name, folder
         )
 
+        # Collect source distributions (resources this recordset reads from)
+        source_distributions: set[str] = set()
+        for rs_field in rs.fields:
+            src = getattr(rs_field, "source", None)
+            if src:
+                for attr in ("distribution", "file_object", "file_set"):
+                    val = getattr(src, attr, None)
+                    if val:
+                        source_distributions.add(str(val))
+
         rs_data: dict[str, Any] = {
             "name": rs_name,
             "description": rs.description or "",
             "fields": [],
             "preview_cols": preview_cols,
             "preview_rows": preview_rows,
+            "source_distributions": sorted(source_distributions),
             "jsonld": rs_jsonld,
         }
         for rs_field in rs.fields:
@@ -580,6 +723,8 @@ def visualize(jsonld: str, output: epath.Path):
             rs_data["fields"].append(field_data)
         record_sets.append(rs_data)
 
+    svg_graph = _build_svg_graph(resources, record_sets)
+
     data = {
         "name": metadata.name,
         "description": _clean_description(metadata.description),
@@ -587,7 +732,7 @@ def visualize(jsonld: str, output: epath.Path):
         "version": _format_value(metadata.version),
         "metadata_fields": metadata_fields,
         "resources": resources,
-        "mermaid_graph": mermaid_graph,
+        "svg_graph": svg_graph,
         "record_sets": record_sets,
         "full_jsonld": json.dumps(raw_jsonld, indent=2, ensure_ascii=False),
         "jsonld_filename": jsonld_path.name,
