@@ -795,6 +795,9 @@
                             {% endif %}
                         </div>
                         <span class="rc-type">{{ res.type_label }}</span>
+                        {% if res.encoding_format %}
+                        <span class="type-badge">{{ res.encoding_format }}</span>
+                        {% endif %}
                         {% if res.description %}
                         <div class="rc-desc markdown">{{ res.description }}</div>
                         {% endif %}

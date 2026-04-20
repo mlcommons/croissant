@@ -323,12 +323,19 @@ def visualize(jsonld: str, output: epath.Path):
             if not file_list and includes:
                 preview = "Pattern: " + ", ".join(includes)
 
+        # Extract encoding format for display
+        enc_fmts = getattr(res, "encoding_formats", []) or []
+        if isinstance(enc_fmts, str):
+            enc_fmts = [enc_fmts]
+        encoding_format = ", ".join(enc_fmts) if enc_fmts else ""
+
         res_data = {
             "name": res_name,
             "type": res_type,
             "type_label": type_label,
             "type_icon": type_icon,
             "description": res.description or "",
+            "encoding_format": encoding_format,
             "preview": preview,
             "file_list": file_list,
             "file_count": file_count,
