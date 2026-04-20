@@ -298,7 +298,7 @@ def visualize(jsonld: str, output: epath.Path):
             if "schema.org/" in data_type_display:
                 data_type_display = data_type_display.split("/")[-1]
 
-            field_name = str(rs_field.name) if rs_field.name else "Unnamed"
+            field_name = str(rs_field.name or rs_field.uuid or "Unnamed")
             field_data = {
                 "name": field_name.split("/")[-1] if "/" in field_name else field_name,
                 "full_name": field_name,
