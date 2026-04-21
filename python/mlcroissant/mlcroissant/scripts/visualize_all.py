@@ -10,6 +10,7 @@ from absl import logging
 from etils import epath
 
 from mlcroissant.scripts.visualize import visualize
+from mlcroissant.scripts.visualize_js import visualize_js
 
 flags.DEFINE_string(
     "changed_files",
@@ -20,6 +21,11 @@ flags.DEFINE_boolean(
     "force",
     False,
     "Force regeneration of all visualizations.",
+)
+flags.DEFINE_boolean(
+    "js",
+    False,
+    "Generate JS-driven visualizations (index-js.html) instead of static HTML.",
 )
 flags.DEFINE_string(
     "datasets_dir",
@@ -55,9 +61,14 @@ def main(argv):
         changed_files = [f.strip() for f in FLAGS.changed_files.split(",")]
 
     # Check if the visualizer itself changed
+    js_mode = FLAGS.js
     visualizer_files = [
         "python/mlcroissant/mlcroissant/scripts/visualize.py",
+        "python/mlcroissant/mlcroissant/scripts/visualize_js.py",
         "python/mlcroissant/mlcroissant/scripts/templates/visualizer.html",
+        "python/mlcroissant/mlcroissant/scripts/templates/visualizer_js.html",
+        "python/mlcroissant/mlcroissant/scripts/static/visualizer.js",
+        "python/mlcroissant/mlcroissant/scripts/static/visualizer.css",
         "python/mlcroissant/mlcroissant/scripts/visualize_all.py",
     ]
 
@@ -88,13 +99,26 @@ def main(argv):
 
     success_count = 0
     for dataset_path in to_process:
-        output_path = dataset_path.parent / "index.html"
-        logging.info(f"Generating visualization for {dataset_path} -> {output_path}")
-        try:
-            visualize(jsonld=str(dataset_path), output=output_path)
-            success_count += 1
-        except Exception as e:
-            logging.error(f"Failed to visualize {dataset_path}: {e}")
+        if js_mode:
+            output_path = dataset_path.parent / "index-js.html"
+            logging.info(
+                f"Generating JS visualization for {dataset_path} -> {output_path}"
+            )
+            try:
+                visualize_js(jsonld=str(dataset_path), output=output_path)
+                success_count += 1
+            except Exception as e:
+                logging.error(f"Failed to JS-visualize {dataset_path}: {e}")
+        else:
+            output_path = dataset_path.parent / "index.html"
+            logging.info(
+                f"Generating visualization for {dataset_path} -> {output_path}"
+            )
+            try:
+                visualize(jsonld=str(dataset_path), output=output_path)
+                success_count += 1
+            except Exception as e:
+                logging.error(f"Failed to visualize {dataset_path}: {e}")
 
     logging.info(f"Successfully visualized {success_count}/{len(to_process)} datasets.")
 
