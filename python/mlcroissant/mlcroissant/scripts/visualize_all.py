@@ -33,7 +33,7 @@ FLAGS = flags.FLAGS
 _VISUALIZER_FILES = [
     "python/mlcroissant/mlcroissant/scripts/visualize.py",
     "python/mlcroissant/mlcroissant/scripts/visualize_utils.py",
-    "python/mlcroissant/mlcroissant/scripts/templates/visualizer_js.html",
+    "python/mlcroissant/mlcroissant/scripts/templates/visualizer.html",
     "python/mlcroissant/mlcroissant/scripts/static/visualizer.js",
     "python/mlcroissant/mlcroissant/scripts/static/visualizer.css",
     "python/mlcroissant/mlcroissant/scripts/visualize_all.py",

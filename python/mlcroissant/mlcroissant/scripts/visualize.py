@@ -174,7 +174,7 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     env = jinja2.Environment(
         loader=loader, autoescape=jinja2.select_autoescape()
     )
-    template = env.get_template("visualizer_js.html")
+    template = env.get_template("visualizer.html")
     data_json = json.dumps(augmented, indent=2, ensure_ascii=False)
     html = template.render(
         name=metadata.name or "Dataset",
