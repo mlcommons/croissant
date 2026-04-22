@@ -839,28 +839,35 @@
     }
   } // end init()
 
-  // ── Bootstrap: fetch data then render ────────────────────────────────
+  // ── Bootstrap: prefer pre-loaded data, fall back to fetch ────────────
   //
-  // Tries metadata-augmented.json first (written by visualize.py, contains
-  // cr:examples preview data), then falls back to the canonical metadata.json.
-  // fetch() requires an HTTP server; opening via file:// will show an error.
+  // visualizer.html includes <script src="./metadata-augmented.js"> before
+  // this file. That script sets window.__CROISSANT_DATA__ synchronously and
+  // works from file:// (no CORS). If the variable is already populated we
+  // call init() directly without any network request.
+  //
+  // If window.__CROISSANT_DATA__ is not set (e.g. the page is served from an
+  // HTTP server without the Python-generated side-file), we fall back to
+  // fetching metadata.json directly. This won't have cr:examples preview
+  // data but will render the core dataset information.
 
-  function tryFetch(url) {
-    return fetch(url).then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + url);
-      return r.json();
-    });
+  if (window.__CROISSANT_DATA__) {
+    init(window.__CROISSANT_DATA__);
+  } else {
+    fetch('./metadata.json')
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(init)
+      .catch(function (err) {
+        document.getElementById('app').innerHTML =
+          '<p style="padding:2rem;font-family:sans-serif;color:#ef4444">' +
+          '\u26a0\ufe0f Could not load dataset metadata.<br>' +
+          'Make sure <code>metadata-augmented.js</code> or <code>metadata.json</code> ' +
+          'is in the same directory as this page.<br>' +
+          '<small style="color:#6b7280">' + esc(String(err)) + '</small></p>';
+      });
   }
-
-  tryFetch('./metadata-augmented.json')
-    .catch(function () { return tryFetch('./metadata.json'); })
-    .then(init)
-    .catch(function (err) {
-      document.getElementById('app').innerHTML =
-        '<p style="padding:2rem;font-family:sans-serif;color:#ef4444">' +
-        '\u26a0\ufe0f Could not load dataset metadata.<br>' +
-        'Open this page from a web server, not <code>file://</code>.<br>' +
-        '<small style="color:#6b7280">' + esc(String(err)) + '</small></p>';
-    });
 
 })();

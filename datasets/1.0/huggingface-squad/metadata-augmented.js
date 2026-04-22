@@ -1,0 +1,284 @@
+window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/rajpurkar/squad/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-plain_text",
+      "name": "parquet-files-for-config-plain_text",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "plain_text/*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "plain_text/*/*.parquet"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "record_set_plain_text_splits",
+      "name": "record_set_plain_text_splits",
+      "description": "Splits for the record_set_plain_text config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "record_set_plain_text_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "record_set_plain_text_splits/split_name": "train"
+        },
+        {
+          "record_set_plain_text_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "record_set_plain_text",
+      "name": "record_set_plain_text",
+      "description": "record set plain text.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text/split",
+          "name": "record_set_plain_text/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "record_set_plain_text_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "plain_text/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text/id",
+          "name": "record_set_plain_text/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text/title",
+          "name": "record_set_plain_text/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text/context",
+          "name": "record_set_plain_text/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text/question",
+          "name": "record_set_plain_text/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record_set_plain_text/answers",
+          "name": "record_set_plain_text/answers",
+          "description": "Column 'answers' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "record_set_plain_text/answers/text",
+              "name": "record_set_plain_text/answers/text",
+              "description": "Column 'answers' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "repeated": true,
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-plain_text"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "record_set_plain_text/answers/answer_start",
+              "name": "record_set_plain_text/answers/answer_start",
+              "description": "Column 'answers' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "repeated": true,
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-plain_text"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "answer_start"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "split",
+          "id",
+          "title",
+          "context",
+          "question",
+          "answers/record_set_plain_text/answers/text",
+          "answers/record_set_plain_text/answers/answer_start"
+        ],
+        "rows": [
+          [
+            "train",
+            "5733be284776f41900661182",
+            "University_of_Notre_Dame",
+            "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \"Venite Ad Me Omnes\". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
+            "To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?",
+            "[b'Saint Bernadette Soubirous']",
+            "[515]"
+          ],
+          [
+            "train",
+            "5733be284776f4190066117f",
+            "University_of_Notre_Dame",
+            "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \"Venite Ad Me Omnes\". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
+            "What is in front of the Notre Dame Main Building?",
+            "[b'a copper statue of Christ']",
+            "[188]"
+          ],
+          [
+            "train",
+            "5733be284776f41900661180",
+            "University_of_Notre_Dame",
+            "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \"Venite Ad Me Omnes\". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
+            "The Basilica of the Sacred heart at Notre Dame is beside to which structure?",
+            "[b'the Main Building']",
+            "[279]"
+          ]
+        ]
+      }
+    }
+  ]
+};

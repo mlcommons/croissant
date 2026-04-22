@@ -168,15 +168,17 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     ]
     augmented["recordSet"] = augmented_rs
 
-    # Write the augmented JSON-LD as a side-file next to index.html.
-    # visualizer.js fetches this file at runtime (falls back to metadata.json
-    # if not found, which omits cr:examples preview data).
+    # Write the augmented JSON-LD as a JS side-file that sets a global variable.
+    # Using a <script> tag (not fetch) means this works from file:// too.
     output_dir = pathlib.Path(str(output)).parent
-    augmented_json_path = output_dir / "metadata-augmented.json"
-    augmented_json_path.write_text(
-        json.dumps(augmented, indent=2, ensure_ascii=False), encoding="utf-8"
+    augmented_js_path = output_dir / "metadata-augmented.js"
+    augmented_js_path.write_text(
+        "window.__CROISSANT_DATA__ = "
+        + json.dumps(augmented, indent=2, ensure_ascii=False)
+        + ";\n",
+        encoding="utf-8",
     )
-    logging.info(f"Wrote augmented JSON-LD to {augmented_json_path}")
+    logging.info(f"Wrote augmented JSON-LD to {augmented_js_path}")
 
     # Copy the static HTML template as index.html (no Jinja2 rendering needed
     # — the template is now fully static; data is loaded at runtime via fetch).

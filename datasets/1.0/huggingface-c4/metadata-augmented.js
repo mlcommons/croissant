@@ -1,0 +1,173 @@
+window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "c4",
+  "description": "A colossal, cleaned version of Common Crawl's web crawl corpus.\n\nBased on Common Crawl dataset: \"https://commoncrawl.org\".\n\nThis is the processed version of Google's C4 dataset by AllenAI.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "\n@article{2019t5,\n author = {Colin Raffel and Noam Shazeer and Adam Roberts and Katherine Lee and Sharan Narang and Michael Matena and Yanqi Zhou and Wei Li and Peter J. Liu},\n title = {Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer},\n journal = {arXiv e-prints},\n year = {2019},\n archivePrefix = {arXiv},\n eprint = {1910.10683},\n}\n",
+  "license": "odc-by",
+  "url": "https://huggingface.co/datasets/allenai/c4",
+  "version": "0.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/c4/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files",
+      "name": "parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*/*/*.parquet"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "data",
+      "name": "data",
+      "description": "The en set of records in the dataset.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "data/variant",
+          "name": "data/variant",
+          "description": "The name of the variant (e.g., en or en.noclean).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "(.+)/.+/.+\\.parquet"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/text",
+          "name": "data/text",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/timestamp",
+          "name": "data/timestamp",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/url",
+          "name": "data/url",
+          "description": "Column from Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "variant",
+          "text",
+          "timestamp",
+          "url"
+        ],
+        "rows": [
+          [
+            "en",
+            "Beginners BBQ Class Taking Place in Missoula!\nDo you want to get better at making delicious BBQ? You will have the opportunity, put this on your calendar now. Thursday, September 22nd join World Class BBQ Champion, Tony Balay from Lonestar Smoke Rangers. He will be teaching a beginner level class for everyone who wants to get better with their culinary skills.\nHe will teach you everything you need to know to compete in a KCBS BBQ competition, including techniques, recipes, timelines, meat selection and trimming, plus smoker and fire information.\nThe cost to be in the class is $35 per person, and for spectators it is free. Included in the cost will be either a t-shirt or apron and you will be tasting samples of each meat that is prepared.",
+            "2019-04-25 12:57:54",
+            "https://klyq.com/beginners-bbq-class-taking-place-in-missoula/"
+          ]
+        ]
+      }
+    }
+  ]
+};
