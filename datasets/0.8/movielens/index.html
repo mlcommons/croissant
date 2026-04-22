@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movielens-25M — Croissant Visualizer</title>
-    <script>/* mermaid removed */</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -14,2063 +13,373 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <!-- Marked.js for markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <style>
-        /* ── Reset & Base ──────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --color-bg: #f8f7f4;
-            --color-surface: #ffffff;
-            --color-primary: #b45309;
-            --color-primary-light: #fef3c7;
-            --color-text: #1a1a2e;
-            --color-text-secondary: #6b7280;
-            --color-border: #e5e7eb;
-            --color-border-light: #f3f4f6;
-            --color-fo: #f97316;   /* FileObject accent */
-            --color-fs: #6366f1;   /* FileSet accent */
-            --color-rs: #22c55e;   /* RecordSet accent */
-            --sidebar-width: 260px;
-            --sidebar-collapsed-width: 0px;
-            --radius: 12px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px -1px rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { color: var(--color-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* ── Layout ────────────────────────────────────── */
-        .app {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ── Sidebar ───────────────────────────────────── */
-        .sidebar {
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            background: var(--color-surface);
-            border-right: 1px solid var(--color-border);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: width 0.25s ease, padding 0.25s ease;
-            z-index: 10;
-        }
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-        .sidebar-inner {
-            padding: 24px 20px;
-            opacity: 1;
-            transition: opacity 0.15s ease;
-        }
-        .sidebar.collapsed .sidebar-inner {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-        .sidebar-brand svg { flex-shrink: 0; }
-        .sidebar h4 {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-text-secondary);
-            margin: 20px 0 8px;
-        }
-        .sidebar ul { list-style: none; }
-        .sidebar > .sidebar-inner > ul > li > a,
-        .sidebar ul li a {
-            display: block;
-            padding: 5px 10px;
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            border-radius: 6px;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sidebar ul li a:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        .sidebar ul ul { padding-left: 14px; }
-        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
-
-        /* ── Toggle Button (inside sidebar) ───────────── */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .sidebar-toggle {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.15s, color 0.15s;
-            flex-shrink: 0;
-        }
-        .sidebar-toggle:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-        }
-        /* Floating open button when sidebar is collapsed */
-        .sidebar-open-btn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 20;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-open-btn:hover { background: var(--color-bg); }
-        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
-
-        /* ── Full JSON-LD Modal ──────────────────────────── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--color-surface);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 800px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-        }
-        .modal-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            flex: 1;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .modal-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .modal-btn:hover {
-            background: var(--color-bg);
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-        .modal-btn.copied {
-            background: #059669;
-            color: white;
-            border-color: #059669;
-        }
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background 0.15s;
-        }
-        .modal-close:hover { background: var(--color-bg); }
-        .modal-body {
-            overflow-y: auto;
-            padding: 0;
-        }
-        .modal-body pre {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 20px 24px;
-            margin: 0;
-            line-height: 1.55;
-            overflow-x: auto;
-        }
-
-        /* ── Main Content ──────────────────────────────── */
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 32px 40px 64px;
-            max-width: 960px;
-        }
-
-        /* ── Hero Header ───────────────────────────────── */
-        .hero {
-            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
-            color: white;
-            padding: 40px 36px;
-            border-radius: var(--radius);
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-md);
-        }
-        .hero h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .hero .description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            opacity: 0.92;
-            max-width: 720px;
-        }
-        /* Markdown overrides for dark hero background */
-        .hero .markdown a {
-            color: var(--color-primary-light);
-            text-decoration: underline;
-        }
-        .hero .markdown blockquote {
-            color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .hero .markdown code {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.18);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-        .hero-badge a { color: white; }
-        .hero-badge a:hover { text-decoration: underline; }
-
-        /* ── Cards ──────────────────────────────────────── */
-        .card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            padding: 28px 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        .card--green::before {
-            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--color-border-light);
-        }
-        .card-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        .card-header .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ── Tables ─────────────────────────────────────── */
-        .table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-        }
-        .rs-preview .table-wrap,
-        .file-listing .table-wrap {
-            border: none;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-        }
-        thead th {
-            text-align: left;
-            padding: 11px 16px;
-            font-weight: 600;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
-            background: #f9fafb;
-            border-bottom: 1px solid var(--color-border);
-        }
-        tbody td {
-            padding: 11px 16px;
-            border-bottom: 1px solid var(--color-border-light);
-            vertical-align: top;
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafafa; }
-
-        /* Key-value metadata table */
-        .kv-table { width: 100%; }
-        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
-        .kv-table tr:last-child td { border-bottom: none; }
-        .kv-table .kv-key {
-            font-weight: 600;
-            font-size: 0.84rem;
-            color: var(--color-text-secondary);
-            width: 160px;
-            padding-right: 24px;
-            vertical-align: top;
-            white-space: nowrap;
-        }
-        .kv-table .kv-val {
-            font-size: 0.88rem;
-            word-break: break-word;
-        }
-        .kv-table .kv-val .jsonld-toggle {
-            float: right;
-            margin-left: 12px;
-        }
-
-        /* ── Resource Cards (full-width list) ───────────── */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .resource-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-left-width: 4px;
-            border-radius: 8px;
-            padding: 16px 20px;
-            transition: box-shadow 0.15s;
-        }
-        .resource-card[data-type="FileObject"] { border-left-color: var(--color-fo); }
-        .resource-card[data-type="FileSet"]    { border-left-color: var(--color-fs); }
-        .resource-card[data-type="other"]      { border-left-color: #94a3b8; }
-        .resource-card:hover { box-shadow: var(--shadow-md); }
-        .resource-card .rc-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .resource-card .rc-icon { font-size: 1.4rem; }
-        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
-        .resource-card .rc-type {
-            display: inline-block;
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        .resource-card .rc-desc {
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-
-        /* ── Code / Preview ─────────────────────────────── */
-        pre.preview {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: #fff4e6;
-            color: #212529;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
-            max-width: 100%;
-            margin-top: 10px;
-            line-height: 1.6;
-            display: none;
-        }
-        pre.preview.open {
-            display: block;
-        }
-
-        /* ── File Listing (FileSet preview) ────────────── */
-        .file-listing {
-            margin-top: 10px;
-            background: #fff4e6;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .file-listing.open {
-            display: block;
-        }
-        .file-listing-header {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            margin-bottom: 6px;
-        }
-        .file-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .file-list li {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 2px 0 2px 16px;
-            position: relative;
-            color: var(--color-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .file-list li::before {
-            content: "📄";
-            position: absolute;
-            left: 0;
-            font-size: 0.7rem;
-        }
-        .file-listing-more {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            font-style: italic;
-            margin-top: 4px;
-            padding-left: 16px;
-        }
-        .cite-block {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 14px 16px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            line-height: 1.5;
-            max-width: 100%;
-        }
-
-        /* ── SVG Dependency Graph ────────────────────────── */
-        .svg-graph-wrap {
-            overflow-x: auto;
-            max-width: 100%;
-            padding: 16px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            margin-bottom: 24px;
-        }
-        .svg-graph-wrap svg a:hover rect {
-            filter: brightness(0.93);
-        }
-
-        /* ── RecordSet Sections ──────────────────────────── */
-        .rs-section { margin-bottom: 28px; }
-        .rs-section:last-child { margin-bottom: 0; }
-        .rs-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .rs-header h3 { font-size: 1rem; font-weight: 600; }
-        .rs-desc {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 14px;
-        }
-        .rs-divider {
-            border: none;
-            border-top: 1px solid var(--color-border-light);
-            margin: 24px 0;
-        }
-
-        /* ── Record Set Data Preview ────────────────────── */
-        .rs-preview {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            background: #f0fdf4; /* Soft green matching graph node */
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .rs-preview.open {
-            display: block;
-        }
-        .rs-preview-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #15803d; /* Darker green */
-            margin-bottom: 6px;
-        }
-        table.preview-table {
-            font-size: 0.80rem;
-            background: #ffffff;
-        }
-        table.preview-table thead th {
-            background: #bbf7d0; /* Match graph node icon_bg */
-            color: #15803d;
-            border-bottom-color: #86efac;
-            white-space: nowrap;
-        }
-        table.preview-table tbody td {
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-        }
-        table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
-
-        /* ── Type Badges in Tables ──────────────────────── */
-        .type-badge {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 8px;
-            border-radius: 4px;
-            color: var(--color-text-secondary);
-        }
-
-        /* ── Markdown Content ───────────────────────────── */
-        .markdown p { margin-bottom: 0.6em; }
-        .markdown p:last-child { margin-bottom: 0; }
-        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
-        .markdown code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 5px;
-            border-radius: 3px;
-        }
-        .markdown pre { margin: 0.6em 0; }
-        .markdown a { color: var(--color-primary); }
-        .markdown h1, .markdown h2, .markdown h3 {
-            font-size: 1em;
-            font-weight: 600;
-            margin: 0.8em 0 0.3em;
-        }
-        .markdown blockquote {
-            border-left: 3px solid var(--color-border);
-            padding-left: 12px;
-            color: var(--color-text-secondary);
-            margin: 0.4em 0;
-        }
-
-        /* ── Footer ─────────────────────────────────────── */
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            padding: 32px 0 16px;
-        }
-
-        /* ── Responsive ─────────────────────────────────── */
-        @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .sidebar-toggle { display: none; }
-            .main { padding: 20px 16px 48px; }
-            .hero { padding: 28px 24px; }
-            .hero h1 { font-size: 1.4rem; }
-            .card { padding: 20px 18px; }
-            .resource-list { gap: 10px; }
-        }
-
-        /* ── JSON-LD Toggle ──────────────────────────────── */
-        .jsonld-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .jsonld-toggle.active {
-            background: #374151;
-            color: #e2e8f0;
-            border-color: #374151;
-        }
-        .jsonld-panel {
-            display: none;
-            margin-top: 8px;
-        }
-        .jsonld-panel.open {
-            display: block;
-        }
-        .jsonld-panel pre {
-            border-radius: 8px;
-            max-width: 100%;
-            margin: 0;
-        }
-        /* Prism.js overrides to match our dark theme */
-        .jsonld-panel pre[class*="language-"],
-        .jsonld-panel code[class*="language-"],
-        .modal-body pre[class*="language-"],
-        .modal-body code[class*="language-"] {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            line-height: 1.55;
-            background: #374151;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .jsonld-panel pre[class*="language-"] {
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .modal-body pre[class*="language-"] {
-            padding: 20px 24px;
-            margin: 0;
-            border-radius: 0;
-        }
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .preview-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .resource-card .preview-toggle.active {
-            background: #fff7ed;
-            color: #c2410c;
-            border-color: #fed7aa;
-        }
-        .rs-section .preview-toggle.active {
-            background: #f0fdf4;
-            color: #15803d;
-            border-color: #bbf7d0;
-        }
-    </style>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="visualizer.css">
 </head>
 <body>
-    <div class="app">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-inner">
-                <div class="sidebar-header">
-                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    </button>
-                    <div class="sidebar-brand">
-                        🥐
-                        Croissant Visualizer
-                    </div>
-                </div>
-
-                <h4>Dataset</h4>
-                <ul>
-                    <li><a href="#top">Overview</a></li>
-                    <li><a href="#metadata">Metadata</a></li>
-                </ul>
-
-                <h4>Resources</h4>
-                <ul>
-                    
-                    <li><a href="#res-ml-25m-archive">📄 ml-25m-archive</a></li>
-                    
-                    <li><a href="#res-ratings-table">📄 ratings-table</a></li>
-                    
-                    <li><a href="#res-movies-table">📄 movies-table</a></li>
-                    
-                    <li><a href="#res-tags-table">📄 tags-table</a></li>
-                    
-                    <li><a href="#res-links-table">📄 links-table</a></li>
-                    
-                    <li><a href="#res-genome-scores-table">📄 genome-scores-table</a></li>
-                    
-                    <li><a href="#res-genome-tags-table">📄 genome-tags-table</a></li>
-                    
-                </ul>
-
-                <h4>Record Sets</h4>
-                <ul>
-                    
-                    <li><a href="#rs-movies">movies</a></li>
-                    
-                    <li><a href="#rs-ratings">ratings</a></li>
-                    
-                    <li><a href="#rs-tags">tags</a></li>
-                    
-                    <li><a href="#rs-movies_with_ratings_with_tags">movies_with_ratings_with_tags</a></li>
-                    
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main">
-            <!-- Floating open button (visible when sidebar is collapsed) -->
-            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
-
-            <!-- Hero -->
-            <div class="hero" id="top">
-                <h1>🥐 Movielens-25M</h1>
-                
-                <div class="description markdown">MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019</div>
-                
-                <div class="hero-meta">
-                    
-                    
-                    <span class="hero-badge">🔗 <a href="https://grouplens.org/datasets/movielens/25m/" target="_blank">Dataset URL</a></span>
-                    
-                    <span class="hero-badge">📦 7 resources</span>
-                    <span class="hero-badge">📋 4 record sets</span>
-                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
-                </div>
-            </div>
-
-            <!-- Metadata -->
-            
-
-            <!-- Resources -->
-            <div class="card" id="resources">
-                <div class="card-header">
-                    <span class="icon">📦</span>
-                    <h2>Resources</h2>
-                </div>
-
-                
-                <div class="svg-graph-wrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 700 556" width="700" height="556" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs><text x="150" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="550" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M60,50 C20,50 20,126 60,126" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M60,50 C20,50 20,202 60,202" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M60,50 C20,50 20,278 60,278" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M60,50 C20,50 20,354 60,354" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M60,50 C20,50 20,430 60,430" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M60,50 C20,50 20,506 60,506" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M240,202 C350,202 350,50 460,50" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><path d="M240,126 C350,126 350,126 460,126" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><path d="M240,278 C350,278 350,202 460,202" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-ml-25m-archive" href="#res-ml-25m-archive"><title>ml-25m-archive</title><rect x="60" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="55" text-anchor="middle" font-size="13">📄</text><text x="100" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">ml-25m-archive</text></a><a xlink:href="#res-ratings-table" href="#res-ratings-table"><title>ratings-table</title><rect x="60" y="100" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="114" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="131" text-anchor="middle" font-size="13">📄</text><text x="100" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">ratings-table</text></a><a xlink:href="#res-movies-table" href="#res-movies-table"><title>movies-table</title><rect x="60" y="176" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="190" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="207" text-anchor="middle" font-size="13">📄</text><text x="100" y="206" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">movies-table</text></a><a xlink:href="#res-tags-table" href="#res-tags-table"><title>tags-table</title><rect x="60" y="252" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="266" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="283" text-anchor="middle" font-size="13">📄</text><text x="100" y="282" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">tags-table</text></a><a xlink:href="#res-links-table" href="#res-links-table"><title>links-table</title><rect x="60" y="328" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="342" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="359" text-anchor="middle" font-size="13">📄</text><text x="100" y="358" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">links-table</text></a><a xlink:href="#res-genome-scores-table" href="#res-genome-scores-table"><title>genome-scores-table</title><rect x="60" y="404" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="418" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="435" text-anchor="middle" font-size="13">📄</text><text x="100" y="434" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">genome-scores-table</text></a><a xlink:href="#res-genome-tags-table" href="#res-genome-tags-table"><title>genome-tags-table</title><rect x="60" y="480" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="494" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="511" text-anchor="middle" font-size="13">📄</text><text x="100" y="510" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">genome-tags-table</text></a><a xlink:href="#rs-movies" href="#rs-movies"><title>movies</title><rect x="460" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="55" text-anchor="middle" font-size="13">📋</text><text x="500" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">movies</text></a><a xlink:href="#rs-ratings" href="#rs-ratings"><title>ratings</title><rect x="460" y="100" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="114" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="131" text-anchor="middle" font-size="13">📋</text><text x="500" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">ratings</text></a><a xlink:href="#rs-tags" href="#rs-tags"><title>tags</title><rect x="460" y="176" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="190" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="207" text-anchor="middle" font-size="13">📋</text><text x="500" y="206" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">tags</text></a><a xlink:href="#rs-movies_with_ratings_with_tags" href="#rs-movies_with_ratings_with_tags"><title>movies_with_ratings_with_tags</title><rect x="460" y="252" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="266" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="283" text-anchor="middle" font-size="13">📋</text><text x="500" y="282" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">movies_with_ratings_…</text></a></svg>
-                </div>
-                
-
-                <div class="resource-list">
-                    
-                    <div class="resource-card" id="res-ml-25m-archive" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">ml-25m-archive</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">application/zip</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;ml-25m-archive&#34;,
-  &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
-  &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-  &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-ratings-table" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">ratings-table</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/csv</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;ratings-table&#34;,
-  &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-  &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-movies-table" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">movies-table</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/csv</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;movies-table&#34;,
-  &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-  &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-tags-table" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">tags-table</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/csv</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;tags-table&#34;,
-  &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-  &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-links-table" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">links-table</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/csv</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;links-table&#34;,
-  &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-  &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-scores-table" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-scores-table</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/csv</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;genome-scores-table&#34;,
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-  &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-genome-tags-table" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">genome-tags-table</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/csv</span>
-                        
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;sc:FileObject&#34;,
-  &#34;name&#34;: &#34;genome-tags-table&#34;,
-  &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-  &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-  &#34;encodingFormat&#34;: &#34;text/csv&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-
-            <!-- Record Sets -->
-            <div class="card card--green" id="recordsets">
-                <div class="card-header">
-                    <span class="icon">📋</span>
-                    <h2>Record Sets</h2>
-                </div>
-
-                
-                <div class="rs-section" id="rs-movies">
-                    <div class="rs-header">
-                        <h3>movies</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The title of the  movie with the release year in parentheses.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>genre</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>A sequence of genres to which the rated movie belongs.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-  &#34;name&#34;: &#34;movies&#34;,
-  &#34;key&#34;: &#34;movie_id&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;movies-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;title&#34;,
-      &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;movies-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;title&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;genre&#34;,
-      &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;repeated&#34;: true,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;movies-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;genres&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;separator&#34;: &#34;|&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-ratings">
-                    <div class="rs-header">
-                        <h3>ratings</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>rating</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The score of the rating on a five-star scale.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-  &#34;name&#34;: &#34;ratings&#34;,
-  &#34;key&#34;: [
-    &#34;user_id&#34;,
-    &#34;movie_id&#34;
-  ],
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;ratings-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: &#34;movies/movie_id&#34;
-      },
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;ratings-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;rating&#34;,
-      &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;ratings-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;rating&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;ratings-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-tags">
-                    <div class="rs-header">
-                        <h3>tags</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tag</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Tags assigned to the movie.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-  &#34;name&#34;: &#34;tags&#34;,
-  &#34;key&#34;: [
-    &#34;user_id&#34;,
-    &#34;movie_id&#34;,
-    &#34;timestamp&#34;
-  ],
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;user_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;tags-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;userId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;movie_id&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: &#34;movies/movie_id&#34;
-      },
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;tags-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;movieId&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;tag&#34;,
-      &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;tags-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;tag&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;timestamp&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;distribution&#34;: &#34;tags-table&#34;,
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-movies_with_ratings_with_tags">
-                    <div class="rs-header">
-                        <h3>movies_with_ratings_with_tags</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>movie_id</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_title</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>movie_genres</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>ratings</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>tags</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-  &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
-  &#34;key&#34;: &#34;movie_id&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;movie_id&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: &#34;movies/movie_id&#34;
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;movie_title&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: &#34;movies/title&#34;
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;movie_genres&#34;,
-      &#34;source&#34;: {
-        &#34;field&#34;: &#34;movies/genre&#34;
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;ratings&#34;,
-      &#34;dataType&#34;: &#34;ml:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: &#34;movies/movie_id&#34;
-        },
-        &#34;source&#34;: {
-          &#34;field&#34;: &#34;ratings/movie_id&#34;
-        }
-      },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;ratings/user_id&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;rating&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;ratings/rating&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;ratings/timestamp&#34;
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;ml:Field&#34;,
-      &#34;name&#34;: &#34;tags&#34;,
-      &#34;dataType&#34;: &#34;ml:RecordSet&#34;,
-      &#34;parentField&#34;: {
-        &#34;references&#34;: {
-          &#34;field&#34;: &#34;movies/movie_id&#34;
-        },
-        &#34;source&#34;: {
-          &#34;field&#34;: &#34;tags/movie_id&#34;
-        }
-      },
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;tags/user_id&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;tag&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;tags/tag&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;tags/timestamp&#34;
-          }
-        }
-      ]
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                
-            </div>
-
-            <div class="footer">
-                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full JSON-LD Modal -->
-    <div class="modal-overlay" id="jsonld-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>🥐 metadata.json</h2>
-                <div class="modal-actions">
-                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                        Copy
-                    </button>
-                    <button class="modal-btn" onclick="downloadFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Download
-                    </button>
-                </div>
-                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
-            </div>
-            <div class="modal-body">
-                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
-  &#34;@context&#34;: {
-    &#34;@language&#34;: &#34;en&#34;,
-    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
-    &#34;column&#34;: &#34;ml:column&#34;,
-    &#34;data&#34;: {
-      &#34;@id&#34;: &#34;ml:data&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;dataBiases&#34;: &#34;ml:dataBiases&#34;,
-    &#34;dataCollection&#34;: &#34;ml:dataCollection&#34;,
-    &#34;dataType&#34;: {
-      &#34;@id&#34;: &#34;ml:dataType&#34;,
-      &#34;@type&#34;: &#34;@vocab&#34;
-    },
-    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
-    &#34;extract&#34;: &#34;ml:extract&#34;,
-    &#34;field&#34;: &#34;ml:field&#34;,
-    &#34;fileProperty&#34;: &#34;ml:fileProperty&#34;,
-    &#34;format&#34;: &#34;ml:format&#34;,
-    &#34;includes&#34;: &#34;ml:includes&#34;,
-    &#34;isEnumeration&#34;: &#34;ml:isEnumeration&#34;,
-    &#34;jsonPath&#34;: &#34;ml:jsonPath&#34;,
-    &#34;ml&#34;: &#34;http://mlcommons.org/schema/&#34;,
-    &#34;parentField&#34;: &#34;ml:parentField&#34;,
-    &#34;path&#34;: &#34;ml:path&#34;,
-    &#34;personalSensitiveInformation&#34;: &#34;ml:personalSensitiveInformation&#34;,
-    &#34;recordSet&#34;: &#34;ml:recordSet&#34;,
-    &#34;references&#34;: &#34;ml:references&#34;,
-    &#34;regex&#34;: &#34;ml:regex&#34;,
-    &#34;repeated&#34;: &#34;ml:repeated&#34;,
-    &#34;replace&#34;: &#34;ml:replace&#34;,
-    &#34;sc&#34;: &#34;https://schema.org/&#34;,
-    &#34;separator&#34;: &#34;ml:separator&#34;,
-    &#34;source&#34;: &#34;ml:source&#34;,
-    &#34;subField&#34;: &#34;ml:subField&#34;,
-    &#34;transform&#34;: &#34;ml:transform&#34;
-  },
-  &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;Movielens-25M&#34;,
-  &#34;description&#34;: &#34;MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019&#34;,
-  &#34;url&#34;: &#34;https://grouplens.org/datasets/movielens/25m/&#34;,
-  &#34;distribution&#34;: [
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;ml-25m-archive&#34;,
-      &#34;contentUrl&#34;: &#34;https://files.grouplens.org/datasets/movielens/ml-25m.zip&#34;,
-      &#34;encodingFormat&#34;: &#34;application/zip&#34;,
-      &#34;sha256&#34;: &#34;8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;ratings-table&#34;,
-      &#34;contentUrl&#34;: &#34;ml-25m/ratings.csv&#34;,
-      &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;movies-table&#34;,
-      &#34;contentUrl&#34;: &#34;ml-25m/movies.csv&#34;,
-      &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;tags-table&#34;,
-      &#34;contentUrl&#34;: &#34;ml-25m/tags.csv&#34;,
-      &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;links-table&#34;,
-      &#34;contentUrl&#34;: &#34;ml-25m/links.csv&#34;,
-      &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;genome-scores-table&#34;,
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-scores.csv&#34;,
-      &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:FileObject&#34;,
-      &#34;name&#34;: &#34;genome-tags-table&#34;,
-      &#34;contentUrl&#34;: &#34;ml-25m/genome-tags.csv&#34;,
-      &#34;containedIn&#34;: &#34;ml-25m-archive&#34;,
-      &#34;encodingFormat&#34;: &#34;text/csv&#34;
-    }
-  ],
-  &#34;recordSet&#34;: [
-    {
-      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-      &#34;name&#34;: &#34;movies&#34;,
-      &#34;key&#34;: &#34;movie_id&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;movies-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;title&#34;,
-          &#34;description&#34;: &#34;The title of the  movie with the release year in parentheses.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;movies-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;title&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;genre&#34;,
-          &#34;description&#34;: &#34;A sequence of genres to which the rated movie belongs.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;repeated&#34;: true,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;movies-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;genres&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;separator&#34;: &#34;|&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-      &#34;name&#34;: &#34;ratings&#34;,
-      &#34;key&#34;: [
-        &#34;user_id&#34;,
-        &#34;movie_id&#34;
-      ],
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;ratings-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: &#34;movies/movie_id&#34;
-          },
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;ratings-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;rating&#34;,
-          &#34;description&#34;: &#34;The score of the rating on a five-star scale.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;ratings-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;rating&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;ratings-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-      &#34;name&#34;: &#34;tags&#34;,
-      &#34;key&#34;: [
-        &#34;user_id&#34;,
-        &#34;movie_id&#34;,
-        &#34;timestamp&#34;
-      ],
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;user_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;tags-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;userId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;movie_id&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: &#34;movies/movie_id&#34;
-          },
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;tags-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;movieId&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;tag&#34;,
-          &#34;description&#34;: &#34;Tags assigned to the movie.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;tags-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;tag&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;timestamp&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;distribution&#34;: &#34;tags-table&#34;,
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;ml:RecordSet&#34;,
-      &#34;name&#34;: &#34;movies_with_ratings_with_tags&#34;,
-      &#34;key&#34;: &#34;movie_id&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;movie_id&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;movies/movie_id&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;movie_title&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;movies/title&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;movie_genres&#34;,
-          &#34;source&#34;: {
-            &#34;field&#34;: &#34;movies/genre&#34;
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;ratings&#34;,
-          &#34;dataType&#34;: &#34;ml:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: &#34;movies/movie_id&#34;
-            },
-            &#34;source&#34;: {
-              &#34;field&#34;: &#34;ratings/movie_id&#34;
-            }
-          },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;ml:Field&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: &#34;ratings/user_id&#34;
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;ml:Field&#34;,
-              &#34;name&#34;: &#34;rating&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: &#34;ratings/rating&#34;
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;ml:Field&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: &#34;ratings/timestamp&#34;
-              }
-            }
-          ]
-        },
-        {
-          &#34;@type&#34;: &#34;ml:Field&#34;,
-          &#34;name&#34;: &#34;tags&#34;,
-          &#34;dataType&#34;: &#34;ml:RecordSet&#34;,
-          &#34;parentField&#34;: {
-            &#34;references&#34;: {
-              &#34;field&#34;: &#34;movies/movie_id&#34;
-            },
-            &#34;source&#34;: {
-              &#34;field&#34;: &#34;tags/movie_id&#34;
-            }
-          },
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;ml:Field&#34;,
-              &#34;name&#34;: &#34;user_id&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: &#34;tags/user_id&#34;
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;ml:Field&#34;,
-              &#34;name&#34;: &#34;tag&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: &#34;tags/tag&#34;
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;ml:Field&#34;,
-              &#34;name&#34;: &#34;timestamp&#34;,
-              &#34;source&#34;: {
-                &#34;field&#34;: &#34;tags/timestamp&#34;
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}</code></pre>
-            </div>
-        </div>
-    </div>
-
+    <div id="app"></div>
     <script>
-        // Sidebar toggle
-        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('collapsed');
-        });
-        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('collapsed');
-        });
-
-        // Render markdown descriptions
-        document.querySelectorAll('.markdown').forEach(function(el) {
-            var raw = el.textContent;
-            if (raw && typeof marked !== 'undefined') {
-                el.innerHTML = marked.parse(raw);
+        window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "Movielens-25M",
+  "description": "MovieLens 25M movie ratings. Stable benchmark dataset. 25 million ratings and one million tag applications applied to 62,000 movies by 162,000 users. Includes tag genome data with 15 million relevance scores across 1,129 tags. Released 12/2019",
+  "url": "https://grouplens.org/datasets/movielens/25m/",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "ml-25m-archive",
+      "contentUrl": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "ratings-table",
+      "contentUrl": "ml-25m/ratings.csv",
+      "containedIn": "ml-25m-archive",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "movies-table",
+      "contentUrl": "ml-25m/movies.csv",
+      "containedIn": "ml-25m-archive",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "tags-table",
+      "contentUrl": "ml-25m/tags.csv",
+      "containedIn": "ml-25m-archive",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "links-table",
+      "contentUrl": "ml-25m/links.csv",
+      "containedIn": "ml-25m-archive",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "genome-scores-table",
+      "contentUrl": "ml-25m/genome-scores.csv",
+      "containedIn": "ml-25m-archive",
+      "encodingFormat": "text/csv"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "genome-tags-table",
+      "contentUrl": "ml-25m/genome-tags.csv",
+      "containedIn": "ml-25m-archive",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "movies",
+      "key": "movie_id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "movie_id",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "movies-table",
+            "extract": {
+              "column": "movieId"
             }
-        });
-
-        function toggleJsonld(btn) {
-            var container = btn.closest('.rs-section, .resource-card, tr, .card');
-            var panel = container.querySelector('.jsonld-panel');
-            if (!panel) {
-                var row = btn.closest('tr');
-                if (row) panel = row.querySelector('.jsonld-panel');
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "title",
+          "description": "The title of the  movie with the release year in parentheses.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "movies-table",
+            "extract": {
+              "column": "title"
             }
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                // Highlight with Prism on first open
-                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
-                    var code = panel.querySelector('code');
-                    if (code) Prism.highlightElement(code);
-                    panel.dataset.highlighted = 'true';
-                }
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "genre",
+          "description": "A sequence of genres to which the rated movie belongs.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "distribution": "movies-table",
+            "extract": {
+              "column": "genres"
+            },
+            "transform": {
+              "separator": "|"
             }
+          }
         }
-
-        function togglePreview(btn) {
-            var container = btn.closest('.rs-section, .resource-card');
-            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "ratings",
+      "key": [
+        "user_id",
+        "movie_id"
+      ],
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "user_id",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "ratings-table",
+            "extract": {
+              "column": "userId"
             }
-        }
-
-        // Full JSON-LD modal
-        var modalHighlighted = false;
-        function openJsonldModal() {
-            var modal = document.getElementById('jsonld-modal');
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (!modalHighlighted) {
-                var code = document.getElementById('full-jsonld-code');
-                if (code) Prism.highlightElement(code);
-                modalHighlighted = true;
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "movie_id",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "movies/movie_id"
+          },
+          "source": {
+            "distribution": "ratings-table",
+            "extract": {
+              "column": "movieId"
             }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "rating",
+          "description": "The score of the rating on a five-star scale.",
+          "dataType": "sc:Float",
+          "source": {
+            "distribution": "ratings-table",
+            "extract": {
+              "column": "rating"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "timestamp",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "ratings-table",
+            "extract": {
+              "column": "timestamp"
+            }
+          }
         }
-        function closeJsonldModal() {
-            document.getElementById('jsonld-modal').classList.remove('open');
-            document.body.style.overflow = '';
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "tags",
+      "key": [
+        "user_id",
+        "movie_id",
+        "timestamp"
+      ],
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "user_id",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "tags-table",
+            "extract": {
+              "column": "userId"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "movie_id",
+          "dataType": "sc:Integer",
+          "references": {
+            "field": "movies/movie_id"
+          },
+          "source": {
+            "distribution": "tags-table",
+            "extract": {
+              "column": "movieId"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "tag",
+          "description": "Tags assigned to the movie.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "tags-table",
+            "extract": {
+              "column": "tag"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "timestamp",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "tags-table",
+            "extract": {
+              "column": "timestamp"
+            }
+          }
         }
-        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeJsonldModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeJsonldModal();
-        });
-
-        function copyFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            navigator.clipboard.writeText(text).then(function() {
-                var btn = document.getElementById('copy-jsonld-btn');
-                btn.classList.add('copied');
-                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-                setTimeout(function() {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
-                }, 2000);
-            });
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "movies_with_ratings_with_tags",
+      "key": "movie_id",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "movie_id",
+          "source": {
+            "field": "movies/movie_id"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "movie_title",
+          "source": {
+            "field": "movies/title"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "movie_genres",
+          "source": {
+            "field": "movies/genre"
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "ratings",
+          "dataType": "ml:RecordSet",
+          "parentField": {
+            "references": {
+              "field": "movies/movie_id"
+            },
+            "source": {
+              "field": "ratings/movie_id"
+            }
+          },
+          "subField": [
+            {
+              "@type": "ml:Field",
+              "name": "user_id",
+              "source": {
+                "field": "ratings/user_id"
+              }
+            },
+            {
+              "@type": "ml:Field",
+              "name": "rating",
+              "source": {
+                "field": "ratings/rating"
+              }
+            },
+            {
+              "@type": "ml:Field",
+              "name": "timestamp",
+              "source": {
+                "field": "ratings/timestamp"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "ml:Field",
+          "name": "tags",
+          "dataType": "ml:RecordSet",
+          "parentField": {
+            "references": {
+              "field": "movies/movie_id"
+            },
+            "source": {
+              "field": "tags/movie_id"
+            }
+          },
+          "subField": [
+            {
+              "@type": "ml:Field",
+              "name": "user_id",
+              "source": {
+                "field": "tags/user_id"
+              }
+            },
+            {
+              "@type": "ml:Field",
+              "name": "tag",
+              "source": {
+                "field": "tags/tag"
+              }
+            },
+            {
+              "@type": "ml:Field",
+              "name": "timestamp",
+              "source": {
+                "field": "tags/timestamp"
+              }
+            }
+          ]
         }
-
-        function downloadFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            var blob = new Blob([text], {type: 'application/ld+json'});
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'metadata.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
+      ]
+    }
+  ]
+};
     </script>
+    <script src="visualizer.js"></script>
 </body>
 </html>

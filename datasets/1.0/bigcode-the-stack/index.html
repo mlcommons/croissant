@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bigcode-the-stack — Croissant Visualizer</title>
-    <script>/* mermaid removed */</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -14,2900 +13,611 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <!-- Marked.js for markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <style>
-        /* ── Reset & Base ──────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --color-bg: #f8f7f4;
-            --color-surface: #ffffff;
-            --color-primary: #b45309;
-            --color-primary-light: #fef3c7;
-            --color-text: #1a1a2e;
-            --color-text-secondary: #6b7280;
-            --color-border: #e5e7eb;
-            --color-border-light: #f3f4f6;
-            --color-fo: #f97316;   /* FileObject accent */
-            --color-fs: #6366f1;   /* FileSet accent */
-            --color-rs: #22c55e;   /* RecordSet accent */
-            --sidebar-width: 260px;
-            --sidebar-collapsed-width: 0px;
-            --radius: 12px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px -1px rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { color: var(--color-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* ── Layout ────────────────────────────────────── */
-        .app {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ── Sidebar ───────────────────────────────────── */
-        .sidebar {
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            background: var(--color-surface);
-            border-right: 1px solid var(--color-border);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: width 0.25s ease, padding 0.25s ease;
-            z-index: 10;
-        }
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-        .sidebar-inner {
-            padding: 24px 20px;
-            opacity: 1;
-            transition: opacity 0.15s ease;
-        }
-        .sidebar.collapsed .sidebar-inner {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-        .sidebar-brand svg { flex-shrink: 0; }
-        .sidebar h4 {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-text-secondary);
-            margin: 20px 0 8px;
-        }
-        .sidebar ul { list-style: none; }
-        .sidebar > .sidebar-inner > ul > li > a,
-        .sidebar ul li a {
-            display: block;
-            padding: 5px 10px;
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            border-radius: 6px;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sidebar ul li a:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        .sidebar ul ul { padding-left: 14px; }
-        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
-
-        /* ── Toggle Button (inside sidebar) ───────────── */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .sidebar-toggle {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.15s, color 0.15s;
-            flex-shrink: 0;
-        }
-        .sidebar-toggle:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-        }
-        /* Floating open button when sidebar is collapsed */
-        .sidebar-open-btn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 20;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-open-btn:hover { background: var(--color-bg); }
-        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
-
-        /* ── Full JSON-LD Modal ──────────────────────────── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--color-surface);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 800px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-        }
-        .modal-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            flex: 1;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .modal-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .modal-btn:hover {
-            background: var(--color-bg);
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-        .modal-btn.copied {
-            background: #059669;
-            color: white;
-            border-color: #059669;
-        }
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background 0.15s;
-        }
-        .modal-close:hover { background: var(--color-bg); }
-        .modal-body {
-            overflow-y: auto;
-            padding: 0;
-        }
-        .modal-body pre {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 20px 24px;
-            margin: 0;
-            line-height: 1.55;
-            overflow-x: auto;
-        }
-
-        /* ── Main Content ──────────────────────────────── */
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 32px 40px 64px;
-            max-width: 960px;
-        }
-
-        /* ── Hero Header ───────────────────────────────── */
-        .hero {
-            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
-            color: white;
-            padding: 40px 36px;
-            border-radius: var(--radius);
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-md);
-        }
-        .hero h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .hero .description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            opacity: 0.92;
-            max-width: 720px;
-        }
-        /* Markdown overrides for dark hero background */
-        .hero .markdown a {
-            color: var(--color-primary-light);
-            text-decoration: underline;
-        }
-        .hero .markdown blockquote {
-            color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .hero .markdown code {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.18);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-        .hero-badge a { color: white; }
-        .hero-badge a:hover { text-decoration: underline; }
-
-        /* ── Cards ──────────────────────────────────────── */
-        .card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            padding: 28px 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        .card--green::before {
-            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--color-border-light);
-        }
-        .card-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        .card-header .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ── Tables ─────────────────────────────────────── */
-        .table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-        }
-        .rs-preview .table-wrap,
-        .file-listing .table-wrap {
-            border: none;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-        }
-        thead th {
-            text-align: left;
-            padding: 11px 16px;
-            font-weight: 600;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
-            background: #f9fafb;
-            border-bottom: 1px solid var(--color-border);
-        }
-        tbody td {
-            padding: 11px 16px;
-            border-bottom: 1px solid var(--color-border-light);
-            vertical-align: top;
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafafa; }
-
-        /* Key-value metadata table */
-        .kv-table { width: 100%; }
-        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
-        .kv-table tr:last-child td { border-bottom: none; }
-        .kv-table .kv-key {
-            font-weight: 600;
-            font-size: 0.84rem;
-            color: var(--color-text-secondary);
-            width: 160px;
-            padding-right: 24px;
-            vertical-align: top;
-            white-space: nowrap;
-        }
-        .kv-table .kv-val {
-            font-size: 0.88rem;
-            word-break: break-word;
-        }
-        .kv-table .kv-val .jsonld-toggle {
-            float: right;
-            margin-left: 12px;
-        }
-
-        /* ── Resource Cards (full-width list) ───────────── */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .resource-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-left-width: 4px;
-            border-radius: 8px;
-            padding: 16px 20px;
-            transition: box-shadow 0.15s;
-        }
-        .resource-card[data-type="FileObject"] { border-left-color: var(--color-fo); }
-        .resource-card[data-type="FileSet"]    { border-left-color: var(--color-fs); }
-        .resource-card[data-type="other"]      { border-left-color: #94a3b8; }
-        .resource-card:hover { box-shadow: var(--shadow-md); }
-        .resource-card .rc-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .resource-card .rc-icon { font-size: 1.4rem; }
-        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
-        .resource-card .rc-type {
-            display: inline-block;
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        .resource-card .rc-desc {
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-
-        /* ── Code / Preview ─────────────────────────────── */
-        pre.preview {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: #fff4e6;
-            color: #212529;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
-            max-width: 100%;
-            margin-top: 10px;
-            line-height: 1.6;
-            display: none;
-        }
-        pre.preview.open {
-            display: block;
-        }
-
-        /* ── File Listing (FileSet preview) ────────────── */
-        .file-listing {
-            margin-top: 10px;
-            background: #fff4e6;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .file-listing.open {
-            display: block;
-        }
-        .file-listing-header {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            margin-bottom: 6px;
-        }
-        .file-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .file-list li {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 2px 0 2px 16px;
-            position: relative;
-            color: var(--color-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .file-list li::before {
-            content: "📄";
-            position: absolute;
-            left: 0;
-            font-size: 0.7rem;
-        }
-        .file-listing-more {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            font-style: italic;
-            margin-top: 4px;
-            padding-left: 16px;
-        }
-        .cite-block {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 14px 16px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            line-height: 1.5;
-            max-width: 100%;
-        }
-
-        /* ── SVG Dependency Graph ────────────────────────── */
-        .svg-graph-wrap {
-            overflow-x: auto;
-            max-width: 100%;
-            padding: 16px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            margin-bottom: 24px;
-        }
-        .svg-graph-wrap svg a:hover rect {
-            filter: brightness(0.93);
-        }
-
-        /* ── RecordSet Sections ──────────────────────────── */
-        .rs-section { margin-bottom: 28px; }
-        .rs-section:last-child { margin-bottom: 0; }
-        .rs-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .rs-header h3 { font-size: 1rem; font-weight: 600; }
-        .rs-desc {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 14px;
-        }
-        .rs-divider {
-            border: none;
-            border-top: 1px solid var(--color-border-light);
-            margin: 24px 0;
-        }
-
-        /* ── Record Set Data Preview ────────────────────── */
-        .rs-preview {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            background: #f0fdf4; /* Soft green matching graph node */
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .rs-preview.open {
-            display: block;
-        }
-        .rs-preview-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #15803d; /* Darker green */
-            margin-bottom: 6px;
-        }
-        table.preview-table {
-            font-size: 0.80rem;
-            background: #ffffff;
-        }
-        table.preview-table thead th {
-            background: #bbf7d0; /* Match graph node icon_bg */
-            color: #15803d;
-            border-bottom-color: #86efac;
-            white-space: nowrap;
-        }
-        table.preview-table tbody td {
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-        }
-        table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
-
-        /* ── Type Badges in Tables ──────────────────────── */
-        .type-badge {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 8px;
-            border-radius: 4px;
-            color: var(--color-text-secondary);
-        }
-
-        /* ── Markdown Content ───────────────────────────── */
-        .markdown p { margin-bottom: 0.6em; }
-        .markdown p:last-child { margin-bottom: 0; }
-        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
-        .markdown code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 5px;
-            border-radius: 3px;
-        }
-        .markdown pre { margin: 0.6em 0; }
-        .markdown a { color: var(--color-primary); }
-        .markdown h1, .markdown h2, .markdown h3 {
-            font-size: 1em;
-            font-weight: 600;
-            margin: 0.8em 0 0.3em;
-        }
-        .markdown blockquote {
-            border-left: 3px solid var(--color-border);
-            padding-left: 12px;
-            color: var(--color-text-secondary);
-            margin: 0.4em 0;
-        }
-
-        /* ── Footer ─────────────────────────────────────── */
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            padding: 32px 0 16px;
-        }
-
-        /* ── Responsive ─────────────────────────────────── */
-        @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .sidebar-toggle { display: none; }
-            .main { padding: 20px 16px 48px; }
-            .hero { padding: 28px 24px; }
-            .hero h1 { font-size: 1.4rem; }
-            .card { padding: 20px 18px; }
-            .resource-list { gap: 10px; }
-        }
-
-        /* ── JSON-LD Toggle ──────────────────────────────── */
-        .jsonld-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .jsonld-toggle.active {
-            background: #374151;
-            color: #e2e8f0;
-            border-color: #374151;
-        }
-        .jsonld-panel {
-            display: none;
-            margin-top: 8px;
-        }
-        .jsonld-panel.open {
-            display: block;
-        }
-        .jsonld-panel pre {
-            border-radius: 8px;
-            max-width: 100%;
-            margin: 0;
-        }
-        /* Prism.js overrides to match our dark theme */
-        .jsonld-panel pre[class*="language-"],
-        .jsonld-panel code[class*="language-"],
-        .modal-body pre[class*="language-"],
-        .modal-body code[class*="language-"] {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            line-height: 1.55;
-            background: #374151;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .jsonld-panel pre[class*="language-"] {
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .modal-body pre[class*="language-"] {
-            padding: 20px 24px;
-            margin: 0;
-            border-radius: 0;
-        }
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .preview-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .resource-card .preview-toggle.active {
-            background: #fff7ed;
-            color: #c2410c;
-            border-color: #fed7aa;
-        }
-        .rs-section .preview-toggle.active {
-            background: #f0fdf4;
-            color: #15803d;
-            border-color: #bbf7d0;
-        }
-    </style>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="visualizer.css">
 </head>
 <body>
-    <div class="app">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-inner">
-                <div class="sidebar-header">
-                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    </button>
-                    <div class="sidebar-brand">
-                        🥐
-                        Croissant Visualizer
-                    </div>
-                </div>
-
-                <h4>Dataset</h4>
-                <ul>
-                    <li><a href="#top">Overview</a></li>
-                    <li><a href="#metadata">Metadata</a></li>
-                </ul>
-
-                <h4>Resources</h4>
-                <ul>
-                    
-                    <li><a href="#res-repo">📄 repo</a></li>
-                    
-                    <li><a href="#res-parquet-files">📁 parquet-files</a></li>
-                    
-                </ul>
-
-                <h4>Record Sets</h4>
-                <ul>
-                    
-                    <li><a href="#rs-default">default</a></li>
-                    
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main">
-            <!-- Floating open button (visible when sidebar is collapsed) -->
-            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
-
-            <!-- Hero -->
-            <div class="hero" id="top">
-                <h1>🥐 bigcode-the-stack</h1>
-                
-                <div class="description markdown">The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.</div>
-                
-                <div class="hero-meta">
-                    
-                    
-                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/bigcode/the-stack" target="_blank">Dataset URL</a></span>
-                    
-                    <span class="hero-badge">📦 2 resources</span>
-                    <span class="hero-badge">📋 1 record set</span>
-                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
-                </div>
-            </div>
-
-            <!-- Metadata -->
-            
-            <div class="card" id="metadata">
-                <div class="card-header">
-                    <span class="icon">ℹ️</span>
-                    <h2>Metadata</h2>
-                </div>
-                <table class="kv-table">
-                    
-                    <tr>
-                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            other
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;license&#34;: &#34;other&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset.">Cite As</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <div class="cite-block">@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Muñoz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }</div>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;citeAs&#34;: &#34;@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Muñoz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="http://mlcommons.org/croissant/1.0" target="_blank">http://mlcommons.org/croissant/1.0</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            crowdsourced, expert-generated
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;keywords&#34;: [
-    &#34;crowdsourced&#34;,
-    &#34;expert-generated&#34;
-  ]
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The creator(s) of the dataset.">Creators</td>
-                        <td class="kv-val">
-                            
-                            
-                            Person(uuid=&#34;_:N693abd2e96d5401ab7082861814810a4&#34;), Person(uuid=&#34;_:Ndf7def5e7dc04090940ad4fab6b180a8&#34;)
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The URL of another Web resource that represents the same dataset as this one.">Same As</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="https://www.bigcode-project.org/docs/about/the-stack/" target="_blank">https://www.bigcode-project.org/docs/about/the-stack/</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;sameAs&#34;: &#34;https://www.bigcode-project.org/docs/about/the-stack/&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Biases</td>
-                        <td class="kv-val">
-                            
-                            
-                            Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer, Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset, The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models.
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Collection</td>
-                        <td class="kv-val">
-                            
-                            
-                            The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Collection Raw Data</td>
-                        <td class="kv-val">
-                            
-                            
-                            Files containing code data.
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Collection Type</td>
-                        <td class="kv-val">
-                            
-                            
-                            Web Scraping, Others
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Limitations</td>
-                        <td class="kv-val">
-                            
-                            
-                            One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues., The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware., Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information.
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Preprocessing Protocol</td>
-                        <td class="kv-val">
-                            
-                            
-                            Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates., Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset.
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Social Impact</td>
-                        <td class="kv-val">
-                            
-                            
-                            The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Data Use Cases</td>
-                        <td class="kv-val">
-                            
-                            
-                            The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling).
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="">Personal Sensitive Information</td>
-                        <td class="kv-val">
-                            
-                            
-                            The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/.
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                </table>
-            </div>
-            
-
-            <!-- Resources -->
-            <div class="card" id="resources">
-                <div class="card-header">
-                    <span class="icon">📦</span>
-                    <h2>Resources</h2>
-                </div>
-
-                
-                <div class="svg-graph-wrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 700 176" width="700" height="176" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs><text x="150" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="550" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M60,50 C20,50 20,126 60,126" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M240,126 C350,126 350,50 460,50" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-repo" href="#res-repo"><title>repo</title><rect x="60" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="55" text-anchor="middle" font-size="13">📄</text><text x="100" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">repo</text></a><a xlink:href="#res-parquet-files" href="#res-parquet-files"><title>parquet-files</title><rect x="60" y="100" width="180" height="52"   rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/><rect x="68" y="114" width="24" height="24" rx="5" fill="#c7d2fe"/><text x="80" y="131" text-anchor="middle" font-size="13">📁</text><text x="100" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">parquet-files</text></a><a xlink:href="#rs-default" href="#rs-default"><title>default</title><rect x="460" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="55" text-anchor="middle" font-size="13">📋</text><text x="500" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">default</text></a></svg>
-                </div>
-                
-
-                <div class="resource-list">
-                    
-                    <div class="resource-card" id="res-repo" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">repo</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">git+https</span>
-                        
-                        
-                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;repo&#34;,
-  &#34;name&#34;: &#34;repo&#34;,
-  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
-  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/bigcode/the-stack&#34;,
-  &#34;encodingFormat&#34;: &#34;git+https&#34;,
-  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-parquet-files" data-type="FileSet">
-                        <div class="rc-header">
-                            <span class="rc-icon">📁</span>
-                            <span class="rc-name">parquet-files</span>
-                            <div class="header-actions">
-                                
-                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File Set</span>
-                        
-                        <span class="type-badge">application/x-parquet</span>
-                        
-                        
-                        
-                        <pre class="preview">Pattern: */*.parquet</pre>
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;parquet-files&#34;,
-  &#34;name&#34;: &#34;parquet-files&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;repo&#34;
-  },
-  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
-  &#34;includes&#34;: &#34;*/*.parquet&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-
-            <!-- Record Sets -->
-            <div class="card card--green" id="recordsets">
-                <div class="card-header">
-                    <span class="icon">📋</span>
-                    <h2>Record Sets</h2>
-                </div>
-
-                
-                <div class="rs-section" id="rs-default">
-                    <div class="rs-header">
-                        <h3>default</h3>
-                        <div class="header-actions">
-                            
-                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>content</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The content of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>language</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Programming language of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Unique git hash of file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>size</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Size of the uncompressed file..</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>ext</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>File extension.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>lang</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hash of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_path</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Path to file in repo containing this file with maximum number of stars.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of repo containing this file with maximum number of stars.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_head_hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hexsha of repository head with the maximum of stars.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_count</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Number of stars in repository.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_stars_event_min_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>First timestamp of a stars event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_stars_repo_stars_event_max_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Last timestamp of a stars event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_path</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Path to file in repo containing this file with maximum number of issues.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_head_hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hexsha of repository head with the maximum of issues.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_count</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Number of issues in repository.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_issues_event_min_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>First timestamp of an issues event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_issues_repo_issues_event_max_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Last timestamp of an issues event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_path</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Path to file in repo containing this file with maximum number of forks.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Name of repo containing this file with maximum number of forks.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_head_hexsha</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Hexsha of repository head with the maximum of forks.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_count</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Number of forks in repository.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_forks_event_min_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>First timestamp of a forks event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_forks_repo_forks_event_max_datetime</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Last timestamp of a forks event.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>avg_line_length</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The average line-length of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>max_line_length</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>The maximum line-length of the file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>alphanum_fraction</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>The fraction of characters in the file that are alphabetical or numerical characters.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="rs-preview">
-                        <div class="rs-preview-label">🔍 Data preview</div>
-                        <div class="table-wrap">
-                            <table class="preview-table">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>content</th>
-                                        
-                                        <th>language</th>
-                                        
-                                        <th>hexsha</th>
-                                        
-                                        <th>size</th>
-                                        
-                                        <th>ext</th>
-                                        
-                                        <th>lang</th>
-                                        
-                                        <th>max_stars_repo_path</th>
-                                        
-                                        <th>max_stars_repo_name</th>
-                                        
-                                        <th>max_stars_repo_head_hexsha</th>
-                                        
-                                        <th>max_stars_count</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        
-                                        <td title="*&amp;---------------------------------------------------------------------*
-*&amp; Report  ZIS_EXAMPLE
-*&amp;---------------------------------------------------------------------*
-report zis_example.
-
-include zis_example_top.
-include zis_example_f01.
-
-start-of-selection.
-
-include = &#39;X&#39;.
-perform perform_write.
-">*&amp;---------------------------------------------------------------------*
-*&amp; Repo…</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="f702dd98900e80f27b0ff4729f38a8f72faf6284">f702dd98900e80f27b0ff4729f38a8f72faf6284</td>
-                                        
-                                        <td title="300">300</td>
-                                        
-                                        <td title="abap">abap</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="zis_example.prog.abap">zis_example.prog.abap</td>
-                                        
-                                        <td title="sbcgua/abap_include_assembler">sbcgua/abap_include_assembler</td>
-                                        
-                                        <td title="5660773df238668bf654ec322dc46fe8c0757dbb">5660773df238668bf654ec322dc46fe8c0757dbb</td>
-                                        
-                                        <td title="3.0">3.0</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="FUNCTION zcafm_customer_delete.
-*&#34;----------------------------------------------------------------------
-*&#34;*&#34;Local Interface:
-*&#34;  IMPORTING
-*&#34;     VALUE(PI_CUSTOMER) TYPE  KNA1-KUNNR
-*&#34;     VALUE(PI_TEST) TYPE  CHAR1
-*&#34;  EXPORTING
-*&#34;     VALUE(SE_RETURN) TYPE  BAPIRET2
-*&#34;----------------------------------------------------------------------
-
-*----------------------------------------------------------------------*
-*  Function Module ZCAFM_CUSTOMER_DELETE *
-* *----------------------------------------------------------------------*
-* * *
-* * ID-Reference: MuleSoft templates *
-* * *
-* * This BAPI aims to set deletion flag for particular customer. If par. *
-* * PI_TEST is provided no change is performed. *
-* *----------------------------------------------------------------------*
-* * Change Log: *
-* * *
-* * Who Date Text *
-* * MMARUSKIN 03.07.2014 Init creation. *
-* *----------------------------------------------------------------------*
-
-* Global data declarations
-
-
-  CONSTANTS: lc_obj_task TYPE cmd_ei_object_task VALUE &#39;M&#39;, &#34;M=Create/Change
-             lc_msg_cls  TYPE sy-msgid VALUE &#39;ZMULESOFTINTEGRATION&#39;.
-  DATA: ls_customer  TYPE cmds_ei_extern,
-        lt_customers TYPE cmds_ei_main,
-        ls_mes_error TYPE cvis_message,
-        lv_par       TYPE sy-msgv1.
-
-
-
-*- Prepare data
-
-
-  ls_customer-header-object_instance-kunnr = pi_customer.
-  ls_customer-header-object_task = lc_obj_task.
-  ls_customer-central_data-central-data-loevm = &#39;X&#39;.
-  ls_customer-central_data-central-datax-loevm = &#39;X&#39;.
-  APPEND ls_customer TO lt_customers-customers.
-  lv_par = pi_customer.
-
-
-*- Run change of material via standard functionality
-
-
-  CALL METHOD cmd_ei_api=&gt;maintain_bapi
-    EXPORTING
-      iv_test_run          = pi_test
-      iv_collect_messages  = &#39;X&#39;
-      is_master_data       = lt_customers
-    IMPORTING
-      es_message_defective = ls_mes_error.
-
-
-*- Error handling
-
-
-  IF ls_mes_error-is_error IS INITIAL AND pi_test IS INITIAL.
-    COMMIT WORK AND WAIT.
-    CALL FUNCTION &#39;BALW_BAPIRETURN_GET2&#39;     &#34;okay: flag set!
-      EXPORTING
-        type      = &#39;I&#39;
-        cl        = lc_msg_cls
-        number    = 100
-        par1      = lv_par
-        parameter = &#39;&#39;
-        field     = &#39;&#39;
-      IMPORTING
-        return    = se_return.
-  ELSE.
-    ROLLBACK WORK.                                     &#34;#EC CI_ROLLBACK
-    CALL FUNCTION &#39;BALW_BAPIRETURN_GET2&#39;     &#34;problem: flag NOT set!
-      EXPORTING
-        type      = &#39;E&#39;
-        cl        = lc_msg_cls
-        number    = 101
-        par1      = lv_par
-        parameter = &#39;&#39;
-        field     = &#39;&#39;
-      IMPORTING
-        return    = se_return.
-  ENDIF.
-
-ENDFUNCTION.">FUNCTION zcafm_customer_delete.
-*&#34;----------------------------------------------…</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="f7059ca25a13836de140134550b96c66d4d503dc">f7059ca25a13836de140134550b96c66d4d503dc</td>
-                                        
-                                        <td title="2640">2640</td>
-                                        
-                                        <td title="abap">abap</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="sap-data-retrieval/src/test/resources/sap/ZCAFM_CUSTOMER_DELETE.abap">sap-data-retrieval/src/test/resources/sap/ZCAFM_CUSTOMER_DELETE.abap</td>
-                                        
-                                        <td title="mulesoft-consulting/anypoint-examples">mulesoft-consulting/anypoint-examples</td>
-                                        
-                                        <td title="20f17b2f162c7a81787aafddd54b0ba196edd8d7">20f17b2f162c7a81787aafddd54b0ba196edd8d7</td>
-                                        
-                                        <td title="1.0">1.0</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="*&amp;---------------------------------------------------------------------*
-*&amp; Report zdemo_ain_cl25
-*&amp;---------------------------------------------------------------------*
-*&amp; This is the demo program written for book:
-*&amp; ALV grid in nutshell by Łukasz Pęgiel
-*&amp;---------------------------------------------------------------------*
-*&amp;- 1st character =&#39;C&#39; if we&#39;re using custom colour or &#39;X&#39; for default *
-*&amp;- 2nd character = colour code (from 0 to 7)                          *
-*&amp;                                  0 = background colour              *
-*&amp;                                  1 = blue                           *
-*&amp;                                  2 = gray                           *
-*&amp;                                  3 = yellow                         *
-*&amp;                                  4 = blue/gray                      *
-*&amp;                                  5 = green                          *
-*&amp;                                  6 = red                            *
-*&amp;                                  7 = orange                         *
-*&amp;- 3rd character = intensified (0=off, 1=on)                          *
-*&amp;- 4th character = inverse display (0=off, 1=on)                      *
-*&amp;---------------------------------------------------------------------*
-report zdemo_ain_cl25.
-
-include zdemo_ain_include_screen.
-
-start-of-selection.
-
-  types: begin of t_data,
-           no_emphasize type spfli-carrid,
-           standard     type spfli-carrid,
-           c100         type spfli-carrid,
-           c101         type spfli-carrid,
-           c110         type spfli-carrid,
-           c111         type spfli-carrid,
-           c200         type spfli-carrid,
-           c201         type spfli-carrid,
-           c210         type spfli-carrid,
-           c211         type spfli-carrid,
-           c300         type spfli-carrid,
-           c301         type spfli-carrid,
-           c310         type spfli-carrid,
-           c311         type spfli-carrid,
-           c400         type spfli-carrid,
-           c401         type spfli-carrid,
-           c410         type spfli-carrid,
-           c411         type spfli-carrid,
-           c500         type spfli-carrid,
-           c501         type spfli-carrid,
-           c510         type spfli-carrid,
-           c511         type spfli-carrid,
-           c600         type spfli-carrid,
-           c601         type spfli-carrid,
-           c610         type spfli-carrid,
-           c611         type spfli-carrid,
-           c700         type spfli-carrid,
-           c701         type spfli-carrid,
-           c710         type spfli-carrid,
-           c711         type spfli-carrid,
-           c000         type spfli-carrid,
-           c001         type spfli-carrid,
-           c010         type spfli-carrid,
-           c011         type spfli-carrid,
-         end of t_data.
-  data flights type standard table of t_data.
-
-  select carrid as no_emphasize
-    up to 50 rows from spfli
-    into corresponding fields of table @flights.
-
-  loop at flights assigning field-symbol(&lt;fl&gt;).
-    &lt;fl&gt;-standard = &lt;fl&gt;-c100 = &lt;fl&gt;-c101 = &lt;fl&gt;-c110 = &lt;fl&gt;-c111 =
-                &lt;fl&gt;-c200 = &lt;fl&gt;-c201 = &lt;fl&gt;-c210 = &lt;fl&gt;-c211 =
-                &lt;fl&gt;-c300 = &lt;fl&gt;-c301 = &lt;fl&gt;-c310 = &lt;fl&gt;-c311 =
-                &lt;fl&gt;-c400 = &lt;fl&gt;-c401 = &lt;fl&gt;-c410 = &lt;fl&gt;-c411 =
-                &lt;fl&gt;-c500 = &lt;fl&gt;-c501 = &lt;fl&gt;-c510 = &lt;fl&gt;-c511 =
-                &lt;fl&gt;-c600 = &lt;fl&gt;-c601 = &lt;fl&gt;-c610 = &lt;fl&gt;-c611 =
-                &lt;fl&gt;-c700 = &lt;fl&gt;-c701 = &lt;fl&gt;-c710 = &lt;fl&gt;-c711 =
-                &lt;fl&gt;-c000 = &lt;fl&gt;-c001 = &lt;fl&gt;-c010 = &lt;fl&gt;-c011 = &lt;fl&gt;-no_emphasize.
-
-  endloop.
-
-  data(grid) = new cl_gui_alv_grid(
-                    i_parent = new cl_gui_custom_container( container_name = &#39;CC&#39; )
-                                   ).
-  data(fcat) = value lvc_t_fcat(
-                                 ( fieldname = &#39;NO_EMPHASIZE&#39; reptext = &#39;NO_EMPHASIZE&#39; )
-                                 ( fieldname = &#39;STANDARD&#39; emphasize = abap_true reptext = &#39;STANDARD&#39; )
-                                 ( fieldname = &#39;C100&#39; emphasize = &#39;C100&#39; reptext = &#39;C100&#39;)
-                                 ( fieldname = &#39;C101&#39; emphasize = &#39;C101&#39; reptext = &#39;C101&#39;)
-                                 ( fieldname = &#39;C110&#39; emphasize = &#39;C110&#39; reptext = &#39;C110&#39;)
-                                 ( fieldname = &#39;C111&#39; emphasize = &#39;C111&#39; reptext = &#39;C111&#39;)
-                                 ( fieldname = &#39;C200&#39; emphasize = &#39;C200&#39; reptext = &#39;C200&#39;)
-                                 ( fieldname = &#39;C201&#39; emphasize = &#39;C201&#39; reptext = &#39;C201&#39;)
-                                 ( fieldname = &#39;C210&#39; emphasize = &#39;C210&#39; reptext = &#39;C210&#39;)
-                                 ( fieldname = &#39;C211&#39; emphasize = &#39;C211&#39; reptext = &#39;C211&#39;)
-                                 ( fieldname = &#39;C300&#39; emphasize = &#39;C300&#39; reptext = &#39;C300&#39;)
-                                 ( fieldname = &#39;C301&#39; emphasize = &#39;C301&#39; reptext = &#39;C301&#39;)
-                                 ( fieldname = &#39;C310&#39; emphasize = &#39;C310&#39; reptext = &#39;C310&#39;)
-                                 ( fieldname = &#39;C311&#39; emphasize = &#39;C311&#39; reptext = &#39;C311&#39;)
-                                 ( fieldname = &#39;C400&#39; emphasize = &#39;C400&#39; reptext = &#39;C400&#39;)
-                                 ( fieldname = &#39;C401&#39; emphasize = &#39;C401&#39; reptext = &#39;C401&#39;)
-                                 ( fieldname = &#39;C410&#39; emphasize = &#39;C410&#39; reptext = &#39;C410&#39;)
-                                 ( fieldname = &#39;C411&#39; emphasize = &#39;C411&#39; reptext = &#39;C411&#39;)
-                                 ( fieldname = &#39;C500&#39; emphasize = &#39;C500&#39; reptext = &#39;C500&#39;)
-                                 ( fieldname = &#39;C501&#39; emphasize = &#39;C501&#39; reptext = &#39;C501&#39;)
-                                 ( fieldname = &#39;C510&#39; emphasize = &#39;C510&#39; reptext = &#39;C510&#39;)
-                                 ( fieldname = &#39;C511&#39; emphasize = &#39;C511&#39; reptext = &#39;C511&#39;)
-                                 ( fieldname = &#39;C600&#39; emphasize = &#39;C600&#39; reptext = &#39;C600&#39;)
-                                 ( fieldname = &#39;C601&#39; emphasize = &#39;C601&#39; reptext = &#39;C601&#39;)
-                                 ( fieldname = &#39;C610&#39; emphasize = &#39;C610&#39; reptext = &#39;C610&#39;)
-                                 ( fieldname = &#39;C611&#39; emphasize = &#39;C611&#39; reptext = &#39;C611&#39;)
-                                 ( fieldname = &#39;C700&#39; emphasize = &#39;C700&#39; reptext = &#39;C700&#39;)
-                                 ( fieldname = &#39;C701&#39; emphasize = &#39;C701&#39; reptext = &#39;C701&#39;)
-                                 ( fieldname = &#39;C710&#39; emphasize = &#39;C710&#39; reptext = &#39;C710&#39;)
-                                 ( fieldname = &#39;C711&#39; emphasize = &#39;C711&#39; reptext = &#39;C711&#39;)
-                                 ( fieldname = &#39;C000&#39; emphasize = &#39;C000&#39; reptext = &#39;C000&#39;)
-                                 ( fieldname = &#39;C001&#39; emphasize = &#39;C001&#39; reptext = &#39;C001&#39;)
-                                 ( fieldname = &#39;C010&#39; emphasize = &#39;C010&#39; reptext = &#39;C010&#39;)
-                                 ( fieldname = &#39;C011&#39; emphasize = &#39;C011&#39; reptext = &#39;C011&#39;)
-                               ).
-  grid-&gt;set_table_for_first_display(
-    exporting
-        is_layout = value #( col_opt = abap_true )
-    changing
-      it_fieldcatalog               = fcat
-      it_outtab                     = flights
-    exceptions
-      invalid_parameter_combination = 1
-      program_error                 = 2
-      too_many_lines                = 3
-      others                        = 4
-  ).
-  if sy-subrc eq 0.
-    call screen 0100.
-  endif.
-">*&amp;---------------------------------------------------------------------*
-*&amp; Repo…</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="f706c5d249ab3a4ce3d3753967774b9920a31554">f706c5d249ab3a4ce3d3753967774b9920a31554</td>
-                                        
-                                        <td title="7390">7390</td>
-                                        
-                                        <td title="abap">abap</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="src/fcat/zdemo_ain_cl25.prog.abap">src/fcat/zdemo_ain_cl25.prog.abap</td>
-                                        
-                                        <td title="fidley/ALVGridInNutschell">fidley/ALVGridInNutschell</td>
-                                        
-                                        <td title="d3c95d7f31afbff001fff50edae0c2e09e51fe90">d3c95d7f31afbff001fff50edae0c2e09e51fe90</td>
-                                        
-                                        <td title="5.0">5.0</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="**********************************************************************
-*  FILTER EMPTY VALUES
-**********************************************************************
-
-CLASS lcl_empty_filter DEFINITION FINAL.
-  PUBLIC SECTION.
-    INTERFACES /mbtools/if_ajson_filter.
-ENDCLASS.
-
-CLASS lcl_empty_filter IMPLEMENTATION.
-  METHOD /mbtools/if_ajson_filter~keep_node.
-
-    rv_keep = boolc(
-      ( iv_visit = /mbtools/if_ajson_filter=&gt;visit_type-value AND is_node-value IS NOT INITIAL ) OR
-      ( iv_visit &lt;&gt; /mbtools/if_ajson_filter=&gt;visit_type-value AND is_node-children &gt; 0 ) ).
-    &#34; children = 0 on open for initially empty nodes and on close for filtered ones
-
-  ENDMETHOD.
-ENDCLASS.
-
-**********************************************************************
-*  FILTER PREDEFINED PATHS
-**********************************************************************
-
-CLASS lcl_paths_filter DEFINITION FINAL.
-  PUBLIC SECTION.
-    INTERFACES /mbtools/if_ajson_filter.
-    METHODS constructor
-      IMPORTING
-        it_skip_paths TYPE string_table OPTIONAL
-        iv_skip_paths TYPE string OPTIONAL
-      RAISING
-        /mbtools/cx_ajson_error.
-  PRIVATE SECTION.
-    DATA mt_skip_paths TYPE HASHED TABLE OF string WITH UNIQUE KEY table_line.
-ENDCLASS.
-
-CLASS lcl_paths_filter IMPLEMENTATION.
-
-  METHOD /mbtools/if_ajson_filter~keep_node.
-
-    DATA lv_path TYPE string.
-
-    lv_path = is_node-path &amp;&amp; is_node-name.
-    READ TABLE mt_skip_paths WITH KEY table_line = lv_path TRANSPORTING NO FIELDS.
-    rv_keep = boolc( sy-subrc &lt;&gt; 0 ).
-
-  ENDMETHOD.
-
-  METHOD constructor.
-
-    DATA lv_s TYPE string.
-    DATA lt_tab TYPE string_table.
-    FIELD-SYMBOLS &lt;s&gt; TYPE string.
-
-    IF boolc( iv_skip_paths IS INITIAL ) = boolc( it_skip_paths IS INITIAL ). &#34; XOR
-      /mbtools/cx_ajson_error=&gt;raise( &#39;no filter path specified&#39; ).
-    ENDIF.
-
-    LOOP AT it_skip_paths INTO lv_s.
-      lv_s = to_lower( lv_s ).
-      APPEND lv_s TO lt_tab.
-    ENDLOOP.
-
-    IF iv_skip_paths IS NOT INITIAL.
-      SPLIT iv_skip_paths AT &#39;,&#39; INTO TABLE lt_tab.
-      LOOP AT lt_tab ASSIGNING &lt;s&gt;.
-        IF &lt;s&gt; IS INITIAL.
-          DELETE lt_tab INDEX sy-tabix.
-          CONTINUE.
-        ENDIF.
-        &lt;s&gt; = condense( to_lower( &lt;s&gt; ) ).
-      ENDLOOP.
-    ENDIF.
-
-    SORT lt_tab BY table_line.
-    DELETE ADJACENT DUPLICATES FROM lt_tab.
-
-    mt_skip_paths = lt_tab.
-
-  ENDMETHOD.
-
-ENDCLASS.
-
-**********************************************************************
-* MULTI FILTER
-**********************************************************************
-
-CLASS lcl_and_filter DEFINITION FINAL.
-  PUBLIC SECTION.
-    INTERFACES /mbtools/if_ajson_filter.
-    METHODS constructor
-      IMPORTING
-        it_filters TYPE /mbtools/if_ajson_filter=&gt;ty_filter_tab
-      RAISING
-        /mbtools/cx_ajson_error.
-  PRIVATE SECTION.
-    DATA mt_filters TYPE /mbtools/if_ajson_filter=&gt;ty_filter_tab.
-ENDCLASS.
-
-CLASS lcl_and_filter IMPLEMENTATION.
-
-  METHOD /mbtools/if_ajson_filter~keep_node.
-
-    DATA li_filter LIKE LINE OF mt_filters.
-
-    rv_keep = abap_true.
-    LOOP AT mt_filters INTO li_filter.
-      rv_keep = li_filter-&gt;keep_node(
-        is_node  = is_node
-        iv_visit = iv_visit ).
-      IF rv_keep = abap_false.
-        RETURN.
-      ENDIF.
-    ENDLOOP.
-
-  ENDMETHOD.
-
-  METHOD constructor.
-
-    DATA li_filter LIKE LINE OF it_filters.
-
-    LOOP AT it_filters INTO li_filter WHERE table_line IS BOUND.
-      APPEND li_filter TO mt_filters.
-    ENDLOOP.
-
-  ENDMETHOD.
-
-ENDCLASS.
-">**********************************************************************
-*  FILTER…</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="f707aa256126ec981696b25d4cbe9173d6a74a1f">f707aa256126ec981696b25d4cbe9173d6a74a1f</td>
-                                        
-                                        <td title="3452">3452</td>
-                                        
-                                        <td title="abap">abap</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="src/#mbtools#cl_ajson_filter_lib.clas.locals_imp.abap">src/#mbtools#cl_ajson_filter_lib.clas.locals_imp.abap</td>
-                                        
-                                        <td title="Marc-Bernard-Tools/Mirror-AJSON">Marc-Bernard-Tools/Mirror-AJSON</td>
-                                        
-                                        <td title="4bc1b5b661a6e0197770da766293d9434c75e559">4bc1b5b661a6e0197770da766293d9434c75e559</td>
-                                        
-                                        <td title="None">None</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="FUNCTION-POOL ZEXPIMP_VX_GENER_TEST_CODE.   &#34;MESSAGE-ID ..
-
-* INCLUDE LZEXPIMP_GENERATE_TEST_CODED...    &#34; Local class definition
-">FUNCTION-POOL ZEXPIMP_VX_GENER_TEST_CODE.   &#34;MESSAGE-ID ..
-
-* INCLUDE LZEXPIMP_G…</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="f70ff1b7c91543804aad129c14175a625e0efafb">f70ff1b7c91543804aad129c14175a625e0efafb</td>
-                                        
-                                        <td title="130">130</td>
-                                        
-                                        <td title="abap">abap</td>
-                                        
-                                        <td title="ABAP">ABAP</td>
-                                        
-                                        <td title="src/zexpimp_vx_gener_test_code.fugr.lzexpimp_vx_gener_test_codetop.abap">src/zexpimp_vx_gener_test_code.fugr.lzexpimp_vx_gener_test_codetop.abap</td>
-                                        
-                                        <td title="sandraros/export-import-vx">sandraros/export-import-vx</td>
-                                        
-                                        <td title="a818910f825f6a19105bb1f6ad3563e93a477c38">a818910f825f6a19105bb1f6ad3563e93a477c38</td>
-                                        
-                                        <td title="1.0">1.0</td>
-                                        
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;default&#34;,
-  &#34;name&#34;: &#34;default&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/content&#34;,
-      &#34;name&#34;: &#34;default/content&#34;,
-      &#34;description&#34;: &#34;The content of the file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;content&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/language&#34;,
-      &#34;name&#34;: &#34;default/language&#34;,
-      &#34;description&#34;: &#34;Programming language of the file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;lang&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/hexsha&#34;,
-      &#34;name&#34;: &#34;default/hexsha&#34;,
-      &#34;description&#34;: &#34;Unique git hash of file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;hexsha&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/size&#34;,
-      &#34;name&#34;: &#34;default/size&#34;,
-      &#34;description&#34;: &#34;Size of the uncompressed file..&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;size&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/ext&#34;,
-      &#34;name&#34;: &#34;default/ext&#34;,
-      &#34;description&#34;: &#34;File extension.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;ext&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/lang&#34;,
-      &#34;name&#34;: &#34;default/lang&#34;,
-      &#34;description&#34;: &#34;Hash of the file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;lang&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_stars_repo_path&#34;,
-      &#34;name&#34;: &#34;default/max_stars_repo_path&#34;,
-      &#34;description&#34;: &#34;Path to file in repo containing this file with maximum number of stars.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_stars_repo_path&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_stars_repo_name&#34;,
-      &#34;name&#34;: &#34;default/max_stars_repo_name&#34;,
-      &#34;description&#34;: &#34;Name of repo containing this file with maximum number of stars.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_stars_repo_name&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_stars_repo_head_hexsha&#34;,
-      &#34;name&#34;: &#34;default/max_stars_repo_head_hexsha&#34;,
-      &#34;description&#34;: &#34;Hexsha of repository head with the maximum of stars.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_stars_repo_head_hexsha&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_stars_count&#34;,
-      &#34;name&#34;: &#34;default/max_stars_count&#34;,
-      &#34;description&#34;: &#34;Number of stars in repository.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_stars_count&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_stars_repo_stars_event_min_datetime&#34;,
-      &#34;name&#34;: &#34;default/max_stars_repo_stars_event_min_datetime&#34;,
-      &#34;description&#34;: &#34;First timestamp of a stars event.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_stars_repo_stars_event_min_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_stars_repo_stars_event_max_datetime&#34;,
-      &#34;name&#34;: &#34;default/max_stars_repo_stars_event_max_datetime&#34;,
-      &#34;description&#34;: &#34;Last timestamp of a stars event.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_stars_repo_stars_event_max_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_issues_repo_path&#34;,
-      &#34;name&#34;: &#34;default/max_issues_repo_path&#34;,
-      &#34;description&#34;: &#34;Path to file in repo containing this file with maximum number of issues.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_issues_repo_path&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_issues_repo_head_hexsha&#34;,
-      &#34;name&#34;: &#34;default/max_issues_repo_head_hexsha&#34;,
-      &#34;description&#34;: &#34;Hexsha of repository head with the maximum of issues.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_issues_repo_head_hexsha&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_issues_count&#34;,
-      &#34;name&#34;: &#34;default/max_issues_count&#34;,
-      &#34;description&#34;: &#34;Number of issues in repository.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_issues_count&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_issues_repo_issues_event_min_datetime&#34;,
-      &#34;name&#34;: &#34;default/max_issues_repo_issues_event_min_datetime&#34;,
-      &#34;description&#34;: &#34;First timestamp of an issues event.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_issues_repo_issues_event_min_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_issues_repo_issues_event_max_datetime&#34;,
-      &#34;name&#34;: &#34;default/max_issues_repo_issues_event_max_datetime&#34;,
-      &#34;description&#34;: &#34;Last timestamp of an issues event.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_issues_repo_issues_event_max_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_forks_repo_path&#34;,
-      &#34;name&#34;: &#34;default/max_forks_repo_path&#34;,
-      &#34;description&#34;: &#34;Path to file in repo containing this file with maximum number of forks.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_forks_repo_path&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_forks_repo_name&#34;,
-      &#34;name&#34;: &#34;default/max_forks_repo_name&#34;,
-      &#34;description&#34;: &#34;Name of repo containing this file with maximum number of forks.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_forks_repo_name&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_forks_repo_head_hexsha&#34;,
-      &#34;name&#34;: &#34;default/max_forks_repo_head_hexsha&#34;,
-      &#34;description&#34;: &#34;Hexsha of repository head with the maximum of forks.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_forks_repo_head_hexsha&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_forks_count&#34;,
-      &#34;name&#34;: &#34;default/max_forks_count&#34;,
-      &#34;description&#34;: &#34;Number of forks in repository.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_forks_count&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_forks_repo_forks_event_min_datetime&#34;,
-      &#34;name&#34;: &#34;default/max_forks_repo_forks_event_min_datetime&#34;,
-      &#34;description&#34;: &#34;First timestamp of a forks event.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_forks_repo_forks_event_min_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_forks_repo_forks_event_max_datetime&#34;,
-      &#34;name&#34;: &#34;default/max_forks_repo_forks_event_max_datetime&#34;,
-      &#34;description&#34;: &#34;Last timestamp of a forks event.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_forks_repo_forks_event_max_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/avg_line_length&#34;,
-      &#34;name&#34;: &#34;default/avg_line_length&#34;,
-      &#34;description&#34;: &#34;The average line-length of the file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;avg_line_length&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/max_line_length&#34;,
-      &#34;name&#34;: &#34;default/max_line_length&#34;,
-      &#34;description&#34;: &#34;The maximum line-length of the file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;max_line_length&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/alphanum_fraction&#34;,
-      &#34;name&#34;: &#34;default/alphanum_fraction&#34;,
-      &#34;description&#34;: &#34;The fraction of characters in the file that are alphabetical or numerical characters.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;alphanum_fraction&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                
-            </div>
-
-            <div class="footer">
-                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full JSON-LD Modal -->
-    <div class="modal-overlay" id="jsonld-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>🥐 metadata.json</h2>
-                <div class="modal-actions">
-                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                        Copy
-                    </button>
-                    <button class="modal-btn" onclick="downloadFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Download
-                    </button>
-                </div>
-                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
-            </div>
-            <div class="modal-body">
-                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
-  &#34;@context&#34;: {
-    &#34;@language&#34;: &#34;en&#34;,
-    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
-    &#34;citeAs&#34;: &#34;cr:citeAs&#34;,
-    &#34;column&#34;: &#34;cr:column&#34;,
-    &#34;conformsTo&#34;: &#34;dct:conformsTo&#34;,
-    &#34;cr&#34;: &#34;http://mlcommons.org/croissant/&#34;,
-    &#34;rai&#34;: &#34;http://mlcommons.org/croissant/RAI/&#34;,
-    &#34;data&#34;: {
-      &#34;@id&#34;: &#34;cr:data&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;dataType&#34;: {
-      &#34;@id&#34;: &#34;cr:dataType&#34;,
-      &#34;@type&#34;: &#34;@vocab&#34;
-    },
-    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
-    &#34;examples&#34;: {
-      &#34;@id&#34;: &#34;cr:examples&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;extract&#34;: &#34;cr:extract&#34;,
-    &#34;field&#34;: &#34;cr:field&#34;,
-    &#34;fileProperty&#34;: &#34;cr:fileProperty&#34;,
-    &#34;fileObject&#34;: &#34;cr:fileObject&#34;,
-    &#34;fileSet&#34;: &#34;cr:fileSet&#34;,
-    &#34;format&#34;: &#34;cr:format&#34;,
-    &#34;includes&#34;: &#34;cr:includes&#34;,
-    &#34;isLiveDataset&#34;: &#34;cr:isLiveDataset&#34;,
-    &#34;jsonPath&#34;: &#34;cr:jsonPath&#34;,
-    &#34;key&#34;: &#34;cr:key&#34;,
-    &#34;md5&#34;: &#34;cr:md5&#34;,
-    &#34;parentField&#34;: &#34;cr:parentField&#34;,
-    &#34;path&#34;: &#34;cr:path&#34;,
-    &#34;recordSet&#34;: &#34;cr:recordSet&#34;,
-    &#34;references&#34;: &#34;cr:references&#34;,
-    &#34;regex&#34;: &#34;cr:regex&#34;,
-    &#34;repeated&#34;: &#34;cr:repeated&#34;,
-    &#34;replace&#34;: &#34;cr:replace&#34;,
-    &#34;sc&#34;: &#34;https://schema.org/&#34;,
-    &#34;separator&#34;: &#34;cr:separator&#34;,
-    &#34;source&#34;: &#34;cr:source&#34;,
-    &#34;subField&#34;: &#34;cr:subField&#34;,
-    &#34;transform&#34;: &#34;cr:transform&#34;
-  },
-  &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;bigcode-the-stack&#34;,
-  &#34;description&#34;: &#34;The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.&#34;,
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;citeAs&#34;: &#34;@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Muñoz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }&#34;,
-  &#34;creator&#34;: [
-    {
-      &#34;@type&#34;: &#34;sc:Person&#34;,
-      &#34;name&#34;: &#34;Harm de Vries&#34;,
-      &#34;email&#34;: &#34;harm.devries@servicenow.com&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;sc:Person&#34;,
-      &#34;name&#34;: &#34;Leandro von Werra&#34;,
-      &#34;email&#34;: &#34;leandro@huggingface.co&#34;
-    }
-  ],
-  &#34;keywords&#34;: [
-    &#34;crowdsourced&#34;,
-    &#34;expert-generated&#34;
-  ],
-  &#34;license&#34;: &#34;other&#34;,
-  &#34;rai:dataBiases&#34;: [
-    &#34;Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer&#34;,
-    &#34;Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset&#34;,
-    &#34;The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models.&#34;
-  ],
-  &#34;rai:dataCollection&#34;: &#34;The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB&#34;,
-  &#34;rai:dataCollectionRawData&#34;: &#34;Files containing code data.&#34;,
-  &#34;rai:dataCollectionType&#34;: [
-    &#34;Web Scraping&#34;,
-    &#34;Others&#34;
-  ],
-  &#34;rai:dataLimitations&#34;: [
-    &#34;One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues.&#34;,
-    &#34;The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware.&#34;,
-    &#34;Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information.&#34;
-  ],
-  &#34;rai:dataPreprocessingProtocol&#34;: [
-    &#34;Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.&#34;,
-    &#34;Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset.&#34;
-  ],
-  &#34;rai:dataSocialImpact&#34;: &#34;The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.&#34;,
-  &#34;rai:dataUseCases&#34;: &#34;The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling).&#34;,
-  &#34;rai:personalSensitiveInformation&#34;: &#34;The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/.&#34;,
-  &#34;sameAs&#34;: &#34;https://www.bigcode-project.org/docs/about/the-stack/&#34;,
-  &#34;url&#34;: &#34;https://huggingface.co/datasets/bigcode/the-stack&#34;,
-  &#34;distribution&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;repo&#34;,
-      &#34;name&#34;: &#34;repo&#34;,
-      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
-      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/bigcode/the-stack&#34;,
-      &#34;encodingFormat&#34;: &#34;git+https&#34;,
-      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;parquet-files&#34;,
-      &#34;name&#34;: &#34;parquet-files&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;repo&#34;
-      },
-      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
-      &#34;includes&#34;: &#34;*/*.parquet&#34;
-    }
-  ],
-  &#34;recordSet&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;default&#34;,
-      &#34;name&#34;: &#34;default&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/content&#34;,
-          &#34;name&#34;: &#34;default/content&#34;,
-          &#34;description&#34;: &#34;The content of the file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;content&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/language&#34;,
-          &#34;name&#34;: &#34;default/language&#34;,
-          &#34;description&#34;: &#34;Programming language of the file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;lang&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/hexsha&#34;,
-          &#34;name&#34;: &#34;default/hexsha&#34;,
-          &#34;description&#34;: &#34;Unique git hash of file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;hexsha&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/size&#34;,
-          &#34;name&#34;: &#34;default/size&#34;,
-          &#34;description&#34;: &#34;Size of the uncompressed file..&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;size&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/ext&#34;,
-          &#34;name&#34;: &#34;default/ext&#34;,
-          &#34;description&#34;: &#34;File extension.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;ext&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/lang&#34;,
-          &#34;name&#34;: &#34;default/lang&#34;,
-          &#34;description&#34;: &#34;Hash of the file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;lang&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_stars_repo_path&#34;,
-          &#34;name&#34;: &#34;default/max_stars_repo_path&#34;,
-          &#34;description&#34;: &#34;Path to file in repo containing this file with maximum number of stars.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_stars_repo_path&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_stars_repo_name&#34;,
-          &#34;name&#34;: &#34;default/max_stars_repo_name&#34;,
-          &#34;description&#34;: &#34;Name of repo containing this file with maximum number of stars.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_stars_repo_name&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_stars_repo_head_hexsha&#34;,
-          &#34;name&#34;: &#34;default/max_stars_repo_head_hexsha&#34;,
-          &#34;description&#34;: &#34;Hexsha of repository head with the maximum of stars.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_stars_repo_head_hexsha&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_stars_count&#34;,
-          &#34;name&#34;: &#34;default/max_stars_count&#34;,
-          &#34;description&#34;: &#34;Number of stars in repository.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_stars_count&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_stars_repo_stars_event_min_datetime&#34;,
-          &#34;name&#34;: &#34;default/max_stars_repo_stars_event_min_datetime&#34;,
-          &#34;description&#34;: &#34;First timestamp of a stars event.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_stars_repo_stars_event_min_datetime&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_stars_repo_stars_event_max_datetime&#34;,
-          &#34;name&#34;: &#34;default/max_stars_repo_stars_event_max_datetime&#34;,
-          &#34;description&#34;: &#34;Last timestamp of a stars event.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_stars_repo_stars_event_max_datetime&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_issues_repo_path&#34;,
-          &#34;name&#34;: &#34;default/max_issues_repo_path&#34;,
-          &#34;description&#34;: &#34;Path to file in repo containing this file with maximum number of issues.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_issues_repo_path&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_issues_repo_head_hexsha&#34;,
-          &#34;name&#34;: &#34;default/max_issues_repo_head_hexsha&#34;,
-          &#34;description&#34;: &#34;Hexsha of repository head with the maximum of issues.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_issues_repo_head_hexsha&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_issues_count&#34;,
-          &#34;name&#34;: &#34;default/max_issues_count&#34;,
-          &#34;description&#34;: &#34;Number of issues in repository.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_issues_count&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_issues_repo_issues_event_min_datetime&#34;,
-          &#34;name&#34;: &#34;default/max_issues_repo_issues_event_min_datetime&#34;,
-          &#34;description&#34;: &#34;First timestamp of an issues event.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_issues_repo_issues_event_min_datetime&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_issues_repo_issues_event_max_datetime&#34;,
-          &#34;name&#34;: &#34;default/max_issues_repo_issues_event_max_datetime&#34;,
-          &#34;description&#34;: &#34;Last timestamp of an issues event.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_issues_repo_issues_event_max_datetime&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_forks_repo_path&#34;,
-          &#34;name&#34;: &#34;default/max_forks_repo_path&#34;,
-          &#34;description&#34;: &#34;Path to file in repo containing this file with maximum number of forks.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_forks_repo_path&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_forks_repo_name&#34;,
-          &#34;name&#34;: &#34;default/max_forks_repo_name&#34;,
-          &#34;description&#34;: &#34;Name of repo containing this file with maximum number of forks.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_forks_repo_name&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_forks_repo_head_hexsha&#34;,
-          &#34;name&#34;: &#34;default/max_forks_repo_head_hexsha&#34;,
-          &#34;description&#34;: &#34;Hexsha of repository head with the maximum of forks.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_forks_repo_head_hexsha&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_forks_count&#34;,
-          &#34;name&#34;: &#34;default/max_forks_count&#34;,
-          &#34;description&#34;: &#34;Number of forks in repository.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_forks_count&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_forks_repo_forks_event_min_datetime&#34;,
-          &#34;name&#34;: &#34;default/max_forks_repo_forks_event_min_datetime&#34;,
-          &#34;description&#34;: &#34;First timestamp of a forks event.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_forks_repo_forks_event_min_datetime&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_forks_repo_forks_event_max_datetime&#34;,
-          &#34;name&#34;: &#34;default/max_forks_repo_forks_event_max_datetime&#34;,
-          &#34;description&#34;: &#34;Last timestamp of a forks event.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_forks_repo_forks_event_max_datetime&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/avg_line_length&#34;,
-          &#34;name&#34;: &#34;default/avg_line_length&#34;,
-          &#34;description&#34;: &#34;The average line-length of the file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;avg_line_length&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/max_line_length&#34;,
-          &#34;name&#34;: &#34;default/max_line_length&#34;,
-          &#34;description&#34;: &#34;The maximum line-length of the file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;max_line_length&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/alphanum_fraction&#34;,
-          &#34;name&#34;: &#34;default/alphanum_fraction&#34;,
-          &#34;description&#34;: &#34;The fraction of characters in the file that are alphabetical or numerical characters.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;alphanum_fraction&#34;
-            }
-          }
-        }
-      ]
-    }
-  ]
-}</code></pre>
-            </div>
-        </div>
-    </div>
-
+    <div id="app"></div>
     <script>
-        // Sidebar toggle
-        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('collapsed');
-        });
-        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('collapsed');
-        });
-
-        // Render markdown descriptions
-        document.querySelectorAll('.markdown').forEach(function(el) {
-            var raw = el.textContent;
-            if (raw && typeof marked !== 'undefined') {
-                el.innerHTML = marked.parse(raw);
+        window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "bigcode-the-stack",
+  "description": "The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Muñoz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Harm de Vries",
+      "email": "harm.devries@servicenow.com"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Leandro von Werra",
+      "email": "leandro@huggingface.co"
+    }
+  ],
+  "keywords": [
+    "crowdsourced",
+    "expert-generated"
+  ],
+  "license": "other",
+  "rai:dataBiases": [
+    "Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer",
+    "Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset",
+    "The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models."
+  ],
+  "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
+  "rai:dataCollectionRawData": "Files containing code data.",
+  "rai:dataCollectionType": [
+    "Web Scraping",
+    "Others"
+  ],
+  "rai:dataLimitations": [
+    "One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues.",
+    "The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware.",
+    "Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information."
+  ],
+  "rai:dataPreprocessingProtocol": [
+    "Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.",
+    "Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset."
+  ],
+  "rai:dataSocialImpact": "The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.",
+  "rai:dataUseCases": "The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling).",
+  "rai:personalSensitiveInformation": "The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/.",
+  "sameAs": "https://www.bigcode-project.org/docs/about/the-stack/",
+  "url": "https://huggingface.co/datasets/bigcode/the-stack",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/bigcode/the-stack",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files",
+      "name": "parquet-files",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*/*.parquet"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/content",
+          "name": "default/content",
+          "description": "The content of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "content"
             }
-        });
-
-        function toggleJsonld(btn) {
-            var container = btn.closest('.rs-section, .resource-card, tr, .card');
-            var panel = container.querySelector('.jsonld-panel');
-            if (!panel) {
-                var row = btn.closest('tr');
-                if (row) panel = row.querySelector('.jsonld-panel');
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/language",
+          "name": "default/language",
+          "description": "Programming language of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "lang"
             }
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                // Highlight with Prism on first open
-                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
-                    var code = panel.querySelector('code');
-                    if (code) Prism.highlightElement(code);
-                    panel.dataset.highlighted = 'true';
-                }
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/hexsha",
+          "name": "default/hexsha",
+          "description": "Unique git hash of file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "hexsha"
             }
-        }
-
-        function togglePreview(btn) {
-            var container = btn.closest('.rs-section, .resource-card');
-            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/size",
+          "name": "default/size",
+          "description": "Size of the uncompressed file..",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "size"
             }
-        }
-
-        // Full JSON-LD modal
-        var modalHighlighted = false;
-        function openJsonldModal() {
-            var modal = document.getElementById('jsonld-modal');
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (!modalHighlighted) {
-                var code = document.getElementById('full-jsonld-code');
-                if (code) Prism.highlightElement(code);
-                modalHighlighted = true;
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ext",
+          "name": "default/ext",
+          "description": "File extension.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "ext"
             }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/lang",
+          "name": "default/lang",
+          "description": "Hash of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_path",
+          "name": "default/max_stars_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_name",
+          "name": "default/max_stars_repo_name",
+          "description": "Name of repo containing this file with maximum number of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_head_hexsha",
+          "name": "default/max_stars_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_count",
+          "name": "default/max_stars_count",
+          "description": "Number of stars in repository.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_stars_event_min_datetime",
+          "name": "default/max_stars_repo_stars_event_min_datetime",
+          "description": "First timestamp of a stars event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_stars_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_stars_event_max_datetime",
+          "name": "default/max_stars_repo_stars_event_max_datetime",
+          "description": "Last timestamp of a stars event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_stars_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_path",
+          "name": "default/max_issues_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of issues.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_head_hexsha",
+          "name": "default/max_issues_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of issues.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_count",
+          "name": "default/max_issues_count",
+          "description": "Number of issues in repository.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_issues_event_min_datetime",
+          "name": "default/max_issues_repo_issues_event_min_datetime",
+          "description": "First timestamp of an issues event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_issues_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_issues_event_max_datetime",
+          "name": "default/max_issues_repo_issues_event_max_datetime",
+          "description": "Last timestamp of an issues event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_issues_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_path",
+          "name": "default/max_forks_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_name",
+          "name": "default/max_forks_repo_name",
+          "description": "Name of repo containing this file with maximum number of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_head_hexsha",
+          "name": "default/max_forks_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_count",
+          "name": "default/max_forks_count",
+          "description": "Number of forks in repository.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_forks_event_min_datetime",
+          "name": "default/max_forks_repo_forks_event_min_datetime",
+          "description": "First timestamp of a forks event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_forks_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_forks_event_max_datetime",
+          "name": "default/max_forks_repo_forks_event_max_datetime",
+          "description": "Last timestamp of a forks event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_forks_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/avg_line_length",
+          "name": "default/avg_line_length",
+          "description": "The average line-length of the file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "avg_line_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_line_length",
+          "name": "default/max_line_length",
+          "description": "The maximum line-length of the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_line_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/alphanum_fraction",
+          "name": "default/alphanum_fraction",
+          "description": "The fraction of characters in the file that are alphabetical or numerical characters.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "alphanum_fraction"
+            }
+          }
         }
-        function closeJsonldModal() {
-            document.getElementById('jsonld-modal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeJsonldModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeJsonldModal();
-        });
-
-        function copyFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            navigator.clipboard.writeText(text).then(function() {
-                var btn = document.getElementById('copy-jsonld-btn');
-                btn.classList.add('copied');
-                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-                setTimeout(function() {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
-                }, 2000);
-            });
-        }
-
-        function downloadFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            var blob = new Blob([text], {type: 'application/ld+json'});
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'metadata.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "content",
+          "language",
+          "hexsha",
+          "size",
+          "ext",
+          "lang",
+          "max_stars_repo_path",
+          "max_stars_repo_name",
+          "max_stars_repo_head_hexsha",
+          "max_stars_count"
+        ],
+        "rows": [
+          [
+            "*&---------------------------------------------------------------------*\n*& Report  ZIS_EXAMPLE\n*&---------------------------------------------------------------------*\nreport zis_example.\n\ninclude zis_example_top.\ninclude zis_example_f01.\n\nstart-of-selection.\n\ninclude = 'X'.\nperform perform_write.\n",
+            "ABAP",
+            "f702dd98900e80f27b0ff4729f38a8f72faf6284",
+            "300",
+            "abap",
+            "ABAP",
+            "zis_example.prog.abap",
+            "sbcgua/abap_include_assembler",
+            "5660773df238668bf654ec322dc46fe8c0757dbb",
+            "3.0"
+          ],
+          [
+            "FUNCTION zcafm_customer_delete.\n*\"----------------------------------------------------------------------\n*\"*\"Local Interface:\n*\"  IMPORTING\n*\"     VALUE(PI_CUSTOMER) TYPE  KNA1-KUNNR\n*\"     VALUE(PI_TEST) TYPE  CHAR1\n*\"  EXPORTING\n*\"     VALUE(SE_RETURN) TYPE  BAPIRET2\n*\"----------------------------------------------------------------------\n\n*----------------------------------------------------------------------*\n*  Function Module ZCAFM_CUSTOMER_DELETE *\n* *----------------------------------------------------------------------*\n* * *\n* * ID-Reference: MuleSoft templates *\n* * *\n* * This BAPI aims to set deletion flag for particular customer. If par. *\n* * PI_TEST is provided no change is performed. *\n* *----------------------------------------------------------------------*\n* * Change Log: *\n* * *\n* * Who Date Text *\n* * MMARUSKIN 03.07.2014 Init creation. *\n* *----------------------------------------------------------------------*\n\n* Global data declarations\n\n\n  CONSTANTS: lc_obj_task TYPE cmd_ei_object_task VALUE 'M', \"M=Create/Change\n             lc_msg_cls  TYPE sy-msgid VALUE 'ZMULESOFTINTEGRATION'.\n  DATA: ls_customer  TYPE cmds_ei_extern,\n        lt_customers TYPE cmds_ei_main,\n        ls_mes_error TYPE cvis_message,\n        lv_par       TYPE sy-msgv1.\n\n\n\n*- Prepare data\n\n\n  ls_customer-header-object_instance-kunnr = pi_customer.\n  ls_customer-header-object_task = lc_obj_task.\n  ls_customer-central_data-central-data-loevm = 'X'.\n  ls_customer-central_data-central-datax-loevm = 'X'.\n  APPEND ls_customer TO lt_customers-customers.\n  lv_par = pi_customer.\n\n\n*- Run change of material via standard functionality\n\n\n  CALL METHOD cmd_ei_api=>maintain_bapi\n    EXPORTING\n      iv_test_run          = pi_test\n      iv_collect_messages  = 'X'\n      is_master_data       = lt_customers\n    IMPORTING\n      es_message_defective = ls_mes_error.\n\n\n*- Error handling\n\n\n  IF ls_mes_error-is_error IS INITIAL AND pi_test IS INITIAL.\n    COMMIT WORK AND WAIT.\n    CALL FUNCTION 'BALW_BAPIRETURN_GET2'     \"okay: flag set!\n      EXPORTING\n        type      = 'I'\n        cl        = lc_msg_cls\n        number    = 100\n        par1      = lv_par\n        parameter = ''\n        field     = ''\n      IMPORTING\n        return    = se_return.\n  ELSE.\n    ROLLBACK WORK.                                     \"#EC CI_ROLLBACK\n    CALL FUNCTION 'BALW_BAPIRETURN_GET2'     \"problem: flag NOT set!\n      EXPORTING\n        type      = 'E'\n        cl        = lc_msg_cls\n        number    = 101\n        par1      = lv_par\n        parameter = ''\n        field     = ''\n      IMPORTING\n        return    = se_return.\n  ENDIF.\n\nENDFUNCTION.",
+            "ABAP",
+            "f7059ca25a13836de140134550b96c66d4d503dc",
+            "2640",
+            "abap",
+            "ABAP",
+            "sap-data-retrieval/src/test/resources/sap/ZCAFM_CUSTOMER_DELETE.abap",
+            "mulesoft-consulting/anypoint-examples",
+            "20f17b2f162c7a81787aafddd54b0ba196edd8d7",
+            "1.0"
+          ],
+          [
+            "*&---------------------------------------------------------------------*\n*& Report zdemo_ain_cl25\n*&---------------------------------------------------------------------*\n*& This is the demo program written for book:\n*& ALV grid in nutshell by Łukasz Pęgiel\n*&---------------------------------------------------------------------*\n*&- 1st character ='C' if we're using custom colour or 'X' for default *\n*&- 2nd character = colour code (from 0 to 7)                          *\n*&                                  0 = background colour              *\n*&                                  1 = blue                           *\n*&                                  2 = gray                           *\n*&                                  3 = yellow                         *\n*&                                  4 = blue/gray                      *\n*&                                  5 = green                          *\n*&                                  6 = red                            *\n*&                                  7 = orange                         *\n*&- 3rd character = intensified (0=off, 1=on)                          *\n*&- 4th character = inverse display (0=off, 1=on)                      *\n*&---------------------------------------------------------------------*\nreport zdemo_ain_cl25.\n\ninclude zdemo_ain_include_screen.\n\nstart-of-selection.\n\n  types: begin of t_data,\n           no_emphasize type spfli-carrid,\n           standard     type spfli-carrid,\n           c100         type spfli-carrid,\n           c101         type spfli-carrid,\n           c110         type spfli-carrid,\n           c111         type spfli-carrid,\n           c200         type spfli-carrid,\n           c201         type spfli-carrid,\n           c210         type spfli-carrid,\n           c211         type spfli-carrid,\n           c300         type spfli-carrid,\n           c301         type spfli-carrid,\n           c310         type spfli-carrid,\n           c311         type spfli-carrid,\n           c400         type spfli-carrid,\n           c401         type spfli-carrid,\n           c410         type spfli-carrid,\n           c411         type spfli-carrid,\n           c500         type spfli-carrid,\n           c501         type spfli-carrid,\n           c510         type spfli-carrid,\n           c511         type spfli-carrid,\n           c600         type spfli-carrid,\n           c601         type spfli-carrid,\n           c610         type spfli-carrid,\n           c611         type spfli-carrid,\n           c700         type spfli-carrid,\n           c701         type spfli-carrid,\n           c710         type spfli-carrid,\n           c711         type spfli-carrid,\n           c000         type spfli-carrid,\n           c001         type spfli-carrid,\n           c010         type spfli-carrid,\n           c011         type spfli-carrid,\n         end of t_data.\n  data flights type standard table of t_data.\n\n  select carrid as no_emphasize\n    up to 50 rows from spfli\n    into corresponding fields of table @flights.\n\n  loop at flights assigning field-symbol(<fl>).\n    <fl>-standard = <fl>-c100 = <fl>-c101 = <fl>-c110 = <fl>-c111 =\n                <fl>-c200 = <fl>-c201 = <fl>-c210 = <fl>-c211 =\n                <fl>-c300 = <fl>-c301 = <fl>-c310 = <fl>-c311 =\n                <fl>-c400 = <fl>-c401 = <fl>-c410 = <fl>-c411 =\n                <fl>-c500 = <fl>-c501 = <fl>-c510 = <fl>-c511 =\n                <fl>-c600 = <fl>-c601 = <fl>-c610 = <fl>-c611 =\n                <fl>-c700 = <fl>-c701 = <fl>-c710 = <fl>-c711 =\n                <fl>-c000 = <fl>-c001 = <fl>-c010 = <fl>-c011 = <fl>-no_emphasize.\n\n  endloop.\n\n  data(grid) = new cl_gui_alv_grid(\n                    i_parent = new cl_gui_custom_container( container_name = 'CC' )\n                                   ).\n  data(fcat) = value lvc_t_fcat(\n                                 ( fieldname = 'NO_EMPHASIZE' reptext = 'NO_EMPHASIZE' )\n                                 ( fieldname = 'STANDARD' emphasize = abap_true reptext = 'STANDARD' )\n                                 ( fieldname = 'C100' emphasize = 'C100' reptext = 'C100')\n                                 ( fieldname = 'C101' emphasize = 'C101' reptext = 'C101')\n                                 ( fieldname = 'C110' emphasize = 'C110' reptext = 'C110')\n                                 ( fieldname = 'C111' emphasize = 'C111' reptext = 'C111')\n                                 ( fieldname = 'C200' emphasize = 'C200' reptext = 'C200')\n                                 ( fieldname = 'C201' emphasize = 'C201' reptext = 'C201')\n                                 ( fieldname = 'C210' emphasize = 'C210' reptext = 'C210')\n                                 ( fieldname = 'C211' emphasize = 'C211' reptext = 'C211')\n                                 ( fieldname = 'C300' emphasize = 'C300' reptext = 'C300')\n                                 ( fieldname = 'C301' emphasize = 'C301' reptext = 'C301')\n                                 ( fieldname = 'C310' emphasize = 'C310' reptext = 'C310')\n                                 ( fieldname = 'C311' emphasize = 'C311' reptext = 'C311')\n                                 ( fieldname = 'C400' emphasize = 'C400' reptext = 'C400')\n                                 ( fieldname = 'C401' emphasize = 'C401' reptext = 'C401')\n                                 ( fieldname = 'C410' emphasize = 'C410' reptext = 'C410')\n                                 ( fieldname = 'C411' emphasize = 'C411' reptext = 'C411')\n                                 ( fieldname = 'C500' emphasize = 'C500' reptext = 'C500')\n                                 ( fieldname = 'C501' emphasize = 'C501' reptext = 'C501')\n                                 ( fieldname = 'C510' emphasize = 'C510' reptext = 'C510')\n                                 ( fieldname = 'C511' emphasize = 'C511' reptext = 'C511')\n                                 ( fieldname = 'C600' emphasize = 'C600' reptext = 'C600')\n                                 ( fieldname = 'C601' emphasize = 'C601' reptext = 'C601')\n                                 ( fieldname = 'C610' emphasize = 'C610' reptext = 'C610')\n                                 ( fieldname = 'C611' emphasize = 'C611' reptext = 'C611')\n                                 ( fieldname = 'C700' emphasize = 'C700' reptext = 'C700')\n                                 ( fieldname = 'C701' emphasize = 'C701' reptext = 'C701')\n                                 ( fieldname = 'C710' emphasize = 'C710' reptext = 'C710')\n                                 ( fieldname = 'C711' emphasize = 'C711' reptext = 'C711')\n                                 ( fieldname = 'C000' emphasize = 'C000' reptext = 'C000')\n                                 ( fieldname = 'C001' emphasize = 'C001' reptext = 'C001')\n                                 ( fieldname = 'C010' emphasize = 'C010' reptext = 'C010')\n                                 ( fieldname = 'C011' emphasize = 'C011' reptext = 'C011')\n                               ).\n  grid->set_table_for_first_display(\n    exporting\n        is_layout = value #( col_opt = abap_true )\n    changing\n      it_fieldcatalog               = fcat\n      it_outtab                     = flights\n    exceptions\n      invalid_parameter_combination = 1\n      program_error                 = 2\n      too_many_lines                = 3\n      others                        = 4\n  ).\n  if sy-subrc eq 0.\n    call screen 0100.\n  endif.\n",
+            "ABAP",
+            "f706c5d249ab3a4ce3d3753967774b9920a31554",
+            "7390",
+            "abap",
+            "ABAP",
+            "src/fcat/zdemo_ain_cl25.prog.abap",
+            "fidley/ALVGridInNutschell",
+            "d3c95d7f31afbff001fff50edae0c2e09e51fe90",
+            "5.0"
+          ],
+          [
+            "**********************************************************************\n*  FILTER EMPTY VALUES\n**********************************************************************\n\nCLASS lcl_empty_filter DEFINITION FINAL.\n  PUBLIC SECTION.\n    INTERFACES /mbtools/if_ajson_filter.\nENDCLASS.\n\nCLASS lcl_empty_filter IMPLEMENTATION.\n  METHOD /mbtools/if_ajson_filter~keep_node.\n\n    rv_keep = boolc(\n      ( iv_visit = /mbtools/if_ajson_filter=>visit_type-value AND is_node-value IS NOT INITIAL ) OR\n      ( iv_visit <> /mbtools/if_ajson_filter=>visit_type-value AND is_node-children > 0 ) ).\n    \" children = 0 on open for initially empty nodes and on close for filtered ones\n\n  ENDMETHOD.\nENDCLASS.\n\n**********************************************************************\n*  FILTER PREDEFINED PATHS\n**********************************************************************\n\nCLASS lcl_paths_filter DEFINITION FINAL.\n  PUBLIC SECTION.\n    INTERFACES /mbtools/if_ajson_filter.\n    METHODS constructor\n      IMPORTING\n        it_skip_paths TYPE string_table OPTIONAL\n        iv_skip_paths TYPE string OPTIONAL\n      RAISING\n        /mbtools/cx_ajson_error.\n  PRIVATE SECTION.\n    DATA mt_skip_paths TYPE HASHED TABLE OF string WITH UNIQUE KEY table_line.\nENDCLASS.\n\nCLASS lcl_paths_filter IMPLEMENTATION.\n\n  METHOD /mbtools/if_ajson_filter~keep_node.\n\n    DATA lv_path TYPE string.\n\n    lv_path = is_node-path && is_node-name.\n    READ TABLE mt_skip_paths WITH KEY table_line = lv_path TRANSPORTING NO FIELDS.\n    rv_keep = boolc( sy-subrc <> 0 ).\n\n  ENDMETHOD.\n\n  METHOD constructor.\n\n    DATA lv_s TYPE string.\n    DATA lt_tab TYPE string_table.\n    FIELD-SYMBOLS <s> TYPE string.\n\n    IF boolc( iv_skip_paths IS INITIAL ) = boolc( it_skip_paths IS INITIAL ). \" XOR\n      /mbtools/cx_ajson_error=>raise( 'no filter path specified' ).\n    ENDIF.\n\n    LOOP AT it_skip_paths INTO lv_s.\n      lv_s = to_lower( lv_s ).\n      APPEND lv_s TO lt_tab.\n    ENDLOOP.\n\n    IF iv_skip_paths IS NOT INITIAL.\n      SPLIT iv_skip_paths AT ',' INTO TABLE lt_tab.\n      LOOP AT lt_tab ASSIGNING <s>.\n        IF <s> IS INITIAL.\n          DELETE lt_tab INDEX sy-tabix.\n          CONTINUE.\n        ENDIF.\n        <s> = condense( to_lower( <s> ) ).\n      ENDLOOP.\n    ENDIF.\n\n    SORT lt_tab BY table_line.\n    DELETE ADJACENT DUPLICATES FROM lt_tab.\n\n    mt_skip_paths = lt_tab.\n\n  ENDMETHOD.\n\nENDCLASS.\n\n**********************************************************************\n* MULTI FILTER\n**********************************************************************\n\nCLASS lcl_and_filter DEFINITION FINAL.\n  PUBLIC SECTION.\n    INTERFACES /mbtools/if_ajson_filter.\n    METHODS constructor\n      IMPORTING\n        it_filters TYPE /mbtools/if_ajson_filter=>ty_filter_tab\n      RAISING\n        /mbtools/cx_ajson_error.\n  PRIVATE SECTION.\n    DATA mt_filters TYPE /mbtools/if_ajson_filter=>ty_filter_tab.\nENDCLASS.\n\nCLASS lcl_and_filter IMPLEMENTATION.\n\n  METHOD /mbtools/if_ajson_filter~keep_node.\n\n    DATA li_filter LIKE LINE OF mt_filters.\n\n    rv_keep = abap_true.\n    LOOP AT mt_filters INTO li_filter.\n      rv_keep = li_filter->keep_node(\n        is_node  = is_node\n        iv_visit = iv_visit ).\n      IF rv_keep = abap_false.\n        RETURN.\n      ENDIF.\n    ENDLOOP.\n\n  ENDMETHOD.\n\n  METHOD constructor.\n\n    DATA li_filter LIKE LINE OF it_filters.\n\n    LOOP AT it_filters INTO li_filter WHERE table_line IS BOUND.\n      APPEND li_filter TO mt_filters.\n    ENDLOOP.\n\n  ENDMETHOD.\n\nENDCLASS.\n",
+            "ABAP",
+            "f707aa256126ec981696b25d4cbe9173d6a74a1f",
+            "3452",
+            "abap",
+            "ABAP",
+            "src/#mbtools#cl_ajson_filter_lib.clas.locals_imp.abap",
+            "Marc-Bernard-Tools/Mirror-AJSON",
+            "4bc1b5b661a6e0197770da766293d9434c75e559",
+            "None"
+          ],
+          [
+            "FUNCTION-POOL ZEXPIMP_VX_GENER_TEST_CODE.   \"MESSAGE-ID ..\n\n* INCLUDE LZEXPIMP_GENERATE_TEST_CODED...    \" Local class definition\n",
+            "ABAP",
+            "f70ff1b7c91543804aad129c14175a625e0efafb",
+            "130",
+            "abap",
+            "ABAP",
+            "src/zexpimp_vx_gener_test_code.fugr.lzexpimp_vx_gener_test_codetop.abap",
+            "sandraros/export-import-vx",
+            "a818910f825f6a19105bb1f6ad3563e93a477c38",
+            "1.0"
+          ]
+        ]
+      }
+    }
+  ]
+};
     </script>
+    <script src="visualizer.js"></script>
 </body>
 </html>

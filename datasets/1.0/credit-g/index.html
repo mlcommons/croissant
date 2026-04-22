@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>credit-g — Croissant Visualizer</title>
-    <script>/* mermaid removed */</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -14,3793 +13,959 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <!-- Marked.js for markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <style>
-        /* ── Reset & Base ──────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --color-bg: #f8f7f4;
-            --color-surface: #ffffff;
-            --color-primary: #b45309;
-            --color-primary-light: #fef3c7;
-            --color-text: #1a1a2e;
-            --color-text-secondary: #6b7280;
-            --color-border: #e5e7eb;
-            --color-border-light: #f3f4f6;
-            --color-fo: #f97316;   /* FileObject accent */
-            --color-fs: #6366f1;   /* FileSet accent */
-            --color-rs: #22c55e;   /* RecordSet accent */
-            --sidebar-width: 260px;
-            --sidebar-collapsed-width: 0px;
-            --radius: 12px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px -1px rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { color: var(--color-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* ── Layout ────────────────────────────────────── */
-        .app {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ── Sidebar ───────────────────────────────────── */
-        .sidebar {
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            background: var(--color-surface);
-            border-right: 1px solid var(--color-border);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: width 0.25s ease, padding 0.25s ease;
-            z-index: 10;
-        }
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-        .sidebar-inner {
-            padding: 24px 20px;
-            opacity: 1;
-            transition: opacity 0.15s ease;
-        }
-        .sidebar.collapsed .sidebar-inner {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-        .sidebar-brand svg { flex-shrink: 0; }
-        .sidebar h4 {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-text-secondary);
-            margin: 20px 0 8px;
-        }
-        .sidebar ul { list-style: none; }
-        .sidebar > .sidebar-inner > ul > li > a,
-        .sidebar ul li a {
-            display: block;
-            padding: 5px 10px;
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            border-radius: 6px;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sidebar ul li a:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        .sidebar ul ul { padding-left: 14px; }
-        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
-
-        /* ── Toggle Button (inside sidebar) ───────────── */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .sidebar-toggle {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.15s, color 0.15s;
-            flex-shrink: 0;
-        }
-        .sidebar-toggle:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-        }
-        /* Floating open button when sidebar is collapsed */
-        .sidebar-open-btn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 20;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-open-btn:hover { background: var(--color-bg); }
-        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
-
-        /* ── Full JSON-LD Modal ──────────────────────────── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--color-surface);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 800px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-        }
-        .modal-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            flex: 1;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .modal-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .modal-btn:hover {
-            background: var(--color-bg);
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-        .modal-btn.copied {
-            background: #059669;
-            color: white;
-            border-color: #059669;
-        }
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background 0.15s;
-        }
-        .modal-close:hover { background: var(--color-bg); }
-        .modal-body {
-            overflow-y: auto;
-            padding: 0;
-        }
-        .modal-body pre {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 20px 24px;
-            margin: 0;
-            line-height: 1.55;
-            overflow-x: auto;
-        }
-
-        /* ── Main Content ──────────────────────────────── */
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 32px 40px 64px;
-            max-width: 960px;
-        }
-
-        /* ── Hero Header ───────────────────────────────── */
-        .hero {
-            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
-            color: white;
-            padding: 40px 36px;
-            border-radius: var(--radius);
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-md);
-        }
-        .hero h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .hero .description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            opacity: 0.92;
-            max-width: 720px;
-        }
-        /* Markdown overrides for dark hero background */
-        .hero .markdown a {
-            color: var(--color-primary-light);
-            text-decoration: underline;
-        }
-        .hero .markdown blockquote {
-            color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .hero .markdown code {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.18);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-        .hero-badge a { color: white; }
-        .hero-badge a:hover { text-decoration: underline; }
-
-        /* ── Cards ──────────────────────────────────────── */
-        .card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            padding: 28px 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        .card--green::before {
-            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--color-border-light);
-        }
-        .card-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        .card-header .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ── Tables ─────────────────────────────────────── */
-        .table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-        }
-        .rs-preview .table-wrap,
-        .file-listing .table-wrap {
-            border: none;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-        }
-        thead th {
-            text-align: left;
-            padding: 11px 16px;
-            font-weight: 600;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
-            background: #f9fafb;
-            border-bottom: 1px solid var(--color-border);
-        }
-        tbody td {
-            padding: 11px 16px;
-            border-bottom: 1px solid var(--color-border-light);
-            vertical-align: top;
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafafa; }
-
-        /* Key-value metadata table */
-        .kv-table { width: 100%; }
-        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
-        .kv-table tr:last-child td { border-bottom: none; }
-        .kv-table .kv-key {
-            font-weight: 600;
-            font-size: 0.84rem;
-            color: var(--color-text-secondary);
-            width: 160px;
-            padding-right: 24px;
-            vertical-align: top;
-            white-space: nowrap;
-        }
-        .kv-table .kv-val {
-            font-size: 0.88rem;
-            word-break: break-word;
-        }
-        .kv-table .kv-val .jsonld-toggle {
-            float: right;
-            margin-left: 12px;
-        }
-
-        /* ── Resource Cards (full-width list) ───────────── */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .resource-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-left-width: 4px;
-            border-radius: 8px;
-            padding: 16px 20px;
-            transition: box-shadow 0.15s;
-        }
-        .resource-card[data-type="FileObject"] { border-left-color: var(--color-fo); }
-        .resource-card[data-type="FileSet"]    { border-left-color: var(--color-fs); }
-        .resource-card[data-type="other"]      { border-left-color: #94a3b8; }
-        .resource-card:hover { box-shadow: var(--shadow-md); }
-        .resource-card .rc-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .resource-card .rc-icon { font-size: 1.4rem; }
-        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
-        .resource-card .rc-type {
-            display: inline-block;
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        .resource-card .rc-desc {
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-
-        /* ── Code / Preview ─────────────────────────────── */
-        pre.preview {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: #fff4e6;
-            color: #212529;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
-            max-width: 100%;
-            margin-top: 10px;
-            line-height: 1.6;
-            display: none;
-        }
-        pre.preview.open {
-            display: block;
-        }
-
-        /* ── File Listing (FileSet preview) ────────────── */
-        .file-listing {
-            margin-top: 10px;
-            background: #fff4e6;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .file-listing.open {
-            display: block;
-        }
-        .file-listing-header {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            margin-bottom: 6px;
-        }
-        .file-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .file-list li {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 2px 0 2px 16px;
-            position: relative;
-            color: var(--color-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .file-list li::before {
-            content: "📄";
-            position: absolute;
-            left: 0;
-            font-size: 0.7rem;
-        }
-        .file-listing-more {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            font-style: italic;
-            margin-top: 4px;
-            padding-left: 16px;
-        }
-        .cite-block {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 14px 16px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            line-height: 1.5;
-            max-width: 100%;
-        }
-
-        /* ── SVG Dependency Graph ────────────────────────── */
-        .svg-graph-wrap {
-            overflow-x: auto;
-            max-width: 100%;
-            padding: 16px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            margin-bottom: 24px;
-        }
-        .svg-graph-wrap svg a:hover rect {
-            filter: brightness(0.93);
-        }
-
-        /* ── RecordSet Sections ──────────────────────────── */
-        .rs-section { margin-bottom: 28px; }
-        .rs-section:last-child { margin-bottom: 0; }
-        .rs-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .rs-header h3 { font-size: 1rem; font-weight: 600; }
-        .rs-desc {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 14px;
-        }
-        .rs-divider {
-            border: none;
-            border-top: 1px solid var(--color-border-light);
-            margin: 24px 0;
-        }
-
-        /* ── Record Set Data Preview ────────────────────── */
-        .rs-preview {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            background: #f0fdf4; /* Soft green matching graph node */
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .rs-preview.open {
-            display: block;
-        }
-        .rs-preview-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #15803d; /* Darker green */
-            margin-bottom: 6px;
-        }
-        table.preview-table {
-            font-size: 0.80rem;
-            background: #ffffff;
-        }
-        table.preview-table thead th {
-            background: #bbf7d0; /* Match graph node icon_bg */
-            color: #15803d;
-            border-bottom-color: #86efac;
-            white-space: nowrap;
-        }
-        table.preview-table tbody td {
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-        }
-        table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
-
-        /* ── Type Badges in Tables ──────────────────────── */
-        .type-badge {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 8px;
-            border-radius: 4px;
-            color: var(--color-text-secondary);
-        }
-
-        /* ── Markdown Content ───────────────────────────── */
-        .markdown p { margin-bottom: 0.6em; }
-        .markdown p:last-child { margin-bottom: 0; }
-        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
-        .markdown code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 5px;
-            border-radius: 3px;
-        }
-        .markdown pre { margin: 0.6em 0; }
-        .markdown a { color: var(--color-primary); }
-        .markdown h1, .markdown h2, .markdown h3 {
-            font-size: 1em;
-            font-weight: 600;
-            margin: 0.8em 0 0.3em;
-        }
-        .markdown blockquote {
-            border-left: 3px solid var(--color-border);
-            padding-left: 12px;
-            color: var(--color-text-secondary);
-            margin: 0.4em 0;
-        }
-
-        /* ── Footer ─────────────────────────────────────── */
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            padding: 32px 0 16px;
-        }
-
-        /* ── Responsive ─────────────────────────────────── */
-        @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .sidebar-toggle { display: none; }
-            .main { padding: 20px 16px 48px; }
-            .hero { padding: 28px 24px; }
-            .hero h1 { font-size: 1.4rem; }
-            .card { padding: 20px 18px; }
-            .resource-list { gap: 10px; }
-        }
-
-        /* ── JSON-LD Toggle ──────────────────────────────── */
-        .jsonld-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .jsonld-toggle.active {
-            background: #374151;
-            color: #e2e8f0;
-            border-color: #374151;
-        }
-        .jsonld-panel {
-            display: none;
-            margin-top: 8px;
-        }
-        .jsonld-panel.open {
-            display: block;
-        }
-        .jsonld-panel pre {
-            border-radius: 8px;
-            max-width: 100%;
-            margin: 0;
-        }
-        /* Prism.js overrides to match our dark theme */
-        .jsonld-panel pre[class*="language-"],
-        .jsonld-panel code[class*="language-"],
-        .modal-body pre[class*="language-"],
-        .modal-body code[class*="language-"] {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            line-height: 1.55;
-            background: #374151;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .jsonld-panel pre[class*="language-"] {
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .modal-body pre[class*="language-"] {
-            padding: 20px 24px;
-            margin: 0;
-            border-radius: 0;
-        }
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .preview-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .resource-card .preview-toggle.active {
-            background: #fff7ed;
-            color: #c2410c;
-            border-color: #fed7aa;
-        }
-        .rs-section .preview-toggle.active {
-            background: #f0fdf4;
-            color: #15803d;
-            border-color: #bbf7d0;
-        }
-    </style>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="visualizer.css">
 </head>
 <body>
-    <div class="app">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-inner">
-                <div class="sidebar-header">
-                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    </button>
-                    <div class="sidebar-brand">
-                        🥐
-                        Croissant Visualizer
-                    </div>
-                </div>
-
-                <h4>Dataset</h4>
-                <ul>
-                    <li><a href="#top">Overview</a></li>
-                    <li><a href="#metadata">Metadata</a></li>
-                </ul>
-
-                <h4>Resources</h4>
-                <ul>
-                    
-                    <li><a href="#res-data-file">📄 data-file</a></li>
-                    
-                </ul>
-
-                <h4>Record Sets</h4>
-                <ul>
-                    
-                    <li><a href="#rs-checking_status">checking_status</a></li>
-                    
-                    <li><a href="#rs-credit_history">credit_history</a></li>
-                    
-                    <li><a href="#rs-purpose">purpose</a></li>
-                    
-                    <li><a href="#rs-savings_status">savings_status</a></li>
-                    
-                    <li><a href="#rs-employment">employment</a></li>
-                    
-                    <li><a href="#rs-personal_status">personal_status</a></li>
-                    
-                    <li><a href="#rs-other_parties">other_parties</a></li>
-                    
-                    <li><a href="#rs-property_magnitude">property_magnitude</a></li>
-                    
-                    <li><a href="#rs-other_payment_plans">other_payment_plans</a></li>
-                    
-                    <li><a href="#rs-housing">housing</a></li>
-                    
-                    <li><a href="#rs-job">job</a></li>
-                    
-                    <li><a href="#rs-own_telephone">own_telephone</a></li>
-                    
-                    <li><a href="#rs-foreign_worker">foreign_worker</a></li>
-                    
-                    <li><a href="#rs-class">class</a></li>
-                    
-                    <li><a href="#rs-data-file-description">data-file-description</a></li>
-                    
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main">
-            <!-- Floating open button (visible when sidebar is collapsed) -->
-            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
-
-            <!-- Hero -->
-            <div class="hero" id="top">
-                <h1>🥐 credit-g</h1>
-                
-                <div class="description markdown">**Author**: Dr. Hans Hofmann  
-**Source**: [UCI](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)) - 1994    
-**Please cite**: [UCI](https://archive.ics.uci.edu/ml/citation_policy.html)
-
-**German Credit dataset**  
-This dataset classifies people described by a set of attributes as good or bad credit risks.
-
-This dataset comes with a cost matrix: 
-``` 
-Good  Bad (predicted)  
-Good   0    1   (actual)  
-Bad    5    0  
-```
-
-It is worse to class a customer as good when they are bad (5), than it is to class a customer as bad when they are good (1).  
-
-### Attribute description  
-
-1. Status of existing checking account, in Deutsche Mark.  
-2. Duration in months  
-3. Credit history (credits taken, paid back duly, delays, critical accounts)  
-4. Purpose of the credit (car, television,...)  
-5. Credit amount  
-6. Status of savings account/bonds, in Deutsche Mark.  
-7. Present employment, in number of years.  
-8. Installment rate in percentage of disposable income  
-9. Personal status (married, single,...) and sex  
-10. Other debtors / guarantors  
-11. Present residence since X years  
-12. Property (e.g. real estate)  
-13. Age in years  
-14. Other installment plans (banks, stores)  
-15. Housing (rent, own,...)  
-16. Number of existing credits at this bank  
-17. Job  
-18. Number of people being liable to provide maintenance for  
-19. Telephone (yes,no)  
-20. Foreign worker (yes,no)</div>
-                
-                <div class="hero-meta">
-                    
-                    <span class="hero-badge">🏷️ v1.0.0</span>
-                    
-                    
-                    <span class="hero-badge">🔗 <a href="https://www.openml.org/search?type=data&amp;id=31" target="_blank">Dataset URL</a></span>
-                    
-                    <span class="hero-badge">📦 1 resource</span>
-                    <span class="hero-badge">📋 15 record sets</span>
-                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
-                </div>
-            </div>
-
-            <!-- Metadata -->
-            
-            <div class="card" id="metadata">
-                <div class="card-header">
-                    <span class="icon">ℹ️</span>
-                    <h2>Metadata</h2>
-                </div>
-                <table class="kv-table">
-                    
-                    <tr>
-                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            Public
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;license&#34;: &#34;Public&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset.">Cite As</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <div class="cite-block">https://dl.acm.org/doi/abs/10.1145/967900.968104</div>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;citeAs&#34;: &#34;https://dl.acm.org/doi/abs/10.1145/967900.968104&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="http://mlcommons.org/croissant/1.0" target="_blank">http://mlcommons.org/croissant/1.0</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            credit_scoring, Data Science, Economics, finance_problem, mythbusting_1, OpenML-CC18, OpenML100, Statistics, study_1, study_123, study_14, study_144, study_15, study_20, study_218, study_241, study_34, study_37, study_41, study_50, study_52, study_7, study_70, study_98, study_99, uci
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;keywords&#34;: [
-    &#34;credit_scoring&#34;,
-    &#34;Data Science&#34;,
-    &#34;Economics&#34;,
-    &#34;finance_problem&#34;,
-    &#34;mythbusting_1&#34;,
-    &#34;OpenML-CC18&#34;,
-    &#34;OpenML100&#34;,
-    &#34;Statistics&#34;,
-    &#34;study_1&#34;,
-    &#34;study_123&#34;,
-    &#34;study_14&#34;,
-    &#34;study_144&#34;,
-    &#34;study_15&#34;,
-    &#34;study_20&#34;,
-    &#34;study_218&#34;,
-    &#34;study_241&#34;,
-    &#34;study_34&#34;,
-    &#34;study_37&#34;,
-    &#34;study_41&#34;,
-    &#34;study_50&#34;,
-    &#34;study_52&#34;,
-    &#34;study_7&#34;,
-    &#34;study_70&#34;,
-    &#34;study_98&#34;,
-    &#34;study_99&#34;,
-    &#34;uci&#34;
-  ]
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The language(s) of the content of the dataset.">In Language</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            en
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;inLanguage&#34;: &#34;en&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The creator(s) of the dataset.">Creators</td>
-                        <td class="kv-val">
-                            
-                            
-                            Person(uuid=&#34;_:N2418e908829b46979070533827d814c9&#34;)
-                            
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The URL of another Web resource that represents the same dataset as this one.">Same As</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)" target="_blank">https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;sameAs&#34;: &#34;https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                </table>
-            </div>
-            
-
-            <!-- Resources -->
-            <div class="card" id="resources">
-                <div class="card-header">
-                    <span class="icon">📦</span>
-                    <h2>Resources</h2>
-                </div>
-
-                
-                <div class="svg-graph-wrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 700 1164" width="700" height="1164" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs><text x="150" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="550" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M240,50 C350,50 350,1114 460,1114" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-data-file" href="#res-data-file"><title>data-file</title><rect x="60" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="55" text-anchor="middle" font-size="13">📄</text><text x="100" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">data-file</text></a><a xlink:href="#rs-checking_status" href="#rs-checking_status"><title>checking_status</title><rect x="460" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="55" text-anchor="middle" font-size="13">📋</text><text x="500" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">checking_status</text></a><a xlink:href="#rs-credit_history" href="#rs-credit_history"><title>credit_history</title><rect x="460" y="100" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="114" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="131" text-anchor="middle" font-size="13">📋</text><text x="500" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">credit_history</text></a><a xlink:href="#rs-purpose" href="#rs-purpose"><title>purpose</title><rect x="460" y="176" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="190" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="207" text-anchor="middle" font-size="13">📋</text><text x="500" y="206" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">purpose</text></a><a xlink:href="#rs-savings_status" href="#rs-savings_status"><title>savings_status</title><rect x="460" y="252" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="266" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="283" text-anchor="middle" font-size="13">📋</text><text x="500" y="282" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">savings_status</text></a><a xlink:href="#rs-employment" href="#rs-employment"><title>employment</title><rect x="460" y="328" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="342" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="359" text-anchor="middle" font-size="13">📋</text><text x="500" y="358" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">employment</text></a><a xlink:href="#rs-personal_status" href="#rs-personal_status"><title>personal_status</title><rect x="460" y="404" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="418" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="435" text-anchor="middle" font-size="13">📋</text><text x="500" y="434" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">personal_status</text></a><a xlink:href="#rs-other_parties" href="#rs-other_parties"><title>other_parties</title><rect x="460" y="480" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="494" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="511" text-anchor="middle" font-size="13">📋</text><text x="500" y="510" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">other_parties</text></a><a xlink:href="#rs-property_magnitude" href="#rs-property_magnitude"><title>property_magnitude</title><rect x="460" y="556" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="570" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="587" text-anchor="middle" font-size="13">📋</text><text x="500" y="586" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">property_magnitude</text></a><a xlink:href="#rs-other_payment_plans" href="#rs-other_payment_plans"><title>other_payment_plans</title><rect x="460" y="632" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="646" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="663" text-anchor="middle" font-size="13">📋</text><text x="500" y="662" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">other_payment_plans</text></a><a xlink:href="#rs-housing" href="#rs-housing"><title>housing</title><rect x="460" y="708" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="722" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="739" text-anchor="middle" font-size="13">📋</text><text x="500" y="738" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">housing</text></a><a xlink:href="#rs-job" href="#rs-job"><title>job</title><rect x="460" y="784" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="798" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="815" text-anchor="middle" font-size="13">📋</text><text x="500" y="814" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">job</text></a><a xlink:href="#rs-own_telephone" href="#rs-own_telephone"><title>own_telephone</title><rect x="460" y="860" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="874" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="891" text-anchor="middle" font-size="13">📋</text><text x="500" y="890" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">own_telephone</text></a><a xlink:href="#rs-foreign_worker" href="#rs-foreign_worker"><title>foreign_worker</title><rect x="460" y="936" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="950" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="967" text-anchor="middle" font-size="13">📋</text><text x="500" y="966" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">foreign_worker</text></a><a xlink:href="#rs-class" href="#rs-class"><title>class</title><rect x="460" y="1012" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="1026" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="1043" text-anchor="middle" font-size="13">📋</text><text x="500" y="1042" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">class</text></a><a xlink:href="#rs-data-file-description" href="#rs-data-file-description"><title>data-file-description</title><rect x="460" y="1088" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="1102" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="1119" text-anchor="middle" font-size="13">📋</text><text x="500" y="1118" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">data-file-description</text></a></svg>
-                </div>
-                
-
-                <div class="resource-list">
-                    
-                    <div class="resource-card" id="res-data-file" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">data-file</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">text/plain, https://ml.cms.waikato.ac.nz/weka/arff.html</span>
-                        
-                        
-                        <div class="rc-desc markdown">Data file belonging to the dataset.</div>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;data-file&#34;,
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;contentUrl&#34;: &#34;https://api.openml.org/data/v1/download/31/credit-g.arff&#34;,
-  &#34;description&#34;: &#34;Data file belonging to the dataset.&#34;,
-  &#34;encodingFormat&#34;: [
-    &#34;text/plain&#34;,
-    &#34;https://ml.cms.waikato.ac.nz/weka/arff.html&#34;
-  ],
-  &#34;md5&#34;: &#34;9a475053fed0c26ee95cd4525e50074c&#34;,
-  &#34;name&#34;: &#34;data-file&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-
-            <!-- Record Sets -->
-            <div class="card card--green" id="recordsets">
-                <div class="card-header">
-                    <span class="icon">📋</span>
-                    <h2>Record Sets</h2>
-                </div>
-
-                
-                <div class="rs-section" id="rs-checking_status">
-                    <div class="rs-header">
-                        <h3>checking_status</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for checking_status</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of checking_status.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/checking_status&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/checking_status/value&#34;: &#34;0&lt;=X&lt;200&#34;
-    },
-    {
-      &#34;enumerations/checking_status/value&#34;: &#34;&lt;0&#34;
-    },
-    {
-      &#34;enumerations/checking_status/value&#34;: &#34;&gt;=200&#34;
-    },
-    {
-      &#34;enumerations/checking_status/value&#34;: &#34;no checking&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for checking_status&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/checking_status/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of checking_status.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;checking_status&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-credit_history">
-                    <div class="rs-header">
-                        <h3>credit_history</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for credit_history</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of credit_history.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/credit_history&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/credit_history/value&#34;: &#34;all paid&#34;
-    },
-    {
-      &#34;enumerations/credit_history/value&#34;: &#34;critical/other existing credit&#34;
-    },
-    {
-      &#34;enumerations/credit_history/value&#34;: &#34;delayed previously&#34;
-    },
-    {
-      &#34;enumerations/credit_history/value&#34;: &#34;existing paid&#34;
-    },
-    {
-      &#34;enumerations/credit_history/value&#34;: &#34;no credits/all paid&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for credit_history&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/credit_history/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of credit_history.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;credit_history&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-purpose">
-                    <div class="rs-header">
-                        <h3>purpose</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for purpose</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of purpose.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/purpose&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;business&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;domestic appliance&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;education&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;furniture/equipment&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;new car&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;other&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;radio/tv&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;repairs&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;retraining&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;used car&#34;
-    },
-    {
-      &#34;enumerations/purpose/value&#34;: &#34;vacation&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for purpose&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/purpose/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of purpose.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;purpose&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-savings_status">
-                    <div class="rs-header">
-                        <h3>savings_status</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for savings_status</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of savings_status.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/savings_status&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/savings_status/value&#34;: &#34;100&lt;=X&lt;500&#34;
-    },
-    {
-      &#34;enumerations/savings_status/value&#34;: &#34;500&lt;=X&lt;1000&#34;
-    },
-    {
-      &#34;enumerations/savings_status/value&#34;: &#34;&lt;100&#34;
-    },
-    {
-      &#34;enumerations/savings_status/value&#34;: &#34;&gt;=1000&#34;
-    },
-    {
-      &#34;enumerations/savings_status/value&#34;: &#34;no known savings&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for savings_status&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/savings_status/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of savings_status.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;savings_status&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-employment">
-                    <div class="rs-header">
-                        <h3>employment</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for employment</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of employment.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/employment&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/employment/value&#34;: &#34;1&lt;=X&lt;4&#34;
-    },
-    {
-      &#34;enumerations/employment/value&#34;: &#34;4&lt;=X&lt;7&#34;
-    },
-    {
-      &#34;enumerations/employment/value&#34;: &#34;&lt;1&#34;
-    },
-    {
-      &#34;enumerations/employment/value&#34;: &#34;&gt;=7&#34;
-    },
-    {
-      &#34;enumerations/employment/value&#34;: &#34;unemployed&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for employment&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/employment/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of employment.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;employment&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-personal_status">
-                    <div class="rs-header">
-                        <h3>personal_status</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for personal_status</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of personal_status.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/personal_status&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/personal_status/value&#34;: &#34;female div/dep/mar&#34;
-    },
-    {
-      &#34;enumerations/personal_status/value&#34;: &#34;female single&#34;
-    },
-    {
-      &#34;enumerations/personal_status/value&#34;: &#34;male div/sep&#34;
-    },
-    {
-      &#34;enumerations/personal_status/value&#34;: &#34;male mar/wid&#34;
-    },
-    {
-      &#34;enumerations/personal_status/value&#34;: &#34;male single&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for personal_status&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/personal_status/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of personal_status.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;personal_status&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-other_parties">
-                    <div class="rs-header">
-                        <h3>other_parties</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for other_parties</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of other_parties.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/other_parties&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/other_parties/value&#34;: &#34;co applicant&#34;
-    },
-    {
-      &#34;enumerations/other_parties/value&#34;: &#34;guarantor&#34;
-    },
-    {
-      &#34;enumerations/other_parties/value&#34;: &#34;none&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for other_parties&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/other_parties/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of other_parties.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;other_parties&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-property_magnitude">
-                    <div class="rs-header">
-                        <h3>property_magnitude</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for property_magnitude</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of property_magnitude.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/property_magnitude&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/property_magnitude/value&#34;: &#34;car&#34;
-    },
-    {
-      &#34;enumerations/property_magnitude/value&#34;: &#34;life insurance&#34;
-    },
-    {
-      &#34;enumerations/property_magnitude/value&#34;: &#34;no known property&#34;
-    },
-    {
-      &#34;enumerations/property_magnitude/value&#34;: &#34;real estate&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for property_magnitude&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/property_magnitude/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of property_magnitude.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;property_magnitude&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-other_payment_plans">
-                    <div class="rs-header">
-                        <h3>other_payment_plans</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for other_payment_plans</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of other_payment_plans.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/other_payment_plans&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/other_payment_plans/value&#34;: &#34;bank&#34;
-    },
-    {
-      &#34;enumerations/other_payment_plans/value&#34;: &#34;none&#34;
-    },
-    {
-      &#34;enumerations/other_payment_plans/value&#34;: &#34;stores&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for other_payment_plans&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/other_payment_plans/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of other_payment_plans.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;other_payment_plans&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-housing">
-                    <div class="rs-header">
-                        <h3>housing</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for housing</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of housing.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/housing&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/housing/value&#34;: &#34;for free&#34;
-    },
-    {
-      &#34;enumerations/housing/value&#34;: &#34;own&#34;
-    },
-    {
-      &#34;enumerations/housing/value&#34;: &#34;rent&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for housing&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/housing/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of housing.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;housing&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-job">
-                    <div class="rs-header">
-                        <h3>job</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for job</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of job.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/job&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/job/value&#34;: &#34;high qualif/self emp/mgmt&#34;
-    },
-    {
-      &#34;enumerations/job/value&#34;: &#34;skilled&#34;
-    },
-    {
-      &#34;enumerations/job/value&#34;: &#34;unemp/unskilled non res&#34;
-    },
-    {
-      &#34;enumerations/job/value&#34;: &#34;unskilled resident&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for job&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/job/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of job.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;job&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-own_telephone">
-                    <div class="rs-header">
-                        <h3>own_telephone</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for own_telephone</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of own_telephone.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/own_telephone&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/own_telephone/value&#34;: &#34;none&#34;
-    },
-    {
-      &#34;enumerations/own_telephone/value&#34;: &#34;yes&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for own_telephone&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/own_telephone/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of own_telephone.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;own_telephone&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-foreign_worker">
-                    <div class="rs-header">
-                        <h3>foreign_worker</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for foreign_worker</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of foreign_worker.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/foreign_worker&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/foreign_worker/value&#34;: &#34;no&#34;
-    },
-    {
-      &#34;enumerations/foreign_worker/value&#34;: &#34;yes&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for foreign_worker&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/foreign_worker/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of foreign_worker.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;foreign_worker&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-class">
-                    <div class="rs-header">
-                        <h3>class</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Possible values for class</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>value</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The value of class.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@id&#34;: &#34;enumerations/class&#34;,
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;data&#34;: [
-    {
-      &#34;enumerations/class/value&#34;: &#34;bad&#34;
-    },
-    {
-      &#34;enumerations/class/value&#34;: &#34;good&#34;
-    }
-  ],
-  &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-  &#34;description&#34;: &#34;Possible values for class&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/class/value&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;The value of class.&#34;,
-      &#34;name&#34;: &#34;value&#34;
-    }
-  ],
-  &#34;name&#34;: &#34;class&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-data-file-description">
-                    <div class="rs-header">
-                        <h3>data-file-description</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Listing the fields of the data.</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>checking_status</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>checking_status - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>duration</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>duration - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>credit_history</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>credit_history - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>purpose</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>purpose - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>credit_amount</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>credit_amount - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>savings_status</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>savings_status - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>employment</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>employment - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>installment_commitment</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>installment_commitment - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>personal_status</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>personal_status - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>other_parties</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>other_parties - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>residence_since</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>residence_since - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>property_magnitude</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>property_magnitude - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>age</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>age - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>other_payment_plans</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>other_payment_plans - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>housing</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>housing - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>existing_credits</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>existing_credits - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>job</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>job - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>num_dependents</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>num_dependents - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>own_telephone</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>own_telephone - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>foreign_worker</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>foreign_worker - a field.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>class</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>class - the default target field.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;data-file-description&#34;,
-  &#34;description&#34;: &#34;Listing the fields of the data.&#34;,
-  &#34;field&#34;: [
-    {
-      &#34;@id&#34;: &#34;features/0-checking_status&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;checking_status - a field.&#34;,
-      &#34;name&#34;: &#34;checking_status&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/checking_status/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;checking_status&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/1-duration&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;duration - a field.&#34;,
-      &#34;name&#34;: &#34;duration&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;duration&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/2-credit_history&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;credit_history - a field.&#34;,
-      &#34;name&#34;: &#34;credit_history&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/credit_history/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;credit_history&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/3-purpose&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;purpose - a field.&#34;,
-      &#34;name&#34;: &#34;purpose&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/purpose/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;purpose&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/4-credit_amount&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;credit_amount - a field.&#34;,
-      &#34;name&#34;: &#34;credit_amount&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;credit_amount&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/5-savings_status&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;savings_status - a field.&#34;,
-      &#34;name&#34;: &#34;savings_status&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/savings_status/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;savings_status&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/6-employment&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;employment - a field.&#34;,
-      &#34;name&#34;: &#34;employment&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/employment/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;employment&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/7-installment_commitment&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;installment_commitment - a field.&#34;,
-      &#34;name&#34;: &#34;installment_commitment&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;installment_commitment&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/8-personal_status&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;personal_status - a field.&#34;,
-      &#34;name&#34;: &#34;personal_status&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/personal_status/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;personal_status&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/9-other_parties&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;other_parties - a field.&#34;,
-      &#34;name&#34;: &#34;other_parties&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/other_parties/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;other_parties&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/10-residence_since&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;residence_since - a field.&#34;,
-      &#34;name&#34;: &#34;residence_since&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;residence_since&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/11-property_magnitude&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;property_magnitude - a field.&#34;,
-      &#34;name&#34;: &#34;property_magnitude&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/property_magnitude/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;property_magnitude&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/12-age&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;age - a field.&#34;,
-      &#34;name&#34;: &#34;age&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;age&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/13-other_payment_plans&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;other_payment_plans - a field.&#34;,
-      &#34;name&#34;: &#34;other_payment_plans&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/other_payment_plans/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;other_payment_plans&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/14-housing&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;housing - a field.&#34;,
-      &#34;name&#34;: &#34;housing&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/housing/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;housing&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/15-existing_credits&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;existing_credits - a field.&#34;,
-      &#34;name&#34;: &#34;existing_credits&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;existing_credits&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/16-job&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;job - a field.&#34;,
-      &#34;name&#34;: &#34;job&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/job/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;job&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/17-num_dependents&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: [
-        &#34;sc:Float&#34;,
-        &#34;sc:Integer&#34;
-      ],
-      &#34;description&#34;: &#34;num_dependents - a field.&#34;,
-      &#34;name&#34;: &#34;num_dependents&#34;,
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;num_dependents&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/18-own_telephone&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;own_telephone - a field.&#34;,
-      &#34;name&#34;: &#34;own_telephone&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/own_telephone/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;own_telephone&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/19-foreign_worker&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;foreign_worker - a field.&#34;,
-      &#34;name&#34;: &#34;foreign_worker&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/foreign_worker/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;foreign_worker&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    },
-    {
-      &#34;@id&#34;: &#34;features/20-class&#34;,
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;description&#34;: &#34;class - the default target field.&#34;,
-      &#34;name&#34;: &#34;class&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;enumerations/class/value&#34;
-        }
-      },
-      &#34;source&#34;: {
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;class&#34;
-        },
-        &#34;fileObject&#34;: {
-          &#34;@id&#34;: &#34;data-file&#34;
-        }
-      }
-    }
-  ],
-  &#34;name&#34;: &#34;data-file-description&#34;
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                
-            </div>
-
-            <div class="footer">
-                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full JSON-LD Modal -->
-    <div class="modal-overlay" id="jsonld-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>🥐 metadata.json</h2>
-                <div class="modal-actions">
-                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                        Copy
-                    </button>
-                    <button class="modal-btn" onclick="downloadFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Download
-                    </button>
-                </div>
-                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
-            </div>
-            <div class="modal-body">
-                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
-  &#34;@context&#34;: {
-    &#34;@language&#34;: &#34;en&#34;,
-    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
-    &#34;citeAs&#34;: &#34;cr:citeAs&#34;,
-    &#34;column&#34;: &#34;cr:column&#34;,
-    &#34;conformsTo&#34;: &#34;dct:conformsTo&#34;,
-    &#34;cr&#34;: &#34;http://mlcommons.org/croissant/&#34;,
-    &#34;data&#34;: {
-      &#34;@id&#34;: &#34;cr:data&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;dataType&#34;: {
-      &#34;@id&#34;: &#34;cr:dataType&#34;,
-      &#34;@type&#34;: &#34;@vocab&#34;
-    },
-    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
-    &#34;examples&#34;: {
-      &#34;@id&#34;: &#34;cr:examples&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;extract&#34;: &#34;cr:extract&#34;,
-    &#34;field&#34;: &#34;cr:field&#34;,
-    &#34;fileObject&#34;: &#34;cr:fileObject&#34;,
-    &#34;fileProperty&#34;: &#34;cr:fileProperty&#34;,
-    &#34;fileSet&#34;: &#34;cr:fileSet&#34;,
-    &#34;format&#34;: &#34;cr:format&#34;,
-    &#34;includes&#34;: &#34;cr:includes&#34;,
-    &#34;isLiveDataset&#34;: &#34;cr:isLiveDataset&#34;,
-    &#34;jsonPath&#34;: &#34;cr:jsonPath&#34;,
-    &#34;key&#34;: &#34;cr:key&#34;,
-    &#34;md5&#34;: &#34;cr:md5&#34;,
-    &#34;parentField&#34;: &#34;cr:parentField&#34;,
-    &#34;path&#34;: &#34;cr:path&#34;,
-    &#34;rai&#34;: &#34;http://mlcommons.org/croissant/RAI/&#34;,
-    &#34;recordSet&#34;: &#34;cr:recordSet&#34;,
-    &#34;references&#34;: &#34;cr:references&#34;,
-    &#34;regex&#34;: &#34;cr:regex&#34;,
-    &#34;repeated&#34;: &#34;cr:repeated&#34;,
-    &#34;replace&#34;: &#34;cr:replace&#34;,
-    &#34;sc&#34;: &#34;https://schema.org/&#34;,
-    &#34;separator&#34;: &#34;cr:separator&#34;,
-    &#34;source&#34;: &#34;cr:source&#34;,
-    &#34;subField&#34;: &#34;cr:subField&#34;,
-    &#34;transform&#34;: &#34;cr:transform&#34;
-  },
-  &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;citeAs&#34;: &#34;https://dl.acm.org/doi/abs/10.1145/967900.968104&#34;,
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;creator&#34;: {
-    &#34;@type&#34;: &#34;sc:Person&#34;,
-    &#34;name&#34;: &#34;Dr. Hans Hofmann&#34;
-  },
-  &#34;description&#34;: &#34;**Author**: Dr. Hans Hofmann  \n**Source**: [UCI](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)) - 1994    \n**Please cite**: [UCI](https://archive.ics.uci.edu/ml/citation_policy.html)\n\n**German Credit dataset**  \nThis dataset classifies people described by a set of attributes as good or bad credit risks.\n\nThis dataset comes with a cost matrix: \n``` \nGood  Bad (predicted)  \nGood   0    1   (actual)  \nBad    5    0  \n```\n\nIt is worse to class a customer as good when they are bad (5), than it is to class a customer as bad when they are good (1).  \n\n### Attribute description  \n\n1. Status of existing checking account, in Deutsche Mark.  \n2. Duration in months  \n3. Credit history (credits taken, paid back duly, delays, critical accounts)  \n4. Purpose of the credit (car, television,...)  \n5. Credit amount  \n6. Status of savings account/bonds, in Deutsche Mark.  \n7. Present employment, in number of years.  \n8. Installment rate in percentage of disposable income  \n9. Personal status (married, single,...) and sex  \n10. Other debtors / guarantors  \n11. Present residence since X years  \n12. Property (e.g. real estate)  \n13. Age in years  \n14. Other installment plans (banks, stores)  \n15. Housing (rent, own,...)  \n16. Number of existing credits at this bank  \n17. Job  \n18. Number of people being liable to provide maintenance for  \n19. Telephone (yes,no)  \n20. Foreign worker (yes,no)&#34;,
-  &#34;distribution&#34;: [
-    {
-      &#34;@id&#34;: &#34;data-file&#34;,
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;contentUrl&#34;: &#34;https://api.openml.org/data/v1/download/31/credit-g.arff&#34;,
-      &#34;description&#34;: &#34;Data file belonging to the dataset.&#34;,
-      &#34;encodingFormat&#34;: [
-        &#34;text/plain&#34;,
-        &#34;https://ml.cms.waikato.ac.nz/weka/arff.html&#34;
-      ],
-      &#34;md5&#34;: &#34;9a475053fed0c26ee95cd4525e50074c&#34;,
-      &#34;name&#34;: &#34;data-file&#34;
-    }
-  ],
-  &#34;inLanguage&#34;: &#34;en&#34;,
-  &#34;keywords&#34;: [
-    &#34;credit_scoring&#34;,
-    &#34;Data Science&#34;,
-    &#34;Economics&#34;,
-    &#34;finance_problem&#34;,
-    &#34;mythbusting_1&#34;,
-    &#34;OpenML-CC18&#34;,
-    &#34;OpenML100&#34;,
-    &#34;Statistics&#34;,
-    &#34;study_1&#34;,
-    &#34;study_123&#34;,
-    &#34;study_14&#34;,
-    &#34;study_144&#34;,
-    &#34;study_15&#34;,
-    &#34;study_20&#34;,
-    &#34;study_218&#34;,
-    &#34;study_241&#34;,
-    &#34;study_34&#34;,
-    &#34;study_37&#34;,
-    &#34;study_41&#34;,
-    &#34;study_50&#34;,
-    &#34;study_52&#34;,
-    &#34;study_7&#34;,
-    &#34;study_70&#34;,
-    &#34;study_98&#34;,
-    &#34;study_99&#34;,
-    &#34;uci&#34;
-  ],
-  &#34;license&#34;: &#34;Public&#34;,
-  &#34;name&#34;: &#34;credit-g&#34;,
-  &#34;recordSet&#34;: [
-    {
-      &#34;@id&#34;: &#34;enumerations/checking_status&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/checking_status/value&#34;: &#34;0&lt;=X&lt;200&#34;
-        },
-        {
-          &#34;enumerations/checking_status/value&#34;: &#34;&lt;0&#34;
-        },
-        {
-          &#34;enumerations/checking_status/value&#34;: &#34;&gt;=200&#34;
-        },
-        {
-          &#34;enumerations/checking_status/value&#34;: &#34;no checking&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for checking_status&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/checking_status/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of checking_status.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;checking_status&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/credit_history&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/credit_history/value&#34;: &#34;all paid&#34;
-        },
-        {
-          &#34;enumerations/credit_history/value&#34;: &#34;critical/other existing credit&#34;
-        },
-        {
-          &#34;enumerations/credit_history/value&#34;: &#34;delayed previously&#34;
-        },
-        {
-          &#34;enumerations/credit_history/value&#34;: &#34;existing paid&#34;
-        },
-        {
-          &#34;enumerations/credit_history/value&#34;: &#34;no credits/all paid&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for credit_history&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/credit_history/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of credit_history.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;credit_history&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/purpose&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;business&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;domestic appliance&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;education&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;furniture/equipment&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;new car&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;other&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;radio/tv&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;repairs&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;retraining&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;used car&#34;
-        },
-        {
-          &#34;enumerations/purpose/value&#34;: &#34;vacation&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for purpose&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/purpose/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of purpose.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;purpose&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/savings_status&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/savings_status/value&#34;: &#34;100&lt;=X&lt;500&#34;
-        },
-        {
-          &#34;enumerations/savings_status/value&#34;: &#34;500&lt;=X&lt;1000&#34;
-        },
-        {
-          &#34;enumerations/savings_status/value&#34;: &#34;&lt;100&#34;
-        },
-        {
-          &#34;enumerations/savings_status/value&#34;: &#34;&gt;=1000&#34;
-        },
-        {
-          &#34;enumerations/savings_status/value&#34;: &#34;no known savings&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for savings_status&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/savings_status/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of savings_status.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;savings_status&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/employment&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/employment/value&#34;: &#34;1&lt;=X&lt;4&#34;
-        },
-        {
-          &#34;enumerations/employment/value&#34;: &#34;4&lt;=X&lt;7&#34;
-        },
-        {
-          &#34;enumerations/employment/value&#34;: &#34;&lt;1&#34;
-        },
-        {
-          &#34;enumerations/employment/value&#34;: &#34;&gt;=7&#34;
-        },
-        {
-          &#34;enumerations/employment/value&#34;: &#34;unemployed&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for employment&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/employment/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of employment.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;employment&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/personal_status&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/personal_status/value&#34;: &#34;female div/dep/mar&#34;
-        },
-        {
-          &#34;enumerations/personal_status/value&#34;: &#34;female single&#34;
-        },
-        {
-          &#34;enumerations/personal_status/value&#34;: &#34;male div/sep&#34;
-        },
-        {
-          &#34;enumerations/personal_status/value&#34;: &#34;male mar/wid&#34;
-        },
-        {
-          &#34;enumerations/personal_status/value&#34;: &#34;male single&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for personal_status&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/personal_status/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of personal_status.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;personal_status&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/other_parties&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/other_parties/value&#34;: &#34;co applicant&#34;
-        },
-        {
-          &#34;enumerations/other_parties/value&#34;: &#34;guarantor&#34;
-        },
-        {
-          &#34;enumerations/other_parties/value&#34;: &#34;none&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for other_parties&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/other_parties/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of other_parties.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;other_parties&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/property_magnitude&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/property_magnitude/value&#34;: &#34;car&#34;
-        },
-        {
-          &#34;enumerations/property_magnitude/value&#34;: &#34;life insurance&#34;
-        },
-        {
-          &#34;enumerations/property_magnitude/value&#34;: &#34;no known property&#34;
-        },
-        {
-          &#34;enumerations/property_magnitude/value&#34;: &#34;real estate&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for property_magnitude&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/property_magnitude/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of property_magnitude.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;property_magnitude&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/other_payment_plans&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/other_payment_plans/value&#34;: &#34;bank&#34;
-        },
-        {
-          &#34;enumerations/other_payment_plans/value&#34;: &#34;none&#34;
-        },
-        {
-          &#34;enumerations/other_payment_plans/value&#34;: &#34;stores&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for other_payment_plans&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/other_payment_plans/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of other_payment_plans.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;other_payment_plans&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/housing&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/housing/value&#34;: &#34;for free&#34;
-        },
-        {
-          &#34;enumerations/housing/value&#34;: &#34;own&#34;
-        },
-        {
-          &#34;enumerations/housing/value&#34;: &#34;rent&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for housing&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/housing/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of housing.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;housing&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/job&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/job/value&#34;: &#34;high qualif/self emp/mgmt&#34;
-        },
-        {
-          &#34;enumerations/job/value&#34;: &#34;skilled&#34;
-        },
-        {
-          &#34;enumerations/job/value&#34;: &#34;unemp/unskilled non res&#34;
-        },
-        {
-          &#34;enumerations/job/value&#34;: &#34;unskilled resident&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for job&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/job/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of job.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;job&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/own_telephone&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/own_telephone/value&#34;: &#34;none&#34;
-        },
-        {
-          &#34;enumerations/own_telephone/value&#34;: &#34;yes&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for own_telephone&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/own_telephone/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of own_telephone.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;own_telephone&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/foreign_worker&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/foreign_worker/value&#34;: &#34;no&#34;
-        },
-        {
-          &#34;enumerations/foreign_worker/value&#34;: &#34;yes&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for foreign_worker&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/foreign_worker/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of foreign_worker.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;foreign_worker&#34;
-    },
-    {
-      &#34;@id&#34;: &#34;enumerations/class&#34;,
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;data&#34;: [
-        {
-          &#34;enumerations/class/value&#34;: &#34;bad&#34;
-        },
-        {
-          &#34;enumerations/class/value&#34;: &#34;good&#34;
-        }
-      ],
-      &#34;dataType&#34;: &#34;sc:Enumeration&#34;,
-      &#34;description&#34;: &#34;Possible values for class&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;enumerations/class/value&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;The value of class.&#34;,
-          &#34;name&#34;: &#34;value&#34;
-        }
-      ],
-      &#34;name&#34;: &#34;class&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;data-file-description&#34;,
-      &#34;description&#34;: &#34;Listing the fields of the data.&#34;,
-      &#34;field&#34;: [
-        {
-          &#34;@id&#34;: &#34;features/0-checking_status&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;checking_status - a field.&#34;,
-          &#34;name&#34;: &#34;checking_status&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/checking_status/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;checking_status&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/1-duration&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;duration - a field.&#34;,
-          &#34;name&#34;: &#34;duration&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;duration&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/2-credit_history&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;credit_history - a field.&#34;,
-          &#34;name&#34;: &#34;credit_history&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/credit_history/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;credit_history&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/3-purpose&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;purpose - a field.&#34;,
-          &#34;name&#34;: &#34;purpose&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/purpose/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;purpose&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/4-credit_amount&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;credit_amount - a field.&#34;,
-          &#34;name&#34;: &#34;credit_amount&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;credit_amount&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/5-savings_status&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;savings_status - a field.&#34;,
-          &#34;name&#34;: &#34;savings_status&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/savings_status/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;savings_status&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/6-employment&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;employment - a field.&#34;,
-          &#34;name&#34;: &#34;employment&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/employment/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;employment&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/7-installment_commitment&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;installment_commitment - a field.&#34;,
-          &#34;name&#34;: &#34;installment_commitment&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;installment_commitment&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/8-personal_status&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;personal_status - a field.&#34;,
-          &#34;name&#34;: &#34;personal_status&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/personal_status/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;personal_status&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/9-other_parties&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;other_parties - a field.&#34;,
-          &#34;name&#34;: &#34;other_parties&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/other_parties/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;other_parties&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/10-residence_since&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;residence_since - a field.&#34;,
-          &#34;name&#34;: &#34;residence_since&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;residence_since&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/11-property_magnitude&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;property_magnitude - a field.&#34;,
-          &#34;name&#34;: &#34;property_magnitude&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/property_magnitude/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;property_magnitude&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/12-age&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;age - a field.&#34;,
-          &#34;name&#34;: &#34;age&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;age&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/13-other_payment_plans&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;other_payment_plans - a field.&#34;,
-          &#34;name&#34;: &#34;other_payment_plans&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/other_payment_plans/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;other_payment_plans&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/14-housing&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;housing - a field.&#34;,
-          &#34;name&#34;: &#34;housing&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/housing/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;housing&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/15-existing_credits&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;existing_credits - a field.&#34;,
-          &#34;name&#34;: &#34;existing_credits&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;existing_credits&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/16-job&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;job - a field.&#34;,
-          &#34;name&#34;: &#34;job&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/job/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;job&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/17-num_dependents&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: [
-            &#34;sc:Float&#34;,
-            &#34;sc:Integer&#34;
-          ],
-          &#34;description&#34;: &#34;num_dependents - a field.&#34;,
-          &#34;name&#34;: &#34;num_dependents&#34;,
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;num_dependents&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/18-own_telephone&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;own_telephone - a field.&#34;,
-          &#34;name&#34;: &#34;own_telephone&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/own_telephone/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;own_telephone&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/19-foreign_worker&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;foreign_worker - a field.&#34;,
-          &#34;name&#34;: &#34;foreign_worker&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/foreign_worker/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;foreign_worker&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        },
-        {
-          &#34;@id&#34;: &#34;features/20-class&#34;,
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;description&#34;: &#34;class - the default target field.&#34;,
-          &#34;name&#34;: &#34;class&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;enumerations/class/value&#34;
-            }
-          },
-          &#34;source&#34;: {
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;class&#34;
-            },
-            &#34;fileObject&#34;: {
-              &#34;@id&#34;: &#34;data-file&#34;
-            }
-          }
-        }
-      ],
-      &#34;name&#34;: &#34;data-file-description&#34;
-    }
-  ],
-  &#34;sameAs&#34;: &#34;https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)&#34;,
-  &#34;url&#34;: &#34;https://www.openml.org/search?type=data&amp;id=31&#34;,
-  &#34;version&#34;: &#34;1.0.0&#34;
-}</code></pre>
-            </div>
-        </div>
-    </div>
-
+    <div id="app"></div>
     <script>
-        // Sidebar toggle
-        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('collapsed');
-        });
-        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('collapsed');
-        });
-
-        // Render markdown descriptions
-        document.querySelectorAll('.markdown').forEach(function(el) {
-            var raw = el.textContent;
-            if (raw && typeof marked !== 'undefined') {
-                el.innerHTML = marked.parse(raw);
+        window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileObject": "cr:fileObject",
+    "fileProperty": "cr:fileProperty",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "citeAs": "https://dl.acm.org/doi/abs/10.1145/967900.968104",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "creator": {
+    "@type": "sc:Person",
+    "name": "Dr. Hans Hofmann"
+  },
+  "description": "**Author**: Dr. Hans Hofmann  \n**Source**: [UCI](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)) - 1994    \n**Please cite**: [UCI](https://archive.ics.uci.edu/ml/citation_policy.html)\n\n**German Credit dataset**  \nThis dataset classifies people described by a set of attributes as good or bad credit risks.\n\nThis dataset comes with a cost matrix: \n``` \nGood  Bad (predicted)  \nGood   0    1   (actual)  \nBad    5    0  \n```\n\nIt is worse to class a customer as good when they are bad (5), than it is to class a customer as bad when they are good (1).  \n\n### Attribute description  \n\n1. Status of existing checking account, in Deutsche Mark.  \n2. Duration in months  \n3. Credit history (credits taken, paid back duly, delays, critical accounts)  \n4. Purpose of the credit (car, television,...)  \n5. Credit amount  \n6. Status of savings account/bonds, in Deutsche Mark.  \n7. Present employment, in number of years.  \n8. Installment rate in percentage of disposable income  \n9. Personal status (married, single,...) and sex  \n10. Other debtors / guarantors  \n11. Present residence since X years  \n12. Property (e.g. real estate)  \n13. Age in years  \n14. Other installment plans (banks, stores)  \n15. Housing (rent, own,...)  \n16. Number of existing credits at this bank  \n17. Job  \n18. Number of people being liable to provide maintenance for  \n19. Telephone (yes,no)  \n20. Foreign worker (yes,no)",
+  "distribution": [
+    {
+      "@id": "data-file",
+      "@type": "cr:FileObject",
+      "contentUrl": "https://api.openml.org/data/v1/download/31/credit-g.arff",
+      "description": "Data file belonging to the dataset.",
+      "encodingFormat": [
+        "text/plain",
+        "https://ml.cms.waikato.ac.nz/weka/arff.html"
+      ],
+      "md5": "9a475053fed0c26ee95cd4525e50074c",
+      "name": "data-file"
+    }
+  ],
+  "inLanguage": "en",
+  "keywords": [
+    "credit_scoring",
+    "Data Science",
+    "Economics",
+    "finance_problem",
+    "mythbusting_1",
+    "OpenML-CC18",
+    "OpenML100",
+    "Statistics",
+    "study_1",
+    "study_123",
+    "study_14",
+    "study_144",
+    "study_15",
+    "study_20",
+    "study_218",
+    "study_241",
+    "study_34",
+    "study_37",
+    "study_41",
+    "study_50",
+    "study_52",
+    "study_7",
+    "study_70",
+    "study_98",
+    "study_99",
+    "uci"
+  ],
+  "license": "Public",
+  "name": "credit-g",
+  "recordSet": [
+    {
+      "@id": "enumerations/checking_status",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/checking_status/value": "0<=X<200"
+        },
+        {
+          "enumerations/checking_status/value": "<0"
+        },
+        {
+          "enumerations/checking_status/value": ">=200"
+        },
+        {
+          "enumerations/checking_status/value": "no checking"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for checking_status",
+      "field": [
+        {
+          "@id": "enumerations/checking_status/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of checking_status.",
+          "name": "value"
+        }
+      ],
+      "name": "checking_status"
+    },
+    {
+      "@id": "enumerations/credit_history",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/credit_history/value": "all paid"
+        },
+        {
+          "enumerations/credit_history/value": "critical/other existing credit"
+        },
+        {
+          "enumerations/credit_history/value": "delayed previously"
+        },
+        {
+          "enumerations/credit_history/value": "existing paid"
+        },
+        {
+          "enumerations/credit_history/value": "no credits/all paid"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for credit_history",
+      "field": [
+        {
+          "@id": "enumerations/credit_history/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of credit_history.",
+          "name": "value"
+        }
+      ],
+      "name": "credit_history"
+    },
+    {
+      "@id": "enumerations/purpose",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/purpose/value": "business"
+        },
+        {
+          "enumerations/purpose/value": "domestic appliance"
+        },
+        {
+          "enumerations/purpose/value": "education"
+        },
+        {
+          "enumerations/purpose/value": "furniture/equipment"
+        },
+        {
+          "enumerations/purpose/value": "new car"
+        },
+        {
+          "enumerations/purpose/value": "other"
+        },
+        {
+          "enumerations/purpose/value": "radio/tv"
+        },
+        {
+          "enumerations/purpose/value": "repairs"
+        },
+        {
+          "enumerations/purpose/value": "retraining"
+        },
+        {
+          "enumerations/purpose/value": "used car"
+        },
+        {
+          "enumerations/purpose/value": "vacation"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for purpose",
+      "field": [
+        {
+          "@id": "enumerations/purpose/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of purpose.",
+          "name": "value"
+        }
+      ],
+      "name": "purpose"
+    },
+    {
+      "@id": "enumerations/savings_status",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/savings_status/value": "100<=X<500"
+        },
+        {
+          "enumerations/savings_status/value": "500<=X<1000"
+        },
+        {
+          "enumerations/savings_status/value": "<100"
+        },
+        {
+          "enumerations/savings_status/value": ">=1000"
+        },
+        {
+          "enumerations/savings_status/value": "no known savings"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for savings_status",
+      "field": [
+        {
+          "@id": "enumerations/savings_status/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of savings_status.",
+          "name": "value"
+        }
+      ],
+      "name": "savings_status"
+    },
+    {
+      "@id": "enumerations/employment",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/employment/value": "1<=X<4"
+        },
+        {
+          "enumerations/employment/value": "4<=X<7"
+        },
+        {
+          "enumerations/employment/value": "<1"
+        },
+        {
+          "enumerations/employment/value": ">=7"
+        },
+        {
+          "enumerations/employment/value": "unemployed"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for employment",
+      "field": [
+        {
+          "@id": "enumerations/employment/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of employment.",
+          "name": "value"
+        }
+      ],
+      "name": "employment"
+    },
+    {
+      "@id": "enumerations/personal_status",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/personal_status/value": "female div/dep/mar"
+        },
+        {
+          "enumerations/personal_status/value": "female single"
+        },
+        {
+          "enumerations/personal_status/value": "male div/sep"
+        },
+        {
+          "enumerations/personal_status/value": "male mar/wid"
+        },
+        {
+          "enumerations/personal_status/value": "male single"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for personal_status",
+      "field": [
+        {
+          "@id": "enumerations/personal_status/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of personal_status.",
+          "name": "value"
+        }
+      ],
+      "name": "personal_status"
+    },
+    {
+      "@id": "enumerations/other_parties",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/other_parties/value": "co applicant"
+        },
+        {
+          "enumerations/other_parties/value": "guarantor"
+        },
+        {
+          "enumerations/other_parties/value": "none"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for other_parties",
+      "field": [
+        {
+          "@id": "enumerations/other_parties/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of other_parties.",
+          "name": "value"
+        }
+      ],
+      "name": "other_parties"
+    },
+    {
+      "@id": "enumerations/property_magnitude",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/property_magnitude/value": "car"
+        },
+        {
+          "enumerations/property_magnitude/value": "life insurance"
+        },
+        {
+          "enumerations/property_magnitude/value": "no known property"
+        },
+        {
+          "enumerations/property_magnitude/value": "real estate"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for property_magnitude",
+      "field": [
+        {
+          "@id": "enumerations/property_magnitude/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of property_magnitude.",
+          "name": "value"
+        }
+      ],
+      "name": "property_magnitude"
+    },
+    {
+      "@id": "enumerations/other_payment_plans",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/other_payment_plans/value": "bank"
+        },
+        {
+          "enumerations/other_payment_plans/value": "none"
+        },
+        {
+          "enumerations/other_payment_plans/value": "stores"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for other_payment_plans",
+      "field": [
+        {
+          "@id": "enumerations/other_payment_plans/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of other_payment_plans.",
+          "name": "value"
+        }
+      ],
+      "name": "other_payment_plans"
+    },
+    {
+      "@id": "enumerations/housing",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/housing/value": "for free"
+        },
+        {
+          "enumerations/housing/value": "own"
+        },
+        {
+          "enumerations/housing/value": "rent"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for housing",
+      "field": [
+        {
+          "@id": "enumerations/housing/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of housing.",
+          "name": "value"
+        }
+      ],
+      "name": "housing"
+    },
+    {
+      "@id": "enumerations/job",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/job/value": "high qualif/self emp/mgmt"
+        },
+        {
+          "enumerations/job/value": "skilled"
+        },
+        {
+          "enumerations/job/value": "unemp/unskilled non res"
+        },
+        {
+          "enumerations/job/value": "unskilled resident"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for job",
+      "field": [
+        {
+          "@id": "enumerations/job/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of job.",
+          "name": "value"
+        }
+      ],
+      "name": "job"
+    },
+    {
+      "@id": "enumerations/own_telephone",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/own_telephone/value": "none"
+        },
+        {
+          "enumerations/own_telephone/value": "yes"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for own_telephone",
+      "field": [
+        {
+          "@id": "enumerations/own_telephone/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of own_telephone.",
+          "name": "value"
+        }
+      ],
+      "name": "own_telephone"
+    },
+    {
+      "@id": "enumerations/foreign_worker",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/foreign_worker/value": "no"
+        },
+        {
+          "enumerations/foreign_worker/value": "yes"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for foreign_worker",
+      "field": [
+        {
+          "@id": "enumerations/foreign_worker/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of foreign_worker.",
+          "name": "value"
+        }
+      ],
+      "name": "foreign_worker"
+    },
+    {
+      "@id": "enumerations/class",
+      "@type": "cr:RecordSet",
+      "data": [
+        {
+          "enumerations/class/value": "bad"
+        },
+        {
+          "enumerations/class/value": "good"
+        }
+      ],
+      "dataType": "sc:Enumeration",
+      "description": "Possible values for class",
+      "field": [
+        {
+          "@id": "enumerations/class/value",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "The value of class.",
+          "name": "value"
+        }
+      ],
+      "name": "class"
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "data-file-description",
+      "description": "Listing the fields of the data.",
+      "field": [
+        {
+          "@id": "features/0-checking_status",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "checking_status - a field.",
+          "name": "checking_status",
+          "references": {
+            "field": {
+              "@id": "enumerations/checking_status/value"
             }
-        });
-
-        function toggleJsonld(btn) {
-            var container = btn.closest('.rs-section, .resource-card, tr, .card');
-            var panel = container.querySelector('.jsonld-panel');
-            if (!panel) {
-                var row = btn.closest('tr');
-                if (row) panel = row.querySelector('.jsonld-panel');
+          },
+          "source": {
+            "fileObject": {
+              "@id": "data-file"
+            },
+            "extract": {
+              "column": "checking_status"
             }
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                // Highlight with Prism on first open
-                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
-                    var code = panel.querySelector('code');
-                    if (code) Prism.highlightElement(code);
-                    panel.dataset.highlighted = 'true';
-                }
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+          }
+        },
+        {
+          "@id": "features/1-duration",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "duration - a field.",
+          "name": "duration",
+          "source": {
+            "extract": {
+              "column": "duration"
+            },
+            "fileObject": {
+              "@id": "data-file"
             }
-        }
-
-        function togglePreview(btn) {
-            var container = btn.closest('.rs-section, .resource-card');
-            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+          }
+        },
+        {
+          "@id": "features/2-credit_history",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "credit_history - a field.",
+          "name": "credit_history",
+          "references": {
+            "field": {
+              "@id": "enumerations/credit_history/value"
             }
-        }
-
-        // Full JSON-LD modal
-        var modalHighlighted = false;
-        function openJsonldModal() {
-            var modal = document.getElementById('jsonld-modal');
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (!modalHighlighted) {
-                var code = document.getElementById('full-jsonld-code');
-                if (code) Prism.highlightElement(code);
-                modalHighlighted = true;
+          },
+          "source": {
+            "extract": {
+              "column": "credit_history"
+            },
+            "fileObject": {
+              "@id": "data-file"
             }
+          }
+        },
+        {
+          "@id": "features/3-purpose",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "purpose - a field.",
+          "name": "purpose",
+          "references": {
+            "field": {
+              "@id": "enumerations/purpose/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "purpose"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/4-credit_amount",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "credit_amount - a field.",
+          "name": "credit_amount",
+          "source": {
+            "extract": {
+              "column": "credit_amount"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/5-savings_status",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "savings_status - a field.",
+          "name": "savings_status",
+          "references": {
+            "field": {
+              "@id": "enumerations/savings_status/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "savings_status"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/6-employment",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "employment - a field.",
+          "name": "employment",
+          "references": {
+            "field": {
+              "@id": "enumerations/employment/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "employment"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/7-installment_commitment",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "installment_commitment - a field.",
+          "name": "installment_commitment",
+          "source": {
+            "extract": {
+              "column": "installment_commitment"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/8-personal_status",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "personal_status - a field.",
+          "name": "personal_status",
+          "references": {
+            "field": {
+              "@id": "enumerations/personal_status/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "personal_status"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/9-other_parties",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "other_parties - a field.",
+          "name": "other_parties",
+          "references": {
+            "field": {
+              "@id": "enumerations/other_parties/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "other_parties"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/10-residence_since",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "residence_since - a field.",
+          "name": "residence_since",
+          "source": {
+            "extract": {
+              "column": "residence_since"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/11-property_magnitude",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "property_magnitude - a field.",
+          "name": "property_magnitude",
+          "references": {
+            "field": {
+              "@id": "enumerations/property_magnitude/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "property_magnitude"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/12-age",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "age - a field.",
+          "name": "age",
+          "source": {
+            "extract": {
+              "column": "age"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/13-other_payment_plans",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "other_payment_plans - a field.",
+          "name": "other_payment_plans",
+          "references": {
+            "field": {
+              "@id": "enumerations/other_payment_plans/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "other_payment_plans"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/14-housing",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "housing - a field.",
+          "name": "housing",
+          "references": {
+            "field": {
+              "@id": "enumerations/housing/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "housing"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/15-existing_credits",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "existing_credits - a field.",
+          "name": "existing_credits",
+          "source": {
+            "extract": {
+              "column": "existing_credits"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/16-job",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "job - a field.",
+          "name": "job",
+          "references": {
+            "field": {
+              "@id": "enumerations/job/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "job"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/17-num_dependents",
+          "@type": "cr:Field",
+          "dataType": [
+            "sc:Float",
+            "sc:Integer"
+          ],
+          "description": "num_dependents - a field.",
+          "name": "num_dependents",
+          "source": {
+            "extract": {
+              "column": "num_dependents"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/18-own_telephone",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "own_telephone - a field.",
+          "name": "own_telephone",
+          "references": {
+            "field": {
+              "@id": "enumerations/own_telephone/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "own_telephone"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/19-foreign_worker",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "foreign_worker - a field.",
+          "name": "foreign_worker",
+          "references": {
+            "field": {
+              "@id": "enumerations/foreign_worker/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "foreign_worker"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
+        },
+        {
+          "@id": "features/20-class",
+          "@type": "cr:Field",
+          "dataType": "sc:Text",
+          "description": "class - the default target field.",
+          "name": "class",
+          "references": {
+            "field": {
+              "@id": "enumerations/class/value"
+            }
+          },
+          "source": {
+            "extract": {
+              "column": "class"
+            },
+            "fileObject": {
+              "@id": "data-file"
+            }
+          }
         }
-        function closeJsonldModal() {
-            document.getElementById('jsonld-modal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeJsonldModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeJsonldModal();
-        });
-
-        function copyFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            navigator.clipboard.writeText(text).then(function() {
-                var btn = document.getElementById('copy-jsonld-btn');
-                btn.classList.add('copied');
-                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-                setTimeout(function() {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
-                }, 2000);
-            });
-        }
-
-        function downloadFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            var blob = new Blob([text], {type: 'application/ld+json'});
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'metadata.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
+      ],
+      "name": "data-file-description"
+    }
+  ],
+  "sameAs": "https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)",
+  "url": "https://www.openml.org/search?type=data&id=31",
+  "version": "1.0.0"
+};
     </script>
+    <script src="visualizer.js"></script>
 </body>
 </html>

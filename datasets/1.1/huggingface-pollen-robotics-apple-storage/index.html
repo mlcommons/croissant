@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>apple_storage — Croissant Visualizer</title>
-    <script>/* mermaid removed */</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -14,1779 +13,310 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <!-- Marked.js for markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <style>
-        /* ── Reset & Base ──────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --color-bg: #f8f7f4;
-            --color-surface: #ffffff;
-            --color-primary: #b45309;
-            --color-primary-light: #fef3c7;
-            --color-text: #1a1a2e;
-            --color-text-secondary: #6b7280;
-            --color-border: #e5e7eb;
-            --color-border-light: #f3f4f6;
-            --color-fo: #f97316;   /* FileObject accent */
-            --color-fs: #6366f1;   /* FileSet accent */
-            --color-rs: #22c55e;   /* RecordSet accent */
-            --sidebar-width: 260px;
-            --sidebar-collapsed-width: 0px;
-            --radius: 12px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px -1px rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { color: var(--color-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* ── Layout ────────────────────────────────────── */
-        .app {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ── Sidebar ───────────────────────────────────── */
-        .sidebar {
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            background: var(--color-surface);
-            border-right: 1px solid var(--color-border);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: width 0.25s ease, padding 0.25s ease;
-            z-index: 10;
-        }
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-        .sidebar-inner {
-            padding: 24px 20px;
-            opacity: 1;
-            transition: opacity 0.15s ease;
-        }
-        .sidebar.collapsed .sidebar-inner {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-        .sidebar-brand svg { flex-shrink: 0; }
-        .sidebar h4 {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-text-secondary);
-            margin: 20px 0 8px;
-        }
-        .sidebar ul { list-style: none; }
-        .sidebar > .sidebar-inner > ul > li > a,
-        .sidebar ul li a {
-            display: block;
-            padding: 5px 10px;
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            border-radius: 6px;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sidebar ul li a:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        .sidebar ul ul { padding-left: 14px; }
-        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
-
-        /* ── Toggle Button (inside sidebar) ───────────── */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .sidebar-toggle {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.15s, color 0.15s;
-            flex-shrink: 0;
-        }
-        .sidebar-toggle:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-        }
-        /* Floating open button when sidebar is collapsed */
-        .sidebar-open-btn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 20;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-open-btn:hover { background: var(--color-bg); }
-        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
-
-        /* ── Full JSON-LD Modal ──────────────────────────── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--color-surface);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 800px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-        }
-        .modal-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            flex: 1;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .modal-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .modal-btn:hover {
-            background: var(--color-bg);
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-        .modal-btn.copied {
-            background: #059669;
-            color: white;
-            border-color: #059669;
-        }
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background 0.15s;
-        }
-        .modal-close:hover { background: var(--color-bg); }
-        .modal-body {
-            overflow-y: auto;
-            padding: 0;
-        }
-        .modal-body pre {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 20px 24px;
-            margin: 0;
-            line-height: 1.55;
-            overflow-x: auto;
-        }
-
-        /* ── Main Content ──────────────────────────────── */
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 32px 40px 64px;
-            max-width: 960px;
-        }
-
-        /* ── Hero Header ───────────────────────────────── */
-        .hero {
-            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
-            color: white;
-            padding: 40px 36px;
-            border-radius: var(--radius);
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-md);
-        }
-        .hero h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .hero .description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            opacity: 0.92;
-            max-width: 720px;
-        }
-        /* Markdown overrides for dark hero background */
-        .hero .markdown a {
-            color: var(--color-primary-light);
-            text-decoration: underline;
-        }
-        .hero .markdown blockquote {
-            color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .hero .markdown code {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.18);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-        .hero-badge a { color: white; }
-        .hero-badge a:hover { text-decoration: underline; }
-
-        /* ── Cards ──────────────────────────────────────── */
-        .card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            padding: 28px 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        .card--green::before {
-            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--color-border-light);
-        }
-        .card-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        .card-header .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ── Tables ─────────────────────────────────────── */
-        .table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-        }
-        .rs-preview .table-wrap,
-        .file-listing .table-wrap {
-            border: none;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-        }
-        thead th {
-            text-align: left;
-            padding: 11px 16px;
-            font-weight: 600;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
-            background: #f9fafb;
-            border-bottom: 1px solid var(--color-border);
-        }
-        tbody td {
-            padding: 11px 16px;
-            border-bottom: 1px solid var(--color-border-light);
-            vertical-align: top;
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafafa; }
-
-        /* Key-value metadata table */
-        .kv-table { width: 100%; }
-        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
-        .kv-table tr:last-child td { border-bottom: none; }
-        .kv-table .kv-key {
-            font-weight: 600;
-            font-size: 0.84rem;
-            color: var(--color-text-secondary);
-            width: 160px;
-            padding-right: 24px;
-            vertical-align: top;
-            white-space: nowrap;
-        }
-        .kv-table .kv-val {
-            font-size: 0.88rem;
-            word-break: break-word;
-        }
-        .kv-table .kv-val .jsonld-toggle {
-            float: right;
-            margin-left: 12px;
-        }
-
-        /* ── Resource Cards (full-width list) ───────────── */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .resource-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-left-width: 4px;
-            border-radius: 8px;
-            padding: 16px 20px;
-            transition: box-shadow 0.15s;
-        }
-        .resource-card[data-type="FileObject"] { border-left-color: var(--color-fo); }
-        .resource-card[data-type="FileSet"]    { border-left-color: var(--color-fs); }
-        .resource-card[data-type="other"]      { border-left-color: #94a3b8; }
-        .resource-card:hover { box-shadow: var(--shadow-md); }
-        .resource-card .rc-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .resource-card .rc-icon { font-size: 1.4rem; }
-        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
-        .resource-card .rc-type {
-            display: inline-block;
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        .resource-card .rc-desc {
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-
-        /* ── Code / Preview ─────────────────────────────── */
-        pre.preview {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: #fff4e6;
-            color: #212529;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
-            max-width: 100%;
-            margin-top: 10px;
-            line-height: 1.6;
-            display: none;
-        }
-        pre.preview.open {
-            display: block;
-        }
-
-        /* ── File Listing (FileSet preview) ────────────── */
-        .file-listing {
-            margin-top: 10px;
-            background: #fff4e6;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .file-listing.open {
-            display: block;
-        }
-        .file-listing-header {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            margin-bottom: 6px;
-        }
-        .file-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .file-list li {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 2px 0 2px 16px;
-            position: relative;
-            color: var(--color-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .file-list li::before {
-            content: "📄";
-            position: absolute;
-            left: 0;
-            font-size: 0.7rem;
-        }
-        .file-listing-more {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            font-style: italic;
-            margin-top: 4px;
-            padding-left: 16px;
-        }
-        .cite-block {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 14px 16px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            line-height: 1.5;
-            max-width: 100%;
-        }
-
-        /* ── SVG Dependency Graph ────────────────────────── */
-        .svg-graph-wrap {
-            overflow-x: auto;
-            max-width: 100%;
-            padding: 16px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            margin-bottom: 24px;
-        }
-        .svg-graph-wrap svg a:hover rect {
-            filter: brightness(0.93);
-        }
-
-        /* ── RecordSet Sections ──────────────────────────── */
-        .rs-section { margin-bottom: 28px; }
-        .rs-section:last-child { margin-bottom: 0; }
-        .rs-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .rs-header h3 { font-size: 1rem; font-weight: 600; }
-        .rs-desc {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 14px;
-        }
-        .rs-divider {
-            border: none;
-            border-top: 1px solid var(--color-border-light);
-            margin: 24px 0;
-        }
-
-        /* ── Record Set Data Preview ────────────────────── */
-        .rs-preview {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            background: #f0fdf4; /* Soft green matching graph node */
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .rs-preview.open {
-            display: block;
-        }
-        .rs-preview-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #15803d; /* Darker green */
-            margin-bottom: 6px;
-        }
-        table.preview-table {
-            font-size: 0.80rem;
-            background: #ffffff;
-        }
-        table.preview-table thead th {
-            background: #bbf7d0; /* Match graph node icon_bg */
-            color: #15803d;
-            border-bottom-color: #86efac;
-            white-space: nowrap;
-        }
-        table.preview-table tbody td {
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-        }
-        table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
-
-        /* ── Type Badges in Tables ──────────────────────── */
-        .type-badge {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 8px;
-            border-radius: 4px;
-            color: var(--color-text-secondary);
-        }
-
-        /* ── Markdown Content ───────────────────────────── */
-        .markdown p { margin-bottom: 0.6em; }
-        .markdown p:last-child { margin-bottom: 0; }
-        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
-        .markdown code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 5px;
-            border-radius: 3px;
-        }
-        .markdown pre { margin: 0.6em 0; }
-        .markdown a { color: var(--color-primary); }
-        .markdown h1, .markdown h2, .markdown h3 {
-            font-size: 1em;
-            font-weight: 600;
-            margin: 0.8em 0 0.3em;
-        }
-        .markdown blockquote {
-            border-left: 3px solid var(--color-border);
-            padding-left: 12px;
-            color: var(--color-text-secondary);
-            margin: 0.4em 0;
-        }
-
-        /* ── Footer ─────────────────────────────────────── */
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            padding: 32px 0 16px;
-        }
-
-        /* ── Responsive ─────────────────────────────────── */
-        @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .sidebar-toggle { display: none; }
-            .main { padding: 20px 16px 48px; }
-            .hero { padding: 28px 24px; }
-            .hero h1 { font-size: 1.4rem; }
-            .card { padding: 20px 18px; }
-            .resource-list { gap: 10px; }
-        }
-
-        /* ── JSON-LD Toggle ──────────────────────────────── */
-        .jsonld-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .jsonld-toggle.active {
-            background: #374151;
-            color: #e2e8f0;
-            border-color: #374151;
-        }
-        .jsonld-panel {
-            display: none;
-            margin-top: 8px;
-        }
-        .jsonld-panel.open {
-            display: block;
-        }
-        .jsonld-panel pre {
-            border-radius: 8px;
-            max-width: 100%;
-            margin: 0;
-        }
-        /* Prism.js overrides to match our dark theme */
-        .jsonld-panel pre[class*="language-"],
-        .jsonld-panel code[class*="language-"],
-        .modal-body pre[class*="language-"],
-        .modal-body code[class*="language-"] {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            line-height: 1.55;
-            background: #374151;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .jsonld-panel pre[class*="language-"] {
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .modal-body pre[class*="language-"] {
-            padding: 20px 24px;
-            margin: 0;
-            border-radius: 0;
-        }
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .preview-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .resource-card .preview-toggle.active {
-            background: #fff7ed;
-            color: #c2410c;
-            border-color: #fed7aa;
-        }
-        .rs-section .preview-toggle.active {
-            background: #f0fdf4;
-            color: #15803d;
-            border-color: #bbf7d0;
-        }
-    </style>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="visualizer.css">
 </head>
 <body>
-    <div class="app">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-inner">
-                <div class="sidebar-header">
-                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    </button>
-                    <div class="sidebar-brand">
-                        🥐
-                        Croissant Visualizer
-                    </div>
-                </div>
-
-                <h4>Dataset</h4>
-                <ul>
-                    <li><a href="#top">Overview</a></li>
-                    <li><a href="#metadata">Metadata</a></li>
-                </ul>
-
-                <h4>Resources</h4>
-                <ul>
-                    
-                    <li><a href="#res-repo">📄 repo</a></li>
-                    
-                    <li><a href="#res-parquet-files-for-config-default">📁 parquet-files-for-config-default</a></li>
-                    
-                </ul>
-
-                <h4>Record Sets</h4>
-                <ul>
-                    
-                    <li><a href="#rs-default_splits">default_splits</a></li>
-                    
-                    <li><a href="#rs-default">default</a></li>
-                    
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main">
-            <!-- Floating open button (visible when sidebar is collapsed) -->
-            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
-
-            <!-- Hero -->
-            <div class="hero" id="top">
-                <h1>🥐 apple_storage</h1>
-                
-                <div class="description markdown">This dataset was created using LeRobot.
-
-
-
-
-
-  Dataset Structure
-
-
-meta/info.json:
-{
-    &#34;codebase_version&#34;: &#34;v2.0&#34;,
-    &#34;robot_type&#34;: &#34;reachy2&#34;,
-    &#34;total_episodes&#34;: 50,
-    &#34;total_frames&#34;: 14983,
-    &#34;total_tasks&#34;: 1,
-    &#34;total_videos&#34;: 50,
-    &#34;total_chunks&#34;: 1,
-    &#34;chunks_size&#34;: 1000,
-    &#34;fps&#34;: 30,
-    &#34;splits&#34;: {
-        &#34;train&#34;: &#34;0:50&#34;
+    <div id="app"></div>
+    <script>
+        window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
     },
-    &#34;data_path&#34;: &#34;data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet&#34;,
-    &#34;video_path&#34;:… See the full description on the dataset page: https://huggingface.co/datasets/pollen-robotics/apple_storage.</div>
-                
-                <div class="hero-meta">
-                    
-                    
-                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/pollen-robotics/apple_storage" target="_blank">Dataset URL</a></span>
-                    
-                    <span class="hero-badge">📦 2 resources</span>
-                    <span class="hero-badge">📋 2 record sets</span>
-                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
-                </div>
-            </div>
-
-            <!-- Metadata -->
-            
-            <div class="card" id="metadata">
-                <div class="card-header">
-                    <span class="icon">ℹ️</span>
-                    <h2>Metadata</h2>
-                </div>
-                <table class="kv-table">
-                    
-                    <tr>
-                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="https://choosealicense.com/licenses/apache-2.0/" target="_blank">https://choosealicense.com/licenses/apache-2.0/</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;license&#34;: &#34;https://choosealicense.com/licenses/apache-2.0/&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="http://mlcommons.org/croissant/1.1" target="_blank">http://mlcommons.org/croissant/1.1</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.1&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A set of keywords associated with the dataset, either as free text, or a DefinedTerm with a formal definition.">Keywords</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            robotics, apache-2.0, 10K - 100K, parquet, Tabular, Time-series, Video, Datasets, Dask, Croissant, Polars, 🇺🇸 Region: US, LeRobot
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;keywords&#34;: [
-    &#34;robotics&#34;,
-    &#34;apache-2.0&#34;,
-    &#34;10K - 100K&#34;,
-    &#34;parquet&#34;,
-    &#34;Tabular&#34;,
-    &#34;Time-series&#34;,
-    &#34;Video&#34;,
-    &#34;Datasets&#34;,
-    &#34;Dask&#34;,
-    &#34;Croissant&#34;,
-    &#34;Polars&#34;,
-    &#34;🇺🇸 Region: US&#34;,
-    &#34;LeRobot&#34;
-  ]
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                </table>
-            </div>
-            
-
-            <!-- Resources -->
-            <div class="card" id="resources">
-                <div class="card-header">
-                    <span class="icon">📦</span>
-                    <h2>Resources</h2>
-                </div>
-
-                
-                <div class="svg-graph-wrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 700 176" width="700" height="176" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs><text x="150" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="550" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M60,50 C20,50 20,126 60,126" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M240,126 C350,126 350,126 460,126" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-repo" href="#res-repo"><title>repo</title><rect x="60" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="55" text-anchor="middle" font-size="13">📄</text><text x="100" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">repo</text></a><a xlink:href="#res-parquet-files-for-config-default" href="#res-parquet-files-for-config-default"><title>parquet-files-for-config-default</title><rect x="60" y="100" width="180" height="52"   rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/><rect x="68" y="114" width="24" height="24" rx="5" fill="#c7d2fe"/><text x="80" y="131" text-anchor="middle" font-size="13">📁</text><text x="100" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">parquet-files-for-co…</text></a><a xlink:href="#rs-default_splits" href="#rs-default_splits"><title>default_splits</title><rect x="460" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="55" text-anchor="middle" font-size="13">📋</text><text x="500" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">default_splits</text></a><a xlink:href="#rs-default" href="#rs-default"><title>default</title><rect x="460" y="100" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="114" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="131" text-anchor="middle" font-size="13">📋</text><text x="500" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">default</text></a></svg>
-                </div>
-                
-
-                <div class="resource-list">
-                    
-                    <div class="resource-card" id="res-repo" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">repo</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">git+https</span>
-                        
-                        
-                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;repo&#34;,
-  &#34;name&#34;: &#34;repo&#34;,
-  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
-  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/pollen-robotics/apple_storage/tree/refs%2Fconvert%2Fparquet&#34;,
-  &#34;encodingFormat&#34;: &#34;git+https&#34;,
-  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-parquet-files-for-config-default" data-type="FileSet">
-                        <div class="rc-header">
-                            <span class="rc-icon">📁</span>
-                            <span class="rc-name">parquet-files-for-config-default</span>
-                            <div class="header-actions">
-                                
-                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File Set</span>
-                        
-                        <span class="type-badge">application/x-parquet</span>
-                        
-                        
-                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).</div>
-                        
-                        
-                        <pre class="preview">Pattern: default/*/*.parquet</pre>
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;,
-  &#34;name&#34;: &#34;parquet-files-for-config-default&#34;,
-  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;repo&#34;
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
-  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
-  &#34;includes&#34;: &#34;default/*/*.parquet&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-
-            <!-- Record Sets -->
-            <div class="card card--green" id="recordsets">
-                <div class="card-header">
-                    <span class="icon">📋</span>
-                    <h2>Record Sets</h2>
-                </div>
-
-                
-                <div class="rs-section" id="rs-default_splits">
-                    <div class="rs-header">
-                        <h3>default_splits</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Splits for the default config.</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the split.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;dataType&#34;: &#34;cr:Split&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;default_splits/split_name&#34;
-  },
-  &#34;@id&#34;: &#34;default_splits&#34;,
-  &#34;name&#34;: &#34;default_splits&#34;,
-  &#34;description&#34;: &#34;Splits for the default config.&#34;,
-  &#34;field&#34;: [
+  "@type": "sc:Dataset",
+  "distribution": [
     {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default_splits/split_name&#34;,
-      &#34;name&#34;: &#34;split_name&#34;,
-      &#34;description&#34;: &#34;The name of the split.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/pollen-robotics/apple_storage/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "default/*/*.parquet"
+        ]
+      }
     }
   ],
-  &#34;data&#34;: {
-    &#34;default_splits/split_name&#34;: &#34;train&#34;
-  }
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-default">
-                    <div class="rs-header">
-                        <h3>default</h3>
-                        <div class="header-actions">
-                            
-                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">pollen-robotics/apple_storage - &#39;default&#39; subset</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Split to which the example belongs to.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>observation.state</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;observation.state&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>action</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;action&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timestamp</strong></td>
-                                    <td><span class="type-badge">numpy.float32</span></td>
-                                    <td>Column &#39;timestamp&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>frame_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;frame_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>episode_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;episode_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>task_index</strong></td>
-                                    <td><span class="type-badge">numpy.int64</span></td>
-                                    <td>Column &#39;task_index&#39; from the Hugging Face parquet file.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="rs-preview">
-                        <div class="rs-preview-label">🔍 Data preview</div>
-                        <div class="table-wrap">
-                            <table class="preview-table">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>split</th>
-                                        
-                                        <th>observation.state</th>
-                                        
-                                        <th>action</th>
-                                        
-                                        <th>timestamp</th>
-                                        
-                                        <th>frame_index</th>
-                                        
-                                        <th>episode_index</th>
-                                        
-                                        <th>index</th>
-                                        
-                                        <th>task_index</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.float32(-1.7795527), np.float32(0.1938768), np.float32(0.23834093), np.float32(0.57367307), np.float32(2.2687576), np.float32(0.3638584), np.float32(-0.107093), np.float32(0.17650287), np.float32(-1.7178313), np.float32(-0.23304716), np.float32(-0.01350467), np.float32(-0.23764093), np.float32(0.71483517), np.float32(0.3042807), np.float32(0.45039922), np.float32(-0.35615972)]">[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.flo…</td>
-                                        
-                                        <td title="[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.float32(-1.7781453), np.float32(0.19254662), np.float32(0.23872802), np.float32(0.57288104), np.float32(2.268928), np.float32(0.33798987), np.float32(-0.12289332), np.float32(0.123407446), np.float32(-1.7406771), np.float32(-0.21982414), np.float32(-0.007903008), np.float32(-0.23672596), np.float32(2.268928), np.float32(0.3065606), np.float32(0.45012394), np.float32(-0.3588098)]">[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.fl…</td>
-                                        
-                                        <td title="0.0">0.0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.float32(-1.7792873), np.float32(0.19340634), np.float32(0.23852363), np.float32(0.573371), np.float32(2.2687576), np.float32(0.35963702), np.float32(-0.10983807), np.float32(0.16703357), np.float32(-1.7218335), np.float32(-0.22976868), np.float32(-0.011929522), np.float32(-0.23680514), np.float32(0.8973787), np.float32(0.30457938), np.float32(0.45057604), np.float32(-0.3568391)]">[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.flo…</td>
-                                        
-                                        <td title="[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.float32(-1.7790642), np.float32(0.19158067), np.float32(0.2376576), np.float32(0.5730079), np.float32(2.268928), np.float32(0.3229675), np.float32(-0.13125515), np.float32(0.096074685), np.float32(-1.7481365), np.float32(-0.20632753), np.float32(-0.004209509), np.float32(-0.23626004), np.float32(2.268928), np.float32(0.3067648), np.float32(0.4495879), np.float32(-0.3593738)]">[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.flo…</td>
-                                        
-                                        <td title="0.033333335">0.033333335</td>
-                                        
-                                        <td title="1">1</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                        <td title="1">1</td>
-                                        
-                                        <td title="0">0</td>
-                                        
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;default&#34;,
-  &#34;name&#34;: &#34;default&#34;,
-  &#34;description&#34;: &#34;pollen-robotics/apple_storage - &#39;default&#39; subset&#34;,
-  &#34;field&#34;: [
+  "recordSet": [
     {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/split&#34;,
-      &#34;name&#34;: &#34;default/split&#34;,
-      &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;fullpath&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;default/(?:partial-)?(train)/.+parquet$&#34;
-        }
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
       },
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;default_splits/split_name&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/observation.state&#34;,
-      &#34;name&#34;: &#34;default/observation.state&#34;,
-      &#34;description&#34;: &#34;Column &#39;observation.state&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Float32&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;observation.state&#34;
-        }
-      },
-      &#34;isArray&#34;: true,
-      &#34;arrayShape&#34;: &#34;19&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/action&#34;,
-      &#34;name&#34;: &#34;default/action&#34;,
-      &#34;description&#34;: &#34;Column &#39;action&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Float32&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;action&#34;
-        }
-      },
-      &#34;isArray&#34;: true,
-      &#34;arrayShape&#34;: &#34;19&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/timestamp&#34;,
-      &#34;name&#34;: &#34;default/timestamp&#34;,
-      &#34;description&#34;: &#34;Column &#39;timestamp&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Float32&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timestamp&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/frame_index&#34;,
-      &#34;name&#34;: &#34;default/frame_index&#34;,
-      &#34;description&#34;: &#34;Column &#39;frame_index&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Int64&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;frame_index&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/episode_index&#34;,
-      &#34;name&#34;: &#34;default/episode_index&#34;,
-      &#34;description&#34;: &#34;Column &#39;episode_index&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Int64&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;episode_index&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/index&#34;,
-      &#34;name&#34;: &#34;default/index&#34;,
-      &#34;description&#34;: &#34;Column &#39;index&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Int64&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;index&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;default/task_index&#34;,
-      &#34;name&#34;: &#34;default/task_index&#34;,
-      &#34;description&#34;: &#34;Column &#39;task_index&#39; from the Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;cr:Int64&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;task_index&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                
-            </div>
-
-            <div class="footer">
-                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full JSON-LD Modal -->
-    <div class="modal-overlay" id="jsonld-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>🥐 metadata.json</h2>
-                <div class="modal-actions">
-                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                        Copy
-                    </button>
-                    <button class="modal-btn" onclick="downloadFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Download
-                    </button>
-                </div>
-                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
-            </div>
-            <div class="modal-body">
-                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
-  &#34;@context&#34;: {
-    &#34;@language&#34;: &#34;en&#34;,
-    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
-    &#34;arrayShape&#34;: &#34;cr:arrayShape&#34;,
-    &#34;citeAs&#34;: &#34;cr:citeAs&#34;,
-    &#34;column&#34;: &#34;cr:column&#34;,
-    &#34;conformsTo&#34;: &#34;dct:conformsTo&#34;,
-    &#34;containedIn&#34;: &#34;cr:containedIn&#34;,
-    &#34;cr&#34;: &#34;http://mlcommons.org/croissant/&#34;,
-    &#34;data&#34;: {
-      &#34;@id&#34;: &#34;cr:data&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;dataBiases&#34;: &#34;cr:dataBiases&#34;,
-    &#34;dataCollection&#34;: &#34;cr:dataCollection&#34;,
-    &#34;dataType&#34;: {
-      &#34;@id&#34;: &#34;cr:dataType&#34;,
-      &#34;@type&#34;: &#34;@vocab&#34;
-    },
-    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
-    &#34;extract&#34;: &#34;cr:extract&#34;,
-    &#34;field&#34;: &#34;cr:field&#34;,
-    &#34;fileProperty&#34;: &#34;cr:fileProperty&#34;,
-    &#34;fileObject&#34;: &#34;cr:fileObject&#34;,
-    &#34;fileSet&#34;: &#34;cr:fileSet&#34;,
-    &#34;format&#34;: &#34;cr:format&#34;,
-    &#34;includes&#34;: &#34;cr:includes&#34;,
-    &#34;isArray&#34;: &#34;cr:isArray&#34;,
-    &#34;isLiveDataset&#34;: &#34;cr:isLiveDataset&#34;,
-    &#34;jsonPath&#34;: &#34;cr:jsonPath&#34;,
-    &#34;key&#34;: &#34;cr:key&#34;,
-    &#34;md5&#34;: &#34;cr:md5&#34;,
-    &#34;parentField&#34;: &#34;cr:parentField&#34;,
-    &#34;path&#34;: &#34;cr:path&#34;,
-    &#34;personalSensitiveInformation&#34;: &#34;cr:personalSensitiveInformation&#34;,
-    &#34;recordSet&#34;: &#34;cr:recordSet&#34;,
-    &#34;references&#34;: &#34;cr:references&#34;,
-    &#34;regex&#34;: &#34;cr:regex&#34;,
-    &#34;repeated&#34;: &#34;cr:repeated&#34;,
-    &#34;replace&#34;: &#34;cr:replace&#34;,
-    &#34;sc&#34;: &#34;https://schema.org/&#34;,
-    &#34;separator&#34;: &#34;cr:separator&#34;,
-    &#34;source&#34;: &#34;cr:source&#34;,
-    &#34;subField&#34;: &#34;cr:subField&#34;,
-    &#34;transform&#34;: &#34;cr:transform&#34;
-  },
-  &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;distribution&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;repo&#34;,
-      &#34;name&#34;: &#34;repo&#34;,
-      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
-      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/pollen-robotics/apple_storage/tree/refs%2Fconvert%2Fparquet&#34;,
-      &#34;encodingFormat&#34;: &#34;git+https&#34;,
-      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;,
-      &#34;name&#34;: &#34;parquet-files-for-config-default&#34;,
-      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;repo&#34;
-      },
-      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
-      &#34;includes&#34;: &#34;default/*/*.parquet&#34;
-    }
-  ],
-  &#34;recordSet&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;dataType&#34;: &#34;cr:Split&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;default_splits/split_name&#34;
-      },
-      &#34;@id&#34;: &#34;default_splits&#34;,
-      &#34;name&#34;: &#34;default_splits&#34;,
-      &#34;description&#34;: &#34;Splits for the default config.&#34;,
-      &#34;field&#34;: [
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default_splits/split_name&#34;,
-          &#34;name&#34;: &#34;split_name&#34;,
-          &#34;description&#34;: &#34;The name of the split.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
         }
       ],
-      &#34;data&#34;: {
-        &#34;default_splits/split_name&#34;: &#34;train&#34;
+      "data": {
+        "default_splits/split_name": "train"
       }
     },
     {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;default&#34;,
-      &#34;name&#34;: &#34;default&#34;,
-      &#34;description&#34;: &#34;pollen-robotics/apple_storage - &#39;default&#39; subset&#34;,
-      &#34;field&#34;: [
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "pollen-robotics/apple_storage - 'default' subset",
+      "field": [
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/split&#34;,
-          &#34;name&#34;: &#34;default/split&#34;,
-          &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            "extract": {
+              "fileProperty": "fullpath"
             },
-            &#34;transform&#34;: {
-              &#34;regex&#34;: &#34;default/(?:partial-)?(train)/.+parquet$&#34;
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
             }
           },
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;default_splits/split_name&#34;
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/observation.state&#34;,
-          &#34;name&#34;: &#34;default/observation.state&#34;,
-          &#34;description&#34;: &#34;Column &#39;observation.state&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Float32&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/observation.state",
+          "name": "default/observation.state",
+          "description": "Column 'observation.state' from the Hugging Face parquet file.",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;observation.state&#34;
+            "extract": {
+              "column": "observation.state"
             }
           },
-          &#34;isArray&#34;: true,
-          &#34;arrayShape&#34;: &#34;19&#34;
+          "isArray": true,
+          "arrayShape": "19"
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/action&#34;,
-          &#34;name&#34;: &#34;default/action&#34;,
-          &#34;description&#34;: &#34;Column &#39;action&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Float32&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/action",
+          "name": "default/action",
+          "description": "Column 'action' from the Hugging Face parquet file.",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;action&#34;
+            "extract": {
+              "column": "action"
             }
           },
-          &#34;isArray&#34;: true,
-          &#34;arrayShape&#34;: &#34;19&#34;
+          "isArray": true,
+          "arrayShape": "19"
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/timestamp&#34;,
-          &#34;name&#34;: &#34;default/timestamp&#34;,
-          &#34;description&#34;: &#34;Column &#39;timestamp&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Float32&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/timestamp",
+          "name": "default/timestamp",
+          "description": "Column 'timestamp' from the Hugging Face parquet file.",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timestamp&#34;
+            "extract": {
+              "column": "timestamp"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/frame_index&#34;,
-          &#34;name&#34;: &#34;default/frame_index&#34;,
-          &#34;description&#34;: &#34;Column &#39;frame_index&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Int64&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/frame_index",
+          "name": "default/frame_index",
+          "description": "Column 'frame_index' from the Hugging Face parquet file.",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;frame_index&#34;
+            "extract": {
+              "column": "frame_index"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/episode_index&#34;,
-          &#34;name&#34;: &#34;default/episode_index&#34;,
-          &#34;description&#34;: &#34;Column &#39;episode_index&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Int64&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/episode_index",
+          "name": "default/episode_index",
+          "description": "Column 'episode_index' from the Hugging Face parquet file.",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;episode_index&#34;
+            "extract": {
+              "column": "episode_index"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/index&#34;,
-          &#34;name&#34;: &#34;default/index&#34;,
-          &#34;description&#34;: &#34;Column &#39;index&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Int64&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/index",
+          "name": "default/index",
+          "description": "Column 'index' from the Hugging Face parquet file.",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;index&#34;
+            "extract": {
+              "column": "index"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;default/task_index&#34;,
-          &#34;name&#34;: &#34;default/task_index&#34;,
-          &#34;description&#34;: &#34;Column &#39;task_index&#39; from the Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;cr:Int64&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;parquet-files-for-config-default&#34;
+          "@type": "cr:Field",
+          "@id": "default/task_index",
+          "name": "default/task_index",
+          "description": "Column 'task_index' from the Hugging Face parquet file.",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;task_index&#34;
+            "extract": {
+              "column": "task_index"
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "split",
+          "observation.state",
+          "action",
+          "timestamp",
+          "frame_index",
+          "episode_index",
+          "index",
+          "task_index"
+        ],
+        "rows": [
+          [
+            "train",
+            "[np.float32(0.1054159), np.float32(0.17775288), np.float32(-0.034828223), np.float32(-1.7795527), np.float32(0.1938768), np.float32(0.23834093), np.float32(0.57367307), np.float32(2.2687576), np.float32(0.3638584), np.float32(-0.107093), np.float32(0.17650287), np.float32(-1.7178313), np.float32(-0.23304716), np.float32(-0.01350467), np.float32(-0.23764093), np.float32(0.71483517), np.float32(0.3042807), np.float32(0.45039922), np.float32(-0.35615972)]",
+            "[np.float32(0.10364092), np.float32(0.17767426), np.float32(-0.035997592), np.float32(-1.7781453), np.float32(0.19254662), np.float32(0.23872802), np.float32(0.57288104), np.float32(2.268928), np.float32(0.33798987), np.float32(-0.12289332), np.float32(0.123407446), np.float32(-1.7406771), np.float32(-0.21982414), np.float32(-0.007903008), np.float32(-0.23672596), np.float32(2.268928), np.float32(0.3065606), np.float32(0.45012394), np.float32(-0.3588098)]",
+            "0.0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "train",
+            "[np.float32(0.10533514), np.float32(0.17774135), np.float32(-0.03509356), np.float32(-1.7792873), np.float32(0.19340634), np.float32(0.23852363), np.float32(0.573371), np.float32(2.2687576), np.float32(0.35963702), np.float32(-0.10983807), np.float32(0.16703357), np.float32(-1.7218335), np.float32(-0.22976868), np.float32(-0.011929522), np.float32(-0.23680514), np.float32(0.8973787), np.float32(0.30457938), np.float32(0.45057604), np.float32(-0.3568391)]",
+            "[np.float32(0.10363448), np.float32(0.17763694), np.float32(-0.03626961), np.float32(-1.7790642), np.float32(0.19158067), np.float32(0.2376576), np.float32(0.5730079), np.float32(2.268928), np.float32(0.3229675), np.float32(-0.13125515), np.float32(0.096074685), np.float32(-1.7481365), np.float32(-0.20632753), np.float32(-0.004209509), np.float32(-0.23626004), np.float32(2.268928), np.float32(0.3067648), np.float32(0.4495879), np.float32(-0.3593738)]",
+            "0.033333335",
+            "1",
+            "0",
+            "1",
+            "0"
+          ]
+        ]
+      }
     }
   ],
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.1&#34;,
-  &#34;name&#34;: &#34;apple_storage&#34;,
-  &#34;description&#34;: &#34;This dataset was created using LeRobot.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Structure\n\t\n\nmeta/info.json:\n{\n    \&#34;codebase_version\&#34;: \&#34;v2.0\&#34;,\n    \&#34;robot_type\&#34;: \&#34;reachy2\&#34;,\n    \&#34;total_episodes\&#34;: 50,\n    \&#34;total_frames\&#34;: 14983,\n    \&#34;total_tasks\&#34;: 1,\n    \&#34;total_videos\&#34;: 50,\n    \&#34;total_chunks\&#34;: 1,\n    \&#34;chunks_size\&#34;: 1000,\n    \&#34;fps\&#34;: 30,\n    \&#34;splits\&#34;: {\n        \&#34;train\&#34;: \&#34;0:50\&#34;\n    },\n    \&#34;data_path\&#34;: \&#34;data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet\&#34;,\n    \&#34;video_path\&#34;:… See the full description on the dataset page: https://huggingface.co/datasets/pollen-robotics/apple_storage.&#34;,
-  &#34;keywords&#34;: [
-    &#34;robotics&#34;,
-    &#34;apache-2.0&#34;,
-    &#34;10K - 100K&#34;,
-    &#34;parquet&#34;,
-    &#34;Tabular&#34;,
-    &#34;Time-series&#34;,
-    &#34;Video&#34;,
-    &#34;Datasets&#34;,
-    &#34;Dask&#34;,
-    &#34;Croissant&#34;,
-    &#34;Polars&#34;,
-    &#34;🇺🇸 Region: US&#34;,
-    &#34;LeRobot&#34;
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "apple_storage",
+  "description": "This dataset was created using LeRobot.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Structure\n\t\n\nmeta/info.json:\n{\n    \"codebase_version\": \"v2.0\",\n    \"robot_type\": \"reachy2\",\n    \"total_episodes\": 50,\n    \"total_frames\": 14983,\n    \"total_tasks\": 1,\n    \"total_videos\": 50,\n    \"total_chunks\": 1,\n    \"chunks_size\": 1000,\n    \"fps\": 30,\n    \"splits\": {\n        \"train\": \"0:50\"\n    },\n    \"data_path\": \"data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet\",\n    \"video_path\":… See the full description on the dataset page: https://huggingface.co/datasets/pollen-robotics/apple_storage.",
+  "keywords": [
+    "robotics",
+    "apache-2.0",
+    "10K - 100K",
+    "parquet",
+    "Tabular",
+    "Time-series",
+    "Video",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "🇺🇸 Region: US",
+    "LeRobot"
   ],
-  &#34;license&#34;: &#34;https://choosealicense.com/licenses/apache-2.0/&#34;,
-  &#34;url&#34;: &#34;https://huggingface.co/datasets/pollen-robotics/apple_storage&#34;
-}</code></pre>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Sidebar toggle
-        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('collapsed');
-        });
-        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('collapsed');
-        });
-
-        // Render markdown descriptions
-        document.querySelectorAll('.markdown').forEach(function(el) {
-            var raw = el.textContent;
-            if (raw && typeof marked !== 'undefined') {
-                el.innerHTML = marked.parse(raw);
-            }
-        });
-
-        function toggleJsonld(btn) {
-            var container = btn.closest('.rs-section, .resource-card, tr, .card');
-            var panel = container.querySelector('.jsonld-panel');
-            if (!panel) {
-                var row = btn.closest('tr');
-                if (row) panel = row.querySelector('.jsonld-panel');
-            }
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                // Highlight with Prism on first open
-                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
-                    var code = panel.querySelector('code');
-                    if (code) Prism.highlightElement(code);
-                    panel.dataset.highlighted = 'true';
-                }
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            }
-        }
-
-        function togglePreview(btn) {
-            var container = btn.closest('.rs-section, .resource-card');
-            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            }
-        }
-
-        // Full JSON-LD modal
-        var modalHighlighted = false;
-        function openJsonldModal() {
-            var modal = document.getElementById('jsonld-modal');
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (!modalHighlighted) {
-                var code = document.getElementById('full-jsonld-code');
-                if (code) Prism.highlightElement(code);
-                modalHighlighted = true;
-            }
-        }
-        function closeJsonldModal() {
-            document.getElementById('jsonld-modal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeJsonldModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeJsonldModal();
-        });
-
-        function copyFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            navigator.clipboard.writeText(text).then(function() {
-                var btn = document.getElementById('copy-jsonld-btn');
-                btn.classList.add('copied');
-                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-                setTimeout(function() {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
-                }, 2000);
-            });
-        }
-
-        function downloadFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            var blob = new Blob([text], {type: 'application/ld+json'});
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'metadata.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/pollen-robotics/apple_storage"
+};
     </script>
+    <script src="visualizer.js"></script>
 </body>
 </html>

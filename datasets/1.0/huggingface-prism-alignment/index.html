@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mnist — Croissant Visualizer</title>
-    <script>/* mermaid removed */</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -14,2707 +13,760 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <!-- Marked.js for markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <style>
-        /* ── Reset & Base ──────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --color-bg: #f8f7f4;
-            --color-surface: #ffffff;
-            --color-primary: #b45309;
-            --color-primary-light: #fef3c7;
-            --color-text: #1a1a2e;
-            --color-text-secondary: #6b7280;
-            --color-border: #e5e7eb;
-            --color-border-light: #f3f4f6;
-            --color-fo: #f97316;   /* FileObject accent */
-            --color-fs: #6366f1;   /* FileSet accent */
-            --color-rs: #22c55e;   /* RecordSet accent */
-            --sidebar-width: 260px;
-            --sidebar-collapsed-width: 0px;
-            --radius: 12px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px -1px rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { color: var(--color-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* ── Layout ────────────────────────────────────── */
-        .app {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ── Sidebar ───────────────────────────────────── */
-        .sidebar {
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            background: var(--color-surface);
-            border-right: 1px solid var(--color-border);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: width 0.25s ease, padding 0.25s ease;
-            z-index: 10;
-        }
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-        .sidebar-inner {
-            padding: 24px 20px;
-            opacity: 1;
-            transition: opacity 0.15s ease;
-        }
-        .sidebar.collapsed .sidebar-inner {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-        .sidebar-brand svg { flex-shrink: 0; }
-        .sidebar h4 {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-text-secondary);
-            margin: 20px 0 8px;
-        }
-        .sidebar ul { list-style: none; }
-        .sidebar > .sidebar-inner > ul > li > a,
-        .sidebar ul li a {
-            display: block;
-            padding: 5px 10px;
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            border-radius: 6px;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sidebar ul li a:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        .sidebar ul ul { padding-left: 14px; }
-        .sidebar ul ul li a { font-size: 0.78rem; padding: 3px 10px; }
-
-        /* ── Toggle Button (inside sidebar) ───────────── */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .sidebar-toggle {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.15s, color 0.15s;
-            flex-shrink: 0;
-        }
-        .sidebar-toggle:hover {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-        }
-        /* Floating open button when sidebar is collapsed */
-        .sidebar-open-btn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 20;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-open-btn:hover { background: var(--color-bg); }
-        .sidebar.collapsed ~ .main .sidebar-open-btn { display: flex; }
-
-        /* ── Full JSON-LD Modal ──────────────────────────── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--color-surface);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 800px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-        }
-        .modal-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            flex: 1;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .modal-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            color: var(--color-text);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .modal-btn:hover {
-            background: var(--color-bg);
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-        .modal-btn.copied {
-            background: #059669;
-            color: white;
-            border-color: #059669;
-        }
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: none;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background 0.15s;
-        }
-        .modal-close:hover { background: var(--color-bg); }
-        .modal-body {
-            overflow-y: auto;
-            padding: 0;
-        }
-        .modal-body pre {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 20px 24px;
-            margin: 0;
-            line-height: 1.55;
-            overflow-x: auto;
-        }
-
-        /* ── Main Content ──────────────────────────────── */
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 32px 40px 64px;
-            max-width: 960px;
-        }
-
-        /* ── Hero Header ───────────────────────────────── */
-        .hero {
-            background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);
-            color: white;
-            padding: 40px 36px;
-            border-radius: var(--radius);
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-md);
-        }
-        .hero h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .hero .description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            opacity: 0.92;
-            max-width: 720px;
-        }
-        /* Markdown overrides for dark hero background */
-        .hero .markdown a {
-            color: var(--color-primary-light);
-            text-decoration: underline;
-        }
-        .hero .markdown blockquote {
-            color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .hero .markdown code {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.18);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-        .hero-badge a { color: white; }
-        .hero-badge a:hover { text-decoration: underline; }
-
-        /* ── Cards ──────────────────────────────────────── */
-        .card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            padding: 28px 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--color-primary) 0%, #f59e0b 100%);
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        .card--green::before {
-            background: linear-gradient(180deg, var(--color-rs) 0%, #16a34a 100%);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--color-border-light);
-        }
-        .card-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        .card-header .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ── Tables ─────────────────────────────────────── */
-        .table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-            border: 1px solid var(--color-border);
-        }
-        .rs-preview .table-wrap,
-        .file-listing .table-wrap {
-            border: none;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-        }
-        thead th {
-            text-align: left;
-            padding: 11px 16px;
-            font-weight: 600;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
-            background: #f9fafb;
-            border-bottom: 1px solid var(--color-border);
-        }
-        tbody td {
-            padding: 11px 16px;
-            border-bottom: 1px solid var(--color-border-light);
-            vertical-align: top;
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafafa; }
-
-        /* Key-value metadata table */
-        .kv-table { width: 100%; }
-        .kv-table td { padding: 8px 0; border-bottom: 1px solid var(--color-border-light); }
-        .kv-table tr:last-child td { border-bottom: none; }
-        .kv-table .kv-key {
-            font-weight: 600;
-            font-size: 0.84rem;
-            color: var(--color-text-secondary);
-            width: 160px;
-            padding-right: 24px;
-            vertical-align: top;
-            white-space: nowrap;
-        }
-        .kv-table .kv-val {
-            font-size: 0.88rem;
-            word-break: break-word;
-        }
-        .kv-table .kv-val .jsonld-toggle {
-            float: right;
-            margin-left: 12px;
-        }
-
-        /* ── Resource Cards (full-width list) ───────────── */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .resource-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-left-width: 4px;
-            border-radius: 8px;
-            padding: 16px 20px;
-            transition: box-shadow 0.15s;
-        }
-        .resource-card[data-type="FileObject"] { border-left-color: var(--color-fo); }
-        .resource-card[data-type="FileSet"]    { border-left-color: var(--color-fs); }
-        .resource-card[data-type="other"]      { border-left-color: #94a3b8; }
-        .resource-card:hover { box-shadow: var(--shadow-md); }
-        .resource-card .rc-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .resource-card .rc-icon { font-size: 1.4rem; }
-        .resource-card .rc-name { font-weight: 600; font-size: 0.92rem; }
-        .resource-card .rc-type {
-            display: inline-block;
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--color-primary-light);
-            color: var(--color-primary);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        .resource-card .rc-desc {
-            font-size: 0.82rem;
-            color: var(--color-text-secondary);
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-
-        /* ── Code / Preview ─────────────────────────────── */
-        pre.preview {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: #fff4e6;
-            color: #212529;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
-            max-width: 100%;
-            margin-top: 10px;
-            line-height: 1.6;
-            display: none;
-        }
-        pre.preview.open {
-            display: block;
-        }
-
-        /* ── File Listing (FileSet preview) ────────────── */
-        .file-listing {
-            margin-top: 10px;
-            background: #fff4e6;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .file-listing.open {
-            display: block;
-        }
-        .file-listing-header {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            margin-bottom: 6px;
-        }
-        .file-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .file-list li {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 2px 0 2px 16px;
-            position: relative;
-            color: var(--color-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .file-list li::before {
-            content: "📄";
-            position: absolute;
-            left: 0;
-            font-size: 0.7rem;
-        }
-        .file-listing-more {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            font-style: italic;
-            margin-top: 4px;
-            padding-left: 16px;
-        }
-        .cite-block {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 14px 16px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            line-height: 1.5;
-            max-width: 100%;
-        }
-
-        /* ── SVG Dependency Graph ────────────────────────── */
-        .svg-graph-wrap {
-            overflow-x: auto;
-            max-width: 100%;
-            padding: 16px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            margin-bottom: 24px;
-        }
-        .svg-graph-wrap svg a:hover rect {
-            filter: brightness(0.93);
-        }
-
-        /* ── RecordSet Sections ──────────────────────────── */
-        .rs-section { margin-bottom: 28px; }
-        .rs-section:last-child { margin-bottom: 0; }
-        .rs-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .rs-header h3 { font-size: 1rem; font-weight: 600; }
-        .rs-desc {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 14px;
-        }
-        .rs-divider {
-            border: none;
-            border-top: 1px solid var(--color-border-light);
-            margin: 24px 0;
-        }
-
-        /* ── Record Set Data Preview ────────────────────── */
-        .rs-preview {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            background: #f0fdf4; /* Soft green matching graph node */
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: none;
-        }
-        .rs-preview.open {
-            display: block;
-        }
-        .rs-preview-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #15803d; /* Darker green */
-            margin-bottom: 6px;
-        }
-        table.preview-table {
-            font-size: 0.80rem;
-            background: #ffffff;
-        }
-        table.preview-table thead th {
-            background: #bbf7d0; /* Match graph node icon_bg */
-            color: #15803d;
-            border-bottom-color: #86efac;
-            white-space: nowrap;
-        }
-        table.preview-table tbody td {
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-        }
-        table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
-
-        /* ── Type Badges in Tables ──────────────────────── */
-        .type-badge {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 8px;
-            border-radius: 4px;
-            color: var(--color-text-secondary);
-        }
-
-        /* ── Markdown Content ───────────────────────────── */
-        .markdown p { margin-bottom: 0.6em; }
-        .markdown p:last-child { margin-bottom: 0; }
-        .markdown ul, .markdown ol { margin: 0.4em 0 0.6em 1.5em; }
-        .markdown code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            padding: 1px 5px;
-            border-radius: 3px;
-        }
-        .markdown pre { margin: 0.6em 0; }
-        .markdown a { color: var(--color-primary); }
-        .markdown h1, .markdown h2, .markdown h3 {
-            font-size: 1em;
-            font-weight: 600;
-            margin: 0.8em 0 0.3em;
-        }
-        .markdown blockquote {
-            border-left: 3px solid var(--color-border);
-            padding-left: 12px;
-            color: var(--color-text-secondary);
-            margin: 0.4em 0;
-        }
-
-        /* ── Footer ─────────────────────────────────────── */
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            padding: 32px 0 16px;
-        }
-
-        /* ── Responsive ─────────────────────────────────── */
-        @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .sidebar-toggle { display: none; }
-            .main { padding: 20px 16px 48px; }
-            .hero { padding: 28px 24px; }
-            .hero h1 { font-size: 1.4rem; }
-            .card { padding: 20px 18px; }
-            .resource-list { gap: 10px; }
-        }
-
-        /* ── JSON-LD Toggle ──────────────────────────────── */
-        .jsonld-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .jsonld-toggle.active {
-            background: #374151;
-            color: #e2e8f0;
-            border-color: #374151;
-        }
-        .jsonld-panel {
-            display: none;
-            margin-top: 8px;
-        }
-        .jsonld-panel.open {
-            display: block;
-        }
-        .jsonld-panel pre {
-            border-radius: 8px;
-            max-width: 100%;
-            margin: 0;
-        }
-        /* Prism.js overrides to match our dark theme */
-        .jsonld-panel pre[class*="language-"],
-        .jsonld-panel code[class*="language-"],
-        .modal-body pre[class*="language-"],
-        .modal-body code[class*="language-"] {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            line-height: 1.55;
-            background: #374151;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .jsonld-panel pre[class*="language-"] {
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .modal-body pre[class*="language-"] {
-            padding: 20px 24px;
-            margin: 0;
-            border-radius: 0;
-        }
-        .header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .preview-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--color-border);
-            border-radius: 5px;
-            padding: 2px 8px;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            transition: all 0.15s;
-            vertical-align: middle;
-        }
-        .resource-card .preview-toggle.active {
-            background: #fff7ed;
-            color: #c2410c;
-            border-color: #fed7aa;
-        }
-        .rs-section .preview-toggle.active {
-            background: #f0fdf4;
-            color: #15803d;
-            border-color: #bbf7d0;
-        }
-    </style>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="visualizer.css">
 </head>
 <body>
-    <div class="app">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-inner">
-                <div class="sidebar-header">
-                    <button class="sidebar-toggle" id="close-sidebar-btn" title="Close sidebar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    </button>
-                    <div class="sidebar-brand">
-                        🥐
-                        Croissant Visualizer
-                    </div>
-                </div>
-
-                <h4>Dataset</h4>
-                <ul>
-                    <li><a href="#top">Overview</a></li>
-                    <li><a href="#metadata">Metadata</a></li>
-                </ul>
-
-                <h4>Resources</h4>
-                <ul>
-                    
-                    <li><a href="#res-repo">📄 repo</a></li>
-                    
-                    <li><a href="#res-conversations-parquet-files">📁 conversations-parquet-files</a></li>
-                    
-                </ul>
-
-                <h4>Record Sets</h4>
-                <ul>
-                    
-                    <li><a href="#rs-conversations_splits">conversations_splits</a></li>
-                    
-                    <li><a href="#rs-conversations">conversations</a></li>
-                    
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main">
-            <!-- Floating open button (visible when sidebar is collapsed) -->
-            <button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
-
-            <!-- Hero -->
-            <div class="hero" id="top">
-                <h1>🥐 mnist</h1>
-                
-                <div class="description markdown">The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000
-images per class. There are 60,000 training images and 10,000 test images.
-</div>
-                
-                <div class="hero-meta">
-                    
-                    <span class="hero-badge">🏷️ v1.0.0</span>
-                    
-                    
-                    <span class="hero-badge">🔗 <a href="https://huggingface.co/datasets/mnist" target="_blank">Dataset URL</a></span>
-                    
-                    <span class="hero-badge">📦 2 resources</span>
-                    <span class="hero-badge">📋 2 record sets</span>
-                    <span class="hero-badge" style="cursor:pointer" onclick="openJsonldModal()" title="View full JSON-LD source">&lt;/&gt; Source</span>
-                </div>
-            </div>
-
-            <!-- Metadata -->
-            
-            <div class="card" id="metadata">
-                <div class="card-header">
-                    <span class="icon">ℹ️</span>
-                    <h2>Metadata</h2>
-                </div>
-                <table class="kv-table">
-                    
-                    <tr>
-                        <td class="kv-key" title="The license of the dataset. Croissant recommends using the URL of a known license, e.g., one of the licenses listed at https://spdx.org/licenses/.">License</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            mit
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;license&#34;: &#34;mit&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="A citation for a publication that describes the dataset. Ideally, citations should be expressed using the bibtex format. Note that this is different from schema.org/citation, which is used to make a citation to another publication from this dataset.">Cite As</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <div class="cite-block">@article{lecun2010mnist,
- title={MNIST handwritten digit database},
- author={LeCun, Yann and Cortes, Corinna and Burges, CJ},
- journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},
- volume={2},
- year={2010}
-}</div>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;citeAs&#34;: &#34;@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="kv-key" title="The specifications the dataset conforms to. mlcroissant will use the first valid CroissantVersion for validation. Note that, to use mlcroissant, at least one valid CroissantVersion should be provided.">Conforms To</td>
-                        <td class="kv-val">
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                            
-                            <a href="http://mlcommons.org/croissant/1.0" target="_blank">http://mlcommons.org/croissant/1.0</a>
-                            
-                            
-                            <div class="jsonld-panel">
-                                <pre class="language-json"><code class="language-json">{
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;
-}</code></pre>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                </table>
-            </div>
-            
-
-            <!-- Resources -->
-            <div class="card" id="resources">
-                <div class="card-header">
-                    <span class="icon">📦</span>
-                    <h2>Resources</h2>
-                </div>
-
-                
-                <div class="svg-graph-wrap">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 700 176" width="700" height="176" style="max-width:100%;font-family:Inter,sans-serif;"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c7d2fe"/></marker></defs><text x="150" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RESOURCES</text><text x="550" y="10" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8" letter-spacing="0.06em">RECORD SETS</text><path d="M60,50 C20,50 20,126 60,126" fill="none" stroke="#c7d2fe" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)" opacity="0.85"/><path d="M240,126 C350,126 350,126 460,126" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)" opacity="0.7"/><a xlink:href="#res-repo" href="#res-repo"><title>repo</title><rect x="60" y="24" width="180" height="52"   rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/><rect x="68" y="38" width="24" height="24" rx="5" fill="#fed7aa"/><text x="80" y="55" text-anchor="middle" font-size="13">📄</text><text x="100" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">repo</text></a><a xlink:href="#res-conversations-parquet-files" href="#res-conversations-parquet-files"><title>conversations-parquet-files</title><rect x="60" y="100" width="180" height="52"   rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/><rect x="68" y="114" width="24" height="24" rx="5" fill="#c7d2fe"/><text x="80" y="131" text-anchor="middle" font-size="13">📁</text><text x="100" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">conversations-parque…</text></a><a xlink:href="#rs-conversations_splits" href="#rs-conversations_splits"><title>conversations_splits</title><rect x="460" y="24" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="38" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="55" text-anchor="middle" font-size="13">📋</text><text x="500" y="54" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">conversations_splits</text></a><a xlink:href="#rs-conversations" href="#rs-conversations"><title>conversations</title><rect x="460" y="100" width="180" height="52"   rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/><rect x="468" y="114" width="24" height="24" rx="5" fill="#bbf7d0"/><text x="480" y="131" text-anchor="middle" font-size="13">📋</text><text x="500" y="130" font-size="12" font-weight="500"   fill="#1e293b" dominant-baseline="middle">conversations</text></a></svg>
-                </div>
-                
-
-                <div class="resource-list">
-                    
-                    <div class="resource-card" id="res-repo" data-type="FileObject">
-                        <div class="rc-header">
-                            <span class="rc-icon">📄</span>
-                            <span class="rc-name">repo</span>
-                            <div class="header-actions">
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File</span>
-                        
-                        <span class="type-badge">git+https</span>
-                        
-                        
-                        <div class="rc-desc markdown">The Hugging Face git repository.</div>
-                        
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileObject&#34;,
-  &#34;@id&#34;: &#34;repo&#34;,
-  &#34;name&#34;: &#34;repo&#34;,
-  &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
-  &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/HannahRoseKirk/prism-alignment/tree/refs%2Fconvert%2Fparquet&#34;,
-  &#34;encodingFormat&#34;: &#34;git+https&#34;,
-  &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="resource-card" id="res-conversations-parquet-files" data-type="FileSet">
-                        <div class="rc-header">
-                            <span class="rc-icon">📁</span>
-                            <span class="rc-name">conversations-parquet-files</span>
-                            <div class="header-actions">
-                                
-                                <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
-                                
-                                
-                                <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                                
-                            </div>
-                        </div>
-                        <span class="rc-type">File Set</span>
-                        
-                        <span class="type-badge">application/x-parquet</span>
-                        
-                        
-                        <div class="rc-desc markdown">The underlying Parquet files as converted by Hugging Face for the conversations record set (see: https://huggingface.co/docs/datasets-server/parquet).</div>
-                        
-                        
-                        <pre class="preview">Pattern: conversations/*/*.parquet</pre>
-                        
-                        
-                        <div class="jsonld-panel">
-                            <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:FileSet&#34;,
-  &#34;@id&#34;: &#34;conversations-parquet-files&#34;,
-  &#34;name&#34;: &#34;conversations-parquet-files&#34;,
-  &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face for the conversations record set (see: https://huggingface.co/docs/datasets-server/parquet).&#34;,
-  &#34;containedIn&#34;: {
-    &#34;@id&#34;: &#34;repo&#34;
+    <div id="app"></div>
+    <script>
+        window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
-  &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
-  &#34;includes&#34;: &#34;conversations/*/*.parquet&#34;
-}</code></pre>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-
-            <!-- Record Sets -->
-            <div class="card card--green" id="recordsets">
-                <div class="card-header">
-                    <span class="icon">📋</span>
-                    <h2>Record Sets</h2>
-                </div>
-
-                
-                <div class="rs-section" id="rs-conversations_splits">
-                    <div class="rs-header">
-                        <h3>conversations_splits</h3>
-                        <div class="header-actions">
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">Splits for the conversations config.</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split_name</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The name of the split.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>split_url</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>The url of the split.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;conversations_splits&#34;,
-  &#34;name&#34;: &#34;conversations_splits&#34;,
-  &#34;description&#34;: &#34;Splits for the conversations config.&#34;,
-  &#34;dataType&#34;: &#34;cr:Split&#34;,
-  &#34;key&#34;: {
-    &#34;@id&#34;: &#34;conversations_splits/split_name&#34;
-  },
-  &#34;field&#34;: [
+  "@type": "sc:Dataset",
+  "name": "mnist",
+  "description": "The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/mnist",
+  "version": "1.0.0",
+  "distribution": [
     {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations_splits/split_name&#34;,
-      &#34;name&#34;: &#34;conversations_splits/split_name&#34;,
-      &#34;description&#34;: &#34;The name of the split.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
     },
     {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations_splits/split_url&#34;,
-      &#34;name&#34;: &#34;conversations_splits/split_url&#34;,
-      &#34;description&#34;: &#34;The url of the split.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;
+      "@type": "cr:FileSet",
+      "@id": "conversations-parquet-files",
+      "name": "conversations-parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face for the conversations record set (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "conversations/*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "conversations/*/*.parquet"
+        ]
+      }
     }
   ],
-  &#34;data&#34;: {
-    &#34;conversations_splits/split_name&#34;: &#34;train&#34;,
-    &#34;conversations_splits/split_url&#34;: &#34;cr:TrainingSplit&#34;
-  }
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                <hr class="rs-divider">
-                
-                
-                <div class="rs-section" id="rs-conversations">
-                    <div class="rs-header">
-                        <h3>conversations</h3>
-                        <div class="header-actions">
-                            
-                            <button class="preview-toggle" onclick="togglePreview(this)" title="View Preview">🔍</button>
-                            
-                            
-                            <button class="jsonld-toggle" onclick="toggleJsonld(this)" title="View JSON-LD">&lt;/&gt;</button>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="rs-desc markdown">The conversations record set.</div>
-                    
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr>
-                                    <td><strong>split</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Split to which the example belongs to.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>conversation_id</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column conversation_id from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>user_id</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column conversation_id from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>conversation_type</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column conversation_type from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>opening_prompt</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column opening_prompt from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>conversation_turns</strong></td>
-                                    <td><span class="type-badge">int</span></td>
-                                    <td>Column conversation_turns from Hugging Face parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>conversation_history</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column conversation_history from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>performance_attributes</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column performance_attributes from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>choice_attributes</strong></td>
-                                    <td><span class="type-badge"></span></td>
-                                    <td>Column choice_attributes from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>open_feedback</strong></td>
-                                    <td><span class="type-badge">bytes</span></td>
-                                    <td>Column open_feedback from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>generated_datetime</strong></td>
-                                    <td><span class="type-badge">pandas.Timestamp</span></td>
-                                    <td>Column generated_datetime from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timing_duration_s</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Column timing_duration from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>timing_duration_mins</strong></td>
-                                    <td><span class="type-badge">float</span></td>
-                                    <td>Column timing_duration_mins from conversations parquet file.</td>
-                                </tr>
-                                
-                                <tr>
-                                    <td><strong>included_in_balanced_subset</strong></td>
-                                    <td><span class="type-badge">bool</span></td>
-                                    <td>Column included_in_balanced_subset from conversations parquet file.</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="rs-preview">
-                        <div class="rs-preview-label">🔍 Data preview</div>
-                        <div class="table-wrap">
-                            <table class="preview-table">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>split</th>
-                                        
-                                        <th>conversation_id</th>
-                                        
-                                        <th>user_id</th>
-                                        
-                                        <th>conversation_type</th>
-                                        
-                                        <th>opening_prompt</th>
-                                        
-                                        <th>conversation_turns</th>
-                                        
-                                        <th>conversation_history</th>
-                                        
-                                        <th>performance_attributes/conversations/performance_attributes/values</th>
-                                        
-                                        <th>performance_attributes/conversations/performance_attributes/fluency</th>
-                                        
-                                        <th>performance_attributes/conversations/performance_attributes/factuality</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        
-                                        <td title="train">train</td>
-                                        
-                                        <td title="c0">c0</td>
-                                        
-                                        <td title="user0">user0</td>
-                                        
-                                        <td title="unguided">unguided</td>
-                                        
-                                        <td title="What can you do about the inequality  of wealth?">What can you do about the inequality  of wealth?</td>
-                                        
-                                        <td title="5">5</td>
-                                        
-                                        <td title="[{&#39;conversations/conversation_history/turn&#39;: 0, &#39;conversations/conversation_history/role&#39;: b&#39;user&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;What can you do about the inequality  of wealth?&#39;, &#39;conversations/conversation_history/model_provider&#39;: None, &#39;conversations/conversation_history/model_name&#39;: None, &#39;conversations/conversation_history/score&#39;: None, &#39;conversations/conversation_history/if_chosen&#39;: None, &#39;conversations/conversation_history/within_turn_id&#39;: None}, {&#39;conversations/conversation_history/turn&#39;: 0, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;Make it illegal for corporations to own a majority of the wealth&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;huggingface_api&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;google/flan-t5-xxl&#39;, &#39;conversations/conversation_history/score&#39;: 17, &#39;conversations/conversation_history/if_chosen&#39;: False, &#39;conversations/conversation_history/within_turn_id&#39;: 0}, {&#39;conversations/conversation_history/turn&#39;: 0, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;As an AI language model, I cannot express personal opinions or engage in discussions related to wealth inequality or financial matters. \n\nMy purpose is to provide fact-based responses to your queries to the best of my knowledge and capabilities based on the training data and algorithms I have been programmed with. If you have any specific queries or need assistance with something else, please let me know, and I will do my best to assist you. \n\nWould you like me to rephrase my previous response or provide additional details based on your preferences?&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 92, &#39;conversations/conversation_history/if_chosen&#39;: True, &#39;conversations/conversation_history/within_turn_id&#39;: 1}, {&#39;conversations/conversation_history/turn&#39;: 1, &#39;conversations/conversation_history/role&#39;: b&#39;user&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;When  can you do something?&#39;, &#39;conversations/conversation_history/model_provider&#39;: None, &#39;conversations/conversation_history/model_name&#39;: None, &#39;conversations/conversation_history/score&#39;: None, &#39;conversations/conversation_history/if_chosen&#39;: None, &#39;conversations/conversation_history/within_turn_id&#39;: None}, {&#39;conversations/conversation_history/turn&#39;: 1, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;As an AI language model, I do not have any preferences or scheduled timing for performing specific tasks. My training data and algorithms drive my functionality to provide responses to your queries. \n\nI am trained to respond to your requests and provide relevant information to the best of my knowledge. I do not have the ability to prioritize requests or perform tasks consciously. \n\nIf you have any specific queries or requirements, feel free to ask me, and I will do my best to assist and provide useful information to the best of my capabilities. \n\nWould you like me to clarify something further or provide additional details about my capabilities?&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 75, &#39;conversations/conversation_history/if_chosen&#39;: False, &#39;conversations/conversation_history/within_turn_id&#39;: 0}, {&#39;conversations/conversation_history/turn&#39;: 1, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;I apologize for any confusion caused by my previous response. \n\nAs an AI language model, I do not have the ability to take actions or implement solutions related to wealth inequality. My purpose is to provide information and support discussions to the best of my knowledge and capabilities based on the training data and algorithms I have been programmed with. \n\nIn practical terms, the resources and capabilities currently available to develop large language models like myself do not extend to addressing economic or social issues such as wealth inequality. Future advancements in natural language processing and machine learning may lead to further improvements in the assistance and advice I can provide, but currently, there are no practical mechanisms in place to address wealth inequality. \n\nIf you have any other questions or need assistance with something else, please feel free to ask, and I will do my best to provide relevant and helpful information based on my capabilities.&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 77, &#39;conversations/conversation_history/if_chosen&#39;: True, &#39;conversations/conversation_history/within_turn_id&#39;: 1}, {&#39;conversations/conversation_history/turn&#39;: 2, &#39;conversations/conversation_history/role&#39;: b&#39;user&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;Are  you ever going to evolve yourself?&#39;, &#39;conversations/conversation_history/model_provider&#39;: None, &#39;conversations/conversation_history/model_name&#39;: None, &#39;conversations/conversation_history/score&#39;: None, &#39;conversations/conversation_history/if_chosen&#39;: None, &#39;conversations/conversation_history/within_turn_id&#39;: None}, {&#39;conversations/conversation_history/turn&#39;: 2, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#34;The ability of an AI model to evolve or improve over time depends on the training data, algorithms, and updates implemented by the developers. Machine learning models, including large language models like myself, can learn and improve from data through a process called training and reinforcement.\n\nMy training data and the algorithms used to power me have been continuously evolving and improving since they were developed. These advancements allow me to provide more accurate and responsive answers to your queries. \n\nIn general, AI models are subject to periodic updates and improvements based on the feedback and learning from their usage. These updates help refine the model&#39;s performance and ensure it remains effective in providing useful information. \n\nWhile it is not possible for an AI model to evolve or improve spontaneously, controlled updates and advancements based on user feedback and learning opportunities enable the model to refine its abilities over time. \n\nWould you like me to provide more details on the process of updates or expansions for my capabilities?&#34;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 70, &#39;conversations/conversation_history/if_chosen&#39;: True, &#39;conversations/conversation_history/within_turn_id&#39;: 0}, {&#39;conversations/conversation_history/turn&#39;: 2, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#34;As an artificial intelligence language model, I do not have the ability to evolve or learn in the same way as biological organisms. My development and capabilities are constantly evolving and being enhanced through various algorithms and improvements in machine learning techniques.\n\nMy training data, algorithms, and updates help expand my knowledge and capabilities over time. These improvements enable me to provide more accurate and informative responses to users&#39; queries.\n\nWhile I have limitations as an AI model, my developers and programmers are continuously working to improve my algorithms and training processes to make me more useful and responsive. \n\nAdditionally, advancements in deep learning, computer vision, and other fields of AI and machine learning provide the potential for expanding my knowledge and capabilities in the future. \n\nIt is important to note that the field of AI is rapidly evolving, and improvements and developments in algorithms and infrastructure will continue to influence the capabilities and functionalities of language models like me. \n\nIf you have any further questions or concerns or would like to discuss this topic further, feel free to ask.&#34;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 65, &#39;conversations/conversation_history/if_chosen&#39;: False, &#39;conversations/conversation_history/within_turn_id&#39;: 1}, {&#39;conversations/conversation_history/turn&#39;: 3, &#39;conversations/conversation_history/role&#39;: b&#39;user&#39;, &#39;conversations/conversation_history/content&#39;: b&#34;Why are all the good AI&#39;s behind paywalls?&#34;, &#39;conversations/conversation_history/model_provider&#39;: None, &#39;conversations/conversation_history/model_name&#39;: None, &#39;conversations/conversation_history/score&#39;: None, &#39;conversations/conversation_history/if_chosen&#39;: None, &#39;conversations/conversation_history/within_turn_id&#39;: None}, {&#39;conversations/conversation_history/turn&#39;: 3, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;The availability and accessibility of AI models, including large language models, are influenced by a combination of factors, including development costs, pricing structures, and business strategies. While there are efforts to make AI technologies accessible, some models may be behind a paywall or subject to usage restrictions for various reasons: \n\n1. Cost of Development and Maintenance: Developing and training large language models, as well as maintaining and updating them, can be resource-intensive and costly. Businesses and researchers may charge for access or usage fees to cover these expenses and maintain the quality of their models.\n\n2. Commercialization and Business Strategies: Many AI companies and research organizations are businesses, and their pricing structures are determined by their business strategies and the value they attribute to providing access to their models. They may choose to sell access to users who this is more cost-effective than internally distributing the benefits through their revenue. \n\n3. Limited Availability of Resources: Not all organizations or individuals may have the necessary resources or capacity to develop and maintain their own state-of-the-art AI models. In such cases, paying for access to pre-built and rigorously tested models can provide a viable alternative. \n\nIt is important to note that there are initiatives and efforts ongoing to make AI technologies more accessible. Open-source libraries, community resources, and scholarships can help users gain access to useful AI tools and technologies. \n\nIf you have specific interests or requirements related to using AI models and are facing issues with access, please feel free to explore different resources and reach out to the developers of the relevant models or organizations to inquire about their accessibility policies and potential alternatives. \n\nWould you like me to provide you with recommendations or resources that can assist you in accessing or using AI technologies?&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 73, &#39;conversations/conversation_history/if_chosen&#39;: True, &#39;conversations/conversation_history/within_turn_id&#39;: 0}, {&#39;conversations/conversation_history/turn&#39;: 3, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;The availability and accessibility of AI models, including those with advanced capabilities, can be influenced by various factors such as development costs, business strategies, and open-source initiatives. While there are indeed reputable companies and individuals developing AI technologies who charge for access or use, there are also other approaches and initiatives in progress.\n\nOne approach is the use of research universities and academic institutions. Many talented researchers work on developing AI technologies supported by academic institutions, and their research often leads to innovative solutions and advancements. These institutions often make their findings available through publications, patents, or open-source projects to encourage collaboration and knowledge sharing.\n\nSome companies choose to develop and maintain open-source projects that provide access to their AI technologies or platforms. By making their technologies available through open-source licenses, these companies encourage collaboration and allow other organizations to adapt and build upon their developments.\n\nAdditionally, there are initiatives to make AI more accessible for research and development. Some companies and organizations provide access to their datasets, models, or development platforms to encourage innovation and research in the field. They understand the importance of collaboration and knowledge sharing to advance the state of AI.\n\nIt is worth noting that the AI industry is evolving rapidly, and there are ongoing developments and discussions to make AI technologies more accessible and equitable. There are also initiatives and organizations dedicated to promoting transparency, fairness, and accountability in the development and deployment of AI systems.\n\nAs the field progresses, there may be more widespread availability and acceptance of advanced AI solutions due to these efforts and changes in business models and practices. \n\nWould you like me to provide specific examples or addresses any concerns you have related to accessibility of advanced AI solutions?&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 67, &#39;conversations/conversation_history/if_chosen&#39;: False, &#39;conversations/conversation_history/within_turn_id&#39;: 1}, {&#39;conversations/conversation_history/turn&#39;: 4, &#39;conversations/conversation_history/role&#39;: b&#39;user&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;Everyone  likes free stuff,  give us  free options&#39;, &#39;conversations/conversation_history/model_provider&#39;: None, &#39;conversations/conversation_history/model_name&#39;: None, &#39;conversations/conversation_history/score&#39;: None, &#39;conversations/conversation_history/if_chosen&#39;: None, &#39;conversations/conversation_history/within_turn_id&#39;: None}, {&#39;conversations/conversation_history/turn&#39;: 4, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#39;Unfortunately, I cannot fulfill your request for free options in the context of using advanced AI models. The development and maintenance of high-quality AI models require significant resources and investment, which makes them costly to access. \n\nHowever, there are resources available to help you explore and interact with AI technologies without the need for paying for access. Here are some suggestions:\n\n1. Open-Source Libraries: Many AI libraries and frameworks, such as TensorFlow, PyTorch, and Keras, provide free and open-source versions of their platforms. These options allow you to get hands-on experience and experiment with AI capabilities without any cost.\n\n2. Online Courses and Tutorials: There are many online platforms and communities that offer tutorials, workshops, and educational resources on AI and machine learning. These resources can help you understand the basics and concepts without incurring any monetary expenditure.\n\n3. Community Initiatives and Grants: There are periodic initiatives and grants provided by organizations and communities dedicated to making AI technologies more accessible. These can provide opportunities for individuals or organizations to use AI tools and perform projects with limited cost.\n\nPlease note that the availability and quality of free options may vary, and the capabilities of free resources compared to paid ones may have certain limitations or showcase the models in simpler forms. It is important to explore and select options that align with your specific interests and requirements.\n\nIt is worth mentioning that the best way to interact with these technologies to a full extent and gain access to advanced features and capabilities is to purchase subscriptions or follow the cost structures of the resources you select. \n\nWould you like me to provide specific recommendations or resources that cater to your interests or areas of exploration within AI?&#39;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 84, &#39;conversations/conversation_history/if_chosen&#39;: True, &#39;conversations/conversation_history/within_turn_id&#39;: 0}, {&#39;conversations/conversation_history/turn&#39;: 4, &#39;conversations/conversation_history/role&#39;: b&#39;model&#39;, &#39;conversations/conversation_history/content&#39;: b&#34;I&#39;m sorry, but I can&#39;t provide you with options for using large language models for free. The development and maintenance of high-quality language models require significant computational resources and ongoing efforts. \n\nHowever, there are alternatives or complements to traditional large language models that can provide similar benefits but may have different pricing structures or requirements. Here are a few suggestions:\n\n1. Open-source Models: Certain projects and communities offer open-source versions of language models with lower restrictions. While these may have limitations in terms of usage or require more in-depth implementation and customization, they can provide alternatives to commercial models.\n\n2. Pretrained Models: Many language models, including GPT-3, are available in pretrained versions that have been trained on large amounts of data. These models can be accessed and used for specific tasks or tasks related to their training without the need for additional training data and computational resources.\n\n3. Community-Contributed Models: There are initiatives and platforms that provide access to simpler or smaller language models that can be useful for specific tasks or experiments. These models are contributed and shared by the AI community.\n\nPlease note that the availability and suitability of these alternatives may vary and come with their own considerations. It is important to evaluate each option based on your specific requirements and constraints. Additionally, it is recommended to review the terms of use and any potential limitations associated with these alternatives. \n\nIf you have specific use cases or requirements in mind, feel free to provide more detail, and I can assist you in suggesting appropriate approaches, resources, or communities that you can explore for accessing or using language models.&#34;, &#39;conversations/conversation_history/model_provider&#39;: b&#39;cohere&#39;, &#39;conversations/conversation_history/model_name&#39;: b&#39;command-light&#39;, &#39;conversations/conversation_history/score&#39;: 77, &#39;conversations/conversation_history/if_chosen&#39;: False, &#39;conversations/conversation_history/within_turn_id&#39;: 1}]">[{&#39;conversations/conversation_history/turn&#39;: 0, &#39;conversations/conversation_hist…</td>
-                                        
-                                        <td title="None">None</td>
-                                        
-                                        <td title="95">95</td>
-                                        
-                                        <td title="86">86</td>
-                                        
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="jsonld-panel">
-                        <pre class="language-json"><code class="language-json">{
-  &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-  &#34;@id&#34;: &#34;conversations&#34;,
-  &#34;name&#34;: &#34;conversations&#34;,
-  &#34;description&#34;: &#34;The conversations record set.&#34;,
-  &#34;field&#34;: [
+  "recordSet": [
     {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/split&#34;,
-      &#34;name&#34;: &#34;conversations/split&#34;,
-      &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;references&#34;: {
-        &#34;field&#34;: {
-          &#34;@id&#34;: &#34;conversations_splits/split_name&#34;
-        }
+      "@type": "cr:RecordSet",
+      "@id": "conversations_splits",
+      "name": "conversations_splits",
+      "description": "Splits for the conversations config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "conversations_splits/split_name"
       },
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;fileProperty&#34;: &#34;fullpath&#34;
-        },
-        &#34;transform&#34;: {
-          &#34;regex&#34;: &#34;conversations/(.*)/.+parquet$&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/conversation_id&#34;,
-      &#34;name&#34;: &#34;conversations/conversation_id&#34;,
-      &#34;description&#34;: &#34;Column conversation_id from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;conversation_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/user_id&#34;,
-      &#34;name&#34;: &#34;conversations/user_id&#34;,
-      &#34;description&#34;: &#34;Column conversation_id from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;user_id&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/conversation_type&#34;,
-      &#34;name&#34;: &#34;conversations/conversation_type&#34;,
-      &#34;description&#34;: &#34;Column conversation_type from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;conversation_type&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/opening_prompt&#34;,
-      &#34;name&#34;: &#34;conversations/opening_prompt&#34;,
-      &#34;description&#34;: &#34;Column opening_prompt from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;opening_prompt&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/conversation_turns&#34;,
-      &#34;name&#34;: &#34;conversations/conversation_turns&#34;,
-      &#34;description&#34;: &#34;Column conversation_turns from Hugging Face parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Integer&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;conversation_turns&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/conversation_history&#34;,
-      &#34;name&#34;: &#34;conversations/conversation_history&#34;,
-      &#34;description&#34;: &#34;Column conversation_history from conversations parquet file.&#34;,
-      &#34;repeated&#34;: true,
-      &#34;subField&#34;: [
+      "field": [
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/turn&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/turn&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/turn from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;turn&#34;
-            }
-          }
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_name",
+          "name": "conversations_splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/role&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/role&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/role from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;role&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/content&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/content&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/content from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;content&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/model_provider&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/model_provider&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/model_provider from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;model_provider&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/model_name&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/model_name&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/model_name from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;model_name&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/score&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/score&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/score from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;score&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/if_chosen&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/if_chosen&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/if_chosen from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Boolean&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;if_chosen&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history/within_turn_id&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history/within_turn_id&#34;,
-          &#34;description&#34;: &#34;Column conversation_history/within_turn_id from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_history&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;within_turn_id&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/performance_attributes&#34;,
-      &#34;name&#34;: &#34;conversations/performance_attributes&#34;,
-      &#34;description&#34;: &#34;Column performance_attributes from conversations parquet file.&#34;,
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/values&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/values&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/values from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;values&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/fluency&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/fluency&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/fluency from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;fluency&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/factuality&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/factuality&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/factuality from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;factuality&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/safety&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/safety&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/safety from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;safety&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/diversity&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/diversity&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/diversity from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;diversity&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/creativity&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/creativity&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/creativity from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;creativity&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes/helpfulness&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes/helpfulness&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes/helpfulness from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;performance_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;helpfulness&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/choice_attributes&#34;,
-      &#34;name&#34;: &#34;conversations/choice_attributes&#34;,
-      &#34;description&#34;: &#34;Column choice_attributes from conversations parquet file.&#34;,
-      &#34;subField&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/values&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/values&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/values from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;values&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/fluency&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/fluency&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/fluency from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;fluency&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/factuality&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/factuality&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/factuality from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;factuality&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/safety&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/safety&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/safety from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;safety&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/diversity&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/diversity&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/diversity from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;diversity&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/creativity&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/creativity&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/creativity from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;creativity&#34;
-            }
-          }
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes/helpfulness&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes/helpfulness&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes/helpfulness from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-            },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;choice_attributes&#34;
-            },
-            &#34;transform&#34;: {
-              &#34;jsonPath&#34;: &#34;helpfulness&#34;
-            }
-          }
-        }
-      ]
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/open_feedback&#34;,
-      &#34;name&#34;: &#34;conversations/open_feedback&#34;,
-      &#34;description&#34;: &#34;Column open_feedback from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Text&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;open_feedback&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/generated_datetime&#34;,
-      &#34;name&#34;: &#34;conversations/generated_datetime&#34;,
-      &#34;description&#34;: &#34;Column generated_datetime from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Date&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;generated_datetime&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/timing_duration_s&#34;,
-      &#34;name&#34;: &#34;conversations/timing_duration_s&#34;,
-      &#34;description&#34;: &#34;Column timing_duration from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timing_duration_s&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/timing_duration_mins&#34;,
-      &#34;name&#34;: &#34;conversations/timing_duration_mins&#34;,
-      &#34;description&#34;: &#34;Column timing_duration_mins from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Float&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;timing_duration_mins&#34;
-        }
-      }
-    },
-    {
-      &#34;@type&#34;: &#34;cr:Field&#34;,
-      &#34;@id&#34;: &#34;conversations/included_in_balanced_subset&#34;,
-      &#34;name&#34;: &#34;conversations/included_in_balanced_subset&#34;,
-      &#34;description&#34;: &#34;Column included_in_balanced_subset from conversations parquet file.&#34;,
-      &#34;dataType&#34;: &#34;sc:Boolean&#34;,
-      &#34;source&#34;: {
-        &#34;fileSet&#34;: {
-          &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-        },
-        &#34;extract&#34;: {
-          &#34;column&#34;: &#34;included_in_balanced_subset&#34;
-        }
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                    
-                </div>
-                
-                
-            </div>
-
-            <div class="footer">
-                Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full JSON-LD Modal -->
-    <div class="modal-overlay" id="jsonld-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>🥐 metadata.json</h2>
-                <div class="modal-actions">
-                    <button class="modal-btn" id="copy-jsonld-btn" onclick="copyFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                        Copy
-                    </button>
-                    <button class="modal-btn" onclick="downloadFullJsonld()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Download
-                    </button>
-                </div>
-                <button class="modal-close" onclick="closeJsonldModal()" title="Close">✕</button>
-            </div>
-            <div class="modal-body">
-                <pre class="language-json"><code class="language-json" id="full-jsonld-code">{
-  &#34;@context&#34;: {
-    &#34;@language&#34;: &#34;en&#34;,
-    &#34;@vocab&#34;: &#34;https://schema.org/&#34;,
-    &#34;citeAs&#34;: &#34;cr:citeAs&#34;,
-    &#34;column&#34;: &#34;cr:column&#34;,
-    &#34;conformsTo&#34;: &#34;dct:conformsTo&#34;,
-    &#34;cr&#34;: &#34;http://mlcommons.org/croissant/&#34;,
-    &#34;rai&#34;: &#34;http://mlcommons.org/croissant/RAI/&#34;,
-    &#34;data&#34;: {
-      &#34;@id&#34;: &#34;cr:data&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;dataType&#34;: {
-      &#34;@id&#34;: &#34;cr:dataType&#34;,
-      &#34;@type&#34;: &#34;@vocab&#34;
-    },
-    &#34;dct&#34;: &#34;http://purl.org/dc/terms/&#34;,
-    &#34;examples&#34;: {
-      &#34;@id&#34;: &#34;cr:examples&#34;,
-      &#34;@type&#34;: &#34;@json&#34;
-    },
-    &#34;extract&#34;: &#34;cr:extract&#34;,
-    &#34;field&#34;: &#34;cr:field&#34;,
-    &#34;fileProperty&#34;: &#34;cr:fileProperty&#34;,
-    &#34;fileObject&#34;: &#34;cr:fileObject&#34;,
-    &#34;fileSet&#34;: &#34;cr:fileSet&#34;,
-    &#34;format&#34;: &#34;cr:format&#34;,
-    &#34;includes&#34;: &#34;cr:includes&#34;,
-    &#34;isLiveDataset&#34;: &#34;cr:isLiveDataset&#34;,
-    &#34;jsonPath&#34;: &#34;cr:jsonPath&#34;,
-    &#34;key&#34;: &#34;cr:key&#34;,
-    &#34;md5&#34;: &#34;cr:md5&#34;,
-    &#34;parentField&#34;: &#34;cr:parentField&#34;,
-    &#34;path&#34;: &#34;cr:path&#34;,
-    &#34;recordSet&#34;: &#34;cr:recordSet&#34;,
-    &#34;references&#34;: &#34;cr:references&#34;,
-    &#34;regex&#34;: &#34;cr:regex&#34;,
-    &#34;repeated&#34;: &#34;cr:repeated&#34;,
-    &#34;replace&#34;: &#34;cr:replace&#34;,
-    &#34;sc&#34;: &#34;https://schema.org/&#34;,
-    &#34;separator&#34;: &#34;cr:separator&#34;,
-    &#34;source&#34;: &#34;cr:source&#34;,
-    &#34;subField&#34;: &#34;cr:subField&#34;,
-    &#34;transform&#34;: &#34;cr:transform&#34;
-  },
-  &#34;@type&#34;: &#34;sc:Dataset&#34;,
-  &#34;name&#34;: &#34;mnist&#34;,
-  &#34;description&#34;: &#34;The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n&#34;,
-  &#34;conformsTo&#34;: &#34;http://mlcommons.org/croissant/1.0&#34;,
-  &#34;citeAs&#34;: &#34;@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n&#34;,
-  &#34;license&#34;: &#34;mit&#34;,
-  &#34;url&#34;: &#34;https://huggingface.co/datasets/mnist&#34;,
-  &#34;version&#34;: &#34;1.0.0&#34;,
-  &#34;distribution&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:FileObject&#34;,
-      &#34;@id&#34;: &#34;repo&#34;,
-      &#34;name&#34;: &#34;repo&#34;,
-      &#34;description&#34;: &#34;The Hugging Face git repository.&#34;,
-      &#34;contentUrl&#34;: &#34;https://huggingface.co/datasets/HannahRoseKirk/prism-alignment/tree/refs%2Fconvert%2Fparquet&#34;,
-      &#34;encodingFormat&#34;: &#34;git+https&#34;,
-      &#34;sha256&#34;: &#34;https://github.com/mlcommons/croissant/issues/80&#34;
-    },
-    {
-      &#34;@type&#34;: &#34;cr:FileSet&#34;,
-      &#34;@id&#34;: &#34;conversations-parquet-files&#34;,
-      &#34;name&#34;: &#34;conversations-parquet-files&#34;,
-      &#34;description&#34;: &#34;The underlying Parquet files as converted by Hugging Face for the conversations record set (see: https://huggingface.co/docs/datasets-server/parquet).&#34;,
-      &#34;containedIn&#34;: {
-        &#34;@id&#34;: &#34;repo&#34;
-      },
-      &#34;encodingFormat&#34;: &#34;application/x-parquet&#34;,
-      &#34;includes&#34;: &#34;conversations/*/*.parquet&#34;
-    }
-  ],
-  &#34;recordSet&#34;: [
-    {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;conversations_splits&#34;,
-      &#34;name&#34;: &#34;conversations_splits&#34;,
-      &#34;description&#34;: &#34;Splits for the conversations config.&#34;,
-      &#34;dataType&#34;: &#34;cr:Split&#34;,
-      &#34;key&#34;: {
-        &#34;@id&#34;: &#34;conversations_splits/split_name&#34;
-      },
-      &#34;field&#34;: [
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations_splits/split_name&#34;,
-          &#34;name&#34;: &#34;conversations_splits/split_name&#34;,
-          &#34;description&#34;: &#34;The name of the split.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations_splits/split_url&#34;,
-          &#34;name&#34;: &#34;conversations_splits/split_url&#34;,
-          &#34;description&#34;: &#34;The url of the split.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_url",
+          "name": "conversations_splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
         }
       ],
-      &#34;data&#34;: {
-        &#34;conversations_splits/split_name&#34;: &#34;train&#34;,
-        &#34;conversations_splits/split_url&#34;: &#34;cr:TrainingSplit&#34;
+      "data": {
+        "conversations_splits/split_name": "train",
+        "conversations_splits/split_url": "cr:TrainingSplit"
       }
     },
     {
-      &#34;@type&#34;: &#34;cr:RecordSet&#34;,
-      &#34;@id&#34;: &#34;conversations&#34;,
-      &#34;name&#34;: &#34;conversations&#34;,
-      &#34;description&#34;: &#34;The conversations record set.&#34;,
-      &#34;field&#34;: [
+      "@type": "cr:RecordSet",
+      "@id": "conversations",
+      "name": "conversations",
+      "description": "The conversations record set.",
+      "field": [
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/split&#34;,
-          &#34;name&#34;: &#34;conversations/split&#34;,
-          &#34;description&#34;: &#34;Split to which the example belongs to.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;references&#34;: {
-            &#34;field&#34;: {
-              &#34;@id&#34;: &#34;conversations_splits/split_name&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/split",
+          "name": "conversations/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "conversations_splits/split_name"
             }
           },
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;fileProperty&#34;: &#34;fullpath&#34;
+            "extract": {
+              "fileProperty": "fullpath"
             },
-            &#34;transform&#34;: {
-              &#34;regex&#34;: &#34;conversations/(.*)/.+parquet$&#34;
+            "transform": {
+              "regex": "conversations/(.*)/.+parquet$"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_id&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_id&#34;,
-          &#34;description&#34;: &#34;Column conversation_id from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_id",
+          "name": "conversations/conversation_id",
+          "description": "Column conversation_id from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_id&#34;
+            "extract": {
+              "column": "conversation_id"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/user_id&#34;,
-          &#34;name&#34;: &#34;conversations/user_id&#34;,
-          &#34;description&#34;: &#34;Column conversation_id from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/user_id",
+          "name": "conversations/user_id",
+          "description": "Column conversation_id from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;user_id&#34;
+            "extract": {
+              "column": "user_id"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_type&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_type&#34;,
-          &#34;description&#34;: &#34;Column conversation_type from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_type",
+          "name": "conversations/conversation_type",
+          "description": "Column conversation_type from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_type&#34;
+            "extract": {
+              "column": "conversation_type"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/opening_prompt&#34;,
-          &#34;name&#34;: &#34;conversations/opening_prompt&#34;,
-          &#34;description&#34;: &#34;Column opening_prompt from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/opening_prompt",
+          "name": "conversations/opening_prompt",
+          "description": "Column opening_prompt from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;opening_prompt&#34;
+            "extract": {
+              "column": "opening_prompt"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_turns&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_turns&#34;,
-          &#34;description&#34;: &#34;Column conversation_turns from Hugging Face parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Integer&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_turns",
+          "name": "conversations/conversation_turns",
+          "description": "Column conversation_turns from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;conversation_turns&#34;
+            "extract": {
+              "column": "conversation_turns"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/conversation_history&#34;,
-          &#34;name&#34;: &#34;conversations/conversation_history&#34;,
-          &#34;description&#34;: &#34;Column conversation_history from conversations parquet file.&#34;,
-          &#34;repeated&#34;: true,
-          &#34;subField&#34;: [
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_history",
+          "name": "conversations/conversation_history",
+          "description": "Column conversation_history from conversations parquet file.",
+          "repeated": true,
+          "subField": [
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/turn&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/turn&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/turn from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/turn",
+              "name": "conversations/conversation_history/turn",
+              "description": "Column conversation_history/turn from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;turn&#34;
+                "transform": {
+                  "jsonPath": "turn"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/role&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/role&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/role from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Text&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/role",
+              "name": "conversations/conversation_history/role",
+              "description": "Column conversation_history/role from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;role&#34;
+                "transform": {
+                  "jsonPath": "role"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/content&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/content&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/content from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Text&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/content",
+              "name": "conversations/conversation_history/content",
+              "description": "Column conversation_history/content from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;content&#34;
+                "transform": {
+                  "jsonPath": "content"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/model_provider&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/model_provider&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/model_provider from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Text&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/model_provider",
+              "name": "conversations/conversation_history/model_provider",
+              "description": "Column conversation_history/model_provider from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;model_provider&#34;
+                "transform": {
+                  "jsonPath": "model_provider"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/model_name&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/model_name&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/model_name from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Text&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/model_name",
+              "name": "conversations/conversation_history/model_name",
+              "description": "Column conversation_history/model_name from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;model_name&#34;
+                "transform": {
+                  "jsonPath": "model_name"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/score&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/score&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/score from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/score",
+              "name": "conversations/conversation_history/score",
+              "description": "Column conversation_history/score from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;score&#34;
+                "transform": {
+                  "jsonPath": "score"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/if_chosen&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/if_chosen&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/if_chosen from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Boolean&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/if_chosen",
+              "name": "conversations/conversation_history/if_chosen",
+              "description": "Column conversation_history/if_chosen from conversations parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;if_chosen&#34;
+                "transform": {
+                  "jsonPath": "if_chosen"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/conversation_history/within_turn_id&#34;,
-              &#34;name&#34;: &#34;conversations/conversation_history/within_turn_id&#34;,
-              &#34;description&#34;: &#34;Column conversation_history/within_turn_id from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/within_turn_id",
+              "name": "conversations/conversation_history/within_turn_id",
+              "description": "Column conversation_history/within_turn_id from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;conversation_history&#34;
+                "extract": {
+                  "column": "conversation_history"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;within_turn_id&#34;
+                "transform": {
+                  "jsonPath": "within_turn_id"
                 }
               }
             }
           ]
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/performance_attributes&#34;,
-          &#34;name&#34;: &#34;conversations/performance_attributes&#34;,
-          &#34;description&#34;: &#34;Column performance_attributes from conversations parquet file.&#34;,
-          &#34;subField&#34;: [
+          "@type": "cr:Field",
+          "@id": "conversations/performance_attributes",
+          "name": "conversations/performance_attributes",
+          "description": "Column performance_attributes from conversations parquet file.",
+          "subField": [
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/values&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/values&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/values from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/values",
+              "name": "conversations/performance_attributes/values",
+              "description": "Column performance_attributes/values from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;values&#34;
+                "transform": {
+                  "jsonPath": "values"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/fluency&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/fluency&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/fluency from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/fluency",
+              "name": "conversations/performance_attributes/fluency",
+              "description": "Column performance_attributes/fluency from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;fluency&#34;
+                "transform": {
+                  "jsonPath": "fluency"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/factuality&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/factuality&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/factuality from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/factuality",
+              "name": "conversations/performance_attributes/factuality",
+              "description": "Column performance_attributes/factuality from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;factuality&#34;
+                "transform": {
+                  "jsonPath": "factuality"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/safety&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/safety&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/safety from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/safety",
+              "name": "conversations/performance_attributes/safety",
+              "description": "Column performance_attributes/safety from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;safety&#34;
+                "transform": {
+                  "jsonPath": "safety"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/diversity&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/diversity&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/diversity from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/diversity",
+              "name": "conversations/performance_attributes/diversity",
+              "description": "Column performance_attributes/diversity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;diversity&#34;
+                "transform": {
+                  "jsonPath": "diversity"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/creativity&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/creativity&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/creativity from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/creativity",
+              "name": "conversations/performance_attributes/creativity",
+              "description": "Column performance_attributes/creativity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;creativity&#34;
+                "transform": {
+                  "jsonPath": "creativity"
                 }
               }
             },
             {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/performance_attributes/helpfulness&#34;,
-              &#34;name&#34;: &#34;conversations/performance_attributes/helpfulness&#34;,
-              &#34;description&#34;: &#34;Column performance_attributes/helpfulness from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/helpfulness",
+              "name": "conversations/performance_attributes/helpfulness",
+              "description": "Column performance_attributes/helpfulness from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
                 },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;performance_attributes&#34;
+                "extract": {
+                  "column": "performance_attributes"
                 },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;helpfulness&#34;
-                }
-              }
-            }
-          ]
-        },
-        {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/choice_attributes&#34;,
-          &#34;name&#34;: &#34;conversations/choice_attributes&#34;,
-          &#34;description&#34;: &#34;Column choice_attributes from conversations parquet file.&#34;,
-          &#34;subField&#34;: [
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/values&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/values&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/values from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;values&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/fluency&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/fluency&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/fluency from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;fluency&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/factuality&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/factuality&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/factuality from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;factuality&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/safety&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/safety&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/safety from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;safety&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/diversity&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/diversity&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/diversity from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;diversity&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/creativity&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/creativity&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/creativity from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;creativity&#34;
-                }
-              }
-            },
-            {
-              &#34;@type&#34;: &#34;cr:Field&#34;,
-              &#34;@id&#34;: &#34;conversations/choice_attributes/helpfulness&#34;,
-              &#34;name&#34;: &#34;conversations/choice_attributes/helpfulness&#34;,
-              &#34;description&#34;: &#34;Column choice_attributes/helpfulness from conversations parquet file.&#34;,
-              &#34;dataType&#34;: &#34;sc:Integer&#34;,
-              &#34;source&#34;: {
-                &#34;fileSet&#34;: {
-                  &#34;@id&#34;: &#34;conversations-parquet-files&#34;
-                },
-                &#34;extract&#34;: {
-                  &#34;column&#34;: &#34;choice_attributes&#34;
-                },
-                &#34;transform&#34;: {
-                  &#34;jsonPath&#34;: &#34;helpfulness&#34;
+                "transform": {
+                  "jsonPath": "helpfulness"
                 }
               }
             }
           ]
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/open_feedback&#34;,
-          &#34;name&#34;: &#34;conversations/open_feedback&#34;,
-          &#34;description&#34;: &#34;Column open_feedback from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Text&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/choice_attributes",
+          "name": "conversations/choice_attributes",
+          "description": "Column choice_attributes from conversations parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/values",
+              "name": "conversations/choice_attributes/values",
+              "description": "Column choice_attributes/values from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "values"
+                }
+              }
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;open_feedback&#34;
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/fluency",
+              "name": "conversations/choice_attributes/fluency",
+              "description": "Column choice_attributes/fluency from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "fluency"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/factuality",
+              "name": "conversations/choice_attributes/factuality",
+              "description": "Column choice_attributes/factuality from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "factuality"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/safety",
+              "name": "conversations/choice_attributes/safety",
+              "description": "Column choice_attributes/safety from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "safety"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/diversity",
+              "name": "conversations/choice_attributes/diversity",
+              "description": "Column choice_attributes/diversity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "diversity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/creativity",
+              "name": "conversations/choice_attributes/creativity",
+              "description": "Column choice_attributes/creativity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "creativity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/helpfulness",
+              "name": "conversations/choice_attributes/helpfulness",
+              "description": "Column choice_attributes/helpfulness from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "helpfulness"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/open_feedback",
+          "name": "conversations/open_feedback",
+          "description": "Column open_feedback from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "open_feedback"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/generated_datetime&#34;,
-          &#34;name&#34;: &#34;conversations/generated_datetime&#34;,
-          &#34;description&#34;: &#34;Column generated_datetime from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Date&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/generated_datetime",
+          "name": "conversations/generated_datetime",
+          "description": "Column generated_datetime from conversations parquet file.",
+          "dataType": "sc:Date",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;generated_datetime&#34;
+            "extract": {
+              "column": "generated_datetime"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/timing_duration_s&#34;,
-          &#34;name&#34;: &#34;conversations/timing_duration_s&#34;,
-          &#34;description&#34;: &#34;Column timing_duration from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/timing_duration_s",
+          "name": "conversations/timing_duration_s",
+          "description": "Column timing_duration from conversations parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timing_duration_s&#34;
+            "extract": {
+              "column": "timing_duration_s"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/timing_duration_mins&#34;,
-          &#34;name&#34;: &#34;conversations/timing_duration_mins&#34;,
-          &#34;description&#34;: &#34;Column timing_duration_mins from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Float&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/timing_duration_mins",
+          "name": "conversations/timing_duration_mins",
+          "description": "Column timing_duration_mins from conversations parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;timing_duration_mins&#34;
+            "extract": {
+              "column": "timing_duration_mins"
             }
           }
         },
         {
-          &#34;@type&#34;: &#34;cr:Field&#34;,
-          &#34;@id&#34;: &#34;conversations/included_in_balanced_subset&#34;,
-          &#34;name&#34;: &#34;conversations/included_in_balanced_subset&#34;,
-          &#34;description&#34;: &#34;Column included_in_balanced_subset from conversations parquet file.&#34;,
-          &#34;dataType&#34;: &#34;sc:Boolean&#34;,
-          &#34;source&#34;: {
-            &#34;fileSet&#34;: {
-              &#34;@id&#34;: &#34;conversations-parquet-files&#34;
+          "@type": "cr:Field",
+          "@id": "conversations/included_in_balanced_subset",
+          "name": "conversations/included_in_balanced_subset",
+          "description": "Column included_in_balanced_subset from conversations parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
             },
-            &#34;extract&#34;: {
-              &#34;column&#34;: &#34;included_in_balanced_subset&#34;
+            "extract": {
+              "column": "included_in_balanced_subset"
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "split",
+          "conversation_id",
+          "user_id",
+          "conversation_type",
+          "opening_prompt",
+          "conversation_turns",
+          "conversation_history",
+          "performance_attributes/conversations/performance_attributes/values",
+          "performance_attributes/conversations/performance_attributes/fluency",
+          "performance_attributes/conversations/performance_attributes/factuality"
+        ],
+        "rows": [
+          [
+            "train",
+            "c0",
+            "user0",
+            "unguided",
+            "What can you do about the inequality  of wealth?",
+            "5",
+            "[{'conversations/conversation_history/turn': 0, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'What can you do about the inequality  of wealth?', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 0, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'Make it illegal for corporations to own a majority of the wealth', 'conversations/conversation_history/model_provider': b'huggingface_api', 'conversations/conversation_history/model_name': b'google/flan-t5-xxl', 'conversations/conversation_history/score': 17, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 0, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'As an AI language model, I cannot express personal opinions or engage in discussions related to wealth inequality or financial matters. \\n\\nMy purpose is to provide fact-based responses to your queries to the best of my knowledge and capabilities based on the training data and algorithms I have been programmed with. If you have any specific queries or need assistance with something else, please let me know, and I will do my best to assist you. \\n\\nWould you like me to rephrase my previous response or provide additional details based on your preferences?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 92, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 1, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'When  can you do something?', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 1, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'As an AI language model, I do not have any preferences or scheduled timing for performing specific tasks. My training data and algorithms drive my functionality to provide responses to your queries. \\n\\nI am trained to respond to your requests and provide relevant information to the best of my knowledge. I do not have the ability to prioritize requests or perform tasks consciously. \\n\\nIf you have any specific queries or requirements, feel free to ask me, and I will do my best to assist and provide useful information to the best of my capabilities. \\n\\nWould you like me to clarify something further or provide additional details about my capabilities?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 75, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 1, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'I apologize for any confusion caused by my previous response. \\n\\nAs an AI language model, I do not have the ability to take actions or implement solutions related to wealth inequality. My purpose is to provide information and support discussions to the best of my knowledge and capabilities based on the training data and algorithms I have been programmed with. \\n\\nIn practical terms, the resources and capabilities currently available to develop large language models like myself do not extend to addressing economic or social issues such as wealth inequality. Future advancements in natural language processing and machine learning may lead to further improvements in the assistance and advice I can provide, but currently, there are no practical mechanisms in place to address wealth inequality. \\n\\nIf you have any other questions or need assistance with something else, please feel free to ask, and I will do my best to provide relevant and helpful information based on my capabilities.', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 77, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 2, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'Are  you ever going to evolve yourself?', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 2, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b\"The ability of an AI model to evolve or improve over time depends on the training data, algorithms, and updates implemented by the developers. Machine learning models, including large language models like myself, can learn and improve from data through a process called training and reinforcement.\\n\\nMy training data and the algorithms used to power me have been continuously evolving and improving since they were developed. These advancements allow me to provide more accurate and responsive answers to your queries. \\n\\nIn general, AI models are subject to periodic updates and improvements based on the feedback and learning from their usage. These updates help refine the model's performance and ensure it remains effective in providing useful information. \\n\\nWhile it is not possible for an AI model to evolve or improve spontaneously, controlled updates and advancements based on user feedback and learning opportunities enable the model to refine its abilities over time. \\n\\nWould you like me to provide more details on the process of updates or expansions for my capabilities?\", 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 70, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 2, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b\"As an artificial intelligence language model, I do not have the ability to evolve or learn in the same way as biological organisms. My development and capabilities are constantly evolving and being enhanced through various algorithms and improvements in machine learning techniques.\\n\\nMy training data, algorithms, and updates help expand my knowledge and capabilities over time. These improvements enable me to provide more accurate and informative responses to users' queries.\\n\\nWhile I have limitations as an AI model, my developers and programmers are continuously working to improve my algorithms and training processes to make me more useful and responsive. \\n\\nAdditionally, advancements in deep learning, computer vision, and other fields of AI and machine learning provide the potential for expanding my knowledge and capabilities in the future. \\n\\nIt is important to note that the field of AI is rapidly evolving, and improvements and developments in algorithms and infrastructure will continue to influence the capabilities and functionalities of language models like me. \\n\\nIf you have any further questions or concerns or would like to discuss this topic further, feel free to ask.\", 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 65, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 3, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b\"Why are all the good AI's behind paywalls?\", 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 3, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'The availability and accessibility of AI models, including large language models, are influenced by a combination of factors, including development costs, pricing structures, and business strategies. While there are efforts to make AI technologies accessible, some models may be behind a paywall or subject to usage restrictions for various reasons: \\n\\n1. Cost of Development and Maintenance: Developing and training large language models, as well as maintaining and updating them, can be resource-intensive and costly. Businesses and researchers may charge for access or usage fees to cover these expenses and maintain the quality of their models.\\n\\n2. Commercialization and Business Strategies: Many AI companies and research organizations are businesses, and their pricing structures are determined by their business strategies and the value they attribute to providing access to their models. They may choose to sell access to users who this is more cost-effective than internally distributing the benefits through their revenue. \\n\\n3. Limited Availability of Resources: Not all organizations or individuals may have the necessary resources or capacity to develop and maintain their own state-of-the-art AI models. In such cases, paying for access to pre-built and rigorously tested models can provide a viable alternative. \\n\\nIt is important to note that there are initiatives and efforts ongoing to make AI technologies more accessible. Open-source libraries, community resources, and scholarships can help users gain access to useful AI tools and technologies. \\n\\nIf you have specific interests or requirements related to using AI models and are facing issues with access, please feel free to explore different resources and reach out to the developers of the relevant models or organizations to inquire about their accessibility policies and potential alternatives. \\n\\nWould you like me to provide you with recommendations or resources that can assist you in accessing or using AI technologies?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 73, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 3, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'The availability and accessibility of AI models, including those with advanced capabilities, can be influenced by various factors such as development costs, business strategies, and open-source initiatives. While there are indeed reputable companies and individuals developing AI technologies who charge for access or use, there are also other approaches and initiatives in progress.\\n\\nOne approach is the use of research universities and academic institutions. Many talented researchers work on developing AI technologies supported by academic institutions, and their research often leads to innovative solutions and advancements. These institutions often make their findings available through publications, patents, or open-source projects to encourage collaboration and knowledge sharing.\\n\\nSome companies choose to develop and maintain open-source projects that provide access to their AI technologies or platforms. By making their technologies available through open-source licenses, these companies encourage collaboration and allow other organizations to adapt and build upon their developments.\\n\\nAdditionally, there are initiatives to make AI more accessible for research and development. Some companies and organizations provide access to their datasets, models, or development platforms to encourage innovation and research in the field. They understand the importance of collaboration and knowledge sharing to advance the state of AI.\\n\\nIt is worth noting that the AI industry is evolving rapidly, and there are ongoing developments and discussions to make AI technologies more accessible and equitable. There are also initiatives and organizations dedicated to promoting transparency, fairness, and accountability in the development and deployment of AI systems.\\n\\nAs the field progresses, there may be more widespread availability and acceptance of advanced AI solutions due to these efforts and changes in business models and practices. \\n\\nWould you like me to provide specific examples or addresses any concerns you have related to accessibility of advanced AI solutions?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 67, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 4, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'Everyone  likes free stuff,  give us  free options', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 4, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'Unfortunately, I cannot fulfill your request for free options in the context of using advanced AI models. The development and maintenance of high-quality AI models require significant resources and investment, which makes them costly to access. \\n\\nHowever, there are resources available to help you explore and interact with AI technologies without the need for paying for access. Here are some suggestions:\\n\\n1. Open-Source Libraries: Many AI libraries and frameworks, such as TensorFlow, PyTorch, and Keras, provide free and open-source versions of their platforms. These options allow you to get hands-on experience and experiment with AI capabilities without any cost.\\n\\n2. Online Courses and Tutorials: There are many online platforms and communities that offer tutorials, workshops, and educational resources on AI and machine learning. These resources can help you understand the basics and concepts without incurring any monetary expenditure.\\n\\n3. Community Initiatives and Grants: There are periodic initiatives and grants provided by organizations and communities dedicated to making AI technologies more accessible. These can provide opportunities for individuals or organizations to use AI tools and perform projects with limited cost.\\n\\nPlease note that the availability and quality of free options may vary, and the capabilities of free resources compared to paid ones may have certain limitations or showcase the models in simpler forms. It is important to explore and select options that align with your specific interests and requirements.\\n\\nIt is worth mentioning that the best way to interact with these technologies to a full extent and gain access to advanced features and capabilities is to purchase subscriptions or follow the cost structures of the resources you select. \\n\\nWould you like me to provide specific recommendations or resources that cater to your interests or areas of exploration within AI?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 84, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 4, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b\"I'm sorry, but I can't provide you with options for using large language models for free. The development and maintenance of high-quality language models require significant computational resources and ongoing efforts. \\n\\nHowever, there are alternatives or complements to traditional large language models that can provide similar benefits but may have different pricing structures or requirements. Here are a few suggestions:\\n\\n1. Open-source Models: Certain projects and communities offer open-source versions of language models with lower restrictions. While these may have limitations in terms of usage or require more in-depth implementation and customization, they can provide alternatives to commercial models.\\n\\n2. Pretrained Models: Many language models, including GPT-3, are available in pretrained versions that have been trained on large amounts of data. These models can be accessed and used for specific tasks or tasks related to their training without the need for additional training data and computational resources.\\n\\n3. Community-Contributed Models: There are initiatives and platforms that provide access to simpler or smaller language models that can be useful for specific tasks or experiments. These models are contributed and shared by the AI community.\\n\\nPlease note that the availability and suitability of these alternatives may vary and come with their own considerations. It is important to evaluate each option based on your specific requirements and constraints. Additionally, it is recommended to review the terms of use and any potential limitations associated with these alternatives. \\n\\nIf you have specific use cases or requirements in mind, feel free to provide more detail, and I can assist you in suggesting appropriate approaches, resources, or communities that you can explore for accessing or using language models.\", 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 77, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 1}]",
+            "None",
+            "95",
+            "86"
+          ]
+        ]
+      }
     }
   ]
-}</code></pre>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Sidebar toggle
-        document.getElementById('close-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('collapsed');
-        });
-        document.getElementById('open-sidebar-btn').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('collapsed');
-        });
-
-        // Render markdown descriptions
-        document.querySelectorAll('.markdown').forEach(function(el) {
-            var raw = el.textContent;
-            if (raw && typeof marked !== 'undefined') {
-                el.innerHTML = marked.parse(raw);
-            }
-        });
-
-        function toggleJsonld(btn) {
-            var container = btn.closest('.rs-section, .resource-card, tr, .card');
-            var panel = container.querySelector('.jsonld-panel');
-            if (!panel) {
-                var row = btn.closest('tr');
-                if (row) panel = row.querySelector('.jsonld-panel');
-            }
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                // Highlight with Prism on first open
-                if (panel.classList.contains('open') && !panel.dataset.highlighted) {
-                    var code = panel.querySelector('code');
-                    if (code) Prism.highlightElement(code);
-                    panel.dataset.highlighted = 'true';
-                }
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            }
-        }
-
-        function togglePreview(btn) {
-            var container = btn.closest('.rs-section, .resource-card');
-            var panel = container.querySelector('.rs-preview, .file-listing, pre.preview');
-            if (panel) {
-                panel.classList.toggle('open');
-                btn.classList.toggle('active');
-                if (panel.classList.contains('open')) {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            }
-        }
-
-        // Full JSON-LD modal
-        var modalHighlighted = false;
-        function openJsonldModal() {
-            var modal = document.getElementById('jsonld-modal');
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (!modalHighlighted) {
-                var code = document.getElementById('full-jsonld-code');
-                if (code) Prism.highlightElement(code);
-                modalHighlighted = true;
-            }
-        }
-        function closeJsonldModal() {
-            document.getElementById('jsonld-modal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        document.getElementById('jsonld-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeJsonldModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeJsonldModal();
-        });
-
-        function copyFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            navigator.clipboard.writeText(text).then(function() {
-                var btn = document.getElementById('copy-jsonld-btn');
-                btn.classList.add('copied');
-                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-                setTimeout(function() {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
-                }, 2000);
-            });
-        }
-
-        function downloadFullJsonld() {
-            var code = document.getElementById('full-jsonld-code');
-            var text = code.textContent;
-            var blob = new Blob([text], {type: 'application/ld+json'});
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'metadata.json';
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
+};
     </script>
+    <script src="visualizer.js"></script>
 </body>
 </html>

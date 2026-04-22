@@ -209,14 +209,14 @@ def main(argv: list | None = None) -> None:
     parser.add_argument(
         "--output",
         default=None,
-        help="Output HTML file (default: index-js.html next to the JSON-LD).",
+        help="Output HTML file (default: index.html next to the JSON-LD).",
     )
     args = parser.parse_args(argv)
     jsonld = args.jsonld
     if args.output:
         output = epath.Path(args.output)
     else:
-        output = epath.Path(jsonld).parent / "index-js.html"
+        output = epath.Path(jsonld).parent / "index.html"
     visualize_js(jsonld=jsonld, output=output)
 
 
