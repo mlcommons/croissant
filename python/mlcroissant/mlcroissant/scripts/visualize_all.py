@@ -82,9 +82,7 @@ def main(argv):
             rel_path = os.path.relpath(dataset_path, os.getcwd())
             if rel_path in changed_files:
                 to_process.append(dataset_path)
-        logging.info(
-            f"Incremental run. Processing {len(to_process)} changed datasets."
-        )
+        logging.info(f"Incremental run. Processing {len(to_process)} changed datasets.")
 
     success_count = 0
     for dataset_path in to_process:
@@ -96,9 +94,7 @@ def main(argv):
         except Exception as e:
             logging.error(f"Failed to visualize {dataset_path}: {e}")
 
-    logging.info(
-        f"Successfully visualized {success_count}/{len(to_process)} datasets."
-    )
+    logging.info(f"Successfully visualized {success_count}/{len(to_process)} datasets.")
 
 
 if __name__ == "__main__":

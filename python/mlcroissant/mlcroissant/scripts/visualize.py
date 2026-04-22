@@ -27,11 +27,8 @@ from absl import logging
 from etils import epath
 
 import mlcroissant as mlc
-
-from mlcroissant.scripts.visualize_utils import (
-    _get_or_generate_recordset_preview,
-    _resolve_fileset_files,
-)
+from mlcroissant.scripts.visualize_utils import _get_or_generate_recordset_preview
+from mlcroissant.scripts.visualize_utils import _resolve_fileset_files
 
 # Directory containing static assets (visualizer.js, visualizer.css)
 _STATIC_DIR = pathlib.Path(__file__).parent / "static"
@@ -74,9 +71,7 @@ def _augment_distribution(
                 ):
                     try:
                         with file_path.open("r") as f:
-                            text_preview = "".join(
-                                [f.readline() for _ in range(5)]
-                            )
+                            text_preview = "".join([f.readline() for _ in range(5)])
                         entry["cr:examples"] = {"text_preview": text_preview}
                     except Exception as e:
                         logging.warning(
@@ -154,8 +149,7 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     if not isinstance(distributions, list):
         distributions = [distributions]
     augmented_dists = [
-        _augment_distribution(d, metadata.distribution, folder)
-        for d in distributions
+        _augment_distribution(d, metadata.distribution, folder) for d in distributions
     ]
     augmented["distribution"] = augmented_dists
 
@@ -163,9 +157,7 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     record_sets = augmented.get("recordSet", [])
     if not isinstance(record_sets, list):
         record_sets = [record_sets]
-    augmented_rs = [
-        _augment_record_set(rs, dataset, folder) for rs in record_sets
-    ]
+    augmented_rs = [_augment_record_set(rs, dataset, folder) for rs in record_sets]
     augmented["recordSet"] = augmented_rs
 
     # Inject the augmented JSON-LD inline into the HTML template.
