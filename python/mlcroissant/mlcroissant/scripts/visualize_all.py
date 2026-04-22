@@ -7,9 +7,9 @@ import sys
 from absl import app
 from absl import flags
 from absl import logging
-import csscompressor
+import csscompressor  # type: ignore
 from etils import epath
-import jsmin
+import jsmin  # type: ignore
 
 from mlcroissant.scripts.visualize import visualize_js
 
