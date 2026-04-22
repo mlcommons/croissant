@@ -2,7 +2,6 @@
 
 import os
 import pathlib
-import shutil
 import sys
 
 import csscompressor
@@ -122,9 +121,14 @@ def main(argv):
         output_path = dataset_path.parent / "index.html"
         # Calculate relative path to shared static assets
         static_path = os.path.relpath(static_dst_dir, output_path.parent)
-        logging.info(f"Generating visualization for {dataset_path} -> {output_path} using static_path={static_path}")
+        logging.info(
+            f"Generating visualization for {dataset_path} -> {output_path} using"
+            f" static_path={static_path}"
+        )
         try:
-            visualize_js(jsonld=str(dataset_path), output=output_path, static_path=static_path)
+            visualize_js(
+                jsonld=str(dataset_path), output=output_path, static_path=static_path
+            )
             success_count += 1
         except Exception as e:
             logging.error(f"Failed to visualize {dataset_path}: {e}")
