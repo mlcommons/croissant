@@ -9,7 +9,7 @@ from absl import flags
 from absl import logging
 from etils import epath
 
-from mlcroissant.scripts.visualize_js import visualize_js
+from mlcroissant.scripts.visualize import visualize_js
 
 flags.DEFINE_string(
     "changed_files",
@@ -32,7 +32,7 @@ FLAGS = flags.FLAGS
 # Files that, when changed, trigger a full regeneration of all datasets.
 _VISUALIZER_FILES = [
     "python/mlcroissant/mlcroissant/scripts/visualize.py",
-    "python/mlcroissant/mlcroissant/scripts/visualize_js.py",
+    "python/mlcroissant/mlcroissant/scripts/visualize_utils.py",
     "python/mlcroissant/mlcroissant/scripts/templates/visualizer_js.html",
     "python/mlcroissant/mlcroissant/scripts/static/visualizer.js",
     "python/mlcroissant/mlcroissant/scripts/static/visualizer.css",
