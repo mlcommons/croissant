@@ -168,21 +168,19 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     ]
     augmented["recordSet"] = augmented_rs
 
-    # Write the augmented JSON-LD as a JS side-file that sets a global variable.
-    # Using a <script> tag (not fetch) means this works from file:// too.
+    # Inject the augmented JSON-LD inline into the HTML template.
+    # A simple placeholder replacement keeps this Jinja2-free.
+    # The inline <script> sets window.__CROISSANT_DATA__ synchronously,
+    # so the page works from file:// with no web server required.
     output_dir = pathlib.Path(str(output)).parent
-    augmented_js_path = output_dir / "metadata-augmented.js"
-    augmented_js_path.write_text(
-        "window.__CROISSANT_DATA__ = "
+    data_script = (
+        "<script>window.__CROISSANT_DATA__ = "
         + json.dumps(augmented, indent=2, ensure_ascii=False)
-        + ";\n",
-        encoding="utf-8",
+        + ";</script>"
     )
-    logging.info(f"Wrote augmented JSON-LD to {augmented_js_path}")
-
-    # Copy the static HTML template as index.html (no Jinja2 rendering needed
-    # — the template is now fully static; data is loaded at runtime via fetch).
-    shutil.copy(_TEMPLATES_DIR / "visualizer.html", output)
+    template_html = (_TEMPLATES_DIR / "visualizer.html").read_text(encoding="utf-8")
+    html = template_html.replace("<!-- DATASET_DATA -->", data_script)
+    pathlib.Path(str(output)).write_text(html, encoding="utf-8")
     print(f"Wrote visualization to {output}")
 
     # Copy static assets next to the output file

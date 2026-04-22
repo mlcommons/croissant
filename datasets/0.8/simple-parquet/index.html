@@ -19,9 +19,120 @@
 </head>
 <body>
     <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
-    <!-- Dataset JSON-LD (written by visualize.py alongside this file).
-         Using a <script> tag instead of fetch() so this works from file:// -->
-    <script src="./metadata-augmented.js"></script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-parquet",
+  "description": "Example to read Parquet files.",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "dataframe",
+      "contentUrl": "data/dataframe.parquet",
+      "encodingFormat": "application/x-parquet",
+      "sha256": "SHA256"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "persons",
+      "description": "List of persons.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "Name of the person.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "dataframe",
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "age",
+          "description": "Age of the person.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "dataframe",
+            "extract": {
+              "column": "age"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "name",
+          "age"
+        ],
+        "rows": [
+          [
+            "person0",
+            "0"
+          ],
+          [
+            "person1",
+            "1"
+          ],
+          [
+            "person2",
+            "2"
+          ],
+          [
+            "person3",
+            "3"
+          ],
+          [
+            "person4",
+            "4"
+          ]
+        ]
+      }
+    }
+  ]
+};</script>
     <script src="visualizer.js"></script>
 </body>
 </html>
