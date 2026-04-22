@@ -4,13 +4,12 @@ import os
 import pathlib
 import sys
 
-import csscompressor
-import jsmin
-
 from absl import app
 from absl import flags
 from absl import logging
+import csscompressor
 from etils import epath
+import jsmin
 
 from mlcroissant.scripts.visualize import visualize_js
 
