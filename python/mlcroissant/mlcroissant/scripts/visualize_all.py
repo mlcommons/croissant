@@ -5,6 +5,9 @@ import pathlib
 import shutil
 import sys
 
+import csscompressor
+import jsmin
+
 from absl import app
 from absl import flags
 from absl import logging
@@ -73,16 +76,25 @@ def main(argv):
 
     all_datasets = get_all_datasets(FLAGS.datasets_dir)
 
-    # Copy static assets once to the shared location
+    # Minify and copy static assets once to the shared location
     static_src_dir = pathlib.Path(__file__).parent / "static"
     static_dst_dir = pathlib.Path(FLAGS.datasets_dir) / "static"
     try:
         static_dst_dir.mkdir(parents=True, exist_ok=True)
-        for asset in ("visualizer.js", "visualizer.css"):
-            shutil.copy(static_src_dir / asset, static_dst_dir / asset)
-        logging.info(f"Copied static assets to {static_dst_dir}")
+
+        # Minify JS
+        js_src = (static_src_dir / "visualizer.js").read_text(encoding="utf-8")
+        js_min = jsmin.jsmin(js_src)
+        (static_dst_dir / "visualizer.min.js").write_text(js_min, encoding="utf-8")
+
+        # Minify CSS
+        css_src = (static_src_dir / "visualizer.css").read_text(encoding="utf-8")
+        css_min = csscompressor.compress(css_src)
+        (static_dst_dir / "visualizer.min.css").write_text(css_min, encoding="utf-8")
+
+        logging.info(f"Minified and copied static assets to {static_dst_dir}")
     except Exception as e:
-        logging.error(f"Failed to copy static assets: {e}")
+        logging.error(f"Failed to minify static assets: {e}")
         sys.exit(1)
 
     to_process = []
