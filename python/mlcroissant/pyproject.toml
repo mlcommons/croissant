@@ -45,7 +45,9 @@ documentation = "https://mlcommons.org/working-groups/data/croissant/"
 # Installed through `pip install -e .[dev]`
 dev = [
   "black==23.11.0",
+  "csscompressor",
   "flake8-docstrings",
+  "jsmin",
   "mlcroissant[audio]",
   "mlcroissant[beam]",
   "mlcroissant[git]",

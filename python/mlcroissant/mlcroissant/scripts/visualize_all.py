@@ -30,6 +30,11 @@ flags.DEFINE_string(
     "datasets",
     "Directory containing the datasets.",
 )
+flags.DEFINE_string(
+    "static_dir",
+    None,
+    "Directory to copy static assets to. Defaults to <datasets_dir>/static.",
+)
 
 FLAGS = flags.FLAGS
 
@@ -78,7 +83,10 @@ def main(argv):
 
     # Minify and copy static assets once to the shared location
     static_src_dir = pathlib.Path(__file__).parent / "static"
-    static_dst_dir = pathlib.Path(FLAGS.datasets_dir) / "static"
+    if FLAGS.static_dir:
+        static_dst_dir = pathlib.Path(FLAGS.static_dir)
+    else:
+        static_dst_dir = pathlib.Path(FLAGS.datasets_dir) / "static"
     try:
         static_dst_dir.mkdir(parents=True, exist_ok=True)
 
