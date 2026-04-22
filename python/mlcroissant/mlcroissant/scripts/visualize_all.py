@@ -2,6 +2,7 @@
 
 import os
 import pathlib
+import shutil
 import sys
 
 from absl import app
@@ -72,6 +73,18 @@ def main(argv):
 
     all_datasets = get_all_datasets(FLAGS.datasets_dir)
 
+    # Copy static assets once to the shared location
+    static_src_dir = pathlib.Path(__file__).parent / "static"
+    static_dst_dir = pathlib.Path(FLAGS.datasets_dir) / "static"
+    try:
+        static_dst_dir.mkdir(parents=True, exist_ok=True)
+        for asset in ("visualizer.js", "visualizer.css"):
+            shutil.copy(static_src_dir / asset, static_dst_dir / asset)
+        logging.info(f"Copied static assets to {static_dst_dir}")
+    except Exception as e:
+        logging.error(f"Failed to copy static assets: {e}")
+        sys.exit(1)
+
     to_process = []
     if force_all or not FLAGS.changed_files:
         to_process = all_datasets
@@ -87,9 +100,11 @@ def main(argv):
     success_count = 0
     for dataset_path in to_process:
         output_path = dataset_path.parent / "index.html"
-        logging.info(f"Generating visualization for {dataset_path} -> {output_path}")
+        # Calculate relative path to shared static assets
+        static_path = os.path.relpath(static_dst_dir, output_path.parent)
+        logging.info(f"Generating visualization for {dataset_path} -> {output_path} using static_path={static_path}")
         try:
-            visualize_js(jsonld=str(dataset_path), output=output_path)
+            visualize_js(jsonld=str(dataset_path), output=output_path, static_path=static_path)
             success_count += 1
         except Exception as e:
             logging.error(f"Failed to visualize {dataset_path}: {e}")

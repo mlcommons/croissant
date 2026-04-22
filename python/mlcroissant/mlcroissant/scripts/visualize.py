@@ -122,7 +122,7 @@ def _augment_record_set(
     return entry
 
 
-def visualize_js(jsonld: str, output: epath.Path) -> None:
+def visualize_js(jsonld: str, output: epath.Path, static_path: str = ".") -> None:
     """Generate a JS-driven visualization HTML page for a Croissant dataset."""
     logging.info(f"Loading dataset from {jsonld}")
     try:
@@ -172,18 +172,20 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     )
     template_html = (_TEMPLATES_DIR / "visualizer.html").read_text(encoding="utf-8")
     html = template_html.replace("<!-- DATASET_DATA -->", data_script)
+    html = html.replace("STATIC_PATH", static_path)
     pathlib.Path(str(output)).write_text(html, encoding="utf-8")
     print(f"Wrote visualization to {output}")
 
-    # Copy static assets next to the output file
-    for asset in ("visualizer.js", "visualizer.css"):
-        src = _STATIC_DIR / asset
-        dst = output_dir / asset
-        if src.exists():
-            shutil.copy(src, dst)
-            logging.info(f"Copied {src} -> {dst}")
-        else:
-            logging.warning(f"Static asset not found: {src}")
+    # Copy static assets next to the output file if using default path
+    if static_path == ".":
+        for asset in ("visualizer.js", "visualizer.css"):
+            src = _STATIC_DIR / asset
+            dst = output_dir / asset
+            if src.exists():
+                shutil.copy(src, dst)
+                logging.info(f"Copied {src} -> {dst}")
+            else:
+                logging.warning(f"Static asset not found: {src}")
 
 
 def main(argv: list | None = None) -> None:
@@ -201,13 +203,18 @@ def main(argv: list | None = None) -> None:
         default=None,
         help="Output HTML file (default: index.html next to the JSON-LD).",
     )
+    parser.add_argument(
+        "--static_path",
+        default=".",
+        help="Path or URL to the js and css directory (default: .).",
+    )
     args = parser.parse_args(argv)
     jsonld = args.jsonld
     if args.output:
         output = epath.Path(args.output)
     else:
         output = epath.Path(jsonld).parent / "index.html"
-    visualize_js(jsonld=jsonld, output=output)
+    visualize_js(jsonld=jsonld, output=output, static_path=args.static_path)
 
 
 if __name__ == "__main__":
