@@ -129,8 +129,17 @@
 
   var EXCLUDED_KEYS = new Set([
     '@context', '@type', '@id', 'name', 'description', 'url', 'version',
-    'distribution', 'recordSet', 'cr:recordSet', 'conformsTo',
+    'distribution', 'recordSet', 'cr:recordSet',
+    // NOTE: conformsTo is intentionally NOT excluded — it is shown in the table.
   ]);
+
+  // Preferred display order, mirroring the Python static visualizer's preferred_order.
+  // Keys not in this list appear after, sorted alphabetically.
+  var PREFERRED_ORDER = [
+    'license', 'citeAs', 'conformsTo', 'datePublished', 'dateCreated',
+    'dateModified', 'keywords', 'inLanguage', 'creators', 'creator',
+    'publisher', 'sameAs',
+  ];
 
   var KEY_LABEL_MAP = {
     citeAs: 'Cite As',
@@ -164,9 +173,21 @@
     } else {
       valStr = String(val).trim();
     }
-    if (!valStr || valStr === 'null' || valStr === '[]') return;
+    // Skip empty / null-like values
+    if (!valStr || valStr === 'null' || valStr === '[]' || valStr === '{}') return;
     var label = KEY_LABEL_MAP[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, function (s) { return s.toUpperCase(); });
     metadataFields.push({ key: key, label: label, value: valStr });
+  });
+
+  // Sort to match the Python static visualizer's preferred_order:
+  // preferred keys first (in declared order), then remaining keys alphabetically.
+  metadataFields.sort(function (a, b) {
+    var ai = PREFERRED_ORDER.indexOf(a.key);
+    var bi = PREFERRED_ORDER.indexOf(b.key);
+    if (ai >= 0 && bi >= 0) return ai - bi;
+    if (ai >= 0) return -1;
+    if (bi >= 0) return 1;
+    return a.key.localeCompare(b.key);
   });
 
   // ── Rendering helpers ─────────────────────────────────────────────────
