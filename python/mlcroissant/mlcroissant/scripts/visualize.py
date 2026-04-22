@@ -25,7 +25,6 @@ from typing import Any
 
 from absl import logging
 from etils import epath
-import jinja2
 
 import mlcroissant as mlc
 
@@ -169,22 +168,22 @@ def visualize_js(jsonld: str, output: epath.Path) -> None:
     ]
     augmented["recordSet"] = augmented_rs
 
-    # Render HTML shell
-    loader = jinja2.FileSystemLoader(_TEMPLATES_DIR)
-    env = jinja2.Environment(
-        loader=loader, autoescape=jinja2.select_autoescape()
+    # Write the augmented JSON-LD as a side-file next to index.html.
+    # visualizer.js fetches this file at runtime (falls back to metadata.json
+    # if not found, which omits cr:examples preview data).
+    output_dir = pathlib.Path(str(output)).parent
+    augmented_json_path = output_dir / "metadata-augmented.json"
+    augmented_json_path.write_text(
+        json.dumps(augmented, indent=2, ensure_ascii=False), encoding="utf-8"
     )
-    template = env.get_template("visualizer.html")
-    data_json = json.dumps(augmented, indent=2, ensure_ascii=False)
-    html = template.render(
-        name=metadata.name or "Dataset",
-        data_json=data_json,
-    )
-    output.write_text(html)
-    print(f"Wrote JS visualization to {output}")
+    logging.info(f"Wrote augmented JSON-LD to {augmented_json_path}")
+
+    # Copy the static HTML template as index.html (no Jinja2 rendering needed
+    # — the template is now fully static; data is loaded at runtime via fetch).
+    shutil.copy(_TEMPLATES_DIR / "visualizer.html", output)
+    print(f"Wrote visualization to {output}")
 
     # Copy static assets next to the output file
-    output_dir = pathlib.Path(str(output)).parent
     for asset in ("visualizer.js", "visualizer.css"):
         src = _STATIC_DIR / asset
         dst = output_dir / asset

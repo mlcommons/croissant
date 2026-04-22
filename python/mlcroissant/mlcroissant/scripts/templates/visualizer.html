@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name }} — Croissant Visualizer</title>
+    <title>Croissant Visualizer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -18,10 +18,7 @@
     <link rel="stylesheet" href="visualizer.css">
 </head>
 <body>
-    <div id="app"></div>
-    <script>
-        window.__CROISSANT_DATA__ = {{ data_json | safe }};
-    </script>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
     <script src="visualizer.js"></script>
 </body>
 </html>
