@@ -1,0 +1,336 @@
+/**
+ * Croissant Dataset Gallery — JavaScript renderer.
+ *
+ * Reads window.__GALLERY_DATA__ (injected by visualize_all.py) and renders
+ * the full gallery UI: top bar with search, version-grouped sidebar, and a
+ * responsive card grid.
+ *
+ * No external dependencies required. Vanilla ES5-compatible JS.
+ */
+
+(function () {
+  'use strict';
+
+  var galleryData; // parsed from window.__GALLERY_DATA__
+  var searchTimeout = null;
+  var DEBOUNCE_MS = 150;
+
+  // ── Helpers ────────────────────────────────────────────────────────────
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  /**
+   * Wrap occurrences of `query` in `text` with <mark>. Case-insensitive.
+   * Returns escaped HTML.
+   */
+  function highlight(text, query) {
+    if (!query) return esc(text);
+    var safe = esc(text);
+    var safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    try {
+      var re = new RegExp('(' + safeQuery + ')', 'gi');
+      return safe.replace(re, '<mark>$1</mark>');
+    } catch (e) {
+      return safe;
+    }
+  }
+
+  /**
+   * Return true if dataset matches the search query.
+   * Searches: name, description, keywords.
+   */
+  function matches(dataset, query) {
+    if (!query) return true;
+    var q = query.toLowerCase();
+    if (dataset.name.toLowerCase().indexOf(q) !== -1) return true;
+    if (dataset.description && dataset.description.toLowerCase().indexOf(q) !== -1) return true;
+    if (dataset.keywords) {
+      var kws = Array.isArray(dataset.keywords)
+        ? dataset.keywords
+        : String(dataset.keywords).split(',');
+      for (var i = 0; i < kws.length; i++) {
+        if (String(kws[i]).toLowerCase().indexOf(q) !== -1) return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Extract a human-readable schema version label from a conformsTo URL.
+   * e.g. "http://mlcommons.org/croissant/1.0" → "1.0"
+   */
+  function conformsToLabel(conformsTo) {
+    if (!conformsTo) return '';
+    var m = String(conformsTo).match(/(\d+\.\d+(?:\.\d+)?)$/);
+    return m ? m[1] : conformsTo;
+  }
+
+  // ── Rendering ──────────────────────────────────────────────────────────
+
+  function renderTopBar(totalCount) {
+    return (
+      '<header class="topbar">' +
+        '<a class="topbar-brand" href="#">' +
+          '<span class="logo">🥐</span>' +
+          '<span class="brand-text">Croissant</span>' +
+        '</a>' +
+        '<div class="topbar-divider"></div>' +
+        '<span class="topbar-title">Dataset Gallery</span>' +
+        '<div class="search-wrap" id="search-wrap">' +
+          '<span class="search-icon">' + _searchIcon() + '</span>' +
+          '<input class="search-input" id="search-input" type="search"' +
+            ' placeholder="Search datasets by name, description, keywords…"' +
+            ' autocomplete="off" autocorrect="off" spellcheck="false">' +
+          '<span class="search-kbd" aria-hidden="true">⌘K</span>' +
+          '<button class="search-clear" id="search-clear" title="Clear search" aria-label="Clear search">✕</button>' +
+        '</div>' +
+        '<span class="topbar-count" id="topbar-count">' + totalCount + ' datasets</span>' +
+      '</header>'
+    );
+  }
+
+  function _searchIcon() {
+    return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  }
+
+  function renderSidebar(versions) {
+    var sections = versions.map(function (v) {
+      var label = v.label;
+      var items = v.datasets.map(function (d) {
+        return '<li><a href="#card-' + esc(d.slug) + '" data-slug="' + esc(d.slug) + '">' + esc(d.name) + '</a></li>';
+      }).join('');
+      return (
+        '<div class="sidebar-section open" data-version="' + esc(label) + '">' +
+          '<button class="sidebar-section-toggle">' +
+            '<svg class="sidebar-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>' +
+            ' Croissant ' + esc(label) +
+            '<span class="sidebar-section-count">' + v.datasets.length + '</span>' +
+          '</button>' +
+          '<ul class="sidebar-dataset-list">' + items + '</ul>' +
+        '</div>'
+      );
+    }).join('');
+
+    return (
+      '<nav class="gallery-sidebar">' +
+        '<div class="sidebar-inner">' + sections + '</div>' +
+      '</nav>'
+    );
+  }
+
+  function renderCard(dataset, query) {
+    var name = highlight(dataset.name, query);
+    var desc = highlight(dataset.description || '', query);
+    var versionPill = dataset.version
+      ? '<span class="card-version">v' + esc(dataset.version) + '</span>'
+      : '';
+    var chips = '';
+    if (typeof dataset.num_resources === 'number') {
+      chips += '<span class="card-chip">📦 ' + dataset.num_resources + ' resource' + (dataset.num_resources === 1 ? '' : 's') + '</span>';
+    }
+    if (typeof dataset.num_record_sets === 'number') {
+      chips += '<span class="card-chip">📋 ' + dataset.num_record_sets + ' record set' + (dataset.num_record_sets === 1 ? '' : 's') + '</span>';
+    }
+    var license = dataset.license
+      ? '<span class="card-license">⚖️ ' + esc(dataset.license) + '</span>'
+      : '';
+
+    return (
+      '<a class="gallery-card" id="card-' + esc(dataset.slug) + '" href="' + esc(dataset.path) + '">' +
+        '<div class="card-title-row">' +
+          '<span class="card-name">' + name + '</span>' +
+          versionPill +
+        '</div>' +
+        '<div class="card-description">' + desc + '</div>' +
+        '<div class="card-footer">' +
+          chips +
+          license +
+        '</div>' +
+      '</a>'
+    );
+  }
+
+  function renderSection(v, query) {
+    var cards = v.datasets.map(function (d) { return renderCard(d, query); }).join('');
+    var conformsToLink = v.conformsTo
+      ? '<a href="' + esc(v.conformsTo) + '" target="_blank" rel="noopener">' + esc(v.conformsTo) + '</a>'
+      : '';
+    return (
+      '<section class="gallery-section" data-version="' + esc(v.label) + '">' +
+        '<div class="gallery-section-header">' +
+          '<h2>Croissant ' + esc(v.label) + '</h2>' +
+          '<span class="gallery-section-badge" id="badge-' + esc(v.label) + '">' + v.datasets.length + '</span>' +
+          (conformsToLink ? '<span class="gallery-section-conformsto">' + conformsToLink + '</span>' : '') +
+        '</div>' +
+        '<div class="gallery-grid" id="grid-' + esc(v.label) + '">' + cards + '</div>' +
+      '</section>'
+    );
+  }
+
+  function renderApp() {
+    var versions = galleryData.versions;
+    var totalCount = versions.reduce(function (n, v) { return n + v.datasets.length; }, 0);
+    var sections = versions.map(function (v) { return renderSection(v, ''); }).join('');
+
+    return (
+      renderTopBar(totalCount) +
+      '<div class="gallery-layout">' +
+        renderSidebar(versions) +
+        '<main class="gallery-main" id="gallery-main">' +
+          sections +
+          '<div class="gallery-empty" id="gallery-empty" style="display:none">' +
+            '<div class="empty-icon">🔍</div>' +
+            '<h3>No datasets found</h3>' +
+            '<p>Try a different search term.</p>' +
+          '</div>' +
+          '<div class="gallery-footer">Generated by 🥐 <strong>Croissant Visualizer</strong> · <a href="https://mlcommons.org/croissant" target="_blank">mlcommons.org/croissant</a></div>' +
+        '</main>' +
+      '</div>'
+    );
+  }
+
+  // ── Search / filter ────────────────────────────────────────────────────
+
+  function applyFilter(query) {
+    var versions = galleryData.versions;
+    var totalVisible = 0;
+
+    versions.forEach(function (v) {
+      var sectionEl = document.querySelector('.gallery-section[data-version="' + v.label + '"]');
+      var sidebarSection = document.querySelector('.sidebar-section[data-version="' + v.label + '"]');
+      var badge = document.getElementById('badge-' + v.label);
+      var visibleInSection = 0;
+
+      v.datasets.forEach(function (d) {
+        var cardEl = document.getElementById('card-' + d.slug);
+        var sidebarLink = sidebarSection
+          ? sidebarSection.querySelector('a[data-slug="' + d.slug + '"]')
+          : null;
+        var visible = matches(d, query);
+
+        if (cardEl) {
+          // Re-render card content with highlighting
+          if (visible) {
+            cardEl.classList.remove('hidden');
+            // Update name and description with highlights
+            var nameEl = cardEl.querySelector('.card-name');
+            var descEl = cardEl.querySelector('.card-description');
+            if (nameEl) nameEl.innerHTML = highlight(d.name, query);
+            if (descEl) descEl.innerHTML = highlight(d.description || '', query);
+            visibleInSection++;
+            totalVisible++;
+          } else {
+            cardEl.classList.add('hidden');
+            // Reset highlights
+            var nameEl = cardEl.querySelector('.card-name');
+            var descEl = cardEl.querySelector('.card-description');
+            if (nameEl) nameEl.innerHTML = esc(d.name);
+            if (descEl) descEl.innerHTML = esc(d.description || '');
+          }
+        }
+        if (sidebarLink) {
+          sidebarLink.parentElement.classList.toggle('hidden', !visible);
+        }
+      });
+
+      // Show/hide whole section if nothing matches
+      if (sectionEl) sectionEl.classList.toggle('hidden', visibleInSection === 0);
+      if (badge) badge.textContent = visibleInSection;
+    });
+
+    // Empty state
+    var emptyEl = document.getElementById('gallery-empty');
+    if (emptyEl) emptyEl.style.display = totalVisible === 0 ? 'block' : 'none';
+
+    // Update count in topbar
+    var countEl = document.getElementById('topbar-count');
+    if (countEl) {
+      var total = versions.reduce(function (n, v) { return n + v.datasets.length; }, 0);
+      countEl.textContent = query
+        ? totalVisible + ' of ' + total + ' datasets'
+        : total + ' datasets';
+    }
+
+    // Search wrap state (show/hide clear button)
+    var wrap = document.getElementById('search-wrap');
+    if (wrap) wrap.classList.toggle('has-query', !!query);
+  }
+
+  // ── Event wiring ───────────────────────────────────────────────────────
+
+  function attachEvents() {
+    var input = document.getElementById('search-input');
+    var clearBtn = document.getElementById('search-clear');
+
+    // Live search with debounce
+    input.addEventListener('input', function () {
+      var q = input.value.trim();
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(function () { applyFilter(q); }, DEBOUNCE_MS);
+    });
+
+    // Clear button
+    clearBtn.addEventListener('click', function () {
+      input.value = '';
+      applyFilter('');
+      input.focus();
+    });
+
+    // ⌘K / Ctrl+K focuses search
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+      if (e.key === 'Escape' && document.activeElement === input) {
+        input.blur();
+      }
+    });
+
+    // Sidebar section toggle (collapse/expand)
+    document.querySelectorAll('.sidebar-section-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var section = btn.closest('.sidebar-section');
+        if (section) section.classList.toggle('open');
+      });
+    });
+
+    // Sidebar link scroll
+    document.querySelectorAll('.sidebar-dataset-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var slug = a.getAttribute('data-slug');
+        var card = document.getElementById('card-' + slug);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.style.outline = '2px solid var(--color-primary)';
+          setTimeout(function () { card.style.outline = ''; }, 1500);
+        }
+      });
+    });
+  }
+
+  // ── Init ───────────────────────────────────────────────────────────────
+
+  function init() {
+    if (!window.__GALLERY_DATA__) {
+      document.getElementById('app').innerHTML =
+        '<p style="padding:2rem;color:#b91c1c">Error: gallery data not found.</p>';
+      return;
+    }
+    galleryData = window.__GALLERY_DATA__;
+    document.getElementById('app').innerHTML = renderApp();
+    document.title = 'Croissant Dataset Gallery';
+    attachEvents();
+  }
+
+  init();
+
+})();

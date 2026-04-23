@@ -122,8 +122,24 @@ def _augment_record_set(
     return entry
 
 
-def visualize_js(jsonld: str, output: epath.Path, static_path: str = ".") -> None:
-    """Generate a JS-driven visualization HTML page for a Croissant dataset."""
+def visualize_js(
+    jsonld: str,
+    output: epath.Path,
+    static_path: str = ".",
+    gallery_url: str | None = None,
+) -> None:
+    """Generate a JS-driven visualization HTML page for a Croissant dataset.
+
+    Args:
+        jsonld: Path to the Croissant JSON-LD file.
+        output: Output HTML file path.
+        static_path: Path or URL to the js/css directory.
+        gallery_url: Optional relative URL back to the gallery index (e.g.
+            ``../../index.html``). When set, the visualizer renders a
+            "\u2190 All Datasets" back-link in the sidebar. Only passed by
+            ``visualize_all.py``; defaults to None so that single-dataset
+            local renders are unaffected.
+    """
     logging.info(f"Loading dataset from {jsonld}")
     try:
         dataset = mlc.Dataset(jsonld)
@@ -170,8 +186,15 @@ def visualize_js(jsonld: str, output: epath.Path, static_path: str = ".") -> Non
         + json.dumps(augmented, indent=2, ensure_ascii=False)
         + ";</script>"
     )
+    # Optional back-link to gallery index (only injected by visualize_all.py).
+    gallery_script = (
+        f"<script>window.__GALLERY_URL__={json.dumps(gallery_url)};</script>"
+        if gallery_url is not None
+        else ""
+    )
     template_html = (_TEMPLATES_DIR / "visualizer.html").read_text(encoding="utf-8")
     html = template_html.replace("<!-- DATASET_DATA -->", data_script)
+    html = html.replace("<!-- GALLERY_URL -->", gallery_script)
     html = html.replace("STATIC_PATH", static_path)
     pathlib.Path(str(output)).write_text(html, encoding="utf-8")
     print(f"Wrote visualization to {output}")

@@ -242,6 +242,22 @@
     );
   }
 
+  // ── Breadcrumb (back to gallery, only when built by visualize_all.py) ─
+
+  function renderBreadcrumb() {
+    if (!window.__GALLERY_URL__) return '';
+    return (
+      '<div class="breadcrumb">' +
+        '<a class="breadcrumb-link" href="' + esc(window.__GALLERY_URL__) + '">' +
+          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>' +
+          ' All Datasets' +
+        '</a>' +
+        '<svg class="breadcrumb-sep" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+        '<span class="breadcrumb-current">' + esc(data.name || 'Dataset') + '</span>' +
+      '</div>'
+    );
+  }
+
   // ── Hero header ───────────────────────────────────────────────────────
 
   function renderHero() {
@@ -504,6 +520,7 @@
         renderSidebar() +
         '<div class="main">' +
           '<button class="sidebar-open-btn" id="open-sidebar-btn" title="Open sidebar">' + HAMBURGER_ICON_LG + '</button>' +
+          renderBreadcrumb() +
           renderHero() +
           renderMetadata() +
           renderResources() +

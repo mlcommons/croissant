@@ -257,6 +257,44 @@ a:hover { text-decoration: underline; }
     max-width: 960px;
 }
 
+/* ── Breadcrumb ─────────────────────────────────── */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    font-size: 0.82rem;
+}
+.breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-primary);
+    font-weight: 500;
+    padding: 4px 10px 4px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--color-primary-light);
+    background: var(--color-primary-light);
+    transition: background 0.15s, border-color 0.15s;
+    text-decoration: none;
+}
+.breadcrumb-link:hover {
+    background: #fde68a;
+    border-color: #fbbf24;
+    text-decoration: none;
+}
+.breadcrumb-sep {
+    color: var(--color-border);
+    flex-shrink: 0;
+}
+.breadcrumb-current {
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
+}
+
 /* ── Hero Header ───────────────────────────────── */
 .hero {
     background: linear-gradient(135deg, #92400e 0%, #d97706 60%, #f59e0b 100%);

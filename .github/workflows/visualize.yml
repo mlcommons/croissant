@@ -45,4 +45,4 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "docs: Update dataset visualizations [skip ci]"
-        file_pattern: 'datasets/**/index.html'
+        file_pattern: 'datasets/**/index.html datasets/index.html datasets/static/gallery.min.js datasets/static/gallery.min.css'
