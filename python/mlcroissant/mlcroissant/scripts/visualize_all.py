@@ -181,11 +181,11 @@ def build_gallery_index(
     for v_label in sorted_versions:
         group = sorted(versions_map[v_label], key=lambda d: d["name"].lower())
         # Find representative conformsTo URL for the section header link
-        conforms_to_url = next(
-            (d["conformsTo"] for d in group if d["conformsTo"]), ""
-        )
+        conforms_to_url = next((d["conformsTo"] for d in group if d["conformsTo"]), "")
         # Strip internal _schema_version helper key before serialising
-        clean_group = [{k: val for k, val in d.items() if k != "_schema_version"} for d in group]
+        clean_group = [
+            {k: val for k, val in d.items() if k != "_schema_version"} for d in group
+        ]
         versions_list.append({
             "label": v_label,
             "conformsTo": conforms_to_url,
@@ -265,7 +265,9 @@ def main(argv):
 
         gallery_css_src = (_STATIC_SRC_DIR / "gallery.css").read_text(encoding="utf-8")
         gallery_css_min = csscompressor.compress(gallery_css_src)
-        (static_dst_dir / "gallery.min.css").write_text(gallery_css_min, encoding="utf-8")
+        (static_dst_dir / "gallery.min.css").write_text(
+            gallery_css_min, encoding="utf-8"
+        )
 
         logging.info(f"Minified and copied static assets to {static_dst_dir}")
     except Exception as e:
@@ -300,7 +302,9 @@ def main(argv):
         # Calculate relative path to shared static assets
         static_path = os.path.relpath(static_dst_dir, output_path.parent)
         # Calculate relative path back to gallery index (for the "← All Datasets" link)
-        gallery_url = os.path.relpath(gallery_index, output_path.parent).replace(os.sep, "/")
+        gallery_url = os.path.relpath(gallery_index, output_path.parent).replace(
+            os.sep, "/"
+        )
         logging.info(
             f"Generating visualization for {dataset_path} -> {output_path} using"
             f" static_path={static_path}"
@@ -321,4 +325,3 @@ def main(argv):
 
 if __name__ == "__main__":
     app.run(main)
-
