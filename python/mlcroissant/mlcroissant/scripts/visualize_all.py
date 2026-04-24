@@ -192,9 +192,29 @@ def build_gallery_index(
             "datasets": clean_group,
         })
 
+    readme_path = datasets_dir / "README.md"
+    readme_intro = ""
+    readme_rest = ""
+    if readme_path.exists():
+        readme_content = readme_path.read_text(encoding="utf-8")
+        paragraphs = readme_content.split("\n\n")
+        # Filter out header lines to find the first actual paragraph
+        non_header_paragraphs = [p for p in paragraphs if not p.strip().startswith("#")]
+        if non_header_paragraphs:
+            readme_intro = non_header_paragraphs[0].strip()
+            # Find the index of the intro paragraph to split the rest
+            intro_idx = paragraphs.index(non_header_paragraphs[0])
+            readme_rest = "\n\n".join(paragraphs[intro_idx + 1:])
+        else:
+            if paragraphs:
+                readme_intro = paragraphs[0].strip()
+                readme_rest = "\n\n".join(paragraphs[1:])
+
     gallery_data = {
         "generated_at": datetime.datetime.utcnow().isoformat() + "Z",
         "versions": versions_list,
+        "readme_intro": readme_intro,
+        "readme_rest": readme_rest,
     }
 
     # Compute relative path from datasets/ to static/

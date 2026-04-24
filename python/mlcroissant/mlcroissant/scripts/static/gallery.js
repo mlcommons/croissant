@@ -173,6 +173,24 @@
     );
   }
 
+  function renderReadme() {
+    if (!galleryData.readme_intro) return '';
+    
+    var intro = galleryData.readme_intro;
+    var rest = galleryData.readme_rest;
+    
+    var html = '<div class="gallery-readme" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius);padding:20px;margin-bottom:24px;box-shadow:var(--shadow-sm);">';
+    html += '<p class="readme-intro" style="font-size:0.95rem;color:var(--color-text);">' + esc(intro) + '</p>';
+    
+    if (rest) {
+      html += '<button class="readme-toggle" id="readme-toggle" style="background:none;border:none;color:var(--color-primary);cursor:pointer;font-size:0.85rem;font-weight:600;padding:4px 0;margin-top:8px;">More...</button>';
+      html += '<div class="readme-rest" id="readme-rest" style="display:none;margin-top:12px;font-size:0.88rem;color:var(--color-text-secondary);">' + marked.parse(rest) + '</div>';
+    }
+    
+    html += '</div>';
+    return html;
+  }
+
   function renderApp() {
     var versions = galleryData.versions;
     var totalCount = versions.reduce(function (n, v) { return n + v.datasets.length; }, 0);
@@ -183,6 +201,7 @@
       '<div class="gallery-layout">' +
         renderSidebar(versions) +
         '<main class="gallery-main" id="gallery-main">' +
+          renderReadme() +
           sections +
           '<div class="gallery-empty" id="gallery-empty" style="display:none">' +
             '<div class="empty-icon">🔍</div>' +
@@ -315,6 +334,19 @@
         }
       });
     });
+
+    // README toggle
+    var readmeToggle = document.getElementById('readme-toggle');
+    if (readmeToggle) {
+      readmeToggle.addEventListener('click', function () {
+        var rest = document.getElementById('readme-rest');
+        if (rest) {
+          var isHidden = rest.style.display === 'none';
+          rest.style.display = isHidden ? 'block' : 'none';
+          readmeToggle.textContent = isHidden ? 'Less...' : 'More...';
+        }
+      });
+    }
   }
 
   // ── Init ───────────────────────────────────────────────────────────────
