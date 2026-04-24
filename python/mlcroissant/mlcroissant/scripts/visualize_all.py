@@ -204,7 +204,7 @@ def build_gallery_index(
             readme_intro = non_header_paragraphs[0].strip()
             # Find the index of the intro paragraph to split the rest
             intro_idx = paragraphs.index(non_header_paragraphs[0])
-            readme_rest = "\n\n".join(paragraphs[intro_idx + 1:])
+            readme_rest = "\n\n".join(paragraphs[intro_idx + 1 :])
         else:
             if paragraphs:
                 readme_intro = paragraphs[0].strip()
