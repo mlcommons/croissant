@@ -46,3 +46,5 @@ jobs:
       with:
         commit_message: "docs: Update dataset visualizations [skip ci]"
         file_pattern: 'datasets/**/index.html datasets/index.html datasets/static/gallery.min.js datasets/static/gallery.min.css'
+        branch: gh-pages
+        create_branch: true
