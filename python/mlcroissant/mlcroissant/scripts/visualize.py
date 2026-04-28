@@ -29,6 +29,8 @@ from etils import epath
 import mlcroissant as mlc
 from mlcroissant.scripts.visualize_utils import _get_or_generate_recordset_preview
 from mlcroissant.scripts.visualize_utils import _resolve_fileset_files
+from mlcroissant.scripts.visualize_utils import _list_archive_entries
+import zipfile
 
 # Directory containing static assets (visualizer.js, visualizer.css)
 _STATIC_DIR = pathlib.Path(__file__).parent / "static"
@@ -60,12 +62,68 @@ def _augment_distribution(
 
     if res_type == "FileObject" and folder:
         content_url = dist_entry.get("contentUrl", "")
-        if content_url and not str(content_url).startswith("http"):
+        enc_fmts = dist_entry.get("encodingFormat", [])
+        if isinstance(enc_fmts, str):
+            enc_fmts = [enc_fmts]
+
+        # Case A: FileObject is a zip archive
+        if any("zip" in fmt for fmt in enc_fmts) or (
+            isinstance(content_url, str) and content_url.endswith(".zip")
+        ):
+            if content_url and not str(content_url).startswith("http"):
+                file_path = folder / content_url
+                if file_path.exists():
+                    archive_entries = _list_archive_entries(str(file_path), enc_fmts)
+                    if archive_entries:
+                        entry["cr:examples"] = {
+                            "file_list": archive_entries[:_MAX_PREVIEW_FILES],
+                            "file_count": len(archive_entries),
+                        }
+
+        # Case B: FileObject is contained within a zip archive
+        contained_in = dist_entry.get("containedIn")
+        if contained_in:
+            if isinstance(contained_in, list):
+                contained_in = contained_in[0] if contained_in else None
+            
+            if isinstance(contained_in, str):
+                # Find parent resource
+                parent = None
+                for res in metadata_distribution:
+                    if res.name == contained_in or res.uuid == contained_in:
+                        parent = res
+                        break
+                
+                if parent and hasattr(parent, "content_url") and parent.content_url:
+                    parent_url = str(parent.content_url)
+                    if not parent_url.startswith("http"):
+                        parent_path = folder / parent_url
+                        if parent_path.exists():
+                            parent_enc = getattr(parent, "encoding_formats", []) or []
+                            if isinstance(parent_enc, str):
+                                parent_enc = [parent_enc]
+                            
+                            if any("zip" in fmt for fmt in parent_enc) or parent_url.endswith(".zip"):
+                                try:
+                                    with zipfile.ZipFile(str(parent_path)) as z:
+                                        if content_url in z.namelist():
+                                            with z.open(content_url) as f:
+                                                # Read first 5 lines
+                                                lines = []
+                                                for _ in range(5):
+                                                    line = f.readline()
+                                                    if not line:
+                                                        break
+                                                    lines.append(line.decode("utf-8", errors="replace"))
+                                                text_preview = "".join(lines)
+                                                entry["cr:examples"] = {"text_preview": text_preview}
+                                except Exception as e:
+                                    logging.warning(f"Failed to read from zip {parent_path}: {e}")
+
+        # Original Case: Direct local file
+        elif content_url and not str(content_url).startswith("http"):
             file_path = folder / content_url
             if file_path.exists():
-                enc_fmts = dist_entry.get("encodingFormat", [])
-                if isinstance(enc_fmts, str):
-                    enc_fmts = [enc_fmts]
                 if enc_fmts and any(
                     fmt in ["text/csv", "text/plain"] for fmt in enc_fmts
                 ):
