@@ -81,6 +81,21 @@ def _augment_distribution(
                             "file_count": len(archive_entries),
                         }
 
+        # Case A (cont.): FileObject is a tar archive
+        elif any("tar" in fmt for fmt in enc_fmts) or any(
+            isinstance(content_url, str) and content_url.endswith(ext)
+            for ext in [".tar", ".tar.gz", ".tgz"]
+        ):
+            if content_url and not str(content_url).startswith("http"):
+                file_path = folder / content_url
+                if file_path.exists():
+                    archive_entries = _list_archive_entries(str(file_path), enc_fmts)
+                    if archive_entries:
+                        entry["cr:examples"] = {
+                            "file_list": archive_entries[:_MAX_PREVIEW_FILES],
+                            "file_count": len(archive_entries),
+                        }
+
         # Case B: FileObject is contained within a zip archive
         contained_in = dist_entry.get("containedIn")
         if contained_in:
