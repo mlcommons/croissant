@@ -738,7 +738,9 @@ table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
 .jsonld-panel pre[class*="language-"],
 .jsonld-panel code[class*="language-"],
 .modal-body pre[class*="language-"],
-.modal-body code[class*="language-"] {
+.modal-body code[class*="language-"],
+pre.preview[class*="language-"],
+pre.preview code[class*="language-"] {
     font-family: var(--font-mono);
     font-size: 0.76rem;
     line-height: 1.55;
