@@ -120,7 +120,7 @@ def _augment_distribution(
                                                 entry["cr:examples"] = {"text_preview": text_preview}
                                 except Exception as e:
                                     logging.warning(f"Failed to read from zip {parent_path}: {e}")
-                            elif any("tar" in fmt for fmt in parent_enc) or any(parent_url.endswith(ext) for ext in [".tar", ".tar.gz", ".tgz"]):
+                            elif any("tar" in str(fmt).lower() for fmt in parent_enc) or any(fmt == "application/x-tar" for fmt in parent_enc) or any(parent_url.endswith(ext) for ext in [".tar", ".tar.gz", ".tgz"]):
                                 try:
                                     with tarfile.open(str(parent_path)) as t:
                                         try:
