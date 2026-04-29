@@ -106,13 +106,16 @@ def _is_local_dataset(distribution) -> bool:
     return True
 
 
-def _sanitize_name(name: str) -> str:
+def _sanitize_name(name: Any) -> str:
     """Convert a record set name to a filesystem-safe stem."""
+    if isinstance(name, dict):
+        name = name.get("en") or (next(iter(name.values())) if name else "")
+    name = str(name)
     return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
 
 
 def _find_jsonl_for_recordset(
-    rs_name: str, output_dir: pathlib.Path
+    rs_name: Any, output_dir: pathlib.Path
 ) -> pathlib.Path | None:
     """Find an existing JSONL file for a record set in the output directory.
 
@@ -120,6 +123,9 @@ def _find_jsonl_for_recordset(
     word, so that hand-named files like 'bands.jsonl' for 'Spectral Bands' still
     match.
     """
+    if isinstance(rs_name, dict):
+        rs_name = rs_name.get("en") or (next(iter(rs_name.values())) if rs_name else "")
+    rs_name = str(rs_name)
     if not output_dir.exists():
         return None
     candidates = []
@@ -159,7 +165,7 @@ def _serialize_value(v: Any) -> Any:
 
 def _get_or_generate_recordset_preview(
     dataset: mlc.Dataset,
-    rs_name: str,
+    rs_name: Any,
     folder: epath.Path | None,
 ) -> tuple[list[str], list[list[str]]]:
     """Return (columns, rows) for a recordset preview.
@@ -170,6 +176,10 @@ def _get_or_generate_recordset_preview(
 
     Returns ([], []) when no preview is available.
     """
+    if isinstance(rs_name, dict):
+        rs_name = rs_name.get("en") or (next(iter(rs_name.values())) if rs_name else "")
+    rs_name = str(rs_name)
+
     if not folder:
         return [], []
 

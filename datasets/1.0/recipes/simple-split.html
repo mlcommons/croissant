@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "sc:Dataset",
+  "name": "simple-split",
+  "description": "An artificial example dataset defining splits from a CSV column",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "books.csv",
+      "name": "books.csv",
+      "contentUrl": "data/books.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "d35c5a01eecbd7700faf86b4ec838eb65bd6e861633b1e10ca3294d4e58e75c9",
+      "cr:examples": {
+        "text_preview": "Title,Author,Split\nThe Great Gatsby,F. Scott Fitzgerald,train\nTo Kill a Mockingbird,Harper Lee,train\n1984,George Orwell,train\nThe Lord of the Rings,J.R.R. Tolkien,train\n"
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "books",
+      "name": "books",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "books/title",
+          "name": "books/title",
+          "description": "The title of the book",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "books.csv"
+            },
+            "extract": {
+              "column": "Title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "books/Author",
+          "name": "books/Author",
+          "description": "The author of the book",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "books.csv"
+            },
+            "extract": {
+              "column": "Author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "books/split",
+          "name": "books/split",
+          "description": "The data split to which belongs the record",
+          "dataType": [
+            "sc:Text",
+            "wd:Q3985153"
+          ],
+          "source": {
+            "fileObject": {
+              "@id": "books.csv"
+            },
+            "extract": {
+              "column": "Split"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "title",
+          "Author",
+          "split"
+        ],
+        "rows": [
+          [
+            "The Great Gatsby",
+            "F. Scott Fitzgerald",
+            "train"
+          ],
+          [
+            "To Kill a Mockingbird",
+            "Harper Lee",
+            "train"
+          ],
+          [
+            "1984",
+            "George Orwell",
+            "train"
+          ],
+          [
+            "The Lord of the Rings",
+            "J.R.R. Tolkien",
+            "train"
+          ],
+          [
+            "The Hitchhiker's Guide to the Galaxy",
+            "Douglas Adams",
+            "train"
+          ]
+        ]
+      }
+    }
+  ]
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
+</html>

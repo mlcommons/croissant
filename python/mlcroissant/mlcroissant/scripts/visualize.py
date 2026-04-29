@@ -30,6 +30,7 @@ import mlcroissant as mlc
 from mlcroissant.scripts.visualize_utils import _get_or_generate_recordset_preview
 from mlcroissant.scripts.visualize_utils import _resolve_fileset_files
 from mlcroissant.scripts.visualize_utils import _list_archive_entries
+import tarfile
 import zipfile
 
 # Directory containing static assets (visualizer.js, visualizer.css)
@@ -119,6 +120,26 @@ def _augment_distribution(
                                                 entry["cr:examples"] = {"text_preview": text_preview}
                                 except Exception as e:
                                     logging.warning(f"Failed to read from zip {parent_path}: {e}")
+                            elif any("tar" in fmt for fmt in parent_enc) or any(parent_url.endswith(ext) for ext in [".tar", ".tar.gz", ".tgz"]):
+                                try:
+                                    with tarfile.open(str(parent_path)) as t:
+                                        try:
+                                            member = t.getmember(content_url)
+                                            f = t.extractfile(member)
+                                            if f:
+                                                # Read first 5 lines
+                                                lines = []
+                                                for _ in range(5):
+                                                    line = f.readline()
+                                                    if not line:
+                                                        break
+                                                    lines.append(line.decode("utf-8", errors="replace"))
+                                                text_preview = "".join(lines)
+                                                entry["cr:examples"] = {"text_preview": text_preview}
+                                        except KeyError:
+                                            logging.warning(f"File {content_url} not found in tar {parent_path}")
+                                except Exception as e:
+                                    logging.warning(f"Failed to read from tar {parent_path}: {e}")
 
         # Original Case: Direct local file
         elif content_url and not str(content_url).startswith("http"):
