@@ -145,8 +145,8 @@ def _augment_distribution(
         elif content_url and not str(content_url).startswith("http"):
             file_path = folder / content_url
             if file_path.exists():
-                if enc_fmts and any(
-                    fmt in ["text/csv", "text/plain"] for fmt in enc_fmts
+                if (enc_fmts and any(fmt in ["text/csv", "text/plain", "application/json"] for fmt in enc_fmts)) or (
+                    isinstance(content_url, str) and content_url.endswith(".json")
                 ):
                     try:
                         with file_path.open("r") as f:
