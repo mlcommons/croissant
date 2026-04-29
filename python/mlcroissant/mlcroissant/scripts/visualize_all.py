@@ -57,15 +57,11 @@ _TEMPLATES_DIR = pathlib.Path(__file__).parent / "templates"
 
 
 def get_all_datasets(datasets_dir_str: str):
-    """Finds all metadata.json files and recipes in the datasets directory."""
+    """Finds all metadata.json files in the datasets directory."""
     datasets = []
     datasets_dir = pathlib.Path(datasets_dir_str)
     for path in datasets_dir.rglob("metadata.json"):
         datasets.append(path)
-    # Also find recipes
-    for path in datasets_dir.rglob("recipes/*.json"):
-        if path not in datasets:
-            datasets.append(path)
     return datasets
 
 

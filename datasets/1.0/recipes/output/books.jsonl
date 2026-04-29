@@ -1,9 +1,0 @@
-{"books/title": "The Great Gatsby", "books/Author": "F. Scott Fitzgerald", "books/split": "train"}
-{"books/title": "To Kill a Mockingbird", "books/Author": "Harper Lee", "books/split": "train"}
-{"books/title": "1984", "books/Author": "George Orwell", "books/split": "train"}
-{"books/title": "The Lord of the Rings", "books/Author": "J.R.R. Tolkien", "books/split": "train"}
-{"books/title": "The Hitchhiker's Guide to the Galaxy", "books/Author": "Douglas Adams", "books/split": "train"}
-{"books/title": "The Catcher in the Rye", "books/Author": "J.D. Salinger", "books/split": "train"}
-{"books/title": "The Grapes of Wrath", "books/Author": "John Steinbeck", "books/split": "test"}
-{"books/title": "Animal Farm", "books/Author": "George Orwell", "books/split": "test"}
-{"books/title": "Brave New World", "books/Author": "Aldous Huxley", "books/split": "test"}

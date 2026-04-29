@@ -1,9 +1,0 @@
-{"title": "The Great Gatsby", "Author": "F. Scott Fitzgerald", "split": "train"}
-{"title": "To Kill a Mockingbird", "Author": "Harper Lee", "split": "train"}
-{"title": "1984", "Author": "George Orwell", "split": "train"}
-{"title": "The Lord of the Rings", "Author": "J.R.R. Tolkien", "split": "train"}
-{"title": "The Hitchhiker's Guide to the Galaxy", "Author": "Douglas Adams", "split": "train"}
-{"title": "The Catcher in the Rye", "Author": "J.D. Salinger", "split": "train"}
-{"title": "The Grapes of Wrath", "Author": "John Steinbeck", "split": "test"}
-{"title": "Animal Farm", "Author": "George Orwell", "split": "test"}
-{"title": "Brave New World", "Author": "Aldous Huxley", "split": "test"}
