@@ -506,6 +506,12 @@ pre.preview {
 pre.preview.open {
     display: block;
 }
+/* Custom light syntax highlighting for JSON previews on orange background */
+pre.preview.language-json .token.property { color: #b45309 !important; } /* amber/brown */
+pre.preview.language-json .token.string { color: #15803d !important; } /* green */
+pre.preview.language-json .token.number { color: #1d4ed8 !important; } /* blue */
+pre.preview.language-json .token.boolean { color: #7c3aed !important; } /* purple */
+pre.preview.language-json .token.operator { color: #374151 !important; } /* dark grey */
 
 /* ── File Listing (FileSet preview) ────────────── */
 .file-listing {
@@ -738,9 +744,7 @@ table.preview-table tbody tr:nth-child(even) { background: #f0fdf4; }
 .jsonld-panel pre[class*="language-"],
 .jsonld-panel code[class*="language-"],
 .modal-body pre[class*="language-"],
-.modal-body code[class*="language-"],
-pre.preview[class*="language-"],
-pre.preview code[class*="language-"] {
+.modal-body code[class*="language-"] {
     font-family: var(--font-mono);
     font-size: 0.76rem;
     line-height: 1.55;
