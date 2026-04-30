@@ -506,6 +506,12 @@ pre.preview {
 pre.preview.open {
     display: block;
 }
+/* Custom light syntax highlighting for JSON previews on orange background */
+pre.preview.language-json .token.property { color: #b45309 !important; } /* amber/brown */
+pre.preview.language-json .token.string { color: #15803d !important; } /* green */
+pre.preview.language-json .token.number { color: #1d4ed8 !important; } /* blue */
+pre.preview.language-json .token.boolean { color: #7c3aed !important; } /* purple */
+pre.preview.language-json .token.operator { color: #374151 !important; } /* dark grey */
 
 /* ── File Listing (FileSet preview) ────────────── */
 .file-listing {

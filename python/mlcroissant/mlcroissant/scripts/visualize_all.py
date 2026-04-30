@@ -102,6 +102,8 @@ def _build_dataset_entry(
         return None
 
     name = raw.get("name") or ""
+    if isinstance(name, dict):
+        name = name.get("@value") or str(name)
     if not name:
         logging.warning(f"Skipping {metadata_path}: no 'name' field.")
         return None
@@ -133,7 +135,10 @@ def _build_dataset_entry(
         record_sets = [record_sets]
 
     # Path to the generated index.html, relative to datasets/index.html
-    index_html = metadata_path.parent / "index.html"
+    if metadata_path.name == "metadata.json":
+        index_html = metadata_path.parent / "index.html"
+    else:
+        index_html = metadata_path.parent / f"{metadata_path.stem}.html"
     rel_path = os.path.relpath(index_html, datasets_dir)
     # Normalise to forward slashes for HTML hrefs
     rel_path = rel_path.replace(os.sep, "/")
@@ -318,7 +323,10 @@ def main(argv):
 
     success_count = 0
     for dataset_path in to_process:
-        output_path = dataset_path.parent / "index.html"
+        if dataset_path.name == "metadata.json":
+            output_path = dataset_path.parent / "index.html"
+        else:
+            output_path = dataset_path.parent / f"{dataset_path.stem}.html"
         # Calculate relative path to shared static assets
         static_path = os.path.relpath(static_dst_dir, output_path.parent)
         # Calculate relative path back to gallery index (for the "← All Datasets" link)

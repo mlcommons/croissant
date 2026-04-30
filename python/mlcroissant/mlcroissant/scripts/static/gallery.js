@@ -183,8 +183,9 @@
     html += '<p class="readme-intro" style="font-size:0.95rem;color:var(--color-text);">' + esc(intro) + '</p>';
     
     if (rest) {
+      var renderedRest = typeof marked !== 'undefined' ? marked.parse(rest) : esc(rest);
       html += '<button class="readme-toggle" id="readme-toggle" style="background:none;border:none;color:var(--color-primary);cursor:pointer;font-size:0.85rem;font-weight:600;padding:4px 0;margin-top:8px;">More...</button>';
-      html += '<div class="readme-rest" id="readme-rest" style="display:none;margin-top:12px;font-size:0.88rem;color:var(--color-text-secondary);">' + marked.parse(rest) + '</div>';
+      html += '<div class="readme-rest" id="readme-rest" style="display:none;margin-top:12px;font-size:0.88rem;color:var(--color-text-secondary);">' + renderedRest + '</div>';
     }
     
     html += '</div>';

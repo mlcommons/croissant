@@ -359,7 +359,12 @@
           '</div>'
         );
       } else if (examples.text_preview) {
-        previewBlock = '<pre class="preview">' + esc(examples.text_preview) + '</pre>';
+        var isJson = encFmts.some(function(fmt) { return fmt === "application/json"; }) || name.endsWith(".json");
+        if (isJson) {
+          previewBlock = '<pre class="preview language-json"><code class="language-json">' + esc(examples.text_preview) + '</code></pre>';
+        } else {
+          previewBlock = '<pre class="preview">' + esc(examples.text_preview) + '</pre>';
+        }
       } else if (examples.includes && examples.includes.length) {
         previewBlock = '<pre class="preview">Pattern: ' + esc(examples.includes.join(', ')) + '</pre>';
       }
@@ -597,6 +602,14 @@
       btn.classList.toggle('active');
       if (panel.classList.contains('open')) {
         panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Trigger Prism highlighting for JSON previews if not already done
+        if (panel.tagName === 'PRE' && !panel.dataset.highlighted) {
+          var code = panel.querySelector('code');
+          if (code && typeof Prism !== 'undefined') {
+            Prism.highlightElement(code);
+            panel.dataset.highlighted = 'true';
+          }
+        }
       }
     }
   });
