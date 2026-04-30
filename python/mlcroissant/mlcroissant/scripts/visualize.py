@@ -21,17 +21,17 @@ import json
 import pathlib
 import shutil
 import sys
+import tarfile
 from typing import Any
+import zipfile
 
 from absl import logging
 from etils import epath
 
 import mlcroissant as mlc
 from mlcroissant.scripts.visualize_utils import _get_or_generate_recordset_preview
-from mlcroissant.scripts.visualize_utils import _resolve_fileset_files
 from mlcroissant.scripts.visualize_utils import _list_archive_entries
-import tarfile
-import zipfile
+from mlcroissant.scripts.visualize_utils import _resolve_fileset_files
 
 # Directory containing static assets (visualizer.js, visualizer.css)
 _STATIC_DIR = pathlib.Path(__file__).parent / "static"
