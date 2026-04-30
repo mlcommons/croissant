@@ -101,7 +101,7 @@ def _augment_distribution(
         if contained_in:
             if isinstance(contained_in, list):
                 contained_in = contained_in[0] if contained_in else None
-            
+
             if isinstance(contained_in, str):
                 # Find parent resource
                 parent = None
@@ -109,7 +109,7 @@ def _augment_distribution(
                     if res.name == contained_in or res.uuid == contained_in:
                         parent = res
                         break
-                
+
                 if parent and hasattr(parent, "content_url") and parent.content_url:
                     parent_url = str(parent.content_url)
                     if not parent_url.startswith("http"):
@@ -118,8 +118,10 @@ def _augment_distribution(
                             parent_enc = getattr(parent, "encoding_formats", []) or []
                             if isinstance(parent_enc, str):
                                 parent_enc = [parent_enc]
-                            
-                            if any("zip" in fmt for fmt in parent_enc) or parent_url.endswith(".zip"):
+
+                            if any(
+                                "zip" in fmt for fmt in parent_enc
+                            ) or parent_url.endswith(".zip"):
                                 try:
                                     with zipfile.ZipFile(str(parent_path)) as z:
                                         if content_url in z.namelist():
@@ -130,39 +132,69 @@ def _augment_distribution(
                                                     line = f.readline()
                                                     if not line:
                                                         break
-                                                    lines.append(line.decode("utf-8", errors="replace"))
+                                                    lines.append(
+                                                        line.decode(
+                                                            "utf-8", errors="replace"
+                                                        )
+                                                    )
                                                 text_preview = "".join(lines)
-                                                entry["cr:examples"] = {"text_preview": text_preview}
+                                                entry["cr:examples"] = {
+                                                    "text_preview": text_preview
+                                                }
                                 except Exception as e:
-                                    logging.warning(f"Failed to read from zip {parent_path}: {e}")
-                            elif any("tar" in str(fmt).lower() for fmt in parent_enc) or any(fmt == "application/x-tar" for fmt in parent_enc) or any(parent_url.endswith(ext) for ext in [".tar", ".tar.gz", ".tgz"]):
+                                    logging.warning(
+                                        f"Failed to read from zip {parent_path}: {e}"
+                                    )
+                            elif (
+                                any("tar" in str(fmt).lower() for fmt in parent_enc)
+                                or any(fmt == "application/x-tar" for fmt in parent_enc)
+                                or any(
+                                    parent_url.endswith(ext)
+                                    for ext in [".tar", ".tar.gz", ".tgz"]
+                                )
+                            ):
                                 try:
                                     with tarfile.open(str(parent_path)) as t:
                                         try:
                                             member = t.getmember(content_url)
-                                            f = t.extractfile(member)
-                                            if f:
+                                            f_obj = t.extractfile(member)
+                                            if f_obj is not None:
                                                 # Read first 5 lines
                                                 lines = []
                                                 for _ in range(5):
-                                                    line = f.readline()
+                                                    line = f_obj.readline()
                                                     if not line:
                                                         break
-                                                    lines.append(line.decode("utf-8", errors="replace"))
+                                                    lines.append(
+                                                        line.decode(
+                                                            "utf-8", errors="replace"
+                                                        )
+                                                    )
                                                 text_preview = "".join(lines)
-                                                entry["cr:examples"] = {"text_preview": text_preview}
+                                                entry["cr:examples"] = {
+                                                    "text_preview": text_preview
+                                                }
                                         except KeyError:
-                                            logging.warning(f"File {content_url} not found in tar {parent_path}")
+                                            logging.warning(
+                                                f"File {content_url} not found in tar"
+                                                f" {parent_path}"
+                                            )
                                 except Exception as e:
-                                    logging.warning(f"Failed to read from tar {parent_path}: {e}")
+                                    logging.warning(
+                                        f"Failed to read from tar {parent_path}: {e}"
+                                    )
 
         # Original Case: Direct local file
         elif content_url and not str(content_url).startswith("http"):
             file_path = folder / content_url
             if file_path.exists():
-                if (enc_fmts and any(fmt in ["text/csv", "text/plain", "application/json"] for fmt in enc_fmts)) or (
-                    isinstance(content_url, str) and content_url.endswith(".json")
-                ):
+                if (
+                    enc_fmts
+                    and any(
+                        fmt in ["text/csv", "text/plain", "application/json"]
+                        for fmt in enc_fmts
+                    )
+                ) or (isinstance(content_url, str) and content_url.endswith(".json")):
                     try:
                         with file_path.open("r") as f:
                             text_preview = "".join([f.readline() for _ in range(5)])
