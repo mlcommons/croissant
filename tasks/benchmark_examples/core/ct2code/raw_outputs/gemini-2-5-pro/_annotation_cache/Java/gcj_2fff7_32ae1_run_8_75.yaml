@@ -1,0 +1,321 @@
+target_var: maxRem 57
+other_vars: 
+  - build 11
+  - build 13
+  - build 35
+  - build 50
+  - build 66
+  - build 70
+early_return: 
+  - 28
+  - 42
+  - 56
+variables:
+  numCases 10:
+    datadep: Null
+    controldep: Null
+  numCases 12:
+    reset: False
+    datadep:
+      - numCases 10
+    controldep:
+      - numCases 12
+      - c 12
+  c 12:
+    datadep:
+      - c 12
+    controldep:
+      - numCases 12
+      - c 12
+  n 14:
+    datadep: Null
+    controldep:
+      - numCases 12
+      - c 12
+  p 15:
+    datadep: Null
+    controldep:
+      - numCases 12
+      - c 12
+  dims 16:
+    datadep:
+      - n 14
+    controldep:
+      - numCases 12
+      - c 12
+  minP 17:
+    datadep: Null
+    controldep:
+      - numCases 12
+      - c 12
+  i 18:
+    datadep:
+      - i 18
+    controldep:
+      - numCases 12
+      - c 12
+      - i 18
+      - n 18
+  n 18:
+    reset: False
+    datadep:
+      - n 14
+    controldep:
+      - numCases 12
+      - c 12
+      - i 18
+      - n 18
+  first 19:
+    datadep: Null
+    controldep:
+      - i 18
+      - n 18
+  second 20:
+    datadep: Null
+    controldep:
+      - i 18
+      - n 18
+  dims 21:
+    datadep:
+      - i 18
+      - first 19
+      - second 20
+    controldep:
+      - i 18
+      - n 18
+  dims 22:
+    datadep:
+      - i 18
+      - first 19
+      - second 20
+    controldep:
+      - i 18
+      - n 18
+  minP 23:
+    datadep:
+      - first 19
+      - second 20
+      - minP 23
+      - minP 17
+    controldep:
+      - i 18
+      - n 18
+  small 25:
+    datadep: Null
+    controldep:
+      - numCases 12
+      - c 12
+  i 26:
+    datadep:
+      - i 26
+    controldep:
+      - numCases 12
+      - c 12
+      - dims 28
+      - i 28
+      - j 28
+  n 26:
+    reset: False
+    datadep:
+      - n 14
+    controldep:
+      - numCases 12
+      - c 12
+      - dims 28
+      - i 28
+      - j 28
+  j 27:
+    datadep:
+      - j 27
+    controldep:
+      - i 26
+      - n 26
+      - dims 28
+      - i 28
+      - j 28
+  dims 28:
+    reset: False
+    datadep:
+      - dims 16
+      - dims 21
+      - dims 22
+    controldep:
+      - j 27
+  i 28:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - j 27
+  j 28:
+    reset: False
+    datadep:
+      - j 27
+    controldep:
+      - j 27
+  small 29:
+    datadep: Null
+    controldep:
+      - dims 28
+      - i 28
+      - j 28
+  minP 34:
+    reset: False
+    datadep:
+      - minP 23
+      - minP 17
+    controldep:
+      - numCases 12
+      - c 12
+  p 34:
+    reset: False
+    datadep:
+      - p 15
+    controldep:
+      - numCases 12
+      - c 12
+  maxRem 38:
+    datadep:
+      - minP 23
+      - minP 17
+      - p 15
+    controldep:
+      - minP 34
+      - p 34
+  small 39:
+    reset: False
+    datadep:
+      - small 25
+      - small 29
+    controldep:
+      - minP 34
+      - p 34
+  minHalf 40:
+    datadep: Null
+    controldep:
+      - small 39
+  minHalf 41:
+    datadep:
+      - minHalf 40
+      - minHalf 41
+    controldep:
+      - small 39
+      - maxRem 42
+      - dims 42
+  n 41:
+    reset: False
+    datadep:
+      - n 14
+    controldep:
+      - small 39
+      - maxRem 42
+      - dims 42
+  maxRem 42:
+    reset: False
+    datadep:
+      - maxRem 38
+      - maxRem 43
+    controldep:
+      - minHalf 41
+      - n 41
+  dims 42:
+    reset: False
+    datadep:
+      - dims 16
+      - dims 21
+    controldep:
+      - minHalf 41
+      - n 41
+  maxRem 43:
+    datadep:
+      - maxRem 38
+      - maxRem 43
+      - dims 16
+      - dims 21
+    controldep:
+      - maxRem 42
+      - dims 42
+  maxRem 49:
+    reset: False
+    datadep:
+      - maxRem 38
+      - maxRem 43
+    controldep:
+      - small 39
+  maxHalf 53:
+    datadep: Null
+    controldep:
+      - maxRem 49
+  maxAdd 54:
+    datadep:
+      - dims 16
+      - dims 21
+      - dims 22
+    controldep:
+      - maxRem 49
+  maxHalf 55:
+    datadep:
+      - maxHalf 53
+      - maxHalf 55
+    controldep:
+      - maxRem 49
+      - maxRem 56
+      - maxAdd 56
+  minHalf 55:
+    reset: False
+    datadep:
+      - minHalf 40
+      - minHalf 41
+    controldep:
+      - maxRem 49
+      - maxRem 56
+      - maxAdd 56
+  maxRem 56:
+    reset: False
+    datadep:
+      - maxRem 38
+      - maxRem 43
+      - maxRem 57
+    controldep:
+      - maxHalf 55
+      - minHalf 55
+  maxAdd 56:
+    reset: False
+    datadep:
+      - maxAdd 54
+    controldep:
+      - maxHalf 55
+      - minHalf 55
+  maxRem 57:
+    datadep:
+      - maxRem 38
+      - maxRem 43
+      - maxRem 57
+      - maxAdd 54
+    controldep:
+      - maxRem 56
+      - maxAdd 56
+  maxRem 64:
+    datadep:
+      - maxRem 38
+      - maxRem 43
+      - maxRem 57
+    controldep:
+      - maxHalf 63
+      - minHalf 63
+  maxHalf 63:
+    reset: False
+    datadep:
+      - maxHalf 53
+      - maxHalf 55
+    controldep:
+      - maxRem 49
+      - maxRem 56
+      - maxAdd 56
+  minHalf 63:
+    reset: False
+    datadep:
+      - minHalf 40
+      - minHalf 41
+    controldep:
+      - maxRem 49

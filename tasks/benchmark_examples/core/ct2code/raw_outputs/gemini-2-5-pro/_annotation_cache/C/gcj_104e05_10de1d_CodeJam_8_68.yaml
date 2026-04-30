@@ -1,0 +1,190 @@
+target_var: match 53
+other_vars: 
+  - max 16
+  - i 35
+  - j 37
+  - word 42
+  - word 43
+early_return: 
+  - 51
+variables:
+  match 15:
+    datadep: Null
+    controldep: Null
+  rw 32:
+    datadep:
+      - i 28
+      - j 30
+      - word 19
+    controldep:
+      - j 30
+      - word 30
+      - i 30
+  i 28:
+    datadep:
+      - i 28
+    controldep:
+      - i 28
+      - n 28
+  n 28:
+    reset: False
+    datadep:
+      - n 8
+    controldep:
+      - i 28
+      - n 28
+  j 30:
+    datadep:
+      - j 30
+    controldep:
+      - j 30
+      - word 30
+      - i 30
+      - i 28
+      - n 28
+  word 19:
+    datadep:
+      - i 17
+    controldep:
+      - i 17
+      - n 17
+  i 17:
+    datadep:
+      - i 17
+    controldep:
+      - i 17
+      - n 17
+  n 17:
+    reset: False
+    datadep:
+      - n 8
+    controldep:
+      - i 17
+      - n 17
+  n 8:
+    datadep: Null
+    controldep: Null
+  word 30:
+    reset: False
+    datadep:
+      - word 19
+    controldep:
+      - j 30
+      - word 30
+      - i 30
+      - i 28
+      - n 28
+  i 30:
+    reset: False
+    datadep:
+      - i 28
+    controldep:
+      - j 30
+      - word 30
+      - i 30
+      - i 28
+      - n 28
+  i 47:
+    datadep:
+      - i 47
+    controldep:
+      - i 47
+      - n 47
+  n 47:
+    reset: False
+    datadep:
+      - n 8
+    controldep:
+      - i 47
+      - n 47
+  j 49:
+    datadep:
+      - j 49
+    controldep:
+      - i 47
+      - n 47
+      - j 49
+      - rw 49
+      - i 49
+      - rw 51
+      - i 51
+      - j 51
+  rw 49:
+    reset: False
+    datadep:
+      - rw 25
+      - rw 32
+    controldep:
+      - i 47
+      - n 47
+      - j 49
+      - rw 49
+      - i 49
+      - rw 51
+      - i 51
+      - j 51
+  i 49:
+    reset: False
+    datadep:
+      - i 47
+    controldep:
+      - i 47
+      - n 47
+      - j 49
+      - rw 49
+      - i 49
+      - rw 51
+      - i 51
+      - j 51
+  rw 51:
+    reset: False
+    datadep:
+      - rw 25
+      - rw 32
+    controldep:
+      - j 49
+      - rw 49
+      - i 49
+  i 51:
+    reset: False
+    datadep:
+      - i 47
+    controldep:
+      - j 49
+      - rw 49
+      - i 49
+  j 51:
+    reset: False
+    datadep:
+      - j 49
+    controldep:
+      - j 49
+      - rw 49
+      - i 49
+  match 53:
+    datadep:
+      - i 47
+      - match 15
+      - match 53
+    controldep:
+      - rw 51
+      - i 51
+      - j 51
+  i 21:
+    datadep: 
+      - i 21
+    controldep:
+      - i 21
+  j 23:
+    datadep:
+      - j 23
+    controldep:
+      - j 23
+      - i 21
+  rw 25:
+    datadep:
+      - word 19
+      - i 21
+      - j 23
+    controldep:
+      - j 23

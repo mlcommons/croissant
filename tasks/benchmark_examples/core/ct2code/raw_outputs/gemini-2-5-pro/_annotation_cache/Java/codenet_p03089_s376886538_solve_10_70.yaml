@@ -1,0 +1,283 @@
+target_var: t 55
+other_vars:
+  - r 20
+  - ans 31
+  - ans 17
+  - r 57
+early_return: 
+  - 24
+  - 25
+  - 38
+  - 48
+  - 54
+  - 59
+  - 65
+variables: 
+  t 55:
+    datadep:
+      - a 12
+      - a 14
+      - i 53
+    controldep:
+      - seen 54
+      - i 54
+  a 14:
+    datadep:
+      - i 13
+    controldep:
+      - i 13
+      - n 13
+  a 12:
+    datadep:
+      - n 11
+    controldep: Null
+  i 13:
+    datadep:
+      - i 13
+    controldep:
+      - i 13
+      - n 13
+  n 13:
+    reset: False
+    datadep:
+      - n 11
+    controldep:
+      - i 13
+      - n 13
+  i 53:
+    datadep:
+      - i 53
+      - n 11
+    controldep:
+      - i 53
+      - seen 48
+      - n 48
+      - seen 54
+      - i 54
+  n 11:
+    datadep: Null
+    controldep: Null
+  seen 54:
+    reset: False
+    datadep:
+      - seen 30
+      - seen 16
+    controldep:
+      - i 53
+  i 54:
+    reset: False
+    datadep:
+      - i 53
+    controldep:
+      - i 53
+  seen 16:
+    datadep: 
+      - n 11
+    controldep: Null
+  seen 30:
+    datadep:
+      - i 23
+    controldep:
+      - a 29
+      - t 29
+      - i 29
+  seen 24:
+    reset: False
+    datadep:
+      - seen 30
+      - seen 16
+    controldep:
+      - i 23
+  i 24:
+    reset: False
+    datadep:
+      - i 23
+    controldep:
+      - i 23
+  i 23:
+    datadep:
+      - n 11
+      - i 23
+      - i 43
+    controldep:
+      - i 23
+      - Null 21
+      - flag 38
+  i 25:
+    reset: False
+    datadep:
+      - i 23
+    controldep:
+      - seen 24
+      - i 24
+  l 25:
+    reset: False
+    datadep:
+      - l 19
+      - l 60
+    controldep:
+      - seen 24
+      - i 24
+  a 29:
+    reset: False
+    datadep:
+      - a 12
+      - a 14
+    controldep:
+      - i 25
+      - l 25
+  t 42:
+    datadep:
+      - t 42
+      - t 55
+      - t 18
+    controldep:
+      - flag 38
+  t 29:
+    reset: False
+    datadep:
+      - t 42
+      - t 55
+      - t 18
+    controldep:
+      - i 25
+      - l 25
+  i 29:
+    reset: False
+    datadep:
+      - i 23
+    controldep:
+      - i 25
+      - l 25
+  j 33:
+    datadep:
+      - i 23
+      - j 33
+    controldep:
+      - a 29
+      - t 29
+      - i 29
+      - j 33
+      - n 33
+  n 33:
+    reset: False
+    datadep:
+      - n 11
+    controldep:
+      - a 29
+      - t 29
+      - i 29
+      - j 33
+      - n 33
+  seen 34:
+    reset: False
+    datadep:
+      - seen 30
+      - seen 16
+    controldep:
+      - j 33
+      - n 33
+  j 34:
+    reset: False
+    datadep:
+      - j 33
+    controldep:
+      - j 33
+      - n 33
+  flag 35:
+    datadep: Null
+    controldep:
+      - seen 34
+      - j 34
+  flag 32:
+    datadep: Null
+    controldep:
+      - a 29
+      - t 29
+      - i 29
+  flag 38:
+    reset: False
+    datadep:
+      - flag 32
+      - flag 35
+    controldep:
+      - a 29
+      - t 29
+      - i 29
+  t 18:
+    datadep: Null 
+    controldep: Null
+  l 19:
+    datadep: Null 
+    controldep: Null
+  l 60:
+    datadep:
+      - j 58
+    controldep:
+      - seen 59
+      - j 59
+  j 58:
+    datadep:
+      - i 53
+      - j 58
+    controldep:
+      - seen 54
+      - i 54
+      - j 58
+      - seen 59
+      - j 59
+  seen 59:
+    reset: False
+    datadep:
+      - seen 30
+      - seen 16
+    controldep:
+      - j 58
+  j 59:
+    reset: False
+    datadep:
+      - j 58
+    controldep:
+      - j 58
+  seen 48:
+    reset: False
+    datadep:
+      - seen 30
+      - seen 16
+    controldep:
+      - Null 21
+  n 48:
+    reset: False
+    datadep:
+      - n 11
+    controldep:
+      - Null 21
+  flag 65:
+    reset: False
+    datadep:
+      - flag 52
+      - flag 56
+    controldep:
+      - seen 48
+      - n 48
+  flag 52:
+    datadep: Null 
+    controldep:
+      - seen 48
+      - n 48
+  flag 56:
+    datadep: Null
+    controldep:
+      - seen 54
+      - i 54
+  Null 21:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 21
+      - flag 65
+  i 43:
+    datadep:
+      - n 11
+    controldep:
+      - flag 38

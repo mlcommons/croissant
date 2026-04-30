@@ -1,0 +1,327 @@
+target_var: remaining_letters 35
+other_vars:
+  - curr_word 15
+  - letter 37
+  - curr_word 38
+early_return: 
+  - 5
+  - 36
+  - 41
+  - 45
+variables:
+  remaining_letters 35:
+    datadep:
+      - available_letters 17
+      - available_letters 19
+      - letters_in_prefix 26
+      - letters_in_prefix 33
+    controldep:
+      - n_prefixes 23
+  remaining_letters 36:
+    reset: False
+    datadep:
+      - remaining_letters 35
+    controldep:
+      - n_prefixes 23
+  isFound 39:
+    datadep: Null
+    controldep:
+      - remaining_letters 36
+  isFound 41:
+    reset: False
+    datadep:
+      - isFound 21
+      - isFound 39
+    controldep:
+      - L 16
+  N 8:
+    datadep:
+      - w_list 3
+    controldep:
+      - w_list 5
+      - L 5
+  last_prefix 9:
+    datadep:
+      - w_list 3
+    controldep:
+      - w_list 5
+      - L 5
+  N 10:
+    reset: False
+    datadep:
+      - N 8
+    controldep:
+      - w_list 5
+      - L 5
+      - N 10
+  i 10:
+    datadep:
+      - N 8
+    controldep:
+      - w_list 5
+      - L 5
+      - N 10
+  w_list 3:
+    datadep: 
+      - w_list 2
+    controldep: Null
+  w_list 2:
+    datadep: Null
+    controldep: Null
+  w_list 5:
+    reset: False
+    datadep:
+      - w_list 3
+    controldep: Null
+  L 4:
+    datadep:
+      - w_list 3
+    controldep: Null
+  L 5:
+    reset: False
+    datadep:
+      - L 4
+    controldep: Null
+  prefix_index 7:
+    datadep: Null
+    controldep:
+      - w_list 5
+      - L 5
+  w_list 11:
+    reset: False
+    datadep:
+      - w_list 3
+    controldep:
+      - N 10
+  i 11:
+    reset: False
+    datadep:
+      - i 10
+    controldep:
+      - N 10
+  last_prefix 11:
+    reset: False
+    datadep:
+      - last_prefix 9
+      - last_prefix 12
+    controldep:
+      - N 10
+  last_prefix 12:
+    datadep:
+      - w_list 3
+      - i 10
+    controldep:
+      - w_list 11
+      - last_prefix 11
+      - i 11
+  prefix_index 13:
+    datadep:
+      - prefix_index 7
+      - prefix_index 13
+      - i 10
+    controldep:
+      - w_list 11
+      - last_prefix 11
+      - i 11
+  prefix_index 14:
+    datadep:
+      - N 8
+      - prefix_index 7
+      - prefix_index 13
+    controldep:
+      - w_list 5
+      - L 5
+  p 16:
+    datadep:
+      - L 4
+    controldep:
+      - w_list 5
+      - L 5
+      - L 16
+      - isFound 41
+  L 16:
+    reset: False
+    datadep:
+      - L 4
+    controldep:
+      - w_list 5
+      - L 5
+      - L 16
+      - isFound 41
+  available_letters 17:
+    datadep:
+      - w_list 3
+      - p 16
+    controldep:
+      - L 16
+  k 18:
+    datadep:
+      - N 8
+    controldep:
+      - L 16
+      - N 18
+  N 18:
+    reset: False
+    datadep:
+      - N 8
+    controldep:
+      - L 16
+      - N 18
+  available_letters 19:
+    datadep:
+      - w_list 3
+      - k 18
+      - p 16
+      - available_letters 17
+      - available_letters 19
+    controldep:
+      - N 18
+  n_prefixes 20:
+    datadep:
+      - prefix_index 14
+      - prefix_index 44
+    controldep:
+      - L 16
+  isFound 21: 
+    datadep: Null
+    controldep:
+      - L 16
+  n_prefixes 23:
+    reset: False
+    datadep:
+      - n_prefixes 20
+    controldep:
+      - L 16
+      - n_prefixes 23
+      - remaining_letters 36
+  n_prefix 23:
+    datadep:
+      - n_prefixes 20
+    controldep:
+      - L 16
+      - n_prefixes 23
+      - remaining_letters 36
+  start_index 24:
+    datadep:
+      - prefix_index 14
+      - prefix_index 44
+      - n_prefix 23
+    controldep:
+      - n_prefixes 23
+  end_index 25:
+    datadep:
+      - prefix_index 14
+      - prefix_index 44
+      - n_prefix 23
+    controldep:
+      - n_prefixes 23
+  letters_in_prefix 26:
+    datadep:
+      - w_list 3
+      - start_index 24
+      - p 16
+    controldep:
+      - n_prefixes 23
+  last_letter 27:
+    datadep:
+      - w_list 3
+      - start_index 24
+      - p 16
+    controldep:
+      - n_prefixes 23
+  letters_in_prefix 33:
+    datadep:
+      - w_list 3
+      - p 16
+      - item 29
+      - letters_in_prefix 26
+      - letters_in_prefix 33
+    controldep:
+      - letter 31
+      - last_letter 31
+  item 29:
+    datadep:
+      - start_index 24
+      - end_index 25
+    controldep:
+      - n_prefixes 23
+      - start_index 29
+      - end_index 29
+  start_index 29:
+    reset: False
+    datadep:
+      - start_index 24
+    controldep:
+      - n_prefixes 23
+      - start_index 29
+      - end_index 29
+  end_index 29:
+    reset: False
+    datadep:
+      - end_index 25
+    controldep:
+      - n_prefixes 23
+      - start_index 29
+      - end_index 29
+  letter 30:
+    datadep:
+      - w_list 3
+      - p 16
+      - item 29
+    controldep:
+      - start_index 29
+      - end_index 29
+  letter 31:
+    reset: False
+    datadep:
+      - letter 30
+    controldep:
+      - start_index 29
+      - end_index 29
+  last_letter 31:
+    reset: False
+    datadep:
+      - last_letter 27
+      - last_letter 32
+    controldep:
+      - start_index 29
+      - end_index 29
+  last_letter 32:
+    datadep:
+      - letter 30
+    controldep:
+      - letter 31
+      - last_letter 31
+  new_prefix_index 43:
+    datadep:
+      - N 8
+      - new_prefix_index 22
+      - new_prefix_index 28
+      - new_prefix_index 34
+    controldep:
+      - isFound 41
+  prefix_index 44:
+    datadep:
+      - new_prefix_index 43
+    controldep:
+      - isFound 41
+  new_prefix_index 22:
+    datadep: Null
+    controldep:
+      - L 16
+  new_prefix_index 28:
+    datadep:
+      - new_prefix_index 22
+      - new_prefix_index 28
+      - new_prefix_index 34
+      - start_index 24
+    controldep:
+      - n_prefixes 23
+  new_prefix_index 34:
+    datadep:
+      - new_prefix_index 28
+      - new_prefix_index 34
+      - item 29
+    controldep:
+      - letter 31
+      - last_letter 31

@@ -1,0 +1,199 @@
+target_var: newDistance 63
+other_vars:
+  - queries 45
+variables:
+  linked 45:
+    datadep: Null
+    controldep: Null
+  prices 45:
+    datadep: Null
+    controldep: Null
+  k 46:
+    datadep:
+      - linked 45
+    controldep: Null
+  routes 47:
+    datadep:
+      - k 46
+    controldep: Null
+  i 48:
+    datadep:
+      - i 48
+    controldep:
+      - i 48
+      - k 48
+  k 48:
+    reset: False
+    datadep:
+      - k 46
+    controldep:
+      - i 48
+      - k 48
+  j 49:
+    datadep:
+      - i 48
+      - j 49
+    controldep:
+      - i 48
+      - k 48
+      - j 49
+  routes 50:
+    datadep:
+      - i 48
+      - j 49
+      - routes 47
+      - routes 50
+      - routes 53
+      - prices 45
+    controldep:
+      - j 49
+  j 52:
+    datadep:  
+      - j 52
+      - i 48
+    controldep:
+      - i 48
+      - k 48
+      - j 52
+      - k 52
+  k 52:
+    reset: False
+    datadep:
+      - k 46
+    controldep:
+      - i 48
+      - k 48
+      - j 52
+      - k 52
+  routes 53:
+    datadep:
+      - i 48
+      - j 52
+      - routes 47
+      - routes 50
+      - routes 53
+      - prices 45
+    controldep:
+      - j 52
+      - k 52
+  updated 56:
+    datadep: Null
+    controldep: Null
+  updated 57:
+    reset: False
+    datadep:
+      - updated 56
+      - updated 65
+      - updated 58
+    controldep:
+      - updated 57
+  updated 58:
+    datadep: Null
+    controldep:
+      - updated 57
+  i 59:
+    datadep:
+      - i 59
+    controldep:
+      - updated 57
+      - i 59
+      - k 59
+  k 59:
+    reset: False
+    datadep:
+      - k 46
+    controldep:
+      - updated 57
+      - i 59
+      - k 59
+  pair 60:
+    datadep:
+      - linked 45
+      - i 59
+    controldep:
+      - i 59
+      - k 59
+  price 61:
+    datadep:
+      - prices 45
+      - i 59
+    controldep:
+      - i 59
+      - k 59
+  j 62:
+    datadep: 
+      - j 62
+    controldep:
+      - i 59
+      - k 59
+      - j 62
+      - k 62
+  k 62:
+    reset: False
+    datadep:
+      - k 46
+    controldep:
+      - i 59
+      - k 59
+      - j 62
+      - k 62
+  newDistance 63:
+    datadep:
+      - routes 47
+      - routes 50
+      - routes 53
+      - routes 66
+      - j 62
+      - price 61
+      - pair 60
+    controldep:
+      - j 62
+      - k 62
+  newDistance 64:
+    reset: False
+    datadep:
+      - newDistance 63
+    controldep:
+      - j 62
+      - k 62
+  routes 64:
+    reset: False
+    datadep:
+      - routes 47
+      - routes 50
+      - routes 53
+      - routes 66
+    controldep:
+      - j 62
+      - k 62
+  i 64:
+    reset: False
+    datadep:
+      - i 59
+    controldep:
+      - j 62
+      - k 62
+  j 64:
+    reset: False
+    datadep:
+      - j 62
+    controldep:
+      - j 62
+      - k 62
+  updated 65:
+    datadep: Null
+    controldep:
+      - newDistance 64
+      - routes 64
+      - i 64
+      - j 64
+  routes 66:
+    datadep:
+      - i 59
+      - j 62
+      - newDistance 63
+    controldep:
+      - newDistance 64
+      - routes 64
+      - i 64
+      - j 64

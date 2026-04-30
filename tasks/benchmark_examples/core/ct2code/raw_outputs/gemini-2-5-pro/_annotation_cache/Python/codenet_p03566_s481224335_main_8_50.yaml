@@ -1,0 +1,59 @@
+target_var: dv2 33
+other_vars:
+  - acce_areas 23
+  - pre_v 48
+  - rect_sums 47
+  - pre_v 24
+  - ans 16
+  - v 22
+  - T 26
+early_return: 
+  - 12
+variables:
+  dv2 33:
+    datadep:
+      - next_v 31
+      - v 30
+    controldep:
+      - N 29
+  N 29:
+    reset: False
+    datadep:
+      - N 9
+    controldep: 
+      - N 29
+      - N 12
+  N 9:
+    datadep: Null
+    controldep: Null
+  v 30:
+    datadep:
+      - V 25
+      - i 29
+    controldep:
+      - N 29
+  next_v 31:
+    datadep:
+      - V 25
+      - i 29
+    controldep:
+      - N 29
+  V 11:
+    datadep: Null
+    controldep: Null
+  V 25:
+    datadep:
+      - V 11
+    controldep: 
+      - N 12
+  N 12:
+    reset: False
+    datadep: 
+      - N 9
+    controldep: Null
+  i 29:
+    datadep: 
+      - N 9
+    controldep: 
+      - N 29
+      - N 12

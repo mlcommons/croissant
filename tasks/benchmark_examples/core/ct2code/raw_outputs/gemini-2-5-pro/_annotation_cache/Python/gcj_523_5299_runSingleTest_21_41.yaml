@@ -1,0 +1,76 @@
+target_var: a_exc 35
+other_vars: 
+  - i 28
+early_return: 
+  - 32
+variables:
+  line 22:
+    datadep: Null
+    controldep: Null
+  tokens 23:
+    datadep:  
+      - line 22
+    controldep: Null
+  a_exc 24:
+    datadep:  
+      - tokens 23
+    controldep: Null
+  b_inc 25:
+    datadep:
+      - tokens 23
+    controldep: Null
+  line 26:
+    datadep: Null
+    controldep: Null
+  n 27:
+    datadep:
+      - line 26
+    controldep: Null
+  n 28:
+    reset: False
+    datadep:
+      - n 27
+    controldep:
+      - n 28
+      - line 36
+  guess 29:
+    datadep:
+      - a_exc 24
+      - a_exc 35
+      - b_inc 25
+      - b_inc 37
+    controldep:
+      - n 28
+  line 31:
+    datadep: Null
+    controldep:
+      - n 28
+  line 32:
+    reset: False
+    datadep:
+      - line 31
+    controldep:
+      - n 28
+  line 34:
+    reset: False
+    datadep:
+      - line 31
+    controldep:
+      - line 32
+  a_exc 35:
+    datadep:
+      - guess 29
+    controldep:
+      - line 34
+  line 36:
+    reset: False
+    datadep:
+      - line 31
+    controldep:
+      - line 34
+  b_inc 37:
+    datadep:
+      - guess 29
+    controldep:
+      - line 36
+
