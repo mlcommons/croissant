@@ -26,6 +26,7 @@ def validate_data(
       inference="rdfs",
       serialize_report_graph=True,
   )
+  print(results_text)
   return conforms, results_text
 
 

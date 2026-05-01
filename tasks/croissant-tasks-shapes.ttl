@@ -45,13 +45,18 @@ croissant:TaskShape
       [ sh:class croissant:ExecutionInfo ]
       [ sh:class croissant:ExecutionConfig ]
       [ sh:class croissant:ExecutionTrace ]
+      [ sh:class croissant:ExecutionSpec ]
     ) ;
-    sh:message "croissant:execution must point to an ExecutionInfo, ExecutionConfig, or ExecutionTrace."
+    sh:message "croissant:execution must point to an ExecutionInfo, ExecutionConfig, ExecutionTrace, or ExecutionSpec."
   ] ;
+
   sh:property [
     sh:path croissant:evaluation ;
-    sh:class croissant:EvaluationTask ;
-    sh:message "croissant:evaluation must point to an EvaluationTask."
+    sh:or (
+      [ sh:class croissant:EvaluationTask ]
+      [ sh:class croissant:EvaluationSpec ]
+    ) ;
+    sh:message "croissant:evaluation must point to an EvaluationTask or EvaluationSpec."
   ] ;  
   sh:property [
     sh:path croissant:subTask ;
@@ -66,15 +71,29 @@ croissant:TaskProblemShape
   a sh:NodeShape ;
   sh:targetClass croissant:TaskProblem ;
   # A TaskProblem must have at least one property that is a spec class
-  sh:property [
-    sh:or (
-      [ sh:path croissant:input ; sh:class croissant:InputSpec ]
-      [ sh:path croissant:output ; sh:class croissant:OutputSpec ]
-      [ sh:path croissant:implementation ; sh:class croissant:ImplementationSpec ]
-    ) ;
-    sh:minCount 1 ;
-    sh:message "A TaskProblem must have at least one property (input, output, or implementation) that is a spec class (InputSpec, OutputSpec, or ImplementationSpec)."
-  ] ;
+  sh:or (
+    [
+      sh:property [
+        sh:path croissant:input ;
+        sh:class croissant:InputSpec ;
+        sh:minCount 1 ;
+      ]
+    ]
+    [
+      sh:property [
+        sh:path croissant:output ;
+        sh:class croissant:OutputSpec ;
+        sh:minCount 1 ;
+      ]
+    ]
+    [
+      sh:property [
+        sh:path croissant:implementation ;
+        sh:class croissant:ImplementationSpec ;
+        sh:minCount 1 ;
+      ]
+    ]
+  ) ;
   sh:property [
     sh:path croissant:execution ;
     sh:class croissant:ExecutionSpec ;
@@ -97,10 +116,6 @@ croissant:TaskSolutionShape
   sh:targetClass croissant:TaskSolution ;
   sh:property [
     sh:path schema:isBasedOn ;
-    sh:or (
-      [ sh:class croissant:TaskProblem ]
-      [ sh:nodeKind sh:IRI ]
-    ) ;
     sh:minCount 1 ;
     sh:message "A TaskSolution must be formally linked to a TaskProblem via schema:isBasedOn."
   ] ;
@@ -109,6 +124,7 @@ croissant:TaskSolutionShape
     sh:not [ sh:class croissant:InputSpec ] ;
     sh:message "A TaskSolution cannot have an InputSpec as input." ;
   ] ;
+
   sh:property [
     sh:path croissant:output ;
     sh:not [ sh:class croissant:OutputSpec ] ;
@@ -255,21 +271,10 @@ croissant:EvaluationResultShape
       [ sh:datatype xsd:string ]
       [ sh:datatype xsd:decimal ]
       [ sh:datatype xsd:integer ]
+      [ sh:datatype xsd:double ]
     ) ;
     sh:minCount 1 ;
     sh:message "croissant:value must be a QuantitativeValue, string, or number, and is required."
-  ] .
-
-# -----------------------------------------------------------------------------
-# Execution Config Shape
-# -----------------------------------------------------------------------------
-croissant:ExecutionConfigShape
-  a sh:NodeShape ;
-  sh:targetClass croissant:ExecutionConfig ;
-  sh:property [
-    sh:path croissant:hyperparameter ;
-    sh:class schema:PropertyValue ;
-    sh:message "croissant:hyperparameter must point to a PropertyValue."
   ] .
 
 # -----------------------------------------------------------------------------
@@ -286,7 +291,8 @@ croissant:EvaluationTaskShape
   sh:property [
     sh:path croissant:evaluatedSolution ;
     sh:class croissant:TaskSolution ;
-    sh:qualifiedMinCount 1 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
     sh:message "croissant:evaluatedSolution must point to exactly one TaskSolution."
   ] ;
   sh:property [
@@ -307,8 +313,7 @@ croissant:RecordSetShape
   sh:property [
     sh:path croissant:field ;
     sh:class croissant:Field ;
-    sh:minCount 1 ;
-    sh:message "A RecordSet must have at least one field."
+    sh:message "A RecordSet must have fields."
   ] .
 
 croissant:FieldShape
@@ -316,13 +321,13 @@ croissant:FieldShape
   sh:targetClass croissant:Field ;
   sh:property [
     sh:path croissant:dataType ;
-    sh:nodeKind sh:IRI ;
+    sh:or (
+      [ sh:nodeKind sh:IRI ]
+      [ sh:datatype xsd:string ]
+    ) ;
     sh:minCount 1 ;
     sh:message "A Field must have a dataType."
-  ] ;
-  sh:property [
-    sh:path schema:valuePattern ;
-    sh:datatype xsd:string ;
-    sh:message "schema:valuePattern must be a string."
   ] .
+
+
 

@@ -3,16 +3,16 @@
 
 import os
 import unittest
-from croissant_tasks.visualization import generate_vis
+from experimental.users.leobianco.croissant_tasks.visualization_js import generate_vis
 
 class GenerateVisTest(unittest.TestCase):
 
     def test_generate_visualization(self):
         # Paths to real files for integration testing
-        problem_path = "../benchmark_examples/mmlu/mmlu_problem.jsonld"
-        solution_path = "../benchmark_examples/mmlu/mmlu_solution_small_fewshot.jsonld"
-        template_path = "../visualization/template.html"
-        output_path = "../benchmark_examples/mmlu/mmlu_visualization_test.html"
+        problem_path = "/google/src/cloud/leobianco/croissant-tasks/google3/experimental/users/leobianco/croissant_tasks/benchmark_examples/mmlu/mmlu_problem.jsonld"
+        solution_path = "/google/src/cloud/leobianco/croissant-tasks/google3/experimental/users/leobianco/croissant_tasks/benchmark_examples/mmlu/mmlu_solution_small_fewshot.jsonld"
+        template_path = "/google/src/cloud/leobianco/croissant-tasks/google3/experimental/users/leobianco/croissant_tasks/visualization_js/template.html"
+        output_path = "/google/src/cloud/leobianco/croissant-tasks/google3/experimental/users/leobianco/croissant_tasks/benchmark_examples/mmlu/mmlu_visualization_test.html"
 
         # Ensure output file doesn't exist
         if os.path.exists(output_path):
