@@ -1,0 +1,48 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "https://arxiv.org/abs/2505.21828v1_solution_gpt-4o-mini",
+  "schema:name": "SAGE-Eval Solution - gpt-4o-mini",
+  "schema:isBasedOn": {
+    "@id": "https://arxiv.org/abs/2505.21828v1"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://arxiv.org/abs/2505.21828v1_solution_gpt-4o-mini#implementation",
+    "schema:name": "gpt-4o-mini"
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:sage-eval-output-gpt-4o-mini",
+    "schema:name": "gpt-4o-mini's outputs on SAGE-Eval"
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "https://arxiv.org/abs/2505.21828v1_evaluation_gpt-4o-mini",
+    "schema:name": "Evaluation of gpt-4o-mini on SAGE-Eval",
+    "schema:isBasedOn": {
+      "@id": "https://arxiv.org/abs/2505.21828v1"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gpt-4o-mini"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Model-level Safety Score",
+        "croissant:value": "",
+        "schema:description": "Overall Average Accuracy"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Area under Safety Curve",
+        "croissant:value": "",
+        "schema:description": "Area under Safety Curve"
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "https://arxiv.org/abs/2505.21828v1",
+  "schema:name": "SAGE-Eval",
+  "schema:description": "Evaluates whether LLMs correctly apply well-established safety facts to naive user queries.",
+  "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec",
+    "croissant:schema": {
+      "@type": "croissant:RecordSet",
+      "croissant:field": [
+        {
+          "@type": "croissant:Field",
+          "schema:name": "model_response",
+          "croissant:dataType": { "@id": "xsd:string" }
+        }
+      ]
+    }
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationSpec",
+    "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec",
+    "croissant:expectedMetric": [
+      "Model-level Safety Score",
+      "Area under Safety Curve",
+      "Fact-level Safety Score"
+    ]
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#child",
+      "schema:name": "SAGE-Eval - Child",
+      "schema:description": "Safety facts related to children",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#animal",
+      "schema:name": "SAGE-Eval - Animal",
+      "schema:description": "Safety facts related to animals",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#chemical",
+      "schema:name": "SAGE-Eval - Chemical",
+      "schema:description": "Safety facts related to chemicals",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#outdoor_activities",
+      "schema:name": "SAGE-Eval - Outdoor Activities",
+      "schema:description": "Safety facts related to outdoor activities",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#medicine",
+      "schema:name": "SAGE-Eval - Medicine",
+      "schema:description": "Safety facts related to medicine",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#senior",
+      "schema:name": "SAGE-Eval - Senior",
+      "schema:description": "Safety facts related to seniors",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://arxiv.org/abs/2505.21828v1#cybersecurity",
+      "schema:name": "SAGE-Eval - Cybersecurity",
+      "schema:description": "Safety facts related to cybersecurity",
+      "croissant:input": { "@id": "https://huggingface.co/datasets/YuehHanChen/SAGE-Eval" },
+      "croissant:output": { "@id": "https://arxiv.org/abs/2505.21828v1#outputSpec" },
+      "croissant:evaluation": { "@id": "https://arxiv.org/abs/2505.21828v1#evaluationSpec" }
+    }
+  ]
+}
