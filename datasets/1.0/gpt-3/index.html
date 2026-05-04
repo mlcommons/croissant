@@ -1,113 +1,198 @@
-<html>
-  <head>GPT-3 dataset</title>
-    <script type="application/ld+json">
-        {
-            "@context": {
-              "@language": "en",
-              "@vocab": "https://schema.org/",
-              "column": "ml:column",
-              "data": {
-                "@id": "ml:data",
-                "@type": "@json"
-              },
-              "dataType": {
-                "@id": "ml:dataType",
-                "@type": "@vocab"
-              },
-              "extract": "ml:extract",
-              "field": "ml:field",
-              "fileProperty": "ml:fileProperty",
-              "format": "ml:format",
-              "includes": "ml:includes",
-              "isEnumeration": "ml:isEnumeration",
-              "jsonPath": "ml:jsonPath",
-              "ml": "http://mlcommons.org/schema/",
-              "parentField": "ml:parentField",
-              "path": "ml:path",
-              "recordSet": "ml:recordSet",
-              "references": "ml:references",
-              "regex": "ml:regex",
-              "repeated": "ml:repeated",
-              "replace": "ml:replace",
-              "sc": "https://schema.org/",
-              "separator": "ml:separator",
-              "source": "ml:source",
-              "subField": "ml:subField",
-              "transform": "ml:transform"
-            },
-            "@type": "sc:Dataset",
-            "name": "gpt-3",
-            "description": "Recent work has demonstrated substantial gains on many NLP tasks and benchmarks by pre-training on a large corpus of text followed by fine-tuning on a specific task. While typically task-agnostic in architecture, this method still requires task-specific fine-tuning datasets of thousands or tens of thousands of examples. By contrast, humans can generally perform a new language task from only a few examples or from simple instructions \u2013 something which current NLP systems still largely struggle to do. Here we show that scaling up language models greatly improves task-agnostic, few-shot performance, sometimes even reaching competitiveness with prior state-of-the-art fine-tuning approaches. Specifically, we train GPT-3, an autoregressive language model with 175 billion parameters, 10x more than any previous non-sparse language model, and test its performance in the few-shot setting. For all tasks, GPT-3 is applied without any gradient updates or fine-tuning, with tasks and few-shot demonstrations specified purely via text interaction with the model. GPT-3 achieves strong performance on many NLP datasets, including translation, question-answering, and cloze tasks, as well as several tasks that require on-the-fly reasoning or domain adaptation, such as unscrambling words, using a novel word in a sentence, or performing 3-digit arithmetic. At the same time, we also identify some datasets where GPT-3's few-shot learning still struggles, as well as some datasets where GPT-3 faces methodological issues related to training on large web corpora. Finally, we find that GPT-3 can generate samples of news articles which human evaluators have difficulty distinguishing from articles written by humans. We discuss broader societal impacts of this finding and of GPT-3 in general.",
-            "citation": "@article{brown2020language, title={Language Models are Few-Shot Learners}, author={Tom B. Brown and Benjamin Mann and Nick Ryder and Melanie Subbiah and Jared Kaplan and Prafulla Dhariwal and Arvind Neelakantan and Pranav Shyam and Girish Sastry and Amanda Askell and Sandhini Agarwal and Ariel Herbert-Voss and Gretchen Krueger and Tom Henighan and Rewon Child and Aditya Ramesh and Daniel M. Ziegler and Jeffrey Wu and Clemens Winter and Christopher Hesse and Mark Chen and Eric Sigler and Mateusz Litwin and Scott Gray and Benjamin Chess and Jack Clark and Christopher Berner and Sam McCandlish and Alec Radford and Ilya Sutskever and Dario Amodei}, year={2020}, eprint={2005.14165}, archivePrefix={arXiv}, primaryClass={cs.CL} }",
-            "license": "Unknown",
-            "url": "https://github.com/openai/gpt-3",
-            "distribution": [
-              {
-                "@type": "cr:FileObject",
-                "name": "repo",
-                "contentUrl": "https://github.com/openai/gpt-3",
-                "encodingFormat": "git+https",
-                "sha256": "https://github.com/mlcommons/croissant/issues/80"
-              },
-              {
-                "@type": "cr:FileSet",
-                "name": "jsonl",
-                "containedIn": "repo",
-                "encodingFormat": "application/jsonlines",
-                "includes": "data/*.jsonl"
-              }
-            ],
-            "recordSet": [
-              {
-                "@type": "ml:RecordSet",
-                "name": "default",
-                "description": "Contexts and completions.",
-                "field": [
-                  {
-                    "@type": "ml:Field",
-                    "name": "context",
-                    "description": "The context in the promt.",
-                    "dataType": "sc:Text",
-                    "source": {
-                      "distribution": "jsonl",
-                      "extract": {
-                        "column": "context"
-                      }
-                    }
-                  },
-                  {
-                    "@type": "ml:Field",
-                    "name": "completion",
-                    "description": "The expected completion of the promt.",
-                    "dataType": "sc:Text",
-                    "source": {
-                      "distribution": "jsonl",
-                      "extract": {
-                        "column": "completion"
-                      }
-                    }
-                  },
-                  {
-                    "@type": "ml:Field",
-                    "name": "task",
-                    "description": "The machine learning task appearing as the name of the file.",
-                    "dataType": "sc:Text",
-                    "source": {
-                      "distribution": "jsonl",
-                      "extract": {
-                        "fileProperty": "filename"
-                      },
-                      "transform": {
-                        "regex": "^(.*)\\.jsonl$"
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
 </head>
 <body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "gpt-3",
+  "description": "Recent work has demonstrated substantial gains on many NLP tasks and benchmarks by pre-training on a large corpus of text followed by fine-tuning on a specific task. While typically task-agnostic in architecture, this method still requires task-specific fine-tuning datasets of thousands or tens of thousands of examples. By contrast, humans can generally perform a new language task from only a few examples or from simple instructions – something which current NLP systems still largely struggle to do. Here we show that scaling up language models greatly improves task-agnostic, few-shot performance, sometimes even reaching competitiveness with prior state-of-the-art fine-tuning approaches. Specifically, we train GPT-3, an autoregressive language model with 175 billion parameters, 10x more than any previous non-sparse language model, and test its performance in the few-shot setting. For all tasks, GPT-3 is applied without any gradient updates or fine-tuning, with tasks and few-shot demonstrations specified purely via text interaction with the model. GPT-3 achieves strong performance on many NLP datasets, including translation, question-answering, and cloze tasks, as well as several tasks that require on-the-fly reasoning or domain adaptation, such as unscrambling words, using a novel word in a sentence, or performing 3-digit arithmetic. At the same time, we also identify some datasets where GPT-3's few-shot learning still struggles, as well as some datasets where GPT-3 faces methodological issues related to training on large web corpora. Finally, we find that GPT-3 can generate samples of news articles which human evaluators have difficulty distinguishing from articles written by humans. We discuss broader societal impacts of this finding and of GPT-3 in general.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{brown2020language, title={Language Models are Few-Shot Learners}, author={Tom B. Brown and Benjamin Mann and Nick Ryder and Melanie Subbiah and Jared Kaplan and Prafulla Dhariwal and Arvind Neelakantan and Pranav Shyam and Girish Sastry and Amanda Askell and Sandhini Agarwal and Ariel Herbert-Voss and Gretchen Krueger and Tom Henighan and Rewon Child and Aditya Ramesh and Daniel M. Ziegler and Jeffrey Wu and Clemens Winter and Christopher Hesse and Mark Chen and Eric Sigler and Mateusz Litwin and Scott Gray and Benjamin Chess and Jack Clark and Christopher Berner and Sam McCandlish and Alec Radford and Ilya Sutskever and Dario Amodei}, year={2020}, eprint={2005.14165}, archivePrefix={arXiv}, primaryClass={cs.CL} }",
+  "license": "unknown",
+  "url": "https://github.com/openai/gpt-3",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "contentUrl": "https://github.com/openai/gpt-3",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "jsonl",
+      "name": "jsonl",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "data/*.jsonl",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "data/*.jsonl"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "Contexts and completions.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/context",
+          "name": "default/context",
+          "description": "The context in the promt.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/completion",
+          "name": "default/completion",
+          "description": "The expected completion of the promt.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl"
+            },
+            "extract": {
+              "column": "completion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/task",
+          "name": "default/task",
+          "description": "The machine learning task appearing as the name of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^(.*)\\.jsonl$"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "context",
+          "completion",
+          "task"
+        ],
+        "rows": [
+          [
+            "\n\nQ: What is 65360 plus 16204?\n\nA:",
+            "81564",
+            "five_digit_addition"
+          ],
+          [
+            "\n\nQ: What is 91169 plus 57223?\n\nA:",
+            "148392",
+            "five_digit_addition"
+          ],
+          [
+            "\n\nQ: What is 52888 plus 52240?\n\nA:",
+            "105128",
+            "five_digit_addition"
+          ],
+          [
+            "\n\nQ: What is 35742 plus 78660?\n\nA:",
+            "114402",
+            "five_digit_addition"
+          ],
+          [
+            "\n\nQ: What is 69074 plus 90431?\n\nA:",
+            "159505",
+            "five_digit_addition"
+          ]
+        ]
+      }
+    }
+  ]
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "encodingFormat": "application/x-parquet",
+      "includes": "data/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "data/*.parquet"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "Note: this is a smaller version of the original HuggingFace dataset. Lichess/standard-chess-games - 'default' subset.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/Event",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Event"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Site",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Site"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/White",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "White"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Black",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Black"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Result",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Result"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/WhiteTitle",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "WhiteTitle"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/BlackTitle",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "BlackTitle"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/WhiteElo",
+          "dataType": "cr:Int16",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "WhiteElo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/BlackElo",
+          "dataType": "cr:Int16",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "BlackElo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/WhiteRatingDiff",
+          "dataType": "cr:Int16",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "WhiteRatingDiff"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/BlackRatingDiff",
+          "dataType": "cr:Int16",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "BlackRatingDiff"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/UTCDate",
+          "dataType": "sc:Date",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "UTCDate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/UTCTime",
+          "dataType": "sc:Time",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "UTCTime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ECO",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "ECO"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Opening",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Opening"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Termination",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Termination"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/TimeControl",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "TimeControl"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/movetext",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "movetext"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "Event",
+          "Site",
+          "White",
+          "Black",
+          "Result",
+          "WhiteTitle",
+          "BlackTitle",
+          "WhiteElo",
+          "BlackElo",
+          "WhiteRatingDiff"
+        ],
+        "rows": [
+          [
+            "Rated Classical game",
+            "https://lichess.org/9tp6v4ps",
+            "Smok",
+            "McCoy",
+            "1-0",
+            "None",
+            "None",
+            "1452",
+            "1227",
+            "5"
+          ],
+          [
+            "Rated Blitz game",
+            "https://lichess.org/b9tstv2z",
+            "dvorak",
+            "Kiriush",
+            "1-0",
+            "None",
+            "None",
+            "1796",
+            "1876",
+            "13"
+          ]
+        ]
+      }
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "standard-chess-games",
+  "description": "\n[!CAUTION]\nThis dataset is still a work in progress and some breaking changes might occur.\n\n\n\t\n\t\t\n\t\tLichess Rated Standard Chess Games Dataset\n\t\n\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\n6,771,826,271 standard rated games, played on lichess.org, updated monthly from the database dumps.\nThis version of the data is meant for data analysis. If you need PGN files you can find those here. That said, once you have a subset of interest, it is trivial to convert it back to PGN as shown in the Dataset Usage… See the full description on the dataset page: https://huggingface.co/datasets/Lichess/standard-chess-games.",
+  "keywords": [
+    "cc0-1.0",
+    "1B - 10B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "🇺🇸 Region: US",
+    "chess",
+    "games",
+    "game",
+    "lichess",
+    "tabular"
+  ],
+  "license": "https://choosealicense.com/licenses/cc0-1.0/",
+  "url": "https://huggingface.co/datasets/Lichess/standard-chess-games"
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
+</html>

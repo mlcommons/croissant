@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "readLines": "cr:readLines",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sdVersion": "cr:sdVersion",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "unArchive": "cr:unArchive",
+    "value": "cr:value"
+  },
+  "@type": "sc:Dataset",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "CC-MAIN-2025-43",
+  "description": "Common Crawl October 2025 Crawl Archive",
+  "license": "https://commoncrawl.org/terms-of-use",
+  "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/index.html",
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "The Common Crawl Foundation",
+    "url": "https://commoncrawl.org/"
+  },
+  "citeAs": "https://commoncrawl.org/",
+  "version": "1.0.0",
+  "sdVersion": "1.0.0",
+  "datePublished": "2025-10-19T01:06:58Z",
+  "temporalCoverage": "2025-10-05T11:42:39Z/2025-10-19T01:06:58Z",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "warc.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/warc.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "97441dcd9ffe73099b4238cc4c327b0adffc72137b712a886b7f913e7a68ebfc"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "warc-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "warc.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/warc",
+      "includes": "*.warc.gz",
+      "contentSize": "97.73 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.warc.gz"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "wat.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/wat.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "46ffdf3190586953f681da396b900c9c19d6e0d247d33f98ca43e4e5cc344357"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "wat-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "wat.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/warc",
+      "includes": "*.warc.wat.gz",
+      "contentSize": "18.39 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.warc.wat.gz"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "wet.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/wet.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "d5205d69c87a180c7f93d72927cc29d6a7e77ceade16e3c4fae3d91e3b4bb7ae"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "wet-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "wet.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/warc",
+      "includes": "*.warc.wet.gz",
+      "contentSize": "7.38 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.warc.wet.gz"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "robotstxt.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/robotstxt.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "9d06ffda119bb7c8db1c706f9b1d3f5d5926632ab88f7edc802dc720f0239674"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "robotstxt-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "robotstxt.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/warc",
+      "includes": "*.warc.gz",
+      "contentSize": "0.15 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.warc.gz"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "non200responses.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/non200responses.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "6835a912596a48bc1a097c1bf2ca61bfe0b35dc1c4b1db7e8935baa9cb34c5a8"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "non200responses-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "non200responses.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/warc",
+      "includes": "*.warc.gz",
+      "contentSize": "3.07 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.warc.gz"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "cc-index.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/cc-index.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "e9ebd0ba0e8ef9e648b3c81e90ed8ff3934ac23d38d05b33323942dc643eb650"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "cc-index-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "cc-index.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/gzip",
+      "includes": "*.gz",
+      "contentSize": "0.20 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.gz"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "cc-index-table.paths.gz",
+      "contentUrl": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2025-43/cc-index-table.paths.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "404325746c1b5968b94afb4d5ac355dbe6eb6a1e05b6a5031f6a79e413e55965"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "cc-index-table-files",
+      "containedIn": {
+        "fileObject": {
+          "@id": "cc-index-table.paths.gz"
+        },
+        "transform": {
+          "unArchive": true,
+          "readLines": true
+        }
+      },
+      "encodingFormat": "application/parquet",
+      "includes": "*.gz.parquet",
+      "contentSize": "0.23 TiB",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.gz.parquet"
+        ]
+      }
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "CC-MAIN-2025-43.domains-top-1000",
+      "contentUrl": "s3://commoncrawl-dev/test-top-1000-domains-v1/CC-MAIN-2025-43.domains-top-1000.csv.gz",
+      "encodingFormat": "application/gzip",
+      "sha256": "d2816340908ecfa20db7a248f668a2470ddefe2bbc7ec652965fb78709455664",
+      "contentSize": "8813 B"
+    }
+  ],
+  "recordSet": [
+    {
+      "@id": "warc-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "warc-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "warc-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    }
+  ]
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
+</html>

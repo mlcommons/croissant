@@ -1,0 +1,50 @@
+name: Croissant Visualization
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'datasets/**/metadata.json'
+      - 'python/mlcroissant/mlcroissant/scripts/visualize.py'
+      - 'python/mlcroissant/mlcroissant/scripts/templates/visualizer.html'
+      - 'python/mlcroissant/mlcroissant/scripts/visualize_all.py'
+
+jobs:
+  visualize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Fetch all history for git diff
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgraphviz-dev
+        pip install ./python/mlcroissant[dev]
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v42
+      with:
+        separator: ","
+
+    - name: Run visualizer
+      run: |
+        python python/mlcroissant/mlcroissant/scripts/visualize_all.py --changed_files="${{ steps.changed-files.outputs.all_changed_files }}"
+
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "docs: Update dataset visualizations [skip ci]"
+        file_pattern: 'datasets/**/index.html datasets/index.html datasets/static/gallery.min.js datasets/static/gallery.min.css'
+        branch: gh-pages
+        create_branch: true

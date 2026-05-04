@@ -1,7 +1,26 @@
-<html>
-  <head>MovieLens dataset</title>
-    <script type="application/ld+json">
-{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
@@ -10,10 +29,13 @@
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -24,6 +46,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -45,47 +68,47 @@
       "name": "ml-25m-archive",
       "contentUrl": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
       "encodingFormat": "application/zip",
-      "sha256": "6b51fb2759a8657d3bfcbfc42b592ada"
+      "sha256": "8b21cfb7eb1706b4ec0aac894368d90acf26ebdfb6aced3ebd4ad5bd1eb9c6aa"
     },
     {
       "@type": "sc:FileObject",
       "name": "ratings-table",
-      "contentUrl": "ratings.csv",
+      "contentUrl": "ml-25m/ratings.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "movies-table",
-      "contentUrl": "movies.csv",
+      "contentUrl": "ml-25m/movies.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "tags-table",
-      "contentUrl": "tags.csv",
+      "contentUrl": "ml-25m/tags.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "links-table",
-      "contentUrl": "links.csv",
+      "contentUrl": "ml-25m/links.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-scores-table",
-      "contentUrl": "genome-scores.csv",
+      "contentUrl": "ml-25m/genome-scores.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     },
     {
       "@type": "sc:FileObject",
       "name": "genome-tags-table",
-      "contentUrl": "genome-tags.csv",
+      "contentUrl": "ml-25m/genome-tags.csv",
       "containedIn": "ml-25m-archive",
       "encodingFormat": "text/csv"
     }
@@ -124,7 +147,7 @@
           "name": "genre",
           "description": "A sequence of genres to which the rated movie belongs.",
           "dataType": "sc:Text",
-          "repeated": "true",
+          "repeated": true,
           "source": {
             "distribution": "movies-table",
             "extract": {
@@ -355,9 +378,7 @@
       ]
     }
   ]
-}
-    </script>
-  </head>
-  <body>
-  </body>
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
 </html>
