@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "croissant-tasks"
+version = "0.1.0"
+description = "A validator and toolkit for Croissant Tasks"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyshacl",
+    "rdflib"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = ["testdata*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.ttl"]

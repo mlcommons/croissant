@@ -1,0 +1,20 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "http://example.org/InvalidProblemWithConcreteExecution",
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "http://example.org/concreteInput"
+  },
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "http://example.org/outputSpec"
+  },
+  "croissant:execution": {
+    "@type": "schema:Dataset",
+    "@id": "http://example.org/concreteExecution"
+  }
+}

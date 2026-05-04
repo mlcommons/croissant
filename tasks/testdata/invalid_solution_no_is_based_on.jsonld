@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/InvalidSolution",
+  "croissant:implementation": {
+    "@type": "schema:SoftwareSourceCode",
+    "@id": "http://example.org/concreteImplementation"
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "http://example.org/concreteOutput"
+  }
+}

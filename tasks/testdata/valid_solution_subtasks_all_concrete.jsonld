@@ -1,0 +1,29 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/ValidSolutionSubtasks",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/ValidProblem"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:Task",
+      "@id": "http://example.org/SubTask1",
+      "croissant:implementation": {
+        "@type": "schema:SoftwareSourceCode",
+        "@id": "http://example.org/concreteImplementation1"
+      }
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "http://example.org/SubTask2",
+      "croissant:implementation": {
+        "@type": "schema:SoftwareSourceCode",
+        "@id": "http://example.org/concreteImplementation2"
+      }
+    }
+  ]
+}
