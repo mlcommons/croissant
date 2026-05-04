@@ -1,0 +1,467 @@
+target_var: sum 67 
+other_vars:
+  - k 36
+  - results 33
+  - results 82
+  - result 73
+  - result 79
+  - max 84
+  - max 87
+variables:
+  T 6:
+    datadep: Null
+    controldep: Null
+  T 7:
+    reset: False
+    datadep:
+      - T 6
+    controldep:
+      - T 7
+      - turn 7
+  turn 7:
+    datadep:
+      - turn 7
+    controldep:
+      - T 7
+      - turn 7
+  n 8:
+    datadep: Null
+    controldep:
+      - T 7
+      - turn 7
+  points 9:
+    datadep: Null
+    controldep:
+      - T 7
+      - turn 7
+  i 10:
+    datadep:
+      - i 10
+    controldep:
+      - T 7
+      - turn 7
+      - i 10
+      - n 10
+  n 10:
+    reset: False
+    reset: False
+    datadep:
+      - n 8
+    controldep:
+      - T 7
+      - turn 7
+      - i 10
+      - n 10
+  point 11:
+    datadep: Null
+    controldep:
+      - i 10
+      - n 10
+  points 12:
+    datadep: 
+      - points 9
+      - points 12
+      - point 11
+    controldep:
+      - i 10
+      - n 10
+  lines 14:
+    datadep: Null
+    controldep:
+      - T 7
+      - turn 7
+  i 15:
+    datadep:
+      - i 15
+    controldep:
+      - T 7
+      - turn 7
+      - i 15
+      - n 15
+  n 15:
+    reset: False
+    datadep:
+      - n 8
+    controldep:
+      - T 7
+      - turn 7
+      - i 15
+      - n 15
+  j 16:
+    datadep:
+      - j 16
+      - i 15
+    controldep:
+      - i 15
+      - n 15
+      - j 16
+      - n 16
+  n 16:
+    reset: False
+    datadep:
+      - n 8
+    controldep:
+      - i 15
+      - n 15
+      - j 16
+      - n 16
+  lines 17:
+    datadep:
+      - points 9
+      - points 12
+      - lines 14
+      - lines 17
+      - i 15
+      - j 16
+    controldep:
+      - j 16
+      - n 16
+  map 20:
+    datadep: Null
+    controldep:
+      - T 7
+      - turn 7
+  i 21:
+    datadep:
+      - i 21
+    controldep:
+      - T 7
+      - turn 7
+      - i 21
+      - lines 21
+  lines 21:
+    reset: False
+    datadep:
+      - lines 14
+      - lines 17
+    controldep:
+      - T 7
+      - turn 7
+      - i 21
+      - lines 21
+  map 22:
+    reset: False
+    datadep:
+      - map 20
+      - map 25
+      - map 27
+    controldep:
+      - i 21
+      - lines 21
+  lines 22:
+    reset: False
+    datadep:
+      - lines 14
+      - lines 17
+    controldep:
+      - i 21
+      - lines 21
+  i 22:
+    reset: False
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - lines 21
+  curr 23:
+    datadep: Null
+    controldep:
+      - map 22
+      - lines 22
+      - i 22
+  curr 24:
+    datadep:
+      - lines 14
+      - lines 17
+      - i 21
+      - curr 23
+    controldep:
+      - map 22
+      - lines 22
+      - i 22
+  map 25:
+    datadep:
+      - lines 14
+      - lines 17
+      - i 21
+      - curr 24
+      - map 20
+      - map 25
+      - map 27
+    controldep:
+      - map 22
+      - lines 22
+      - i 22
+  map 27:
+    datadep:
+      - map 20
+      - map 25
+      - map 27
+      - lines 14
+      - lines 17
+      - i 21
+    controldep:
+      - map 22
+      - lines 22
+      - i 22
+  mapIterator 31:
+    datadep:
+      - map 20
+      - map 25
+      - map 27
+    controldep: 
+      - T 7
+      - turn 7
+  mapIterator 32:
+    reset: False
+    datadep:
+      - mapIterator 31
+    controldep:
+      - T 7
+      - turn 7
+      - mapIterator 32
+  mapElement 34:
+    datadep:
+      - mapIterator 31
+    controldep:
+      - mapIterator 32
+  bmap 35:
+    datadep: Null
+    controldep:
+      - mapIterator 32
+  blines 37:
+    datadep:
+      - mapElement 34
+    controldep:
+      - mapIterator 32
+  i 38:
+    datadep:
+      - i 38
+    controldep:
+      - mapIterator 32
+      - i 38
+      - blines 38
+  blines 38:
+    reset: False
+    datadep:
+      - blines 37
+    controldep:
+      - mapIterator 32
+      - i 38
+      - blines 38
+  b 39:
+    datadep:
+      - blines 37
+      - i 38
+    controldep:
+      - i 38
+      - blines 38
+  l 40:
+    datadep:
+      - blines 37
+      - i 38
+    controldep:
+      - i 38
+      - blines 38
+  bmap 41:
+    reset: False
+    datadep:
+      - bmap 35
+      - bmap 44
+      - bmap 46
+    controldep:
+      - i 38
+      - blines 38
+  b 41:
+    reset: False
+    datadep:
+      - b 39
+    controldep:
+      - i 38
+      - blines 38
+  curr 42:
+    datadep: Null
+    controldep:
+      - bmap 41
+      - b 41
+  curr 43:
+    datadep:
+      - curr 42
+      - l 40
+    controldep:
+      - bmap 41
+      - b 41
+  bmap 44:
+    datadep:
+      - bmap 35
+      - bmap 44
+      - bmap 46
+      - b 39
+      - curr 43
+    controldep:
+      - bmap 41
+      - b 41
+  bmap 46:
+    datadep:
+      - bmap 35
+      - bmap 44
+      - bmap 46
+      - b 39
+      - l 40
+    controldep:
+      - bmap 41
+      - b 41
+  resultarray 49:
+    datadep: Null
+    controldep:
+      - mapIterator 32
+  bmapIterator 50:
+    datadep:
+      - bmap 35
+      - bmap 44
+      - bmap 46
+    controldep:
+      - mapIterator 32
+  bmapIterator 51:
+    reset: False
+    datadep:
+      - bmapIterator 50
+    controldep:
+      - mapIterator 32
+      - bmapIterator 51
+  bmapElement 52:
+    datadep:
+      - bmapIterator 50
+    controldep:
+      - bmapIterator 51
+  gongxian 53:
+    datadep:
+      - bmapElement 52
+    controldep:
+      - bmapIterator 51
+  currp 54:
+    datadep: Null
+    controldep:
+      - bmapIterator 51
+  gongxian 55:
+    reset: False
+    datadep:
+      - gongxian 53
+    controldep:
+      - bmapIterator 51
+      - i 55
+      - gongxian 55
+  i 55:
+    datadep:
+      - i 55
+    controldep:
+      - bmapIterator 51
+      - i 55
+      - gongxian 55
+  currp 56:
+    reset: False
+    datadep:
+      - currp 54
+      - currp 57
+      - currp 60
+    controldep:
+      - i 55
+      - gongxian 55
+  gongxian 56:
+    reset: False
+    datadep:
+      - gongxian 53
+    controldep:
+      - i 55
+      - gongxian 55
+  i 56:
+    reset: False
+    datadep:
+      - i 55
+    controldep:
+      - i 55
+      - gongxian 55
+  currp 57:
+    datadep:
+      - gongxian 53
+      - currp 54
+      - currp 57
+      - currp 60
+      - i 55
+    controldep:
+      - currp 56
+      - gongxian 56
+      - i 56
+  currp 59:
+    reset: False
+    datadep:
+      - currp 54
+      - currp 57
+      - currp 60
+    controldep:
+      - i 55
+      - gongxian 55
+  gongxian 59:
+    reset: False
+    datadep:
+      - gongxian 53
+    controldep:
+      - i 55
+      - gongxian 55
+  i 59:
+    reset: False
+    datadep:
+      - i 55
+    controldep:
+      - i 55
+      - gongxian 55
+  currp 60:
+    datadep:
+      - gongxian 53
+      - currp 54
+      - currp 57
+      - currp 60
+      - i 55
+    controldep:
+      - currp 59
+      - gongxian 59
+      - i 59
+  resultarray 63:
+    datadep:
+      - currp 54
+      - currp 57
+      - currp 60
+      - resultarray 49
+      - resultarray 63
+    controldep:
+      - bmapIterator 51
+  sum 65:
+    datadep: Null
+    controldep:
+      - mapIterator 32
+  i 66:
+    datadep:
+      - i 66
+    controldep:
+      - mapIterator 32
+      - i 66
+      - resultarray 66
+  resultarray 66:
+    reset: False
+    datadep:
+      - resultarray 49
+      - resultarray 63
+    controldep:
+      - mapIterator 32
+      - i 66
+      - resultarray 66
+  sum 67:
+    datadep:
+      - resultarray 49
+      - resultarray 63
+      - sum 67
+      - sum 65
+      - i 66
+    controldep:
+      - i 66
+      - resultarray 66

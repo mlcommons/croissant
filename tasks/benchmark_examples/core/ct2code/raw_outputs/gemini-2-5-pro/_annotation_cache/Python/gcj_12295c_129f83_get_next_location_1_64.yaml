@@ -1,0 +1,324 @@
+target_var: highest_count 49
+other_vars:
+  - popular_next_dest 37
+  - popular_next_dest 38
+  - popular_next_dest 46
+  - popular_next_dest 48
+  - popular_next_dest 50
+early_return: 
+  - 29
+  - 42
+  - 52
+  - 58
+variables:
+  num_of_people 1:
+    datadep: Null
+    controldep: Null
+  coordinates_list 2:
+    datadep: Null
+    controldep: Null
+  people_count 3:
+    datadep: Null
+    controldep: Null
+  people_count 4:
+    reset: False
+    datadep: 
+      - people_count 3
+      - people_count 22
+    controldep: 
+      - people_count 4
+      - num_of_people 4
+  num_of_people 4:
+    reset: False
+    datadep:
+      - num_of_people 1
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  curr_location 5:
+    datadep: Null
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  curr_location 6:
+    datadep:
+      - curr_location 5
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  x 7:
+    datadep:
+      - curr_location 6
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  y 8:
+    datadep:
+      - curr_location 6
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  dir 9:
+    datadep:
+      - curr_location 6
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  dir 10:
+    reset: False
+    datadep:
+      - dir 9
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  y 11:
+    datadep:
+      - y 8
+      - y 11
+      - y 13
+    controldep:
+      - dir 10
+  dir 12:
+    reset: False
+    datadep:
+      - dir 9
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  y 13:
+    datadep:
+      - y 8
+      - y 11
+      - y 13
+    controldep:
+      - dir 12
+  dir 14:
+    reset: False
+    datadep:
+      - dir 9
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  x 15:
+    datadep:
+      - x 7
+      - x 15
+      - x 17
+    controldep:
+      - dir 14
+  dir 16:
+    reset: False
+    datadep:
+      - dir 9
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  x 17:
+    datadep:
+      - x 7
+      - x 15
+      - x 17
+    controldep:
+      - dir 16
+  coordinates 18:
+    datadep: Null
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  coordinates 19:
+    datadep:
+      - x 7
+      - x 15
+      - x 17
+      - coordinates 18
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  coordinates 20:
+    datadep:
+      - y 8
+      - y 11
+      - y 13
+      - coordinates 19
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  coordinates_list 21:
+    datadep:
+      - coordinates 20
+      - coordinates_list 2
+      - coordinates_list 21
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  people_count 22:
+    datadep:
+      - people_count 3
+      - people_count 22
+    controldep:
+      - people_count 4
+      - num_of_people 4
+  next_dest 23:
+    datadep: Null
+    controldep: Null
+  next_dest_count 24:
+    datadep: Null
+    controldep: Null
+  coordinates_list 25:
+    reset: False
+    datadep:
+      - coordinates_list 2
+      - coordinates_list 21
+    controldep:
+      - coordinates_list 25
+  coordinates 25:
+    datadep:
+      - coordinates_list 2
+      - coordinates_list 21
+    controldep:
+      - coordinates_list 25
+  found 26:
+    datadep: Null
+    controldep:
+      - coordinates_list 25
+  dest_idx 27:
+    datadep: Null
+    controldep:
+      - coordinates_list 25
+  dest 28:
+    datadep:
+      - next_dest 23
+      - next_dest 35
+    controldep:
+      - coordinates_list 25
+      - next_dest 28
+      - coordinates 29
+      - dest 29
+  next_dest 28:
+    reset: False
+    datadep:
+      - next_dest 23
+      - next_dest 35
+    controldep:
+      - coordinates_list 25
+      - next_dest 28
+      - coordinates 29
+      - dest 29
+  coordinates 29:
+    reset: False
+    datadep:
+      - coordinates 25
+    controldep:
+      - next_dest 28
+  dest 29:
+    reset: False
+    datadep:
+      - dest 28
+    controldep:
+      - next_dest 28
+  next_dest_count 30:
+    datadep:
+      - dest_idx 27
+      - dest_idx 33
+      - next_dest_count 30
+      - next_dest_count 36
+    controldep:
+      - coordinates 29
+      - dest 29
+  found 31:
+    datadep: Null
+    controldep:
+      - coordinates 29
+      - dest 29
+  dest_idx 33:
+    datadep:
+      - dest_idx 27
+      - dest_idx 33
+    controldep:
+      - coordinates 29
+      - dest 29
+  found 34:
+    reset: False
+    datadep: 
+      - found 31
+      - found 26
+    controldep:
+      - coordinates_list 25
+  next_dest 35:
+    datadep:
+      - next_dest 23
+      - next_dest 35
+      - coordinates 25
+    controldep:
+      - found 34
+  next_dest_count 36:
+    datadep:
+      - next_dest_count 24
+      - next_dest_count 30
+      - next_dest_count 36
+    controldep:
+      - found 34
+  highest_count 39:
+    datadep:
+      - next_dest_count 30
+      - next_dest_count 36
+    controldep: Null
+  dest_count_idx 40:
+    datadep: Null
+    controldep: Null
+  next_dest_count 41:
+    reset: False
+    datadep:
+      - next_dest_count 24
+      - next_dest_count 30
+      - next_dest_count 36
+    controldep:
+      - next_dest_count 41
+  dest_count 41:
+    datadep:
+      - next_dest_count 24
+      - next_dest_count 30
+      - next_dest_count 36
+    controldep:
+      - next_dest_count 41
+  dest_count_idx 42:
+    reset: False
+    datadep:
+      - dest_count_idx 40
+      - dest_count_idx 43
+      - dest_count_idx 51
+    controldep:
+      - next_dest_count 41
+  dest_count_idx 43:
+    datadep:
+      - dest_count_idx 40
+      - dest_count_idx 43
+      - dest_count_idx 51
+    controldep:
+      - dest_count_idx 42
+  dest_count 47:
+    reset: False
+    datadep:
+      - dest_count 41
+    controldep:
+      - dest_count_idx 42
+  highest_count 47:
+    reset: False
+    datadep:
+      - highest_count 49
+      - highest_count 39
+    controldep:
+      - dest_count_idx 42
+  highest_count 49:
+    datadep:
+      - dest_count 41
+    controldep:
+      - highest_count 47
+      - dest_count 47
+  dest_count_idx 51:
+    datadep:
+      - dest_count_idx 40
+      - dest_count_idx 43
+      - dest_count_idx 51
+    controldep:
+      - dest_count_idx 42

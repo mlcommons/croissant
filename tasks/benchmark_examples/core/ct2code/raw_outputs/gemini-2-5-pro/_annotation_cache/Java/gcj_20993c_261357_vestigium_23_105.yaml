@@ -1,0 +1,171 @@
+target_var: count1 75
+other_vars: 
+  - k 25
+  - r 26
+  - c 27
+  - k 31
+  - a 42
+  - repeat 52
+  - count 45
+  - repeat 58
+variables: 
+  a 23:
+    datadep: Null
+    controldep: Null
+  n 23:
+    datadep: Null
+    controldep: Null
+  b 28:
+    datadep:
+      - n 23
+    controldep: Null
+  i 33:
+    datadep:
+      - i 33
+    controldep:
+      - i 33
+      - n 33
+  n 33:
+    reset: False
+    datadep:
+      - n 23
+    controldep:
+      - i 33
+      - n 33
+  j 35:
+    datadep:
+      - j 35
+    controldep:
+      - i 33
+      - n 33
+      - j 35
+      - n 35
+  n 35:
+    reset: False
+    datadep:
+      - n 23
+    controldep:
+      - i 33
+      - n 33
+      - j 35
+      - n 35
+  b 37:
+    datadep:
+      - i 33
+      - j 35
+      - a 23
+    controldep:
+      - j 35
+      - n 35
+  i 61:
+    datadep:
+      - i 61
+    controldep:
+      - i 61
+      - n 61
+  n 61:
+    reset: False
+    datadep:
+      - n 23
+    controldep:
+      - i 61
+      - n 61
+  b 63:
+    datadep:
+      - b 37
+      - b 28
+      - i 61
+    controldep:
+      - i 61
+      - n 61
+  count1 65:
+    datadep: Null
+    controldep: Null
+  repeat1 66:
+    datadep: Null
+    controldep: Null
+  i 67:
+    datadep: 
+      - i 67
+    controldep:
+      - i 67
+      - n 67
+  n 67:
+    reset: False
+    datadep:
+      - n 23
+    controldep:
+      - i 67
+      - n 67
+  j 69:
+    datadep:
+      - j 69
+    controldep:
+      - i 67
+      - n 67
+      - j 69
+      - n 69
+  n 69:
+    reset: False
+    datadep:
+      - n 23
+    controldep:
+      - i 67
+      - n 67
+      - j 69
+      - n 69
+  b 71:
+    reset: False
+    datadep:
+     - b 63
+     - b 37
+     - b 28
+    controldep:
+      - j 69
+      - n 69
+  i 71:
+    reset: False
+    datadep:
+      - i 67
+    controldep:
+      - j 69
+      - n 69
+  j 71:
+    reset: False
+    datadep:
+      - j 69
+    controldep:
+      - j 69
+      - n 69
+  repeat1 73:
+    datadep:
+      - repeat1 66
+      - repeat1 73
+      - repeat1 79
+    controldep:
+      - b 71
+      - i 71
+      - j 71
+  count1 75:
+    datadep:
+      - repeat1 66
+      - repeat1 73
+      - repeat1 79
+      - count1 65
+      - count1 75
+    controldep:
+      - j 69
+      - n 69
+  repeat1 77:
+    reset: False
+    datadep: 
+      - repeat1 66
+      - repeat1 73
+      - repeat1 79
+    controldep:
+      - i 67
+      - n 67
+  repeat1 79:
+    datadep: Null
+    controldep:
+      - repeat1 77 

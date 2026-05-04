@@ -1,0 +1,105 @@
+target_var: queryList 25
+other_vars: 
+  - queryList 13
+  - queryList 18
+variables:
+  n 8:
+    datadep: Null
+    controldep: Null
+  beginning 10:
+    datadep: Null
+    controldep: Null
+  end 10:
+    datadep:
+      - n 8
+    controldep: Null
+  i 10:
+    datadep: Null
+    controldep: Null
+  beginning 11:
+    reset: False
+    datadep:
+      - beginning 10
+      - beginning 14
+    controldep:
+      - beginning 11
+      - end 11
+  end 11:
+    reset: False
+    datadep:
+      - end 10
+      - end 19
+    controldep:
+      - beginning 11
+      - end 11
+  beginning 14:
+    datadep:
+      - beginning 10
+      - beginning 14
+    controldep:
+      - beginning 11
+      - end 11
+  i 15:
+    datadep:
+      - i 10
+      - i 15
+      - i 20
+    controldep:
+      - beginning 11
+      - end 11
+  beginning 16:
+    reset: False
+    datadep:
+      - beginning 10
+      - beginning 14
+    controldep:
+      - beginning 11
+      - end 11
+  end 16:
+    reset: False
+    datadep:
+      - end 10
+      - end 19
+    controldep:
+      - beginning 11
+      - end 11
+  end 19:
+    datadep:
+      - end 10
+      - end 19
+    controldep:
+      - beginning 16
+      - end 16
+  i 20:
+    datadep:
+      - i 10
+      - i 15
+      - i 20
+    controldep:
+      - beginning 16
+      - end 16
+  i 23:
+    reset: False
+    datadep: 
+      - i 10
+      - i 15
+      - i 20
+      - i 26
+    controldep:
+      - i 23
+  queryList 25:
+    datadep:
+      - i 10
+      - i 15
+      - i 20
+      - i 26
+    controldep:
+      - i 23
+  i 26:
+    datadep:
+      - i 10
+      - i 15
+      - i 20
+      - i 26
+    controldep:
+      - i 23

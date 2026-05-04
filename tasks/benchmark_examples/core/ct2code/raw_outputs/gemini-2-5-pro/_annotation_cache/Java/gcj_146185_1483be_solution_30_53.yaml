@@ -1,0 +1,138 @@
+target_var: result 46
+other_vars: 
+  - acyclic 39
+  - numOfElem 30
+variables:
+  graph 30:
+    datadep: Null
+    controldep: Null
+  startElem 30:
+    datadep: Null
+    controldep: Null
+  visited 31:
+    datadep: Null
+    controldep: Null
+  visited 32:
+    datadep:
+      - visited 31
+    controldep: Null
+  q 33:
+    datadep: Null
+    controldep: Null
+  result 34:
+    datadep:
+      - startElem 30
+    controldep: Null
+  i 35:
+    datadep:
+      - graph 30
+    controldep:
+      - graph 35
+  graph 35:
+    reset: False
+    datadep:
+      - graph 30
+    controldep:
+      - graph 35
+  i 36:
+    reset: False
+    datadep:
+      - i 35
+    controldep:
+      - graph 35
+  q 37:
+    datadep:
+      - q 37
+      - q 33
+      - i 35
+    controldep:
+      - i 36
+  q 40:
+    reset: False
+    datadep:
+      - q 37
+      - q 33
+      - q 41
+      - q 47
+    controldep:
+      - q 40
+  next 41:
+    datadep:
+      - q 37
+      - q 33
+      - q 41
+      - q 47
+    controldep:
+      - q 40
+  q 41:
+    datadep:
+      - q 37
+      - q 33
+      - q 41
+      - q 47
+    controldep:
+      - q 40
+  neighbor 42:
+    datadep:
+      - graph 30
+      - next 41
+    controldep:
+      - q 40
+      - graph 42
+      - next 42
+  next 42:
+    reset: False
+    datadep:
+      - next 41
+    controldep:
+      - q 40
+      - graph 42
+      - next 42
+  graph 42:
+    reset: False
+    datadep:
+      - graph 30
+    controldep:
+      - q 40
+      - graph 42
+      - next 42
+  visited 43:
+    reset: False
+    datadep:
+      - visited 32
+      - visited 48
+    controldep:
+      - graph 42
+      - next 42
+  neighbor 43:
+    reset: False
+    datadep:
+      - neighbor 42
+    controldep:
+      - graph 42
+      - next 42
+  result 46:
+    datadep:
+      - neighbor 42
+      - result 34
+      - result 46
+      - startElem 30
+    controldep:
+      - visited 43
+      - neighbor 43
+  q 47:
+    datadep:
+      - q 41
+      - q 47
+      - neighbor 42
+    controldep:
+      - visited 43
+      - neighbor 43
+  visited 48:
+    datadep:
+      - neighbor 42
+      - visited 32
+      - visited 48
+    controldep:
+      - visited 43
+      - neighbor 43

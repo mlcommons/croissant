@@ -1,0 +1,242 @@
+target_var: sz 47
+other_vars: 
+  - result 29
+  - result 48
+variables: 
+  r 27:
+    datadep: Null
+    controldep: Null
+  s 28:
+    datadep: Null
+    controldep: Null
+  v 30:
+    datadep: Null
+    controldep: Null
+  ss 31:
+    datadep:  
+      - ss 31
+    controldep:
+      - ss 31
+      - s 31
+  s 31:
+    reset: False
+    datadep:
+      - s 28
+    controldep:
+      - ss 31
+      - s 31
+  rr 32:
+    datadep:
+      - rr 32
+    controldep:
+      - ss 31
+      - s 31
+      - rr 32
+      - r 32
+  r 32:
+    reset: False
+    datadep:
+      - r 27
+    controldep:
+      - ss 31
+      - s 31
+      - rr 32
+      - r 32
+  v 33:
+    datadep:
+      - v 30
+      - v 33
+      - rr 32
+    controldep:
+      - rr 32
+      - r 32
+  rr 36:
+    datadep:
+      - rr 36
+    controldep:
+      - rr 36
+      - r 36
+  r 36:
+    reset: False
+    datadep:
+      - r 27
+    controldep:
+      - rr 36
+      - r 36
+  current 37:
+    datadep:
+      - rr 36
+      - r 27
+    controldep:
+      - rr 36
+      - r 36
+  count 38:
+    datadep:
+      - s 28
+    controldep:
+      - rr 36
+      - r 36
+  idx 39:
+    datadep:
+      - s 28
+      - current 37
+    controldep:
+      - rr 36
+      - r 36
+  start 40:
+    datadep:
+      - idx 39
+    controldep:
+      - rr 36
+      - r 36
+  count 41:
+    reset: False
+    datadep:
+      - count 38
+      - count 45
+    controldep:
+      - rr 36
+      - r 36
+      - count 41
+  found 42:
+    datadep: Null
+    controldep:
+      - count 41
+  found 43:
+    reset: False
+    datadep:
+      - found 42
+      - found 46
+    controldep:
+      - count 41
+      - found 43
+  v 44:
+    reset: False
+    datadep:
+      - v 33
+      - v 55
+    controldep:
+      - found 43
+  idx 44:
+    reset: False
+    datadep:
+      - idx 39
+      - idx 59
+    controldep:
+      - found 43
+  current 44:
+    reset: False
+    datadep:
+      - current 37
+    controldep:
+      - found 43
+  count 45:
+    datadep:
+      - count 38
+      - count 45
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  found 46:
+    datadep: Null
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  sz 47:
+    datadep:
+      - idx 39
+      - idx 59
+      - start 40
+      - start 57
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  t 49:
+    datadep: Null
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  sz 50:
+    reset: False
+    datadep:
+      - sz 47
+      - sz 51
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+      - sz 50
+  sz 51:
+    datadep:
+      - sz 47
+      - sz 51
+    controldep:
+      - sz 50
+  t 52:
+    datadep:
+      - v 30
+      - v 33
+      - v 52
+      - v 55
+      - idx 39
+      - idx 59
+      - t 49
+      - t 52
+    controldep:
+      - sz 50
+  v 52:
+    datadep:
+      - v 30
+      - v 33
+      - v 52
+      - v 55
+      - idx 39
+      - idx 59
+    controldep:
+      - sz 50
+  t 54:
+    datadep:
+      - v 30
+      - v 33
+      - v 52
+      - v 55
+      - t 49
+      - t 52
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  v 55:
+    datadep:
+      - t 54
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  idx 56:
+    datadep:
+      - start 40
+      - start 57
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  start 57:
+    datadep:
+      - start 40
+      - start 57
+    controldep:
+      - v 44
+      - idx 44
+      - current 44
+  idx 59:
+    datadep:
+      - idx 39
+      - idx 56
+      - idx 59
+    controldep:
+      - found 43
