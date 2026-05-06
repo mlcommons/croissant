@@ -1,7 +1,26 @@
-<html>
-  <head>Titanic dataset</title>
-    <script type="application/ld+json">
-{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
@@ -10,10 +29,13 @@
       "@id": "ml:data",
       "@type": "@json"
     },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
     "dataType": {
       "@id": "ml:dataType",
       "@type": "@vocab"
     },
+    "dct": "http://purl.org/dc/terms/",
     "extract": "ml:extract",
     "field": "ml:field",
     "fileProperty": "ml:fileProperty",
@@ -24,6 +46,7 @@
     "ml": "http://mlcommons.org/schema/",
     "parentField": "ml:parentField",
     "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
     "recordSet": "ml:recordSet",
     "references": "ml:references",
     "regex": "ml:regex",
@@ -40,16 +63,20 @@
   "name": "Titanic",
   "description": "The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n",
   "citation": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
-  "license": "Public",
+  "license": "afl-3.0",
   "url": "https://www.openml.org/d/40945",
+  "version": "1.0.0",
   "distribution": [
     {
       "@type": "sc:FileObject",
       "name": "passengers.csv",
       "contentSize": "117743 B",
-      "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
+      "contentUrl": "data/titanic.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
+      "cr:examples": {
+        "text_preview": "\"pclass\",\"survived\",\"name\",\"sex\",\"age\",\"sibsp\",\"parch\",\"ticket\",\"fare\",\"cabin\",\"embarked\",\"boat\",\"body\",\"home.dest\"\n1,1,\"Allen, Miss. Elisabeth Walton\",\"female\",29,0,0,\"24160\",211.3375,\"B5\",\"S\",\"2\",?,\"St Louis, MO\"\n1,1,\"Allison, Master. Hudson Trevor\",\"male\",0.9167,1,2,\"113781\",151.55,\"C22 C26\",\"S\",\"11\",?,\"Montreal, PQ / Chesterville, ON\"\n1,0,\"Allison, Miss. Helen Loraine\",\"female\",2,1,2,\"113781\",151.55,\"C22 C26\",\"S\",?,?,\"Montreal, PQ / Chesterville, ON\"\n1,0,\"Allison, Mr. Hudson Joshua Creighton\",\"male\",30,1,2,\"113781\",151.55,\"C22 C26\",\"S\",?,135,\"Montreal, PQ / Chesterville, ON\"\n"
+      }
     },
     {
       "@type": "sc:FileObject",
@@ -58,7 +85,10 @@
       "contentSize": "117743 B",
       "contentUrl": "data/genders.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
+      "cr:examples": {
+        "text_preview": "label,url\nmale,https://www.wikidata.org/wiki/Q6581097\nfemale,https://www.wikidata.org/wiki/Q6581072\n"
+      }
     },
     {
       "@type": "sc:FileObject",
@@ -67,7 +97,10 @@
       "contentSize": "117743 B",
       "contentUrl": "data/embarkation_ports.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
+      "cr:examples": {
+        "text_preview": "key,label,url\nC,Cherbourg,wd:Q3667188\nQ,Queenstown,wd:Q733093\nS,Southampton,wd:Q79848\n?,Unknown,wd:Q24238356\n"
+      }
     }
   ],
   "recordSet": [
@@ -108,7 +141,23 @@
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "label",
+          "url"
+        ],
+        "rows": [
+          [
+            "male",
+            "https://www.wikidata.org/wiki/Q6581097"
+          ],
+          [
+            "female",
+            "https://www.wikidata.org/wiki/Q6581072"
+          ]
+        ]
+      }
     },
     {
       "@type": "ml:RecordSet",
@@ -159,7 +208,36 @@
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "key",
+          "label",
+          "url"
+        ],
+        "rows": [
+          [
+            "C",
+            "Cherbourg",
+            "wd:Q3667188"
+          ],
+          [
+            "Q",
+            "Queenstown",
+            "wd:Q733093"
+          ],
+          [
+            "S",
+            "Southampton",
+            "wd:Q79848"
+          ],
+          [
+            "?",
+            "Unknown",
+            "wd:Q24238356"
+          ]
+        ]
+      }
     },
     {
       "@type": "ml:RecordSet",
@@ -340,12 +418,86 @@
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "name",
+          "age",
+          "survived",
+          "pclass",
+          "cabin",
+          "fare",
+          "home_destination",
+          "ticket",
+          "num_parents_children",
+          "num_siblings_spouses"
+        ],
+        "rows": [
+          [
+            "Allen, Miss. Elisabeth Walton",
+            "29",
+            "1",
+            "1",
+            "B5",
+            "211.3375",
+            "St Louis, MO",
+            "24160",
+            "0",
+            "0"
+          ],
+          [
+            "Allison, Master. Hudson Trevor",
+            "0.9167",
+            "1",
+            "1",
+            "C22 C26",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781",
+            "2",
+            "1"
+          ],
+          [
+            "Allison, Miss. Helen Loraine",
+            "2",
+            "0",
+            "1",
+            "C22 C26",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781",
+            "2",
+            "1"
+          ],
+          [
+            "Allison, Mr. Hudson Joshua Creighton",
+            "30",
+            "0",
+            "1",
+            "C22 C26",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781",
+            "2",
+            "1"
+          ],
+          [
+            "Allison, Mrs. Hudson J C (Bessie Waldo Daniels)",
+            "25",
+            "0",
+            "1",
+            "C22 C26",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781",
+            "2",
+            "1"
+          ]
+        ]
+      }
     }
   ]
-}
-    </script>
-  </head>
-  <body>
-  </body>
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
 </html>

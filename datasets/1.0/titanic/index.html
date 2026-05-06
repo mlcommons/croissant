@@ -1,353 +1,583 @@
-<html>
-  <head>Titanic dataset</title>
-    <script type="application/ld+json">
-{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
     "wd": "https://www.wikidata.org/wiki/"
   },
   "@type": "sc:Dataset",
   "name": "Titanic",
   "description": "The original Titanic dataset, describing the status of individual passengers on the Titanic.\n\n The titanic data does not contain information from the crew, but it does contain actual ages of half of the passengers. \n\n For more information about how this dataset was constructed: \nhttps://web.archive.org/web/20200802155940/http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt\n\nOther useful information (useful for prices description for example):\nhttp://campus.lakeforest.edu/frank/FILES/MLFfiles/Bio150/Titanic/TitanicMETA.pdf\n\n Also see the following article describing shortcomings of the dataset data:\nhttps://emma-stiefel.medium.com/plugging-holes-in-kaggles-titanic-dataset-an-introduction-to-combining-datasets-with-fuzzywuzzy-60a686699da7\n",
-  "citation": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
-  "license": "Public",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "The principal source for data about Titanic passengers is the Encyclopedia Titanica (http://www.encyclopedia-titanica.org/). The datasets used here were begun by a variety of researchers. One of the original sources is Eaton & Haas (1994) Titanic: Triumph and Tragedy, Patrick Stephens Ltd, which includes a passenger list created by many researchers and edited by Michael A. Findlay.\n\nThomas Cason of UVa has greatly updated and improved the titanic data frame using the Encyclopedia Titanica and created the dataset here. Some duplicate passengers have been dropped, many errors corrected, many missing ages filled in, and new variables created.\n",
+  "license": "afl-3.0",
   "url": "https://www.openml.org/d/40945",
+  "version": "1.0.0",
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "passengers.csv",
       "name": "passengers.csv",
       "contentSize": "117743 B",
-      "contentUrl": "https://www.openml.org/data/get_csv/16826755/phpMYEkMl",
+      "contentUrl": "data/titanic.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737",
+      "cr:examples": {
+        "text_preview": "\"pclass\",\"survived\",\"name\",\"sex\",\"age\",\"sibsp\",\"parch\",\"ticket\",\"fare\",\"cabin\",\"embarked\",\"boat\",\"body\",\"home.dest\"\n1,1,\"Allen, Miss. Elisabeth Walton\",\"female\",29,0,0,\"24160\",211.3375,\"B5\",\"S\",\"2\",?,\"St Louis, MO\"\n1,1,\"Allison, Master. Hudson Trevor\",\"male\",0.9167,1,2,\"113781\",151.55,\"C22 C26\",\"S\",\"11\",?,\"Montreal, PQ / Chesterville, ON\"\n1,0,\"Allison, Miss. Helen Loraine\",\"female\",2,1,2,\"113781\",151.55,\"C22 C26\",\"S\",?,?,\"Montreal, PQ / Chesterville, ON\"\n1,0,\"Allison, Mr. Hudson Joshua Creighton\",\"male\",30,1,2,\"113781\",151.55,\"C22 C26\",\"S\",?,135,\"Montreal, PQ / Chesterville, ON\"\n"
+      }
     },
     {
       "@type": "cr:FileObject",
+      "@id": "genders.csv",
       "name": "genders.csv",
       "description": "Maps gender values (\"male\", \"female\") to semantic URLs.",
       "contentSize": "117743 B",
       "contentUrl": "data/genders.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "3b0d1ce9ffb5224626105c50a0f9e5fbf941bcbcd913e5567aba25936333c3b8",
+      "cr:examples": {
+        "text_preview": "label,url\nmale,https://www.wikidata.org/wiki/Q6581097\nfemale,https://www.wikidata.org/wiki/Q6581072\n"
+      }
     },
     {
       "@type": "cr:FileObject",
+      "@id": "embarkation_ports.csv",
       "name": "embarkation_ports.csv",
       "description": "Maps Embarkation port initial to labeled values.",
       "contentSize": "117743 B",
       "contentUrl": "data/embarkation_ports.csv",
       "encodingFormat": "text/csv",
-      "sha256": "c617db2c7470716250f6f001be51304c76bcc8815527ab8bae734bdca0735737"
+      "sha256": "38dc364ac098f39ecb5c108c8911ef47a7256a146aef3c26c85e7cc01efdd047",
+      "cr:examples": {
+        "text_preview": "key,label,url\nC,Cherbourg,wd:Q3667188\nQ,Queenstown,wd:Q733093\nS,Southampton,wd:Q79848\n?,Unknown,wd:Q24238356\n"
+      }
     }
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
+      "@id": "genders",
       "name": "genders",
       "description": "Maps gender labels to semantic definitions.",
-      "isEnumeration": true,
-      "key": "label",
+      "dataType": "sc:Enumeration",
+      "key": {
+        "@id": "genders/label"
+      },
       "field": [
         {
-          "@type": "ml:Field",
-          "name": "label",
+          "@type": "cr:Field",
+          "@id": "genders/label",
+          "name": "genders/label",
           "description": "One of {\"male\", \"female\"}",
           "dataType": [
             "sc:Text",
             "sc:name"
           ],
           "source": {
-            "distribution": "genders.csv",
+            "fileObject": {
+              "@id": "genders.csv"
+            },
             "extract": {
               "column": "label"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "url",
+          "@type": "cr:Field",
+          "@id": "genders/url",
+          "name": "genders/url",
           "description": "Corresponding WikiData URL",
           "dataType": [
             "sc:URL",
             "wd:Q48277"
           ],
           "source": {
-            "distribution": "genders.csv",
+            "fileObject": {
+              "@id": "genders.csv"
+            },
             "extract": {
               "column": "url"
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "label",
+          "url"
+        ],
+        "rows": [
+          [
+            "male",
+            "https://www.wikidata.org/wiki/Q6581097"
+          ],
+          [
+            "female",
+            "https://www.wikidata.org/wiki/Q6581072"
+          ]
+        ]
+      }
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
+      "@id": "embarkation_ports",
       "name": "embarkation_ports",
       "description": "Maps Embarkation port initial to labeled values.",
-      "isEnumeration": true,
+      "dataType": "sc:Enumeration",
       "key": {
-        "@id": "key"
+        "@id": "embarkation_ports/key"
       },
       "field": [
         {
-          "@type": "ml:Field",
-          "name": "key",
+          "@type": "cr:Field",
+          "@id": "embarkation_ports/key",
+          "name": "embarkation_ports/key",
           "description": "C, Q, S or ?",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "embarkation_ports.csv",
+            "fileObject": {
+              "@id": "embarkation_ports.csv"
+            },
             "extract": {
               "column": "key"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "label",
+          "@type": "cr:Field",
+          "@id": "embarkation_ports/label",
+          "name": "embarkation_ports/label",
           "description": "Human-readable label",
           "dataType": [
             "sc:Text",
             "sc:name"
           ],
           "source": {
-            "distribution": "embarkation_ports.csv",
+            "fileObject": {
+              "@id": "embarkation_ports.csv"
+            },
             "extract": {
               "column": "label"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "url",
+          "@type": "cr:Field",
+          "@id": "embarkation_ports/url",
+          "name": "embarkation_ports/url",
           "description": "Corresponding WikiData URL",
           "dataType": [
             "sc:URL",
             "wd:Q515"
           ],
           "source": {
-            "distribution": "embarkation_ports.csv",
+            "fileObject": {
+              "@id": "embarkation_ports.csv"
+            },
             "extract": {
               "column": "url"
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "key",
+          "label",
+          "url"
+        ],
+        "rows": [
+          [
+            "C",
+            "Cherbourg",
+            "wd:Q3667188"
+          ],
+          [
+            "Q",
+            "Queenstown",
+            "wd:Q733093"
+          ],
+          [
+            "S",
+            "Southampton",
+            "wd:Q79848"
+          ],
+          [
+            "?",
+            "Unknown",
+            "wd:Q24238356"
+          ]
+        ]
+      }
     },
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
+      "@id": "passengers",
       "name": "passengers",
       "description": "The list of passengers. Does not include crew members.",
       "field": [
         {
-          "@type": "ml:Field",
-          "name": "name",
+          "@type": "cr:Field",
+          "@id": "passengers/name",
+          "name": "passengers/name",
           "description": "Name of the passenger",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "name"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "gender",
+          "@type": "cr:Field",
+          "@id": "passengers/gender",
+          "name": "passengers/gender",
           "description": "Gender of passenger (male or female)",
           "dataType": "sc:Text",
           "references": {
-            "field": "genders/label"
+            "field": {
+              "@id": "genders/label"
+            }
           },
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "sex"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "age",
+          "@type": "cr:Field",
+          "@id": "passengers/age",
+          "name": "passengers/age",
           "description": "Age of passenger at time of death. It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "age"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "survived",
+          "@type": "cr:Field",
+          "@id": "passengers/survived",
+          "name": "passengers/survived",
           "description": "Survival status of passenger (0: Lost, 1: Saved)",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "survived"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "pclass",
+          "@type": "cr:Field",
+          "@id": "passengers/pclass",
+          "name": "passengers/pclass",
           "description": "Passenger Class (1st/2nd/3rd)",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "pclass"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "cabin",
+          "@type": "cr:Field",
+          "@id": "passengers/cabin",
+          "name": "passengers/cabin",
           "description": "Passenger cabin.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "cabin"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "embarked",
+          "@type": "cr:Field",
+          "@id": "passengers/embarked",
+          "name": "passengers/embarked",
           "description": "Port of Embarkation (C: Cherbourg, Q: Queenstown, S: Southampton, ?: Unknown).",
           "dataType": "sc:Text",
           "references": {
-            "field": "embarkation_ports/key"
+            "field": {
+              "@id": "embarkation_ports/key"
+            }
           },
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "embarked"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "fare",
+          "@type": "cr:Field",
+          "@id": "passengers/fare",
+          "name": "passengers/fare",
           "description": "Passenger Fare (British pound). It's a string, because some values can be `?`.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "fare"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "home_destination",
+          "@type": "cr:Field",
+          "@id": "passengers/home_destination",
+          "name": "passengers/home_destination",
           "description": "Home and destination",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "home.dest"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "ticket",
+          "@type": "cr:Field",
+          "@id": "passengers/ticket",
+          "name": "passengers/ticket",
           "description": "Ticket Number, may include a letter.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "ticket"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "num_parents_children",
+          "@type": "cr:Field",
+          "@id": "passengers/num_parents_children",
+          "name": "passengers/num_parents_children",
           "description": "Number of Parents/Children Aboard",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "parch"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "num_siblings_spouses",
+          "@type": "cr:Field",
+          "@id": "passengers/num_siblings_spouses",
+          "name": "passengers/num_siblings_spouses",
           "description": "Number of Siblings/Spouses Aboard",
           "dataType": "sc:Integer",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "sibsp"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "boat",
+          "@type": "cr:Field",
+          "@id": "passengers/boat",
+          "name": "passengers/boat",
           "description": "Lifeboat used by passenger",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "boat"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "body",
+          "@type": "cr:Field",
+          "@id": "passengers/body",
+          "name": "passengers/body",
           "description": "Body Identification Number",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "passengers.csv",
+            "fileObject": {
+              "@id": "passengers.csv"
+            },
             "extract": {
               "column": "body"
             }
           }
         }
-      ]
+      ],
+      "cr:examples": {
+        "columns": [
+          "name",
+          "gender",
+          "age",
+          "survived",
+          "pclass",
+          "cabin",
+          "embarked",
+          "fare",
+          "home_destination",
+          "ticket"
+        ],
+        "rows": [
+          [
+            "Allen, Miss. Elisabeth Walton",
+            "female",
+            "29",
+            "1",
+            "1",
+            "B5",
+            "S",
+            "211.3375",
+            "St Louis, MO",
+            "24160"
+          ],
+          [
+            "Allison, Master. Hudson Trevor",
+            "male",
+            "0.9167",
+            "1",
+            "1",
+            "C22 C26",
+            "S",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781"
+          ],
+          [
+            "Allison, Miss. Helen Loraine",
+            "female",
+            "2",
+            "0",
+            "1",
+            "C22 C26",
+            "S",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781"
+          ],
+          [
+            "Allison, Mr. Hudson Joshua Creighton",
+            "male",
+            "30",
+            "0",
+            "1",
+            "C22 C26",
+            "S",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781"
+          ],
+          [
+            "Allison, Mrs. Hudson J C (Bessie Waldo Daniels)",
+            "female",
+            "25",
+            "0",
+            "1",
+            "C22 C26",
+            "S",
+            "151.55",
+            "Montreal, PQ / Chesterville, ON",
+            "113781"
+          ]
+        ]
+      }
     }
   ]
-}
-    </script>
-  </head>
-  <body>
-  </body>
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
 </html>

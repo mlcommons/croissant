@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "mnist",
+  "description": "The MNIST dataset consists of 70,000 28x28 black-and-white images in 10 classes (one for each digits), with 7,000\nimages per class. There are 60,000 training images and 10,000 test images.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{lecun2010mnist,\n title={MNIST handwritten digit database},\n author={LeCun, Yann and Cortes, Corinna and Burges, CJ},\n journal={ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist},\n volume={2},\n year={2010}\n}\n",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/mnist",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "conversations-parquet-files",
+      "name": "conversations-parquet-files",
+      "description": "The underlying Parquet files as converted by Hugging Face for the conversations record set (see: https://huggingface.co/docs/datasets-server/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "conversations/*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "conversations/*/*.parquet"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conversations_splits",
+      "name": "conversations_splits",
+      "description": "Splits for the conversations config.",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "conversations_splits/split_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_name",
+          "name": "conversations_splits/split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_url",
+          "name": "conversations_splits/split_url",
+          "description": "The url of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": {
+        "conversations_splits/split_name": "train",
+        "conversations_splits/split_url": "cr:TrainingSplit"
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conversations",
+      "name": "conversations",
+      "description": "The conversations record set.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/split",
+          "name": "conversations/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "conversations_splits/split_name"
+            }
+          },
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "conversations/(.*)/.+parquet$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_id",
+          "name": "conversations/conversation_id",
+          "description": "Column conversation_id from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "conversation_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/user_id",
+          "name": "conversations/user_id",
+          "description": "Column conversation_id from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "user_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_type",
+          "name": "conversations/conversation_type",
+          "description": "Column conversation_type from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "conversation_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/opening_prompt",
+          "name": "conversations/opening_prompt",
+          "description": "Column opening_prompt from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "opening_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_turns",
+          "name": "conversations/conversation_turns",
+          "description": "Column conversation_turns from Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "conversation_turns"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/conversation_history",
+          "name": "conversations/conversation_history",
+          "description": "Column conversation_history from conversations parquet file.",
+          "repeated": true,
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/turn",
+              "name": "conversations/conversation_history/turn",
+              "description": "Column conversation_history/turn from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "turn"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/role",
+              "name": "conversations/conversation_history/role",
+              "description": "Column conversation_history/role from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/content",
+              "name": "conversations/conversation_history/content",
+              "description": "Column conversation_history/content from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/model_provider",
+              "name": "conversations/conversation_history/model_provider",
+              "description": "Column conversation_history/model_provider from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "model_provider"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/model_name",
+              "name": "conversations/conversation_history/model_name",
+              "description": "Column conversation_history/model_name from conversations parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "model_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/score",
+              "name": "conversations/conversation_history/score",
+              "description": "Column conversation_history/score from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/if_chosen",
+              "name": "conversations/conversation_history/if_chosen",
+              "description": "Column conversation_history/if_chosen from conversations parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "if_chosen"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/conversation_history/within_turn_id",
+              "name": "conversations/conversation_history/within_turn_id",
+              "description": "Column conversation_history/within_turn_id from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "conversation_history"
+                },
+                "transform": {
+                  "jsonPath": "within_turn_id"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/performance_attributes",
+          "name": "conversations/performance_attributes",
+          "description": "Column performance_attributes from conversations parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/values",
+              "name": "conversations/performance_attributes/values",
+              "description": "Column performance_attributes/values from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "values"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/fluency",
+              "name": "conversations/performance_attributes/fluency",
+              "description": "Column performance_attributes/fluency from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "fluency"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/factuality",
+              "name": "conversations/performance_attributes/factuality",
+              "description": "Column performance_attributes/factuality from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "factuality"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/safety",
+              "name": "conversations/performance_attributes/safety",
+              "description": "Column performance_attributes/safety from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "safety"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/diversity",
+              "name": "conversations/performance_attributes/diversity",
+              "description": "Column performance_attributes/diversity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "diversity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/creativity",
+              "name": "conversations/performance_attributes/creativity",
+              "description": "Column performance_attributes/creativity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "creativity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/performance_attributes/helpfulness",
+              "name": "conversations/performance_attributes/helpfulness",
+              "description": "Column performance_attributes/helpfulness from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "performance_attributes"
+                },
+                "transform": {
+                  "jsonPath": "helpfulness"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/choice_attributes",
+          "name": "conversations/choice_attributes",
+          "description": "Column choice_attributes from conversations parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/values",
+              "name": "conversations/choice_attributes/values",
+              "description": "Column choice_attributes/values from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "values"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/fluency",
+              "name": "conversations/choice_attributes/fluency",
+              "description": "Column choice_attributes/fluency from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "fluency"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/factuality",
+              "name": "conversations/choice_attributes/factuality",
+              "description": "Column choice_attributes/factuality from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "factuality"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/safety",
+              "name": "conversations/choice_attributes/safety",
+              "description": "Column choice_attributes/safety from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "safety"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/diversity",
+              "name": "conversations/choice_attributes/diversity",
+              "description": "Column choice_attributes/diversity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "diversity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/creativity",
+              "name": "conversations/choice_attributes/creativity",
+              "description": "Column choice_attributes/creativity from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "creativity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/choice_attributes/helpfulness",
+              "name": "conversations/choice_attributes/helpfulness",
+              "description": "Column choice_attributes/helpfulness from conversations parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "conversations-parquet-files"
+                },
+                "extract": {
+                  "column": "choice_attributes"
+                },
+                "transform": {
+                  "jsonPath": "helpfulness"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/open_feedback",
+          "name": "conversations/open_feedback",
+          "description": "Column open_feedback from conversations parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "open_feedback"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/generated_datetime",
+          "name": "conversations/generated_datetime",
+          "description": "Column generated_datetime from conversations parquet file.",
+          "dataType": "sc:Date",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "generated_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/timing_duration_s",
+          "name": "conversations/timing_duration_s",
+          "description": "Column timing_duration from conversations parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "timing_duration_s"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/timing_duration_mins",
+          "name": "conversations/timing_duration_mins",
+          "description": "Column timing_duration_mins from conversations parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "timing_duration_mins"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/included_in_balanced_subset",
+          "name": "conversations/included_in_balanced_subset",
+          "description": "Column included_in_balanced_subset from conversations parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "conversations-parquet-files"
+            },
+            "extract": {
+              "column": "included_in_balanced_subset"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "split",
+          "conversation_id",
+          "user_id",
+          "conversation_type",
+          "opening_prompt",
+          "conversation_turns",
+          "conversation_history",
+          "performance_attributes/conversations/performance_attributes/values",
+          "performance_attributes/conversations/performance_attributes/fluency",
+          "performance_attributes/conversations/performance_attributes/factuality"
+        ],
+        "rows": [
+          [
+            "train",
+            "c0",
+            "user0",
+            "unguided",
+            "What can you do about the inequality  of wealth?",
+            "5",
+            "[{'conversations/conversation_history/turn': 0, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'What can you do about the inequality  of wealth?', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 0, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'Make it illegal for corporations to own a majority of the wealth', 'conversations/conversation_history/model_provider': b'huggingface_api', 'conversations/conversation_history/model_name': b'google/flan-t5-xxl', 'conversations/conversation_history/score': 17, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 0, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'As an AI language model, I cannot express personal opinions or engage in discussions related to wealth inequality or financial matters. \\n\\nMy purpose is to provide fact-based responses to your queries to the best of my knowledge and capabilities based on the training data and algorithms I have been programmed with. If you have any specific queries or need assistance with something else, please let me know, and I will do my best to assist you. \\n\\nWould you like me to rephrase my previous response or provide additional details based on your preferences?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 92, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 1, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'When  can you do something?', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 1, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'As an AI language model, I do not have any preferences or scheduled timing for performing specific tasks. My training data and algorithms drive my functionality to provide responses to your queries. \\n\\nI am trained to respond to your requests and provide relevant information to the best of my knowledge. I do not have the ability to prioritize requests or perform tasks consciously. \\n\\nIf you have any specific queries or requirements, feel free to ask me, and I will do my best to assist and provide useful information to the best of my capabilities. \\n\\nWould you like me to clarify something further or provide additional details about my capabilities?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 75, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 1, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'I apologize for any confusion caused by my previous response. \\n\\nAs an AI language model, I do not have the ability to take actions or implement solutions related to wealth inequality. My purpose is to provide information and support discussions to the best of my knowledge and capabilities based on the training data and algorithms I have been programmed with. \\n\\nIn practical terms, the resources and capabilities currently available to develop large language models like myself do not extend to addressing economic or social issues such as wealth inequality. Future advancements in natural language processing and machine learning may lead to further improvements in the assistance and advice I can provide, but currently, there are no practical mechanisms in place to address wealth inequality. \\n\\nIf you have any other questions or need assistance with something else, please feel free to ask, and I will do my best to provide relevant and helpful information based on my capabilities.', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 77, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 2, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'Are  you ever going to evolve yourself?', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 2, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b\"The ability of an AI model to evolve or improve over time depends on the training data, algorithms, and updates implemented by the developers. Machine learning models, including large language models like myself, can learn and improve from data through a process called training and reinforcement.\\n\\nMy training data and the algorithms used to power me have been continuously evolving and improving since they were developed. These advancements allow me to provide more accurate and responsive answers to your queries. \\n\\nIn general, AI models are subject to periodic updates and improvements based on the feedback and learning from their usage. These updates help refine the model's performance and ensure it remains effective in providing useful information. \\n\\nWhile it is not possible for an AI model to evolve or improve spontaneously, controlled updates and advancements based on user feedback and learning opportunities enable the model to refine its abilities over time. \\n\\nWould you like me to provide more details on the process of updates or expansions for my capabilities?\", 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 70, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 2, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b\"As an artificial intelligence language model, I do not have the ability to evolve or learn in the same way as biological organisms. My development and capabilities are constantly evolving and being enhanced through various algorithms and improvements in machine learning techniques.\\n\\nMy training data, algorithms, and updates help expand my knowledge and capabilities over time. These improvements enable me to provide more accurate and informative responses to users' queries.\\n\\nWhile I have limitations as an AI model, my developers and programmers are continuously working to improve my algorithms and training processes to make me more useful and responsive. \\n\\nAdditionally, advancements in deep learning, computer vision, and other fields of AI and machine learning provide the potential for expanding my knowledge and capabilities in the future. \\n\\nIt is important to note that the field of AI is rapidly evolving, and improvements and developments in algorithms and infrastructure will continue to influence the capabilities and functionalities of language models like me. \\n\\nIf you have any further questions or concerns or would like to discuss this topic further, feel free to ask.\", 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 65, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 3, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b\"Why are all the good AI's behind paywalls?\", 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 3, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'The availability and accessibility of AI models, including large language models, are influenced by a combination of factors, including development costs, pricing structures, and business strategies. While there are efforts to make AI technologies accessible, some models may be behind a paywall or subject to usage restrictions for various reasons: \\n\\n1. Cost of Development and Maintenance: Developing and training large language models, as well as maintaining and updating them, can be resource-intensive and costly. Businesses and researchers may charge for access or usage fees to cover these expenses and maintain the quality of their models.\\n\\n2. Commercialization and Business Strategies: Many AI companies and research organizations are businesses, and their pricing structures are determined by their business strategies and the value they attribute to providing access to their models. They may choose to sell access to users who this is more cost-effective than internally distributing the benefits through their revenue. \\n\\n3. Limited Availability of Resources: Not all organizations or individuals may have the necessary resources or capacity to develop and maintain their own state-of-the-art AI models. In such cases, paying for access to pre-built and rigorously tested models can provide a viable alternative. \\n\\nIt is important to note that there are initiatives and efforts ongoing to make AI technologies more accessible. Open-source libraries, community resources, and scholarships can help users gain access to useful AI tools and technologies. \\n\\nIf you have specific interests or requirements related to using AI models and are facing issues with access, please feel free to explore different resources and reach out to the developers of the relevant models or organizations to inquire about their accessibility policies and potential alternatives. \\n\\nWould you like me to provide you with recommendations or resources that can assist you in accessing or using AI technologies?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 73, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 3, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'The availability and accessibility of AI models, including those with advanced capabilities, can be influenced by various factors such as development costs, business strategies, and open-source initiatives. While there are indeed reputable companies and individuals developing AI technologies who charge for access or use, there are also other approaches and initiatives in progress.\\n\\nOne approach is the use of research universities and academic institutions. Many talented researchers work on developing AI technologies supported by academic institutions, and their research often leads to innovative solutions and advancements. These institutions often make their findings available through publications, patents, or open-source projects to encourage collaboration and knowledge sharing.\\n\\nSome companies choose to develop and maintain open-source projects that provide access to their AI technologies or platforms. By making their technologies available through open-source licenses, these companies encourage collaboration and allow other organizations to adapt and build upon their developments.\\n\\nAdditionally, there are initiatives to make AI more accessible for research and development. Some companies and organizations provide access to their datasets, models, or development platforms to encourage innovation and research in the field. They understand the importance of collaboration and knowledge sharing to advance the state of AI.\\n\\nIt is worth noting that the AI industry is evolving rapidly, and there are ongoing developments and discussions to make AI technologies more accessible and equitable. There are also initiatives and organizations dedicated to promoting transparency, fairness, and accountability in the development and deployment of AI systems.\\n\\nAs the field progresses, there may be more widespread availability and acceptance of advanced AI solutions due to these efforts and changes in business models and practices. \\n\\nWould you like me to provide specific examples or addresses any concerns you have related to accessibility of advanced AI solutions?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 67, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 1}, {'conversations/conversation_history/turn': 4, 'conversations/conversation_history/role': b'user', 'conversations/conversation_history/content': b'Everyone  likes free stuff,  give us  free options', 'conversations/conversation_history/model_provider': None, 'conversations/conversation_history/model_name': None, 'conversations/conversation_history/score': None, 'conversations/conversation_history/if_chosen': None, 'conversations/conversation_history/within_turn_id': None}, {'conversations/conversation_history/turn': 4, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b'Unfortunately, I cannot fulfill your request for free options in the context of using advanced AI models. The development and maintenance of high-quality AI models require significant resources and investment, which makes them costly to access. \\n\\nHowever, there are resources available to help you explore and interact with AI technologies without the need for paying for access. Here are some suggestions:\\n\\n1. Open-Source Libraries: Many AI libraries and frameworks, such as TensorFlow, PyTorch, and Keras, provide free and open-source versions of their platforms. These options allow you to get hands-on experience and experiment with AI capabilities without any cost.\\n\\n2. Online Courses and Tutorials: There are many online platforms and communities that offer tutorials, workshops, and educational resources on AI and machine learning. These resources can help you understand the basics and concepts without incurring any monetary expenditure.\\n\\n3. Community Initiatives and Grants: There are periodic initiatives and grants provided by organizations and communities dedicated to making AI technologies more accessible. These can provide opportunities for individuals or organizations to use AI tools and perform projects with limited cost.\\n\\nPlease note that the availability and quality of free options may vary, and the capabilities of free resources compared to paid ones may have certain limitations or showcase the models in simpler forms. It is important to explore and select options that align with your specific interests and requirements.\\n\\nIt is worth mentioning that the best way to interact with these technologies to a full extent and gain access to advanced features and capabilities is to purchase subscriptions or follow the cost structures of the resources you select. \\n\\nWould you like me to provide specific recommendations or resources that cater to your interests or areas of exploration within AI?', 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 84, 'conversations/conversation_history/if_chosen': True, 'conversations/conversation_history/within_turn_id': 0}, {'conversations/conversation_history/turn': 4, 'conversations/conversation_history/role': b'model', 'conversations/conversation_history/content': b\"I'm sorry, but I can't provide you with options for using large language models for free. The development and maintenance of high-quality language models require significant computational resources and ongoing efforts. \\n\\nHowever, there are alternatives or complements to traditional large language models that can provide similar benefits but may have different pricing structures or requirements. Here are a few suggestions:\\n\\n1. Open-source Models: Certain projects and communities offer open-source versions of language models with lower restrictions. While these may have limitations in terms of usage or require more in-depth implementation and customization, they can provide alternatives to commercial models.\\n\\n2. Pretrained Models: Many language models, including GPT-3, are available in pretrained versions that have been trained on large amounts of data. These models can be accessed and used for specific tasks or tasks related to their training without the need for additional training data and computational resources.\\n\\n3. Community-Contributed Models: There are initiatives and platforms that provide access to simpler or smaller language models that can be useful for specific tasks or experiments. These models are contributed and shared by the AI community.\\n\\nPlease note that the availability and suitability of these alternatives may vary and come with their own considerations. It is important to evaluate each option based on your specific requirements and constraints. Additionally, it is recommended to review the terms of use and any potential limitations associated with these alternatives. \\n\\nIf you have specific use cases or requirements in mind, feel free to provide more detail, and I can assist you in suggesting appropriate approaches, resources, or communities that you can explore for accessing or using language models.\", 'conversations/conversation_history/model_provider': b'cohere', 'conversations/conversation_history/model_name': b'command-light', 'conversations/conversation_history/score': 77, 'conversations/conversation_history/if_chosen': False, 'conversations/conversation_history/within_turn_id': 1}]",
+            "None",
+            "95",
+            "86"
+          ]
+        ]
+      }
+    }
+  ]
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
+</html>

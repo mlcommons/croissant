@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "bigcode-the-stack",
+  "description": "The Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@article{Kocetkov2022TheStack, title={The Stack: 3 TB of permissively licensed source code}, author={Kocetkov, Denis and Li, Raymond and Ben Allal, Loubna and Li, Jia and Mou,Chenghao and Muñoz Ferrandis, Carlos and Jernite, Yacine and Mitchell, Margaret and Hughes, Sean and Wolf, Thomas and Bahdanau, Dzmitry and von Werra, Leandro and de Vries, Harm}, journal={Preprint}, year={2022} }",
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Harm de Vries",
+      "email": "harm.devries@servicenow.com"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Leandro von Werra",
+      "email": "leandro@huggingface.co"
+    }
+  ],
+  "keywords": [
+    "crowdsourced",
+    "expert-generated"
+  ],
+  "license": "other",
+  "rai:dataBiases": [
+    "Widely adopted programming languages like C and Javascript are overrepresented compared to niche programming languages like Julia and Scala. Some programming languages such as SQL, Batchfile, TypeScript are less likely to be permissively licensed (4% vs the average 10%). This may result in a biased representation of those languages. Permissively licensed files also tend to be longer",
+    "Roughly 40 natural languages are present in docstrings and comments with English being the most prevalent. In python files, it makes up ~96% of the dataset",
+    "The code collected from GitHub does not contain demographic information or proxy information about the demographics. However, it is not without risks, as the comments within the code may contain harmful or offensive language, which could be learned by the models."
+  ],
+  "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
+  "rai:dataCollectionRawData": "Files containing code data.",
+  "rai:dataCollectionType": [
+    "Web Scraping",
+    "Others"
+  ],
+  "rai:dataLimitations": [
+    "One of the current limitations of The Stack is that scraped HTML for websites may not be compliant with Web Content Accessibility Guidelines (WCAG). This could have an impact on HTML-generated code that may introduce web accessibility issues.",
+    "The training dataset could contain malicious code and/or the model could be used to generate malware or ransomware.",
+    "Despite datasets containing personal information, researchers should only use public, non-personal information in support of conducting and publishing their open-access research. Personal information should not be used for spamming purposes, including sending unsolicited emails or selling of personal information."
+  ],
+  "rai:dataPreprocessingProtocol": [
+    "Near-deduplication was implemented in the pre-processing pipeline on top of exact deduplication. To find near-duplicates, MinHash with 256 permutations of all documents was computed in linear time. Locality Sensitive Hashing was used to find the clusters of duplicates. Jaccard Similarities were computed inside these clusters to remove any false positives and with a similarity threshold of 0.85. Roughly 40% of permissively licensed files were (near-)duplicates.",
+    "Non detected licenses: GHArchive contained the license information for approximately 12% of the collected repositories. For the remaining repositories, go-license-detector was run to detect the most likely SPDX license identifier. The detector did not detect a license for ~81% of the repositories, in which case the repository was excluded from the dataset."
+  ],
+  "rai:dataSocialImpact": "The Stack is released with the aim to increase access, reproducibility, and transparency of code LLMs in the research community. We expect code LLMs to enable people from diverse backgrounds to write higher quality code and develop low-code applications. Mission-critical software could become easier to maintain as professional developers are guided by code-generating systems on how to write more robust and efficient code. While the social impact is intended to be positive, the increased accessibility of code LLMs comes with certain risks such as over-reliance on the generated code and long-term effects on the software development job market.",
+  "rai:dataUseCases": "The Stack is a pre-training dataset for creating code LLMs. Code LLMs can be used for a wide variety of downstream tasks such as code completion from natural language descriptions (HumanEval, MBPP), documentation generation for individual functions (CodeSearchNet), and auto-completion of code snippets (HumanEval-Infilling).",
+  "rai:personalSensitiveInformation": "The released dataset may contain sensitive information such as emails, IP addresses, and API/ssh keys that have previously been published to public repositories on GitHub. Deduplication has helped to reduce the amount of sensitive data that may exist. The PII pipeline for this dataset is still a work in progress. Researchers who wish to contribute to the anonymization pipeline of the project can apply to join here: https://www.bigcode-project.org/docs/about/join/.",
+  "sameAs": "https://www.bigcode-project.org/docs/about/the-stack/",
+  "url": "https://huggingface.co/datasets/bigcode/the-stack",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/bigcode/the-stack",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files",
+      "name": "parquet-files",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "*/*.parquet",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*/*.parquet"
+        ]
+      }
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/content",
+          "name": "default/content",
+          "description": "The content of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "content"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/language",
+          "name": "default/language",
+          "description": "Programming language of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/hexsha",
+          "name": "default/hexsha",
+          "description": "Unique git hash of file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/size",
+          "name": "default/size",
+          "description": "Size of the uncompressed file..",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ext",
+          "name": "default/ext",
+          "description": "File extension.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "ext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/lang",
+          "name": "default/lang",
+          "description": "Hash of the file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_path",
+          "name": "default/max_stars_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_name",
+          "name": "default/max_stars_repo_name",
+          "description": "Name of repo containing this file with maximum number of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_head_hexsha",
+          "name": "default/max_stars_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of stars.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_count",
+          "name": "default/max_stars_count",
+          "description": "Number of stars in repository.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_stars_event_min_datetime",
+          "name": "default/max_stars_repo_stars_event_min_datetime",
+          "description": "First timestamp of a stars event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_stars_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_stars_repo_stars_event_max_datetime",
+          "name": "default/max_stars_repo_stars_event_max_datetime",
+          "description": "Last timestamp of a stars event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_stars_repo_stars_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_path",
+          "name": "default/max_issues_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of issues.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_head_hexsha",
+          "name": "default/max_issues_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of issues.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_count",
+          "name": "default/max_issues_count",
+          "description": "Number of issues in repository.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_issues_event_min_datetime",
+          "name": "default/max_issues_repo_issues_event_min_datetime",
+          "description": "First timestamp of an issues event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_issues_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_issues_repo_issues_event_max_datetime",
+          "name": "default/max_issues_repo_issues_event_max_datetime",
+          "description": "Last timestamp of an issues event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_issues_repo_issues_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_path",
+          "name": "default/max_forks_repo_path",
+          "description": "Path to file in repo containing this file with maximum number of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_name",
+          "name": "default/max_forks_repo_name",
+          "description": "Name of repo containing this file with maximum number of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_head_hexsha",
+          "name": "default/max_forks_repo_head_hexsha",
+          "description": "Hexsha of repository head with the maximum of forks.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_head_hexsha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_count",
+          "name": "default/max_forks_count",
+          "description": "Number of forks in repository.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_forks_event_min_datetime",
+          "name": "default/max_forks_repo_forks_event_min_datetime",
+          "description": "First timestamp of a forks event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_forks_event_min_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_forks_repo_forks_event_max_datetime",
+          "name": "default/max_forks_repo_forks_event_max_datetime",
+          "description": "Last timestamp of a forks event.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_forks_repo_forks_event_max_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/avg_line_length",
+          "name": "default/avg_line_length",
+          "description": "The average line-length of the file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "avg_line_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/max_line_length",
+          "name": "default/max_line_length",
+          "description": "The maximum line-length of the file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "max_line_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/alphanum_fraction",
+          "name": "default/alphanum_fraction",
+          "description": "The fraction of characters in the file that are alphabetical or numerical characters.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files"
+            },
+            "extract": {
+              "column": "alphanum_fraction"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "content",
+          "language",
+          "hexsha",
+          "size",
+          "ext",
+          "lang",
+          "max_stars_repo_path",
+          "max_stars_repo_name",
+          "max_stars_repo_head_hexsha",
+          "max_stars_count"
+        ],
+        "rows": [
+          [
+            "*&---------------------------------------------------------------------*\n*& Report  ZIS_EXAMPLE\n*&---------------------------------------------------------------------*\nreport zis_example.\n\ninclude zis_example_top.\ninclude zis_example_f01.\n\nstart-of-selection.\n\ninclude = 'X'.\nperform perform_write.\n",
+            "ABAP",
+            "f702dd98900e80f27b0ff4729f38a8f72faf6284",
+            "300",
+            "abap",
+            "ABAP",
+            "zis_example.prog.abap",
+            "sbcgua/abap_include_assembler",
+            "5660773df238668bf654ec322dc46fe8c0757dbb",
+            "3.0"
+          ],
+          [
+            "FUNCTION zcafm_customer_delete.\n*\"----------------------------------------------------------------------\n*\"*\"Local Interface:\n*\"  IMPORTING\n*\"     VALUE(PI_CUSTOMER) TYPE  KNA1-KUNNR\n*\"     VALUE(PI_TEST) TYPE  CHAR1\n*\"  EXPORTING\n*\"     VALUE(SE_RETURN) TYPE  BAPIRET2\n*\"----------------------------------------------------------------------\n\n*----------------------------------------------------------------------*\n*  Function Module ZCAFM_CUSTOMER_DELETE *\n* *----------------------------------------------------------------------*\n* * *\n* * ID-Reference: MuleSoft templates *\n* * *\n* * This BAPI aims to set deletion flag for particular customer. If par. *\n* * PI_TEST is provided no change is performed. *\n* *----------------------------------------------------------------------*\n* * Change Log: *\n* * *\n* * Who Date Text *\n* * MMARUSKIN 03.07.2014 Init creation. *\n* *----------------------------------------------------------------------*\n\n* Global data declarations\n\n\n  CONSTANTS: lc_obj_task TYPE cmd_ei_object_task VALUE 'M', \"M=Create/Change\n             lc_msg_cls  TYPE sy-msgid VALUE 'ZMULESOFTINTEGRATION'.\n  DATA: ls_customer  TYPE cmds_ei_extern,\n        lt_customers TYPE cmds_ei_main,\n        ls_mes_error TYPE cvis_message,\n        lv_par       TYPE sy-msgv1.\n\n\n\n*- Prepare data\n\n\n  ls_customer-header-object_instance-kunnr = pi_customer.\n  ls_customer-header-object_task = lc_obj_task.\n  ls_customer-central_data-central-data-loevm = 'X'.\n  ls_customer-central_data-central-datax-loevm = 'X'.\n  APPEND ls_customer TO lt_customers-customers.\n  lv_par = pi_customer.\n\n\n*- Run change of material via standard functionality\n\n\n  CALL METHOD cmd_ei_api=>maintain_bapi\n    EXPORTING\n      iv_test_run          = pi_test\n      iv_collect_messages  = 'X'\n      is_master_data       = lt_customers\n    IMPORTING\n      es_message_defective = ls_mes_error.\n\n\n*- Error handling\n\n\n  IF ls_mes_error-is_error IS INITIAL AND pi_test IS INITIAL.\n    COMMIT WORK AND WAIT.\n    CALL FUNCTION 'BALW_BAPIRETURN_GET2'     \"okay: flag set!\n      EXPORTING\n        type      = 'I'\n        cl        = lc_msg_cls\n        number    = 100\n        par1      = lv_par\n        parameter = ''\n        field     = ''\n      IMPORTING\n        return    = se_return.\n  ELSE.\n    ROLLBACK WORK.                                     \"#EC CI_ROLLBACK\n    CALL FUNCTION 'BALW_BAPIRETURN_GET2'     \"problem: flag NOT set!\n      EXPORTING\n        type      = 'E'\n        cl        = lc_msg_cls\n        number    = 101\n        par1      = lv_par\n        parameter = ''\n        field     = ''\n      IMPORTING\n        return    = se_return.\n  ENDIF.\n\nENDFUNCTION.",
+            "ABAP",
+            "f7059ca25a13836de140134550b96c66d4d503dc",
+            "2640",
+            "abap",
+            "ABAP",
+            "sap-data-retrieval/src/test/resources/sap/ZCAFM_CUSTOMER_DELETE.abap",
+            "mulesoft-consulting/anypoint-examples",
+            "20f17b2f162c7a81787aafddd54b0ba196edd8d7",
+            "1.0"
+          ],
+          [
+            "*&---------------------------------------------------------------------*\n*& Report zdemo_ain_cl25\n*&---------------------------------------------------------------------*\n*& This is the demo program written for book:\n*& ALV grid in nutshell by Łukasz Pęgiel\n*&---------------------------------------------------------------------*\n*&- 1st character ='C' if we're using custom colour or 'X' for default *\n*&- 2nd character = colour code (from 0 to 7)                          *\n*&                                  0 = background colour              *\n*&                                  1 = blue                           *\n*&                                  2 = gray                           *\n*&                                  3 = yellow                         *\n*&                                  4 = blue/gray                      *\n*&                                  5 = green                          *\n*&                                  6 = red                            *\n*&                                  7 = orange                         *\n*&- 3rd character = intensified (0=off, 1=on)                          *\n*&- 4th character = inverse display (0=off, 1=on)                      *\n*&---------------------------------------------------------------------*\nreport zdemo_ain_cl25.\n\ninclude zdemo_ain_include_screen.\n\nstart-of-selection.\n\n  types: begin of t_data,\n           no_emphasize type spfli-carrid,\n           standard     type spfli-carrid,\n           c100         type spfli-carrid,\n           c101         type spfli-carrid,\n           c110         type spfli-carrid,\n           c111         type spfli-carrid,\n           c200         type spfli-carrid,\n           c201         type spfli-carrid,\n           c210         type spfli-carrid,\n           c211         type spfli-carrid,\n           c300         type spfli-carrid,\n           c301         type spfli-carrid,\n           c310         type spfli-carrid,\n           c311         type spfli-carrid,\n           c400         type spfli-carrid,\n           c401         type spfli-carrid,\n           c410         type spfli-carrid,\n           c411         type spfli-carrid,\n           c500         type spfli-carrid,\n           c501         type spfli-carrid,\n           c510         type spfli-carrid,\n           c511         type spfli-carrid,\n           c600         type spfli-carrid,\n           c601         type spfli-carrid,\n           c610         type spfli-carrid,\n           c611         type spfli-carrid,\n           c700         type spfli-carrid,\n           c701         type spfli-carrid,\n           c710         type spfli-carrid,\n           c711         type spfli-carrid,\n           c000         type spfli-carrid,\n           c001         type spfli-carrid,\n           c010         type spfli-carrid,\n           c011         type spfli-carrid,\n         end of t_data.\n  data flights type standard table of t_data.\n\n  select carrid as no_emphasize\n    up to 50 rows from spfli\n    into corresponding fields of table @flights.\n\n  loop at flights assigning field-symbol(<fl>).\n    <fl>-standard = <fl>-c100 = <fl>-c101 = <fl>-c110 = <fl>-c111 =\n                <fl>-c200 = <fl>-c201 = <fl>-c210 = <fl>-c211 =\n                <fl>-c300 = <fl>-c301 = <fl>-c310 = <fl>-c311 =\n                <fl>-c400 = <fl>-c401 = <fl>-c410 = <fl>-c411 =\n                <fl>-c500 = <fl>-c501 = <fl>-c510 = <fl>-c511 =\n                <fl>-c600 = <fl>-c601 = <fl>-c610 = <fl>-c611 =\n                <fl>-c700 = <fl>-c701 = <fl>-c710 = <fl>-c711 =\n                <fl>-c000 = <fl>-c001 = <fl>-c010 = <fl>-c011 = <fl>-no_emphasize.\n\n  endloop.\n\n  data(grid) = new cl_gui_alv_grid(\n                    i_parent = new cl_gui_custom_container( container_name = 'CC' )\n                                   ).\n  data(fcat) = value lvc_t_fcat(\n                                 ( fieldname = 'NO_EMPHASIZE' reptext = 'NO_EMPHASIZE' )\n                                 ( fieldname = 'STANDARD' emphasize = abap_true reptext = 'STANDARD' )\n                                 ( fieldname = 'C100' emphasize = 'C100' reptext = 'C100')\n                                 ( fieldname = 'C101' emphasize = 'C101' reptext = 'C101')\n                                 ( fieldname = 'C110' emphasize = 'C110' reptext = 'C110')\n                                 ( fieldname = 'C111' emphasize = 'C111' reptext = 'C111')\n                                 ( fieldname = 'C200' emphasize = 'C200' reptext = 'C200')\n                                 ( fieldname = 'C201' emphasize = 'C201' reptext = 'C201')\n                                 ( fieldname = 'C210' emphasize = 'C210' reptext = 'C210')\n                                 ( fieldname = 'C211' emphasize = 'C211' reptext = 'C211')\n                                 ( fieldname = 'C300' emphasize = 'C300' reptext = 'C300')\n                                 ( fieldname = 'C301' emphasize = 'C301' reptext = 'C301')\n                                 ( fieldname = 'C310' emphasize = 'C310' reptext = 'C310')\n                                 ( fieldname = 'C311' emphasize = 'C311' reptext = 'C311')\n                                 ( fieldname = 'C400' emphasize = 'C400' reptext = 'C400')\n                                 ( fieldname = 'C401' emphasize = 'C401' reptext = 'C401')\n                                 ( fieldname = 'C410' emphasize = 'C410' reptext = 'C410')\n                                 ( fieldname = 'C411' emphasize = 'C411' reptext = 'C411')\n                                 ( fieldname = 'C500' emphasize = 'C500' reptext = 'C500')\n                                 ( fieldname = 'C501' emphasize = 'C501' reptext = 'C501')\n                                 ( fieldname = 'C510' emphasize = 'C510' reptext = 'C510')\n                                 ( fieldname = 'C511' emphasize = 'C511' reptext = 'C511')\n                                 ( fieldname = 'C600' emphasize = 'C600' reptext = 'C600')\n                                 ( fieldname = 'C601' emphasize = 'C601' reptext = 'C601')\n                                 ( fieldname = 'C610' emphasize = 'C610' reptext = 'C610')\n                                 ( fieldname = 'C611' emphasize = 'C611' reptext = 'C611')\n                                 ( fieldname = 'C700' emphasize = 'C700' reptext = 'C700')\n                                 ( fieldname = 'C701' emphasize = 'C701' reptext = 'C701')\n                                 ( fieldname = 'C710' emphasize = 'C710' reptext = 'C710')\n                                 ( fieldname = 'C711' emphasize = 'C711' reptext = 'C711')\n                                 ( fieldname = 'C000' emphasize = 'C000' reptext = 'C000')\n                                 ( fieldname = 'C001' emphasize = 'C001' reptext = 'C001')\n                                 ( fieldname = 'C010' emphasize = 'C010' reptext = 'C010')\n                                 ( fieldname = 'C011' emphasize = 'C011' reptext = 'C011')\n                               ).\n  grid->set_table_for_first_display(\n    exporting\n        is_layout = value #( col_opt = abap_true )\n    changing\n      it_fieldcatalog               = fcat\n      it_outtab                     = flights\n    exceptions\n      invalid_parameter_combination = 1\n      program_error                 = 2\n      too_many_lines                = 3\n      others                        = 4\n  ).\n  if sy-subrc eq 0.\n    call screen 0100.\n  endif.\n",
+            "ABAP",
+            "f706c5d249ab3a4ce3d3753967774b9920a31554",
+            "7390",
+            "abap",
+            "ABAP",
+            "src/fcat/zdemo_ain_cl25.prog.abap",
+            "fidley/ALVGridInNutschell",
+            "d3c95d7f31afbff001fff50edae0c2e09e51fe90",
+            "5.0"
+          ],
+          [
+            "**********************************************************************\n*  FILTER EMPTY VALUES\n**********************************************************************\n\nCLASS lcl_empty_filter DEFINITION FINAL.\n  PUBLIC SECTION.\n    INTERFACES /mbtools/if_ajson_filter.\nENDCLASS.\n\nCLASS lcl_empty_filter IMPLEMENTATION.\n  METHOD /mbtools/if_ajson_filter~keep_node.\n\n    rv_keep = boolc(\n      ( iv_visit = /mbtools/if_ajson_filter=>visit_type-value AND is_node-value IS NOT INITIAL ) OR\n      ( iv_visit <> /mbtools/if_ajson_filter=>visit_type-value AND is_node-children > 0 ) ).\n    \" children = 0 on open for initially empty nodes and on close for filtered ones\n\n  ENDMETHOD.\nENDCLASS.\n\n**********************************************************************\n*  FILTER PREDEFINED PATHS\n**********************************************************************\n\nCLASS lcl_paths_filter DEFINITION FINAL.\n  PUBLIC SECTION.\n    INTERFACES /mbtools/if_ajson_filter.\n    METHODS constructor\n      IMPORTING\n        it_skip_paths TYPE string_table OPTIONAL\n        iv_skip_paths TYPE string OPTIONAL\n      RAISING\n        /mbtools/cx_ajson_error.\n  PRIVATE SECTION.\n    DATA mt_skip_paths TYPE HASHED TABLE OF string WITH UNIQUE KEY table_line.\nENDCLASS.\n\nCLASS lcl_paths_filter IMPLEMENTATION.\n\n  METHOD /mbtools/if_ajson_filter~keep_node.\n\n    DATA lv_path TYPE string.\n\n    lv_path = is_node-path && is_node-name.\n    READ TABLE mt_skip_paths WITH KEY table_line = lv_path TRANSPORTING NO FIELDS.\n    rv_keep = boolc( sy-subrc <> 0 ).\n\n  ENDMETHOD.\n\n  METHOD constructor.\n\n    DATA lv_s TYPE string.\n    DATA lt_tab TYPE string_table.\n    FIELD-SYMBOLS <s> TYPE string.\n\n    IF boolc( iv_skip_paths IS INITIAL ) = boolc( it_skip_paths IS INITIAL ). \" XOR\n      /mbtools/cx_ajson_error=>raise( 'no filter path specified' ).\n    ENDIF.\n\n    LOOP AT it_skip_paths INTO lv_s.\n      lv_s = to_lower( lv_s ).\n      APPEND lv_s TO lt_tab.\n    ENDLOOP.\n\n    IF iv_skip_paths IS NOT INITIAL.\n      SPLIT iv_skip_paths AT ',' INTO TABLE lt_tab.\n      LOOP AT lt_tab ASSIGNING <s>.\n        IF <s> IS INITIAL.\n          DELETE lt_tab INDEX sy-tabix.\n          CONTINUE.\n        ENDIF.\n        <s> = condense( to_lower( <s> ) ).\n      ENDLOOP.\n    ENDIF.\n\n    SORT lt_tab BY table_line.\n    DELETE ADJACENT DUPLICATES FROM lt_tab.\n\n    mt_skip_paths = lt_tab.\n\n  ENDMETHOD.\n\nENDCLASS.\n\n**********************************************************************\n* MULTI FILTER\n**********************************************************************\n\nCLASS lcl_and_filter DEFINITION FINAL.\n  PUBLIC SECTION.\n    INTERFACES /mbtools/if_ajson_filter.\n    METHODS constructor\n      IMPORTING\n        it_filters TYPE /mbtools/if_ajson_filter=>ty_filter_tab\n      RAISING\n        /mbtools/cx_ajson_error.\n  PRIVATE SECTION.\n    DATA mt_filters TYPE /mbtools/if_ajson_filter=>ty_filter_tab.\nENDCLASS.\n\nCLASS lcl_and_filter IMPLEMENTATION.\n\n  METHOD /mbtools/if_ajson_filter~keep_node.\n\n    DATA li_filter LIKE LINE OF mt_filters.\n\n    rv_keep = abap_true.\n    LOOP AT mt_filters INTO li_filter.\n      rv_keep = li_filter->keep_node(\n        is_node  = is_node\n        iv_visit = iv_visit ).\n      IF rv_keep = abap_false.\n        RETURN.\n      ENDIF.\n    ENDLOOP.\n\n  ENDMETHOD.\n\n  METHOD constructor.\n\n    DATA li_filter LIKE LINE OF it_filters.\n\n    LOOP AT it_filters INTO li_filter WHERE table_line IS BOUND.\n      APPEND li_filter TO mt_filters.\n    ENDLOOP.\n\n  ENDMETHOD.\n\nENDCLASS.\n",
+            "ABAP",
+            "f707aa256126ec981696b25d4cbe9173d6a74a1f",
+            "3452",
+            "abap",
+            "ABAP",
+            "src/#mbtools#cl_ajson_filter_lib.clas.locals_imp.abap",
+            "Marc-Bernard-Tools/Mirror-AJSON",
+            "4bc1b5b661a6e0197770da766293d9434c75e559",
+            "None"
+          ],
+          [
+            "FUNCTION-POOL ZEXPIMP_VX_GENER_TEST_CODE.   \"MESSAGE-ID ..\n\n* INCLUDE LZEXPIMP_GENERATE_TEST_CODED...    \" Local class definition\n",
+            "ABAP",
+            "f70ff1b7c91543804aad129c14175a625e0efafb",
+            "130",
+            "abap",
+            "ABAP",
+            "src/zexpimp_vx_gener_test_code.fugr.lzexpimp_vx_gener_test_codetop.abap",
+            "sandraros/export-import-vx",
+            "a818910f825f6a19105bb1f6ad3563e93a477c38",
+            "1.0"
+          ]
+        ]
+      }
+    }
+  ]
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
+</html>

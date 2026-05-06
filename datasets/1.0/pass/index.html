@@ -1,49 +1,82 @@
-<html>
-  <head>Pass dataset</title>
-    <script type="application/ld+json">
-{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "column": "ml:column",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
     "data": {
-      "@id": "ml:data",
+      "@id": "cr:data",
       "@type": "@json"
     },
     "dataType": {
-      "@id": "ml:dataType",
+      "@id": "cr:dataType",
       "@type": "@vocab"
     },
-    "extract": "ml:extract",
-    "field": "ml:field",
-    "fileProperty": "ml:fileProperty",
-    "format": "ml:format",
-    "includes": "ml:includes",
-    "isEnumeration": "ml:isEnumeration",
-    "jsonPath": "ml:jsonPath",
-    "ml": "http://mlcommons.org/schema/",
-    "parentField": "ml:parentField",
-    "path": "ml:path",
-    "recordSet": "ml:recordSet",
-    "references": "ml:references",
-    "regex": "ml:regex",
-    "repeated": "ml:repeated",
-    "replace": "ml:replace",
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
     "sc": "https://schema.org/",
-    "separator": "ml:separator",
-    "source": "ml:source",
-    "subField": "ml:subField",
-    "transform": "ml:transform"
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
   "name": "PASS",
   "description": "PASS is a large-scale image dataset that does not include any humans and which can be used for high-quality pretraining while significantly reducing privacy concerns.",
-  "citation": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@Article{asano21pass, author = \"Yuki M. Asano and Christian Rupprecht and Andrew Zisserman and Andrea Vedaldi\", title = \"PASS: An ImageNet replacement for self-supervised pretraining without humans\", journal = \"NeurIPS Track on Datasets and Benchmarks\", year = \"2021\" }",
+  "license": "cc-by-4.0",
   "url": "https://www.robots.ox.ac.uk/~vgg/data/pass/",
   "distribution": [
     {
       "@type": "cr:FileObject",
+      "@id": "metadata",
       "name": "metadata",
       "contentUrl": "https://zenodo.org/record/6615455/files/pass_metadata.csv",
       "encodingFormat": "text/csv",
@@ -51,6 +84,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass0",
       "name": "pass0",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.0.tar",
       "encodingFormat": "application/x-tar",
@@ -58,6 +92,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass1",
       "name": "pass1",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.1.tar",
       "encodingFormat": "application/x-tar",
@@ -65,6 +100,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass2",
       "name": "pass2",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.2.tar",
       "encodingFormat": "application/x-tar",
@@ -72,6 +108,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass3",
       "name": "pass3",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.3.tar",
       "encodingFormat": "application/x-tar",
@@ -79,6 +116,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass4",
       "name": "pass4",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.4.tar",
       "encodingFormat": "application/x-tar",
@@ -86,6 +124,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass5",
       "name": "pass5",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.5.tar",
       "encodingFormat": "application/x-tar",
@@ -93,6 +132,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass6",
       "name": "pass6",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.6.tar",
       "encodingFormat": "application/x-tar",
@@ -100,6 +140,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass7",
       "name": "pass7",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.7.tar",
       "encodingFormat": "application/x-tar",
@@ -107,6 +148,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass8",
       "name": "pass8",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.8.tar",
       "encodingFormat": "application/x-tar",
@@ -114,6 +156,7 @@
     },
     {
       "@type": "cr:FileObject",
+      "@id": "pass9",
       "name": "pass9",
       "contentUrl": "https://zenodo.org/record/6615455/files/PASS.9.tar",
       "encodingFormat": "application/x-tar",
@@ -121,44 +164,78 @@
     },
     {
       "@type": "cr:FileSet",
+      "@id": "image-files",
       "name": "image-files",
       "containedIn": [
-        "pass0",
-        "pass1",
-        "pass2",
-        "pass3",
-        "pass4",
-        "pass5",
-        "pass6",
-        "pass7",
-        "pass8",
-        "pass9"
+        {
+          "@id": "pass0"
+        },
+        {
+          "@id": "pass1"
+        },
+        {
+          "@id": "pass2"
+        },
+        {
+          "@id": "pass3"
+        },
+        {
+          "@id": "pass4"
+        },
+        {
+          "@id": "pass5"
+        },
+        {
+          "@id": "pass6"
+        },
+        {
+          "@id": "pass7"
+        },
+        {
+          "@id": "pass8"
+        },
+        {
+          "@id": "pass9"
+        }
       ],
       "encodingFormat": "image/jpeg",
-      "includes": "*.jpg"
+      "includes": "*.jpg",
+      "cr:examples": {
+        "file_list": [],
+        "file_count": 0,
+        "includes": [
+          "*.jpg"
+        ]
+      }
     }
   ],
   "recordSet": [
     {
-      "@type": "ml:RecordSet",
+      "@type": "cr:RecordSet",
+      "@id": "images",
       "name": "images",
       "key": {
         "@id": "hash"
       },
       "field": [
         {
-          "@type": "ml:Field",
-          "name": "hash",
+          "@type": "cr:Field",
+          "@id": "images/hash",
+          "name": "images/hash",
           "description": "The hash of the image, as computed from YFCC-100M.",
           "dataType": "sc:Text",
           "references": {
-            "distribution": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "hash"
             }
           },
           "source": {
-            "distribution": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "filename"
             },
@@ -168,52 +245,65 @@
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "image_content",
+          "@type": "cr:Field",
+          "@id": "images/image_content",
+          "name": "images/image_content",
           "description": "The content of the image.",
           "dataType": "sc:ImageObject",
           "source": {
-            "distribution": "image-files",
+            "fileSet": {
+              "@id": "image-files"
+            },
             "extract": {
               "fileProperty": "content"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "creator_uname",
+          "@type": "cr:Field",
+          "@id": "images/creator_uname",
+          "name": "images/creator_uname",
           "description": "Unique name of photo creator.",
           "dataType": "sc:Text",
           "source": {
-            "distribution": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "unickname"
             }
           }
         },
         {
-          "@type": "ml:Field",
-          "name": "gps_coordinates",
+          "@type": "cr:Field",
+          "@id": "images/gps_coordinates",
+          "name": "images/gps_coordinates",
           "description": "GPS coordinates where the image was taken.",
           "dataType": "sc:GeoCoordinates",
           "subField": [
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
+              "@id": "images/latitude",
               "name": "latitude",
               "dataType": "sc:Float",
               "source": {
-                "distribution": "metadata",
+                "fileObject": {
+                  "@id": "metadata"
+                },
                 "extract": {
                   "column": "latitude"
                 }
               }
             },
             {
-              "@type": "ml:Field",
+              "@type": "cr:Field",
+              "@id": "images/longitude",
               "name": "longitude",
               "dataType": "sc:Float",
               "source": {
-                "distribution": "metadata",
+                "fileObject": {
+                  "@id": "metadata"
+                },
                 "extract": {
                   "column": "longitude"
                 }
@@ -222,12 +312,15 @@
           ]
         },
         {
-          "@type": "ml:Field",
-          "name": "date_taken",
+          "@type": "cr:Field",
+          "@id": "images/date_taken",
+          "name": "images/date_taken",
           "description": "The date the photo was taken.",
           "dataType": "sc:Date",
           "source": {
-            "distribution": "metadata",
+            "fileObject": {
+              "@id": "metadata"
+            },
             "extract": {
               "column": "datetaken"
             },
@@ -239,9 +332,7 @@
       ]
     }
   ]
-}
-</script>
-  </head>
-  <body>
-  </body>
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
 </html>

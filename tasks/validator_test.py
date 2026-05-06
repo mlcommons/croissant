@@ -1,6 +1,6 @@
 import unittest
 
-from google3.experimental.users.leobianco.croissant_tasks import validator
+from . import validator
 
 validate_data = validator.validate_data
 

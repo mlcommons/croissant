@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- D3.js for SVG graph -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <link rel="stylesheet" href="../../static/visualizer.min.css">
+</head>
+<body>
+    <div id="app"><p style="padding:2rem;font-family:sans-serif;color:#6b7280">Loading dataset…</p></div>
+    <script>window.__GALLERY_URL__="../../index.html";</script>
+    <script>window.__CROISSANT_DATA__ = {
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "guymorlan/levanti",
+  "description": "# Levanti: A Levantine Arabic Dataset\n\nLevanti is a dataset of 500K sentences in Levantine colloquial Arabic (Palestinian, Syrian, Lebanese + Egyptian), translated to English and Hebrew and augmented with diacritics, Hebrew transliteration and English transliteration. Levanti is composed of a core of 42K real sentences collected and manually translated and validated, and 466K high quality synthetic sentences carefully generated with Claude Sonnet 3.5 based on diverse dictionary entries and appropriate example to increase the semantic and lexical diversity in the corpus. Diacritics, Hebrew transliteration and English transliteration are added to 113K sentences in Palestinian Arabic. Diacritics were generated with Claude Sonnet 3.5 via appropriate prompting and examples, and fixed with an extensive set of manually crafted heuristics. Claude was likewise used as a reasoning engine for applying several of the heuristics. Transliteration is the output of the transliteration model (see below). All English translation were generated with gpt-4o based on the Arabic and Hebrew translation.\n",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/guymorlan/levanti",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/guymorlan/levanti",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "levanti-csv",
+      "name": "levanti-csv",
+      "description": "The csv file for Levanti",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "contentUrl": "levanti_v1.csv",
+      "encodingFormat": "text/csv"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "levanti_train",
+      "name": "levanti_train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/dialect",
+          "name": "levanti/dialect",
+          "description": "Palestinian, Syrian, Lebnese, Jordanian, Egyptian or Levantine (if exact dialect unknown).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "dialect"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/arabic",
+          "name": "levanti/arabic",
+          "description": "Sentence text in Arabic, without diacritics.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "arabic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/hebrew",
+          "name": "levanti/hebrew",
+          "description": "Hebrew translation.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "hebrew"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/english",
+          "name": "levanti/english",
+          "description": "English translation.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "english"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/synthesized",
+          "name": "levanti/synthesized",
+          "description": "Whether sentence is generated with LLM based on definitions and example (True) or found in the wild (False).",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "synthesized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/diacritized",
+          "name": "levanti/diacritized",
+          "description": "Diacritized version of Arabic sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "diacritized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/hebrew_taatik_EXP",
+          "name": "levanti/hebrew_taatik_EXP",
+          "description": "Transliteration into Hebrew of diacritized sentence (after disambiguation of diacritics).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "hebrew_taatik_EXP"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "levanti/english_translit_EXP",
+          "name": "levanti/english_translit_EXP",
+          "description": "Transliteration into English of diacritized sentence.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "levanti-csv"
+            },
+            "extract": {
+              "column": "english_translit_EXP"
+            }
+          }
+        }
+      ],
+      "cr:examples": {
+        "columns": [
+          "dialect",
+          "arabic",
+          "hebrew",
+          "english",
+          "synthesized",
+          "diacritized",
+          "hebrew_taatik_EXP",
+          "english_translit_EXP"
+        ],
+        "rows": [
+          [
+            "Levantine",
+            "انا حابب احكي معك.",
+            "אני רוצה לדבר איתך.",
+            "I want to talk to you.",
+            "False",
+            "None",
+            "None",
+            "None"
+          ],
+          [
+            "Palestinian",
+            "مرحبا أريج. -مرحبا جلال.",
+            "שלום, אריג'. -שלום, ג'לאל.",
+            "Hello, Areej. -Hello, Jalal.",
+            "False",
+            "None",
+            "None",
+            "None"
+          ],
+          [
+            "Levantine",
+            "وإذا مش نسايبنا ولاد عمّنا!",
+            "ואם לא קרובים שלנו הם בני דודינו!",
+            "And if they are not our relatives, they are our cousins!",
+            "False",
+            "None",
+            "None",
+            "None"
+          ],
+          [
+            "Jordanian",
+            "هم مش عاجبهم إنو مديرتهم ست",
+            "הם לא מרוצים מכך שהמנהלת שלהם אישה",
+            "They don't like that their manager is a woman.",
+            "False",
+            "None",
+            "None",
+            "None"
+          ],
+          [
+            "Syrian",
+            "‏الشبكات كانت ملانة سمك ‎",
+            "הרשתות היו מלאות דגים",
+            "The nets were full of fish.",
+            "False",
+            "None",
+            "None",
+            "None"
+          ]
+        ]
+      }
+    }
+  ]
+};</script>
+    <script src="../../static/visualizer.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # Dataset Definitions
 
+This gallery contains example Croissant datasets created by the community.
+
 This directory contains definitions of datasets (one sub-directory per version and per dataset).
 
 ```text
