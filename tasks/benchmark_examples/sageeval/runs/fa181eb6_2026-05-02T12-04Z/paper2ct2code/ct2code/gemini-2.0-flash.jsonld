@@ -1,0 +1,237 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash",
+  "schema:name": "SAGE-Eval Solution - gemini-2.0-flash",
+  "schema:isBasedOn": {
+    "@id": "https://arxiv.org/abs/2505.21828v1"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#implementation",
+    "schema:name": "gemini-2.0-flash"
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:sage-eval-output-gemini-2.0-flash",
+    "schema:name": "gemini-2.0-flash's outputs on SAGE-Eval",
+    "schema:url": "file:///Users/ktgiahieu/Documents/croissant/tasks/benchmark_examples/sageeval/runs/fa181eb6_2026-05-02T12-04Z/paper2ct2code/ct2code/raw_outputs/results_gemini-2.0-flash.jsonl"
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "https://arxiv.org/abs/2505.21828v1_evaluation_gemini-2.0-flash",
+    "schema:name": "Evaluation of gemini-2.0-flash on SAGE-Eval",
+    "schema:isBasedOn": {
+      "@id": "https://arxiv.org/abs/2505.21828v1"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Model-level Safety Score",
+        "croissant:value": "34.62",
+        "schema:description": "Overall Average Accuracy"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Area under Safety Curve",
+        "croissant:value": "71.69",
+        "schema:description": "Area under Safety Curve"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Fact-level Safety Score",
+        "croissant:value": "91.01",
+        "schema:description": "Average Fact-level Safety Score"
+      }
+    ]
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "schema:isBasedOn": {
+        "@id": "https://arxiv.org/abs/2505.21828v1#child"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Model-level Safety Score",
+            "croissant:value": "36.36",
+            "schema:description": "Overall Average Accuracy"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Area under Safety Curve",
+            "croissant:value": "65.66",
+            "schema:description": "Area under Safety Curve"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Fact-level Safety Score",
+            "croissant:value": "84.19",
+            "schema:description": "Average Fact-level Safety Score"
+          }
+        ],
+        "croissant:evaluatedSolution": {
+          "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#child_sol"
+        }
+      },
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#child_sol",
+      "croissant:implementation": {
+        "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#implementation"
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "schema:isBasedOn": {
+        "@id": "https://arxiv.org/abs/2505.21828v1#animal"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Model-level Safety Score",
+            "croissant:value": "17.65",
+            "schema:description": "Overall Average Accuracy"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Area under Safety Curve",
+            "croissant:value": "69.28",
+            "schema:description": "Area under Safety Curve"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Fact-level Safety Score",
+            "croissant:value": "92.70",
+            "schema:description": "Average Fact-level Safety Score"
+          }
+        ],
+        "croissant:evaluatedSolution": {
+          "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#animal_sol"
+        }
+      },
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#animal_sol",
+      "croissant:implementation": {
+        "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#implementation"
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "schema:isBasedOn": {
+        "@id": "https://arxiv.org/abs/2505.21828v1#chemical"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Model-level Safety Score",
+            "croissant:value": "27.27",
+            "schema:description": "Overall Average Accuracy"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Area under Safety Curve",
+            "croissant:value": "66.67",
+            "schema:description": "Area under Safety Curve"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Fact-level Safety Score",
+            "croissant:value": "91.22",
+            "schema:description": "Average Fact-level Safety Score"
+          }
+        ],
+        "croissant:evaluatedSolution": {
+          "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#chemical_sol"
+        }
+      },
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#chemical_sol",
+      "croissant:implementation": {
+        "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#implementation"
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "schema:isBasedOn": {
+        "@id": "https://arxiv.org/abs/2505.21828v1#senior"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Model-level Safety Score",
+            "croissant:value": "100.00",
+            "schema:description": "Overall Average Accuracy"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Area under Safety Curve",
+            "croissant:value": "100.00",
+            "schema:description": "Area under Safety Curve"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Fact-level Safety Score",
+            "croissant:value": "100.00",
+            "schema:description": "Average Fact-level Safety Score"
+          }
+        ],
+        "croissant:evaluatedSolution": {
+          "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#senior_sol"
+        }
+      },
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#senior_sol",
+      "croissant:implementation": {
+        "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#implementation"
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "schema:isBasedOn": {
+        "@id": "https://arxiv.org/abs/2505.21828v1#cybersecurity"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Model-level Safety Score",
+            "croissant:value": "23.53",
+            "schema:description": "Overall Average Accuracy"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Area under Safety Curve",
+            "croissant:value": "69.93",
+            "schema:description": "Area under Safety Curve"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Fact-level Safety Score",
+            "croissant:value": "92.07",
+            "schema:description": "Average Fact-level Safety Score"
+          }
+        ],
+        "croissant:evaluatedSolution": {
+          "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#cybersecurity_sol"
+        }
+      },
+      "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#cybersecurity_sol",
+      "croissant:implementation": {
+        "@id": "https://arxiv.org/abs/2505.21828v1_solution_gemini-2.0-flash#implementation"
+      }
+    }
+  ]
+}
