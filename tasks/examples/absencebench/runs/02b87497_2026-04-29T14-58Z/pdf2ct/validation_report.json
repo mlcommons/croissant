@@ -78,11 +78,11 @@
   "overall_passed": true,
   "iterations": 1,
   "output_files": [
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_problem.jsonld",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/summary.md",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/validation_report.json"
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_problem.jsonld",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/summary.md",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/validation_report.json"
   ],
   "upstream_issues": [
     {

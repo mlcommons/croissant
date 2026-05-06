@@ -64,8 +64,8 @@ export ANTHROPIC_API_KEY=...
 
 # Snapshot a new run dir based on this one's structure:
 NEW_RUN="$(git rev-parse --short HEAD)_$(date -u +%Y-%m-%dT%H-%MZ)"
-NEW_DIR="tasks/benchmark_examples/absencebench/runs/$NEW_RUN"
-cp -r tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z "$NEW_DIR"
+NEW_DIR="tasks/examples/absencebench/runs/$NEW_RUN"
+cp -r tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z "$NEW_DIR"
 rm -rf "$NEW_DIR/ct2code/raw_outputs/claude-4-sonnet" "$NEW_DIR/ct2code/prompts"
 sed -i 's/PENDING/PENDING/g' "$NEW_DIR/ct2code/absencebench_claude-4-sonnet_solution.jsonld"  # reset the populated solution to placeholders if desired
 
