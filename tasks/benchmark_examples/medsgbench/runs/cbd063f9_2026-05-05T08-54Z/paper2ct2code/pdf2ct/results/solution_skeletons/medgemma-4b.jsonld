@@ -1,0 +1,429 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/medsg-bench_solution_medgemma-4b",
+  "schema:name": "MedSG-Bench Solution - MedGemma",
+  "schema:description": "Zero-shot evaluation of MedGemma (medical-domain MLLM, 4B) on the MedSG-Bench benchmark, as reported in Table 3 of the MedSG-Bench paper.",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/medsg-bench"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation",
+    "schema:name": "MedGemma",
+    "schema:applicationCategory": "Multimodal Large Language Model",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "Google (medical)"
+    }
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "evaluation_setting",
+        "schema:value": "zero-shot"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "model_size",
+        "schema:value": "4B"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "image_resolution",
+        "schema:value": "336x336"
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:medsg-bench-medgemma-4b-output",
+    "schema:name": "MedGemma bbox predictions on MedSG-Bench (overall)"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#rdg_sol",
+      "schema:name": "MedSG-Bench Registered Difference Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-rdg-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#rdg",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#rdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 0.45,
+            "schema:description": "Average IoU on Registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.0,
+            "schema:description": "Acc@0.5 on Registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#nrdg_sol",
+      "schema:name": "MedSG-Bench Non-registered Difference Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-nrdg-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Non-registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#nrdg",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Non-registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#nrdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 0.84,
+            "schema:description": "Average IoU on Non-registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.0,
+            "schema:description": "Acc@0.5 on Non-registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#mv_sol",
+      "schema:name": "MedSG-Bench Multi-View Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#multi_view_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-mv-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Multi-View Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#mv",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Multi-View Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#multi_view_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#mv_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 7.8,
+            "schema:description": "Average IoU on Multi-View Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 4.53,
+            "schema:description": "Acc@0.5 on Multi-View Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#ot_sol",
+      "schema:name": "MedSG-Bench Object Tracking - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#object_tracking"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-ot-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Object Tracking"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#ot",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Object Tracking",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#object_tracking"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#ot_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 26.36,
+            "schema:description": "Average IoU on Object Tracking (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 22.4,
+            "schema:description": "Acc@0.5 on Object Tracking (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#vcg_sol",
+      "schema:name": "MedSG-Bench Visual Concept Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-vcg-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Visual Concept Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#vcg",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Visual Concept Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#vcg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 11.31,
+            "schema:description": "Average IoU on Visual Concept Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.9,
+            "schema:description": "Acc@0.5 on Visual Concept Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#vpg_sol",
+      "schema:name": "MedSG-Bench Visual Patch Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-vpg-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Visual Patch Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#vpg",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Visual Patch Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#vpg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 26.59,
+            "schema:description": "Average IoU on Visual Patch Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 15.4,
+            "schema:description": "Acc@0.5 on Visual Patch Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#cmg_sol",
+      "schema:name": "MedSG-Bench Cross-modal Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-cmg-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Cross-modal Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#cmg",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Cross-modal Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#cmg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 5.92,
+            "schema:description": "Average IoU on Cross-modal Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.5,
+            "schema:description": "Acc@0.5 on Cross-modal Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b#rg_sol",
+      "schema:name": "MedSG-Bench Referring Grounding - MedGemma",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#referring_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_medgemma-4b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-medgemma-4b-rg-output",
+        "schema:name": "MedGemma bbox predictions on MedSG-Bench Referring Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b#rg",
+        "schema:name": "Evaluation of MedGemma on MedSG-Bench Referring Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#referring_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_medgemma-4b#rg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 10.01,
+            "schema:description": "Average IoU on Referring Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 1.01,
+            "schema:description": "Acc@0.5 on Referring Grounding (percentage)"
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/medsg-bench_evaluation_medgemma-4b",
+    "schema:name": "Overall evaluation of MedGemma on MedSG-Bench",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/medsg-bench"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/medsg-bench_solution_medgemma-4b"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "IoU",
+        "croissant:value": 10.55,
+        "schema:description": "Overall average IoU across all 8 subtasks (percentage)"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Acc@0.5",
+        "croissant:value": 4.82,
+        "schema:description": "Overall average Acc@0.5 across all 8 subtasks (percentage)"
+      }
+    ]
+  }
+}

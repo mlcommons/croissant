@@ -1,0 +1,219 @@
+{
+  "version": "1.0.0",
+  "run_date": "2026-05-03T22:15:00Z",
+  "parameters": {
+    "pdf_location": "/2290_MedSG_Bench_A_Benchmark_f.pdf",
+    "paper_url": "",
+    "dataset_url": "https://github.com/Yuejingkun/MedSG-Bench"
+  },
+  "stages": [
+    {
+      "name": "setup",
+      "passed": true,
+      "message": "Local PR#1017 shapes + ontology copied; pyshacl/rdflib already installed in .venv"
+    },
+    {
+      "name": "paper_analysis",
+      "passed": true,
+      "message": "Paper read (10 pages); 8 subtasks and 22 baselines extracted"
+    },
+    {
+      "name": "problem_generated",
+      "passed": true,
+      "message": "problem.jsonld written (TaskProblem with 8 sub-TaskProblems)"
+    },
+    {
+      "name": "solutions_generated",
+      "passed": true,
+      "message": "22 TaskSolution files written, one per Table 3 row"
+    },
+    {
+      "name": "json_validity",
+      "passed": true,
+      "message": "All 23 .jsonld files parse as JSON"
+    },
+    {
+      "name": "shacl_conformance",
+      "passed": true,
+      "message": "All 23 files conform to Croissant Tasks SHACL shapes"
+    },
+    {
+      "name": "report_generation",
+      "passed": true,
+      "message": "summary.md + validation_report.json written"
+    }
+  ],
+  "per_file": [
+    {
+      "file": "problem.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/gpt-4o.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/claude-sonnet-4.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/gemini-2_5-pro.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/qwen2_5-vl-3b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/qwen2_5-vl-7b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/qwen2_5-vl-32b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/qwen2_5-vl-72b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/minicpm-v-2_6-8b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/minicpm-o-2_6-8b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/mplug-owl3-7b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/mantis-idefics2-8b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/llava-onevision-7b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/llava-onevision-72b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/internvl3-8b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/internvl3-14b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/internvl3-38b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/internvl3-78b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/migician-7b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/medgemma-4b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/huatuogpt-vision-7b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/huatuogpt-vision-34b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    },
+    {
+      "file": "solutions/medseq-grounder-7b.jsonld",
+      "json_valid": true,
+      "shacl_conforms": true,
+      "iterations": 1
+    }
+  ],
+  "results": {
+    "pass": 23,
+    "fail": 0
+  },
+  "overall_passed": true,
+  "iterations": 1,
+  "output_files": [
+    "/problem.jsonld",
+    "/solutions/gpt-4o.jsonld",
+    "/solutions/claude-sonnet-4.jsonld",
+    "/solutions/gemini-2_5-pro.jsonld",
+    "/solutions/qwen2_5-vl-3b.jsonld",
+    "/solutions/qwen2_5-vl-7b.jsonld",
+    "/solutions/qwen2_5-vl-32b.jsonld",
+    "/solutions/qwen2_5-vl-72b.jsonld",
+    "/solutions/minicpm-v-2_6-8b.jsonld",
+    "/solutions/minicpm-o-2_6-8b.jsonld",
+    "/solutions/mplug-owl3-7b.jsonld",
+    "/solutions/mantis-idefics2-8b.jsonld",
+    "/solutions/llava-onevision-7b.jsonld",
+    "/solutions/llava-onevision-72b.jsonld",
+    "/solutions/internvl3-8b.jsonld",
+    "/solutions/internvl3-14b.jsonld",
+    "/solutions/internvl3-38b.jsonld",
+    "/solutions/internvl3-78b.jsonld",
+    "/solutions/migician-7b.jsonld",
+    "/solutions/medgemma-4b.jsonld",
+    "/solutions/huatuogpt-vision-7b.jsonld",
+    "/solutions/huatuogpt-vision-34b.jsonld",
+    "/solutions/medseq-grounder-7b.jsonld",
+    "/summary.md",
+    "/validation_report.json"
+  ]
+}
