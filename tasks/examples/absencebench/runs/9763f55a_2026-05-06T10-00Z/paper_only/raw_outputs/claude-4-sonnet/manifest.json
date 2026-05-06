@@ -1,0 +1,142 @@
+{
+  "version": "1.0.0",
+  "skill": "ct2code",
+  "run_id": "9763f55a_2026-05-06T10-00Z",
+  "condition": "paper_only",
+  "run_kind": "ablation_subset",
+  "run_kind_note": "Ablation condition paper_only; first 20 instances per subtask in validation split; responses collected via Cursor subagents.",
+  "created_utc": "2026-05-06T10:07:05Z",
+  "model": "claude-4-sonnet",
+  "runner_type": "cursor-subagent",
+  "hyperparameters": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "instances_per_subset": 20
+  },
+  "dataset": {
+    "huggingface_id": "harveyfin/AbsenceBench",
+    "split": "validation",
+    "configs": [
+      "poetry",
+      "numerical",
+      "github_prs"
+    ],
+    "instances_used": {
+      "poetry": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "numerical": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "github_prs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    }
+  },
+  "paths_relative_to_condition_dir": {
+    "solution": "absencebench_claude-4-sonnet_solution.jsonld",
+    "raw_outputs_dir": "raw_outputs/claude-4-sonnet",
+    "bootstrap_metrics": "raw_outputs/claude-4-sonnet/bootstrap_metrics.json"
+  },
+  "metrics_summary": {
+    "poetry": {
+      "f1": 98.17,
+      "precision": 100.0,
+      "recall": 96.4,
+      "exact_match_rate": 40.0,
+      "n": 20
+    },
+    "numerical": {
+      "f1": 96.45,
+      "precision": 99.27,
+      "recall": 93.79,
+      "exact_match_rate": 70.0,
+      "n": 20
+    },
+    "github_prs": {
+      "f1": 9.52,
+      "precision": 9.62,
+      "recall": 9.43,
+      "exact_match_rate": 0.0,
+      "n": 20
+    },
+    "overall": {
+      "f1": 94.59,
+      "precision": 96.42,
+      "recall": 92.82,
+      "exact_match_rate": 36.67,
+      "n": 60
+    }
+  },
+  "bootstrap": {
+    "iters": 1000,
+    "seed": 42,
+    "overall_f1_mean_pct": 94.44,
+    "overall_f1_ci95_pct": [
+      91.33,
+      96.64
+    ],
+    "overall_em_mean_pct": 36.7,
+    "overall_em_ci95_pct": [
+      25.0,
+      48.33
+    ]
+  }
+}

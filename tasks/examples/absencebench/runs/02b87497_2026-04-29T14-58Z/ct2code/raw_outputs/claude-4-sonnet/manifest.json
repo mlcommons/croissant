@@ -3,7 +3,7 @@
   "skill": "ct2code",
   "run_id": "02b87497_2026-04-29T14-58Z",
   "run_id_breakdown": {
-    "parent_commit": "02b87497 (Leo: 'add - ct2code skill + updated pdf2ct skill')",
+    "parent_commit": "02b87497 (ct2code skill + updated pdf2ct skill)",
     "started_utc": "2026-04-29T14:58Z"
   },
   "run_kind": "dryrun",
@@ -60,7 +60,7 @@
   },
   "command_line": "cursor: 15 Task() invocations of subagent_type=generalPurpose with model=claude-4-sonnet (see runner_note). Equivalent direct-API command for a fresh run on a different machine: `python absencebench_implementation.py --dry-run --model claude-sonnet-4-5` (requires ANTHROPIC_API_KEY).",
   "agent_transcript": {
-    "path": "/home/luis/.cursor/projects/<session-uuid>/agent-transcripts/<conversation-uuid>.jsonl",
+    "path": "<redacted-local-transcript-path>",
     "committed": false,
     "note": "Lives on the contributor's machine; session-scoped Cursor metadata; not portable. Referenced for audit but not part of this commit. The implementation script + this manifest + the per-instance outputs_*.jsonl + committed prompts/ dir are sufficient for full reproducibility."
   },

@@ -1,0 +1,18 @@
+{
+  "prepared_utc": "2026-05-06T10:04:12Z",
+  "condition": "paper_only",
+  "prompt_source": "paper_appendix_a",
+  "dataset": {
+    "id": "harveyfin/AbsenceBench",
+    "split": "validation",
+    "max_per_subset": 20
+  },
+  "domain_counts": {
+    "poetry": 20,
+    "numerical": 20,
+    "github_prs": 20
+  },
+  "paths": {
+    "prompts_dir": "paper_only/prompts"
+  }
+}

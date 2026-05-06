@@ -4,7 +4,7 @@ Self-contained snapshot of one end-to-end `pdf2ct → ct2code` execution against
 
 ## TL;DR
 
-- **Parent commit**: `02b87497` (Leo: "add - ct2code skill + updated pdf2ct skill").
+- **Parent commit**: `02b87497` (ct2code skill + updated pdf2ct skill).
 - **Started**: 2026-04-29 14:58 UTC.
 - **Run kind**: dry-run, first 5 instances of the validation split per subtask = 15 LLM calls total. This is a pipeline sanity check, not a benchmark result.
 - **Baseline**: `claude-4-sonnet` invoked via 15 Cursor subagents (one per instance), `temperature=0`, `max_tokens=4096`, paper Appendix A default prompt templates.
@@ -64,8 +64,8 @@ export ANTHROPIC_API_KEY=...
 
 # Snapshot a new run dir based on this one's structure:
 NEW_RUN="$(git rev-parse --short HEAD)_$(date -u +%Y-%m-%dT%H-%MZ)"
-NEW_DIR="tasks/benchmark_examples/absencebench/runs/$NEW_RUN"
-cp -r tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z "$NEW_DIR"
+NEW_DIR="tasks/examples/absencebench/runs/$NEW_RUN"
+cp -r tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z "$NEW_DIR"
 rm -rf "$NEW_DIR/ct2code/raw_outputs/claude-4-sonnet" "$NEW_DIR/ct2code/prompts"
 sed -i 's/PENDING/PENDING/g' "$NEW_DIR/ct2code/absencebench_claude-4-sonnet_solution.jsonld"  # reset the populated solution to placeholders if desired
 
@@ -105,7 +105,7 @@ SHACL validation against the current upstream (`02b87497`) is blocked on the pat
 
 | Bug | Where | pyshacl error | Affects | Matches RISEBench analysis |
 |---|---|---|---|---|
-| **A** | `TaskProblemShape` "must have at least one Spec" — outer `sh:property` whose body is `sh:or` of alternatives has no outer `sh:path` | `'exists but is not a well-formed SHACL PropertyShape'` | All TaskProblems, including our `pdf2ct/absencebench_problem.jsonld` and Leo's own `tasks/testdata/valid_problem.jsonld` | "Change 2: Fix TaskProblemShape spec constraint" |
+| **A** | `TaskProblemShape` "must have at least one Spec" — outer `sh:property` whose body is `sh:or` of alternatives has no outer `sh:path` | `'exists but is not a well-formed SHACL PropertyShape'` | All TaskProblems, including our `pdf2ct/absencebench_problem.jsonld` and upstream `tasks/testdata/valid_problem.jsonld` | "Change 2: Fix TaskProblemShape spec constraint" |
 | **B** | `EvaluationTaskShape` `croissant:evaluatedSolution` — `sh:qualifiedMinCount 1` without corresponding `sh:qualifiedValueShape` | `'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'` | All TaskSolutions in this run (each carries `EvaluationTask` children) | "Change 4: Fix evaluatedSolution cardinality" |
 
 Suggested fixes (also recorded in `pdf2ct/validation_report.json` `upstream_issues`):
@@ -113,7 +113,7 @@ Suggested fixes (also recorded in `pdf2ct/validation_report.json` `upstream_issu
 - **Bug A**: lift the `sh:or` out of the inner `sh:property` to NodeShape level, with each alternative being a full `sh:property` carrying its own `sh:path`, `sh:class`, and `sh:minCount 1`.
 - **Bug B**: replace `sh:qualifiedMinCount 1` with `sh:minCount 1` + `sh:maxCount 1` (the cardinality the constraint actually wants is "exactly 1", not a qualified-shape count).
 
-Validator state on simpler inputs is healthier than yesterday: `tasks/testdata/valid_solution.jsonld` and `tasks/testdata/direct_task.jsonld` now PASS. So Leo's recent shape updates did land — just not on the two shapes our files exercise.
+Validator state on simpler inputs is healthier than yesterday: `tasks/testdata/valid_solution.jsonld` and `tasks/testdata/direct_task.jsonld` now PASS. So recent upstream shape updates did land — just not on the two shapes our files exercise.
 
 **This run deliberately does NOT modify the spec files** (`tasks/croissant-tasks.ttl` or `tasks/croissant-tasks-shapes.ttl`), per the team guidance in the 2026-04-29 Slack thread. Workaround: `infra/_structural_check.py` (rdflib-only) verifies each JSON-LD parses, has the expected types, includes required references, and that no Specs leak into Solutions. All four JSON-LD files pass it.
 

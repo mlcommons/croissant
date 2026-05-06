@@ -1,0 +1,79 @@
+{
+  "condition": "paper_only",
+  "iters": 1000,
+  "seed": 42,
+  "per_domain": {
+    "poetry": {
+      "iters": 1000,
+      "seed": 42,
+      "mean": {
+        "f1": 0.3108753006507973,
+        "exact_match_rate": 0.0
+      },
+      "ci95": {
+        "f1": [
+          0.3028200255462683,
+          0.3194892852602214
+        ],
+        "exact_match_rate": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "numerical": {
+      "iters": 1000,
+      "seed": 42,
+      "mean": {
+        "f1": 1.0,
+        "exact_match_rate": 1.0
+      },
+      "ci95": {
+        "f1": [
+          1.0,
+          1.0
+        ],
+        "exact_match_rate": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "github_prs": {
+      "iters": 1000,
+      "seed": 42,
+      "mean": {
+        "f1": 0.0,
+        "exact_match_rate": 0.0
+      },
+      "ci95": {
+        "f1": [
+          0.0,
+          0.0
+        ],
+        "exact_match_rate": [
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "overall": {
+    "iters": 1000,
+    "seed": 42,
+    "mean": {
+      "f1": 0.7124075866662702,
+      "exact_match_rate": 0.3658050640634533
+    },
+    "ci95": {
+      "f1": [
+        0.6963706996485508,
+        0.7278018095199332
+      ],
+      "exact_match_rate": [
+        0.34837553386211106,
+        0.38194020744356316
+      ]
+    }
+  }
+}

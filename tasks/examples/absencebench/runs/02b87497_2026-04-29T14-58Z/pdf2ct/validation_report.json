@@ -37,7 +37,7 @@
       "name": "shacl_conformance",
       "passed": false,
       "skipped": true,
-      "message": "SHACL validation could not be performed against any of our four JSON-LD files. Two distinct shape bugs in tasks/croissant-tasks-shapes.ttl block our paths. Bug A (TaskProblemShape spec constraint): outer sh:property whose body is sh:or of alternatives has no sh:path; pyshacl rejects with 'exists but is not a well-formed SHACL PropertyShape'. Hits absencebench_problem.jsonld and Leo's own tasks/testdata/valid_problem.jsonld. Bug B (EvaluationTaskShape evaluatedSolution cardinality): croissant:evaluatedSolution uses sh:qualifiedMinCount 1 with no corresponding sh:qualifiedValueShape; pyshacl rejects with 'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'. Hits all three of our TaskSolution files (which carry EvaluationTask blocks). Both bugs match items on the team's known-issue list as identified during the RISEBench experiment (Slack, 2026-04-29): Change 2 ('Fix TaskProblemShape spec constraint') and Change 4 ('Fix evaluatedSolution cardinality'). Per team guidance from that thread we deliberately did NOT modify the spec files (.ttl); we use _structural_check.py (rdflib-only) as a substitute - see per_file rows for status. Validator state on simpler inputs is healthier than yesterday: tasks/testdata/valid_solution.jsonld and tasks/testdata/direct_task.jsonld now PASS, so Leo's recent shape fixes did help, just not on the two shapes our files exercise."
+      "message": "SHACL validation could not be performed against any of our four JSON-LD files. Two distinct shape bugs in tasks/croissant-tasks-shapes.ttl block our paths. Bug A (TaskProblemShape spec constraint): outer sh:property whose body is sh:or of alternatives has no sh:path; pyshacl rejects with 'exists but is not a well-formed SHACL PropertyShape'. Hits absencebench_problem.jsonld and upstream tasks/testdata/valid_problem.jsonld. Bug B (EvaluationTaskShape evaluatedSolution cardinality): croissant:evaluatedSolution uses sh:qualifiedMinCount 1 with no corresponding sh:qualifiedValueShape; pyshacl rejects with 'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'. Hits all three of our TaskSolution files (which carry EvaluationTask blocks). Both bugs match items on the team's known-issue list as identified during the RISEBench experiment (Slack, 2026-04-29): Change 2 ('Fix TaskProblemShape spec constraint') and Change 4 ('Fix evaluatedSolution cardinality'). Per team guidance from that thread we deliberately did NOT modify the spec files (.ttl); we use _structural_check.py (rdflib-only) as a substitute - see per_file rows for status. Validator state on simpler inputs is healthier than yesterday: tasks/testdata/valid_solution.jsonld and tasks/testdata/direct_task.jsonld now PASS, so recent upstream shape fixes did help, just not on the two shapes our files exercise."
     },
     {
       "name": "report_generation",
@@ -78,18 +78,18 @@
   "overall_passed": true,
   "iterations": 1,
   "output_files": [
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_problem.jsonld",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/summary.md",
-    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/validation_report.json"
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_problem.jsonld",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/summary.md",
+    "tasks/examples/absencebench/runs/02b87497_2026-04-29T14-58Z/pdf2ct/validation_report.json"
   ],
   "upstream_issues": [
     {
       "id": "shacl-bug-A-taskproblemshape-malformed-property",
       "where": "tasks/croissant-tasks-shapes.ttl :: TaskProblemShape (the 'must have at least one Spec' constraint)",
       "summary": "Outer sh:property whose body is sh:or of alternative {sh:path + sh:class} pairs has no sh:path on the outer property shape; pyshacl 0.22-0.31 rejects with 'exists but is not a well-formed SHACL PropertyShape'.",
-      "matches_known_issue": "RISEBench agent analysis Change 2 ('Fix TaskProblemShape spec constraint') from Slack thread on 2026-04-29.",
+      "matches_known_issue": "RISEBench agent analysis Change 2 ('Fix TaskProblemShape spec constraint') from internal discussion on 2026-04-29.",
       "suggested_fix": "Lift sh:or out of the inner sh:property to NodeShape level, with each alternative being a full sh:property (own sh:path, own sh:class, own sh:minCount 1).",
       "affects_files_in_this_run": ["pdf2ct/absencebench_problem.jsonld"],
       "workaround": "_structural_check.py at runs/<run_id>/infra/ - rdflib-only checks of expected types, refs, and spec-leak rules. Drop when shapes file is fixed."
@@ -108,5 +108,5 @@
       "workaround": "Same as above (_structural_check.py)."
     }
   ],
-  "spec_modifications_made_in_this_run": "NONE. Per team guidance in the 2026-04-29 Slack thread (Omar: 'we should not allow them to do that'; Leo: 'ignore the croissant-tasks-shapes.ttl. The shapes are only important for the validator.'), this run deliberately does NOT modify tasks/croissant-tasks.ttl or tasks/croissant-tasks-shapes.ttl. The two SHACL bugs above are documented and worked around, not patched."
+  "spec_modifications_made_in_this_run": "NONE. Per internal team guidance documented on 2026-04-29 (internal guidance: avoid patching croissant-tasks schema files in this run.), this run deliberately does NOT modify tasks/croissant-tasks.ttl or tasks/croissant-tasks-shapes.ttl. The two SHACL bugs above are documented and worked around, not patched."
 }

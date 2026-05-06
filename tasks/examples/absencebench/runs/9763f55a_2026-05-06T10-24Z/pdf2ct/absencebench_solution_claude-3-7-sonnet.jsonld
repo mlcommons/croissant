@@ -1,0 +1,143 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet",
+  "schema:name": "AbsenceBench Solution - Claude 3.7 Sonnet (no thinking, paper-reported)",
+  "schema:description": "TaskSolution documenting the values reported by Fu et al. 2025 in Table 3 (claude-3-7-sonnet baseline, no inference-time compute). Generated via pdf2ct - numbers come from the paper, not from a re-run.",
+  "schema:isBasedOn": { "@id": "http://example.org/absencebench_problem" },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:absencebench-claude-3-7-sonnet-paper-output",
+    "schema:name": "Reported outputs of claude-3-7-sonnet on AbsenceBench (paper Table 3)"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "model",
+        "schema:value": "claude-3-7-sonnet-latest"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "context_length",
+        "schema:value": "200K"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "api_provider",
+        "schema:value": "Anthropic"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "thinking_mode",
+        "schema:value": false
+      }
+    ]
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#implementation",
+    "schema:name": "Anthropic Messages API - claude-3-7-sonnet-latest"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#poetry_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/absencebench#poetry" },
+      "croissant:execution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#execution" },
+      "croissant:implementation": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-3-7-sonnet-paper-poetry-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet#poetry",
+        "schema:name": "Evaluation on AbsenceBench - Poetry (paper-reported)",
+        "schema:isBasedOn": { "@id": "http://example.org/absencebench#poetry" },
+        "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#poetry_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "73.5",
+            "schema:description": "Micro F1-score on the poetry domain, as reported in Fu et al. 2025 Table 3."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#numerical_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/absencebench#numerical" },
+      "croissant:execution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#execution" },
+      "croissant:implementation": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-3-7-sonnet-paper-numerical-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet#numerical",
+        "schema:name": "Evaluation on AbsenceBench - Numerical Sequences (paper-reported)",
+        "schema:isBasedOn": { "@id": "http://example.org/absencebench#numerical" },
+        "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#numerical_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "91.4",
+            "schema:description": "Micro F1-score on the numerical sequences domain, as reported in Fu et al. 2025 Table 3."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#github_prs_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/absencebench#github_prs" },
+      "croissant:execution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#execution" },
+      "croissant:implementation": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-3-7-sonnet-paper-github-prs-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet#github_prs",
+        "schema:name": "Evaluation on AbsenceBench - GitHub PRs (paper-reported)",
+        "schema:isBasedOn": { "@id": "http://example.org/absencebench#github_prs" },
+        "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet#github_prs_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "35.7",
+            "schema:description": "Micro F1-score on the github_prs domain, as reported in Fu et al. 2025 Table 3."
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet",
+    "schema:name": "AbsenceBench Evaluation - Claude 3.7 Sonnet, no thinking (paper-reported)",
+    "schema:isBasedOn": { "@id": "http://example.org/absencebench_problem" },
+    "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet" },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "F1-Score",
+        "croissant:value": "66.9",
+        "schema:description": "Average Micro F1-score across the three domains, as reported in Fu et al. 2025 Table 3."
+      }
+    ]
+  }
+}
