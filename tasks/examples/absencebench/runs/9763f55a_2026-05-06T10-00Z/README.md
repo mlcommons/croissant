@@ -80,8 +80,8 @@ depress overall F1 as much as a macro average would.
 
 ```bash
 # 1) Build prompts for each condition (already committed here):
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py prepare --condition ct_only --max-per-subset 20
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py prepare --condition paper_only --max-per-subset 20
+python infra/ablation_pipeline.py prepare --condition ct_only --max-per-subset 20
+python infra/ablation_pipeline.py prepare --condition paper_only --max-per-subset 20
 
 # 2) Generate responses into:
 #    ct_only/responses/responses_<domain>.jsonl
@@ -89,8 +89,8 @@ depress overall F1 as much as a macro average would.
 #    (done in this run via Cursor subagents)
 
 # 3) Finalize metrics + solution files + bootstrap:
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py finalize --condition ct_only --max-per-subset 20 --model claude-4-sonnet --bootstrap-iters 1000
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py finalize --condition paper_only --max-per-subset 20 --model claude-4-sonnet --bootstrap-iters 1000
+python infra/ablation_pipeline.py finalize --condition ct_only --max-per-subset 20 --model claude-4-sonnet --bootstrap-iters 1000
+python infra/ablation_pipeline.py finalize --condition paper_only --max-per-subset 20 --model claude-4-sonnet --bootstrap-iters 1000
 ```
 
 ## Validation status

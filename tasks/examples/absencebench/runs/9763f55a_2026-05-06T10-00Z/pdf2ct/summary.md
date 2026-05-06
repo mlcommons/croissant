@@ -67,12 +67,12 @@ See `validation_report.json` for the structured form. Summary:
 
 SHACL validation against `tasks/croissant-tasks-shapes.ttl` is blocked by two distinct shape bugs that affect our four files:
 
-- **Bug A**: `TaskProblemShape`'s "must have at least one Spec" constraint uses `sh:property` with `sh:or` of alternative `sh:path`s but no outer `sh:path`. Pyshacl 0.22-0.31 rejects with `'exists but is not a well-formed SHACL PropertyShape'`. Hits our `absencebench_problem.jsonld` (and Leo's own `tasks/testdata/valid_problem.jsonld`).
+- **Bug A**: `TaskProblemShape`'s "must have at least one Spec" constraint uses `sh:property` with `sh:or` of alternative `sh:path`s but no outer `sh:path`. Pyshacl 0.22-0.31 rejects with `'exists but is not a well-formed SHACL PropertyShape'`. Hits our `absencebench_problem.jsonld` (and upstream `tasks/testdata/valid_problem.jsonld`).
 - **Bug B**: `EvaluationTaskShape`'s `croissant:evaluatedSolution` uses `sh:qualifiedMinCount 1` without a corresponding `sh:qualifiedValueShape`. Pyshacl rejects with `'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'`. Hits all three of our TaskSolution files (which carry `EvaluationTask` blocks).
 
-Both bugs match items on the team's known-issue list as identified by the agent in the RISEBench experiment (Slack thread on 2026-04-29): Bug A = "Change 2: Fix TaskProblemShape spec constraint", Bug B = "Change 4: Fix evaluatedSolution cardinality". Validator state on simpler inputs is now healthy — `tasks/testdata/valid_solution.jsonld` and `tasks/testdata/direct_task.jsonld` PASS — so Leo's recent shape fixes did land, just not on the two shapes our files exercise.
+Both bugs match items on the team's known-issue list as identified by the agent in the RISEBench experiment (internal discussion on 2026-04-29): Bug A = "Change 2: Fix TaskProblemShape spec constraint", Bug B = "Change 4: Fix evaluatedSolution cardinality". Validator state on simpler inputs is now healthy — `tasks/testdata/valid_solution.jsonld` and `tasks/testdata/direct_task.jsonld` PASS — so recent upstream shape fixes did land, just not on the two shapes our files exercise.
 
-Per the team guidance in that same Slack thread (Omar: *"we should not allow them to do that"*; Leo: *"ignore the croissant-tasks-shapes.ttl. The shapes are only important for the validator."*), **this run deliberately does NOT modify `tasks/croissant-tasks.ttl` or `tasks/croissant-tasks-shapes.ttl`.** The two bugs above are documented and worked around (via `infra/_structural_check.py`), not patched. See `validation_report.json` for the structured form, including suggested fixes for both bugs.
+Per the same internal team guidance (internal guidance: avoid patching croissant-tasks schema files in this run.), **this run deliberately does NOT modify `tasks/croissant-tasks.ttl` or `tasks/croissant-tasks-shapes.ttl`.** The two bugs above are documented and worked around (via `infra/_structural_check.py`), not patched. See `validation_report.json` for the structured form, including suggested fixes for both bugs.
 
 ## Limitations / caveats
 

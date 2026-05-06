@@ -96,38 +96,38 @@ This run enforces no cross-condition access:
 
 ```bash
 # 1) Prepare prompts
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py prepare --condition ct_only --max-per-subset 0
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py prepare --condition paper_only --max-per-subset 0
+python infra/ablation_pipeline.py prepare --condition ct_only --max-per-subset 0
+python infra/ablation_pipeline.py prepare --condition paper_only --max-per-subset 0
 
 # 2) Split into chunks (80 rows/chunk)
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py split --condition ct_only --domain poetry --chunk-size 80
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py split --condition ct_only --domain numerical --chunk-size 80
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py split --condition ct_only --domain github_prs --chunk-size 80
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py split --condition paper_only --domain poetry --chunk-size 80
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py split --condition paper_only --domain numerical --chunk-size 80
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py split --condition paper_only --domain github_prs --chunk-size 80
+python infra/chunk_tools.py split --condition ct_only --domain poetry --chunk-size 80
+python infra/chunk_tools.py split --condition ct_only --domain numerical --chunk-size 80
+python infra/chunk_tools.py split --condition ct_only --domain github_prs --chunk-size 80
+python infra/chunk_tools.py split --condition paper_only --domain poetry --chunk-size 80
+python infra/chunk_tools.py split --condition paper_only --domain numerical --chunk-size 80
+python infra/chunk_tools.py split --condition paper_only --domain github_prs --chunk-size 80
 
 # 3) Collect chunk responses with condition-isolated workers
 #    (performed via Cursor subagents; outputs land in */chunk_responses/)
 
 # 4) Merge + validate
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py merge --condition ct_only --domain poetry
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py merge --condition ct_only --domain numerical
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py merge --condition ct_only --domain github_prs
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py merge --condition paper_only --domain poetry
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py merge --condition paper_only --domain numerical
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py merge --condition paper_only --domain github_prs
+python infra/chunk_tools.py merge --condition ct_only --domain poetry
+python infra/chunk_tools.py merge --condition ct_only --domain numerical
+python infra/chunk_tools.py merge --condition ct_only --domain github_prs
+python infra/chunk_tools.py merge --condition paper_only --domain poetry
+python infra/chunk_tools.py merge --condition paper_only --domain numerical
+python infra/chunk_tools.py merge --condition paper_only --domain github_prs
 
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py validate --condition ct_only --domain poetry --strict-text-checks
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py validate --condition ct_only --domain numerical --strict-text-checks
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py validate --condition ct_only --domain github_prs --strict-text-checks
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py validate --condition paper_only --domain poetry --strict-text-checks
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py validate --condition paper_only --domain numerical --strict-text-checks
-/home/luis/repos/croissant/venv/bin/python infra/chunk_tools.py validate --condition paper_only --domain github_prs --strict-text-checks
+python infra/chunk_tools.py validate --condition ct_only --domain poetry --strict-text-checks
+python infra/chunk_tools.py validate --condition ct_only --domain numerical --strict-text-checks
+python infra/chunk_tools.py validate --condition ct_only --domain github_prs --strict-text-checks
+python infra/chunk_tools.py validate --condition paper_only --domain poetry --strict-text-checks
+python infra/chunk_tools.py validate --condition paper_only --domain numerical --strict-text-checks
+python infra/chunk_tools.py validate --condition paper_only --domain github_prs --strict-text-checks
 
 # 5) Finalize metrics + bootstrap
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py finalize --condition ct_only --max-per-subset 0 --model claude-4-sonnet --temperature 0.0 --max-tokens 4096 --bootstrap-iters 1000 --bootstrap-seed 42
-/home/luis/repos/croissant/venv/bin/python infra/ablation_pipeline.py finalize --condition paper_only --max-per-subset 0 --model claude-4-sonnet --temperature 0.0 --max-tokens 4096 --bootstrap-iters 1000 --bootstrap-seed 42
+python infra/ablation_pipeline.py finalize --condition ct_only --max-per-subset 0 --model claude-4-sonnet --temperature 0.0 --max-tokens 4096 --bootstrap-iters 1000 --bootstrap-seed 42
+python infra/ablation_pipeline.py finalize --condition paper_only --max-per-subset 0 --model claude-4-sonnet --temperature 0.0 --max-tokens 4096 --bootstrap-iters 1000 --bootstrap-seed 42
 ```
 
 ## Layout

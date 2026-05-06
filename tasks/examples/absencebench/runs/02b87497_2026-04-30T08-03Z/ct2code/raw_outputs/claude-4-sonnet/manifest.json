@@ -3,7 +3,7 @@
   "skill": "ct2code",
   "run_id": "02b87497_2026-04-30T08-03Z",
   "run_id_breakdown": {
-    "parent_commit": "02b87497 (Leo: 'add - ct2code skill + updated pdf2ct skill')",
+    "parent_commit": "02b87497 (ct2code skill + updated pdf2ct skill)",
     "started_utc": "2026-04-30T08:03Z"
   },
   "run_kind": "dryrun",
@@ -46,7 +46,7 @@
   "validation": {
     "shacl_validator": "RAN",
     "shacl_validator_outcome": "FAIL on all 4 of our JSON-LDs against the current upstream shapes file. Failures are due to two known shape bugs (Bug A: TaskProblemShape PropertyShape malformed; Bug B: EvaluationTaskShape qualifiedValueShape missing). See ../../../pdf2ct/shacl_run.txt for the captured pyshacl output and ../../../pdf2ct/validation_report.json for structured per-bug attribution. Both bugs match items on the team's known-issue list (RISEBench agent analysis, Slack 2026-04-29: Changes 2 and 4).",
-    "shacl_validator_testdata_state": "Leo's testdata is partially passing on 02b87497: valid_solution.jsonld + direct_task.jsonld + valid_solution_subtasks_all_concrete.jsonld PASS; valid_problem.jsonld + valid_evaluation_task.jsonld FAIL (same Bugs A and B respectively). So the bugs are general, not specific to our files.",
+    "shacl_validator_testdata_state": "upstream testdata is partially passing on 02b87497: valid_solution.jsonld + direct_task.jsonld + valid_solution_subtasks_all_concrete.jsonld PASS; valid_problem.jsonld + valid_evaluation_task.jsonld FAIL (same Bugs A and B respectively). So the bugs are general, not specific to our files.",
     "structural_check": "PASS",
     "structural_check_tool": "../../../infra/_structural_check.py"
   },
@@ -99,7 +99,7 @@
   },
   "command_line": "Cursor-subagent path: 15 Task() invocations of subagent_type=generalPurpose with model=claude-4-sonnet (see runner_note); subsequently a small inline ingest python snippet that mirrors absencebench_implementation.py:run_subset / aggregate / update_solution_file. Equivalent direct-API command for a fresh run on a different machine: `python absencebench_implementation.py --dry-run --model claude-sonnet-4-5` (requires ANTHROPIC_API_KEY).",
   "agent_transcript": {
-    "path": "/home/luis/.cursor/projects/<session-uuid>/agent-transcripts/<conversation-uuid>.jsonl",
+    "path": "<redacted-local-transcript-path>",
     "committed": false,
     "note": "Lives on the contributor's machine; session-scoped Cursor metadata; not portable. Referenced for audit but not part of this commit. The implementation script + this manifest + the per-instance outputs_*.jsonl + committed prompts/ dir are sufficient for full reproducibility (modulo Cursor-subagent run-to-run nondeterminism documented in comparison_to_previous_run.per_instance_response_identity)."
   },
