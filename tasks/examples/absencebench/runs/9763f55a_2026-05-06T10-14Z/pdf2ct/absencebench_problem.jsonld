@@ -1,0 +1,93 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "http://example.org/absencebench_problem",
+  "schema:name": "AbsenceBench",
+  "schema:description": "AbsenceBench evaluates LLMs' ability to detect intentionally omitted information across three domains (poetry, numerical sequences, GitHub PRs). Given an original document and a modified document where p=10% of the elements have been removed, a model must identify the exact set of omitted elements. Performance is measured with micro F1-score based on element-level exact match. Introduced in Fu et al. 2025 (arXiv:2506.11440).",
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://huggingface.co/datasets/harveyfin/AbsenceBench",
+    "schema:name": "AbsenceBench Dataset on Hugging Face"
+  },
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "http://example.org/absencebench#outputSpec",
+    "croissant:schema": {
+      "@type": "croissant:RecordSet",
+      "croissant:field": [
+        {
+          "@type": "croissant:Field",
+          "schema:name": "predicted_omitted_context",
+          "croissant:dataType": "xsd:string",
+          "croissant:repeated": true,
+          "schema:description": "The list of elements (poem lines / numbers / diff lines) the model predicts were omitted from the modified document. Order is not significant; evaluation is set-based."
+        }
+      ]
+    }
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationSpec",
+    "@id": "http://example.org/absencebench#evaluationSpec",
+    "croissant:expectedMetric": [
+      "F1-Score",
+      "Exact Match"
+    ]
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/absencebench#poetry",
+      "schema:name": "AbsenceBench - Poetry",
+      "schema:description": "Identify lines that have been omitted from a poem. Source poems come from the Gutenberg Poetry Corpus, truncated to between 100 and 1000 lines. Omissions are at line granularity (newline-delimited). Average document length is 4.7K tokens. Subset corresponds to the `poetry` config of the HF dataset (1191 instances in the validation split).",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/harveyfin/AbsenceBench",
+        "schema:description": "Poetry subset of harveyfin/AbsenceBench (config: poetry, split: validation)."
+      },
+      "croissant:output": {
+        "@id": "http://example.org/absencebench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/absencebench#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/absencebench#numerical",
+      "schema:name": "AbsenceBench - Numerical Sequences",
+      "schema:description": "Identify numbers that have been omitted from a synthetically generated sequence. Each sequence consists of n decimal numbers in a particular order (ascending, descending, or random) with step size in {1, 4, 7, 13}. Numbers are newline-delimited. Average document length is 1.5K tokens. Subset corresponds to the `numerical` config of the HF dataset (1200 instances in the validation split).",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/harveyfin/AbsenceBench",
+        "schema:description": "Numerical subset of harveyfin/AbsenceBench (config: numerical, split: validation)."
+      },
+      "croissant:output": {
+        "@id": "http://example.org/absencebench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/absencebench#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/absencebench#github_prs",
+      "schema:name": "AbsenceBench - GitHub PRs",
+      "schema:description": "Identify changed lines (insertions or deletions) that have been omitted from a GitHub pull request diff. PRs come from the top-20 GitHub repositories with the most PRs and contain 10-200 updated lines. Only updated lines that are unique within each PR's diff are eligible for omission. Average document length is 1.7K tokens. This is the most challenging domain. Subset corresponds to the `github_prs` config of the HF dataset (887 instances in the validation split).",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/harveyfin/AbsenceBench",
+        "schema:description": "GitHub PRs subset of harveyfin/AbsenceBench (config: github_prs, split: validation)."
+      },
+      "croissant:output": {
+        "@id": "http://example.org/absencebench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/absencebench#evaluationSpec"
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+     {
++
++    {
++    public function prependState($state)
++    {
++            'states' => $this->states->prepend(
++    }
++
++    /**
+             $this->factory->state([
+                 $relationship->getForeignKeyName() => $relationship->getParentKey(),
+-            ])->create([], $parent);
++            ])->prependState($relationship->getQuery()->pendingAttributes)->create([], $parent);
++    {
++
++        $this->assertEquals('foo bar baz', FactoryTestPost::first()->title);
++    }
++
++    public function test_factory_model_has_one_relationship_has_pending_attributes_override()
++    {
++
++        $this->assertEquals('other title', FactoryTestPost::first()->title);
++    }
++
++    {
++
++    }
++
++    {
++
++    }
++
++    public function test_factory_model_morph_many_relationship_has_pending_attributes()
++    {
++        (new FactoryTestPostFactory())->has(new FactoryTestCommentFactory(), 'commentsWithFooBarBazAsBody')->create();
++
++    }
++
++    {
++        (new FactoryTestPostFactory())->has((new FactoryTestCommentFactory())->state(['body' => 'other body']), 'commentsWithFooBarBazAsBody')->create();
++
++    }
++
++    }
++
++    {
++        return $this->hasOne(FactoryTestPost::class, 'user_id')->withAttributes(['title' => 'foo bar baz']);
++    }
++
+         return $this->belongsToMany(FactoryTestRole::class, 'role_user', 'user_id', 'role_id')->withPivot('admin');
+     }
++
++    {
++
++    }
++
+         return $this->belongsToMany(FactoryTestRole::class, 'role_user', 'user_id', 'role_id')->withPivot('admin');
+     }
++
++    {
++
++    }

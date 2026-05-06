@@ -1,0 +1,17 @@
+     }
++ 
++    {
++
++        Line::create(['order_id' => $order->id, 'product_id' => $product2->id]);
++
++        $serialized = serialize(new ModelRelationSerializationTestClass($order));
++
++    }
++
++    {
++    public $timestamps = false;
++
++    }
++
++    }
++
