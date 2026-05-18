@@ -77,57 +77,54 @@ def test_jsonld_fields():
     assert fields[0].name == "field2"
 
 
-@pytest.mark.parametrize(
-    "accessor",
-    [
-        # Access class
-        lambda cls: cls,
-        # Access instance of class
-        lambda cls: cls(),
-    ],
-)
-def test_types_of_fields(accessor):
-    @mlc_dataclasses.dataclass
-    class SubNode(Node):
-        field: int | None = mlc_dataclasses.jsonld_field(
-            default=None,
-            input_types=[SDO.Text],  # this is incompatible with `int`
-        )
+def test_types_of_fields():
+    with pytest.raises(
+        TypeError,
+        match='Field "IncompatibleIntAndTextNode.field" should have type',
+    ):
+        @mlc_dataclasses.dataclass
+        class IncompatibleIntAndTextNode(Node):
+            field: int | None = mlc_dataclasses.jsonld_field(
+                default=None,
+                input_types=[SDO.Text],  # this is incompatible with `int`
+            )
 
-    with pytest.raises(TypeError, match='Field "SubNode.field" should have type'):
-        list(mlc_dataclasses.jsonld_fields(accessor(SubNode)))
+    with pytest.raises(
+        TypeError,
+        match='Field "IncompatibleDefaultNoneNode.field" should have type',
+    ):
+        @mlc_dataclasses.dataclass
+        class IncompatibleDefaultNoneNode(Node):
+            field: int = mlc_dataclasses.jsonld_field(
+                default=None,  # this is incompatible with `int` (expect int | None)
+                input_types=[SDO.Integer],
+            )
 
-    @mlc_dataclasses.dataclass
-    class SubNode(Node):
-        field: int = mlc_dataclasses.jsonld_field(
-            default=None,  # this is incompatible with `int` (expect int | None)
-            input_types=[SDO.Integer],
-        )
-
-    with pytest.raises(TypeError, match='Field "SubNode.field" should have type'):
-        list(mlc_dataclasses.jsonld_fields(accessor(SubNode)))
-
-    @mlc_dataclasses.dataclass
-    class SubNode(Node):
-        field: str = mlc_dataclasses.jsonld_field(
-            default_factory=Node,  # this is incompatible with str
-            input_types=[Node],
-        )
-
-    with pytest.raises(TypeError, match='Field "SubNode.field" should have type'):
-        list(mlc_dataclasses.jsonld_fields(accessor(SubNode)))
+    with pytest.raises(
+        TypeError,
+        match='Field "IncompatibleDefaultFactoryNode.field" should have type',
+    ):
+        @mlc_dataclasses.dataclass
+        class IncompatibleDefaultFactoryNode(Node):
+            field: str = mlc_dataclasses.jsonld_field(
+                default_factory=Node,  # this is incompatible with str
+                input_types=[Node],
+            )
 
     def cast_fn(value: Node) -> int:  # int is incompatible with Node
         del value
         return 0
 
-    @mlc_dataclasses.dataclass
-    class SubNode(Node):
-        field: Node = mlc_dataclasses.jsonld_field(
-            cast_fn=cast_fn,
-            default_factory=Node,
-            input_types=[Node],
-        )
-
-    with pytest.raises(TypeError, match='Field "SubNode.field" .* should have type'):
-        list(mlc_dataclasses.jsonld_fields(accessor(SubNode)))
+    with pytest.raises(
+        TypeError,
+        match=(
+            'Field "IncompatibleCastFunctionReturnNode.field" .* should have type'
+        ),
+    ):
+        @mlc_dataclasses.dataclass
+        class IncompatibleCastFunctionReturnNode(Node):
+            field: Node = mlc_dataclasses.jsonld_field(
+                cast_fn=cast_fn,
+                default_factory=Node,
+                input_types=[Node],
+            )
