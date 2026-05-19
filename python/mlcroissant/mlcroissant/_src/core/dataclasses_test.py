@@ -82,6 +82,7 @@ def test_types_of_fields():
         TypeError,
         match='Field "IncompatibleIntAndTextNode.field" should have type',
     ):
+
         @mlc_dataclasses.dataclass
         class IncompatibleIntAndTextNode(Node):
             field: int | None = mlc_dataclasses.jsonld_field(
@@ -93,6 +94,7 @@ def test_types_of_fields():
         TypeError,
         match='Field "IncompatibleDefaultNoneNode.field" should have type',
     ):
+
         @mlc_dataclasses.dataclass
         class IncompatibleDefaultNoneNode(Node):
             field: int = mlc_dataclasses.jsonld_field(
@@ -104,6 +106,7 @@ def test_types_of_fields():
         TypeError,
         match='Field "IncompatibleDefaultFactoryNode.field" should have type',
     ):
+
         @mlc_dataclasses.dataclass
         class IncompatibleDefaultFactoryNode(Node):
             field: str = mlc_dataclasses.jsonld_field(
@@ -117,10 +120,9 @@ def test_types_of_fields():
 
     with pytest.raises(
         TypeError,
-        match=(
-            'Field "IncompatibleCastFunctionReturnNode.field" .* should have type'
-        ),
+        match='Field "IncompatibleCastFunctionReturnNode.field" .* should have type',
     ):
+
         @mlc_dataclasses.dataclass
         class IncompatibleCastFunctionReturnNode(Node):
             field: Node = mlc_dataclasses.jsonld_field(
