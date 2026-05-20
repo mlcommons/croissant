@@ -5,7 +5,7 @@ from __future__ import annotations
 import abc
 import dataclasses
 import types
-from typing import Any, Generic, Iterable, Sequence, TypeVar
+from typing import Any, cast, Generic, Iterable, Sequence, TypeVar
 
 import networkx as nx
 import pandas as pd
@@ -120,7 +120,7 @@ class Operation(abc.ABC, Generic[OutputT]):
         inputs = self.inputs
         output = self.call() if inputs is None else self.call(*inputs)
         if isinstance(output, types.GeneratorType) and set_output_in_memory:
-            output = pd.DataFrame(output)  # type:ignore
+            output = cast(OutputT, pd.DataFrame(output))
         self.set_output(output)
         return output
 

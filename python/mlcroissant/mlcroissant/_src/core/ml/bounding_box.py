@@ -24,15 +24,15 @@ def parse(value: Any) -> list[float]:
             " an issue on GitHub."
         )
     try:
-        value = [float(element) for element in value]
+        float_value: list[float] = [float(element) for element in value]
     except ValueError as e:
         raise ValueError(
             "Bounding boxes should have coordinates that can be converted to floats."
             f" Got {value}"
         ) from e
-    if len(value) != 4:
+    if len(float_value) != 4:
         raise ValueError(
             "Bounding box could not be parsed. Bounding boxes should have a length of"
-            f" 4. Got {len(value)}"
+            f" 4. Got {len(float_value)}"
         )
-    return value
+    return float_value
