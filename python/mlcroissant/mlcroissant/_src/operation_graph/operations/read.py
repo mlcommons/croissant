@@ -6,6 +6,7 @@ import gzip
 import io
 import json
 import pathlib
+from typing import Any
 
 from etils import epath
 import numpy as np
@@ -165,14 +166,15 @@ class Read(Operation):
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
                 # TODO(https://github.com/mlcommons/croissant/issues/635).
+                read_file: Any = file
                 if filepath.suffix == ".gz":
-                    file = gzip.open(file, "rt", newline="")
+                    read_file = gzip.open(file, "rt", newline="")
                 if encoding_format == EncodingFormat.CSV:
-                    return pd.read_csv(file)
+                    return pd.read_csv(read_file)
                 elif encoding_format == EncodingFormat.TSV:
-                    return pd.read_csv(file, sep="\t")
+                    return pd.read_csv(read_file, sep="\t")
                 elif encoding_format == EncodingFormat.JSON:
-                    json_content = json.load(file)
+                    json_content = json.load(read_file)
                     if reading_method == ReadingMethod.JSON:
                         return parse_json_content(json_content, self.fields)
                     else:
@@ -181,10 +183,10 @@ class Read(Operation):
                             FileProperty.content: [json_content],
                         })
                 elif encoding_format == EncodingFormat.JSON_LINES:
-                    return pd.read_json(file, lines=True)
+                    return pd.read_json(read_file, lines=True)
                 elif encoding_format == EncodingFormat.PARQUET:
                     try:
-                        df = pd.read_parquet(file)
+                        df = pd.read_parquet(read_file)
                         # Sometimes the author already set an index in Parquet, so we
                         # want to reset it to always have the same format.
                         df.reset_index(inplace=True)
