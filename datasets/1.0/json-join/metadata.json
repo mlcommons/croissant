@@ -65,7 +65,7 @@
       "name": "prices",
       "contentUrl": "data/prices.json",
       "encodingFormat": "application/json",
-      "sha256": "88ba9ea7ce69ca5d2f03f71e0b55c5d0defa88f1299d1556b14badca10b54dd4"
+      "sha256": "288538f1f97505cda0679672a52087610ea9bfc0c7e4f6a99e8137f129c75a18"
     }
   ],
   "recordSet": [
