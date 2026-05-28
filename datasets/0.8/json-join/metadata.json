@@ -1,0 +1,136 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "column": "ml:column",
+    "data": {
+      "@id": "ml:data",
+      "@type": "@json"
+    },
+    "dataBiases": "ml:dataBiases",
+    "dataCollection": "ml:dataCollection",
+    "dataType": {
+      "@id": "ml:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "ml:extract",
+    "field": "ml:field",
+    "fileProperty": "ml:fileProperty",
+    "format": "ml:format",
+    "includes": "ml:includes",
+    "isEnumeration": "ml:isEnumeration",
+    "jsonPath": "ml:jsonPath",
+    "ml": "http://mlcommons.org/schema/",
+    "parentField": "ml:parentField",
+    "path": "ml:path",
+    "personalSensitiveInformation": "ml:personalSensitiveInformation",
+    "recordSet": "ml:recordSet",
+    "references": "ml:references",
+    "regex": "ml:regex",
+    "repeated": "ml:repeated",
+    "replace": "ml:replace",
+    "sc": "https://schema.org/",
+    "separator": "ml:separator",
+    "source": "ml:source",
+    "subField": "ml:subField",
+    "transform": "ml:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "json-join",
+  "description": "Two JSON files joined via references. Regression test for issue #1030.",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "sc:FileObject",
+      "name": "items",
+      "contentUrl": "data/items.json",
+      "encodingFormat": "application/json",
+      "sha256": "09c7a515d9d49fa6f597f9103c2b54c2c13f27c4a033f780700957a18b17dcb6"
+    },
+    {
+      "@type": "sc:FileObject",
+      "name": "prices",
+      "contentUrl": "data/prices.json",
+      "encodingFormat": "application/json",
+      "sha256": "88ba9ea7ce69ca5d2f03f71e0b55c5d0defa88f1299d1556b14badca10b54dd4"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "ml:RecordSet",
+      "name": "items_recordset",
+      "description": "List of items.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "Item identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "items",
+            "extract": {
+              "jsonPath": "$[*].id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "Item name.",
+          "dataType": "sc:Text",
+          "source": {
+            "distribution": "items",
+            "extract": {
+              "jsonPath": "$[*].name"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ml:RecordSet",
+      "name": "items_with_prices",
+      "description": "Items joined with their prices.",
+      "field": [
+        {
+          "@type": "ml:Field",
+          "name": "id",
+          "description": "Item identifier (join key).",
+          "dataType": "sc:Text",
+          "references": {
+            "field": "items_recordset/id"
+          },
+          "source": {
+            "distribution": "prices",
+            "extract": {
+              "jsonPath": "$[*].id"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "price",
+          "description": "Item price.",
+          "dataType": "sc:Integer",
+          "source": {
+            "distribution": "prices",
+            "extract": {
+              "jsonPath": "$[*].price"
+            }
+          }
+        },
+        {
+          "@type": "ml:Field",
+          "name": "name",
+          "description": "Item name (from items via join).",
+          "dataType": "sc:Text",
+          "source": {
+            "field": "items_recordset/name"
+          }
+        }
+      ]
+    }
+  ]
+}
