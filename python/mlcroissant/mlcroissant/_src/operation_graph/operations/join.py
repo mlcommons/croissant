@@ -1,6 +1,7 @@
 """Join operation module."""
 
 import dataclasses
+from typing import Any
 
 import pandas as pd
 
@@ -10,6 +11,14 @@ from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.record_set import get_parent_uuid
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.source import Source
+
+
+def _normalize_merge_key(df: Any, column: Any) -> None:
+    """Decode bytes to str in a merge key column so both sides have a common type."""
+    if column in df.columns and df[column].dtype == object:
+        df[column] = df[column].apply(
+            lambda x: x.decode("utf-8") if isinstance(x, bytes) else x
+        )
 
 
 @dataclasses.dataclass(frozen=True, repr=False)
@@ -66,6 +75,8 @@ class Join(Operation):
             df_left[left_column] = df_left[left_column].transform(
                 apply_transforms_fn, field=field
             )
+            _normalize_merge_key(df_left, left_column)
+            _normalize_merge_key(df_right, right_column)
             return df_left.merge(
                 df_right,
                 left_on=left_column,

@@ -200,6 +200,7 @@ def load_records_with_beam_and_test_equality(
         ["recipes/read_from_tar.json", "images_with_annotations", -1],
         ["simple-join/metadata.json", "publications_by_user", -1],
         ["simple-parquet/metadata.json", "persons", -1],
+        ["json-join/metadata.json", "items_with_prices", 3],
     ],
 )
 def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
