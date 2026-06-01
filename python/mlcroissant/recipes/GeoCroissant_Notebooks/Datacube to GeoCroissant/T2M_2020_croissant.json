@@ -1,0 +1,213 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "NASA-POWER-T2M-Monthly-Time-Series-2020",
+  "alternateName": [
+    "nasa-power-t2m-2020",
+    "POWER-T2M-2020"
+  ],
+  "description": "Monthly time series of Temperature at 2 Meters (T2M) for 2020 from NASA POWER dataset. This dataset provides global temperature data at 0.5° latitude and 0.625° longitude resolution with monthly temporal resolution.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "1.0.0",
+  "url": "https://power.larc.nasa.gov",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {
+    "@type": "Organization",
+    "name": "NASA Langley Research Center (LaRC)",
+    "url": "https://power.larc.nasa.gov"
+  },
+  "keywords": [
+    "Temperature",
+    "Climate",
+    "NASA",
+    "POWER",
+    "2020",
+    "Monthly",
+    "Geospatial",
+    "Earth Science",
+    "Meteorology",
+    "Climate Data"
+  ],
+  "citeAs": "NASA POWER Project. Prediction Of Worldwide Energy Resource (POWER) Project. NASA Langley Research Center.",
+  "geocr:BoundingBox": [
+    -180.0,
+    -90.0,
+    179.375,
+    90.0
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2020-01-01T00:00:00Z",
+    "endDate": "2020-12-31T23:59:59Z"
+  },
+  "geocr:spatialResolution": "0.5° lat × 0.625° lon",
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "geocr:mlTask": {
+    "@type": "geocr:Regression",
+    "taskType": "climate_prediction",
+    "evaluationMetric": "RMSE",
+    "applicationDomain": "climate_monitoring"
+  },
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "zarr-store-t2m-2020",
+      "name": "zarr-store-t2m-2020",
+      "description": "Zarr datacube for NASA POWER T2M data for the year 2020",
+      "contentUrl": "s3://nasa-power/merra2/temporal/power_merra2_monthly_temporal_utc.zarr/",
+      "encodingFormat": "application/x-zarr",
+      "md5": "4ca24277afe104204ad95719bf6ceb40"
+    }
+  ],
+  "datePublished": "2020-12-31",
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "nasa_power_t2m_2020",
+      "name": "nasa_power_t2m_2020",
+      "description": "NASA POWER T2M climate data for the year 2020",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "nasa_power_t2m_2020/lat",
+          "name": "nasa_power_t2m_2020/lat",
+          "description": "Coordinate: lat",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "zarr-store-t2m-2020"
+            },
+            "extract": {
+              "jsonPath": "$.lat"
+            }
+          },
+          "geocr:dataShape": [
+            361
+          ],
+          "geocr:validRange": {
+            "min": -90.0,
+            "max": 90.0
+          },
+          "geocr:units": "degrees_north"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "nasa_power_t2m_2020/lon",
+          "name": "nasa_power_t2m_2020/lon",
+          "description": "Coordinate: lon",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "zarr-store-t2m-2020"
+            },
+            "extract": {
+              "jsonPath": "$.lon"
+            }
+          },
+          "geocr:dataShape": [
+            576
+          ],
+          "geocr:validRange": {
+            "min": -180.0,
+            "max": 180.0
+          },
+          "geocr:units": "degrees_east"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "nasa_power_t2m_2020/time",
+          "name": "nasa_power_t2m_2020/time",
+          "description": "Coordinate: time",
+          "dataType": "sc:Date",
+          "source": {
+            "fileObject": {
+              "@id": "zarr-store-t2m-2020"
+            },
+            "extract": {
+              "jsonPath": "$.time"
+            }
+          },
+          "geocr:dataShape": [
+            12
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "nasa_power_t2m_2020/T2M",
+          "name": "nasa_power_t2m_2020/T2M",
+          "description": "Temperature at 2 Meters",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "zarr-store-t2m-2020"
+            },
+            "extract": {
+              "jsonPath": "$.T2M"
+            }
+          },
+          "geocr:dataShape": [
+            12,
+            361,
+            576
+          ],
+          "geocr:validRange": {
+            "min": -125.0,
+            "max": 80.0
+          },
+          "geocr:units": "C",
+          "geocr:standardName": "Temperature_at_2_Meters",
+          "geocr:definition": "The average air (dry bulb) temperature at 2 meters above the surface of the earth.",
+          "geocr:cellMethods": "time: mean"
+        }
+      ]
+    }
+  ]
+}
