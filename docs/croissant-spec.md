@@ -237,7 +237,7 @@ Note that while the Croissant specification is versioned, the Croissant namespac
 
 In Croissant datasets, various elements need to be connected to each other. For instance, a `FileObject` may be extracted from another `FileObject`, or a column of a table may reference another table. We therefore need a mechanism to define **identifiers** for parts of a dataset, and to reference them in other places.
 
-We use the standard JSON-LD mechanism for IDs and references, which relies on using the special `@id` property. References to objects are also specified using the `@id` property. They can be differenciated from ID definitions by the fact that no other properties are specified within the same object, e.g., `{"@id": "flores200_dataset.tar.gz"}` is a reference.
+We use the standard JSON-LD mechanism for IDs and references, which relies on using the special `@id` property. References to objects are also specified using the `@id` property. They can be differentiated from ID definitions by the fact that no other properties are specified within the same object, e.g., `{"@id": "flores200_dataset.tar.gz"}` is a reference.
 
 IDs may be specified as short strings, but they are interpreted as IRIs. The "base" IRI is either the URL of the document (when accessed on the Web), or is specified explicitly in the context, via the `@base` property (see [JSON-LD specification](https://www.w3.org/TR/json-ld11/#base-iri)).
 
