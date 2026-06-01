@@ -2325,7 +2325,7 @@ The following example shows how to combine DUO and ODRL to represent a data use 
 
 In the health domain, it is often necessary to specify that a dataset can only be used for research on a specific disease. DUO recommends using the [MONDO](https://mondo.monarchinitiative.org/) ontology to specify disease-specific restrictions. 
 
-The example below shows how to use MONDO in combination with DUO and ODRL to specify that a dataset can only be used for research on Alzheimer's disease ([MONDO_0005070](http://purl.obolibrary.org/obo/MONDO_0005070)).
+The example below shows how to use MONDO in combination with DUO and ODRL to specify that a dataset can only be used for research on Alzheimer's disease ([MONDO_0004975](http://purl.obolibrary.org/obo/MONDO_0004975)).
 
 ```json
 {
@@ -2360,7 +2360,7 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
            "@type": "odrl:Constraint",
            "odrl:leftOperand": { "@id": "duo:0000010"},
            "odrl:operator": { "@id": "odrl:eq" },
-           "odrl:rightOperand": { "@id": "mondo:0005070" }
+           "odrl:rightOperand": { "@id": "mondo:0004975" }
         }
       ]
     }
