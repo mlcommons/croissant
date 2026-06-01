@@ -1,0 +1,104 @@
+target_var: exist 55
+other_vars: 
+  - possible 23
+  - set 33
+  - set 26
+  - graph 36
+  - graph 39
+  - graph 42
+  - graph 45
+  - x 50
+  - count 20
+  - m 18
+  - flag 17
+  - graph 31
+  - possible 57
+  - possible 61
+  - possible 67
+  - possible 69
+  - possible 71
+  - count 72
+  - count 76
+  - possible 79
+  - possible 83
+  - possible 82
+early_return: 
+  - 66
+variables: 
+  exist 55:
+    datadep:
+      - a 54
+    controldep:
+      - queue 53
+  a 54:
+    datadep:
+      - queue 54
+      - queue 48
+      - queue 27
+    controldep:
+      - queue 53
+  queue 53:
+    reset: False
+    datadep:
+      - queue 54
+      - queue 48
+      - queue 27
+    controldep:
+      - queue 53
+  queue 54:
+    datadep:
+      - queue 54
+      - queue 48
+      - queue 27
+    controldep:
+      - queue 53
+  queue 27:
+    datadep: Null
+    controldep: Null
+  i 28:
+    datadep:
+      - i 28
+    controldep:
+      - i 28
+      - n 28
+  n 28:
+    reset: False
+    datadep:
+      - n 16
+    controldep:
+      - i 28
+      - n 28
+  n 16:
+    datadep: Null
+    controldep: Null
+  j 29:
+    datadep:
+      - j 29
+    controldep:
+      - j 29
+      - n 29
+      - i 28
+      - n 28
+  n 29:
+    reset: False
+    datadep:
+      - n 16
+    controldep:
+      - j 29
+      - n 29
+      - i 28
+      - n 28
+  queue 48:
+    datadep:
+      - p 47
+      - queue 48
+      - queue 27
+    controldep:
+      - j 29
+      - n 29
+  p 47:
+    datadep: Null
+    controldep:
+      - j 29
+      - n 29
+  

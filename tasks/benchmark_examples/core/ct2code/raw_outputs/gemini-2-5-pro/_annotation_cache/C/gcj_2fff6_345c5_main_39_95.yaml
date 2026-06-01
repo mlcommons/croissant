@@ -1,0 +1,196 @@
+target_var: share 72
+other_vars: 
+  - i 67
+  - j 68
+  - B 69
+  - i 74
+  - j 75 
+variables:
+  share 72:
+    datadep:
+      - chips 51
+      - chips 60
+      - guests 50
+    controldep:
+      - chips 64
+      - guests 64
+  chips 51:
+    datadep: Null
+    controldep:
+      - tc 45
+      - t 45
+  chips 60:
+    datadep:
+      - chips 51
+      - chips 60
+    controldep:
+      - A 59
+      - i 59
+      - j 59
+  guests 50:
+    datadep:
+      - h 48
+      - v 49
+    controldep:
+      - tc 45
+      - t 45
+  tc 45:
+    reset: False
+    datadep:
+      - tc 92
+      - tc 44
+    controldep:
+      - tc 45
+      - t 45
+  t 45:
+    reset: False
+    datadep:
+      - t 43
+    controldep:
+      - tc 45
+      - t 45
+  tc 44:
+    datadep: Null
+    controldep: Null
+  t 43:
+    datadep: Null
+    controldep: Null
+  tc 92:
+    datadep:
+      - tc 92
+      - tc 44
+    controldep:
+      - tc 45
+      - t 45
+  h 48:
+    datadep: Null
+    controldep: 
+      - tc 45
+      - t 45
+  v 49:
+    datadep: Null
+    controldep:
+      - tc 45
+      - t 45
+  r 46:
+    datadep: Null
+    controldep:
+      - tc 45
+      - t 45
+  c 47:
+    datadep: Null
+    controldep:
+      - tc 45
+      - t 45
+  r 52:
+    reset: False
+    datadep:
+      - r 46
+    controldep:
+      - tc 45
+      - t 45
+      - i 52
+      - r 52
+  i 52:
+    datadep:
+      - i 52
+    controldep:
+      - tc 45
+      - t 45
+      - i 52
+      - r 52
+  str 53:
+    datadep: Null
+    controldep:
+      - i 53
+  i 53:
+    reset: False
+    datadep:
+      - i 52
+    controldep:
+      - i 52
+      - r 52
+  j 54:
+    datadep:
+      - j 54
+    controldep:
+      - j 54
+      - c 54
+      - i 52
+      - r 52
+  c 54:
+    reset: False
+    datadep:
+      - c 47
+    controldep:
+      - j 54
+      - c 54
+      - i 52
+      - r 52
+  i 55:
+    reset: False
+    datadep:
+      - i 52
+    controldep:
+      - j 54
+      - c 54
+  j 55:
+    reset: False
+    datadep:
+      - j 54
+    controldep:
+      - j 54
+      - c 54
+  A 56:
+    datadep:
+      - i 52
+      - j 54
+    controldep:
+      - i 55
+      - j 55
+  A 58:
+    datadep:
+      - i 52
+      - j 54
+      - str 53
+    controldep:
+      - i 55
+      - j 55
+  A 59:
+    reset: False
+    datadep:
+      - A 56
+      - A 58
+    controldep:
+      - i 55
+      - j 55
+  i 59:
+    reset: False
+    datadep:
+      - i 52
+    controldep:
+      - i 55
+      - j 55
+  j 59:
+    reset: False
+    datadep:
+      - j 54
+    controldep:
+      - i 55
+      - j 55
+  chips 64:
+    reset: False
+    datadep:
+      - chips 51
+      - chips 60
+    controldep:
+      - tc 45
+      - t 45
+  guests 64:
+    reset: False
+    datadep:
+      - guests 50
+    controldep:
+      - tc 45
+      - t 45
+  

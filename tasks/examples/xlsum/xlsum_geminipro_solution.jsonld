@@ -1,0 +1,99 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/xlsum_solution_geminipro",
+  "schema:name": "XL-Sum Solution - Gemini Pro 3.1",
+  "schema:isBasedOn": { "@id": "http://example.org/xlsum_problem" },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:geminipro-xlsum-overall-output",
+    "schema:name": "XL-Sum Gemini Pro 3.1 Overall Outputs"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/xlsum_solution_geminipro#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "few_shot",
+        "schema:value": 3
+      }
+    ]
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/xlsum_solution_geminipro#implementation",
+    "schema:name": "Gemini Pro 3.1"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/xlsum_solution_geminipro#english_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/xlsum#english" },
+      "croissant:execution": { "@id": "http://example.org/xlsum_solution_geminipro#execution" },
+      "croissant:implementation": { "@id": "http://example.org/xlsum_solution_geminipro#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:geminipro-xlsum-english-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/xlsum_evaluation_geminipro#english",
+        "schema:isBasedOn": { "@id": "http://example.org/xlsum#english" },
+        "schema:name": "XL-Sum - English",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/xlsum_solution_geminipro#english_sol" },
+        "croissant:evaluationResults": []
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/xlsum_solution_geminipro#french_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/xlsum#french" },
+      "croissant:execution": { "@id": "http://example.org/xlsum_solution_geminipro#execution" },
+      "croissant:implementation": { "@id": "http://example.org/xlsum_solution_geminipro#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:geminipro-xlsum-french-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/xlsum_evaluation_geminipro#french",
+        "schema:isBasedOn": { "@id": "http://example.org/xlsum#french" },
+        "schema:name": "XL-Sum - French",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/xlsum_solution_geminipro#french_sol" },
+        "croissant:evaluationResults": []
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/xlsum_solution_geminipro#spanish_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/xlsum#spanish" },
+      "croissant:execution": { "@id": "http://example.org/xlsum_solution_geminipro#execution" },
+      "croissant:implementation": { "@id": "http://example.org/xlsum_solution_geminipro#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:geminipro-xlsum-spanish-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/xlsum_evaluation_geminipro#spanish",
+        "schema:isBasedOn": { "@id": "http://example.org/xlsum#spanish" },
+        "schema:name": "XL-Sum - Spanish",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/xlsum_solution_geminipro#spanish_sol" },
+        "croissant:evaluationResults": []
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/xlsum_evaluation_geminipro",
+    "schema:name": "XL-Sum Evaluation - Gemini Pro 3.1",
+    "schema:isBasedOn": { "@id": "http://example.org/xlsum_problem" },
+    "croissant:evaluatedSolution": { "@id": "http://example.org/xlsum_solution_geminipro" },
+    "croissant:evaluationResults": []
+  }
+}

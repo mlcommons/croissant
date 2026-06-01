@@ -1,0 +1,693 @@
+target_var: pows2 73
+other_vars: Null
+early_return: 
+  - 79
+  - 92
+variables: 
+  mod 25:
+    datadep: Null
+    controldep: Null
+  s 26:
+    datadep: Null
+    controldep: Null
+  t 27:
+    datadep: Null
+    controldep: Null
+  ns 28:
+    datadep: 
+      - s 26
+    controldep: Null
+  nt 29:
+    datadep: 
+      - t 27
+    controldep: Null
+  i 31:
+    datadep: Null
+    controldep:
+      - Null 31
+  Null 31:
+    reset: False
+    datadep: Null
+    controldep: 
+      - Null 31
+  f 32:
+    datadep:
+      - i 31
+    controldep:
+      - Null 31
+  ns 33:
+    reset: False
+    datadep:
+      - ns 28
+    controldep:
+      - ns 33
+  i 33:
+    datadep:
+      - ns 28
+    controldep:
+      - ns 33
+  s 34:
+    datadep:
+      - i 33
+      - f 32
+      - s 34
+      - s 26
+    controldep:
+      - ns 33
+  nt 35:
+    reset: False
+    datadep:
+      - nt 29
+    controldep:
+      - nt 35
+  i 35:
+    datadep:
+      - nt 29
+    controldep:
+      - nt 35
+  t 36:
+    datadep:
+      - f 32
+      - i 35
+      - t 36
+      - t 27
+    controldep:
+      - nt 35
+  b 37:
+    datadep: Null
+    controldep: Null
+  mod1 38:
+    datadep: Null
+    controldep: Null
+  mod2 39:
+    datadep: Null
+    controldep: Null
+  pownt1 40:
+    datadep:
+      - b 37
+      - nt 29
+      - mod 25
+    controldep: Null
+  invnt1 41:
+    datadep:
+      - pownt1 40
+      - mod1 38
+    controldep: Null
+  powns1 42:
+    datadep:
+      - b 37
+      - ns 28
+      - mod1 38
+    controldep: Null
+  invns1 43:
+    datadep:
+    - mod1 38
+    - powns1 42
+    controldep: Null
+  pownt2 44:
+    datadep:
+      - b 37
+      - nt 29
+      - mod2 39
+    controldep: Null
+  invnt2 45:
+    datadep:
+      - mod2 39
+      - pownt2 44
+    controldep: Null
+  powns2 46:
+    datadep:
+      - b 37
+      - mod2 39
+      - ns 28
+    controldep: Null
+  invns2 47:
+    datadep:
+      - mod2 39
+      - powns2 46
+    controldep: Null
+  l 48:
+    datadep: Null
+    controldep: Null
+  r 49:
+    datadep:
+      - ns 28
+    controldep: Null
+  r 50:
+    reset: False
+    datadep:
+      - r 49
+      - r 108
+    controldep:
+      - r 50
+      - l 50
+  l 50:
+    reset: False
+    datadep:
+      - l 93
+      - l 48
+    controldep:
+      - r 50
+      - l 50
+  m 51:
+    datadep:
+      - l 93
+      - l 48
+      - r 49
+      - r 108
+    controldep:
+      - r 50
+      - l 50
+  n 52:
+    datadep:
+      - m 51
+      - nt 29
+    controldep:
+      - r 50
+      - l 50
+  st 53:
+    datadep:
+      - nt 29
+      - m 51
+    controldep:
+      - r 50
+      - l 50
+  ms 54:
+    datadep:
+      - ns 28
+      - n 52
+    controldep:
+      - r 50
+      - l 50
+  rs 55:
+    datadep:
+      - ns 28
+      - n 52
+      - ms 54
+    controldep:
+      - r 50
+      - l 50
+  ss 56:
+    datadep: Null
+    controldep:
+      - r 50
+      - l 50
+  i 57:
+    datadep:
+      - ns 28
+    controldep:
+      - r 50
+      - l 50
+      - ns 57
+  ns 57:
+    reset: False
+    datadep:
+      - ns 28
+    controldep:
+      - r 50
+      - l 50
+      - ns 57
+  i 58:
+    reset: False
+    datadep:
+      - i 57
+    controldep:
+      - ns 57
+  rs 58:
+    reset: False
+    datadep:
+      - rs 55
+    controldep:
+      - ns 57
+  ss 59:
+    datadep:
+      - ms 54
+      - ss 56
+      - ss 59
+      - ss 61
+    controldep:
+      - i 58
+      - rs 58
+  ss 61:
+    datadep:
+      - ms 54
+      - ss 56
+      - ss 59
+      - ss 61
+    controldep:
+      - i 58
+      - rs 58
+  p1 62:
+    datadep:
+      - n 52
+      - b 37
+      - mod1 38
+    controldep:
+      - r 50
+      - l 50
+  p2 63:
+    datadep:
+      - mod2 39
+      - n 52
+      - b 37
+    controldep:
+      - r 50
+      - l 50
+  h1 64:
+    datadep: Null
+    controldep:
+      - r 50
+      - l 50
+  h2 65:
+    datadep: Null
+    controldep:
+      - r 50
+      - l 50
+  i 66:
+    datadep:
+      - nt 29
+    controldep:
+      - r 50
+      - l 50
+      - nt 66
+  nt 66:
+    reset: False
+    datadep:
+      - nt 29
+    controldep:
+      - r 50
+      - l 50
+      - nt 66
+  ti 67:
+    datadep:
+      - t 36
+      - t 27
+      - i 66
+    controldep:
+      - nt 66
+  pow1 68:
+    datadep:
+      - n 52
+      - b 37
+      - mod1 38
+      - i 66
+    controldep:
+      - nt 66
+  pows1 69:
+    datadep:
+      - pownt1 40
+      - mod1 38
+      - i 66
+      - st 53
+    controldep:
+      - nt 66
+  h1 70:
+    datadep:
+      - mod1 38
+      - h1 64
+      - h1 71
+      - ti 67
+      - pow1 68
+      - pows1 69
+      - invnt1 41
+    controldep:
+      - nt 66
+  h1 71:
+    datadep:
+      - mod1 38
+      - h1 70
+    controldep:
+      - nt 66
+  pow2 72:
+    datadep:
+      - mod2 39
+      - n 52
+      - b 37
+      - i 66
+    controldep:
+      - nt 66
+  pows2 73:
+    datadep:
+      - mod2 39
+      - pownt2 44
+      - i 66
+      - st 53
+    controldep:
+      - nt 66
+  h2 74:
+    datadep:
+      - mod2 39
+      - ti 67
+      - pow2 72
+      - pows2 73
+      - invnt2 45
+      - h2 65
+      - h2 75
+    controldep:
+      - nt 66
+  h2 75:
+    datadep:
+      - mod2 39
+      - h2 74
+    controldep:
+      - nt 66
+  k1 76:
+    datadep: Null
+    controldep:
+      - r 50
+      - l 50
+  k2 77:
+    datadep: Null
+    controldep:
+      - r 50
+      - l 50
+  i 78:
+    datadep:
+      - ns 28
+    controldep:
+      - r 50
+      - l 50
+      - ns 78
+      - ss 79
+      - i 79
+  ns 78:
+    reset: False
+    datadep:
+      - ns 28
+    controldep:
+      - r 50
+      - l 50
+      - ns 78
+      - ss 79
+      - i 79
+  ss 79:
+    reset: False
+    datadep:
+      - ss 59
+      - ss 61
+    controldep:
+      - ns 78
+  i 79:
+    reset: False
+    datadep:
+      - i 78
+    controldep:
+      - ns 78
+  si 81:
+    datadep:
+      - i 78
+      - s 26
+      - s 34
+    controldep:
+      - ss 79
+      - i 79
+  pow1 82:
+    datadep:
+      - n 52
+      - b 37
+      - mod1 38
+      - i 78
+    controldep:
+      - ss 79
+      - i 79
+  pows1 83:
+    datadep:
+      - powns1 42
+      - ss 59
+      - ss 61
+      - mod1 38
+      - i 78
+    controldep:
+      - ss 79
+      - i 79
+  k1 84:
+    datadep:
+      - mod1 38
+      - si 81
+      - pow1 82
+      - pows1 83
+      - invns1 43
+      - k1 76
+      - k1 85
+    controldep:
+      - ss 79
+      - i 79
+  k1 85:
+    datadep:
+      - mod1 38
+      - k1 84
+    controldep:
+      - ss 79
+      - i 79
+  pow2 86:
+    datadep:
+      - mod2 39
+      - n 52
+      - b 37
+      - i 78
+    controldep:
+      - ss 79
+      - i 79
+  pows2 87:
+    datadep:
+      - mod2 39
+      - ss 59
+      - ss 61
+      - i 78
+      - powns2 46
+    controldep:
+      - ss 79
+      - i 79
+  k2 88:
+    datadep:
+      - mod2 39
+      - pow2 86
+      - si 81
+      - pows2 87
+      - invns2 47
+      - k2 89
+      - k2 77
+    controldep:
+      - ss 79
+      - i 79
+  k2 89:
+    datadep:
+      - mod2 39
+      - k2 88
+    controldep:
+      - ss 79
+      - i 79
+  k 90:
+    datadep: Null
+    controldep:
+      - r 50
+      - l 50
+  j 91:
+    datadep:
+      - ns 28
+      - rs 55
+    controldep:
+      - r 50
+      - l 50
+      - rs 91
+      - ns 91
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  rs 91:
+    reset: False
+    datadep:
+      - rs 55
+    controldep:
+      - r 50
+      - l 50
+      - rs 91
+      - ns 91
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  ns 91:
+    reset: False
+    datadep:
+      - ns 28
+    controldep:
+      - r 50
+      - l 50
+      - rs 91
+      - ns 91
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  h1 92:
+    reset: False
+    datadep:
+      - h1 64
+      - h1 71
+    controldep:
+      - rs 91
+      - ns 91
+  h2 92:
+    reset: False
+    datadep:
+      - h2 65
+      - h2 75
+    controldep:
+      - rs 91
+      - ns 91
+  k1 92:
+    reset: False
+    datadep:
+      - k1 76
+      - k1 85
+      - k1 101
+    controldep:
+      - rs 91
+      - ns 91
+  k2 92:
+    reset: False
+    datadep:
+      - k2 77
+      - k2 89
+      - k2 105
+    controldep:
+      - rs 91
+      - ns 91
+  l 93:
+    datadep:
+      - m 51
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  i 95:
+    datadep:
+      - j 91
+      - ns 28
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  si 96:
+    datadep:
+      - s 26
+      - s 34
+      - i 95
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  sk 97:
+    datadep:
+      - s 26
+      - s 34
+      - k 106
+      - k 90
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k1 98:
+    datadep:
+      - mod1 38
+      - k1 76
+      - k1 85
+      - k1 101
+      - sk 97
+      - p1 62
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k1 99:
+    datadep:
+      - si 96
+      - k1 98
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k1 100:
+    datadep:
+      - b 37
+      - k1 99
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k1 101:
+    datadep:
+      - mod1 38
+      - k1 100
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k2 102:
+    datadep:
+      - mod2 39
+      - k2 77
+      - k2 89
+      - k2 105
+      - sk 97
+      - p2 63
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k2 103:
+    datadep:
+      - si 96
+      - k2 102
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k2 104:
+    datadep:
+      - b 37
+      - k2 103
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k2 105:
+    datadep:
+      - mod2 39
+      - k2 104
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  k 106:
+    datadep:
+      - k 106
+      - k 90
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  r 108:
+    datadep:
+      - m 51
+    controldep:
+      - h1 92
+      - h2 92
+      - k1 92
+      - k2 92
+  

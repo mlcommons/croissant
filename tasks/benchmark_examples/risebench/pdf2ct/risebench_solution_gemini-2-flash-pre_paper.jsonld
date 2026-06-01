@@ -1,0 +1,168 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper",
+  "schema:name": "RISEBench Solution - Gemini-2.0-Flash-Preview",
+  "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench" },
+
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#implementation",
+    "schema:name": "Gemini-2.0-Flash-Preview-Image-Generation (Google)",
+    "schema:description": "Accessed via Google official API service."
+  },
+
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "evaluation_judge",
+        "schema:value": "GPT-4.1"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "access_method",
+        "schema:value": "official API"
+      }
+    ]
+  },
+
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:risebench-gemini-2-flash-pre-outputs",
+    "schema:name": "Gemini-2.0-Flash-Preview outputs on RISEBench-360"
+  },
+
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#temporal",
+      "schema:name": "RISEBench - Temporal Reasoning Solution - Gemini-2.0-Flash-Preview",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#temporal-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gemini-2-flash-pre-temporal-outputs",
+        "schema:name": "Gemini-2.0-Flash-Preview outputs on RISEBench Temporal Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gemini-2-flash-pre_paper#temporal",
+        "schema:name": "Evaluation of Gemini-2.0-Flash-Preview on RISEBench - Temporal Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#temporal-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#temporal" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "10.6"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#causal",
+      "schema:name": "RISEBench - Causal Reasoning Solution - Gemini-2.0-Flash-Preview",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#causal-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gemini-2-flash-pre-causal-outputs",
+        "schema:name": "Gemini-2.0-Flash-Preview outputs on RISEBench Causal Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gemini-2-flash-pre_paper#causal",
+        "schema:name": "Evaluation of Gemini-2.0-Flash-Preview on RISEBench - Causal Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#causal-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#causal" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "13.3"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#spatial",
+      "schema:name": "RISEBench - Spatial Reasoning Solution - Gemini-2.0-Flash-Preview",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#spatial-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gemini-2-flash-pre-spatial-outputs",
+        "schema:name": "Gemini-2.0-Flash-Preview outputs on RISEBench Spatial Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gemini-2-flash-pre_paper#spatial",
+        "schema:name": "Evaluation of Gemini-2.0-Flash-Preview on RISEBench - Spatial Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#spatial-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#spatial" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "11.0"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#logical",
+      "schema:name": "RISEBench - Logical Reasoning Solution - Gemini-2.0-Flash-Preview",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#logical-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gemini-2-flash-pre-logical-outputs",
+        "schema:name": "Gemini-2.0-Flash-Preview outputs on RISEBench Logical Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gemini-2-flash-pre_paper#logical",
+        "schema:name": "Evaluation of Gemini-2.0-Flash-Preview on RISEBench - Logical Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#logical-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper#logical" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "2.3"
+          }
+        ]
+      }
+    }
+  ],
+
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gemini-2-flash-pre_paper",
+    "schema:name": "Evaluation of Gemini-2.0-Flash-Preview on RISEBench-360",
+    "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench" },
+    "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gemini-2-flash-pre_paper" },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Accuracy",
+        "croissant:value": "9.4",
+        "schema:description": "Overall accuracy across all 360 samples (third highest among evaluated models)."
+      }
+    ]
+  }
+}

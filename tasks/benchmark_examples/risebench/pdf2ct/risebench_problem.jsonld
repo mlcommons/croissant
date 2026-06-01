@@ -1,0 +1,119 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "https://github.com/PhoenixZ810/RISEBench",
+  "schema:name": "RISEBench (Reasoning-Informed viSual Editing Benchmark)",
+  "schema:description": "Given an input image and a reasoning-grounded natural language instruction, a solution must generate an edited output image that correctly applies the reasoning implied by the instruction. The benchmark covers four reasoning categories — Temporal, Causal, Spatial, and Logical Reasoning — and comprises 360 manually curated, human-annotated samples. Evaluation uses an LMM-as-a-Judge pipeline (GPT-4.1) across three dimensions: Instruction Reasoning, Appearance Consistency, and Visual Plausibility.",
+
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://github.com/PhoenixZ810/RISEBench/tree/main/data",
+    "schema:name": "RISEBench-360 Dataset",
+    "schema:description": "360 human-annotated image editing samples across four reasoning categories: 85 Temporal, 90 Causal, 100 Spatial, and 85 Logical.",
+    "schema:url": "https://github.com/PhoenixZ810/RISEBench"
+  },
+
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "https://github.com/PhoenixZ810/RISEBench#outputSpec",
+    "croissant:schema": {
+      "@type": "croissant:RecordSet",
+      "@id": "https://github.com/PhoenixZ810/RISEBench#outputRecordSet",
+      "croissant:field": [
+        {
+          "@type": "croissant:Field",
+          "@id": "https://github.com/PhoenixZ810/RISEBench#field-edited-image",
+          "schema:name": "edited_image",
+          "croissant:dataType": { "@id": "xsd:anyURI" },
+          "schema:description": "The edited output image produced by applying the reasoning-informed instruction to the input image."
+        }
+      ]
+    }
+  },
+
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationSpec",
+    "@id": "https://github.com/PhoenixZ810/RISEBench#evaluationSpec",
+    "croissant:expectedMetric": [
+      "Accuracy",
+      "Instruction Reasoning",
+      "Appearance Consistency",
+      "Visual Plausibility"
+    ]
+  },
+
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://github.com/PhoenixZ810/RISEBench#temporal-reasoning",
+      "schema:name": "RISEBench - Temporal Reasoning",
+      "schema:description": "Tasks requiring the model to understand and depict the temporal evolution of objects or scenes over time. Covers four subcategories: life progression, environmental cycles, material state change, and societal transformation. Contains 85 test samples. Evaluated on all three dimensions: Instruction Reasoning, Appearance Consistency, and Visual Plausibility (each scored 1–5).",
+      "croissant:input": {
+        "@id": "https://github.com/PhoenixZ810/RISEBench/tree/main/data"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://github.com/PhoenixZ810/RISEBench#causal-reasoning",
+      "schema:name": "RISEBench - Causal Reasoning",
+      "schema:description": "Tasks requiring the model to reason about cause-and-effect relationships and depict resulting physical or structural changes. Covers four subcategories: Structural Deformation, State Transition, Chemical & Biological Transformations, and Physical Manifestations. Contains 90 test samples. Evaluated on all three dimensions (each scored 1–5).",
+      "croissant:input": {
+        "@id": "https://github.com/PhoenixZ810/RISEBench/tree/main/data"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://github.com/PhoenixZ810/RISEBench#spatial-reasoning",
+      "schema:name": "RISEBench - Spatial Reasoning",
+      "schema:description": "Tasks requiring the model to understand and manipulate spatial relationships, geometric structures, and 3D perspectives among objects. Covers five subcategories: Component Assembly, Object Arrangement, Viewpoint Generation, Structural Reasoning, and Layout Reasoning. Contains 100 test samples. Evaluated on all three dimensions (each scored 1–5).",
+      "croissant:input": {
+        "@id": "https://github.com/PhoenixZ810/RISEBench/tree/main/data"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "https://github.com/PhoenixZ810/RISEBench#logical-reasoning",
+      "schema:name": "RISEBench - Logical Reasoning",
+      "schema:description": "Tasks requiring structured, rule-based visual inference grounded in formal logic. Covers three subcategories: Puzzle Solving (Sudoku, mazes, tic-tac-toe), Mathematical Derivation (shortest paths, formula reasoning), and Pattern Prediction (completing visual patterns by implicit rules). Contains 85 test samples. Visual Plausibility is not evaluated for this subtask; Appearance Consistency uses a binary scheme (score 1 or 5).",
+      "croissant:input": {
+        "@id": "https://github.com/PhoenixZ810/RISEBench/tree/main/data"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "https://github.com/PhoenixZ810/RISEBench#evaluationSpec"
+      }
+    }
+  ]
+}

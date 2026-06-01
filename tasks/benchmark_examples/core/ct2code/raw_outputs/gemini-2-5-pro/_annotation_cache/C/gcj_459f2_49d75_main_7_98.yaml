@@ -1,0 +1,213 @@
+target_var: cur 45
+other_vars: 
+  - res 56
+  - j 55
+  - R 41
+  - res 40
+  - mx 19
+  - ori 15
+  - res 28
+early_return: 
+  - 21
+  - 35
+  - 83
+variables:
+  cur 45:
+    datadep:
+      - cur 44
+      - A 43
+      - A 51
+      - A 14
+      - i 31
+    controldep:
+      - cur 32
+  cur 29:
+    datadep: Null
+    controldep:
+      - A 21
+      - C 21
+  cur 44:
+    datadep:
+      - cur 45
+      - cur 29
+      - cur 58
+      - cur 50
+    controldep:
+      - cur 32
+  cur 48:
+    datadep:
+      - cur 45
+      - cur 29
+      - cur 58
+      - cur 50
+      - A 43
+      - A 51
+      - A 14
+      - i 31
+    controldep:
+      - cur 32
+  cur 50:
+    datadep:
+      - cur 48
+    controldep:
+      - cur 49
+  cur 58:
+    datadep:
+      - cur 48
+    controldep:
+      - cur 49
+  tc 10:
+    datadep:
+      - tc 10
+    controldep:
+      - tc 10
+      - T 10
+  T 10:
+    reset: False
+    datadep:
+      - T 9
+    controldep:
+      - tc 10
+      - T 10
+  T 9:
+    datadep: Null
+    controldep: Null
+  A 21:
+    reset: False
+    datadep:
+      - A 43
+      - A 51
+      - A 14
+    controldep:
+      - tc 10
+      - T 10
+  C 21:
+    reset: False
+    datadep:
+      - C 12
+    controldep:
+      - tc 10
+      - T 10
+  C 12:
+    datadep: Null
+    controldep:
+      - tc 10
+      - T 10
+  i 13:
+    datadep:
+      - i 13
+    controldep:
+      - tc 10
+      - T 10
+      - i 13
+      - C 13
+  C 13:
+    reset: False
+    datadep:
+      - C 12
+    controldep:
+      - tc 10
+      - T 10
+      - i 13
+      - C 13
+  A 14:
+    datadep:
+      - i 13
+    controldep:
+      - i 13
+      - C 13
+  i 31:
+    datadep:
+      - i 31
+    controldep:
+      - A 21
+      - C 21
+      - i 31
+      - C 31
+  C 31:
+    reset: False
+    datadep:
+      - C 12
+    controldep:
+      - A 21
+      - C 21
+      - i 31
+      - C 31
+  cur 32:
+    reset: False
+    datadep:
+      - cur 45
+      - cur 29
+      - cur 58
+      - cur 50
+    controldep:
+      - i 31
+      - C 31
+  A 43:
+    datadep:
+      - A 43
+      - A 51
+      - A 14
+      - fi 33
+      - fi 36
+    controldep:
+      - cur 32
+  A 51:
+    datadep:
+      - i 31
+      - cur 50
+    controldep:
+      - cur 49
+  fi 33:
+    datadep: Null
+    controldep:
+      - cur 32
+  j 34:
+    datadep:
+      - j 34
+    controldep:
+      - cur 32
+      - j 34
+      - C 34
+      - A 35
+      - j 35
+  C 34:
+    reset: False
+    datadep:
+      - C 12
+    controldep:
+      - cur 32
+      - j 34
+      - C 34
+      - A 35
+      - j 35
+  A 35:
+    reset: False
+    datadep:
+      - A 43
+      - A 51
+      - A 14
+    controldep:
+      - j 34
+      - C 34
+  j 35:
+    reset: False
+    datadep:
+      - j 34
+    controldep:
+      - j 34
+      - C 34
+  fi 36:
+    datadep:
+      - j 34
+    controldep:
+      - A 35
+      - j 35
+  cur 49:
+    reset: False
+    datadep:
+      - cur 48
+    controldep:
+      - cur 32
+
+  

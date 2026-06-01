@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "skill": "ct2code",
+  "run_id": "02b87497_2026-04-29T14-58Z",
+  "run_id_breakdown": {
+    "parent_commit": "02b87497 (Leo: 'add - ct2code skill + updated pdf2ct skill')",
+    "started_utc": "2026-04-29T14:58Z"
+  },
+  "run_kind": "dryrun",
+  "run_kind_note": "First 5 instances of the validation split per subtask (15 LLM calls total). Pipeline sanity check, not a benchmark result. The `instances_per_subset` hyperparameter (5) and the per-instance `metrics_summary.<domain>.n` (5) make the dry-run nature explicit at the data level.",
+  "paths_relative_to_this_file": {
+    "task_problem": "../../../pdf2ct/absencebench_problem.jsonld",
+    "task_solution": "../../absencebench_claude-4-sonnet_solution.jsonld",
+    "implementation": "../../absencebench_implementation.py",
+    "prompts_dir": "../../prompts/",
+    "structural_check_tool": "../../../infra/_structural_check.py",
+    "validation_report": "../../../pdf2ct/validation_report.json"
+  },
+  "model": "claude-4-sonnet",
+  "model_note": "Cursor-subagent invocation; model slug is the one accepted by the Task tool. Closest direct mapping is Anthropic claude-sonnet-4 (i.e., the Sonnet 4 family).",
+  "runner_type": "cursor-subagent",
+  "runner_note": "15 Cursor subagents (subagent_type=generalPurpose, model=claude-4-sonnet, one per instance) launched in two parallel batches - 5 numerical, then 10 (5 github_prs + 5 poetry). Each subagent was given the path to a per-instance prompt file (committed under prompts/) containing the paper Appendix A default template (system + user) wrapped in a roleplay preamble, and instructed to write its literal model output back. Subagent IDs were session-scoped and are not archived; the response text is preserved as the raw_response field in each outputs_<domain>.jsonl record.",
+  "hyperparameters": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "instances_per_subset": 5
+  },
+  "dataset": {
+    "huggingface_id": "harveyfin/AbsenceBench",
+    "split": "validation",
+    "configs": ["poetry", "numerical", "github_prs"],
+    "instances_used": {
+      "poetry": [0, 1, 2, 3, 4],
+      "numerical": [0, 1, 2, 3, 4],
+      "github_prs": [0, 1, 2, 3, 4]
+    }
+  },
+  "paper": {
+    "title": "AbsenceBench: Language Models Can't Tell What's Missing",
+    "arxiv": "https://arxiv.org/abs/2506.11440",
+    "openreview": "https://openreview.net/pdf?id=pmLMrqhIpb"
+  },
+  "validation": {
+    "shacl_validator": "SKIPPED",
+    "shacl_validator_note": "Two known shape bugs in tasks/croissant-tasks-shapes.ttl block the paths our files exercise. Bug A (TaskProblemShape spec constraint, malformed outer PropertyShape) hits TaskProblems; Bug B (EvaluationTaskShape evaluatedSolution qualified-cardinality) hits TaskSolutions with EvaluationTask children. Both match items on the team's known-issue list (RISEBench agent analysis, Slack 2026-04-29: 'Change 2' and 'Change 4'). Spec files were NOT modified in this run, per team guidance. See pdf2ct/validation_report.json for structured detail and suggested fixes.",
+    "structural_check": "PASS",
+    "structural_check_tool": "../../../infra/_structural_check.py"
+  },
+  "metrics_summary": {
+    "poetry":     {"f1": 85.35, "exact_match_rate": 20.00, "n": 5},
+    "numerical":  {"f1": 100.00, "exact_match_rate": 100.00, "n": 5},
+    "github_prs": {"f1": 9.77, "exact_match_rate": 0.00, "n": 5},
+    "overall":    {"f1": 65.98, "exact_match_rate": 40.00, "n": 15}
+  },
+  "comparison_to_paper_table_3": {
+    "note": "Paper Table 3 reports micro-F1 across the FULL validation split; ours is on n=5 per subset. Comparison shown for orientation only; the n=5 sample is too small to support claims about model improvement vs. claude-3-7-sonnet.",
+    "claude-3-7-sonnet (paper, no thinking)": {"poetry": 73.5, "numerical": 91.4, "github_prs": 35.7, "overall": 66.9},
+    "claude-3-7-sonnet (paper, thinking)":    {"poetry": 72.7, "numerical": 96.0, "github_prs": 40.0, "overall": 69.6},
+    "this run (claude-4-sonnet, n=5/subset)": {"poetry": 85.35, "numerical": 100.00, "github_prs": 9.77, "overall": 65.98}
+  },
+  "command_line": "cursor: 15 Task() invocations of subagent_type=generalPurpose with model=claude-4-sonnet (see runner_note). Equivalent direct-API command for a fresh run on a different machine: `python absencebench_implementation.py --dry-run --model claude-sonnet-4-5` (requires ANTHROPIC_API_KEY).",
+  "agent_transcript": {
+    "path": "/home/luis/.cursor/projects/<session-uuid>/agent-transcripts/<conversation-uuid>.jsonl",
+    "committed": false,
+    "note": "Lives on the contributor's machine; session-scoped Cursor metadata; not portable. Referenced for audit but not part of this commit. The implementation script + this manifest + the per-instance outputs_*.jsonl + committed prompts/ dir are sufficient for full reproducibility."
+  },
+  "output_files": [
+    "outputs_poetry.jsonl",
+    "outputs_numerical.jsonl",
+    "outputs_github_prs.jsonl"
+  ]
+}

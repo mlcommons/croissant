@@ -1,0 +1,198 @@
+target_var: b 77
+other_vars: 
+  - flag2 37
+  - num1 40
+  - num2 40
+  - num 39
+  - temp1 79
+  - temp1 82
+  - four 42
+  - k 56
+  - i 54
+  - j 34
+  - b 75
+  - prime 43
+  - k 35
+early_return: 
+  - 47
+variables:
+  N 33:
+    datadep: Null
+    controldep: Null
+  j 36:
+    datadep:
+      - j 36
+    controldep:
+      - j 36
+      - N 36
+  N 36:
+    reset: False
+    datadep:
+      - N 33
+    controldep:
+      - j 36
+      - N 36
+  flag 38:
+    datadep: Null
+    controldep:
+      - j 36
+      - N 36
+  num 41:
+    datadep: Null
+    controldep:
+      - j 36
+      - N 36
+  temp 42:
+    datadep:
+      - num 41
+    controldep:
+      - j 36
+      - N 36
+  temp 44:
+    reset: False
+    datadep:
+      - temp 42
+      - temp 52
+    controldep:
+      - j 36
+      - N 36
+      - temp 44
+      - four 47
+  four 46:
+    datadep:
+      - temp 42
+      - temp 52
+    controldep:
+      - temp 44
+  four 47:
+    reset: False
+    datadep:
+      - four 46
+    controldep:
+      - temp 44
+  flag 49:
+    datadep: Null
+    controldep:
+      - four 47
+  temp 52:
+    datadep:
+      - temp 42
+      - temp 52
+    controldep:
+      - four 47
+  flag 55:
+    reset: False
+    datadep:
+      - flag 38
+      - flag 49
+    controldep:
+      - j 36
+      - N 36
+  count 57:
+    datadep: Null
+    controldep:
+      - flag 55
+  i 58:
+    datadep: Null
+    controldep:
+      - flag 55
+  temp 59:
+    datadep:
+      - num 41
+    controldep:
+      - flag 55
+  count 61:
+    datadep:
+      - count 57
+      - count 61
+    controldep:
+      - flag 55
+      - temp 63
+  temp 62:
+    datadep:
+      - temp 59
+      - temp 62
+    controldep:
+      - flag 55
+      - temp 63
+  temp 63:
+    reset: False
+    datadep:
+      - temp 59
+      - temp 62
+    controldep:
+      - flag 55
+      - temp 63
+  temp 65:
+    datadep:
+      - num 41
+    controldep:
+      - flag 55
+  a 68:
+    datadep:
+      - temp 65
+      - temp 69
+      - i 58
+      - i 68
+    controldep:
+      - flag 55
+      - temp 70
+  i 68:
+    datadep:
+      - i 58
+      - i 68
+    controldep:
+      - flag 55
+      - temp 70
+  temp 69:
+    datadep:
+      - temp 65
+      - temp 69
+    controldep:
+      - flag 55
+      - temp 70
+  temp 70:
+    reset: False
+    datadep:
+      - temp 65
+      - temp 69
+    controldep:
+      - flag 55
+      - temp 70
+  k 72:
+    datadep:
+      - k 72
+    controldep:
+      - flag 55
+      - k 72
+      - count 72
+  count 72:
+    reset: False
+    datadep:
+      - count 57
+      - count 61
+    controldep:
+      - flag 55
+      - k 72
+      - count 72
+  a 74:
+    reset: False
+    datadep:
+      - a 68
+    controldep:
+      - k 72
+      - count 72
+  k 74:
+    reset: False
+    datadep:
+      - k 72
+    controldep:
+      - k 72
+      - count 72
+  b 77:
+    datadep:
+      - a 68
+      - k 72
+    controldep:
+      - a 74
+      - k 74

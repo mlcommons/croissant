@@ -87,16 +87,22 @@ croissant:metric a rdf:Property ;
   schema:domainIncludes croissant:EvaluationResult ;
   schema:rangeIncludes schema:Text, schema:URL .
 
+croissant:expectedMetric a rdf:Property ;
+  rdfs:label "expectedMetric" ;
+  rdfs:comment "The metric expected to be calculated for this task." ;
+  schema:domainIncludes croissant:EvaluationSpec ;
+  schema:rangeIncludes schema:Text, schema:URL .
+
 croissant:value a rdf:Property ;
   rdfs:label "value" ;
   rdfs:comment "The value of the result." ;
   schema:domainIncludes croissant:EvaluationResult ;
   schema:rangeIncludes schema:QuantitativeValue, schema:Text, schema:Number .
 
-# Reusing schema:isBasedOn to link a TaskSolution to the TaskProblem it solves.
-schema:isBasedOn schema:domainIncludes croissant:TaskSolution ;
+# Reusing schema:isBasedOn to link a TaskSolution or EvaluationTask to the TaskProblem it addresses.
+schema:isBasedOn schema:domainIncludes croissant:TaskSolution, croissant:EvaluationTask ;
   schema:rangeIncludes schema:URL, croissant:TaskProblem ;
-  rdfs:comment "Required. A reference to the @id of the cr:TaskProblem that this solution addresses. This creates the formal link between the problem and the solution." .
+  rdfs:comment "A reference to the @id of the cr:TaskProblem that this solution or evaluation addresses." .
 
 # Spec Classes
 
@@ -142,3 +148,50 @@ croissant:environment a rdf:Property ;
   rdfs:comment "A description of or link to the required execution environment (e.g., a requirements.txt file)." ;
   schema:domainIncludes croissant:ImplementationSpec ;
   schema:rangeIncludes schema:CreativeWork, schema:URL .
+
+# Test Classes
+
+croissant:Test a rdf:Class ;
+  rdfs:label "Test" ;
+  rdfs:comment "Represents a test or a test suite for verifying an implementation." .
+
+# Test properties
+
+croissant:testCommand a rdf:Property ;
+  rdfs:label "testCommand" ;
+  rdfs:comment "The command to execute the test." ;
+  schema:domainIncludes croissant:Test ;
+  schema:rangeIncludes schema:Text .
+
+# Execution Classes
+
+croissant:ExecutionInfo a rdf:Class ;
+  rdfs:label "ExecutionInfo" ;
+  rdfs:comment "Information about the execution of a task." .
+
+croissant:ExecutionConfig a rdf:Class ;
+  rdfs:label "ExecutionConfig" ;
+  rdfs:comment "Configuration used for execution, such as hyperparameters." ;
+  rdfs:subClassOf croissant:ExecutionInfo .
+
+croissant:ExecutionTrace a rdf:Class ;
+  rdfs:label "ExecutionTrace" ;
+  rdfs:comment "Trace information from execution, such as logs and metrics." ;
+  rdfs:subClassOf croissant:ExecutionInfo .
+
+# Execution properties
+
+croissant:hyperparameter a rdf:Property ;
+  rdfs:label "hyperparameter" ;
+  rdfs:comment "A hyperparameter used in the execution configuration." ;
+  schema:domainIncludes croissant:ExecutionConfig ;
+  schema:rangeIncludes schema:PropertyValue .
+
+# External properties reused or formalized here
+
+schema:valuePattern a rdf:Property ;
+  rdfs:label "valuePattern" ;
+  rdfs:comment "A regular expression pattern to validate field values." ;
+  schema:domainIncludes croissant:Field ;
+  schema:rangeIncludes schema:Text .
+

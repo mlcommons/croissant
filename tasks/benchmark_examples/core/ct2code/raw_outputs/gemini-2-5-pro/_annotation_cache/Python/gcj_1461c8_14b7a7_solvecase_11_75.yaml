@@ -1,0 +1,405 @@
+target_var: vases 55
+other_vars:
+  - tokens 56
+  - tokens 20
+  - tokens 15
+  - dd 18
+early_return: 
+  - 41
+  - 64
+  - 73
+variables:
+  vases 12:
+    datadep: Null
+    controldep: Null
+  peektime 13:
+    datadep: Null
+    controldep: Null
+  stuffV 14:
+    datadep: Null
+    controldep: Null
+  target 16:
+    datadep: Null
+    controldep: Null
+  d 17:
+    datadep: Null
+    controldep:
+      - Null 17
+  Null 17:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 17
+  d 21:
+    reset: False
+    datadep:
+      - d 17
+    controldep:
+      - Null 17
+  V 22:
+    datadep:
+      - d 17
+    controldep:
+      - d 21
+  P 23:
+    datadep: Null
+    controldep:
+      - d 21
+  d 24:
+    reset: False
+    datadep:
+      - d 17
+    controldep:
+      - d 21
+  V 25:
+    datadep: Null
+    controldep:
+      - d 24
+  P 26:
+    datadep: Null
+    controldep:
+      - d 24
+  stuffV 27:
+    reset: False
+    datadep:
+      - stuffV 14
+      - stuffV 48
+      - stuffV 67
+    controldep:
+      - d 24
+  V 28:
+    datadep:
+      - stuffV 14
+      - stuffV 48
+      - stuffV 67
+    controldep:
+      - stuffV 27
+  v 29:
+    datadep:
+      - V 28
+      - vases 12
+      - vases 52
+      - vases 55
+    controldep:
+      - stuffV 27
+  peektime 31:
+    reset: False
+    datadep:
+      - peektime 13
+      - peektime 53
+    controldep:
+      - stuffV 27
+  target 31:
+    reset: False
+    datadep: 
+      - target 16
+    controldep:
+      - stuffV 27
+  d 31:
+    reset: False
+    datadep:
+      - d 17
+    controldep:
+      - stuffV 27
+  V 32:
+    datadep:
+      - target 16
+    controldep:
+      - peektime 31
+      - target 31
+      - d 31
+  P 33:
+    datadep: Null
+    controldep:
+      - peektime 31
+      - target 31
+      - d 31
+  peektime 35:
+    reset: False
+    datadep:
+      - peektime 13
+      - peektime 53
+    controldep:
+      - peektime 31
+      - target 31
+      - d 31
+  V 35:
+    reset: False
+    datadep:
+      - V 28
+    controldep:
+      - peektime 31
+      - target 31
+      - d 31
+  d 35:
+    reset: False
+    datadep:
+      - d 17
+    controldep:
+      - peektime 31
+      - target 31
+      - d 31
+  P 36:
+    datadep: Null
+    controldep:
+      - peektime 35
+      - V 35
+      - d 35
+  P 39:
+    datadep: Null
+    controldep:
+      - peektime 35
+      - V 35
+      - d 35
+  Null 40:
+    reset: False
+    datadep: Null
+    controldep:
+      - peektime 35
+      - V 35
+      - d 35
+      - Null 40
+      - P 41
+      - v 41
+  P 41:
+    reset: False
+    datadep:
+      - P 39
+      - P 43
+    controldep:
+      - Null 40
+  v 41:
+    reset: False
+    datadep:
+      - v 29
+    controldep:
+      - Null 40
+  P 43:
+    datadep:
+      - P 39
+      - P 43
+    controldep:
+      - P 41
+      - v 41
+  V 45:
+    datadep:
+      - target 16
+    controldep:
+      - stuffV 27
+  P 46:
+    datadep: Null
+    controldep:
+      - stuffV 27
+  stuffV 48:
+    datadep: Null
+    controldep: 
+      - Null 17
+  P 49:
+    reset: False
+    datadep:
+      - P 23
+      - P 26
+      - P 33
+      - P 36
+      - P 39
+      - P 43
+      - P 46
+    controldep:
+      - Null 17
+  L 50:
+    datadep: Null
+    controldep:
+      - P 49
+  L 51:
+    datadep: 
+      - L 50
+    controldep:
+      - P 49
+  vases 52:
+    datadep:
+      - V 22
+      - V 25
+      - V 28
+      - V 32
+      - V 45
+      - L 51
+    controldep:
+      - P 49
+  peektime 53:
+    datadep:
+      - d 17
+      - V 22
+      - V 25
+      - V 28
+      - V 32
+      - V 45
+    controldep:
+      - P 49
+  P 54:
+    reset: False
+    datadep:
+      - P 23
+      - P 26
+      - P 33
+      - P 36
+      - P 39
+      - P 43
+      - P 46
+    controldep:
+      - P 49
+  vases 55:
+    datadep:
+      - vases 12
+      - vases 52
+      - vases 55
+      - P 23
+      - P 26
+      - P 33
+      - P 36
+      - P 39
+      - P 43
+      - P 46
+      - V 22
+      - V 25
+      - V 28
+      - V 32
+      - V 45
+    controldep:
+      - P 54
+  m 57:
+    datadep:
+      - vases 52
+      - vases 55
+    controldep:
+      - Null 17
+  m 60:
+    reset: False
+    datadep:
+      - m 57
+    controldep:
+      - Null 17
+  vases 60:
+    reset: False
+    datadep:
+      - vases 12
+      - vases 52
+      - vases 55
+    controldep:
+      - Null 17
+  target 60:
+    reset: False
+    datadep:
+      - target 16
+    controldep:
+      - Null 17
+  m2 61:
+    datadep: Null
+    controldep:
+      - vases 60
+      - target 60
+      - m 60
+  mtime 62:
+    datadep: Null
+    controldep:
+      - vases 60
+      - target 60
+      - m 60
+  V 63:
+    datadep: Null
+    controldep:
+      - vases 60
+      - target 60
+      - m 60
+      - Null 63
+  Null 63:
+    reset: False
+    datadep: Null
+    controldep:
+      - vases 60
+      - target 60
+      - m 60
+      - Null 63
+  V 64:
+    reset: False
+    datadep:
+      - V 63
+    controldep:
+      - Null 63
+  target 64:
+    reset: False
+    datadep:
+      - target 16
+    controldep:
+      - Null 63
+  vases 66:
+    reset: False
+    datadep:
+      - vases 12
+      - vases 52
+      - vases 55
+    controldep:
+      - V 64
+      - target 64
+  V 66:
+    reset: False
+    datadep:
+      - V 63
+    controldep:
+      - V 64
+      - target 64
+  m2 66:
+    reset: False
+    datadep:
+      - m2 61
+      - m2 68
+    controldep:
+      - V 64
+      - target 64
+  peektime 66:
+    reset: False
+    datadep:
+      - peektime 13
+      - peektime 53
+    controldep:
+      - V 64
+      - target 64
+  mtime 66:
+    reset: False
+    datadep:
+      - mtime 62
+      - mtime 69
+    controldep:
+      - V 64
+      - target 64
+  stuffV 67:
+    datadep:
+      - V 63
+    controldep:
+      - vases 66
+      - V 66
+      - m2 66
+      - peektime 66
+      - mtime 66
+  m2 68:
+    datadep:
+      - vases 12
+      - vases 52
+      - vases 55
+      - V 63
+    controldep:
+      - vases 66
+      - V 66
+      - m2 66
+      - peektime 66
+      - mtime 66
+  mtime 69:
+    datadep:
+      - peektime 13
+      - peektime 53
+      - V 63
+    controldep:
+      - vases 66
+      - V 66
+      - m2 66
+      - peektime 66
+      - mtime 66

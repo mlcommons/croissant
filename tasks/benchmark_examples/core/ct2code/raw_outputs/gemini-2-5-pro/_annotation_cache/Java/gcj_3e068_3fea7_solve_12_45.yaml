@@ -1,0 +1,136 @@
+target_var: toSell 37
+other_vars: 
+  - p 21
+  - p 25
+variables: 
+  t 14:
+    datadep: Null
+    controldep: Null
+  i2 16:
+    datadep:
+      - i2 16
+    controldep:
+      - i2 16
+      - t 16
+  t 16:
+    reset: False
+    datadep:
+      - t 14
+    controldep:
+      - i2 16
+      - t 16
+  n 17:
+    datadep: Null
+    controldep:
+      - i2 16
+      - t 16
+  sold 18:
+    datadep:
+      - n 17
+    controldep:
+      - i2 16
+      - t 16
+  i 19:
+    datadep:
+      - i 19
+    controldep:
+      - i2 16
+      - t 16
+      - i 19
+      - n 19
+  n 19:
+    reset: False
+    datadep:
+      - n 17
+    controldep:
+      - i2 16
+      - t 16
+      - i 19
+      - n 19
+  d 20:
+    datadep: Null
+    controldep:
+      - i 19
+      - n 19
+  wants 22:
+    datadep: Null
+    controldep:
+      - i 19
+      - n 19
+  j 23:
+    datadep:
+      - j 23
+    controldep:
+      - i 19
+      - n 19
+      - j 23
+      - d 23
+  d 23:
+    reset: False
+    datadep:
+      - d 20
+    controldep:
+      - i 19
+      - n 19
+      - j 23
+      - d 23
+  x 24:
+    datadep: Null
+    controldep:
+      - j 23
+      - d 23
+  sold 26:
+    reset: False
+    datadep:
+      - sold 18
+      - sold 38
+    controldep:
+      - j 23
+      - d 23
+  x 26:
+    reset: False
+    datadep:
+      - x 24
+    controldep:
+      - j 23
+      - d 23
+  wants 27:
+    datadep:
+      - wants 22
+      - wants 27
+      - x 24
+    controldep:
+      - x 26
+      - sold 26
+  d 30:
+    reset: False
+    datadep:
+      - d 20
+    controldep:
+      - i 19
+      - n 19
+  wants 33:
+    reset: False
+    datadep:
+      - wants 22
+      - wants 27
+    controldep:
+      - d 30
+  idx 36:
+    datadep:
+      - wants 22
+      - wants 27
+    controldep:
+      - wants 33
+  toSell 37:
+    datadep:
+      - wants 22
+      - wants 27
+      - idx 36
+    controldep:
+      - wants 33
+  sold 38:
+    datadep:
+      - toSell 37
+    controldep:
+      - wants 33

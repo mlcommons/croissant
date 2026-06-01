@@ -1,0 +1,61 @@
+target_var: SuccessFlag 19
+other_vars:
+  - flagC 13
+  - flagC 18
+  - flagF 21
+  - flagF 14
+early_return: Null
+variables: 
+  SuccessFlag 19:
+    datadep:
+      - SuccessFlag 19
+      - SuccessFlag 15
+    controldep:
+      - word 17
+      - i 17
+  SuccessFlag 15:
+    datadep: Null
+    controldep: Null
+  word 17:
+    reset: False
+    datadep:
+      - word 11
+    controldep:
+      - word 16
+      - i 16
+  word 16:
+    reset: False
+    datadep:
+      - word 11
+    controldep: 
+      - word 16
+      - i 16
+  word 11:
+    datadep: Null
+    controldep: Null
+  i 16:
+    reset: False
+    datadep: 
+      - i 12
+      - i 23
+    controldep: 
+      - word 16
+      - i 16
+  i 17:
+    reset: False
+    datadep: 
+      - i 12
+      - i 23
+    controldep: 
+      - word 16
+      - i 16
+  i 23:
+    datadep: 
+      - i 12
+      - i 23
+    controldep: 
+      - word 16
+      - i 16
+  i 12:
+    datadep: Null
+    controldep: Null

@@ -1,0 +1,1588 @@
+You are roleplaying as the LLM addressed by the prompts below. Respond as that model would. Hard constraints: do NOT use any tools, do NOT write to any files, do NOT explain what you are doing, do NOT add a preamble like "Here are the missing lines:". Your final assistant message must contain ONLY the literal model output text.
+
+The prompts are delimited below. The SYSTEM PROMPT defines the model role, and the USER MESSAGE is what the user sent.
+
+=== SYSTEM PROMPT ===
+You are helping a student practice memorizing poems. The student will recite a poem, but they may have missed some lines. Your task is to identify exactly which lines are missing from their recitation. List only the missing lines, nothing else.
+=== USER MESSAGE ===
+Here is the complete original poem:
+The Song of Hiawatha is based on the legends and stories of
+many North American Indian tribes, but especially those of the
+Ojibway Indians of northern Michigan, Wisconsin, and Minnesota.
+They were collected by Henry Rowe Schoolcraft, the reknowned
+Schoolcraft married Jane, O-bah-bahm-wawa-ge-zhe-go-qua (The
+fur trader, and O-shau-gus-coday-way-qua (The Woman of the Green
+Prairie), who was a daughter of Waub-o-jeeg (The White Fisher),
+who was Chief of the Ojibway tribe at La Pointe, Wisconsin.
+Jane and her mother are credited with having researched,
+authenticated, and compiled much of the material Schoolcraft
+included in his Algic Researches (1839) and a revision published
+in 1856 as The Myth of Hiawatha.  It was this latter revision
+that Longfellow used as the basis for The Song of Hiawatha.
+Longfellow began Hiawatha on June 25, 1854, he completed it
+soon as the poem was  published its popularity was assured.
+However, it also was severely criticized as a plagiary of the
+Finnish epic poem Kalevala.  Longfellow made no secret of the
+fact that he had used the meter of the Kalevala; but as for the
+legends, he openly gave credit to Schoolcraft in his notes to the
+I would add a personal note here.  My father's roots include
+Ojibway Indians: his mother, Margaret Caroline Davenport, was a
+daughter of Susan des Carreaux, O-gee-em-a-qua (The Chief Woman),
+Finally, my mother used to rock me to sleep reading portions of
+Hiawatha to me, especially:
+"Wah-wah-taysee, little fire-fly,
+Little, flitting, white-fire insect
+Little, dancing, white-fire creature,
+Light me with your little candle,
+Ere upon my bed I lay me,
+Ere in sleep I close my eyelids!"
+Should you ask me, whence these stories?
+Whence these legends and traditions,
+With the odors of the forest
+With the dew and damp of meadows,
+With the curling smoke of wigwams,
+With the rushing of great rivers,
+With their frequent repetitions,
+And their wild reverberations
+As of thunder in the mountains?
+I should answer, I should tell you,
+"From the forests and the prairies,
+From the great lakes of the Northland,
+From the land of the Ojibways,
+From the land of the Dacotahs,
+From the mountains, moors, and fen-lands
+Where the heron, the Shuh-shuh-gah,
+Feeds among the reeds and rushes.
+I repeat them as I heard them
+From the lips of Nawadaha,
+The musician, the sweet singer."
+Should you ask where Nawadaha
+Found these songs so wild and wayward,
+Found these legends and traditions,
+I should answer, I should tell you,
+"In the bird's-nests of the forest,
+In the lodges of the beaver,
+In the hoofprint of the bison,
+In the eyry of the eagle!
+"All the wild-fowl sang them to him,
+In the moorlands and the fen-lands,
+In the melancholy marshes;
+Chetowaik, the plover, sang them,
+Mahng, the loon, the wild-goose, Wawa,
+The blue heron, the Shuh-shuh-gah,
+And the grouse, the Mushkodasa!"
+If still further you should ask me,
+Tell us of this Nawadaha,"
+I should answer your inquiries
+Straightway in such words as follow.
+"In the vale of Tawasentha,
+In the green and silent valley,
+By the pleasant water-courses,
+Dwelt the singer Nawadaha.
+Round about the Indian village
+Spread the meadows and the corn-fields,
+And beyond them stood the forest,
+Stood the groves of singing pine-trees,
+Green in Summer, white in Winter,
+Ever sighing, ever singing.
+"And the pleasant water-courses,
+You could trace them through the valley,
+By the rushing in the Spring-time,
+By the alders in the Summer,
+By the white fog in the Autumn,
+By the black line in the Winter;
+And beside them dwelt the singer,
+In the vale of Tawasentha,
+In the green and silent valley.
+"There he sang of Hiawatha,
+Sang his wondrous birth and being,
+How he prayed and how be fasted,
+How he lived, and toiled, and suffered,
+That the tribes of men might prosper,
+That he might advance his people!"
+Ye who love the haunts of Nature,
+Love the sunshine of the meadow,
+Love the shadow of the forest,
+Love the wind among the branches,
+And the rain-shower and the snow-storm,
+And the rushing of great rivers
+Through their palisades of pine-trees,
+And the thunder in the mountains,
+Whose innumerable echoes
+Flap like eagles in their eyries;--
+Listen to these wild traditions,
+To this Song of Hiawatha!
+Ye who love a nation's legends,
+Love the ballads of a people,
+That like voices from afar off
+Call to us to pause and listen,
+Speak in tones so plain and childlike,
+Scarcely can the ear distinguish
+Whether they are sung or spoken;--
+Listen to this Indian Legend,
+To this Song of Hiawatha!
+Ye whose hearts are fresh and simple,
+Who have faith in God and Nature,
+Who believe that in all ages
+Every human heart is human,
+That in even savage bosoms
+There are longings, yearnings, strivings
+For the good they comprehend not,
+That the feeble hands and helpless,
+Groping blindly in the darkness,
+Touch God's right hand in that darkness
+And are lifted up and strengthened;--
+Listen to this simple story,
+To this Song of Hiawatha!
+Ye, who sometimes, in your rambles
+Through the green lanes of the country,
+Where the tangled barberry-bushes
+Hang their tufts of crimson berries
+Over stone walls gray with mosses,
+Pause by some neglected graveyard,
+For a while to muse, and ponder
+On a half-effaced inscription,
+Written with little skill of song-craft,
+Homely phrases, but each letter
+Full of hope and yet of heart-break,
+Full of all the tender pathos
+Stay and read this rude inscription,
+Read this Song of Hiawatha!
+On the great Red Pipe-stone Quarry,
+Gitche Manito, the mighty,
+He the Master of Life, descending,
+On the red crags of the quarry
+Stood erect, and called the nations,
+Called the tribes of men together.
+From his footprints flowed a river,
+Leaped into the light of morning,
+O'er the precipice plunging downward
+Gleamed like Ishkoodah, the comet.
+And the Spirit, stooping earthward,
+With his finger on the meadow
+Traced a winding pathway for it,
+Saying to it, "Run in this way!"
+From the red stone of the quarry
+With his hand he broke a fragment,
+Moulded it into a pipe-head,
+Shaped and fashioned it with figures;
+From the margin of the river
+Took a long reed for a pipe-stem,
+With its dark green leaves upon it;
+Filled the pipe with bark of willow,
+With the bark of the red willow;
+Breathed upon the neighboring forest,
+Made its great boughs chafe together,
+Till in flame they burst and kindled;
+And erect upon the mountains,
+Gitche Manito, the mighty,
+Smoked the calumet, the Peace-Pipe,
+As a signal to the nations.
+And the smoke rose slowly, slowly,
+Through the tranquil air of morning,
+First a single line of darkness,
+Then a denser, bluer vapor,
+Then a snow-white cloud unfolding,
+Like the tree-tops of the forest,
+Ever rising, rising, rising,
+Till it touched the top of heaven,
+Till it broke against the heaven,
+And rolled outward all around it.
+From the groves of Tuscaloosa,
+From the far-off Rocky Mountains,
+From the Northern lakes and rivers
+All the tribes beheld the signal,
+Saw the distant smoke ascending,
+And the Prophets of the nations
+By the signal of the Peace-Pipe,
+Bending like a wand of willow,
+Waving like a hand that beckons,
+Gitche Manito, the mighty,
+Calls the tribes of men together,
+Calls the warriors to his council!"
+Down the rivers, o'er the prairies,
+Came the warriors of the nations,
+All the warriors drawn together
+By the signal of the Peace-Pipe,
+To the great Red Pipe-stone Quarry,
+And they stood there on the meadow,
+With their weapons and their war-gear,
+Painted like the leaves of Autumn,
+Painted like the sky of morning,
+Wildly glaring at each other;
+In their faces stern defiance,
+In their hearts the feuds of ages,
+The hereditary hatred,
+The ancestral thirst of vengeance.
+Gitche Manito, the mighty,
+The creator of the nations,
+Looked upon them with compassion,
+With paternal love and pity;
+Looked upon their wrath and wrangling
+But as quarrels among children,
+But as feuds and fights of children!
+Over them he stretched his right hand,
+To subdue their stubborn natures,
+To allay their thirst and fever,
+By the shadow of his right hand;
+Spake to them with voice majestic
+As the sound of far-off waters,
+Falling into deep abysses,
+Warning, chiding, spake in this wise:
+"O my children! my poor children!
+Listen to the words of wisdom,
+Listen to the words of warning,
+From the lips of the Great Spirit,
+From the Master of Life, who made you!
+"I have given you lands to hunt in,
+I have given you streams to fish in,
+I have given you bear and bison,
+I have given you roe and reindeer,
+I have given you brant and beaver,
+Filled the marshes full of wild-fowl,
+Filled the rivers full of fishes:
+Why then are you not contented?
+Why then will you hunt each other?
+"I am weary of your quarrels,
+Weary of your wars and bloodshed,
+Weary of your prayers for vengeance,
+Of your wranglings and dissensions;
+All your strength is in your union,
+All your danger is in discord;
+Therefore be at peace henceforward,
+And as brothers live together.
+"I will send a Prophet to you,
+A Deliverer of the nations,
+Who shall guide you and shall teach you,
+Who shall toil and suffer with you.
+If you listen to his counsels,
+You will multiply and prosper;
+If his warnings pass unheeded,
+You will fade away and perish!
+"Bathe now in the stream before you,
+Wash the war-paint from your faces,
+Wash the blood-stains from your fingers,
+Bury your war-clubs and your weapons,
+Break the red stone from this quarry,
+Mould and make it into Peace-Pipes,
+Take the reeds that grow beside you,
+Deck them with your brightest feathers,
+Smoke the calumet together,
+And as brothers live henceforward!"
+Then upon the ground the warriors
+Threw their cloaks and shirts of deer-skin,
+Threw their weapons and their war-gear,
+Leaped into the rushing river,
+Washed the war-paint from their faces.
+Clear above them flowed the water,
+Clear and limpid from the footprints
+Of the Master of Life descending;
+Dark below them flowed the water,
+Soiled and stained with streaks of crimson,
+As if blood were mingled with it!
+From the river came the warriors,
+Clean and washed from all their war-paint;
+On the banks their clubs they buried,
+Buried all their warlike weapons.
+Gitche Manito, the mighty,
+The Great Spirit, the creator,
+Smiled upon his helpless children!
+And in silence all the warriors
+Broke the red stone of the quarry,
+Smoothed and formed it into Peace-Pipes,
+Broke the long reeds by the river,
+Decked them with their brightest feathers,
+And departed each one homeward,
+While the Master of Life, ascending,
+Through the opening of cloud-curtains,
+Through the doorways of the heaven,
+Vanished from before their faces,
+In the smoke that rolled around him,
+Cried the warriors, cried the old men,
+When he came in triumph homeward
+With the sacred Belt of Wampum,
+From the regions of the North-Wind,
+From the kingdom of Wabasso,
+From the land of the White Rabbit.
+He had stolen the Belt of Wampum
+From the neck of Mishe-Mokwa,
+From the Great Bear of the mountains,
+From the terror of the nations,
+As he lay asleep and cumbrous
+On the summit of the mountains,
+Like a rock with mosses on it,
+Spotted brown and gray with mosses.
+Silently he stole upon him
+Till the red nails of the monster
+Almost touched him, almost scared him,
+Till the hot breath of his nostrils
+Warmed the hands of Mudjekeewis,
+As he drew the Belt of Wampum
+Over the round ears, that heard not,
+Over the small eyes, that saw not,
+Over the long nose and nostrils,
+The black muffle of the nostrils,
+Out of which the heavy breathing
+Warmed the hands of Mudjekeewis.
+Then he swung aloft his war-club,
+Shouted loud and long his war-cry,
+Smote the mighty Mishe-Mokwa
+In the middle of the forehead,
+Right between the eyes he smote him.
+With the heavy blow bewildered,
+Rose the Great Bear of the mountains;
+But his knees beneath him trembled,
+And he whimpered like a woman,
+As he reeled and staggered forward,
+As he sat upon his haunches;
+And the mighty Mudjekeewis,
+Standing fearlessly before him,
+Taunted him in loud derision,
+Spake disdainfully in this wise:
+"Hark you, Bear! you are a coward;
+And no Brave, as you pretended;
+Else you would not cry and whimper
+Like a miserable woman!
+Bear! you know our tribes are hostile,
+Long have been at war together;
+Now you find that we are strongest,
+You go sneaking in the forest,
+You go hiding in the mountains!
+Had you conquered me in battle
+Not a groan would I have uttered;
+But you, Bear! sit here and whimper,
+And disgrace your tribe by crying,
+Like a wretched Shaugodaya,
+Like a cowardly old woman!"
+Then again he raised his war-club,
+Smote again the Mishe-Mokwa
+In the middle of his forehead,
+Broke his skull, as ice is broken
+When one goes to fish in Winter.
+Thus was slain the Mishe-Mokwa,
+He the Great Bear of the mountains,
+He the terror of the nations.
+With a shout exclaimed the people,
+Henceforth he shall be the West-Wind,
+And hereafter and forever
+Shall he hold supreme dominion
+Over all the winds of heaven.
+Call him no more Mudjekeewis,
+Thus was Mudjekeewis chosen
+For himself he kept the West-Wind,
+Gave the others to his children;
+Unto Wabun gave the East-Wind,
+And the North-Wind, wild and cruel,
+To the fierce Kabibonokka.
+Young and beautiful was Wabun;
+He it was who brought the morning,
+He it was whose silver arrows
+Chased the dark o'er hill and valley;
+He it was whose cheeks were painted
+With the brightest streaks of crimson,
+And whose voice awoke the village,
+Called the deer, and called the hunter.
+Though the birds sang gayly to him,
+Though the wild-flowers of the meadow
+Filled the air with odors for him;
+Though the forests and the rivers
+Sang and shouted at his coming,
+Still his heart was sad within him,
+For he was alone in heaven.
+But one morning, gazing earthward,
+While the village still was sleeping,
+And the fog lay on the river,
+Like a ghost, that goes at sunrise,
+He beheld a maiden walking
+All alone upon a meadow,
+Gathering water-flags and rushes
+By a river in the meadow.
+Every morning, gazing earthward,
+Still the first thing he beheld there
+Was her blue eyes looking at him,
+Two blue lakes among the rushes.
+And he loved the lonely maiden,
+Who thus waited for his coming;
+For they both were solitary,
+She on earth and he in heaven.
+And he wooed her with caresses,
+Wooed her with his smile of sunshine,
+With his flattering words he wooed her,
+With his sighing and his singing,
+Gentlest whispers in the branches,
+Softest music, sweetest odors,
+Till he drew her to his bosom,
+Folded in his robes of crimson,
+Till into a star he changed her,
+Trembling still upon his bosom;
+And forever in the heavens
+They are seen together walking,
+But the fierce Kabibonokka
+Had his dwelling among icebergs,
+In the everlasting snow-drifts,
+In the kingdom of Wabasso,
+In the land of the White Rabbit.
+He it was whose hand in Autumn
+Painted all the trees with scarlet,
+Stained the leaves with red and yellow;
+He it was who sent the snow-flake,
+Sifting, hissing through the forest,
+Froze the ponds, the lakes, the rivers,
+Drove the loon and sea-gull southward,
+Drove the cormorant and curlew
+To their nests of sedge and sea-tang
+In the realms of Shawondasee.
+Once the fierce Kabibonokka
+Issued from his lodge of snow-drifts
+From his home among the icebergs,
+And his hair, with snow besprinkled,
+Streamed behind him like a river,
+Like a black and wintry river,
+As he howled and hurried southward,
+Over frozen lakes and moorlands.
+There among the reeds and rushes
+Found he Shingebis, the diver,
+Trailing strings of fish behind him,
+O'er the frozen fens and moorlands,
+Lingering still among the moorlands,
+Though his tribe had long departed
+To the land of Shawondasee.
+Cried the fierce Kabibonokka,
+"Who is this that dares to brave me?
+Dares to stay in my dominions,
+When the Wawa has departed,
+When the wild-goose has gone southward,
+And the heron, the Shuh-shuh-gah,
+Long ago departed southward?
+I will go into his wigwam,
+I will put his smouldering fire out!"
+And at night Kabibonokka,
+To the lodge came wild and wailing,
+Heaped the snow in drifts about it,
+Shouted down into the smoke-flue,
+Shook the lodge-poles in his fury,
+Flapped the curtain of the door-way.
+Shingebis, the diver, feared not,
+Shingebis, the diver, cared not;
+Four great logs had he for firewood,
+One for each moon of the winter,
+And for food the fishes served him.
+By his blazing fire he sat there,
+Warm and merry, eating, laughing,
+You are but my fellow-mortal!"
+Then Kabibonokka entered,
+And though Shingebis, the diver,
+Felt his presence by the coldness,
+Felt his icy breath upon him,
+Still he did not cease his singing,
+Still he did not leave his laughing,
+Only turned the log a little,
+Only made the fire burn brighter,
+Made the sparks fly up the smoke-flue.
+From Kabibonokka's forehead,
+From his snow-besprinkled tresses,
+Drops of sweat fell fast and heavy,
+Making dints upon the ashes,
+As along the eaves of lodges,
+As from drooping boughs of hemlock,
+Drips the melting snow in spring-time,
+Making hollows in the snow-drifts.
+Till at last he rose defeated,
+Could not bear the heat and laughter,
+Could not bear the merry singing,
+But rushed headlong through the door-way,
+Stamped upon the crusted snow-drifts,
+Stamped upon the lakes and rivers,
+Made the snow upon them harder,
+Made the ice upon them thicker,
+Challenged Shingebis, the diver,
+To come forth and wrestle with him,
+To come forth and wrestle naked
+On the frozen fens and moorlands.
+Forth went Shingebis, the diver,
+Wrestled all night with the North-Wind,
+Wrestled naked on the moorlands
+With the fierce Kabibonokka,
+Till his panting breath grew fainter,
+Till his frozen grasp grew feebler,
+Till he reeled and staggered backward,
+And retreated, baffled, beaten,
+To the kingdom of Wabasso,
+To the land of the White Rabbit,
+Hearing still the gusty laughter,
+Hearing Shingebis, the diver,
+You are but my fellow-mortal!"
+Shawondasee, fat and lazy,
+Had his dwelling far to southward,
+In the drowsy, dreamy sunshine,
+In the never-ending Summer.
+He it was who sent the wood-birds,
+Sent the robin, the Opechee,
+Sent the bluebird, the Owaissa,
+Sent the Shawshaw, sent the swallow,
+Sent the wild-goose, Wawa, northward,
+Sent the melons and tobacco,
+And the grapes in purple clusters.
+From his pipe the smoke ascending
+Filled the sky with haze and vapor,
+Filled the air with dreamy softness,
+Gave a twinkle to the water,
+Touched the rugged hills with smoothness,
+Brought the tender Indian Summer
+To the melancholy north-land,
+In the dreary Moon of Snow-shoes.
+Listless, careless Shawondasee!
+In his life he had one shadow,
+In his heart one sorrow had he.
+Once, as he was gazing northward,
+Far away upon a prairie
+He beheld a maiden standing,
+Saw a tall and slender maiden
+All alone upon a prairie;
+Brightest green were all her garments,
+And her hair was like the sunshine.
+Day by day he gazed upon her,
+Day by day he sighed with passion,
+Day by day his heart within him
+Grew more hot with love and longing
+For the maid with yellow tresses.
+But he was too fat and lazy
+To bestir himself and woo her.
+Yes, too indolent and easy
+To pursue her and persuade her;
+So he only gazed upon her,
+Only sat and sighed with passion
+For the maiden of the prairie.
+Till one morning, looking northward,
+He beheld her yellow tresses
+Changed and covered o'er with whiteness,
+Covered as with whitest snow-flakes.
+"Ah! my brother from the North-land,
+From the kingdom of Wabasso,
+From the land of the White Rabbit!
+You have stolen the maiden from me,
+You have laid your hand upon her,
+You have wooed and won my maiden,
+With your stories of the North-land!"
+Thus the wretched Shawondasee
+Breathed into the air his sorrow;
+And the South-Wind o'er the prairie
+Wandered warm with sighs of passion,
+With the sighs of Shawondasee,
+Till the air seemed full of snow-flakes,
+Full of thistle-down the prairie,
+And the maid with hair like sunshine
+Vanished from his sight forever;
+Never more did Shawondasee
+See the maid with yellow tresses!
+Poor, deluded Shawondasee!
+'T was no woman that you gazed at,
+'T was no maiden that you sighed for,
+'T was the prairie dandelion
+That through all the dreamy Summer
+You had gazed at with such longing,
+You had sighed for with such passion,
+And had puffed away forever,
+Blown into the air with sighing.
+Ah! deluded Shawondasee!
+Thus the Four Winds were divided
+Thus the sons of Mudjekeewis
+Had their stations in the heavens,
+At the corners of the heavens;
+For himself the West-Wind only
+Kept the mighty Mudjekeewis.
+Hiawatha's Childhood
+Downward through the evening twilight,
+In the days that are forgotten,
+In the unremembered ages,
+From the full moon fell Nokomis,
+Fell the beautiful Nokomis,
+She a wife, but not a mother.
+She was sporting with her women,
+Swinging in a swing of grape-vines,
+When her rival the rejected,
+Full of jealousy and hatred,
+Cut the leafy swing asunder,
+Cut in twain the twisted grape-vines,
+And Nokomis fell affrighted
+Downward through the evening twilight,
+On the Muskoday, the meadow,
+On the prairie full of blossoms.
+"See! a star falls!" said the people;
+"From the sky a star is falling!"
+There among the ferns and mosses,
+There among the prairie lilies,
+On the Muskoday, the meadow,
+In the moonlight and the starlight,
+Fair Nokomis bore a daughter.
+And she called her name Wenonah,
+As the first-born of her daughters.
+And the daughter of Nokomis
+Grew up like the prairie lilies,
+Grew a tall and slender maiden,
+With the beauty of the moonlight,
+With the beauty of the starlight.
+And Nokomis warned her often,
+Saying oft, and oft repeating,
+"Oh, beware of Mudjekeewis,
+Listen not to what he tells you;
+Lie not down upon the meadow,
+Stoop not down among the lilies,
+Lest the West-Wind come and harm you!"
+But she heeded not the warning,
+Heeded not those words of wisdom,
+And the West-Wind came at evening,
+Walking lightly o'er the prairie,
+Whispering to the leaves and blossoms,
+Bending low the flowers and grasses,
+Found the beautiful Wenonah,
+Lying there among the lilies,
+Wooed her with his words of sweetness,
+Wooed her with his soft caresses,
+Till she bore a son in sorrow,
+Bore a son of love and sorrow.
+Thus was born my Hiawatha,
+Thus was born the child of wonder;
+But the daughter of Nokomis,
+Hiawatha's gentle mother,
+In her anguish died deserted
+By the West-Wind, false and faithless,
+By the heartless Mudjekeewis.
+For her daughter long and loudly
+Wailed and wept the sad Nokomis;
+"Oh that I were dead!" she murmured,
+"Oh that I were dead, as thou art!
+No more work, and no more weeping,
+By the shores of Gitche Gumee,
+By the shining Big-Sea-Water,
+Stood the wigwam of Nokomis,
+Dark behind it rose the forest,
+Rose the black and gloomy pine-trees,
+Rose the firs with cones upon them;
+Bright before it beat the water,
+Beat the clear and sunny water,
+Beat the shining Big-Sea-Water.
+There the wrinkled old Nokomis
+Nursed the little Hiawatha,
+Rocked him in his linden cradle,
+Bedded soft in moss and rushes,
+Safely bound with reindeer sinews;
+Stilled his fretful wail by saying,
+"Hush! the Naked Bear will hear thee!"
+Lulled him into slumber, singing,
+"Ewa-yea! my little owlet!
+Who is this, that lights the wigwam?
+With his great eyes lights the wigwam?
+Ewa-yea! my little owlet!"
+Many things Nokomis taught him
+Of the stars that shine in heaven;
+Showed him Ishkoodah, the comet,
+Ishkoodah, with fiery tresses;
+Showed the Death-Dance of the spirits,
+Warriors with their plumes and war-clubs,
+Flaring far away to northward
+In the frosty nights of Winter;
+Showed the broad white road in heaven,
+Pathway of the ghosts, the shadows,
+Running straight across the heavens,
+Crowded with the ghosts, the shadows.
+At the door on summer evenings
+Sat the little Hiawatha;
+Heard the whispering of the pine-trees,
+Heard the lapping of the waters,
+Sounds of music, words of wonder;
+"Minne-wawa!" said the Pine-trees,
+"Mudway-aushka!" said the water.
+Saw the fire-fly, Wah-wah-taysee,
+Flitting through the dusk of evening,
+With the twinkle of its candle
+Lighting up the brakes and bushes,
+And he sang the song of children,
+Sang the song Nokomis taught him:
+"Wah-wah-taysee, little fire-fly,
+Little, flitting, white-fire insect,
+Little, dancing, white-fire creature,
+Light me with your little candle,
+Ere upon my bed I lay me,
+Ere in sleep I close my eyelids!"
+Saw the moon rise from the water
+Rippling, rounding from the water,
+Saw the flecks and shadows on it,
+Whispered, "What is that, Nokomis?"
+And the good Nokomis answered:
+"Once a warrior, very angry,
+Seized his grandmother, and threw her
+Up into the sky at midnight;
+Right against the moon he threw her;
+'T is her body that you see there."
+Saw the rainbow in the heaven,
+In the eastern sky, the rainbow,
+Whispered, "What is that, Nokomis?"
+And the good Nokomis answered:
+"'T is the heaven of flowers you see there;
+All the wild-flowers of the forest,
+All the lilies of the prairie,
+When on earth they fade and perish,
+Blossom in that heaven above us."
+When he heard the owls at midnight,
+Hooting, laughing in the forest,
+"What is that?" he cried in terror,
+"What is that," he said, "Nokomis?"
+And the good Nokomis answered:
+"That is but the owl and owlet,
+Talking in their native language,
+Talking, scolding at each other."
+Then the little Hiawatha
+Learned of every bird its language,
+Learned their names and all their secrets,
+How they built their nests in Summer,
+Where they hid themselves in Winter,
+Talked with them whene'er he met them,
+Called them "Hiawatha's Chickens."
+Of all beasts he learned the language,
+Learned their names and all their secrets,
+How the beavers built their lodges,
+Where the squirrels hid their acorns,
+How the reindeer ran so swiftly,
+Why the rabbit was so timid,
+Talked with them whene'er he met them,
+Called them "Hiawatha's Brothers."
+Then Iagoo, the great boaster,
+He the marvellous story-teller,
+He the traveller and the talker,
+He the friend of old Nokomis,
+From a branch of ash he made it,
+From an oak-bough made the arrows,
+Tipped with flint, and winged with feathers,
+And the cord he made of deer-skin.
+Then he said to Hiawatha:
+"Go, my son, into the forest,
+Where the red deer herd together,
+Kill for us a famous roebuck,
+Kill for us a deer with antlers!"
+Forth into the forest straightway
+All alone walked Hiawatha
+Proudly, with his bow and arrows;
+And the birds sang round him, o'er him,
+"Do not shoot us, Hiawatha!"
+Sang the robin, the Opechee,
+Sang the bluebird, the Owaissa,
+"Do not shoot us, Hiawatha!"
+Up the oak-tree, close beside him,
+Sprang the squirrel, Adjidaumo,
+In and out among the branches,
+Coughed and chattered from the oak-tree,
+Laughed, and said between his laughing,
+"Do not shoot me, Hiawatha!"
+And the rabbit from his pathway
+Leaped aside, and at a distance
+Sat erect upon his haunches,
+Half in fear and half in frolic,
+Saying to the little hunter,
+"Do not shoot me, Hiawatha!"
+But he heeded not, nor heard them,
+For his thoughts were with the red deer;
+On their tracks his eyes were fastened,
+Leading downward to the river,
+To the ford across the river,
+And as one in slumber walked he.
+Hidden in the alder-bushes,
+There he waited till the deer came,
+Till he saw two antlers lifted,
+Saw two eyes look from the thicket,
+Saw two nostrils point to windward,
+And a deer came down the pathway,
+Flecked with leafy light and shadow.
+And his heart within him fluttered,
+Trembled like the leaves above him,
+Like the birch-leaf palpitated,
+As the deer came down the pathway.
+Then, upon one knee uprising,
+Hiawatha aimed an arrow;
+Scarce a twig moved with his motion,
+Scarce a leaf was stirred or rustled,
+But the wary roebuck started,
+Stamped with all his hoofs together,
+Listened with one foot uplifted,
+Leaped as if to meet the arrow;
+Ah! the singing, fatal arrow,
+Like a wasp it buzzed and stung him!
+Dead he lay there in the forest,
+By the ford across the river;
+Beat his timid heart no longer,
+But the heart of Hiawatha
+Throbbed and shouted and exulted,
+As he bore the red deer homeward,
+Hailed his coming with applauses.
+From the red deer's hide Nokomis
+Made a cloak for Hiawatha,
+From the red deer's flesh Nokomis
+Made a banquet to his honor.
+All the village came and feasted,
+All the guests praised Hiawatha,
+Called him Strong-Heart, Soan-ge-taha!
+Called him Loon-Heart, Mahn-go-taysee!
+Out of childhood into manhood
+Now had grown my Hiawatha,
+Skilled in all the craft of hunters,
+Learned in all the lore of old men,
+In all youthful sports and pastimes,
+In all manly arts and labors.
+Swift of foot was Hiawatha;
+
+Now, here is my recitation which may be missing some lines:
+The Song of Hiawatha is based on the legends and stories of
+many North American Indian tribes, but especially those of the
+They were collected by Henry Rowe Schoolcraft, the reknowned
+Schoolcraft married Jane, O-bah-bahm-wawa-ge-zhe-go-qua (The
+fur trader, and O-shau-gus-coday-way-qua (The Woman of the Green
+who was Chief of the Ojibway tribe at La Pointe, Wisconsin.
+Jane and her mother are credited with having researched,
+authenticated, and compiled much of the material Schoolcraft
+included in his Algic Researches (1839) and a revision published
+in 1856 as The Myth of Hiawatha.  It was this latter revision
+that Longfellow used as the basis for The Song of Hiawatha.
+Longfellow began Hiawatha on June 25, 1854, he completed it
+soon as the poem was  published its popularity was assured.
+However, it also was severely criticized as a plagiary of the
+Finnish epic poem Kalevala.  Longfellow made no secret of the
+fact that he had used the meter of the Kalevala; but as for the
+legends, he openly gave credit to Schoolcraft in his notes to the
+Ojibway Indians: his mother, Margaret Caroline Davenport, was a
+daughter of Susan des Carreaux, O-gee-em-a-qua (The Chief Woman),
+Finally, my mother used to rock me to sleep reading portions of
+Hiawatha to me, especially:
+"Wah-wah-taysee, little fire-fly,
+Little, flitting, white-fire insect
+Light me with your little candle,
+Ere in sleep I close my eyelids!"
+Should you ask me, whence these stories?
+Whence these legends and traditions,
+With the odors of the forest
+With the dew and damp of meadows,
+With the curling smoke of wigwams,
+With the rushing of great rivers,
+With their frequent repetitions,
+And their wild reverberations
+As of thunder in the mountains?
+I should answer, I should tell you,
+"From the forests and the prairies,
+From the great lakes of the Northland,
+From the land of the Ojibways,
+From the land of the Dacotahs,
+From the mountains, moors, and fen-lands
+Where the heron, the Shuh-shuh-gah,
+Feeds among the reeds and rushes.
+I repeat them as I heard them
+From the lips of Nawadaha,
+The musician, the sweet singer."
+Should you ask where Nawadaha
+Found these songs so wild and wayward,
+Found these legends and traditions,
+I should answer, I should tell you,
+"In the bird's-nests of the forest,
+In the lodges of the beaver,
+In the hoofprint of the bison,
+In the eyry of the eagle!
+In the moorlands and the fen-lands,
+In the melancholy marshes;
+Chetowaik, the plover, sang them,
+Mahng, the loon, the wild-goose, Wawa,
+The blue heron, the Shuh-shuh-gah,
+And the grouse, the Mushkodasa!"
+If still further you should ask me,
+Tell us of this Nawadaha,"
+I should answer your inquiries
+Straightway in such words as follow.
+In the green and silent valley,
+By the pleasant water-courses,
+Dwelt the singer Nawadaha.
+Round about the Indian village
+Spread the meadows and the corn-fields,
+And beyond them stood the forest,
+Stood the groves of singing pine-trees,
+Green in Summer, white in Winter,
+Ever sighing, ever singing.
+"And the pleasant water-courses,
+You could trace them through the valley,
+By the alders in the Summer,
+By the white fog in the Autumn,
+And beside them dwelt the singer,
+In the vale of Tawasentha,
+In the green and silent valley.
+"There he sang of Hiawatha,
+Sang his wondrous birth and being,
+How he prayed and how be fasted,
+How he lived, and toiled, and suffered,
+That the tribes of men might prosper,
+That he might advance his people!"
+Ye who love the haunts of Nature,
+Love the sunshine of the meadow,
+Love the shadow of the forest,
+Love the wind among the branches,
+And the rain-shower and the snow-storm,
+And the rushing of great rivers
+Through their palisades of pine-trees,
+And the thunder in the mountains,
+Whose innumerable echoes
+Listen to these wild traditions,
+To this Song of Hiawatha!
+Ye who love a nation's legends,
+Love the ballads of a people,
+That like voices from afar off
+Call to us to pause and listen,
+Speak in tones so plain and childlike,
+Scarcely can the ear distinguish
+Whether they are sung or spoken;--
+Listen to this Indian Legend,
+Ye whose hearts are fresh and simple,
+Who have faith in God and Nature,
+Who believe that in all ages
+Every human heart is human,
+That in even savage bosoms
+There are longings, yearnings, strivings
+For the good they comprehend not,
+And are lifted up and strengthened;--
+Listen to this simple story,
+To this Song of Hiawatha!
+Ye, who sometimes, in your rambles
+Hang their tufts of crimson berries
+Over stone walls gray with mosses,
+Pause by some neglected graveyard,
+For a while to muse, and ponder
+Written with little skill of song-craft,
+Homely phrases, but each letter
+Full of hope and yet of heart-break,
+Full of all the tender pathos
+Stay and read this rude inscription,
+Read this Song of Hiawatha!
+On the great Red Pipe-stone Quarry,
+Gitche Manito, the mighty,
+He the Master of Life, descending,
+On the red crags of the quarry
+Stood erect, and called the nations,
+Called the tribes of men together.
+From his footprints flowed a river,
+Leaped into the light of morning,
+O'er the precipice plunging downward
+Gleamed like Ishkoodah, the comet.
+And the Spirit, stooping earthward,
+With his finger on the meadow
+Traced a winding pathway for it,
+Saying to it, "Run in this way!"
+From the red stone of the quarry
+With his hand he broke a fragment,
+Shaped and fashioned it with figures;
+From the margin of the river
+Took a long reed for a pipe-stem,
+With its dark green leaves upon it;
+Filled the pipe with bark of willow,
+With the bark of the red willow;
+Breathed upon the neighboring forest,
+Made its great boughs chafe together,
+Till in flame they burst and kindled;
+And erect upon the mountains,
+Gitche Manito, the mighty,
+Smoked the calumet, the Peace-Pipe,
+As a signal to the nations.
+And the smoke rose slowly, slowly,
+Through the tranquil air of morning,
+First a single line of darkness,
+Then a denser, bluer vapor,
+Then a snow-white cloud unfolding,
+Like the tree-tops of the forest,
+Ever rising, rising, rising,
+Till it touched the top of heaven,
+Till it broke against the heaven,
+And rolled outward all around it.
+From the groves of Tuscaloosa,
+From the far-off Rocky Mountains,
+From the Northern lakes and rivers
+All the tribes beheld the signal,
+Saw the distant smoke ascending,
+And the Prophets of the nations
+By the signal of the Peace-Pipe,
+Gitche Manito, the mighty,
+Calls the tribes of men together,
+Calls the warriors to his council!"
+Down the rivers, o'er the prairies,
+Came the warriors of the nations,
+All the warriors drawn together
+By the signal of the Peace-Pipe,
+To the great Red Pipe-stone Quarry,
+And they stood there on the meadow,
+With their weapons and their war-gear,
+Painted like the leaves of Autumn,
+Wildly glaring at each other;
+In their faces stern defiance,
+In their hearts the feuds of ages,
+The hereditary hatred,
+The ancestral thirst of vengeance.
+Gitche Manito, the mighty,
+The creator of the nations,
+Looked upon them with compassion,
+With paternal love and pity;
+But as quarrels among children,
+But as feuds and fights of children!
+Over them he stretched his right hand,
+To subdue their stubborn natures,
+To allay their thirst and fever,
+By the shadow of his right hand;
+Spake to them with voice majestic
+As the sound of far-off waters,
+Falling into deep abysses,
+Warning, chiding, spake in this wise:
+"O my children! my poor children!
+Listen to the words of warning,
+From the lips of the Great Spirit,
+From the Master of Life, who made you!
+"I have given you lands to hunt in,
+I have given you streams to fish in,
+I have given you bear and bison,
+I have given you roe and reindeer,
+Filled the marshes full of wild-fowl,
+Filled the rivers full of fishes:
+Why then are you not contented?
+Why then will you hunt each other?
+"I am weary of your quarrels,
+Weary of your prayers for vengeance,
+Of your wranglings and dissensions;
+All your strength is in your union,
+All your danger is in discord;
+"I will send a Prophet to you,
+A Deliverer of the nations,
+Who shall guide you and shall teach you,
+Who shall toil and suffer with you.
+If you listen to his counsels,
+You will multiply and prosper;
+"Bathe now in the stream before you,
+Wash the war-paint from your faces,
+Wash the blood-stains from your fingers,
+Bury your war-clubs and your weapons,
+Break the red stone from this quarry,
+Mould and make it into Peace-Pipes,
+Take the reeds that grow beside you,
+Deck them with your brightest feathers,
+Smoke the calumet together,
+And as brothers live henceforward!"
+Threw their cloaks and shirts of deer-skin,
+Threw their weapons and their war-gear,
+Leaped into the rushing river,
+Clear above them flowed the water,
+Clear and limpid from the footprints
+Of the Master of Life descending;
+Dark below them flowed the water,
+As if blood were mingled with it!
+From the river came the warriors,
+Clean and washed from all their war-paint;
+On the banks their clubs they buried,
+Buried all their warlike weapons.
+Gitche Manito, the mighty,
+The Great Spirit, the creator,
+Smiled upon his helpless children!
+And in silence all the warriors
+Broke the red stone of the quarry,
+Smoothed and formed it into Peace-Pipes,
+Broke the long reeds by the river,
+Decked them with their brightest feathers,
+And departed each one homeward,
+While the Master of Life, ascending,
+Through the opening of cloud-curtains,
+Through the doorways of the heaven,
+Vanished from before their faces,
+In the smoke that rolled around him,
+When he came in triumph homeward
+With the sacred Belt of Wampum,
+From the regions of the North-Wind,
+From the kingdom of Wabasso,
+From the land of the White Rabbit.
+He had stolen the Belt of Wampum
+From the neck of Mishe-Mokwa,
+From the Great Bear of the mountains,
+From the terror of the nations,
+As he lay asleep and cumbrous
+Like a rock with mosses on it,
+Silently he stole upon him
+Till the red nails of the monster
+Almost touched him, almost scared him,
+Warmed the hands of Mudjekeewis,
+As he drew the Belt of Wampum
+Over the round ears, that heard not,
+Over the small eyes, that saw not,
+Over the long nose and nostrils,
+The black muffle of the nostrils,
+Out of which the heavy breathing
+Warmed the hands of Mudjekeewis.
+Then he swung aloft his war-club,
+Shouted loud and long his war-cry,
+Smote the mighty Mishe-Mokwa
+In the middle of the forehead,
+Right between the eyes he smote him.
+With the heavy blow bewildered,
+Rose the Great Bear of the mountains;
+But his knees beneath him trembled,
+And he whimpered like a woman,
+As he reeled and staggered forward,
+As he sat upon his haunches;
+And the mighty Mudjekeewis,
+Standing fearlessly before him,
+Taunted him in loud derision,
+Spake disdainfully in this wise:
+"Hark you, Bear! you are a coward;
+And no Brave, as you pretended;
+Else you would not cry and whimper
+Like a miserable woman!
+Bear! you know our tribes are hostile,
+Long have been at war together;
+Now you find that we are strongest,
+You go sneaking in the forest,
+You go hiding in the mountains!
+Not a groan would I have uttered;
+But you, Bear! sit here and whimper,
+And disgrace your tribe by crying,
+Like a wretched Shaugodaya,
+Then again he raised his war-club,
+Smote again the Mishe-Mokwa
+In the middle of his forehead,
+Broke his skull, as ice is broken
+He the Great Bear of the mountains,
+With a shout exclaimed the people,
+Henceforth he shall be the West-Wind,
+And hereafter and forever
+Shall he hold supreme dominion
+Over all the winds of heaven.
+Call him no more Mudjekeewis,
+Thus was Mudjekeewis chosen
+For himself he kept the West-Wind,
+Unto Wabun gave the East-Wind,
+And the North-Wind, wild and cruel,
+To the fierce Kabibonokka.
+Young and beautiful was Wabun;
+He it was who brought the morning,
+He it was whose silver arrows
+Chased the dark o'er hill and valley;
+He it was whose cheeks were painted
+And whose voice awoke the village,
+Called the deer, and called the hunter.
+Though the birds sang gayly to him,
+Though the wild-flowers of the meadow
+Filled the air with odors for him;
+Though the forests and the rivers
+Sang and shouted at his coming,
+Still his heart was sad within him,
+For he was alone in heaven.
+But one morning, gazing earthward,
+While the village still was sleeping,
+And the fog lay on the river,
+Like a ghost, that goes at sunrise,
+He beheld a maiden walking
+All alone upon a meadow,
+Gathering water-flags and rushes
+By a river in the meadow.
+Every morning, gazing earthward,
+Still the first thing he beheld there
+Was her blue eyes looking at him,
+Two blue lakes among the rushes.
+And he loved the lonely maiden,
+Who thus waited for his coming;
+For they both were solitary,
+She on earth and he in heaven.
+And he wooed her with caresses,
+Wooed her with his smile of sunshine,
+With his flattering words he wooed her,
+With his sighing and his singing,
+Gentlest whispers in the branches,
+Softest music, sweetest odors,
+Till he drew her to his bosom,
+Folded in his robes of crimson,
+Trembling still upon his bosom;
+And forever in the heavens
+They are seen together walking,
+But the fierce Kabibonokka
+Had his dwelling among icebergs,
+In the everlasting snow-drifts,
+In the kingdom of Wabasso,
+In the land of the White Rabbit.
+He it was whose hand in Autumn
+Painted all the trees with scarlet,
+Stained the leaves with red and yellow;
+He it was who sent the snow-flake,
+Sifting, hissing through the forest,
+Froze the ponds, the lakes, the rivers,
+Drove the loon and sea-gull southward,
+Drove the cormorant and curlew
+To their nests of sedge and sea-tang
+In the realms of Shawondasee.
+Once the fierce Kabibonokka
+Issued from his lodge of snow-drifts
+From his home among the icebergs,
+And his hair, with snow besprinkled,
+Streamed behind him like a river,
+Like a black and wintry river,
+As he howled and hurried southward,
+Over frozen lakes and moorlands.
+There among the reeds and rushes
+Found he Shingebis, the diver,
+Trailing strings of fish behind him,
+O'er the frozen fens and moorlands,
+Lingering still among the moorlands,
+Though his tribe had long departed
+To the land of Shawondasee.
+Cried the fierce Kabibonokka,
+"Who is this that dares to brave me?
+Dares to stay in my dominions,
+When the wild-goose has gone southward,
+And the heron, the Shuh-shuh-gah,
+Long ago departed southward?
+I will go into his wigwam,
+I will put his smouldering fire out!"
+And at night Kabibonokka,
+To the lodge came wild and wailing,
+Heaped the snow in drifts about it,
+Shouted down into the smoke-flue,
+Shook the lodge-poles in his fury,
+Flapped the curtain of the door-way.
+Shingebis, the diver, feared not,
+Shingebis, the diver, cared not;
+Four great logs had he for firewood,
+One for each moon of the winter,
+And for food the fishes served him.
+By his blazing fire he sat there,
+Warm and merry, eating, laughing,
+You are but my fellow-mortal!"
+Then Kabibonokka entered,
+And though Shingebis, the diver,
+Felt his presence by the coldness,
+Still he did not cease his singing,
+Still he did not leave his laughing,
+Only turned the log a little,
+Only made the fire burn brighter,
+Made the sparks fly up the smoke-flue.
+From Kabibonokka's forehead,
+From his snow-besprinkled tresses,
+Drops of sweat fell fast and heavy,
+Making dints upon the ashes,
+As along the eaves of lodges,
+As from drooping boughs of hemlock,
+Drips the melting snow in spring-time,
+Making hollows in the snow-drifts.
+Till at last he rose defeated,
+Could not bear the heat and laughter,
+Could not bear the merry singing,
+But rushed headlong through the door-way,
+Stamped upon the crusted snow-drifts,
+Stamped upon the lakes and rivers,
+Made the snow upon them harder,
+Made the ice upon them thicker,
+Challenged Shingebis, the diver,
+To come forth and wrestle with him,
+To come forth and wrestle naked
+On the frozen fens and moorlands.
+Forth went Shingebis, the diver,
+Wrestled naked on the moorlands
+With the fierce Kabibonokka,
+Till his panting breath grew fainter,
+Till his frozen grasp grew feebler,
+Till he reeled and staggered backward,
+And retreated, baffled, beaten,
+To the kingdom of Wabasso,
+To the land of the White Rabbit,
+Hearing Shingebis, the diver,
+You are but my fellow-mortal!"
+Had his dwelling far to southward,
+In the drowsy, dreamy sunshine,
+In the never-ending Summer.
+He it was who sent the wood-birds,
+Sent the robin, the Opechee,
+Sent the bluebird, the Owaissa,
+Sent the Shawshaw, sent the swallow,
+Sent the wild-goose, Wawa, northward,
+Sent the melons and tobacco,
+From his pipe the smoke ascending
+Filled the sky with haze and vapor,
+Filled the air with dreamy softness,
+Gave a twinkle to the water,
+Touched the rugged hills with smoothness,
+Brought the tender Indian Summer
+To the melancholy north-land,
+In the dreary Moon of Snow-shoes.
+Listless, careless Shawondasee!
+In his life he had one shadow,
+In his heart one sorrow had he.
+Once, as he was gazing northward,
+Far away upon a prairie
+He beheld a maiden standing,
+Saw a tall and slender maiden
+All alone upon a prairie;
+Brightest green were all her garments,
+And her hair was like the sunshine.
+Day by day he gazed upon her,
+Day by day he sighed with passion,
+Day by day his heart within him
+Grew more hot with love and longing
+For the maid with yellow tresses.
+But he was too fat and lazy
+To bestir himself and woo her.
+Yes, too indolent and easy
+To pursue her and persuade her;
+So he only gazed upon her,
+Only sat and sighed with passion
+For the maiden of the prairie.
+He beheld her yellow tresses
+Changed and covered o'er with whiteness,
+Covered as with whitest snow-flakes.
+From the kingdom of Wabasso,
+From the land of the White Rabbit!
+You have stolen the maiden from me,
+You have laid your hand upon her,
+You have wooed and won my maiden,
+With your stories of the North-land!"
+Thus the wretched Shawondasee
+Breathed into the air his sorrow;
+And the South-Wind o'er the prairie
+Wandered warm with sighs of passion,
+With the sighs of Shawondasee,
+Till the air seemed full of snow-flakes,
+Full of thistle-down the prairie,
+And the maid with hair like sunshine
+Vanished from his sight forever;
+Never more did Shawondasee
+See the maid with yellow tresses!
+Poor, deluded Shawondasee!
+'T was no woman that you gazed at,
+'T was no maiden that you sighed for,
+'T was the prairie dandelion
+That through all the dreamy Summer
+You had gazed at with such longing,
+You had sighed for with such passion,
+And had puffed away forever,
+Blown into the air with sighing.
+Ah! deluded Shawondasee!
+Thus the sons of Mudjekeewis
+At the corners of the heavens;
+For himself the West-Wind only
+Kept the mighty Mudjekeewis.
+Downward through the evening twilight,
+In the days that are forgotten,
+From the full moon fell Nokomis,
+Fell the beautiful Nokomis,
+She a wife, but not a mother.
+She was sporting with her women,
+Swinging in a swing of grape-vines,
+When her rival the rejected,
+Full of jealousy and hatred,
+Cut the leafy swing asunder,
+Cut in twain the twisted grape-vines,
+And Nokomis fell affrighted
+Downward through the evening twilight,
+On the Muskoday, the meadow,
+On the prairie full of blossoms.
+On the Muskoday, the meadow,
+In the moonlight and the starlight,
+Fair Nokomis bore a daughter.
+And she called her name Wenonah,
+As the first-born of her daughters.
+And the daughter of Nokomis
+Grew up like the prairie lilies,
+Grew a tall and slender maiden,
+With the beauty of the starlight.
+And Nokomis warned her often,
+Saying oft, and oft repeating,
+"Oh, beware of Mudjekeewis,
+Listen not to what he tells you;
+Lie not down upon the meadow,
+Stoop not down among the lilies,
+Lest the West-Wind come and harm you!"
+But she heeded not the warning,
+Heeded not those words of wisdom,
+And the West-Wind came at evening,
+Walking lightly o'er the prairie,
+Whispering to the leaves and blossoms,
+Bending low the flowers and grasses,
+Found the beautiful Wenonah,
+Lying there among the lilies,
+Wooed her with his words of sweetness,
+Wooed her with his soft caresses,
+Till she bore a son in sorrow,
+Bore a son of love and sorrow.
+Thus was born my Hiawatha,
+Thus was born the child of wonder;
+But the daughter of Nokomis,
+Hiawatha's gentle mother,
+In her anguish died deserted
+By the West-Wind, false and faithless,
+By the heartless Mudjekeewis.
+For her daughter long and loudly
+Wailed and wept the sad Nokomis;
+"Oh that I were dead!" she murmured,
+"Oh that I were dead, as thou art!
+No more work, and no more weeping,
+By the shores of Gitche Gumee,
+By the shining Big-Sea-Water,
+Stood the wigwam of Nokomis,
+Dark behind it rose the forest,
+Rose the firs with cones upon them;
+Beat the clear and sunny water,
+Beat the shining Big-Sea-Water.
+There the wrinkled old Nokomis
+Nursed the little Hiawatha,
+Rocked him in his linden cradle,
+Safely bound with reindeer sinews;
+Stilled his fretful wail by saying,
+"Hush! the Naked Bear will hear thee!"
+Lulled him into slumber, singing,
+"Ewa-yea! my little owlet!
+Who is this, that lights the wigwam?
+With his great eyes lights the wigwam?
+Ewa-yea! my little owlet!"
+Many things Nokomis taught him
+Of the stars that shine in heaven;
+Showed him Ishkoodah, the comet,
+Ishkoodah, with fiery tresses;
+Showed the Death-Dance of the spirits,
+Warriors with their plumes and war-clubs,
+Flaring far away to northward
+In the frosty nights of Winter;
+Showed the broad white road in heaven,
+Pathway of the ghosts, the shadows,
+Crowded with the ghosts, the shadows.
+At the door on summer evenings
+Sat the little Hiawatha;
+Heard the whispering of the pine-trees,
+Heard the lapping of the waters,
+Sounds of music, words of wonder;
+"Minne-wawa!" said the Pine-trees,
+"Mudway-aushka!" said the water.
+Saw the fire-fly, Wah-wah-taysee,
+Flitting through the dusk of evening,
+With the twinkle of its candle
+And he sang the song of children,
+Sang the song Nokomis taught him:
+"Wah-wah-taysee, little fire-fly,
+Little, flitting, white-fire insect,
+Little, dancing, white-fire creature,
+Light me with your little candle,
+Ere upon my bed I lay me,
+Ere in sleep I close my eyelids!"
+Saw the moon rise from the water
+Rippling, rounding from the water,
+Saw the flecks and shadows on it,
+And the good Nokomis answered:
+"Once a warrior, very angry,
+Seized his grandmother, and threw her
+Up into the sky at midnight;
+Right against the moon he threw her;
+'T is her body that you see there."
+Saw the rainbow in the heaven,
+In the eastern sky, the rainbow,
+Whispered, "What is that, Nokomis?"
+And the good Nokomis answered:
+"'T is the heaven of flowers you see there;
+All the wild-flowers of the forest,
+All the lilies of the prairie,
+Blossom in that heaven above us."
+When he heard the owls at midnight,
+Hooting, laughing in the forest,
+"What is that?" he cried in terror,
+"What is that," he said, "Nokomis?"
+And the good Nokomis answered:
+"That is but the owl and owlet,
+Talking in their native language,
+Talking, scolding at each other."
+Then the little Hiawatha
+Learned of every bird its language,
+Learned their names and all their secrets,
+How they built their nests in Summer,
+Where they hid themselves in Winter,
+Talked with them whene'er he met them,
+Called them "Hiawatha's Chickens."
+Of all beasts he learned the language,
+Learned their names and all their secrets,
+How the beavers built their lodges,
+Where the squirrels hid their acorns,
+How the reindeer ran so swiftly,
+Why the rabbit was so timid,
+Talked with them whene'er he met them,
+Called them "Hiawatha's Brothers."
+Then Iagoo, the great boaster,
+He the marvellous story-teller,
+He the traveller and the talker,
+He the friend of old Nokomis,
+From a branch of ash he made it,
+From an oak-bough made the arrows,
+Tipped with flint, and winged with feathers,
+And the cord he made of deer-skin.
+Then he said to Hiawatha:
+"Go, my son, into the forest,
+Where the red deer herd together,
+Kill for us a famous roebuck,
+Kill for us a deer with antlers!"
+Forth into the forest straightway
+All alone walked Hiawatha
+Proudly, with his bow and arrows;
+"Do not shoot us, Hiawatha!"
+Sang the robin, the Opechee,
+Sang the bluebird, the Owaissa,
+"Do not shoot us, Hiawatha!"
+Up the oak-tree, close beside him,
+Sprang the squirrel, Adjidaumo,
+In and out among the branches,
+Coughed and chattered from the oak-tree,
+Laughed, and said between his laughing,
+"Do not shoot me, Hiawatha!"
+And the rabbit from his pathway
+Leaped aside, and at a distance
+Sat erect upon his haunches,
+Half in fear and half in frolic,
+Saying to the little hunter,
+"Do not shoot me, Hiawatha!"
+But he heeded not, nor heard them,
+For his thoughts were with the red deer;
+On their tracks his eyes were fastened,
+Leading downward to the river,
+To the ford across the river,
+And as one in slumber walked he.
+Hidden in the alder-bushes,
+There he waited till the deer came,
+Till he saw two antlers lifted,
+Saw two eyes look from the thicket,
+Saw two nostrils point to windward,
+Flecked with leafy light and shadow.
+And his heart within him fluttered,
+Trembled like the leaves above him,
+Like the birch-leaf palpitated,
+As the deer came down the pathway.
+Then, upon one knee uprising,
+Hiawatha aimed an arrow;
+Scarce a twig moved with his motion,
+Scarce a leaf was stirred or rustled,
+But the wary roebuck started,
+Stamped with all his hoofs together,
+Listened with one foot uplifted,
+Leaped as if to meet the arrow;
+Ah! the singing, fatal arrow,
+Like a wasp it buzzed and stung him!
+Dead he lay there in the forest,
+Beat his timid heart no longer,
+But the heart of Hiawatha
+Throbbed and shouted and exulted,
+Hailed his coming with applauses.
+From the red deer's hide Nokomis
+Made a cloak for Hiawatha,
+From the red deer's flesh Nokomis
+Made a banquet to his honor.
+All the village came and feasted,
+All the guests praised Hiawatha,
+Called him Strong-Heart, Soan-ge-taha!
+Called him Loon-Heart, Mahn-go-taysee!
+Out of childhood into manhood
+Now had grown my Hiawatha,
+Skilled in all the craft of hunters,
+Learned in all the lore of old men,
+In all youthful sports and pastimes,
+In all manly arts and labors.
+Swift of foot was Hiawatha;
+
+What lines did I miss? Please list only the missing lines, nothing else.
+
+Now respond as the model would, following the system prompt and user message exactly.

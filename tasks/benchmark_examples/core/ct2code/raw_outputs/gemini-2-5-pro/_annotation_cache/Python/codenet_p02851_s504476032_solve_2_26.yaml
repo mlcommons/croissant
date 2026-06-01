@@ -1,0 +1,231 @@
+target_var: res 24
+other_vars: Null
+early_return: 
+  - 14
+  - 22
+variables: 
+  n 2:
+    datadep: Null
+    controldep: Null
+  k 2:
+    datadep: Null
+    controldep: Null
+  a_list 2:
+    datadep: Null
+    controldep: Null
+  b_list 3:
+    datadep:
+      - a_list 2
+    controldep: Null
+  res_dict 4:
+    datadep: Null
+    controldep: Null
+  res_dict 5:
+    datadep:
+      - res_dict 4
+    controldep: Null
+  r 6:
+    datadep: Null
+    controldep: Null
+  i 7:
+    datadep:
+      - n 2
+    controldep:
+      - n 7
+  n 7:
+    reset: False
+    datadep:
+      - n 2
+    controldep:
+      - n 7
+  r 8:
+    datadep:
+      - r 6
+      - r 9
+      - b_list 3
+      - i 7
+    controldep:
+      - n 7
+  r 9:
+    datadep:
+      - r 8
+      - k 2
+    controldep:
+      - n 7
+  res_dict 10:
+    datadep:
+      - r 9
+      - i 7
+      - res_dict 5
+      - res_dict 10
+    controldep:
+      - n 7
+  res 11:
+    datadep: Null
+    controldep: Null
+  r 12:
+    datadep:
+      - res_dict 5
+      - res_dict 10
+    controldep:
+      - res_dict 12
+  res_dict 12:
+    reset: False
+    datadep:
+      - res_dict 5
+      - res_dict 10
+    controldep:
+      - res_dict 12
+  r_list 13:
+    datadep:
+      - res_dict 5
+      - res_dict 10
+      - r 12
+    controldep:
+      - res_dict 12
+  r_list 14:
+    reset: False
+    datadep:
+      - r_list 13
+    controldep:
+      - res_dict 12
+  i 16:
+    datadep: Null
+    controldep:
+      - r_list 14
+  j 17:
+    datadep: Null
+    controldep:
+      - r_list 14
+  i 18:
+    reset: False
+    datadep:
+      - i 16
+      - i 25
+    controldep:
+      - r_list 14
+      - i 18
+      - r_list 18
+  r_list 18:
+    reset: False
+    datadep:
+      - r_list 13
+    controldep:
+      - r_list 14
+      - i 18
+      - r_list 18
+  j 19:
+    reset: False
+    datadep:
+      - j 17
+      - j 21
+    controldep:
+      - i 18
+      - r_list 18
+  r_list 19:
+    reset: False
+    datadep:
+      - r_list 13
+    controldep:
+      - i 18
+      - r_list 18
+  r_list 20:
+    reset: False
+    datadep:
+      - r_list 13
+    controldep:
+      - j 19
+      - r_list 19
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+      - j 22
+      - r_list 22
+  j 20:
+    reset: False
+    datadep:
+      - j 17
+      - j 21
+    controldep:
+      - j 19
+      - r_list 19
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+      - j 22
+      - r_list 22
+  i 20:
+    reset: False
+    datadep:
+      - i 16
+      - i 25
+    controldep:
+      - j 19
+      - r_list 19
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+      - j 22
+      - r_list 22
+  k 20:
+    reset: False
+    datadep:
+      - k 2
+    controldep:
+      - j 19
+      - r_list 19
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+      - j 22
+      - r_list 22
+  j 21:
+    datadep:
+      - j 17
+      - j 21
+    controldep:
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+  j 22:
+    reset: False
+    datadep:
+      - j 17
+      - j 21
+    controldep:
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+  r_list 22:
+    reset: False
+    datadep:
+      - r_list 13
+    controldep:
+      - r_list 20
+      - i 20
+      - j 20
+      - k 20
+  res 24:
+    datadep:
+      - i 16
+      - i 25
+      - j 17
+      - j 21
+      - res 11
+      - res 24
+    controldep:
+      - i 18
+      - r_list 18
+  i 25:
+    datadep:
+      - i 16
+      - i 25
+    controldep:
+      - i 18
+      - r_list 18
