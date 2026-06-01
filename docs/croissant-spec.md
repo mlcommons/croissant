@@ -542,7 +542,7 @@ For live datasets, the Croissant boolean property `isLiveDataset` should be set 
 
 ##### Example 1: Daily refreshes
 
-A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historicallyorganized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
+A financial dataset corresponding to stock prices is now being used for machine learning. To make analysis more modular, the dataset has been historically organized by year. The dataset was initiated in 2000 and has been constantly updated till today. Each year has a CSV file of the format "stock_data\_&lt;YEAR>.csv", where &lt;YEAR> is the year of the data. The data for the most recent year is updated daily to account for new data. This directory of these files looks something like this:
 
 ```text
 stock_data_2000.csv
