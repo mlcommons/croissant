@@ -14,7 +14,7 @@ import csscompressor  # type: ignore
 from etils import epath
 import jsmin  # type: ignore
 
-from mlcroissant.scripts.visualize import visualize_js
+from mlcroissant.scripts.visualize_utils import visualize_js
 
 flags.DEFINE_string(
     "changed_files",
