@@ -148,8 +148,8 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
     <td>
       rai:dataLimitations<br>
       rai:dataCollection<br>
-      rai:useCases<br>
-      rai:dataReleaseMaintenance
+      rai:dataUseCases<br>
+      rai:dataReleaseMaintenancePlan
     </td>
     <td>
       cr:<a href="http://schema.org/distribution">distribution</a><br>
@@ -199,7 +199,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
     <td>
       rai:dataLimitations<br>
       rai:dataBiases<br>
-      rai:useCases<br>
+      <br>
       rai:personalSensitiveInformation
     </td>
     <td></td>
@@ -219,9 +219,8 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
     <td>Use case 6: Regulatory compliance</td>
     <td>
       rai:personalSensitiveInformation<br>
-      rai:useCases<br>
-      rai:dataReleaseMaintenance<br>
-      rai:dataManipulationProtocol<br>
+      <br>
+      rai:dataReleaseMaintenancePlan<br>
       rai:dataManipulationProtocol
     </td>
     <td></td>
@@ -282,7 +281,7 @@ This information can be relevant across fields, including research, businesses, 
 
 ### Use case 7: Inclusion
 
-In relation to the creation of the datasets, as well as the labeling and annotations for datasets, representation of cultural and social demographics of humans is often missing. Documentation on these properties, e.g. representation of people with disabilities, would promote inclusivity and diversity of the datasets, and enable wider adoption and accessibility. Lacking representativeness can potentially affect the ML system's performance, for example, resulting in gender-biased classifiers. This includes, profiling humans involved in the dataset creation (active and passive actors) by defining demographic information (rai:annotatorsDemographics) and, if the dataset represents or is gathered from people, the target of the collection process (_dataCollectionDemographics_).
+In relation to the creation of the datasets, as well as the labeling and annotations for datasets, representation of cultural and social demographics of humans is often missing. Documentation on these properties, e.g. representation of people with disabilities, would promote inclusivity and diversity of the datasets, and enable wider adoption and accessibility. Lacking representativeness can potentially affect the ML system's performance, for example, resulting in gender-biased classifiers. This includes, profiling humans involved in the dataset creation (active and passive actors) by defining demographic information (rai:annotatorDemographics) and, if the dataset represents or is gathered from people, the target of the collection process (_dataCollectionDemographics_).
 
 ## RAI property information
 
