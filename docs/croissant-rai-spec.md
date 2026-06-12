@@ -170,7 +170,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
   <tr>
     <td>Use case 2: Data labeling</td>
     <td>
-      rai:annotationPlatform<br>
+      rai:dataAnnotationPlatform<br>
       rai:annotationsPerItem<br>
       rai:annotatorDemographics<br>
       rai:machineAnnotationTools
@@ -185,7 +185,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
   <tr>
     <td>Use case 3: Participatory data</td>
     <td>
-      rai:annotationPlatform<br>
+      rai:dataAnnotationPlatform<br>
       rai:annotatorDemographics
     </td>
     <td></td>
@@ -270,7 +270,7 @@ Compliance officers and legal teams require data-related information to **assess
 - _Sensitive and personal identifiable information_: A description of the types of data present in the dataset, such as personally identifiable information, sensitive data, or any other categories that may be subject to privacy regulations in the GDPR Art. 5. (rai:personalSensitiveInformation)
 - _Data purposes and limitations_: Information about the intended use of the data and the specific purposes for which it was collected (rai:dataUseCases), and the potential generalization limits and warning (rai:dataLimitations).
 - _Data collection processes_: Information about how the data have been collected. For instance, the fields rai:dataCollection and rai:dataCollectionType give the user space to explain the collection process, and the rai:dataCollectionTimeFrame describes the collection's time span.
-- _Data annotation processes_: Information about the annotation process (rai:annotationProtocol) along with the platforms used during them (rai:dataAnnotationPlatform) and also the guidelines and validation methods applied over the labels (rai:dataAnnotationAnalysis)
+- _Data annotation processes_: Information about the annotation process (rai:dataAnnotationProtocol) along with the platforms used during them (rai:dataAnnotationPlatform) and also the guidelines and validation methods applied over the labels (rai:dataAnnotationAnalysis)
 - Data retention policies: The duration for which the data will be stored and retained, considering the legal requirements and data protection laws.
 - Data access control: Information about who has access to the data, the level of access privileges, and any measures implemented to control data access.
 - Data anonymization or pseudonymization: If applicable, details about any anonymization or pseudonymization techniques.
