@@ -148,8 +148,8 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
     <td>
       rai:dataLimitations<br>
       rai:dataCollection<br>
-      rai:useCases<br>
-      rai:dataReleaseMaintenance
+      rai:dataUseCases<br>
+      rai:dataReleaseMaintenancePlan
     </td>
     <td>
       cr:<a href="http://schema.org/distribution">distribution</a><br>
@@ -170,7 +170,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
   <tr>
     <td>Use case 2: Data labeling</td>
     <td>
-      rai:annotationPlatform<br>
+      rai:dataAnnotationPlatform<br>
       rai:annotationsPerItem<br>
       rai:annotatorDemographics<br>
       rai:machineAnnotationTools
@@ -185,7 +185,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
   <tr>
     <td>Use case 3: Participatory data</td>
     <td>
-      rai:annotationPlatform<br>
+      rai:dataAnnotationPlatform<br>
       rai:annotatorDemographics
     </td>
     <td></td>
@@ -199,7 +199,7 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
     <td>
       rai:dataLimitations<br>
       rai:dataBiases<br>
-      rai:useCases<br>
+      <br>
       rai:personalSensitiveInformation
     </td>
     <td></td>
@@ -219,9 +219,8 @@ The following table provides an overview of Croissant RAI vocabulary and maps th
     <td>Use case 6: Regulatory compliance</td>
     <td>
       rai:personalSensitiveInformation<br>
-      rai:useCases<br>
-      rai:dataReleaseMaintenance<br>
-      rai:dataManipulationProtocol<br>
+      <br>
+      rai:dataReleaseMaintenancePlan<br>
       rai:dataManipulationProtocol
     </td>
     <td></td>
@@ -270,7 +269,7 @@ Compliance officers and legal teams require data-related information to **assess
 - _Sensitive and personal identifiable information_: A description of the types of data present in the dataset, such as personally identifiable information, sensitive data, or any other categories that may be subject to privacy regulations in the GDPR Art. 5. (rai:personalSensitiveInformation)
 - _Data purposes and limitations_: Information about the intended use of the data and the specific purposes for which it was collected (rai:dataUseCases), and the potential generalization limits and warning (rai:dataLimitations).
 - _Data collection processes_: Information about how the data have been collected. For instance, the fields rai:dataCollection and rai:dataCollectionType give the user space to explain the collection process, and the rai:dataCollectionTimeFrame describes the collection's time span.
-- _Data annotation processes_: Information about the annotation process (rai:annotationProtocol) along with the platforms used during them (rai:dataAnnotationPlatform) and also the guidelines and validation methods applied over the labels (rai:dataAnnotationAnalysis)
+- _Data annotation processes_: Information about the annotation process (rai:dataAnnotationProtocol) along with the platforms used during them (rai:dataAnnotationPlatform) and also the guidelines and validation methods applied over the labels (rai:dataAnnotationAnalysis)
 - Data retention policies: The duration for which the data will be stored and retained, considering the legal requirements and data protection laws.
 - Data access control: Information about who has access to the data, the level of access privileges, and any measures implemented to control data access.
 - Data anonymization or pseudonymization: If applicable, details about any anonymization or pseudonymization techniques.
@@ -282,7 +281,7 @@ This information can be relevant across fields, including research, businesses, 
 
 ### Use case 7: Inclusion
 
-In relation to the creation of the datasets, as well as the labeling and annotations for datasets, representation of cultural and social demographics of humans is often missing. Documentation on these properties, e.g. representation of people with disabilities, would promote inclusivity and diversity of the datasets, and enable wider adoption and accessibility. Lacking representativeness can potentially affect the ML system's performance, for example, resulting in gender-biased classifiers. This includes, profiling humans involved in the dataset creation (active and passive actors) by defining demographic information (rai:annotatorsDemographics) and, if the dataset represents or is gathered from people, the target of the collection process (_dataCollectionDemographics_).
+In relation to the creation of the datasets, as well as the labeling and annotations for datasets, representation of cultural and social demographics of humans is often missing. Documentation on these properties, e.g. representation of people with disabilities, would promote inclusivity and diversity of the datasets, and enable wider adoption and accessibility. Lacking representativeness can potentially affect the ML system's performance, for example, resulting in gender-biased classifiers. This includes, profiling humans involved in the dataset creation (active and passive actors) by defining demographic information (rai:annotatorDemographics) and, if the dataset represents or is gathered from people, the target of the collection process (_dataCollectionDemographics_).
 
 ## RAI property information
 
@@ -563,7 +562,7 @@ As the size of language models continues to increase, there is a growing demand 
   "dct:conformsTo": "http://mlcommons.org/croissant-RAI/1.0",
   "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
   "rai:dataCollectionType": "Web Scraping",
-  "rai:dataCollectionRaw": "Files containing code data.",
+  "rai:dataCollectionRawData": "Files containing code data.",
   "rai:dataCollectionTimeFrameStart": {
     "@value": "2015-01-01T00:00:00",
     "dataType": "sc:Date"
