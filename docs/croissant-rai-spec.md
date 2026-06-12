@@ -562,7 +562,7 @@ As the size of language models continues to increase, there is a growing demand 
   "dct:conformsTo": "http://mlcommons.org/croissant-RAI/1.0",
   "rai:dataCollection": "The collection process is composed of the collection of 220.92M active GitHub repository names from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB",
   "rai:dataCollectionType": "Web Scraping",
-  "rai:dataCollectionRaw": "Files containing code data.",
+  "rai:dataCollectionRawData": "Files containing code data.",
   "rai:dataCollectionTimeFrameStart": {
     "@value": "2015-01-01T00:00:00",
     "dataType": "sc:Date"
