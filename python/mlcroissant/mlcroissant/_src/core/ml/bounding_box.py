@@ -14,9 +14,9 @@ def parse(value: Any) -> list[float]:
         The 4-float list that composes the bounding box.
     """
     if isinstance(value, list):
-        pass
+        elements = value
     elif isinstance(value, str):
-        value = value.split(" ")
+        elements = value.split(" ")
     else:
         raise ValueError(
             "Wrong format for a bounding box. Expected: str | list. Got:"
@@ -24,15 +24,15 @@ def parse(value: Any) -> list[float]:
             " an issue on GitHub."
         )
     try:
-        value = [float(element) for element in value]
+        coordinates = [float(element) for element in elements]
     except ValueError as e:
         raise ValueError(
             "Bounding boxes should have coordinates that can be converted to floats."
-            f" Got {value}"
+            f" Got {elements}"
         ) from e
-    if len(value) != 4:
+    if len(coordinates) != 4:
         raise ValueError(
             "Bounding box could not be parsed. Bounding boxes should have a length of"
-            f" 4. Got {len(value)}"
+            f" 4. Got {len(coordinates)}"
         )
-    return value
+    return coordinates
