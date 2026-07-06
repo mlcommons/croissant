@@ -200,7 +200,6 @@ def load_records_with_beam_and_test_equality(
         ["recipes/read_from_tar.json", "images_with_annotations", -1],
         ["simple-join/metadata.json", "publications_by_user", -1],
         ["simple-parquet/metadata.json", "persons", -1],
-        ["json-join/metadata.json", "items_with_prices", 5],
     ],
 )
 def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
@@ -230,6 +229,7 @@ def test_beam_hermetic_loading(version, dataset_name, record_set_name):
         ["coco2014-mini/metadata.json", "images", -1, None],
         ["coco2014-mini/metadata.json", "split_enums", -1, None],
         ["simple-split/metadata.json", "data", -1, {"data/split": "train"}],
+        ["json-join/metadata.json", "items_with_prices", 5, None],
     ],
 )
 def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
