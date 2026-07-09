@@ -4,7 +4,7 @@ import dataclasses
 import enum
 import gzip
 import io
-import json
+import os
 import pathlib
 from typing import Any
 
@@ -19,7 +19,8 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
-from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
+from mlcroissant._src.operation_graph.operations.parse_json import JsonlReader
+from mlcroissant._src.operation_graph.operations.parse_json import JsonReader
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
@@ -163,6 +164,7 @@ class Read(Operation):
         if EncodingFormat.DICOM in encoding_formats:
             return _read_dicom_file(filepath)
 
+        reader: JsonReader | JsonlReader | None = None
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
                 # TODO(https://github.com/mlcommons/croissant/issues/635).
@@ -174,16 +176,24 @@ class Read(Operation):
                 elif encoding_format == EncodingFormat.TSV:
                     return pd.read_csv(read_file, sep="\t")
                 elif encoding_format == EncodingFormat.JSON:
-                    json_content = json.load(read_file)
+                    reader = JsonReader(self.fields)
                     if reading_method == ReadingMethod.JSON:
-                        return parse_json_content(json_content, self.fields)
-                    else:
-                        # Raw files are returned as a one-line pd.DataFrame.
-                        return pd.DataFrame({
-                            FileProperty.content: [json_content],
-                        })
-                elif encoding_format == EncodingFormat.JSON_LINES:
-                    return pd.read_json(read_file, lines=True)
+                        return reader.parse(read_file)
+                    return reader.raw(read_file)
+                elif encoding_format in (
+                    EncodingFormat.JSON_LINES,
+                    EncodingFormat.FHIR,
+                ):
+                    # Enable FHIR validation if env var set
+                    validate_fhir = (
+                        encoding_format == EncodingFormat.FHIR
+                        and os.getenv("CROISSANT_VALIDATE_FHIR", "").lower()
+                        in ("1", "true")
+                    )
+                    reader = JsonlReader(self.fields, validate_fhir=validate_fhir)
+                    if reading_method == ReadingMethod.JSON:
+                        return reader.parse(read_file)
+                    return reader.raw(read_file)
                 elif encoding_format == EncodingFormat.PARQUET:
                     try:
                         df = pd.read_parquet(read_file)
