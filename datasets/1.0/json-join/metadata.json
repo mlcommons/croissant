@@ -1,0 +1,166 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "json-join",
+  "description": "Two JSON files joined via references. Regression test for issue #1030.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://mlcommons.org",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "items",
+      "name": "items",
+      "contentUrl": "data/items.json",
+      "encodingFormat": "application/json",
+      "sha256": "09c7a515d9d49fa6f597f9103c2b54c2c13f27c4a033f780700957a18b17dcb6"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "prices",
+      "name": "prices",
+      "contentUrl": "data/prices.json",
+      "encodingFormat": "application/json",
+      "sha256": "288538f1f97505cda0679672a52087610ea9bfc0c7e4f6a99e8137f129c75a18"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "items_recordset",
+      "name": "items_recordset",
+      "description": "List of items.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "items_recordset/id",
+          "name": "items_recordset/id",
+          "description": "Item identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "items"
+            },
+            "extract": {
+              "jsonPath": "$[*].id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "items_recordset/name",
+          "name": "items_recordset/name",
+          "description": "Item name.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "items"
+            },
+            "extract": {
+              "jsonPath": "$[*].name"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "items_with_prices",
+      "name": "items_with_prices",
+      "description": "Items joined with their prices.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "items_with_prices/id",
+          "name": "items_with_prices/id",
+          "description": "Item identifier (join key).",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "items_recordset/id"
+            }
+          },
+          "source": {
+            "fileObject": {
+              "@id": "prices"
+            },
+            "extract": {
+              "jsonPath": "$[*].id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "items_with_prices/price",
+          "name": "items_with_prices/price",
+          "description": "Item price.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "prices"
+            },
+            "extract": {
+              "jsonPath": "$[*].price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "items_with_prices/name",
+          "name": "items_with_prices/name",
+          "description": "Item name (from items via join).",
+          "dataType": "sc:Text",
+          "source": {
+            "field": {
+              "@id": "items_recordset/name"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

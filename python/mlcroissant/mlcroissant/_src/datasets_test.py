@@ -229,6 +229,7 @@ def test_beam_hermetic_loading(version, dataset_name, record_set_name):
         ["coco2014-mini/metadata.json", "images", -1, None],
         ["coco2014-mini/metadata.json", "split_enums", -1, None],
         ["simple-split/metadata.json", "data", -1, {"data/split": "train"}],
+        ["json-join/metadata.json", "items_with_prices", 5, None],
     ],
 )
 def test_hermetic_loading_1_0(dataset_name, record_set_name, num_records, filters):
