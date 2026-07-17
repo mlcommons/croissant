@@ -1,0 +1,184 @@
+target_var: column_digits 26
+other_vars: 
+  - same_column_counter 9
+  - same_column_counter 29
+  - same_row_counter 8
+  - same_row_counter 22
+  - trail 10
+  - trail 15
+  - result 3
+  - row_digits 4
+  - row_digits 19
+  - i 17
+early_return: 
+  - 18
+  - 21
+  - 25
+  - 28
+variables: 
+  pinax 1:
+    datadep: Null
+    controldep: Null
+  size 2:
+    datadep:
+      - pinax 1
+    controldep: Null
+  column_digits 5:
+    datadep: Null
+    controldep: Null
+  size 6:
+    reset: False
+    datadep:
+      - size 2
+    controldep:
+      - size 6
+  column_digits 7:
+    datadep:
+      - column_digits 5
+      - column_digits 7
+    controldep:
+      - size 6
+  row 11:
+    datadep:
+      - size 2
+    controldep:
+      - size 11
+  size 11:
+    reset: False
+    datadep:
+      - size 2
+    controldep:
+      - size 11
+  column 13:
+    datadep:
+      - size 2
+    controldep:
+      - size 11
+      - size 13
+  size 13:
+    reset: False
+    datadep:
+      - size 2
+    controldep:
+      - size 11
+      - size 13
+  column_digits 24:
+    reset: False
+    datadep:
+      - column_digits 5
+      - column_digits 7
+      - column_digits 26
+    controldep:
+      - size 13
+      - column_digits 24
+      - column 24
+      - column_digits 28
+      - column 28
+      - i 28
+      - pinax 28
+      - row 28
+  column 24:
+    reset: False
+    datadep:
+      - column 13
+    controldep:
+      - size 13
+      - column_digits 24
+      - column 24
+      - column_digits 28
+      - column 28
+      - i 28
+      - pinax 28
+      - row 28
+  i 24:
+    datadep:
+      - column_digits 5
+      - column_digits 7
+      - column_digits 26
+      - column 13
+    controldep:
+      - size 13
+      - column_digits 24
+      - column 24
+      - column_digits 28
+      - column 28
+      - i 28
+      - pinax 28
+      - row 28
+  i 25:
+    reset: False
+    datadep:
+      - i 24
+    controldep:
+      - column_digits 24
+      - column 24
+  column_digits 25:
+    reset: False
+    datadep:
+      - column_digits 5
+      - column_digits 7
+      - column_digits 26
+    controldep:
+      - column_digits 24
+      - column 24
+  column 25:
+    reset: False
+    datadep:
+      - column 13
+    controldep:
+      - column_digits 24
+      - column 24
+  column_digits 26:
+    datadep:
+      - column_digits 5
+      - column_digits 7
+      - column_digits 26
+      - column 13
+      - pinax 1
+      - row 11
+    controldep:
+      - i 25
+      - column_digits 25
+      - column 25
+  column_digits 28:
+    reset: False
+    datadep:
+      - column_digits 5
+      - column_digits 7
+      - column_digits 26
+    controldep:
+      - i 25
+      - column_digits 25
+      - column 25
+  i 28:
+    reset: False
+    datadep:
+      - i 24
+    controldep:
+      - i 25
+      - column_digits 25
+      - column 25
+  column 28:
+    reset: False
+    datadep:
+      - column 13
+    controldep:
+      - i 25
+      - column_digits 25
+      - column 25
+  row 28:
+    reset: False
+    datadep:
+      - row 11
+    controldep:
+      - i 25
+      - column_digits 25
+      - column 25
+  pinax 28:
+    reset: False
+    datadep:
+      - pinax 1
+    controldep:
+      - i 25
+      - column_digits 25
+      - column 25

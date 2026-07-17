@@ -1,0 +1,137 @@
+target_var: disp 19
+other_vars: 
+  - maxi 17
+  - devolver 6
+  - devolver 18
+variables: 
+  N 2:
+    datadep: Null
+    controldep: Null
+  disp 2:
+    datadep: Null
+    controldep: Null
+  cuentas 2:
+    datadep: Null
+    controldep: Null
+  pasados 3:
+    datadep: Null
+    controldep: Null
+  pasados 4:
+    reset: False
+    datadep:
+      - pasados 3
+      - pasados 5
+    controldep:
+      - pasados 4
+      - N 4
+  N 4:
+    reset: False
+    datadep:
+      - N 2
+    controldep:
+      - pasados 4
+      - N 4
+  pasados 5:
+    datadep:
+      - pasados 3
+      - pasados 5
+    controldep:
+      - pasados 4
+      - N 4
+  flavours 7:
+    datadep: Null
+    controldep:
+      - pasados 4
+      - N 4
+  D 8:
+    datadep:
+      - flavours 7 
+    controldep:
+      - pasados 4
+      - N 4
+  D 9:
+    reset: False
+    datadep:
+      - D 8
+    controldep:
+      - pasados 4
+      - N 4
+  posibles 10:
+    datadep: Null
+    controldep:
+      - D 9
+  el 11:
+    datadep:
+      - flavours 7
+    controldep:
+      - D 9
+      - flavours 11
+  flavours 11:
+    reset: False
+    datadep:
+      - flavours 7 
+    controldep:
+      - D 9
+      - flavours 11
+  el 12:
+    reset: False
+    datadep:
+      - el 11
+    controldep:
+      - flavours 11
+  N 12:
+    reset: False
+    datadep:
+      - N 2
+    controldep:
+      - flavours 11
+  cuentas 13:
+    datadep:
+      - cuentas 2
+      - cuentas 13
+      - el 11
+    controldep:
+      - el 12
+      - N 12
+  disp 14:
+    reset: False
+    datadep:
+      - disp 2
+      - disp 19
+    controldep:
+      - el 12
+      - N 12
+  el 14:
+    reset: False
+    datadep:
+      - el 11
+    controldep:
+      - el 12
+      - N 12
+  posibles 15:
+    datadep:
+      - cuentas 13
+      - el 11
+      - posibles 10
+      - posibles 15
+    controldep:
+      - disp 14
+      - el 14
+  posibles 16:
+    reset: False
+    datadep:
+      - posibles 10
+      - posibles 15
+    controldep:
+      - D 9
+  elmax 17:
+    datadep:
+      - posibles 10
+      - posibles 15
+    controldep:
+      - posibles 16
+  disp 19:
+    datadep:
+      - elmax 17
+    controldep:
+      - posibles 16

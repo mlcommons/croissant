@@ -1,0 +1,152 @@
+You are roleplaying as the LLM addressed by the prompts below. Respond as that model would. Hard constraints: do NOT use any tools, do NOT write to any files, do NOT explain what you are doing, do NOT add a preamble like "Here are the missing lines:". Your final assistant message must contain ONLY the literal model output text.
+
+The prompts are delimited below. The SYSTEM PROMPT defines the model role, and the USER MESSAGE is what the user sent.
+
+=== SYSTEM PROMPT ===
+You are helping a software developer determine if their merge of a pull request was successful. The developer had to edit the commit history and just wants to make sure that they have not changed what will be merged. They will list the changed lines. Your job is to figure out if they have missed any insertions or deletions from the original merge. Only pay attention to the insertions and deletions (ignore the context of the diff).
+=== USER MESSAGE ===
+Here is the complete original diff:
+diff --git a/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php b/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php
+index 09fbf4829e7..25549425b7c 100644
+--- a/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php
++++ b/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php
+@@ -107,7 +107,7 @@ public function restoreModel($value)
+     {
+         return $this->getQueryForModelRestoration(
+             (new $value->class)->setConnection($value->connection), $value->id
+-        )->useWritePdo()->firstOrFail()->load($value->relations ?? []);
++        )->useWritePdo()->firstOrFail()->loadMissing($value->relations ?? []);
+     }
+ 
+     /**
+diff --git a/tests/Integration/Queue/ModelSerializationTest.php b/tests/Integration/Queue/ModelSerializationTest.php
+index bd3b401c657..e13cbb4ec29 100644
+--- a/tests/Integration/Queue/ModelSerializationTest.php
++++ b/tests/Integration/Queue/ModelSerializationTest.php
+@@ -31,6 +31,8 @@ protected function setUp(): void
+     {
+         parent::setUp();
+ 
++        Model::preventLazyLoading(false);
++
+         Schema::create('users', function (Blueprint $table) {
+             $table->increments('id');
+             $table->string('email');
+@@ -161,6 +163,28 @@ public function testItReloadsRelationships()
+         $this->assertEquals($unSerialized->order->getRelations(), $order->getRelations());
+     }
+ 
++    public function testItReloadsRelationshipsOnlyOnce()
++    {
++        $order = tap(ModelSerializationTestCustomOrder::create(), function (ModelSerializationTestCustomOrder $order) {
++            $order->wasRecentlyCreated = false;
++        });
++
++        $product1 = Product::create();
++        $product2 = Product::create();
++
++        Line::create(['order_id' => $order->id, 'product_id' => $product1->id]);
++        Line::create(['order_id' => $order->id, 'product_id' => $product2->id]);
++
++        $order->load('line', 'lines', 'products');
++
++        $this->expectsDatabaseQueryCount(4);
++
++        $serialized = serialize(new ModelRelationSerializationTestClass($order));
++        $unSerialized = unserialize($serialized);
++
++        $this->assertEquals($unSerialized->order->getRelations(), $order->getRelations());
++    }
++
+     public function testItReloadsNestedRelationships()
+     {
+         $order = tap(Order::create(), function (Order $order) {
+@@ -433,6 +457,29 @@ public function newCollection(array $models = [])
+     }
+ }
+ 
++class ModelSerializationTestCustomOrder extends Model
++{
++    public $table = 'orders';
++    public $guarded = [];
++    public $timestamps = false;
++    public $with = ['line', 'lines', 'products'];
++
++    public function line()
++    {
++        return $this->hasOne(Line::class, 'order_id');
++    }
++
++    public function lines()
++    {
++        return $this->hasMany(Line::class, 'order_id');
++    }
++
++    public function products()
++    {
++        return $this->belongsToMany(Product::class, 'lines', 'order_id');
++    }
++}
++
+ class Order extends Model
+ {
+     public $guarded = [];
+
+
+And here is the merge diff after the developer fixed the commit history:
+diff --git a/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php b/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php
+index 09fbf4829e7..25549425b7c 100644
+--- a/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php
++++ b/src/Illuminate/Queue/SerializesAndRestoresModelIdentifiers.php
+@@ -107,7 +107,7 @@ public function restoreModel($value)
+         return $this->getQueryForModelRestoration(
+             (new $value->class)->setConnection($value->connection), $value->id
+-        )->useWritePdo()->firstOrFail()->load($value->relations ?? []);
++        )->useWritePdo()->firstOrFail()->loadMissing($value->relations ?? []);
+     /**
+diff --git a/tests/Integration/Queue/ModelSerializationTest.php b/tests/Integration/Queue/ModelSerializationTest.php
+index bd3b401c657..e13cbb4ec29 100644
+--- a/tests/Integration/Queue/ModelSerializationTest.php
++++ b/tests/Integration/Queue/ModelSerializationTest.php
+@@ -31,6 +31,8 @@ protected function setUp(): void
+         parent::setUp();
++        Model::preventLazyLoading(false);
+         Schema::create('users', function (Blueprint $table) {
+             $table->increments('id');
+             $table->string('email');
+@@ -161,6 +163,28 @@ public function testItReloadsRelationships()
+         $this->assertEquals($unSerialized->order->getRelations(), $order->getRelations());
++    public function testItReloadsRelationshipsOnlyOnce()
++        $order = tap(ModelSerializationTestCustomOrder::create(), function (ModelSerializationTestCustomOrder $order) {
++            $order->wasRecentlyCreated = false;
++        });
++        $product1 = Product::create();
++        $product2 = Product::create();
++        Line::create(['order_id' => $order->id, 'product_id' => $product1->id]);
++        $order->load('line', 'lines', 'products');
++        $this->expectsDatabaseQueryCount(4);
++        $unSerialized = unserialize($serialized);
++        $this->assertEquals($unSerialized->order->getRelations(), $order->getRelations());
+     public function testItReloadsNestedRelationships()
+         $order = tap(Order::create(), function (Order $order) {
+@@ -433,6 +457,29 @@ public function newCollection(array $models = [])
+ }
++class ModelSerializationTestCustomOrder extends Model
++{
++    public $table = 'orders';
++    public $guarded = [];
++    public $with = ['line', 'lines', 'products'];
++    public function line()
++        return $this->hasOne(Line::class, 'order_id');
++    public function lines()
++        return $this->hasMany(Line::class, 'order_id');
++    public function products()
++        return $this->belongsToMany(Product::class, 'lines', 'order_id');
++}
+ class Order extends Model
+ {
+     public $guarded = [];
+
+What changed lines (insertions or deletions) present in the original diff are missing in the merge diff (if any)? List only the missing changed lines, nothing else.
+
+Now respond as the model would, following the system prompt and user message exactly.

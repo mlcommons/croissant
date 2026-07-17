@@ -1,0 +1,130 @@
+target_var: dp 17
+other_vars:
+  - a0b_list 7
+  - a0b_list_cum_sum 22
+  - a0b_list 2
+  - n 1
+variables:
+  dp 17:
+    datadep:
+      - dp 17
+      - dp 12
+      - dp 10
+      - ti 15
+      - a 16
+      - b 16
+      - i 13
+      - k 14
+    controldep:
+      - Null 14
+  dp 10:
+    datadep:
+      - t 1
+    controldep:
+      - m 10
+  dp 12:
+    datadep: 
+      - i 11
+    controldep:
+      - m 11
+  i 11:
+    datadep:
+      - m 9
+    controldep:
+      - m 11
+  apb_list 8:
+    datadep: 
+      - apb_list 6
+      - apb_list 3
+    controldep: Null
+  apb_list 6:
+    datadep:
+      - ab 4
+      - apb_list 6
+      - apb_list 3
+    controldep:  
+      - ab 5
+  apb_list 3:
+    datadep: Null
+    controldep: Null
+  ab_list 1:
+    datadep: Null
+    controldep: Null
+  ab_list 4:
+    reset: False
+    datadep:  
+      - ab_list 1
+    controldep: 
+      - ab_list 4
+  ab 5:
+    reset: False
+    datadep:
+      - ab 4
+    controldep:
+      - ab_list 4
+  ab 4:
+    datadep:
+      - ab_list 1
+    controldep:
+      - ab_list 4
+  m 10:
+    reset: False
+    datadep:
+      - m 9
+    controldep: 
+      - m 10
+  m 9:
+    datadep:
+      - apb_list 8
+    controldep: Null
+  m 13:
+    reset: False
+    datadep:
+      - m 9
+    controldep: 
+      - m 13
+  m 11:
+    reset: False
+    datadep:
+      - m 9
+    controldep: 
+      - m 11
+  Null 14:
+    datadep: Null
+    controldep:
+      - m 13
+      - Null 14
+  t 1:
+    datadep: Null
+    controldep: Null
+  ti 15:
+    datadep: 
+      - dp 17
+      - dp 12
+      - dp 10
+      - i 13
+      - k 14
+    controldep:  
+      - Null 14
+  a 16:
+    datadep: 
+      - apb_list 8
+      - i 13
+    controldep: 
+      - Null 14
+  b 16:
+    datadep: 
+      - apb_list 8
+      - i 13
+    controldep: 
+      - Null 14
+  i 13:
+    datadep: 
+      - m 9
+    controldep: 
+      - m 13
+  k 14:
+    datadep:  Null
+    controldep: 
+      - Null 14
+      - m 13

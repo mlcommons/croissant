@@ -1,0 +1,196 @@
+target_var: b 44
+other_vars: 
+  - b 33
+  - b 35
+  - b 40
+  - i_upper 40
+  - i_b 40
+early_return: Null
+variables:
+  a 27:
+    datadep: Null
+    controldep: Null
+  lower 27:
+    datadep: Null
+    controldep: Null
+  upper 27:
+    datadep: Null
+    controldep: Null
+  sep 27:
+    datadep: Null
+    controldep: Null
+  i_lower 28:
+    datadep:
+      - lower 27
+    controldep: Null
+  i_upper 29:
+    datadep:
+      - sep 27
+    controldep: Null
+  i_b 30:
+    datadep: Null
+    controldep: Null
+  i_lower 31:
+    reset: False
+    datadep:
+      - i_lower 28
+      - i_lower 33
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  sep 31:
+    reset: False
+    datadep:
+      - sep 27
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  i_upper 31:
+    reset: False
+    datadep:
+      - i_upper 29
+      - i_upper 35
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  upper 31:
+    reset: False
+    datadep:
+      - upper 27
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  a 32:
+    reset: False
+    datadep:
+      - a 27
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  i_lower 32:
+    reset: False
+    datadep:
+      - i_lower 28
+      - i_lower 33
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  i_upper 32:
+    reset: False
+    datadep:
+      - i_upper 29
+      - i_upper 35
+    controldep:
+      - i_lower 31
+      - sep 31
+      - upper 31
+      - i_upper 31
+  i_b 33:
+    datadep:
+      - i_b 30
+      - i_b 33
+      - i_b 35
+    controldep:
+      - a 32
+      - i_lower 32
+      - i_upper 32
+  i_lower 33:
+    datadep:
+      - i_lower 28
+      - i_lower 33
+    controldep:
+      - a 32
+      - i_lower 32
+      - i_upper 32
+  i_b 35:
+    datadep:
+      - i_b 30
+      - i_b 33
+      - i_b 35
+    controldep:
+      - a 32
+      - i_lower 32
+      - i_upper 32
+  i_upper 35:
+    datadep:
+      - i_upper 29
+      - i_upper 35
+    controldep:
+      - a 32
+      - i_lower 32
+      - i_upper 32
+  i_lower 38:
+    reset: False
+    datadep:
+      - i_lower 28
+      - i_lower 33
+    controldep: Null
+  sep 38:
+    reset: False
+    datadep:
+      - sep 27
+    controldep: Null
+  i_lower 43:
+    reset: False
+    datadep:
+      - i_lower 28
+      - i_lower 33
+      - i_lower 44
+    controldep:
+      - i_lower 38
+      - sep 38
+      - i_lower 43
+      - sep 43
+  sep 43:
+    reset: False
+    datadep:
+      - sep 27
+    controldep:
+      - i_lower 38
+      - sep 38
+      - i_lower 43
+      - sep 43
+  i_b 44:
+    datadep:
+      - i_b 30
+      - i_b 33
+      - i_b 35
+      - i_b 44
+    controldep:
+      - i_lower 43
+      - sep 43
+  i_lower 44:
+    datadep:
+      - i_lower 28
+      - i_lower 33
+      - i_lower 44
+    controldep:
+      - i_lower 43
+      - sep 43
+  b 44:
+    datadep:
+      - i_b 30
+      - i_b 33
+      - i_b 35
+      - i_b 44
+      - i_lower 28
+      - i_lower 33
+      - i_lower 44
+      - a 27
+    controldep:
+      - i_lower 43
+      - sep 43
+
+

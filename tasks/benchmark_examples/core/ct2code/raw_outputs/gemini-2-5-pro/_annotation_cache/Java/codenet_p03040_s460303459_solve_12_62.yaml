@@ -1,0 +1,231 @@
+target_var: lsum 42
+other_vars:
+  - B 17
+  - B 52
+  - fsum 25
+  - fsum 16
+  - fsum 30
+  - fsum 35
+  - fsum 46
+variables: 
+  lsum 42:
+    datadep:
+      - lsum 42
+      - lsum 45
+      - lsum 29
+      - lsum 16
+      - a 21
+    controldep:
+      - x 41
+      - a 41
+  lsum 16:
+    datadep: Null 
+    controldep: Null
+  lsum 29:
+    datadep:
+      - lsum 42
+      - lsum 45
+      - lsum 29
+      - lsum 16
+      - a 21
+      - x 27
+    controldep:
+      - x 28
+      - a 28
+  lsum 45:
+    datadep:
+      - lsum 42
+      - lsum 45
+      - lsum 29
+      - lsum 16
+      - x 40
+    controldep:
+      - x 41
+      - a 41
+  Q 13:
+    datadep: Null
+    controldep: Null
+  Q 18:
+    datadep:
+      - Q 13
+      - Q 18
+    controldep:
+      - Q 18
+  com 19:
+    datadep: Null
+    controldep:
+      - Q 18
+  com 20:
+    reset: False
+    datadep:
+      - com 19
+    controldep:
+      - Q 18
+  f 14:
+    datadep: Null
+    controldep: Null
+  l 15:
+    datadep: Null
+    controldep: Null
+  a 21:
+    datadep: Null
+    controldep:
+      - com 20
+  f 22:
+    reset: False
+    datadep: 
+      - f 14
+      - f 24
+      - f 33
+      - f 36
+      - f 48
+    controldep:
+      - com 20
+  l 22:
+    reset: False
+    datadep:
+      - l 15
+      - l 32
+      - l 43
+      - l 49
+    controldep:
+      - com 20
+  l 23:
+    reset: False
+    datadep:
+      - l 15
+      - l 32
+      - l 43
+      - l 49
+    controldep:
+      - f 22
+      - l 22
+  f 24:
+    datadep:
+      - f 14
+      - f 24
+      - f 33
+      - f 36
+      - f 48
+      - a 21
+    controldep:
+      - l 23
+  x 27:
+    datadep:
+      - l 15
+      - l 32
+      - l 43
+      - l 49
+    controldep:
+      - l 23
+  x 28:
+    reset: False
+    datadep:
+      - x 27
+    controldep:
+      - l 23
+  a 28:
+    reset: False
+    datadep:
+      - a 21
+    controldep:
+      - l 23
+  l 31:
+    datadep:
+      - l 15
+      - l 32
+      - l 43
+      - l 49
+    controldep:
+      - x 28
+      - a 28
+  l 32:
+    datadep:
+      - l 31
+      - a 21
+    controldep:
+      - x 28
+      - a 28
+  f 33:
+    datadep:
+      - f 14
+      - f 24
+      - f 33
+      - f 36
+      - f 48
+      - x 27
+    controldep:
+      - x 28
+      - a 28
+  f 36:
+    datadep:
+      - f 14
+      - f 24
+      - f 33
+      - f 36
+      - f 48
+      - a 21
+    controldep:
+      - x 28
+      - a 28
+  x 40:
+    datadep:
+      - f 14
+      - f 24
+      - f 33
+      - f 36
+      - f 48
+    controldep:
+      - f 22
+      - l 22
+  x 41:
+    reset: False
+    datadep:
+      - x 40
+    controldep:
+      - f 22
+      - l 22
+  a 41:
+    reset: False
+    datadep:
+      - a 21
+    controldep:
+      - f 22
+      - l 22
+  l 43:
+    datadep:
+      - l 15
+      - l 32
+      - l 43
+      - l 49
+      - a 21
+    controldep:
+      - x 41
+      - a 41
+  f 47:
+    datadep:
+      - f 14
+      - f 24
+      - f 33
+      - f 36
+      - f 48
+    controldep:
+      - x 41
+      - a 41
+  f 48:
+    datadep:
+      - f 47
+      - a 21
+    controldep:
+      - x 41
+      - a 41
+  l 49:
+    datadep:
+      - l 15
+      - l 32
+      - l 43
+      - l 49
+      - x 40
+    controldep:
+      - x 41
+      - a 41

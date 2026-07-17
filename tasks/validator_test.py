@@ -1,7 +1,8 @@
-import os
-import sys
 import unittest
-from tasks.validator import validate_data
+
+from . import validator
+
+validate_data = validator.validate_data
 
 
 class TestCroissantTasksValidator(unittest.TestCase):
@@ -11,21 +12,22 @@ class TestCroissantTasksValidator(unittest.TestCase):
     self.assertTrue(conforms, "Valid problem should pass validation.")
 
   def test_invalid_problem(self):
-    conforms, text = validate_data("testdata/invalid_problem.jsonld")
+    conforms, text = validate_data("testdata/invalid_problem_no_spec.jsonld")
     self.assertFalse(conforms, "Problem with no specs should fail.")
     self.assertIn(
-        "A TaskProblem must have at least one property (input, output, or"
-        " implementation) that is a spec class",
+        "croissant:TaskProblemShape",
         text,
     )
+
 
   def test_valid_solution(self):
     conforms, _ = validate_data("testdata/valid_solution.jsonld")
     self.assertTrue(conforms, "Valid solution should pass validation.")
 
   def test_invalid_solution(self):
-    conforms, text = validate_data("testdata/invalid_solution.jsonld")
+    conforms, text = validate_data("testdata/invalid_solution_no_is_based_on.jsonld")
     self.assertFalse(conforms, "Solution without schema:isBasedOn should fail.")
+
     self.assertIn(
         "A TaskSolution must be formally linked to a TaskProblem via"
         " schema:isBasedOn",
@@ -96,6 +98,14 @@ class TestCroissantTasksValidator(unittest.TestCase):
   def test_valid_evaluation_task(self):
     conforms, _ = validate_data("testdata/valid_evaluation_task.jsonld")
     self.assertTrue(conforms, "Valid evaluation task should pass validation.")
+
+  def test_mmlu_problem(self):
+    conforms, _ = validate_data("benchmark_examples/mmlu/mmlu_problem.jsonld")
+    self.assertTrue(conforms, "MMLU problem should pass validation.")
+
+  def test_mmlu_solutions(self):
+    conforms, _ = validate_data("benchmark_examples/mmlu/mmlu_solution_large_fewshot.jsonld")
+    self.assertTrue(conforms, "MMLU solutions should pass validation.")
 
 
 if __name__ == "__main__":

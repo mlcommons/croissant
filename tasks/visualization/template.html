@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Tasks Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        #visualization {
+            border: 1px solid #ccc;
+            background-color: transparent;
+        }
+        .node circle {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+        .link {
+            fill: none;
+            stroke-opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Croissant Tasks Visualization</h1>
+    <button id="save-png">Save as PNG</button>
+    <div id="visualization"></div>
+
+    <!-- Include visualizer logic -->
+    <script src="visualizer.js"></script>
+
+    <script>
+        // Placeholders to be replaced by generate_vis.py
+        const problemData = {{ PROBLEM_DATA }};
+        const solutionData = {{ SOLUTION_DATA }};
+        const alignSolutions = {{ ALIGN_SOLUTIONS }};
+        const hideUnsolved = {{ HIDE_UNSOLVED }};
+
+        renderVisualization(problemData, solutionData, "#visualization", alignSolutions, hideUnsolved);
+    </script>
+</body>
+</html>

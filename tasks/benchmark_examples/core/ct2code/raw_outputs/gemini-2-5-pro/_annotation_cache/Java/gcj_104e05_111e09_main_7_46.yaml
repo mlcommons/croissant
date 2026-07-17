@@ -1,0 +1,256 @@
+target_var: key 36
+other_vars: 
+  - result 25
+  - key 31
+early_return: 
+  - 34
+variables:
+  tc 10:
+    datadep: Null
+    controldep: Null
+  i 11:
+    datadep:
+      - i 11
+    controldep:
+      - i 11
+      - tc 11
+  tc 11:
+    reset: False
+    datadep:
+      - tc 10
+    controldep:
+      - i 11
+      - tc 11
+  noOfWords 12:
+    datadep: Null
+    controldep:
+      - i 11
+      - tc 11
+  set 13:
+    datadep: Null
+    controldep:
+      - i 11
+      - tc 11
+  j 14:
+    datadep:
+      - j 14
+    controldep:
+      - i 11
+      - tc 11
+      - j 14
+      - noOfWords 14
+  noOfWords 14:
+    reset: False
+    datadep:
+      - noOfWords 12
+    controldep:
+      - i 11
+      - tc 11
+      - j 14
+      - noOfWords 14
+  word 15:
+    datadep: Null
+    controldep:
+      - j 14
+      - noOfWords 14
+  set 16:
+    datadep:
+      - set 13
+      - set 16
+      - word 15
+    controldep:
+      - j 14
+      - noOfWords 14
+  wrd1 18:
+    datadep:
+      - set 13
+      - set 16
+    controldep:
+      - i 11
+      - tc 11
+  wrd2 19:
+    datadep:
+      - set 13
+      - set 16
+    controldep:
+      - i 11
+      - tc 11
+  c1 20:
+    datadep: Null
+    controldep:
+      - i 11
+      - tc 11
+  wrd1 21:
+    reset: False
+    datadep:
+      - wrd1 18
+      - wrd1 24
+    controldep:
+      - i 11
+      - tc 11
+      - wrd1 21
+  c1 22:
+    datadep:
+      - c1 20
+      - c1 22
+    controldep:
+      - wrd1 21
+  c2 23:
+    datadep: Null
+    controldep:
+      - wrd1 21
+  wordOne 24:
+    datadep:
+      - wrd1 18
+      - wrd1 24
+    controldep:
+      - wrd1 21
+  wrd1 24:
+    datadep:
+      - wrd1 18
+      - wrd1 24
+    controldep:
+      - wrd1 21
+  wrd2 26:
+    reset: False
+    datadep:
+      - wrd2 19
+      - wrd2 29
+    controldep:
+      - wrd1 21
+      - wrd2 26
+  c2 27:
+    datadep:
+      - c2 27
+      - c2 23
+    controldep:
+      - wrd2 26
+  c1 28:
+    reset: False
+    datadep:
+      - c1 22
+    controldep:
+      - wrd2 26
+  c2 28:
+    reset: False
+    datadep:
+      - c2 27
+    controldep:
+      - wrd2 26
+  wrd2 29:
+    datadep:
+      - wrd2 19
+      - wrd2 29
+    controldep:
+      - c1 28
+      - c2 28
+  wordTwo 29:
+    datadep:
+      - wrd2 19
+      - wrd2 29
+    controldep:
+      - c1 28
+      - c2 28
+  max 30:
+    datadep: Null
+    controldep:
+      - c1 28
+      - c2 28
+  l 32:
+    datadep:
+      - l 32
+    controldep:
+      - c1 28
+      - c2 28
+      - l 32
+      - wordTwo 32
+  wordTwo 32:
+    reset: False
+    datadep:
+      - wordTwo 29
+    controldep:
+      - c1 28
+      - c2 28
+      - l 32
+      - wordTwo 32
+  k 33:
+    datadep:
+      - k 33
+      - l 32
+    controldep:
+      - l 32
+      - wordTwo 32
+      - wordOne 34
+      - wordTwo 34
+      - l 34
+      - k 34
+      - max 34
+  wordTwo 33:
+    reset: False
+    datadep:
+      - wordTwo 29
+    controldep:
+      - l 32
+      - wordTwo 32
+      - wordOne 34
+      - wordTwo 34
+      - l 34
+      - k 34
+      - max 34
+  wordOne 34:
+    reset: False
+    datadep:
+      - wordOne 24
+    controldep:
+      - k 33
+      - wordTwo 33
+  wordTwo 34:
+    reset: False
+    datadep:
+      - wordTwo 29
+    controldep:
+      - k 33
+      - wordTwo 33
+  k 34:
+    reset: False
+    datadep:
+      - k 33
+    controldep:
+      - k 33
+      - wordTwo 33
+  l 34:
+    reset: False
+    datadep:
+      - l 32
+    controldep:
+      - k 33
+      - wordTwo 33
+  max 34:
+    reset: False
+    datadep:
+      - max 30
+      - max 35
+    controldep:
+      - k 33
+      - wordTwo 33
+  max 35:
+    datadep:
+      - k 33
+      - l 32
+    controldep:
+      - wordOne 34
+      - wordTwo 34
+      - l 34
+      - k 34
+      - max 34
+  key 36:
+    datadep:
+      - wordTwo 29
+      - k 33
+      - l 32
+    controldep:
+      - wordOne 34
+      - wordTwo 34
+      - l 34
+      - k 34
+      - max 34

@@ -1,0 +1,201 @@
+target_var: count 39
+other_vars: 
+  - ans 16
+  - ans 21
+  - ans 26
+early_return: 
+  - 20
+  - 25
+variables:
+  T 8:
+    datadep: Null
+    controldep:  Null
+  C 9:
+    datadep: 
+      - C 9
+    controldep: 
+      - C 9
+      - T 9
+  T 9:
+    reset: False
+    datadep:
+      - T 8
+    controldep:
+      - C 9
+      - T 9
+  N 10:
+    datadep: Null
+    controldep:
+      - C 9
+      - T 9
+  K 11:
+    datadep: Null
+    controldep:
+      - C 9
+      - T 9
+  queue 12:
+    datadep: Null
+    controldep:
+      - C 9
+      - T 9
+  count 13:
+    datadep: Null
+    controldep:
+      - C 9
+      - T 9
+  queue 14:
+    datadep:
+      - N 10
+      - queue 12
+    controldep:
+      - C 9
+      - T 9
+  count 15:
+    datadep:
+      - count 13
+      - N 10
+    controldep:
+      - C 9
+      - T 9
+  Null 17:
+    reset: False
+    datadep: Null
+    controldep:
+      - C 9
+      - T 9
+      - K 25
+  cur 18:
+    datadep:
+      - queue 14
+      - queue 35
+      - queue 42
+      - queue 18
+    controldep:
+      - Null 17
+  queue 18:
+    datadep:
+      - queue 14
+      - queue 35
+      - queue 42
+      - queue 18
+    controldep:
+      - Null 17
+  rest 19:
+    datadep:
+      - count 15
+      - count 39
+      - count 43
+      - cur 18
+    controldep:
+      - Null 17
+  K 20:
+    reset: False
+    datadep:
+      - K 11
+      - K 24
+    controldep:
+      - Null 17
+  K 24:
+    datadep:
+      - K 11
+      - K 24
+      - rest 19
+    controldep:
+      - K 20
+  K 25:
+    reset: False
+    datadep:
+      - K 24
+    controldep:
+      - K 20
+  large 29:
+    datadep:
+      - cur 18
+    controldep:
+      - K 25
+  small 30:
+    datadep:
+      - cur 18
+    controldep:
+      - K 25
+  count 31:
+    reset: False
+    datadep:
+      - count 15
+      - count 39
+      - count 43
+    controldep:
+      - K 25
+  large 31:
+    reset: False
+    datadep:
+      - large 29
+    controldep:
+      - K 25
+  count 32:
+    datadep:
+      - count 15
+      - count 39
+      - count 43
+      - rest 19
+      - large 29
+    controldep:
+      - count 31
+      - large 31
+  queue 35:
+    datadep:
+      - queue 18
+      - large 29
+    controldep:
+      - count 31
+      - large 31
+  count 36:
+    datadep:
+      - count 15
+      - count 39
+      - count 43
+      - rest 19
+      - large 29
+    controldep:
+      - count 31
+      - large 31
+  count 38:
+    reset: False
+    datadep:
+      - count 32
+      - count 36
+    controldep:
+      - K 25
+  small 38:
+    reset: False
+    datadep:
+      - small 30
+    controldep:
+      - K 25
+  count 39:
+    datadep:
+      - count 32
+      - count 36
+      - rest 19
+      - small 30
+    controldep:
+      - count 38
+      - small 38
+  queue 42:
+    datadep:
+      - queue 18
+      - queue 35
+      - small 30
+    controldep:
+      - count 38
+      - small 38
+  count 43:
+    datadep:
+      - count 32
+      - count 36
+      - rest 19
+      - small 30
+    controldep:
+      - count 38
+      - small 38
+

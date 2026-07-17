@@ -1,0 +1,396 @@
+target_var: damage 48
+other_vars: 
+  - movements 16
+  - movements 47
+early_return: 
+  - 28
+  - 31
+  - 36
+  - 40
+  - 50
+variables:
+  code 46:
+    reset: False
+    datadep:
+      - code 14
+      - code 56
+    controldep:
+      - code 40
+      - i 40
+  j 46:
+    reset: False
+    datadep:
+      - j 35
+    controldep:
+      - code 40
+      - i 40
+  i 46:
+    reset: False
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - code 40
+      - i 40
+  c 49:
+    datadep:
+      - code 14
+      - code 56
+    controldep:
+      - code 46
+      - i 46
+      - j 46
+  damage 48:
+    datadep:
+      - shootDamage 11
+      - shootDamage 25
+      - shootDamage 41
+      - shootDamage 58
+      - damage 15
+      - damage 21
+      - damage 48
+    controldep:
+      - code 46
+      - i 46
+      - j 46
+  damage 50:
+    reset: False
+    datadep:
+      - damage 48
+    controldep:
+      - code 46
+      - i 46
+      - j 46
+  shield 50:
+    reset: False
+    datadep:
+      - shield 13
+    controldep:
+      - code 46
+      - i 46
+      - j 46
+  temp 53:
+    datadep:
+      - j 35
+      - c 49
+    controldep:
+      - damage 50
+      - shield 50
+  c 54:
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+      - c 49
+      - j 35
+    controldep:
+      - damage 50
+      - shield 50
+  c 55:
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+      - temp 53
+    controldep:
+      - damage 50
+      - shield 50
+  code 56:
+    datadep:
+      - c 55
+      - c 54
+      - c 49
+    controldep:
+      - damage 50
+      - shield 50
+  i 57:
+    reset: False
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - damage 50
+      - shield 50
+  lastIterableElement 57:
+    reset: False
+    datadep:
+      - lastIterableElement 18
+      - lastIterableElement 43
+    controldep:
+      - damage 50
+      - shield 50
+  shootDamage 58:
+    datadep:
+      - shootDamage 11
+      - shootDamage 25
+      - shootDamage 41
+      - shootDamage 58
+    controldep:
+      - i 57
+      - lastIterableElement 57
+  i 59:
+    reset: False
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - i 57
+      - lastIterableElement 57
+  i 60:
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - i 59
+  i 63:
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - i 57
+      - lastIterableElement 57
+  j 64:
+    datadep:
+      - j 35
+    controldep:
+      - i 57
+      - lastIterableElement 57
+  code 40:
+    reset: False
+    datadep:
+      - code 14
+      - code 56
+    controldep:
+      - code 36
+      - i 36
+      - j 36
+  i 40:
+    reset: False
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - code 36
+      - i 36
+      - j 36
+  shootDamage 41:
+    datadep:
+      - shootDamage 11
+      - shootDamage 25
+      - shootDamage 41
+      - shootDamage 58
+    controldep:
+      - code 40
+      - i 40
+  i 42:
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - code 40
+      - i 40
+  lastIterableElement 43:
+    datadep:
+      - lastIterableElement 18
+      - lastIterableElement 43
+    controldep:
+      - code 40
+      - i 40
+  code 36:
+    reset: False
+    datadep:
+      - code 14
+      - code 56
+    controldep:
+      - j 35
+  j 36:
+    reset: False
+    datadep:
+      - j 35
+    controldep:
+      - j 35
+  i 36:
+    reset: False
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - j 35
+  i 37:
+    datadep:
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - code 36
+      - i 36
+      - j 36
+  j 35:
+    datadep:
+      - sizeScript 17
+      - j 35
+      - j 64
+    controldep:
+      - i 34
+      - damage 50
+      - shield 50
+  i 34:
+    datadep:
+      - sizeScript 17
+      - i 34
+      - i 37
+      - i 42
+      - i 60
+      - i 63
+    controldep:
+      - shootCounter 31
+      - shield 31
+      - i 34
+  shootCounter 31:
+    reset: False
+    datadep:
+      - shootCounter 22
+      - shootCounter 12
+    controldep:
+      - damage 28
+      - shield 28
+  shield 31:
+    reset: False
+    datadep:
+      - shield 13
+    controldep:
+      - damage 28
+      - shield 28
+  damage 28:
+    reset: False
+    datadep:
+      - damage 15
+      - damage 21
+    controldep: Null
+  shield 28:
+    reset: False
+    datadep:
+      - shield 13
+    controldep: Null
+  code 19:
+    reset: False
+    datadep:
+      - code 14
+    controldep:
+      - code 19
+      - i 19
+  i 19:
+    datadep:
+      - i 19
+    controldep:
+      - code 19
+      - i 19
+  code 20:
+    reset: False
+    datadep:
+      - code 14
+    controldep:
+      - code 19
+      - i 19
+  i 20:
+    reset: False
+    datadep:
+      - i 19
+    controldep:
+      - code 19
+      - i 19
+  damage 21:
+    datadep:
+      - damage 15
+      - damage 21
+      - shootDamage 11
+      - shootDamage 25
+    controldep:
+      - code 20
+      - i 20
+  shootCounter 22:
+    datadep:
+      - shootCounter 22
+      - shootCounter 12
+    controldep:
+      - code 20
+      - i 20
+  code 24:
+    reset: False
+    datadep:
+      - code 14
+    controldep:
+      - code 19
+      - i 19
+  i 24:
+    reset: False
+    datadep:
+      - i 19
+    controldep:
+      - code 19
+      - i 19
+  shootDamage 25:
+    datadep:
+      - shootDamage 11
+      - shootDamage 25
+    controldep:
+      - code 24
+      - i 24
+  lastIterableElement 18:
+    datadep:
+      - sizeScript 17
+    controldep: Null
+  sizeScript 17: 
+    datadep:
+      - code 14
+    controldep: Null
+  shootDamage 11:
+    datadep: Null
+    controldep: Null
+  shootCounter 12:
+    datadep: Null
+    controldep: Null
+  shield 13:
+    datadep:
+      - softwareToHack 10
+    controldep: Null
+  code 14:
+    datadep:
+      - softwareToHack 10
+    controldep: Null
+  damage 15:
+    datadep: Null
+    controldep: Null
+  softwareToHack 10:
+    datadep: Null
+    controldep: Null

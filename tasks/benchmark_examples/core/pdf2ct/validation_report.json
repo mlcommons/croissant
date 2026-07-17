@@ -1,0 +1,121 @@
+{
+  "version": "1.0.0",
+  "run_date": "2026-04-29T00:00:00Z",
+  "parent_commit": "fa181eb6",
+  "parameters": {
+    "pdf_location": "CoRe.pdf",
+    "paper_url": "https://corebench.github.io/",
+    "dataset_url": "https://corebench.github.io/",
+    "shapes_file_used_locally": "patched copy of tasks/croissant-tasks-shapes.ttl (4 fixes applied — see upstream_issues)",
+    "shapes_file_shipped_in_repo": "tasks/croissant-tasks-shapes.ttl (UNPATCHED upstream version — this PR does not modify it)",
+    "validator_note": "Per spec-discipline convention from PR #1025, this PR does not ship modified shapes. Files validate against the patched shapes (see results below); against the unpatched upstream shapes both files FAIL with the load errors listed under upstream_issues."
+  },
+  "stages": [
+    {
+      "name": "setup",
+      "passed": true,
+      "message": "pyshacl 0.31.0 + rdflib installed; shapes + ontology downloaded from PR #1017 commit 02b87497; shapes file patched locally for pyshacl compatibility (patched copy NOT shipped in this PR)"
+    },
+    {
+      "name": "paper_analysis",
+      "passed": true,
+      "message": "Paper read (10 pages); CoRe benchmark extracted with 3 task types, 2 query formulations, 3 subtasks; 1 Gemini baseline (Gemini 2.5 Pro) extracted from Table 4"
+    },
+    {
+      "name": "problem_generated",
+      "passed": true,
+      "message": "core_problem.jsonld written; TaskProblem with OutputSpec, EvaluationSpec, and 3 subtasks (data_dependency, control_dependency, information_flow)"
+    },
+    {
+      "name": "solutions_generated",
+      "passed": true,
+      "message": "1 paper-reported solution written: core_solution_gemini-2-5-pro_paper.jsonld"
+    },
+    {
+      "name": "json_validity",
+      "passed": true,
+      "message": "All .jsonld files parse as valid JSON"
+    },
+    {
+      "name": "shacl_conformance_against_patched_shapes",
+      "passed": true,
+      "message": "All files conform to the locally-patched Croissant Tasks SHACL shapes (pyshacl 0.31.0, inference=rdfs)"
+    },
+    {
+      "name": "shacl_conformance_against_unpatched_shapes",
+      "passed": false,
+      "message": "All files FAIL against the unpatched upstream shapes shipped at tasks/croissant-tasks-shapes.ttl. Failure modes are deterministic shape-load errors (not constraint violations) — see upstream_issues. Symptoms match Luis's Bug A and Bug B in PR #1025 plus two additional findings."
+    },
+    {
+      "name": "report_generation",
+      "passed": true,
+      "message": "summary.md and validation_report.json written"
+    }
+  ],
+  "per_file": [
+    {
+      "file": "core_problem.jsonld",
+      "json_valid": true,
+      "shacl_conforms_against_patched_shapes": true,
+      "shacl_conforms_against_unpatched_shapes": false,
+      "iterations_to_pass_patched": 2,
+      "fixes_applied_to_file": [
+        "Changed croissant:dataType values from plain strings to @id IRIs (e.g. {\"@id\": \"xsd:boolean\"})"
+      ]
+    },
+    {
+      "file": "core_solution_gemini-2-5-pro_paper.jsonld",
+      "json_valid": true,
+      "shacl_conforms_against_patched_shapes": true,
+      "shacl_conforms_against_unpatched_shapes": false,
+      "iterations_to_pass_patched": 3,
+      "fixes_applied_to_file": [
+        "Converted all croissant:value numeric literals to xsd:string (JSON strings) to match EvaluationResultShape"
+      ]
+    }
+  ],
+  "upstream_issues": [
+    {
+      "id": 1,
+      "shape": "TaskProblemShape",
+      "symptom": "sh:property blank node missing sh:path (body is an sh:or) — pyshacl rejects it as malformed PropertyShape",
+      "status_vs_pr_1025": "known — equivalent to Luis's Bug A",
+      "suggested_fix": "Lift sh:or to NodeShape level; each alternative is a full sh:property with its own sh:path and sh:minCount 1"
+    },
+    {
+      "id": 2,
+      "shape": "TaskShape (base)",
+      "symptom": "Base croissant:evaluation constraint allows only EvaluationTask, but TaskProblemShape allows EvaluationSpec; TaskProblem ⊑ Task so both shapes apply additively under RDFS inference, rejecting the documented EvaluationSpec pattern",
+      "status_vs_pr_1025": "appears new — not flagged in PR #1025",
+      "suggested_fix": "Extend base TaskShape evaluation constraint to sh:or (EvaluationTask | EvaluationSpec)"
+    },
+    {
+      "id": 3,
+      "shape": "EvaluationTaskShape",
+      "symptom": "sh:qualifiedMinCount 1 without sh:qualifiedValueShape on croissant:evaluatedSolution — invalid SHACL",
+      "status_vs_pr_1025": "known — equivalent to Luis's Bug B",
+      "suggested_fix": "Replace sh:qualifiedMinCount 1 with sh:minCount 1 (no companion sh:qualifiedMaxCount exists)"
+    },
+    {
+      "id": 4,
+      "shape": "TaskSolutionShape",
+      "symptom": "Deeply nested sh:or → sh:property → sh:node → sh:property causes pyshacl to lose the inner sh:qualifiedValueShape",
+      "status_vs_pr_1025": "possibly new — not in PR #1025's findings table",
+      "suggested_fix": "Flatten the sh:or to two simple alternatives pyshacl can process"
+    }
+  ],
+  "results": {
+    "pass_against_patched_shapes": 2,
+    "fail_against_patched_shapes": 0,
+    "pass_against_unpatched_shapes": 0,
+    "fail_against_unpatched_shapes": 2
+  },
+  "overall_passed_against_patched_shapes": true,
+  "iterations": 3,
+  "output_files": [
+    "pdf2ct/core_problem.jsonld",
+    "pdf2ct/core_solution_gemini-2-5-pro_paper.jsonld",
+    "pdf2ct/summary.md",
+    "pdf2ct/validation_report.json"
+  ]
+}

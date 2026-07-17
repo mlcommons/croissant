@@ -1,0 +1,714 @@
+target_var: Min_s 81
+other_vars:
+  - k 29
+  - y 69
+  - z 70
+  - y 44
+  - z 45
+early_return: 
+  - 53
+  - 61
+  - 78
+  - 86
+variables:
+  T 6:
+    datadep: Null
+    controldep: Null
+  T 7:
+    reset: False
+    datadep:
+      - T 6
+    controldep:
+      - T 7
+  tmp 8:
+    datadep: Null
+    controldep:
+      - T 7
+  tmpList 9:
+    datadep:
+      - tmp 8
+    controldep:
+      - T 7
+  N 10:
+    datadep:
+      - tmpList 9
+    controldep:
+      - T 7
+  K 11:
+    datadep:
+      - tmpList 9
+    controldep:
+      - T 7
+  stall_occupied 12:
+    datadep: Null
+    controldep:
+      - T 7
+  N 13:
+    reset: False
+    datadep:
+      - N 10
+    controldep:
+      - T 7
+      - N 13
+  stall_occupied 14:
+    datadep:
+      - stall_occupied 12
+      - stall_occupied 14
+    controldep:
+      - N 13
+  stall_occupied 15:
+    datadep:
+      - stall_occupied 12
+      - stall_occupied 14
+    controldep:
+      - T 7
+  Ls 16:
+    datadep: Null
+    controldep:
+      - T 7
+  Rs 17:
+    datadep: Null
+    controldep:
+      - T 7
+  Min_s 18:
+    datadep: Null
+    controldep:
+      - T 7
+  Max_s 19:
+    datadep: Null
+    controldep:
+      - T 7
+  N 20:
+    reset: False
+    datadep:
+      - N 10
+    controldep:
+      - T 7
+      - N 20
+  j 20:
+    datadep:
+      - N 10
+    controldep:
+      - T 7
+      - N 20
+  stall_occupied 21:
+    reset: False
+    datadep:
+      - stall_occupied 15
+    controldep:
+      - N 20
+  j 21:
+    reset: False
+    datadep:
+      - j 20
+    controldep:
+      - N 20
+  Ls 22:
+    datadep:
+      - Ls 16
+      - Ls 22
+      - Ls 25
+    controldep:
+      - j 21
+      - stall_occupied 21
+  Rs 23:
+    datadep:
+      - Rs 17
+      - Rs 23
+      - Rs 26
+    controldep:
+      - j 21
+      - stall_occupied 21
+  Ls 25:
+    datadep:
+      - Ls 16
+      - Ls 22
+      - Ls 25
+      - j 20
+    controldep:
+      - j 21
+      - stall_occupied 21
+  Rs 26:
+    datadep:
+      - N 10
+      - Rs 17
+      - Rs 23
+      - Rs 26
+      - j 20
+    controldep:
+      - j 21
+      - stall_occupied 21
+  Min_s 27:
+    datadep:
+      - Ls 22
+      - Ls 25
+      - Rs 23
+      - Rs 26
+      - Min_s 18
+      - Min_s 27
+    controldep:
+      - N 20
+  Max_s 28:
+    datadep:
+      - Ls 22
+      - Ls 25
+      - Rs 23
+      - Rs 26
+      - Max_s 19
+      - Max_s 28
+    controldep:
+      - N 20
+  K 29:
+    reset: False
+    datadep:
+      - K 11
+    controldep:
+      - T 7
+      - K 29
+  maximal 30:
+    datadep:
+      - Min_s 18
+      - Min_s 27
+      - Min_s 49
+      - Min_s 56
+      - Min_s 64
+      - Min_s 74
+      - Min_s 81
+      - Min_s 89
+    controldep:
+      - K 29
+  maximal 31:
+    reset: False
+    datadep:
+      - maximal 30
+    controldep:
+      - K 29
+  Min_s 31:
+    reset: False
+    datadep:
+      - Min_s 18
+      - Min_s 27
+      - Min_s 49
+      - Min_s 56
+      - Min_s 64
+      - Min_s 74
+      - Min_s 81
+      - Min_s 89
+    controldep:
+      - K 29
+  values 32:
+    datadep:
+      - Min_s 18
+      - Min_s 27
+      - Min_s 49
+      - Min_s 56
+      - Min_s 64
+      - Min_s 74
+      - Min_s 81
+      - Min_s 89
+    controldep:
+      - Min_s 31
+      - maximal 31
+  idxs 33:
+    datadep:
+      - maximal 30
+      - values 32
+    controldep:
+      - Min_s 31
+      - maximal 31
+  max_of_idxs 34:
+    datadep: Null
+    controldep:
+      - Min_s 31
+      - maximal 31
+  idxs 35:
+    reset: False
+    datadep:
+      - idxs 33
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - idxs 35
+  j 35:
+    datadep:
+      - idxs 33
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - idxs 35
+  max_of_idxs 36:
+    datadep:
+      - max_of_idxs 34
+      - max_of_idxs 36
+      - Max_s 28
+      - Max_s 50
+      - Max_s 57
+      - Max_s 65
+      - Max_s 75
+      - Max_s 82
+      - Max_s 90
+      - j 35
+    controldep:
+      - idxs 35
+  max_max 37:
+    datadep:
+      - max_of_idxs 34
+      - max_of_idxs 36
+    controldep:
+      - Min_s 31
+      - maximal 31
+  max_of_idxs 38:
+    reset: False
+    datadep:
+      - max_of_idxs 34
+      - max_of_idxs 36
+    controldep:
+      - Min_s 31
+      - maximal 31
+  max_max 38:
+    reset: False
+    datadep:
+      - max_max 37
+    controldep:
+      - Min_s 31
+      - maximal 31
+  values1 39:
+    datadep:
+      - max_of_idxs 34
+      - max_of_idxs 36
+    controldep:
+      - max_max 38
+      - max_of_idxs 38
+  idxs1 40:
+    datadep:
+      - max_max 37
+      - values1 39
+    controldep:
+      - max_max 38
+      - max_of_idxs 38
+  idx 41:
+    datadep:
+      - idxs1 40
+      - idxs 33
+    controldep:
+      - max_max 38
+      - max_of_idxs 38
+  idx 43:
+    datadep:
+      - idxs 33
+      - max_of_idxs 36
+      - max_max 37
+    controldep:
+      - max_max 38
+      - max_of_idxs 38
+  stall_occupied 46:
+    datadep: 
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Ls 47:
+    datadep:
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Rs 48:
+    datadep:
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Min_s 49:
+    datadep:
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Max_s 50:
+    datadep:
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  leftIdx 51:
+    datadep:
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  leftIdx 52:
+    reset: False
+    datadep:
+      - leftIdx 51
+      - leftIdx 58
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - leftIdx 52
+      - leftIdx 53
+      - stall_occupied 53
+  leftIdx 53:
+    reset: False
+    datadep:
+      - leftIdx 51
+      - leftIdx 58
+    controldep:
+      - leftIdx 52
+  stall_occupied 53:
+    reset: False
+    datadep: 
+      - stall_occupied 15
+      - stall_occupied 46
+      - stall_occupied 71
+    controldep:
+      - leftIdx 52
+  Rs 55:
+    datadep:
+      - idx 41
+      - idx 43
+      - leftIdx 51
+      - leftIdx 58
+    controldep:
+      - leftIdx 53
+      - stall_occupied 53
+  Min_s 56:
+    datadep:
+      - Ls 22
+      - Ls 25
+      - Ls 72
+      - Ls 88
+      - Ls 63
+      - Ls 47
+      - Rs 55
+      - leftIdx 51
+      - leftIdx 58
+    controldep:
+      - leftIdx 53
+      - stall_occupied 53
+  Max_s 57:
+    datadep:
+      - leftIdx 51
+      - leftIdx 58
+      - Ls 22
+      - Ls 25
+      - Ls 72
+      - Ls 88
+      - Ls 63
+      - Ls 47
+      - Rs 55
+    controldep:
+      - leftIdx 53
+      - stall_occupied 53
+  leftIdx 58:
+    datadep:
+      - leftIdx 51
+      - leftIdx 58
+    controldep:
+      - leftIdx 53
+      - stall_occupied 53
+  rightIdx 59:
+    datadep:
+      - idx 41
+      - idx 43
+    controldep:
+      - Min_s 31
+      - maximal 31
+  rightIdx 60:
+    reset: False
+    datadep:
+      - rightIdx 59
+      - rightIdx 66
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - rightIdx 60
+      - N 60
+      - rightIdx 61
+      - stall_occupied 61
+  N 60:
+    reset: False
+    datadep:
+      - N 10
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - rightIdx 60
+      - N 60
+      - rightIdx 61
+      - stall_occupied 61
+  stall_occupied 61:
+    reset: False
+    datadep:
+      - stall_occupied 15
+      - stall_occupied 46
+      - stall_occupied 71
+    controldep:
+      - rightIdx 60
+      - N 60
+  rightIdx 61:
+    reset: False
+    datadep:
+      - rightIdx 59
+      - rightIdx 66
+    controldep:
+      - rightIdx 60
+      - N 60
+  Ls 63:
+    datadep:
+      - idx 41
+      - idx 43
+      - rightIdx 59
+      - rightIdx 66
+    controldep:
+      - rightIdx 61
+      - stall_occupied 61
+  Min_s 64:
+    datadep:
+      - Ls 63
+      - Rs 23
+      - Rs 26
+      - Rs 55
+      - Rs 48
+      - Rs 73
+      - Rs 80
+      - rightIdx 59
+      - rightIdx 66
+    controldep:
+      - rightIdx 61
+      - stall_occupied 61
+  Max_s 65:
+    datadep:
+      - Ls 63
+      - Rs 23
+      - Rs 26
+      - Rs 55
+      - Rs 48
+      - Rs 73
+      - Rs 80
+      - rightIdx 59
+      - rightIdx 66
+    controldep:
+      - rightIdx 61
+      - stall_occupied 61
+  rightIdx 66:
+    datadep:
+      - rightIdx 59
+      - rightIdx 66
+    controldep:
+      - rightIdx 61
+      - stall_occupied 61
+  idx 68:
+    datadep:
+      - Min_s 18
+      - Min_s 27
+      - Min_s 49
+      - Min_s 56
+      - Min_s 64
+      - Min_s 74
+      - Min_s 81
+      - Min_s 89
+      - maximal 30
+    controldep:
+      - Min_s 31
+      - maximal 31
+  stall_occupied 71:
+    datadep: 
+      - idx 68
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Ls 72:
+    datadep:
+      - idx 68 
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Rs 73:
+    datadep:
+      - idx 68 
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Min_s 74:
+    datadep:
+      - idx 68 
+    controldep:
+      - Min_s 31
+      - maximal 31
+  Max_s 75:
+    datadep:
+      - idx 68 
+    controldep:
+      - Min_s 31
+      - maximal 31
+  leftIdx 76:
+    datadep:
+      - idx 68 
+    controldep:
+      - Min_s 31
+      - maximal 31
+  leftIdx 77:
+    reset: False
+    datadep:
+      - leftIdx 76
+      - leftIdx 83
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - leftIdx 77
+      - stall_occupied 78
+      - leftIdx 78
+  leftIdx 78:
+    reset: False
+    datadep:
+      - leftIdx 76
+      - leftIdx 83
+    controldep:
+      - leftIdx 77
+  stall_occupied 78:
+    reset: False
+    datadep:
+      - stall_occupied 15
+      - stall_occupied 46
+      - stall_occupied 71
+    controldep:
+      - leftIdx 77
+  Rs 80:
+    datadep:
+      - idx 68 
+      - leftIdx 76
+      - leftIdx 83
+    controldep:
+      - stall_occupied 78
+      - leftIdx 78
+  Min_s 81:
+    datadep:
+      - Ls 22
+      - Ls 25
+      - Ls 72
+      - Ls 88
+      - Ls 63
+      - Ls 47
+      - Rs 80
+      - leftIdx 76
+      - leftIdx 83
+    controldep:
+      - stall_occupied 78
+      - leftIdx 78
+  Max_s 82:
+    datadep:
+      - Ls 22
+      - Ls 25
+      - Ls 72
+      - Ls 88
+      - Ls 63
+      - Ls 47
+      - Rs 80
+      - leftIdx 76
+      - leftIdx 83
+    controldep:
+      - stall_occupied 78
+      - leftIdx 78
+  leftIdx 83:
+    datadep:
+      - leftIdx 76
+      - leftIdx 83
+    controldep:
+      - stall_occupied 78
+      - leftIdx 78
+  rightIdx 84:
+    datadep:
+      - idx 68 
+    controldep:
+      - Min_s 31
+      - maximal 31
+  rightIdx 85:
+    reset: False
+    datadep:
+      - rightIdx 84
+      - rightIdx 91
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - rightIdx 85
+      - N 85
+      - rightIdx 86
+      - stall_occupied 86
+  N 85:
+    reset: False
+    datadep:
+      - N 10
+    controldep:
+      - Min_s 31
+      - maximal 31
+      - rightIdx 85
+      - N 85
+      - rightIdx 86
+      - stall_occupied 86
+  rightIdx 86:
+    reset: False
+    datadep:
+      - rightIdx 84
+      - rightIdx 91
+    controldep:
+      - rightIdx 85
+      - N 85
+  stall_occupied 86:
+    reset: False
+    datadep:
+      - stall_occupied 15
+      - stall_occupied 46
+      - stall_occupied 71
+    controldep:
+      - rightIdx 85
+      - N 85
+  Ls 88:
+    datadep:
+      - idx 68 
+      - rightIdx 84
+      - rightIdx 91
+    controldep:
+      - rightIdx 86
+      - stall_occupied 86
+  Min_s 89:
+    datadep:
+      - Ls 88
+      - Rs 23
+      - Rs 26
+      - Rs 55
+      - Rs 48
+      - Rs 73
+      - Rs 80
+      - rightIdx 84
+      - rightIdx 91
+    controldep:
+      - rightIdx 86
+      - stall_occupied 86
+  Max_s 90:
+    datadep:
+      - Ls 88
+      - Rs 23
+      - Rs 26
+      - Rs 55
+      - Rs 48
+      - Rs 73
+      - Rs 80
+      - rightIdx 84
+      - rightIdx 91
+    controldep:
+      - rightIdx 86
+      - stall_occupied 86
+  rightIdx 91:
+    datadep:
+      - rightIdx 84
+      - rightIdx 91
+    controldep:
+      - rightIdx 86
+      - stall_occupied 86

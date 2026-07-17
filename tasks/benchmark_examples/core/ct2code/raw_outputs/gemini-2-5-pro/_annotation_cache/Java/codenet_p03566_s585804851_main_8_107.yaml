@@ -1,0 +1,383 @@
+target_var: prevHei 73
+other_vars: 
+  - ctr 22
+  - ctr 31
+  - ttt 40
+  - prevHei 39
+  - size 37
+  - prepre 42
+  - ttt 54
+  - ttt 50
+  - prevHei 53
+  - btt 57
+  - prepre 63
+  - ttt 69
+  - size 76
+  - size 71
+  - ttt 89
+  - preHei 92
+  - ttt 93
+  - prepre 101
+  - ttt 89
+variables: 
+  prevHei 73:
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - mv 68
+      - curHei 68
+  perform 43:
+    datadep: Null
+    controldep: Null
+  perform 46:
+    reset: False
+    datadep:
+      - perform 43
+      - perform 59
+      - perform 61
+      - perform 75
+      - perform 79
+      - perform 95
+      - perform 97
+    controldep:
+      - i 44
+      - totalt 44
+  mv 45:
+    datadep:
+      - i 44
+      - maxv 30
+      - maxv 25
+      - maxv 24
+      - maxv 23
+    controldep:
+      - i 44
+      - totalt 44
+  mv 48:
+    reset: False
+    datadep:
+      - mv 45
+    controldep:
+      - perform 46
+  curHei 48:
+    reset: False
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - perform 46
+  curHei 49:
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - mv 48
+      - curHei 48
+  mv 55:
+    reset: False
+    datadep:
+      - mv 45
+    controldep:
+      - mv 48
+      - curHei 48
+  curHei 55:
+    reset: False
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - mv 48
+      - curHei 48
+  perform 59:
+    datadep: Null
+    controldep:
+      - mv 55
+      - curHei 55
+  perform 61:
+    datadep: Null
+    controldep:
+      - mv 55
+      - curHei 55
+  i 64:
+    datadep:
+      - i 44
+    controldep:
+      - mv 48
+      - curHei 48
+  i 44:
+    datadep:
+      - i 44
+      - i 64
+      - i 83
+      - i 99
+    controldep:
+      - i 44
+      - totalt 44
+  totalt 44:
+    reset: False
+    datadep:
+      - totalt 16
+      - totalt 9
+    controldep:
+      - i 44
+      - totalt 44
+  totalt 16:
+    datadep:
+      - totalt 16
+      - totalt 9
+      - t 15
+      - i 14
+    controldep:
+      - i 14
+      - n 14
+  i 14:
+    datadep:
+      - i 14
+    controldep:
+      - i 14
+      - n 14
+  n 14:
+    reset: False
+    datadep:
+      - n 11
+    controldep:
+      - i 14
+      - n 14
+  n 11:
+    datadep: Null
+    controldep: Null
+  t 15:
+    datadep:
+      - i 14
+    controldep:
+      - i 14
+      - n 14
+  maxv 21:
+    datadep:
+      - totalt 16
+      - totalt 9
+    controldep: Null 
+  maxv 23:
+    datadep:
+      - maxv 21
+    controldep: Null 
+  maxv 24:
+    datadep: Null
+    controldep: Null
+  maxv 25:
+    datadep:
+      - totalt 16
+      - totalt 9
+    controldep: Null
+  i 28:
+    datadep:
+      - totalt 16
+      - totalt 9
+      - i 28
+    controldep:
+      - i 28
+  maxv 30:
+    datadep:
+      - maxv 30
+      - maxv 25
+      - maxv 24
+      - maxv 23
+      - i 28
+      - v 13
+      - v 19
+      - tidx 26
+      - tidx 34
+    controldep:
+      - i 28
+  t 12:
+    datadep: 
+      - n 11
+    controldep: Null
+  v 13:
+    datadep:
+      - n 11
+    controldep: Null
+  i 18:
+    datadep:
+      - i 18
+    controldep:
+      - i 18
+      - n 18
+  n 18:
+    reset: False
+    datadep:
+      - n 11
+    controldep:
+      - i 18
+      - n 18
+  v 19:
+    datadep:
+      - i 18
+    controldep:
+      - i 18
+      - n 18
+  tidx 26:
+    datadep:
+      - n 11
+    controldep: Null
+  mov 27:
+    datadep: Null
+    controldep: Null
+  mov 29:
+    datadep:
+      - mov 27
+      - mov 33
+      - mov 29
+    controldep:
+      - i 28
+  mov 32:
+    reset: False
+    datadep:
+      - mov 29
+    controldep:
+      - i 28
+  t 32:
+    reset: False
+    datadep:
+      - t 15
+      - t 12
+    controldep:
+      - i 28
+  tidx 32:
+    reset: False
+    datadep:
+      - tidx 26
+      - tidx 34
+    controldep:
+      - i 28
+  mov 33:
+    datadep: Null
+    controldep:
+      - mov 32
+      - t 32
+      - tidx 32
+  tidx 34:
+    datadep:
+      - tidx 26
+      - tidx 34
+    controldep:
+      - mov 32
+      - t 32
+      - tidx 32
+  curHei 41:
+    datadep: Null
+    controldep: Null
+  totalt 9:
+    datadep: Null
+    controldep: Null
+  mv 68:
+    reset: False
+    datadep:
+      - mv 45
+    controldep:
+      - perform 46
+  curHei 68:
+    reset: False
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - perform 46
+  i 83:
+    datadep:
+      - i 44
+      - i 77
+    controldep:
+      - mv 68
+      - curHei 68
+  mv 74:
+    reset: False
+    datadep:
+      - mv 45
+    controldep:
+      - mv 68
+      - curHei 68
+  curHei 74:
+    reset: False
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - mv 68
+      - curHei 68
+  perform 75:
+    datadep: Null
+    controldep:
+      - mv 74
+      - curHei 74
+  perform 79:
+    datadep: Null
+    controldep:
+      - mv 74
+      - curHei 74
+  i 77:
+    datadep:
+      - i 44
+    controldep:
+      - mv 74
+      - curHei 74
+  mv 87:
+    reset: False
+    datadep:
+      - mv 45
+    controldep:
+      - perform 46
+  curHei 87:
+    reset: False
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - perform 46
+  curHei 88:
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - mv 87
+      - curHei 87
+  mv 94:
+    reset: False
+    datadep:
+      - mv 45
+    controldep:
+      - mv 87
+      - curHei 87
+  curHei 94:
+    reset: False
+    datadep:
+      - curHei 41
+      - curHei 49
+      - curHei 88
+    controldep:
+      - mv 87
+      - curHei 87
+  perform 95:
+    datadep: Null 
+    controldep:
+      - mv 94
+      - curHei 94
+  perform 97:
+    datadep: Null
+    controldep:
+      - mv 94
+      - curHei 94
+  i 99:
+    datadep:
+      - i 44
+    controldep:
+      - mv 87
+      - curHei 87

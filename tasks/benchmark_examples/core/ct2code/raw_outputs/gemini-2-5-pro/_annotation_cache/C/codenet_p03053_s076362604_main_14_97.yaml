@@ -1,0 +1,167 @@
+target_var: q 63
+other_vars:
+  - d 25
+  - p 38
+  - r 40
+  - s 41
+  - s 47
+  - r 46
+  - p 44
+  - p 52
+  - p 54
+  - r 72
+  - s 81
+variables:
+  q 63:
+    datadep:
+      - q 63
+      - q 61
+      - q 45
+      - q 39
+      - i 58
+      - j 59
+    controldep:
+      - l 60
+      - i 60
+      - j 60
+  q 61:
+    datadep: 
+      - i 58
+      - j 59
+    controldep:
+      - l 60
+      - i 60
+      - j 60
+  q 45:
+    datadep: 
+      - m 32
+      - j 43
+    controldep:
+      - j 43
+      - W 43
+  q 39:
+    datadep:
+      - m 32
+      - W 18
+    controldep:
+      - i 37
+      - H 37
+  i 37:
+    datadep:
+      - i 37
+    controldep:
+      - i 37
+      - H 37
+  H 37:
+    reset: False
+    datadep:
+      - H 16
+    controldep:
+      - i 37
+      - H 37
+  H 16:
+    datadep: Null
+    controldep: Null
+  j 43:
+    datadep:
+      - j 43
+    controldep:
+      - j 43
+      - W 43
+  W 43:
+    reset: False
+    datadep:
+      - W 18
+    controldep:
+      - j 43
+      - W 43
+  W 18:
+    datadep: Null
+    controldep: Null
+  l 60:
+    reset: False
+    datadep:
+      - l 28
+    controldep:
+      - j 59
+  l 28:
+    datadep: 
+      - c 27
+      - i 24
+      - j 26
+    controldep:
+      - j 26
+      - W 26
+  c 27:
+    datadep: Null
+    controldep:
+      - j 26
+      - W 26
+  j 26:
+    datadep:
+      - j 26
+    controldep:
+      - j 26
+      - W 26
+      - i 24
+      - H 24
+  W 26:
+    reset: False
+    datadep:
+      - W 18
+    controldep:
+      - j 26
+      - W 26
+      - i 24
+      - H 24
+  i 24:
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - H 24
+  H 24:
+    reset: False
+    datadep:
+      - H 16
+    controldep:
+      - i 24
+      - H 24
+  j 59:
+    datadep:
+      - j 59
+      - W 18
+    controldep:
+      - j 59
+      - i 58
+      - H 58
+  i 58:
+    datadep:
+      - i 58
+    controldep:
+      - i 58
+      - H 58
+  H 58:
+    reset: False
+    datadep:
+      - H 16
+    controldep:
+      - i 58
+      - H 58
+  m 32:
+    datadep:
+      - H 16
+      - W 18
+    controldep: Null
+  i 60:
+    reset: False
+    datadep: 
+      - i 58
+    controldep:
+      - j 59
+  j 60:
+    reset: False
+    datadep: 
+      - j 59
+    controldep:
+      - j 59

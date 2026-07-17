@@ -1,0 +1,122 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro",
+  "schema:name": "CoRe Solution - Gemini 2.5 Pro (actual run, control-dependency subtask only)",
+  "schema:description": "TaskSolution carrying the actual measured metrics from running core_implementation_gemini-2-5-pro.py against the gemini-2.5-pro stable endpoint. CAVEATS: (1) only the control-dependency / trace subtask was run (489 instances from CoRe Lite); data dependency and information flow subtasks were not run and are intentionally omitted. (2) Endpoint mismatch: the paper used gemini-2.5-pro-preview-05-06; this run used the gemini-2.5-pro stable endpoint, so numbers are not directly comparable to Table 4. (3) 15 of 489 instances had API failures (same model, intermittent) and were forced to pred=False; reported F1=80.2 includes those failures. F1 excluding the 15 failures (i.e. over the 474 instances with valid responses) is 82.03. (4) For paper-reported numbers, see ../pdf2ct/core_solution_gemini-2-5-pro_paper.jsonld.",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/core-benchmark"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro#implementation",
+    "schema:name": "Google Gemini API - Gemini 2.5 Pro (stable)",
+    "schema:version": "gemini-2.5-pro",
+    "schema:codeRepository": "core_implementation_gemini-2-5-pro.py"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "few_shot_examples",
+        "schema:value": "5-7",
+        "schema:description": "Number of illustrative few-shot examples drawn from small synthetic programs included in each prompt."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "temperature",
+        "schema:value": "0",
+        "schema:description": "Decoding temperature 0 to minimize randomness."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "max_output_tokens",
+        "schema:value": "2048",
+        "schema:description": "Maximum number of output tokens per call."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "reasoning_model",
+        "schema:value": "true",
+        "schema:description": "Gemini 2.5 Pro is classified as a reasoning model in the paper (Table 3)."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "prompt_includes_trace",
+        "schema:value": "true",
+        "schema:description": "Default pairwise query setting: model is asked to both classify the dependency and produce a supporting trace."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "max_retries_on_parse_failure",
+        "schema:value": "3",
+        "schema:description": "Model is re-queried up to 3 times with a fallback prompt if JSON parsing fails."
+      }
+    ],
+    "croissant:runTimestamp": "2026-04-29T21:31:43.073462+00:00",
+    "croissant:modelId": "gemini-2.5-pro",
+    "croissant:instanceCount": 489
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:gemini-2-5-pro-core-lite-outputs",
+    "schema:name": "Gemini 2.5 Pro outputs on CoRe Lite (control-dependency subtask only)",
+    "schema:contentUrl": "raw_outputs/gemini-2-5-pro/control_dep_trace.jsonl",
+    "schema:encodingFormat": "application/jsonlines"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro#control_dependency_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/core-benchmark#control_dependency"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:gemini-2-5-pro-core-lite-control-dep-outputs",
+        "schema:name": "Gemini 2.5 Pro outputs on CoRe Lite - Control Dependency",
+        "schema:contentUrl": "raw_outputs/gemini-2-5-pro/control_dep_trace.jsonl",
+        "schema:encodingFormat": "application/jsonlines"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/core-benchmark_evaluation_gemini-2-5-pro#control_dependency",
+        "schema:name": "Evaluation of Gemini 2.5 Pro on CoRe - Control Dependency (actual run)",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/core-benchmark#control_dependency"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro#control_dependency_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1 Score",
+            "croissant:value": "80.2",
+            "schema:description": "Dependency Classification F1 on Control Dependency (CoRe Lite, actual run, includes 15 API failures forced to pred=False; F1 excluding failures = 82.03)",
+            "croissant:computedAt": "2026-04-29T21:31:43.073462+00:00"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Correct Trace Rate",
+            "croissant:value": "96.93",
+            "schema:description": "Trace Generation Correct Trace Rate on Control Dependency (CoRe Lite, actual run; computed over 163 positive predictions)",
+            "croissant:computedAt": "2026-04-29T21:31:43.073462+00:00"
+          }
+        ]
+      }
+    }
+  ]
+}

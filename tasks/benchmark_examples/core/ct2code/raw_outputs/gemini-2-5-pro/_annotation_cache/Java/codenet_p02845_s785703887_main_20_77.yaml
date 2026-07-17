@@ -1,0 +1,367 @@
+target_var: fst 49
+other_vars:
+  - answer 25
+  - answer 38
+  - answer 39
+  - answer 42
+  - answer 43
+  - answer 46
+  - answer 47
+  - answer 50
+  - answer 51
+  - MOD 23
+variables:
+  N 22:
+    datadep: Null
+    controldep: Null
+  fst 24:
+    datadep: Null
+    controldep: Null
+  snd 24:
+    datadep: Null
+    controldep: Null
+  thd 24:
+    datadep: Null
+    controldep: Null
+  i 26:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  N 26:
+    reset: False
+    datadep:
+      - N 22
+    controldep:
+      - i 26
+      - N 26
+  val 27:
+    datadep: Null
+    controldep:
+      - i 26
+      - N 26
+  val 28:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - i 26
+      - N 26
+  fst 29:
+    reset: False
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - val 28
+  fst 30:
+    datadep: Null
+    controldep:
+      - fst 29
+  snd 31:
+    reset: False
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep:
+      - fst 29
+  snd 32:
+    datadep: Null
+    controldep:
+      - snd 31
+  thd 33:
+    reset: False
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+    controldep:
+      - snd 31
+  thd 34:
+    datadep: Null
+    controldep:
+      - thd 33
+  fst 36:
+    reset: False
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - val 28
+  val 36:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - val 28
+  snd 36:
+    reset: False
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep:
+      - val 28
+  thd 36:
+    reset: False
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+    controldep:
+      - val 28
+  fst 37:
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - fst 36
+      - snd 36
+      - thd 36
+      - val 36
+  fst 40:
+    reset: False
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - fst 36
+      - snd 36
+      - thd 36
+      - val 36
+  val 40:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - fst 36
+      - snd 36
+      - thd 36
+      - val 36
+  snd 40:
+    reset: False
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep: 
+      - fst 36
+      - snd 36
+      - thd 36
+      - val 36
+  fst 41:
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - fst 40
+      - snd 40
+      - val 40
+  val 44:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - fst 40
+      - snd 40
+      - val 40
+  snd 44:
+    reset: False
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep:
+      - fst 40
+      - snd 40
+      - val 40
+  thd 44:
+    reset: False
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+    controldep:
+      - fst 40
+      - snd 40
+      - val 40
+  snd 45:
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep:
+      - thd 44
+      - snd 44
+      - val 44
+  fst 48:
+    reset: False
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - thd 44
+      - snd 44
+      - val 44
+  val 48:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - thd 44
+      - snd 44
+      - val 44
+  thd 48:
+    reset: False
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+    controldep:
+      - thd 44
+      - snd 44
+      - val 44
+  fst 49:
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - thd 48
+      - fst 48
+      - val 48
+  fst 52:
+    reset: False
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - thd 48
+      - fst 48
+      - val 48
+  val 52:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - thd 48
+      - fst 48
+      - val 48
+  fst 53:
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+    controldep:
+      - fst 52
+      - val 52
+  snd 54:
+    reset: False
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep:
+      - fst 52
+      - val 52
+  val 54:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - fst 52
+      - val 52
+  snd 55:
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+    controldep:
+      - snd 54
+      - val 54
+  thd 56:
+    reset: False
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+    controldep:
+      - snd 54
+      - val 54
+  val 56:
+    reset: False
+    datadep:
+      - val 27
+    controldep:
+      - snd 54
+      - val 54
+  thd 57:
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+    controldep:
+      - thd 56
+      - val 56
+  old_fst 59:
+    datadep:
+      - fst 24
+      - fst 30
+      - fst 60
+      - fst 37
+      - fst 41
+      - fst 49
+      - fst 53
+    controldep:
+      - val 28
+  old_snd 59:
+    datadep:
+      - snd 24
+      - snd 62
+      - snd 32
+      - snd 45
+      - snd 55
+    controldep:
+      - val 28
+  old_thd 59:
+    datadep:
+      - thd 24
+      - thd 34
+      - thd 61
+      - thd 57
+    controldep:
+      - val 28
+  fst 60:
+    datadep:
+      - old_fst 59
+      - old_snd 59
+      - old_thd 59
+    controldep:
+      - val 28
+  thd 61:
+    datadep:
+      - old_fst 59
+      - old_snd 59
+      - old_thd 59
+    controldep:
+      - val 28
+  snd 62:
+    datadep:
+      - old_fst 59
+      - old_snd 59
+      - old_thd 59
+      - fst 60
+      - thd 61
+    controldep:
+      - val 28
+
+
