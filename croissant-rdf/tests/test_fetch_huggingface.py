@@ -64,8 +64,13 @@ def test_fetch_data_workflow():
     assert len(croissant_dataset) > 0
     for dataset in croissant_dataset:
         if "error" not in dataset:
-            assert "https://schema.org/" in dataset["@context"]["@vocab"]
-            assert "http://mlcommons.org/croissant/" in dataset["@context"]["cr"]
+            # @context can be either a string or a dict
+            context = dataset["@context"]
+            if isinstance(context, str):
+                assert "https://schema.org" in context
+            elif isinstance(context, dict):
+                assert "https://schema.org/" in context.get("@vocab", "")
+                assert "http://mlcommons.org/croissant/" in context.get("cr", "")
 
 
 
