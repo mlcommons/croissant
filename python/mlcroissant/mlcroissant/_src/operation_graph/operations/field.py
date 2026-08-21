@@ -12,7 +12,6 @@ import re
 from typing import Any, Iterator
 
 from etils import epath
-import jsonpath_rw
 import numpy as np
 import pandas as pd
 from rdflib import term
@@ -31,7 +30,7 @@ from mlcroissant._src.structure_graph.nodes.source import Transform
 @functools.cache
 def _parse_jsonpath(json_path: str):
     """Memoizes jsonpath_rw.parse for better performances."""
-    return jsonpath_rw.parse(json_path)
+    return deps.jsonpath_rw.parse(json_path)
 
 
 def _is_repeated_field(field: Field | None) -> bool | None:

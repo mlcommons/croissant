@@ -137,6 +137,7 @@ jobs:
           etils[epath] \
           GitPython \
           jsmin \
+          jmespath \
           jsonpath_rw \
           librosa \
           mypy \
@@ -175,6 +176,7 @@ jobs:
             etils[epath] \
             GitPython \
             jsmin \
+            jmespath \
             jsonpath_rw \
             mypy \
             networkx \
