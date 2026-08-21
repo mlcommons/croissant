@@ -1,0 +1,726 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/microsoft/WildFeedback/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sat_dsat_annotation",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sat_dsat_annotation/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-user_preference",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "user_preference/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-wildfeedback",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "wildfeedback/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sat_dsat_annotation_splits/split_name"
+      },
+      "@id": "sat_dsat_annotation_splits",
+      "name": "sat_dsat_annotation_splits",
+      "description": "Splits for the sat_dsat_annotation config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sat_dsat_annotation_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sat_dsat_annotation",
+      "description": "microsoft/WildFeedback - 'sat_dsat_annotation' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sat_dsat_annotation/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sat_dsat_annotation_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/TurnId",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "TurnId"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/UtterranceId",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "UtterranceId"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Role",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Role"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Content",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Content"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Intent",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Intent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Preceeding",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Preceeding"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Satisfaction",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Satisfaction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Satisfaction-Justificiation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Satisfaction-Justificiation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Disatisfaction",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Disatisfaction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/Dissatisfaction-Justificiation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "Dissatisfaction-Justificiation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sat_dsat_annotation/State",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sat_dsat_annotation"
+            },
+            "extract": {
+              "column": "State"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "user_preference_splits/split_name"
+      },
+      "@id": "user_preference_splits",
+      "name": "user_preference_splits",
+      "description": "Splits for the user_preference config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "user_preference_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "user_preference",
+      "description": "microsoft/WildFeedback - 'user_preference' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "user_preference/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "user_preference_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "user_preference/messages/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-user_preference"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "user_preference/messages/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-user_preference"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/model_response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "column": "model_response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/input_token_usage",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "column": "input_token_usage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/output_token_usage",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "column": "output_token_usage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/original_idx",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "column": "original_idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/history",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "user_preference/history/Agent",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-user_preference"
+                },
+                "extract": {
+                  "column": "history"
+                },
+                "transform": {
+                  "jsonPath": "Agent"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "user_preference/history/User",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-user_preference"
+                },
+                "extract": {
+                  "column": "history"
+                },
+                "transform": {
+                  "jsonPath": "User"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "user_preference/history/turn_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-user_preference"
+                },
+                "extract": {
+                  "column": "history"
+                },
+                "transform": {
+                  "jsonPath": "['turn id']"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/sft_data",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "column": "sft_data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "user_preference/num_tokens",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-user_preference"
+            },
+            "extract": {
+              "column": "num_tokens"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "wildfeedback_splits/split_name"
+      },
+      "@id": "wildfeedback_splits",
+      "name": "wildfeedback_splits",
+      "description": "Splits for the wildfeedback config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wildfeedback_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "wildfeedback_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "wildfeedback",
+      "description": "microsoft/WildFeedback - 'wildfeedback' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wildfeedback/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wildfeedback"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "wildfeedback/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "wildfeedback_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wildfeedback/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "wildfeedback/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wildfeedback"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "wildfeedback/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wildfeedback"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wildfeedback/chosen",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "wildfeedback/chosen/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wildfeedback"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "wildfeedback/chosen/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wildfeedback"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wildfeedback/rejected",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "wildfeedback/rejected/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wildfeedback"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "wildfeedback/rejected/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wildfeedback"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "WildFeedback",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for WildFeedback\n\t\n\nWildFeedback is a preference dataset constructed from real-world user interactions with ChatGPT. Unlike synthetic datasets that rely solely on AI-generated rankings, WildFeedback captures authentic human preferences through naturally occurring user feedback signals in conversation. The dataset is designed to improve the alignment of large language models (LLMs) with actual human values by leveraging direct user input.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Details… See the full description on the dataset page: https://huggingface.co/datasets/microsoft/WildFeedback.",
+  "alternateName": [
+    "microsoft/WildFeedback",
+    "WildFeedback"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Microsoft",
+    "url": "https://huggingface.co/microsoft"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "odc-by",
+    "1M - 10M",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2408.15549",
+    "🇺🇸 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/microsoft/WildFeedback"
+}
