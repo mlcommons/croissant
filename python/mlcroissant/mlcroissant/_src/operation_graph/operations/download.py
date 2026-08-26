@@ -162,9 +162,12 @@ class Download(Operation):
         # The hash from the Croissant JSON-LD can be in either hex or base64,
         # so let's check both
         expected_hash = getattr(self.node, hash.name)
-        # First, try hex as that's likely more common
+        # First, try hex as that's likely more common. Hex digests are
+        # case-insensitive by convention (unlike base64 below, where case is
+        # significant), so compare case-insensitively to accept metadata that
+        # was published with uppercase hex.
         hex_hash = hash.hexdigest()
-        if hex_hash == expected_hash:
+        if hex_hash == expected_hash.lower():
             return
         # Next, try base64 as a fallback
         base64_hash = base64.b64encode(bytes.fromhex(hex_hash)).decode()
