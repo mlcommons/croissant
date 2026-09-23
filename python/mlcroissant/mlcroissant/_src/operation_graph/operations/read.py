@@ -19,6 +19,7 @@ from mlcroissant._src.core.optional import deps
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.base_operation import Operation
 from mlcroissant._src.operation_graph.operations.download import is_url
+from mlcroissant._src.operation_graph.operations.extract import is_gzip
 from mlcroissant._src.operation_graph.operations.parse_json import parse_json_content
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
@@ -163,11 +164,12 @@ class Read(Operation):
         if EncodingFormat.DICOM in encoding_formats:
             return _read_dicom_file(filepath)
 
+        gzipped = is_gzip(filepath)
         with filepath.open("rb") as file:
             for encoding_format in encoding_formats:
                 # TODO(https://github.com/mlcommons/croissant/issues/635).
                 read_file: Any = file
-                if filepath.suffix == ".gz":
+                if gzipped:
                     read_file = gzip.open(file, "rt", newline="")
                 if encoding_format == EncodingFormat.CSV:
                     return pd.read_csv(read_file)
