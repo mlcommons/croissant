@@ -1,0 +1,221 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "cr": "http://mlcommons.org/croissant/",
+    "croissant": "http://mlcommons.org/croissant/",
+    "sc": "https://schema.org/",
+    "schema": "https://schema.org/",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "stato": "http://purl.obolibrary.org/obo/STATO_",
+    "e3": "https://evalevalai.com/schema/0.3.0/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "subField": "cr:subField",
+    "extract": "cr:extract",
+    "jsonPath": "cr:jsonPath",
+    "fileObject": "cr:fileObject",
+    "isArray": "cr:isArray",
+    "lowerIsBetter": "cr:lowerIsBetter",
+    "standardError": "stato:0000037",
+    "confidenceInterval": "stato:0000198",
+    "confidenceLevel": "stato:0000088",
+    "sampleSize": "stato:0000047",
+    "standardDeviation": "stato:0000164"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "https://huggingface.co/datasets/evaleval/EEE_datastore/blob/main/data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3.json",
+  "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+  "schema:name": "MMLU-Pro Solution - Kimi K2 Instruct (Chain-of-Thought)",
+  "schema:identifier": "lm-eval/moonshotai/kimi-k2-instruct/1764204739.50717",
+  "schema:isBasedOn": {
+    "@id": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro#problem"
+  },
+  "prov:generatedAtTime": "2025-11-27T00:52:19.507170Z",
+  "schema:provider": {
+    "@type": "schema:Organization",
+    "schema:name": "EleutherAI",
+    "schema:url": "https://www.eleuther.ai"
+  },
+  "e3:schemaVersion": "0.3.0",
+  "e3:sourceName": "lm-eval",
+  "e3:sourceType": "evaluation_run",
+  "e3:evaluatorRelationship": "third_party",
+  "e3:evalLibrary": {
+    "@type": "schema:SoftwareApplication",
+    "schema:name": "lm-eval",
+    "schema:version": "0.4.11"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://huggingface.co/moonshotai/kimi-k2-instruct",
+    "schema:name": "Kimi K2 Instruct",
+    "schema:identifier": "moonshotai/kimi-k2-instruct",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "moonshotai"
+    },
+    "e3:inferencePlatform": "Together AI",
+    "e3:inferenceEngine": {
+      "@type": "schema:SoftwareApplication",
+      "schema:name": "vLLM",
+      "schema:version": "0.6.3"
+    },
+    "e3:deploymentType": "externally_managed",
+    "e3:modelAvailability": "open_weights"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionInfo",
+    "@id": "https://huggingface.co/datasets/evaleval/EEE_datastore/blob/main/data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3.json#execution",
+    "schema:description": "Greedy decoding (temperature 0.0) with chain-of-thought reasoning up to 2048 tokens.",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "temperature",
+        "schema:value": 0.0
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "top_p",
+        "schema:value": 1.0
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "top_k",
+        "schema:value": -1
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "max_tokens",
+        "schema:value": 2048
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "https://huggingface.co/datasets/evaleval/EEE_datastore/blob/main/data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3_samples.jsonl",
+    "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+    "schema:name": "Instance-level evaluation outputs for Kimi K2 Instruct on MMLU-Pro",
+    "schema:distribution": [
+      {
+        "@type": "cr:FileObject",
+        "@id": "samples_jsonl_file",
+        "schema:name": "59ee0934-f60d-4d4b-b986-844fc51e89a3_samples.jsonl",
+        "schema:contentUrl": "data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3_samples.jsonl",
+        "schema:encodingFormat": "application/jsonlines",
+        "schema:sha256": "a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0"
+      }
+    ],
+    "cr:recordSet": [
+      {
+        "@type": "cr:RecordSet",
+        "@id": "e3_instance_records",
+        "schema:name": "e3_instance_records",
+        "sampleSize": 12032,
+        "examples": [
+          {
+            "schema_version": "0.3.0",
+            "evaluation_id": "lm-eval/moonshotai/kimi-k2-instruct/1764204739.50717",
+            "evaluation_result_id": "mmlu_pro_cot_correct",
+            "model_id": "moonshotai/kimi-k2-instruct",
+            "evaluation_name": "mmlu_pro",
+            "sample_id": "test_1042",
+            "interaction_type": "single_turn",
+            "input": {
+              "raw": "Question: Which is a scalar?...",
+              "reference": [
+                "C"
+              ],
+              "choices": [
+                "Velocity",
+                "Force",
+                "Speed"
+              ]
+            },
+            "output": {
+              "raw": [
+                "Speed is a scalar. The answer is C."
+              ],
+              "reasoning_trace": [
+                "Velocity has direction..."
+              ]
+            },
+            "answer_attribution": [
+              {
+                "turn_idx": 0,
+                "source": "output.raw",
+                "extracted_value": "C",
+                "extraction_method": "regex",
+                "is_terminal": true
+              }
+            ],
+            "evaluation": {
+              "score": 1.0,
+              "is_correct": true
+            },
+            "token_usage": {
+              "input_tokens": 365,
+              "output_tokens": 42,
+              "total_tokens": 407
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "https://huggingface.co/datasets/evaleval/EEE_datastore/blob/main/data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3.json#evaluation",
+    "schema:name": "MMLU-Pro - COT correct",
+    "schema:isBasedOn": {
+      "@id": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro#problem"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "https://huggingface.co/datasets/evaleval/EEE_datastore/blob/main/data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3.json"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "@id": "https://huggingface.co/datasets/evaleval/EEE_datastore/blob/main/data/mmlu_pro/moonshotai/kimi-k2-instruct/59ee0934-f60d-4d4b-b986-844fc51e89a3.json#result_mmlu_pro_cot_correct",
+        "schema:identifier": "mmlu_pro_cot_correct",
+        "schema:name": "MMLU-Pro - COT correct",
+        "schema:description": "Fraction of correct answers after chain of thought",
+        "prov:generatedAtTime": "2025-11-27T00:52:19.507170Z",
+        "croissant:metric": {
+          "@id": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro#metric_accuracy"
+        },
+        "croissant:lowerIsBetter": false,
+        "croissant:value": {
+          "@type": "schema:QuantitativeValue",
+          "schema:value": 0.819,
+          "schema:minValue": 0.0,
+          "schema:maxValue": 1.0,
+          "schema:unitText": "proportion",
+          "standardError": {
+            "schema:value": 0.0035,
+            "schema:measurementMethod": "analytic"
+          },
+          "confidenceInterval": {
+            "schema:minValue": 0.812,
+            "schema:maxValue": 0.826,
+            "confidenceLevel": 0.95,
+            "schema:measurementMethod": "bootstrap"
+          },
+          "standardDeviation": 0.385,
+          "sampleSize": 12032
+        }
+      }
+    ]
+  }
+}
