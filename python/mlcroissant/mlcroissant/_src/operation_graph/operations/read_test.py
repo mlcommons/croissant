@@ -1,5 +1,6 @@
 """read_test module."""
 
+import gzip
 import io
 import pathlib
 import pickle
@@ -216,3 +217,20 @@ def test_read_dicom_missing_dependency(tmpdir, monkeypatch):
 
     with pytest.raises(ImportError, match="Missing dependency to read DICOM files"):
         read_mod._read_dicom_file(tmpdir / "does_not_matter.dcm")
+
+
+@pytest.mark.parametrize("filename", ["file.csv.gz", "file"])
+def test_read_gzipped_csv(tmpdir, filename):
+    tmpdir = epath.Path(tmpdir)
+    filepath = tmpdir / filename
+    with gzip.open(filepath, "wt") as f:
+        f.write("a,b\n1,2\n")
+    operation = Read(
+        operations=operations(),
+        node=create_test_file_object(encoding_formats=[EncodingFormat.CSV]),
+        folder=tmpdir,
+        fields=(),
+    )
+    df = operation.call(Path(filepath=filepath, fullpath=pathlib.PurePath()))
+    assert df["a"].tolist() == [1]
+    assert df["b"].tolist() == [2]
