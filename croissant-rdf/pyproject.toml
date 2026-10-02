@@ -47,6 +47,7 @@ Source = "https://github.com/mlcommons/croissant/croissant-rdf"
 
 
 [project.scripts]
+croissant-rdf = "croissant_rdf._src.cli:main"
 huggingface-rdf = "croissant_rdf.providers.huggingface:main"
 kaggle-rdf = "croissant_rdf.providers.kaggle:main"
 openml-rdf = "croissant_rdf.providers.openml:main"
